@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
 
       - name: Set Up JDK
         uses: actions/setup-java@v1
@@ -17,7 +17,8 @@ jobs:
       - name: Set Up Ruby
         uses: actions/setup-ruby@v1
         with:
-          ruby-version: 2.6
+          ruby-version: '3.0'
+          bundler-cache: true
 
       - name: Danger Checks
         run: |
