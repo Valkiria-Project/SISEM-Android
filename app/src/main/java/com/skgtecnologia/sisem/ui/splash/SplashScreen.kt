@@ -13,6 +13,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.skgtecnologia.sisem.R
 import kotlinx.coroutines.delay
 
+private const val SPLASH_TIME = 1000L
+
 @Composable
 fun SplashScreen(
         modifier: Modifier = Modifier,
@@ -33,7 +35,7 @@ fun SplashScreen(
     }
 
     LaunchedEffect(key1 = true) {
-        delay(1000)
+        delay(SPLASH_TIME)
         onClick()
     }
 }
