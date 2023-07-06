@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.uicomponents"
+    namespace = "com.valkiria.uicomponents"
     compileSdk = 34
 
     defaultConfig {
