@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Android Template"
+rootProject.name = "SISEM Android"
 include(":app")
 include(":uicomponents")

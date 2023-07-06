@@ -9,11 +9,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.myapplication"
+    namespace = "com.skgtecnologia.sisem"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.myapplication"
+        applicationId = "com.skgtecnologia.sisem"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
