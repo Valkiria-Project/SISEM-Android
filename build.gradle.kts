@@ -17,3 +17,12 @@ subprojects {
     apply(from = "../buildscripts/detekt.gradle")
     apply(from = "../buildscripts/versionsplugin.gradle")
 }
+
+task("clean") {
+    delete(rootProject.buildDir)
+}
+
+afterEvaluate {
+    // We install the hook at the first occasion
+    tasks["clean"].dependsOn("installGitHooks")
+}
