@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.skgtecnologia.sisem.ui.myscreen.fetch.FetchScreen
 import com.skgtecnologia.sisem.ui.myscreen.result.ResultScreen
+import com.skgtecnologia.sisem.ui.splash.SplashScreen
 import com.skgtecnologia.sisem.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -26,8 +27,18 @@ fun ComposeApp(
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = NavigationRoute.FETCH
+        startDestination = NavigationRoute.SPLASH
     ) {
+        composable(
+            route = NavigationRoute.SPLASH
+        ) {
+            SplashScreen(
+                modifier = modifier,
+                onClick = {
+                    navController.navigate(NavigationRoute.FETCH)
+                }
+            )
+        }
         composable(
             route = NavigationRoute.FETCH
         ) {
