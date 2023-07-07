@@ -17,20 +17,20 @@ private const val SPLASH_TIME = 1000L
 
 @Composable
 fun SplashScreen(
-        modifier: Modifier = Modifier,
-        onClick: () -> Unit
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         Image(
-                modifier = Modifier.fillMaxSize(),
-                painter = painterResource(id = R.drawable.ic_background),
-                contentDescription = null,
-                contentScale = ContentScale.Crop
+            modifier = Modifier.fillMaxSize(),
+            painter = painterResource(id = R.drawable.ic_background),
+            contentDescription = null,
+            contentScale = ContentScale.Crop
         )
         Image(
-                modifier = Modifier.align(Alignment.Center),
-                painter = painterResource(id = R.drawable.ic_icon_splash),
-                contentDescription = "logo sisem"
+            modifier = Modifier.align(Alignment.Center),
+            painter = painterResource(id = R.drawable.ic_icon_splash),
+            contentDescription = "logo sisem"
         )
     }
 
@@ -39,7 +39,6 @@ fun SplashScreen(
         onClick()
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
