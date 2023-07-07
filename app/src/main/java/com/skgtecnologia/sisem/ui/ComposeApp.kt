@@ -30,13 +30,13 @@ fun ComposeApp(
         startDestination = NavigationRoute.SPLASH
     ) {
         composable(
-                route = NavigationRoute.SPLASH
+            route = NavigationRoute.SPLASH
         ) {
             SplashScreen(
-                    modifier = modifier,
-                    onClick = {
-                        navController.navigate(NavigationRoute.FETCH)
-                    }
+                modifier = modifier,
+                onClick = {
+                    navController.navigate(NavigationRoute.FETCH)
+                }
             )
         }
         composable(
