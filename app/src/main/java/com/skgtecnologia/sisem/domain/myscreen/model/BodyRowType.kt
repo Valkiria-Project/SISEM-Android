@@ -5,8 +5,13 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 enum class BodyRowType : Parcelable {
+    BUTTON,
+    CHIP,
     CROSS_SELLING,
+    LABEL,
     MESSAGE,
     PAYMENT_METHOD_INFO,
-    SECTION
+    SECTION,
+    TERMS_AND_CONDITIONS,
+    TEXT_FIELD
 }

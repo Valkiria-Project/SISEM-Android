@@ -12,10 +12,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowModel
+import com.skgtecnologia.sisem.domain.myscreen.model.ButtonModelNew
+import com.skgtecnologia.sisem.domain.myscreen.model.ChipModel
 import com.skgtecnologia.sisem.domain.myscreen.model.CrossSellingModel
+import com.skgtecnologia.sisem.domain.myscreen.model.LabelModel
 import com.skgtecnologia.sisem.domain.myscreen.model.MessageModel
 import com.skgtecnologia.sisem.domain.myscreen.model.NestedBodyModel
 import com.skgtecnologia.sisem.domain.myscreen.model.PaymentMethodInfoModel
+import com.skgtecnologia.sisem.domain.myscreen.model.TermsAndConditionsModel
+import com.skgtecnologia.sisem.domain.myscreen.model.TextFieldModel
+import com.skgtecnologia.sisem.domain.myscreen.model.mapToUiModel
+import com.valkiria.uicomponents.components.button.ButtonComponent
+import com.valkiria.uicomponents.components.chip.ChipComponent
+import com.valkiria.uicomponents.components.label.LabelComponent
+import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.payments.PaymentMethodInfo
 import timber.log.Timber
 
@@ -66,6 +76,26 @@ fun BodyModelMapper(
                         methodType = model.methodType
                     )
                 }
+
+                is ChipModel -> item {
+                    ChipComponent(model = model.mapToUiModel())
+                }
+
+                is LabelModel -> item {
+                    LabelComponent(labelUiModel = model.mapToUiModel())
+                }
+
+                is TextFieldModel -> item {
+                    TextFieldComponent(model = model.mapToUiModel())
+                }
+
+                is ButtonModelNew -> item {
+                    ButtonComponent(model = model.mapToUiModel())
+                }
+
+                is TermsAndConditionsModel -> item {
+                    // TermsAndConditions(...)
+                }
             }
         }
     }
@@ -108,6 +138,22 @@ fun NestedBodyModelMapper(
                 )
 
                 is NestedBodyModel -> Timber.d("no-op")
+
+                is ChipModel -> ChipComponent(model = model.mapToUiModel())
+
+                is LabelModel -> LabelComponent(
+                    labelUiModel = model.mapToUiModel()
+                )
+
+                is TextFieldModel -> TextFieldComponent(
+                    model = model.mapToUiModel()
+                )
+
+                is ButtonModelNew -> ButtonComponent(
+                    model = model.mapToUiModel()
+                )
+
+                is TermsAndConditionsModel -> Timber.d("no-op")
             }
         }
     }

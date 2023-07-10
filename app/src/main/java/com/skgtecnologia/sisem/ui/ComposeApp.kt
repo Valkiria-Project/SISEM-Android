@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.skgtecnologia.sisem.ui.loginscreen.LoginScreen
 import com.skgtecnologia.sisem.ui.myscreen.fetch.FetchScreen
 import com.skgtecnologia.sisem.ui.myscreen.result.ResultScreen
 import com.skgtecnologia.sisem.ui.splash.SplashScreen
@@ -33,6 +34,16 @@ fun ComposeApp(
             route = NavigationRoute.SPLASH
         ) {
             SplashScreen(
+                modifier = modifier,
+                onClick = {
+                    navController.navigate(NavigationRoute.LOGIN)
+                }
+            )
+        }
+        composable(
+            route = NavigationRoute.LOGIN
+        ) {
+            LoginScreen(
                 modifier = modifier,
                 onClick = {
                     navController.navigate(NavigationRoute.FETCH)
