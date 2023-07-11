@@ -15,7 +15,7 @@ import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowModel
 import com.skgtecnologia.sisem.domain.myscreen.model.ButtonModelNew
 import com.skgtecnologia.sisem.domain.myscreen.model.ChipModel
 import com.skgtecnologia.sisem.domain.myscreen.model.CrossSellingModel
-import com.skgtecnologia.sisem.domain.myscreen.model.LabelModel
+import com.skgtecnologia.sisem.domain.myscreen.model.RichLabelModel
 import com.skgtecnologia.sisem.domain.myscreen.model.MessageModel
 import com.skgtecnologia.sisem.domain.myscreen.model.NestedBodyModel
 import com.skgtecnologia.sisem.domain.myscreen.model.PaymentMethodInfoModel
@@ -81,8 +81,8 @@ fun BodyModelMapper(
                     ChipComponent(model = model.mapToUiModel())
                 }
 
-                is LabelModel -> item {
-                    LabelComponent(labelUiModel = model.mapToUiModel())
+                is RichLabelModel -> item {
+                    LabelComponent(richLabelUiModel = model.mapToUiModel())
                 }
 
                 is TextFieldModel -> item {
@@ -141,8 +141,8 @@ fun NestedBodyModelMapper(
 
                 is ChipModel -> ChipComponent(model = model.mapToUiModel())
 
-                is LabelModel -> LabelComponent(
-                    labelUiModel = model.mapToUiModel()
+                is RichLabelModel -> LabelComponent(
+                    richLabelUiModel = model.mapToUiModel()
                 )
 
                 is TextFieldModel -> TextFieldComponent(

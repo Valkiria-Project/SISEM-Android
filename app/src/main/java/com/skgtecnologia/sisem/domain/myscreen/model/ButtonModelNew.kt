@@ -10,6 +10,7 @@ data class ButtonModelNew(
     val label: String,
     val style: ButtonStyle,
     val onClick: OnClickType,
+    val size: ButtonSize,
     val margins: MarginsModel?
 ) : BodyRowModel {
 
@@ -22,6 +23,7 @@ fun ButtonModelNew.mapToUiModel(): ButtonUiModel {
         label = label,
         style = style.mapToUiModel(),
         onClick = onClick.mapToUiModel(),
+        size = size.mapToUiModel(),
         margins = margins?.mapToUiModel()
     )
 }

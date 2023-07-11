@@ -9,7 +9,7 @@ data class TextFieldModel(
     val identifier: String?,
     val icon: String?,
     val hint: String?,
-    val keyboardType: KeyBoardType,
+    val keyboardType: KeyboardType,
     val validations: List<ValidationModel>,
     val margins: MarginsModel?
 ) : BodyRowModel {

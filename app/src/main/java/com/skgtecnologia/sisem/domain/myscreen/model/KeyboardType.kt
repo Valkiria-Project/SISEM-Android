@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.domain.myscreen.model
 
-enum class KeyBoardType {
+enum class KeyboardType {
     TEXT,
     NUMBER,
     EMAIL,

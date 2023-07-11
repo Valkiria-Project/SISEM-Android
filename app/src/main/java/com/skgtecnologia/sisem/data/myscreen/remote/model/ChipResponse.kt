@@ -4,7 +4,9 @@ import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowModel
 import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowType
 import com.skgtecnologia.sisem.domain.myscreen.model.ChipModel
 import com.skgtecnologia.sisem.domain.myscreen.model.ChipStyle
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class ChipResponse(
     val icon: String?,
     val text: String?,

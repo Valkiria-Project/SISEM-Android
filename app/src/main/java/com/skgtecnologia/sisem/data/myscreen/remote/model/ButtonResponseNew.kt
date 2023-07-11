@@ -5,12 +5,17 @@ import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowType
 import com.skgtecnologia.sisem.domain.myscreen.model.ButtonModelNew
 import com.skgtecnologia.sisem.domain.myscreen.model.ButtonStyle
 import com.skgtecnologia.sisem.domain.myscreen.model.OnClickType
+import com.skgtecnologia.sisem.domain.myscreen.model.ButtonSize
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class ButtonResponseNew(
     val identifier: String?,
     val label: String?,
     val style: ButtonStyle,
-    val onClick: OnClickType,
+    @Json(name = "on_click") val onClick: OnClickType,
+    val size: ButtonSize,
     val margins: MarginsResponse?
 ) : BodyRowResponse {
 
@@ -21,6 +26,7 @@ data class ButtonResponseNew(
         label = label ?: error("Button label cannot be null"),
         style = style,
         onClick = onClick,
+        size = size,
         margins = margins?.mapToDomain()
     )
 }

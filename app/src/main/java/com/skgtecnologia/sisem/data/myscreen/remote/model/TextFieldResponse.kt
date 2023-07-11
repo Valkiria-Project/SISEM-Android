@@ -2,14 +2,17 @@ package com.skgtecnologia.sisem.data.myscreen.remote.model
 
 import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowModel
 import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowType
-import com.skgtecnologia.sisem.domain.myscreen.model.KeyBoardType
+import com.skgtecnologia.sisem.domain.myscreen.model.KeyboardType
 import com.skgtecnologia.sisem.domain.myscreen.model.TextFieldModel
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class TextFieldResponse(
     val identifier: String?,
     val icon: String?,
     val hint: String?,
-    val keyboardType: KeyBoardType,
+    @Json(name = "keyboard_type") val keyboardType: KeyboardType,
     val validations: List<ValidationResponse>,
     val margins: MarginsResponse?
 ) : BodyRowResponse {

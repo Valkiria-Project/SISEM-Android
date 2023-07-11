@@ -5,7 +5,7 @@ import com.skgtecnologia.sisem.data.myscreen.remote.model.BodyRowResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.ButtonResponseNew
 import com.skgtecnologia.sisem.data.myscreen.remote.model.ChipResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.CrossSellingResponse
-import com.skgtecnologia.sisem.data.myscreen.remote.model.LabelResponse
+import com.skgtecnologia.sisem.data.myscreen.remote.model.RichLabelResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.MessageResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.PaymentMethodInfoResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.SectionResponse
@@ -13,7 +13,7 @@ import com.skgtecnologia.sisem.data.myscreen.remote.model.TermsAndConditionsResp
 import com.skgtecnologia.sisem.data.myscreen.remote.model.TextFieldResponse
 import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowType
 import com.skgtecnologia.sisem.domain.myscreen.model.ButtonStyle
-import com.skgtecnologia.sisem.domain.myscreen.model.KeyBoardType
+import com.skgtecnologia.sisem.domain.myscreen.model.KeyboardType
 import com.skgtecnologia.sisem.domain.myscreen.model.LabelStyle
 import com.skgtecnologia.sisem.domain.myscreen.model.OnClickType
 import com.skgtecnologia.sisem.domain.myscreen.model.ScreenType
@@ -21,6 +21,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.EnumJsonAdapter
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.valkiria.uicomponents.components.button.ButtonSize
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -54,9 +55,9 @@ object CoreNetworkModule {
             )
         )
         .add(
-            KeyBoardType::class.java,
-            EnumJsonAdapter.create(KeyBoardType::class.java).withUnknownFallback(
-                KeyBoardType.TEXT
+            KeyboardType::class.java,
+            EnumJsonAdapter.create(KeyboardType::class.java).withUnknownFallback(
+                KeyboardType.TEXT
             )
         )
         .add(
@@ -76,6 +77,12 @@ object CoreNetworkModule {
             EnumJsonAdapter.create(BodyRowType::class.java).withUnknownFallback(null)
         )
         .add(
+            ButtonSize::class.java,
+            EnumJsonAdapter.create(ButtonSize::class.java).withUnknownFallback(
+                ButtonSize.DEFAULT
+            )
+        )
+        .add(
             PolymorphicJsonAdapterFactory.of(
                 BodyRowResponse::class.java,
                 "type"
@@ -92,8 +99,8 @@ object CoreNetworkModule {
                 SectionResponse::class.java,
                 BodyRowType.SECTION.name
             ).withSubtype(
-                LabelResponse::class.java,
-                BodyRowType.LABEL.name
+                RichLabelResponse::class.java,
+                BodyRowType.RICH_LABEL.name
             ).withSubtype(
                 TextFieldResponse::class.java,
                 BodyRowType.TEXT_FIELD.name

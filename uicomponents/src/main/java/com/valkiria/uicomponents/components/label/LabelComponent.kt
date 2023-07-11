@@ -9,16 +9,16 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun LabelComponent(
-    labelUiModel: LabelUiModel,
+    richLabelUiModel: RichLabelUiModel,
     modifier: Modifier = Modifier
 ) {
-    when(labelUiModel.style) {
+    when(richLabelUiModel.style) {
         LabelStyle.HEADING -> LabelHeading(
-            labelUiModel = labelUiModel,
+            richLabelUiModel = richLabelUiModel,
             modifier = modifier
         )
         LabelStyle.PRIMARY -> LabelPrimary(
-            labelUiModel = labelUiModel,
+            richLabelUiModel = richLabelUiModel,
             modifier = modifier
         )
     }
@@ -26,11 +26,11 @@ fun LabelComponent(
 
 @Composable
 private fun LabelHeading(
-    labelUiModel: LabelUiModel,
+    richLabelUiModel: RichLabelUiModel,
     modifier: Modifier = Modifier
 ) {
     Text(
-        text = Html.fromHtml(labelUiModel.text).toString(),
+        text = Html.fromHtml(richLabelUiModel.text).toString(),
         color = Color.White,
         fontSize = 24.sp
     )
@@ -38,11 +38,11 @@ private fun LabelHeading(
 
 @Composable
 private fun LabelPrimary(
-    labelUiModel: LabelUiModel,
+    richLabelUiModel: RichLabelUiModel,
     modifier: Modifier = Modifier
 ) {
     Text(
-        text = Html.fromHtml(labelUiModel.text).toString(),
+        text = Html.fromHtml(richLabelUiModel.text).toString(),
         color = Color.White,
         fontSize = 12.sp
     )

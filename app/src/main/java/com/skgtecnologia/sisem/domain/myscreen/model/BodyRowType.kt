@@ -8,9 +8,9 @@ enum class BodyRowType : Parcelable {
     BUTTON,
     CHIP,
     CROSS_SELLING,
-    LABEL,
     MESSAGE,
     PAYMENT_METHOD_INFO,
+    RICH_LABEL,
     SECTION,
     TERMS_AND_CONDITIONS,
     TEXT_FIELD
