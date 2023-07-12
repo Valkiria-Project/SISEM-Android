@@ -47,7 +47,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
+        kotlinCompilerExtensionVersion = "1.4.8"
     }
     packaging {
         resources {
@@ -62,6 +62,7 @@ dependencies {
 
     // Android
     implementation("androidx.core:core-ktx:1.10.1")
+    implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.activity:activity-compose:1.7.2")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
@@ -72,6 +73,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material:material")
+    implementation("androidx.compose.material:material-icons-extended")
 
     // Logging
     implementation("com.jakewharton.timber:timber:5.0.1")
@@ -85,7 +88,7 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.6.0")
 
     // Networking
-    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.10.0"))
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.11.0"))
 
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
@@ -105,7 +108,7 @@ dependencies {
     implementation("androidx.room:room-ktx:2.5.2")
 
     // Media
-    implementation("com.google.accompanist:accompanist-placeholder-material:0.13.0")
+    implementation("com.google.accompanist:accompanist-placeholder-material:0.30.1")
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("com.airbnb.android:lottie-compose:6.0.1")
 
