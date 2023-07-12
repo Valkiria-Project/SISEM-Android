@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.loginscreen
+package com.skgtecnologia.sisem.ui.login
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

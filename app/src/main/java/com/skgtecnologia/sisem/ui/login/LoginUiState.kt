@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.loginscreen
+package com.skgtecnologia.sisem.ui.login
 
 import com.skgtecnologia.sisem.domain.loginscreen.model.LoginScreenModel
 

@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.loginscreen
+package com.skgtecnologia.sisem.ui.login
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable

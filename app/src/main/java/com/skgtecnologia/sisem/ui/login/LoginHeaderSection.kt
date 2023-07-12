@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.loginscreen
+package com.skgtecnologia.sisem.ui.login
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -7,5 +7,4 @@ import androidx.compose.ui.Modifier
 fun LoginHeaderSection(
     modifier: Modifier = Modifier
 ) {
-
 }
