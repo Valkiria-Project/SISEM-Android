@@ -1,11 +1,11 @@
-package com.skgtecnologia.sisem.data.loginscreen
+package com.skgtecnologia.sisem.data.login
 
-import com.skgtecnologia.sisem.data.loginscreen.remote.LoginScreenRemoteDataSource
+import com.skgtecnologia.sisem.data.login.remote.LoginScreenRemoteDataSource
 import com.skgtecnologia.sisem.domain.loginscreen.LoginScreenRepository
 import com.skgtecnologia.sisem.domain.loginscreen.model.LoginScreenModel
 import javax.inject.Inject
 
-class LoginScreenRepositoryImpl @Inject constructor(
+class LoginRepositoryImpl @Inject constructor(
     private val loginScreenRemoteDatasource: LoginScreenRemoteDataSource
 ) : LoginScreenRepository {
 

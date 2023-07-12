@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.di.loginscreen
 
-import com.skgtecnologia.sisem.data.loginscreen.remote.LoginScreenApi
+import com.skgtecnologia.sisem.data.login.remote.api.LoginScreenApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

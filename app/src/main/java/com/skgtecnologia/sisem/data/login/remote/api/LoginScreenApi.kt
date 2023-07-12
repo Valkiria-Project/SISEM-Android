@@ -1,7 +1,7 @@
-package com.skgtecnologia.sisem.data.loginscreen.remote
+package com.skgtecnologia.sisem.data.login.remote.api
 
-import com.skgtecnologia.sisem.data.loginscreen.remote.model.LoginScreenBody
-import com.skgtecnologia.sisem.data.loginscreen.remote.model.LoginScreenResponse
+import com.skgtecnologia.sisem.data.login.remote.model.LoginScreenBody
+import com.skgtecnologia.sisem.data.login.remote.model.LoginScreenResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST

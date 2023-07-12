@@ -1,9 +1,10 @@
-package com.skgtecnologia.sisem.data.loginscreen.remote
+package com.skgtecnologia.sisem.data.login.remote
 
 import com.skgtecnologia.sisem.commons.extensions.resultOf
-import com.skgtecnologia.sisem.data.loginscreen.remote.model.LoginScreenBody
-import com.skgtecnologia.sisem.data.loginscreen.remote.model.Params
-import com.skgtecnologia.sisem.data.loginscreen.remote.model.mapToDomain
+import com.skgtecnologia.sisem.data.login.remote.api.LoginScreenApi
+import com.skgtecnologia.sisem.data.login.remote.model.LoginScreenBody
+import com.skgtecnologia.sisem.data.login.remote.model.Params
+import com.skgtecnologia.sisem.data.login.remote.model.mapToDomain
 import com.skgtecnologia.sisem.domain.loginscreen.model.LoginScreenModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

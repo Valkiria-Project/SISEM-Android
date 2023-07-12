@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.di.loginscreen
 
-import com.skgtecnologia.sisem.data.loginscreen.LoginScreenRepositoryImpl
+import com.skgtecnologia.sisem.data.login.LoginRepositoryImpl
 import com.skgtecnologia.sisem.domain.loginscreen.LoginScreenRepository
 import dagger.Binds
 import dagger.Module
@@ -13,6 +13,6 @@ abstract class LoginScreenRepositoryModule {
 
     @Binds
     abstract fun bindLoginScreenRepositoryImpl(
-        loginScreenRepositoryImpl: LoginScreenRepositoryImpl
+        loginRepositoryImpl: LoginRepositoryImpl
     ): LoginScreenRepository
 }

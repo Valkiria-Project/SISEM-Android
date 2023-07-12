@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.data.loginscreen.remote.model
+package com.skgtecnologia.sisem.data.login.remote.model
 
 data class LoginScreenBody(
     val params: Params

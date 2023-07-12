@@ -1,12 +1,13 @@
-package com.skgtecnologia.sisem.data.loginscreen.remote.model
+package com.skgtecnologia.sisem.data.login.remote.model
 
 import com.skgtecnologia.sisem.data.myscreen.remote.model.BodyRowResponse
 import com.skgtecnologia.sisem.domain.loginscreen.model.LoginScreenModel
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class LoginScreenResponse(
-    val body: List<BodyRowResponse>? = null
+    @Json(name = "body") val body: List<BodyRowResponse>? = null
 )
 
 fun LoginScreenResponse.mapToDomain(): LoginScreenModel = LoginScreenModel(
