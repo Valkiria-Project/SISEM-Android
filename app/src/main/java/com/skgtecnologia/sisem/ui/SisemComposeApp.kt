@@ -6,11 +6,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.skgtecnologia.sisem.ui.login.LoginScreen
-import com.skgtecnologia.sisem.ui.navigation.NavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.NavigationGraph
 import com.skgtecnologia.sisem.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.CoroutineScope
 
@@ -23,13 +27,21 @@ fun ComposeApp(
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = NavigationRoute.LOGIN
+        startDestination = NavigationGraph.Auth.route
+    ) {
+        authGraph(navController)
+    }
+}
+
+private fun NavGraphBuilder.authGraph(navController: NavHostController) {
+    navigation(
+        startDestination = AuthNavigationRoute.Login.route,
+        route = NavigationGraph.Auth.route
     ) {
         composable(
-            route = NavigationRoute.LOGIN
+            route = AuthNavigationRoute.Login.route
         ) {
             LoginScreen(
-                modifier = modifier,
                 onClick = {
 //                    navController.navigate(NavigationRoute.FETCH)
                 }
