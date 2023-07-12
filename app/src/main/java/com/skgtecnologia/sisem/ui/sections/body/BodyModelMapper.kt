@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.domain.core.model.bodyrow.BodyRowModel
+import com.skgtecnologia.sisem.domain.core.model.bodyrow.ButtonModel
 import com.skgtecnologia.sisem.domain.core.model.bodyrow.ButtonModelNew
 import com.skgtecnologia.sisem.domain.core.model.bodyrow.ChipModel
 import com.skgtecnologia.sisem.domain.core.model.bodyrow.RichLabelModel
@@ -54,6 +55,8 @@ fun BodyModelMapper(
                 is TermsAndConditionsModel -> item {
                     // TermsAndConditions(...)
                 }
+
+                is ButtonModel -> {}
             }
         }
     }

@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.data.myscreen.remote.model
 
-import com.skgtecnologia.sisem.domain.myscreen.model.HeaderModel
+import com.skgtecnologia.sisem.domain.core.model.header.HeaderModel
 
 const val DEFAULT_ICON_URL =
     "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/64px-Bitcoin.svg.png"

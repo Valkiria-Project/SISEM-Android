@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.domain.core.model.bodyrow
 
-import com.skgtecnologia.sisem.domain.myscreen.model.MarginsModel
-import com.skgtecnologia.sisem.domain.myscreen.model.TextStyle
+import com.skgtecnologia.sisem.domain.core.model.props.MarginsModel
+import com.skgtecnologia.sisem.domain.core.model.props.TextStyle
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 

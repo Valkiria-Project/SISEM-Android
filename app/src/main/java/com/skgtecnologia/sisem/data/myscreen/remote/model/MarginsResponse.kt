@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.data.myscreen.remote.model
 
-import com.skgtecnologia.sisem.domain.myscreen.model.MarginsModel
+import com.skgtecnologia.sisem.domain.core.model.props.MarginsModel
 
 data class MarginsResponse(
     val top: Int?,

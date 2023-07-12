@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.data.myscreen.remote.model
 import com.skgtecnologia.sisem.domain.core.model.bodyrow.BodyRowModel
 import com.skgtecnologia.sisem.domain.core.model.bodyrow.BodyRowType
 import com.skgtecnologia.sisem.domain.core.model.bodyrow.ChipModel
-import com.skgtecnologia.sisem.domain.myscreen.model.ChipStyle
+import com.skgtecnologia.sisem.domain.core.model.props.ChipStyle
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)

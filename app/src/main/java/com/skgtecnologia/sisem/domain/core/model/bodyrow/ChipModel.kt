@@ -1,9 +1,7 @@
 package com.skgtecnologia.sisem.domain.core.model.bodyrow
 
-import com.skgtecnologia.sisem.domain.myscreen.model.ChipStyle
-import com.skgtecnologia.sisem.domain.myscreen.model.MarginsModel
-import com.skgtecnologia.sisem.domain.core.model.bodyrow.mapToUiModel
-import com.valkiria.uicomponents.components.chip.ChipUiModel
+import com.skgtecnologia.sisem.domain.core.model.props.ChipStyle
+import com.skgtecnologia.sisem.domain.core.model.props.MarginsModel
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 

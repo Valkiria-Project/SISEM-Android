@@ -1,8 +1,7 @@
 package com.skgtecnologia.sisem.domain.core.model.bodyrow
 
-import com.skgtecnologia.sisem.domain.myscreen.model.MarginsModel
-import com.skgtecnologia.sisem.domain.core.model.bodyrow.mapToUiModel
-import com.skgtecnologia.sisem.domain.myscreen.model.mapToUiModel
+import com.skgtecnologia.sisem.domain.core.model.props.MarginsModel
+import com.skgtecnologia.sisem.domain.core.model.props.mapToUiModel
 import com.valkiria.uicomponents.components.termandconditions.TermsAndConditionsUiModel
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize

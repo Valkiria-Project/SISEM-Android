@@ -8,11 +8,10 @@ import com.skgtecnologia.sisem.data.myscreen.remote.model.RichLabelResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.TermsAndConditionsResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.TextFieldResponse
 import com.skgtecnologia.sisem.domain.core.model.bodyrow.BodyRowType
-import com.skgtecnologia.sisem.domain.myscreen.model.ButtonStyle
-import com.skgtecnologia.sisem.domain.myscreen.model.KeyboardType
-import com.skgtecnologia.sisem.domain.myscreen.model.LabelStyle
-import com.skgtecnologia.sisem.domain.myscreen.model.OnClickType
-import com.skgtecnologia.sisem.domain.myscreen.model.ScreenType
+import com.skgtecnologia.sisem.domain.core.model.props.ButtonStyle
+import com.skgtecnologia.sisem.domain.core.model.props.KeyboardType
+import com.skgtecnologia.sisem.domain.core.model.props.LabelStyle
+import com.skgtecnologia.sisem.domain.core.model.props.OnClickType
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.EnumJsonAdapter
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
@@ -39,12 +38,6 @@ object CoreNetworkModule {
     @Singleton
     @Provides
     fun providesMoshi(): Moshi = Moshi.Builder()
-        .add(
-            ScreenType::class.java,
-            EnumJsonAdapter.create(ScreenType::class.java).withUnknownFallback(
-                ScreenType.PROCESSING
-            )
-        )
         .add(
             LabelStyle::class.java,
             EnumJsonAdapter.create(LabelStyle::class.java).withUnknownFallback(

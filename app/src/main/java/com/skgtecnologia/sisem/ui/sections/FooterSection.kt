@@ -8,7 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.myscreen.model.ButtonModel
+import com.skgtecnologia.sisem.domain.core.model.bodyrow.ButtonModel
 
 @Composable
 fun FooterSection(

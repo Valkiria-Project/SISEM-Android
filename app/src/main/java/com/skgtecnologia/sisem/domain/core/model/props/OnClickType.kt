@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.domain.myscreen.model
+package com.skgtecnologia.sisem.domain.core.model.props
 
 enum class OnClickType {
     FORGOT_PASSWORD,

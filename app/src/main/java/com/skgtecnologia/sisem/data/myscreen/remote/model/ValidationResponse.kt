@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.data.myscreen.remote.model
 
-import com.skgtecnologia.sisem.domain.myscreen.model.ValidationModel
+import com.skgtecnologia.sisem.domain.core.model.props.ValidationModel
 
 data class ValidationResponse(
     val regex: String?,

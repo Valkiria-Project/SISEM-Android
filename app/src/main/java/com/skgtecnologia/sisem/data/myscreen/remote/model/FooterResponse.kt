@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.data.myscreen.remote.model
 
-import com.skgtecnologia.sisem.domain.myscreen.model.FooterModel
+import com.skgtecnologia.sisem.domain.core.model.footer.FooterModel
 
 data class FooterResponse(
     val buttonList: List<ButtonResponse>? = null,

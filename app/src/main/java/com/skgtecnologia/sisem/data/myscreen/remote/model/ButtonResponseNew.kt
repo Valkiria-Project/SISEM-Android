@@ -3,9 +3,9 @@ package com.skgtecnologia.sisem.data.myscreen.remote.model
 import com.skgtecnologia.sisem.domain.core.model.bodyrow.BodyRowModel
 import com.skgtecnologia.sisem.domain.core.model.bodyrow.BodyRowType
 import com.skgtecnologia.sisem.domain.core.model.bodyrow.ButtonModelNew
-import com.skgtecnologia.sisem.domain.myscreen.model.ButtonStyle
-import com.skgtecnologia.sisem.domain.myscreen.model.OnClickType
-import com.skgtecnologia.sisem.domain.myscreen.model.ButtonSize
+import com.skgtecnologia.sisem.domain.core.model.props.ButtonStyle
+import com.skgtecnologia.sisem.domain.core.model.props.OnClickType
+import com.skgtecnologia.sisem.domain.core.model.props.ButtonSize
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

@@ -1,11 +1,10 @@
 package com.skgtecnologia.sisem.domain.core.model.bodyrow
 
-import com.skgtecnologia.sisem.domain.myscreen.model.ButtonSize
-import com.skgtecnologia.sisem.domain.myscreen.model.ButtonStyle
-import com.skgtecnologia.sisem.domain.myscreen.model.MarginsModel
-import com.skgtecnologia.sisem.domain.myscreen.model.OnClickType
-import com.skgtecnologia.sisem.domain.core.model.bodyrow.mapToUiModel
-import com.skgtecnologia.sisem.domain.myscreen.model.mapToUiModel
+import com.skgtecnologia.sisem.domain.core.model.props.ButtonSize
+import com.skgtecnologia.sisem.domain.core.model.props.ButtonStyle
+import com.skgtecnologia.sisem.domain.core.model.props.MarginsModel
+import com.skgtecnologia.sisem.domain.core.model.props.OnClickType
+import com.skgtecnologia.sisem.domain.core.model.props.mapToUiModel
 import com.valkiria.uicomponents.components.button.ButtonUiModel
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize

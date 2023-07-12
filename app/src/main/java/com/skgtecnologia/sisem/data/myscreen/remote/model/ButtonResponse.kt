@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.data.myscreen.remote.model
 
-import com.skgtecnologia.sisem.domain.myscreen.model.ButtonModel
+import com.skgtecnologia.sisem.domain.core.model.bodyrow.ButtonModel
 
 data class ButtonResponse(
     val label: String? = null

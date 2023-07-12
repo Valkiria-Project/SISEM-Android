@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.domain.myscreen.model
+package com.skgtecnologia.sisem.domain.core.model.props
 
 import android.os.Parcelable
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel

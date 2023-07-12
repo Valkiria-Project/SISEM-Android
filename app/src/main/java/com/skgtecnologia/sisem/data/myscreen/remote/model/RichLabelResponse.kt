@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.data.myscreen.remote.model
 import com.skgtecnologia.sisem.domain.core.model.bodyrow.BodyRowModel
 import com.skgtecnologia.sisem.domain.core.model.bodyrow.BodyRowType
 import com.skgtecnologia.sisem.domain.core.model.bodyrow.RichLabelModel
-import com.skgtecnologia.sisem.domain.myscreen.model.TextStyle
+import com.skgtecnologia.sisem.domain.core.model.props.TextStyle
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
