@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.data.login.remote
 
 import com.skgtecnologia.sisem.commons.extensions.resultOf
-import com.skgtecnologia.sisem.data.login.remote.api.LoginScreenApi
+import com.skgtecnologia.sisem.data.login.remote.api.LoginApi
 import com.skgtecnologia.sisem.data.login.remote.model.LoginScreenBody
 import com.skgtecnologia.sisem.data.login.remote.model.Params
 import com.skgtecnologia.sisem.data.login.remote.model.mapToDomain
@@ -12,12 +12,12 @@ import javax.inject.Inject
 import timber.log.Timber
 
 class LoginScreenRemoteDataSource @Inject constructor(
-    private val loginScreenApi: LoginScreenApi
+    private val loginApi: LoginApi
 ) {
 
     suspend fun getLoginScreen(serial: String): Result<LoginScreenModel> = resultOf {
         val response = withContext(Dispatchers.IO) {
-            loginScreenApi.getLoginScreen(
+            loginApi.getLoginScreen(
                 loginScreenBody = LoginScreenBody(
                     params = Params(
                         serial = serial

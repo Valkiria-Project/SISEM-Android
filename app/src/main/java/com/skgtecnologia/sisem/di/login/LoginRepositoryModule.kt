@@ -1,7 +1,7 @@
-package com.skgtecnologia.sisem.di.loginscreen
+package com.skgtecnologia.sisem.di.login
 
 import com.skgtecnologia.sisem.data.login.LoginRepositoryImpl
-import com.skgtecnologia.sisem.domain.loginscreen.LoginScreenRepository
+import com.skgtecnologia.sisem.domain.loginscreen.LoginRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -9,10 +9,10 @@ import dagger.hilt.android.components.ViewModelComponent
 
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class LoginScreenRepositoryModule {
+abstract class LoginRepositoryModule {
 
     @Binds
-    abstract fun bindLoginScreenRepositoryImpl(
+    abstract fun bindLoginRepositoryImpl(
         loginRepositoryImpl: LoginRepositoryImpl
-    ): LoginScreenRepository
+    ): LoginRepository
 }

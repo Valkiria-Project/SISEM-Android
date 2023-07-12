@@ -5,9 +5,9 @@ import com.skgtecnologia.sisem.data.myscreen.remote.model.BodyRowResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.ButtonResponseNew
 import com.skgtecnologia.sisem.data.myscreen.remote.model.ChipResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.CrossSellingResponse
-import com.skgtecnologia.sisem.data.myscreen.remote.model.RichLabelResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.MessageResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.PaymentMethodInfoResponse
+import com.skgtecnologia.sisem.data.myscreen.remote.model.RichLabelResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.TermsAndConditionsResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.TextFieldResponse
 import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowType
@@ -32,7 +32,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-const val OK_HTTP_CLIENT_TIMEOUT_DEFAULTS = 15_000L
+private const val OK_HTTP_CLIENT_TIMEOUT_DEFAULTS = 15_000L
+private const val BASE_URL = "http://34.69.190.119:8080/"
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -155,7 +156,7 @@ object CoreNetworkModule {
         okHttpClient: OkHttpClient
     ): Retrofit =
         Retrofit.Builder()
-            .baseUrl("http://34.69.190.119:8080/")
+            .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
