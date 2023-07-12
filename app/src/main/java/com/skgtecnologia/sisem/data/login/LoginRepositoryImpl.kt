@@ -1,8 +1,8 @@
 package com.skgtecnologia.sisem.data.login
 
 import com.skgtecnologia.sisem.data.login.remote.LoginScreenRemoteDataSource
-import com.skgtecnologia.sisem.domain.loginscreen.LoginRepository
-import com.skgtecnologia.sisem.domain.loginscreen.model.LoginScreenModel
+import com.skgtecnologia.sisem.domain.login.LoginRepository
+import com.skgtecnologia.sisem.domain.login.model.LoginScreenModel
 import javax.inject.Inject
 
 class LoginRepositoryImpl @Inject constructor(

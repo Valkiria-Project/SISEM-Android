@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.domain.loginscreen.model
+package com.skgtecnologia.sisem.domain.login.model
 
 import android.os.Parcelable
 import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowModel

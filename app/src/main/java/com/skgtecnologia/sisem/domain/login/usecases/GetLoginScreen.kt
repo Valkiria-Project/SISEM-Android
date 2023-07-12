@@ -1,9 +1,9 @@
-package com.skgtecnologia.sisem.domain.loginscreen.usecases
+package com.skgtecnologia.sisem.domain.login.usecases
 
 import androidx.annotation.CheckResult
 import com.skgtecnologia.sisem.commons.extensions.resultOf
-import com.skgtecnologia.sisem.domain.loginscreen.LoginRepository
-import com.skgtecnologia.sisem.domain.loginscreen.model.LoginScreenModel
+import com.skgtecnologia.sisem.domain.login.LoginRepository
+import com.skgtecnologia.sisem.domain.login.model.LoginScreenModel
 import javax.inject.Inject
 
 class GetLoginScreen @Inject constructor(

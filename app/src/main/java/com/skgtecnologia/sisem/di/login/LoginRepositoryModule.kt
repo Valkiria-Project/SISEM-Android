@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.di.login
 
 import com.skgtecnologia.sisem.data.login.LoginRepositoryImpl
-import com.skgtecnologia.sisem.domain.loginscreen.LoginRepository
+import com.skgtecnologia.sisem.domain.login.LoginRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

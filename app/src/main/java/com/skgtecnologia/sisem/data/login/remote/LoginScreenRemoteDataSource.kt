@@ -5,7 +5,7 @@ import com.skgtecnologia.sisem.data.login.remote.api.LoginApi
 import com.skgtecnologia.sisem.data.login.remote.model.LoginScreenBody
 import com.skgtecnologia.sisem.data.login.remote.model.Params
 import com.skgtecnologia.sisem.data.login.remote.model.mapToDomain
-import com.skgtecnologia.sisem.domain.loginscreen.model.LoginScreenModel
+import com.skgtecnologia.sisem.domain.login.model.LoginScreenModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
