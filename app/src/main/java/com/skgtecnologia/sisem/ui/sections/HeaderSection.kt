@@ -65,11 +65,11 @@ fun HeaderSection(
                 contentDescription = "Header icon url $iconUrl",
                 modifier = Modifier.size(56.dp),
                 placeholder = forwardingPainter(
-                    painter = painterResource(R.drawable.ic_bag),
+                    painter = painterResource(R.drawable.ic_launcher_foreground),
                     colorFilter = ColorFilter.tint(Green40),
                 ),
                 error = forwardingPainter(
-                    painter = painterResource(R.drawable.ic_bag),
+                    painter = painterResource(R.drawable.ic_launcher_foreground),
                     colorFilter = ColorFilter.tint(Green40),
                 ),
                 contentScale = ContentScale.FillBounds

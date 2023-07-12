@@ -1,11 +1,8 @@
 package com.skgtecnologia.sisem.ui.loginscreen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -20,7 +17,7 @@ fun LoginScreen(
     val uiState = loginScreenViewModel.uiState
 
     ConstraintLayout(
-        modifier = modifier.fillMaxSize().background(color = Color(0xFF242426))
+        modifier = modifier.fillMaxSize()
     ) {
         val (header, body) = createRefs()
 
@@ -34,7 +31,7 @@ fun LoginScreen(
 
         BodySection(
             body = uiState.loginScreenModel?.body,
-            modifier = modifier.background(color = Color(0xFF242426)).constrainAs(body) {
+            modifier = modifier.constrainAs(body) {
                 top.linkTo(header.bottom, margin = 16.dp)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
