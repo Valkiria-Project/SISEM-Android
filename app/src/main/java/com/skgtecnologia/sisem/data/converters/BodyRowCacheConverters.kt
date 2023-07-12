@@ -1,12 +1,10 @@
 package com.skgtecnologia.sisem.data.converters
 
 import androidx.room.TypeConverter
-import com.skgtecnologia.sisem.data.myscreen.cache.model.ButtonEntity
 import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowModel
 import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowType
 import com.skgtecnologia.sisem.domain.myscreen.model.CrossSellingModel
 import com.skgtecnologia.sisem.domain.myscreen.model.MessageModel
-import com.skgtecnologia.sisem.domain.myscreen.model.NestedBodyModel
 import com.skgtecnologia.sisem.domain.myscreen.model.PaymentMethodInfoModel
 import com.skgtecnologia.sisem.domain.myscreen.model.ScreenType
 import com.squareup.moshi.JsonAdapter
@@ -16,7 +14,7 @@ import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.lang.reflect.ParameterizedType
 
-class MyScreenCacheConverters {
+class BodyRowCacheConverters {
 
     @TypeConverter
     fun toScreenType(value: String): ScreenType = enumValueOf(value)
@@ -42,7 +40,6 @@ class MyScreenCacheConverters {
                         PaymentMethodInfoModel::class.java,
                         BodyRowType.PAYMENT_METHOD_INFO.name
                     )
-                    .withSubtype(NestedBodyModel::class.java, BodyRowType.SECTION.name)
             )
             .add(KotlinJsonAdapterFactory())
             .build()
@@ -56,20 +53,5 @@ class MyScreenCacheConverters {
     @TypeConverter
     fun fromBodyRow(bodyRowModelList: List<BodyRowModel>?): String? {
         return bodyRowModelJsonAdapter.toJson(bodyRowModelList)
-    }
-
-    private val buttonParametrizedType: ParameterizedType =
-        Types.newParameterizedType(List::class.java, ButtonEntity::class.java)
-    private val buttonJsonAdapter: JsonAdapter<List<ButtonEntity>> =
-        Moshi.Builder().build().adapter(buttonParametrizedType)
-
-    @TypeConverter
-    fun toButtonList(value: String?): List<ButtonEntity>? {
-        return if (value != null) buttonJsonAdapter.fromJson(value) else null
-    }
-
-    @TypeConverter
-    fun fromButtonList(buttonList: List<ButtonEntity>?): String? {
-        return buttonJsonAdapter.toJson(buttonList)
     }
 }

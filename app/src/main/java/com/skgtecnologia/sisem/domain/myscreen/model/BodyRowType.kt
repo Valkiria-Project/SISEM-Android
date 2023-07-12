@@ -10,8 +10,8 @@ enum class BodyRowType : Parcelable {
     CROSS_SELLING,
     MESSAGE,
     PAYMENT_METHOD_INFO,
+    PASSWORD_TEXT_FIELD,
     RICH_LABEL,
-    SECTION,
     TERMS_AND_CONDITIONS,
     TEXT_FIELD
 }

@@ -8,7 +8,6 @@ import com.skgtecnologia.sisem.data.myscreen.remote.model.CrossSellingResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.RichLabelResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.MessageResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.PaymentMethodInfoResponse
-import com.skgtecnologia.sisem.data.myscreen.remote.model.SectionResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.TermsAndConditionsResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.TextFieldResponse
 import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowType
@@ -96,9 +95,6 @@ object CoreNetworkModule {
                 PaymentMethodInfoResponse::class.java,
                 BodyRowType.PAYMENT_METHOD_INFO.name
             ).withSubtype(
-                SectionResponse::class.java,
-                BodyRowType.SECTION.name
-            ).withSubtype(
                 RichLabelResponse::class.java,
                 BodyRowType.RICH_LABEL.name
             ).withSubtype(
@@ -110,6 +106,9 @@ object CoreNetworkModule {
             ).withSubtype(
                 ChipResponse::class.java,
                 BodyRowType.CHIP.name
+            ).withSubtype(
+                TermsAndConditionsResponse::class.java,
+                BodyRowType.PASSWORD_TEXT_FIELD.name
             ).withSubtype(
                 TermsAndConditionsResponse::class.java,
                 BodyRowType.TERMS_AND_CONDITIONS.name
