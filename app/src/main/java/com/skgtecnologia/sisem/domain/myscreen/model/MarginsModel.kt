@@ -12,7 +12,7 @@ data class MarginsModel(
     val right: Int?
 ) : Parcelable
 
-fun MarginsModel.mapToUiModel() = MarginsUiModel(
+fun MarginsModel.mapToUiModel(): MarginsUiModel = MarginsUiModel(
     top = top,
     bottom = bottom,
     left = left,

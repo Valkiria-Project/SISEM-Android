@@ -10,16 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowModel
-import com.skgtecnologia.sisem.domain.myscreen.model.ButtonModelNew
-import com.skgtecnologia.sisem.domain.myscreen.model.ChipModel
-import com.skgtecnologia.sisem.domain.myscreen.model.CrossSellingModel
-import com.skgtecnologia.sisem.domain.myscreen.model.MessageModel
-import com.skgtecnologia.sisem.domain.myscreen.model.PaymentMethodInfoModel
-import com.skgtecnologia.sisem.domain.myscreen.model.RichLabelModel
-import com.skgtecnologia.sisem.domain.myscreen.model.TermsAndConditionsModel
-import com.skgtecnologia.sisem.domain.myscreen.model.TextFieldModel
-import com.skgtecnologia.sisem.domain.myscreen.model.mapToUiModel
+import com.skgtecnologia.sisem.domain.core.model.bodyrow.BodyRowModel
+import com.skgtecnologia.sisem.domain.core.model.bodyrow.ButtonModelNew
+import com.skgtecnologia.sisem.domain.core.model.bodyrow.ChipModel
+import com.skgtecnologia.sisem.domain.core.model.bodyrow.RichLabelModel
+import com.skgtecnologia.sisem.domain.core.model.bodyrow.TermsAndConditionsModel
+import com.skgtecnologia.sisem.domain.core.model.bodyrow.TextFieldModel
+import com.skgtecnologia.sisem.domain.core.model.bodyrow.mapToUiModel
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
@@ -38,36 +35,8 @@ fun BodyModelMapper(
     ) {
         bodyRowModel.map { model ->
             when (model) {
-                is CrossSellingModel -> item {
-                    // CrossSelling(...)
-                    Text(
-                        text = model.text,
-                        color = Color.Black.copy(alpha = 0.9f),
-                        textAlign = TextAlign.Center
-                    )
-                }
-
-                is MessageModel -> item {
-                    // Message(...)
-                    Text(
-                        text = model.text,
-                        color = Color.Black.copy(alpha = 0.9f),
-                        textAlign = TextAlign.Center
-                    )
-                }
-
-                is PaymentMethodInfoModel -> item {
-                    PaymentMethodInfo(
-                        imageUrl = "",
-                        amountPaid = 100.0,
-                        discount = "50% OFF",
-                        rawAmount = 100.0,
-                        methodType = model.methodType
-                    )
-                }
-
                 is ChipModel -> item {
-                    ChipComponent(model = model.mapToUiModel())
+//                    ChipComponent(model = model.mapToUiModel())
                 }
 
                 is RichLabelModel -> item {

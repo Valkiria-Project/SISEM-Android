@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.domain.myscreen.model
+package com.skgtecnologia.sisem.domain.core.model.bodyrow
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -7,9 +7,6 @@ import kotlinx.parcelize.Parcelize
 enum class BodyRowType : Parcelable {
     BUTTON,
     CHIP,
-    CROSS_SELLING,
-    MESSAGE,
-    PAYMENT_METHOD_INFO,
     PASSWORD_TEXT_FIELD,
     RICH_LABEL,
     TERMS_AND_CONDITIONS,

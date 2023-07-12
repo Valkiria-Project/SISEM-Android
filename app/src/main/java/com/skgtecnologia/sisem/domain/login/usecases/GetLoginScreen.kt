@@ -7,13 +7,11 @@ import com.skgtecnologia.sisem.domain.login.model.LoginScreenModel
 import javax.inject.Inject
 
 class GetLoginScreen @Inject constructor(
-		private val loginRepository: LoginRepository
+    private val loginRepository: LoginRepository
 ) {
 
-		@CheckResult
-		suspend operator fun invoke(serial: String): Result<LoginScreenModel> = resultOf {
-				val fetchResult = loginRepository.getLoginScreen(serial)
-
-				fetchResult
-		}
+    @CheckResult
+    suspend operator fun invoke(serial: String): Result<LoginScreenModel> = resultOf {
+        loginRepository.getLoginScreen(serial)
+    }
 }

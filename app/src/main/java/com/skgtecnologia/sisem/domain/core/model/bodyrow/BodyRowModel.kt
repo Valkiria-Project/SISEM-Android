@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.domain.myscreen.model
+package com.skgtecnologia.sisem.domain.core.model.bodyrow
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

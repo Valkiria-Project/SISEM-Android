@@ -4,13 +4,10 @@ import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.data.myscreen.remote.model.BodyRowResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.ButtonResponseNew
 import com.skgtecnologia.sisem.data.myscreen.remote.model.ChipResponse
-import com.skgtecnologia.sisem.data.myscreen.remote.model.CrossSellingResponse
-import com.skgtecnologia.sisem.data.myscreen.remote.model.MessageResponse
-import com.skgtecnologia.sisem.data.myscreen.remote.model.PaymentMethodInfoResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.RichLabelResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.TermsAndConditionsResponse
 import com.skgtecnologia.sisem.data.myscreen.remote.model.TextFieldResponse
-import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowType
+import com.skgtecnologia.sisem.domain.core.model.bodyrow.BodyRowType
 import com.skgtecnologia.sisem.domain.myscreen.model.ButtonStyle
 import com.skgtecnologia.sisem.domain.myscreen.model.KeyboardType
 import com.skgtecnologia.sisem.domain.myscreen.model.LabelStyle
@@ -86,15 +83,6 @@ object CoreNetworkModule {
             PolymorphicJsonAdapterFactory.of(
                 BodyRowResponse::class.java,
                 "type"
-            ).withSubtype(
-                CrossSellingResponse::class.java,
-                BodyRowType.CROSS_SELLING.name
-            ).withSubtype(
-                MessageResponse::class.java,
-                BodyRowType.MESSAGE.name
-            ).withSubtype(
-                PaymentMethodInfoResponse::class.java,
-                BodyRowType.PAYMENT_METHOD_INFO.name
             ).withSubtype(
                 RichLabelResponse::class.java,
                 BodyRowType.RICH_LABEL.name

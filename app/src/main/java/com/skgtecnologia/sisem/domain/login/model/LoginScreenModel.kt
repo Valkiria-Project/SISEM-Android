@@ -1,10 +1,10 @@
 package com.skgtecnologia.sisem.domain.login.model
 
 import android.os.Parcelable
-import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowModel
+import com.skgtecnologia.sisem.domain.core.model.bodyrow.BodyRowModel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class LoginScreenModel(
-		val body: List<BodyRowModel>
+    val body: List<BodyRowModel>
 ) : Parcelable

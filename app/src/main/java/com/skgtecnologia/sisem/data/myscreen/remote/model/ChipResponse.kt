@@ -1,8 +1,8 @@
 package com.skgtecnologia.sisem.data.myscreen.remote.model
 
-import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowModel
-import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowType
-import com.skgtecnologia.sisem.domain.myscreen.model.ChipModel
+import com.skgtecnologia.sisem.domain.core.model.bodyrow.BodyRowModel
+import com.skgtecnologia.sisem.domain.core.model.bodyrow.BodyRowType
+import com.skgtecnologia.sisem.domain.core.model.bodyrow.ChipModel
 import com.skgtecnologia.sisem.domain.myscreen.model.ChipStyle
 import com.squareup.moshi.JsonClass
 

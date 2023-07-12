@@ -1,8 +1,8 @@
 package com.skgtecnologia.sisem.data.myscreen.remote.model
 
-import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowModel
-import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowType
-import com.skgtecnologia.sisem.domain.myscreen.model.ButtonModelNew
+import com.skgtecnologia.sisem.domain.core.model.bodyrow.BodyRowModel
+import com.skgtecnologia.sisem.domain.core.model.bodyrow.BodyRowType
+import com.skgtecnologia.sisem.domain.core.model.bodyrow.ButtonModelNew
 import com.skgtecnologia.sisem.domain.myscreen.model.ButtonStyle
 import com.skgtecnologia.sisem.domain.myscreen.model.OnClickType
 import com.skgtecnologia.sisem.domain.myscreen.model.ButtonSize

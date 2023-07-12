@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.ui.sections.body
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowModel
+import com.skgtecnologia.sisem.domain.core.model.bodyrow.BodyRowModel
 
 @Composable
 fun BodySection(

@@ -1,5 +1,9 @@
-package com.skgtecnologia.sisem.domain.myscreen.model
+package com.skgtecnologia.sisem.domain.core.model.bodyrow
 
+import com.skgtecnologia.sisem.domain.myscreen.model.KeyboardType
+import com.skgtecnologia.sisem.domain.myscreen.model.MarginsModel
+import com.skgtecnologia.sisem.domain.myscreen.model.ValidationModel
+import com.skgtecnologia.sisem.domain.myscreen.model.mapToUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
