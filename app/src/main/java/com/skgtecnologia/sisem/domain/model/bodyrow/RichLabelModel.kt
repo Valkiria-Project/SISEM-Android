@@ -4,7 +4,7 @@ import com.skgtecnologia.sisem.domain.model.props.MarginsModel
 import com.skgtecnologia.sisem.domain.model.props.TextStyle
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType.RICH_LABEL
 import com.skgtecnologia.sisem.domain.model.props.mapToUiModel
-import com.valkiria.uicomponents.props.label.RichLabelUiModel
+import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 

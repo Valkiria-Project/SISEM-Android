@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.props.label
+package com.valkiria.uicomponents.components.label
 
 import com.valkiria.uicomponents.props.MarginsUiModel
 import com.valkiria.uicomponents.props.TextStyleUi

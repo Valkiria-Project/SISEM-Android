@@ -71,8 +71,7 @@ fun ChipComponentPreview() {
         "text_style":"HEADLINE_5",
         "style":"PRIMARY",
         "type":"CHIP",
-        "margins":{"top":20,"left":0,
-        "right":0,"bottom":0
+        "margins":{"top":20,"left":0,"right":0,"bottom":0}
     }
     */
     val chipUiModel = ChipUiModel(
