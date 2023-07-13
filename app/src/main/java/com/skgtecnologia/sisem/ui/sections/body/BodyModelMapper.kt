@@ -18,8 +18,9 @@ import com.skgtecnologia.sisem.domain.model.bodyrow.RichLabelModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.mapToUiModel
-import com.valkiria.uicomponents.props.button.ButtonComponent
+import com.valkiria.uicomponents.theme.montserratFontFamily
 import com.valkiria.uicomponents.components.chip.ChipComponent
+import com.valkiria.uicomponents.props.button.ButtonComponent
 import com.valkiria.uicomponents.props.textfield.TextFieldComponent
 
 @Composable
@@ -42,7 +43,10 @@ fun BodyModelMapper(
                 }
 
                 is ChipModel -> item {
-                    ChipComponent(model = model.mapToUiModel())
+                    ChipComponent(
+                        uiModel = model.mapToUiModel(),
+                        fontFamily = montserratFontFamily
+                    )
                 }
 
                 is LabelModel -> {}

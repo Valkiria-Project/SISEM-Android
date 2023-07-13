@@ -15,7 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.NavigationGraph
-import com.skgtecnologia.sisem.ui.theme.MyApplicationTheme
+import com.valkiria.uicomponents.theme.MyApplicationTheme
 import kotlinx.coroutines.CoroutineScope
 
 @Composable

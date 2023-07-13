@@ -1,5 +1,6 @@
 package com.valkiria.uicomponents.components.chip
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AssistChip
@@ -11,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -18,20 +20,24 @@ import androidx.compose.ui.unit.sp
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.props.ChipStyleUi
 import com.valkiria.uicomponents.props.TextStyleUi
+import com.valkiria.uicomponents.theme.lobsterTwoFontFamily
+import com.valkiria.uicomponents.theme.montserratFontFamily
 
 @Composable
 fun ChipComponent(
-    model: ChipUiModel,
-    modifier: Modifier = Modifier
+    uiModel: ChipUiModel,
+    modifier: Modifier = Modifier,
+    fontFamily: FontFamily = FontFamily.Default
 ) {
-    model.text?.let { chipLabel ->
+    uiModel.text?.let { chipLabel ->
         AssistChip(
             onClick = { },
             label = { // FIXME: Create function to extract the TextStyle from the input
                 Text(
                     text = chipLabel,
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.W700
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = fontFamily
                 )
             },
             leadingIcon = {
@@ -54,7 +60,7 @@ fun ChipComponent(
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun ChipComponentPreview() {
     /*
@@ -76,7 +82,14 @@ fun ChipComponentPreview() {
         style = ChipStyleUi.PRIMARY,
         margins = null
     )
-    ChipComponent(
-        chipUiModel
-    )
+    Column {
+        ChipComponent(
+            uiModel = chipUiModel,
+            fontFamily = montserratFontFamily
+        )
+        ChipComponent(
+            uiModel = chipUiModel,
+            fontFamily = lobsterTwoFontFamily
+        )
+    }
 }

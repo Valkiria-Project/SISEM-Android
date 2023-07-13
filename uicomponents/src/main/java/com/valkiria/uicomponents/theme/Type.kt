@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.theme
+package com.valkiria.uicomponents.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
@@ -7,19 +7,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.unit.sp
-import com.skgtecnologia.sisem.R
-import com.valkiria.uicomponents.theme.montserratFontName
+import com.valkiria.uicomponents.R
 
-val fontName = GoogleFont("Montserrat")
+val montserratFontName = GoogleFont("Montserrat")
+val lobsterTwoFontName = GoogleFont("Lobster Two")
 
 val provider = GoogleFont.Provider(
     providerAuthority = "com.google.android.gms.fonts",
     providerPackage = "com.google.android.gms",
     certificates = R.array.com_google_android_gms_fonts_certs
 )
+
 val montserratFontFamily = FontFamily(
-    Font(googleFont = montserratFontName, fontProvider = com.valkiria.uicomponents.theme.provider),
-    Font(googleFont = montserratFontName, fontProvider = com.valkiria.uicomponents.theme.provider, weight = FontWeight.Bold)
+    Font(googleFont = montserratFontName, fontProvider = provider),
+    Font(googleFont = montserratFontName, fontProvider = provider, weight = FontWeight.Bold)
+)
+
+val lobsterTwoFontFamily = FontFamily(
+    Font(googleFont = lobsterTwoFontName, fontProvider = provider),
+    Font(googleFont = lobsterTwoFontName, fontProvider = provider, weight = FontWeight.Bold)
 )
 
 // Set of Material typography styles to start with

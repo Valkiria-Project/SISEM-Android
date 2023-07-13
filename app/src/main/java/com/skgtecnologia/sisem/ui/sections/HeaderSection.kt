@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.skgtecnologia.sisem.R
-import com.skgtecnologia.sisem.ui.theme.Green40
+import com.valkiria.uicomponents.theme.Green40
 import com.skgtecnologia.sisem.ui.utlis.forwardingPainter
 
 @Composable
