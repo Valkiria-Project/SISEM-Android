@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.common
+package com.valkiria.uicomponents.commons
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

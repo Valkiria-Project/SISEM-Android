@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.domain.model.bodyrow
 import com.skgtecnologia.sisem.domain.model.props.ButtonSize
 import com.skgtecnologia.sisem.domain.model.props.ButtonStyle
 import com.skgtecnologia.sisem.domain.model.props.MarginsModel
-import com.skgtecnologia.sisem.domain.model.props.OnClickType
+import com.skgtecnologia.sisem.domain.model.props.OnClick
 import com.skgtecnologia.sisem.domain.model.props.mapToUiModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType.BUTTON
 import com.valkiria.uicomponents.components.button.ButtonUiModel
@@ -15,7 +15,7 @@ data class ButtonModelNew(
     val identifier: String,
     val label: String,
     val style: ButtonStyle,
-    val onClick: OnClickType,
+    val onClick: OnClick,
     val size: ButtonSize,
     val margins: MarginsModel?
 ) : BodyRowModel {

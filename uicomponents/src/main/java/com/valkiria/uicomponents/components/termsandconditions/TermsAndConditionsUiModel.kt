@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.components.termandconditions
+package com.valkiria.uicomponents.components.termsandconditions
 
 import com.valkiria.uicomponents.components.MarginsUiModel
 

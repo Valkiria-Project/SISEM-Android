@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.common
+package com.valkiria.uicomponents.commons
 
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column

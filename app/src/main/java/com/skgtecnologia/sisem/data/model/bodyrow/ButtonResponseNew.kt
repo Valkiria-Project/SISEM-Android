@@ -7,7 +7,7 @@ import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType
 import com.skgtecnologia.sisem.domain.model.bodyrow.ButtonModelNew
 import com.skgtecnologia.sisem.domain.model.props.ButtonSize
 import com.skgtecnologia.sisem.domain.model.props.ButtonStyle
-import com.skgtecnologia.sisem.domain.model.props.OnClickType
+import com.skgtecnologia.sisem.domain.model.props.OnClick
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -16,7 +16,7 @@ data class ButtonResponseNew(
     val identifier: String?,
     val label: String?,
     val style: ButtonStyle,
-    @Json(name = "on_click") val onClick: OnClickType,
+    @Json(name = "on_click") val onClick: OnClick,
     val size: ButtonSize,
     val margins: MarginsResponse?
 ) : BodyRowResponse {

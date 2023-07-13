@@ -1,15 +1,15 @@
 package com.skgtecnologia.sisem.domain.model.bodyrow
 
+import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType.RICH_LABEL
 import com.skgtecnologia.sisem.domain.model.props.MarginsModel
 import com.skgtecnologia.sisem.domain.model.props.TextStyle
-import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType.RICH_LABEL
 import com.skgtecnologia.sisem.domain.model.props.mapToUiModel
-import com.valkiria.uicomponents.components.label.RichLabelUiModel
+import com.valkiria.uicomponents.components.label.LabelUiModel
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class RichLabelModel(
+data class LabelModel(
     val identifier: String,
     val text: String,
     val textStyle: TextStyle,
@@ -20,8 +20,8 @@ data class RichLabelModel(
     override val type: BodyRowType = RICH_LABEL
 }
 
- fun RichLabelModel.mapToUiModel() = RichLabelUiModel(
+fun LabelModel.mapToUiModel() = LabelUiModel(
     text = text,
     style = textStyle.mapToUiModel(),
     margins = margins?.mapToUiModel()
- )
+)

@@ -1,20 +1,20 @@
 package com.skgtecnologia.sisem.domain.model.props
 
 enum class KeyboardType {
-    TEXT,
-    NUMBER,
     EMAIL,
+    NUMBER,
+    PASSWORD,
     PHONE,
-    PASSWORD;
+    TEXT;
 
     // FIXME
     fun mapToUiModel(): com.valkiria.uicomponents.components.textfield.KeyBoardUiType {
         return when (this) {
-            TEXT -> com.valkiria.uicomponents.components.textfield.KeyBoardUiType.TEXT
-            NUMBER -> com.valkiria.uicomponents.components.textfield.KeyBoardUiType.NUMBER
             EMAIL -> com.valkiria.uicomponents.components.textfield.KeyBoardUiType.EMAIL
-            PHONE -> com.valkiria.uicomponents.components.textfield.KeyBoardUiType.PHONE
+            NUMBER -> com.valkiria.uicomponents.components.textfield.KeyBoardUiType.NUMBER
             PASSWORD -> com.valkiria.uicomponents.components.textfield.KeyBoardUiType.PASSWORD
+            PHONE -> com.valkiria.uicomponents.components.textfield.KeyBoardUiType.PHONE
+            TEXT -> com.valkiria.uicomponents.components.textfield.KeyBoardUiType.TEXT
         }
     }
 }
