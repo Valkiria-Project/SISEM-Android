@@ -5,10 +5,10 @@ enum class OnClick {
     LOGIN;
 
     // FIXME
-    fun mapToUiModel(): com.valkiria.uicomponents.components.button.OnClickType {
+    fun mapToUiModel(): com.valkiria.uicomponents.props.button.OnClickType {
         return when (this) {
-            FORGOT_PASSWORD -> com.valkiria.uicomponents.components.button.OnClickType.FORGOT_PASSWORD
-            LOGIN -> com.valkiria.uicomponents.components.button.OnClickType.LOGIN
+            FORGOT_PASSWORD -> com.valkiria.uicomponents.props.button.OnClickType.FORGOT_PASSWORD
+            LOGIN -> com.valkiria.uicomponents.props.button.OnClickType.LOGIN
         }
     }
 }

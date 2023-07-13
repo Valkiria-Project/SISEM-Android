@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.components
+package com.valkiria.uicomponents.props
 
 data class MarginsUiModel(
     val top: Int?,

@@ -1,8 +1,8 @@
-package com.valkiria.uicomponents.components.textfield
+package com.valkiria.uicomponents.props.textfield
 
-import com.valkiria.uicomponents.components.MarginsUiModel
+import com.valkiria.uicomponents.props.MarginsUiModel
 
-data class PasswordTextFieldUiModel(
+data class TextFieldUiModel(
     val identifier: String?,
     val icon: String?,
     val hint: String?,

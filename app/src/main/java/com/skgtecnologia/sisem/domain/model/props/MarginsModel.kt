@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.domain.model.props
 
 import android.os.Parcelable
-import com.valkiria.uicomponents.components.MarginsUiModel
+import com.valkiria.uicomponents.props.MarginsUiModel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

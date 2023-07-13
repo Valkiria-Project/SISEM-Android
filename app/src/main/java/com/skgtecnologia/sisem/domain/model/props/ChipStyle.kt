@@ -6,7 +6,7 @@ enum class ChipStyle {
 
     // FIXME
     fun mapToUiModel() = when (this) {
-        PRIMARY -> com.valkiria.uicomponents.components.chip.ChipStyle.PRIMARY
-        SECONDARY -> com.valkiria.uicomponents.components.chip.ChipStyle.SECONDARY
+        PRIMARY -> com.valkiria.uicomponents.props.chip.ChipStyle.PRIMARY
+        SECONDARY -> com.valkiria.uicomponents.props.chip.ChipStyle.SECONDARY
     }
 }

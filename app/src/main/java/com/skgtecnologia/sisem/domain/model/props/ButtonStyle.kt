@@ -6,9 +6,9 @@ enum class ButtonStyle {
     TRANSPARENT;
 
     // FIXME
-    fun mapToUiModel(): com.valkiria.uicomponents.components.button.ButtonStyle = when (this) {
-        LOUD -> com.valkiria.uicomponents.components.button.ButtonStyle.LOUD
-        QUIET -> com.valkiria.uicomponents.components.button.ButtonStyle.LOUD
-        TRANSPARENT -> com.valkiria.uicomponents.components.button.ButtonStyle.TRANSPARENT
+    fun mapToUiModel(): com.valkiria.uicomponents.props.button.ButtonStyle = when (this) {
+        LOUD -> com.valkiria.uicomponents.props.button.ButtonStyle.LOUD
+        QUIET -> com.valkiria.uicomponents.props.button.ButtonStyle.LOUD
+        TRANSPARENT -> com.valkiria.uicomponents.props.button.ButtonStyle.TRANSPARENT
     }
 }

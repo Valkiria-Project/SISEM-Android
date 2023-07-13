@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.components.label
+package com.valkiria.uicomponents.props.label
 
 import android.text.Html
 import androidx.compose.material3.Text

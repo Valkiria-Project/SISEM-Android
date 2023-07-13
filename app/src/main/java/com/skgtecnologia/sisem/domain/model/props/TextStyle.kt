@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.domain.model.props
 
-import com.valkiria.uicomponents.components.label.LabelStyle
+import com.valkiria.uicomponents.props.label.LabelStyle
 
 enum class TextStyle {
     BODY_1,

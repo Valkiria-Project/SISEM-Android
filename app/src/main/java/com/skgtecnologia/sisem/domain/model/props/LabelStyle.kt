@@ -6,7 +6,7 @@ enum class LabelStyle {
 
     // FIXME
     fun mapToUiModel() = when (this) {
-        HEADING -> com.valkiria.uicomponents.components.label.LabelStyle.HEADING
-        PRIMARY -> com.valkiria.uicomponents.components.label.LabelStyle.PRIMARY
+        HEADING -> com.valkiria.uicomponents.props.label.LabelStyle.HEADING
+        PRIMARY -> com.valkiria.uicomponents.props.label.LabelStyle.PRIMARY
     }
 }

@@ -6,7 +6,7 @@ import com.skgtecnologia.sisem.domain.model.props.MarginsModel
 import com.skgtecnologia.sisem.domain.model.props.OnClick
 import com.skgtecnologia.sisem.domain.model.props.mapToUiModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType.BUTTON
-import com.valkiria.uicomponents.components.button.ButtonUiModel
+import com.valkiria.uicomponents.props.button.ButtonUiModel
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 

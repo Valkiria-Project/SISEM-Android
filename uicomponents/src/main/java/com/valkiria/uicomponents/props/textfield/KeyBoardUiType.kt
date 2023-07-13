@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.components.textfield
+package com.valkiria.uicomponents.props.textfield
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.KeyboardType

@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.components.chip
+package com.valkiria.uicomponents.props.chip
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.AssistChip

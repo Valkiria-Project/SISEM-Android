@@ -5,7 +5,7 @@ import com.skgtecnologia.sisem.domain.model.props.MarginsModel
 import com.skgtecnologia.sisem.domain.model.props.ValidationModel
 import com.skgtecnologia.sisem.domain.model.props.mapToUiModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType.TEXT_FIELD
-import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.props.textfield.TextFieldUiModel
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 

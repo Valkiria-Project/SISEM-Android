@@ -8,13 +8,13 @@ enum class KeyboardType {
     TEXT;
 
     // FIXME
-    fun mapToUiModel(): com.valkiria.uicomponents.components.textfield.KeyBoardUiType {
+    fun mapToUiModel(): com.valkiria.uicomponents.props.textfield.KeyBoardUiType {
         return when (this) {
-            EMAIL -> com.valkiria.uicomponents.components.textfield.KeyBoardUiType.EMAIL
-            NUMBER -> com.valkiria.uicomponents.components.textfield.KeyBoardUiType.NUMBER
-            PASSWORD -> com.valkiria.uicomponents.components.textfield.KeyBoardUiType.PASSWORD
-            PHONE -> com.valkiria.uicomponents.components.textfield.KeyBoardUiType.PHONE
-            TEXT -> com.valkiria.uicomponents.components.textfield.KeyBoardUiType.TEXT
+            EMAIL -> com.valkiria.uicomponents.props.textfield.KeyBoardUiType.EMAIL
+            NUMBER -> com.valkiria.uicomponents.props.textfield.KeyBoardUiType.NUMBER
+            PASSWORD -> com.valkiria.uicomponents.props.textfield.KeyBoardUiType.PASSWORD
+            PHONE -> com.valkiria.uicomponents.props.textfield.KeyBoardUiType.PHONE
+            TEXT -> com.valkiria.uicomponents.props.textfield.KeyBoardUiType.TEXT
         }
     }
 }

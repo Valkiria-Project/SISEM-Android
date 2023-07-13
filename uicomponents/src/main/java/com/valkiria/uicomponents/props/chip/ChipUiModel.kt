@@ -1,6 +1,6 @@
-package com.valkiria.uicomponents.components.chip
+package com.valkiria.uicomponents.props.chip
 
-import com.valkiria.uicomponents.components.MarginsUiModel
+import com.valkiria.uicomponents.props.MarginsUiModel
 
 data class ChipUiModel(
     val icon: String?,

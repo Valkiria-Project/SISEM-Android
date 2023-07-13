@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.domain.model.bodyrow
 import com.skgtecnologia.sisem.domain.model.props.MarginsModel
 import com.skgtecnologia.sisem.domain.model.props.mapToUiModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType.TERMS_AND_CONDITIONS
-import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsUiModel
+import com.valkiria.uicomponents.props.termsandconditions.TermsAndConditionsUiModel
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 

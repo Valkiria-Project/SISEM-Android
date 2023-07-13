@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.domain.model.props
 
 import android.os.Parcelable
-import com.valkiria.uicomponents.components.textfield.ValidationUiModel
+import com.valkiria.uicomponents.props.textfield.ValidationUiModel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

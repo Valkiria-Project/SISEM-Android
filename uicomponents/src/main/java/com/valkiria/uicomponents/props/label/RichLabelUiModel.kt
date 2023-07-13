@@ -1,6 +1,6 @@
-package com.valkiria.uicomponents.components.label
+package com.valkiria.uicomponents.props.label
 
-import com.valkiria.uicomponents.components.MarginsUiModel
+import com.valkiria.uicomponents.props.MarginsUiModel
 
 data class RichLabelUiModel(
     val text: String,

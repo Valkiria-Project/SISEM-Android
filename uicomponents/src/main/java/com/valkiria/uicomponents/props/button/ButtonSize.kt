@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.components.button
+package com.valkiria.uicomponents.props.button
 
 enum class ButtonSize {
     DEFAULT,

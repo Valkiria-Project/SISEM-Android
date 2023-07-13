@@ -1,6 +1,6 @@
-package com.valkiria.uicomponents.components.button
+package com.valkiria.uicomponents.props.button
 
-import com.valkiria.uicomponents.components.MarginsUiModel
+import com.valkiria.uicomponents.props.MarginsUiModel
 
 data class ButtonUiModel(
     val label: String,
