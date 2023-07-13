@@ -35,6 +35,9 @@ fun ChipComponent(
                 containerColor = MaterialTheme.colorScheme.primary,
                 labelColor = Color.Black,
                 leadingIconContentColor = Color.Black
+            ),
+            border = AssistChipDefaults.assistChipBorder(
+                borderColor = MaterialTheme.colorScheme.primary
             )
         )
     }
