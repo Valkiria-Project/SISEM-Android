@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.di
 
 import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.data.model.bodyrow.BodyRowResponse
-import com.skgtecnologia.sisem.data.model.bodyrow.ButtonResponseNew
+import com.skgtecnologia.sisem.data.model.bodyrow.ButtonResponse
 import com.skgtecnologia.sisem.data.model.bodyrow.ChipResponse
 import com.skgtecnologia.sisem.data.model.bodyrow.LabelResponse
 import com.skgtecnologia.sisem.data.model.bodyrow.LabeledSwitchResponse
@@ -77,7 +77,7 @@ object CoreNetworkModule {
             BodyRowResponse::class.java,
             "type"
         ).withSubtype(
-            ButtonResponseNew::class.java,
+            ButtonResponse::class.java,
             BodyRowType.BUTTON.name
         ).withSubtype(
             ChipResponse::class.java,

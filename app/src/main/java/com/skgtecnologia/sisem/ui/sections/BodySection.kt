@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.ButtonModel
-import com.skgtecnologia.sisem.domain.model.bodyrow.ButtonModelNew
 import com.skgtecnologia.sisem.domain.model.bodyrow.ChipModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.LabelModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.LabeledSwitchModel
@@ -37,11 +36,7 @@ fun BodySection(
         ) {
             body.map { model ->
                 when (model) {
-                    is ButtonModel -> item(key = model.label) {
-
-                    }
-
-                    is ButtonModelNew -> item(key = model.identifier) {
+                    is ButtonModel -> item(key = model.identifier) {
                         ButtonComponent(model = model.mapToUiModel())
                     }
 
