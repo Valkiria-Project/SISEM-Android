@@ -1,17 +1,14 @@
 package com.valkiria.uicomponents.components.richlabel
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.text.HtmlCompat
-import com.valkiria.uicomponents.components.chip.ChipComponent
-import com.valkiria.uicomponents.components.chip.ChipUiModel
-import com.valkiria.uicomponents.props.ChipStyleUi
 import com.valkiria.uicomponents.props.TextStyleUi
-import com.valkiria.uicomponents.theme.lobsterTwoFontFamily
-import com.valkiria.uicomponents.theme.montserratFontFamily
 
 @Composable
 fun RichLabelComponent(
@@ -24,9 +21,9 @@ fun RichLabelComponent(
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-fun ChipComponentPreview() {
+fun RichLabelComponentPreview() {
     /*
     {
         "identifier":"LOGIN_TITLE",
@@ -36,21 +33,19 @@ fun ChipComponentPreview() {
         "margins":{"top":20,"left":20,"right":20,"bottom":0}
     }
     */
-    val chipUiModel = ChipUiModel(
-        icon = "ic_ambulance",
-        text = "5421244",
-        textStyle = TextStyleUi.HEADLINE_5,
-        style = ChipStyleUi.PRIMARY,
+    val richLabelUiModel = RichLabelUiModel(
+        text = "Bienvenido al <b>SISEM</b>",
+        textStyle = TextStyleUi.HEADLINE_1,
         margins = null
     )
     Column {
-        ChipComponent(
-            uiModel = chipUiModel,
-            fontFamily = montserratFontFamily
+        RichLabelComponent(
+            uiModel = richLabelUiModel,
+            modifier = Modifier.padding(16.dp)
         )
-        ChipComponent(
-            uiModel = chipUiModel,
-            fontFamily = lobsterTwoFontFamily
+        RichLabelComponent(
+            uiModel = richLabelUiModel,
+            modifier = Modifier.padding(0.dp)
         )
     }
 }
