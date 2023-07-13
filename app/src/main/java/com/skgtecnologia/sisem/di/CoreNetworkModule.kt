@@ -14,7 +14,6 @@ import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType
 import com.skgtecnologia.sisem.domain.model.props.ButtonStyle
 import com.skgtecnologia.sisem.domain.model.props.ChipStyle
 import com.skgtecnologia.sisem.domain.model.props.KeyboardType
-import com.skgtecnologia.sisem.domain.model.props.LabelStyle
 import com.skgtecnologia.sisem.domain.model.props.OnClick
 import com.skgtecnologia.sisem.domain.model.props.TextStyle
 import com.squareup.moshi.Moshi
@@ -62,9 +61,6 @@ object CoreNetworkModule {
     ).add(
         KeyboardType::class.java,
         EnumJsonAdapter.create(KeyboardType::class.java).withUnknownFallback(KeyboardType.TEXT)
-    ).add(
-        LabelStyle::class.java,
-        EnumJsonAdapter.create(LabelStyle::class.java).withUnknownFallback(LabelStyle.PRIMARY)
     ).add(
         OnClick::class.java,
         EnumJsonAdapter.create(OnClick::class.java).withUnknownFallback(OnClick.LOGIN)

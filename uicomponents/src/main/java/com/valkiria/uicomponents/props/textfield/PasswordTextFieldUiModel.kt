@@ -1,5 +1,6 @@
 package com.valkiria.uicomponents.props.textfield
 
+import com.valkiria.uicomponents.props.KeyBoardUiType
 import com.valkiria.uicomponents.props.MarginsUiModel
 
 data class PasswordTextFieldUiModel(

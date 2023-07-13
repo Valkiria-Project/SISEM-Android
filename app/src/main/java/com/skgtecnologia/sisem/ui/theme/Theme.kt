@@ -23,7 +23,7 @@ private val LightColorScheme = lightColorScheme(
     primary = DodgerBlue,
     secondary = PurpleGrey40,
     tertiary = Pink40,
-    background = Color.White
+    background = Shark
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -61,7 +61,7 @@ fun MyApplicationTheme(
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = true
         }
     }
 

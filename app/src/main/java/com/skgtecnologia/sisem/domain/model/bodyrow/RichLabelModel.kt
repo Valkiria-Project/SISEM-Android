@@ -22,6 +22,6 @@ data class RichLabelModel(
 
  fun RichLabelModel.mapToUiModel() = RichLabelUiModel(
     text = text,
-    style = textStyle.mapToUiModel(),
+    textStyle = textStyle.mapToUiModel(),
     margins = margins?.mapToUiModel()
  )

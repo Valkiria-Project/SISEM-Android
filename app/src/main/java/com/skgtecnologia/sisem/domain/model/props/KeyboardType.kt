@@ -1,5 +1,7 @@
 package com.skgtecnologia.sisem.domain.model.props
 
+import com.valkiria.uicomponents.props.KeyBoardUiType
+
 enum class KeyboardType {
     EMAIL,
     NUMBER,
@@ -8,13 +10,13 @@ enum class KeyboardType {
     TEXT;
 
     // FIXME
-    fun mapToUiModel(): com.valkiria.uicomponents.props.textfield.KeyBoardUiType {
+    fun mapToUiModel(): KeyBoardUiType {
         return when (this) {
-            EMAIL -> com.valkiria.uicomponents.props.textfield.KeyBoardUiType.EMAIL
-            NUMBER -> com.valkiria.uicomponents.props.textfield.KeyBoardUiType.NUMBER
-            PASSWORD -> com.valkiria.uicomponents.props.textfield.KeyBoardUiType.PASSWORD
-            PHONE -> com.valkiria.uicomponents.props.textfield.KeyBoardUiType.PHONE
-            TEXT -> com.valkiria.uicomponents.props.textfield.KeyBoardUiType.TEXT
+            EMAIL -> KeyBoardUiType.EMAIL
+            NUMBER -> KeyBoardUiType.NUMBER
+            PASSWORD -> KeyBoardUiType.PASSWORD
+            PHONE -> KeyBoardUiType.PHONE
+            TEXT -> KeyBoardUiType.TEXT
         }
     }
 }

@@ -22,6 +22,6 @@ data class LabelModel(
 
 fun LabelModel.mapToUiModel() = LabelUiModel(
     text = text,
-    style = textStyle.mapToUiModel(),
+    textStyle = textStyle.mapToUiModel(),
     margins = margins?.mapToUiModel()
 )

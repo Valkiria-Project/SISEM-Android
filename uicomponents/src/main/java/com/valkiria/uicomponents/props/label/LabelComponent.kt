@@ -6,21 +6,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
+import com.valkiria.uicomponents.props.TextStyleUi
 
 @Composable
 fun LabelComponent(
     richLabelUiModel: RichLabelUiModel,
     modifier: Modifier = Modifier
 ) {
-    when(richLabelUiModel.style) {
-        LabelStyle.HEADING -> LabelHeading(
+    when (richLabelUiModel.textStyle) {
+        TextStyleUi.HEADLINE_1 -> LabelHeading(
             richLabelUiModel = richLabelUiModel,
             modifier = modifier
         )
-        LabelStyle.PRIMARY -> LabelPrimary(
+
+        TextStyleUi.HEADLINE_2 -> LabelPrimary(
             richLabelUiModel = richLabelUiModel,
             modifier = modifier
         )
+
+        else -> {}
     }
 }
 

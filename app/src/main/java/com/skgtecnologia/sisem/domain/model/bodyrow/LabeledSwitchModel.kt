@@ -22,6 +22,6 @@ data class LabeledSwitchModel(
 
 fun LabeledSwitchModel.mapToUiModel() = LabeledSwitchUiModel(
     text = text,
-    style = textStyle.mapToUiModel(),
+    textStyle = textStyle.mapToUiModel(),
     margins = margins?.mapToUiModel()
 )

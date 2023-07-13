@@ -19,7 +19,7 @@ import com.skgtecnologia.sisem.domain.model.bodyrow.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.mapToUiModel
 import com.valkiria.uicomponents.props.button.ButtonComponent
-import com.valkiria.uicomponents.props.chip.ChipComponent
+import com.valkiria.uicomponents.components.chip.ChipComponent
 import com.valkiria.uicomponents.props.textfield.TextFieldComponent
 
 @Composable

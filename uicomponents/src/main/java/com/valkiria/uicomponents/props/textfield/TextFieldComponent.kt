@@ -15,6 +15,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import com.valkiria.uicomponents.R
+import com.valkiria.uicomponents.props.toKeyBoardOption
 
 @Composable
 fun TextFieldComponent(
@@ -32,7 +33,7 @@ fun TextFieldComponent(
 
         TextFieldUi(model = model)
     }
-    
+
 }
 
 @Composable
