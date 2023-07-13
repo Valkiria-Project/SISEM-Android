@@ -11,6 +11,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ChipModel(
+    val identifier: String?,
     val icon: String?,
     val text: String?,
     val textStyle: TextStyle,

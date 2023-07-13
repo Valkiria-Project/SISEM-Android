@@ -9,6 +9,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class TermsAndConditionsModel(
+    val identifier: String?,
     val margins: MarginsModel?
 ) : BodyRowModel {
 

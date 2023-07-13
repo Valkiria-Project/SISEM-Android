@@ -12,6 +12,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class ChipResponse(
+    @Json(name = "identifier") val identifier: String?,
     @Json(name = "icon") val icon: String?,
     @Json(name = "text") val text: String?,
     @Json(name = "text_style") val textStyle: TextStyle?,
@@ -22,6 +23,7 @@ data class ChipResponse(
     override val type: BodyRowType = BodyRowType.CHIP
 
     override fun mapToDomain(): BodyRowModel = ChipModel(
+        identifier = identifier,
         icon = icon,
         text = text ?: error("Chip text cannot be null"),
         textStyle = textStyle ?: error("Text style cannot be null"),
