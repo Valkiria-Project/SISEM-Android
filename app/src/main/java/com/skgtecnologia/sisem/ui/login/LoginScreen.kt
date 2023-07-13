@@ -3,8 +3,8 @@ package com.skgtecnologia.sisem.ui.login
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.sections.body.BodySection
 
@@ -23,18 +23,16 @@ fun LoginScreen(
 
         LoginHeaderSection(
             modifier = modifier.constrainAs(header) {
-                top.linkTo(parent.top, margin = 10.dp)
-                start.linkTo(parent.start, margin = 24.dp)
-                end.linkTo(parent.end, margin = 24.dp)
+                top.linkTo(parent.top)
             }
         )
 
         BodySection(
             body = uiState.loginScreenModel?.body,
             modifier = modifier.constrainAs(body) {
-                top.linkTo(header.bottom, margin = 16.dp)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
+                top.linkTo(header.bottom)
+                bottom.linkTo(parent.bottom)
+                height = Dimension.fillToConstraints
             }
         )
     }

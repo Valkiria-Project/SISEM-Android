@@ -1,5 +1,9 @@
 package com.skgtecnologia.sisem.ui
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -19,21 +23,26 @@ import com.valkiria.uicomponents.theme.MyApplicationTheme
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun ComposeApp(
-    scope: CoroutineScope,
-    snackbarHostState: SnackbarHostState,
-    modifier: Modifier = Modifier
-) {
-    val navController = rememberNavController()
-    NavHost(
-        navController = navController,
-        startDestination = NavigationGraph.Auth.route
-    ) {
-        authGraph(navController)
+fun ComposeApp() {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        modifier = Modifier.fillMaxSize(),
+    ) { paddingValues ->
+        val modifier = Modifier.padding(paddingValues)
+        val navController = rememberNavController()
+        NavHost(
+            navController = navController,
+            startDestination = NavigationGraph.Auth.route
+        ) {
+            authGraph(navController, modifier)
+        }
     }
 }
 
-private fun NavGraphBuilder.authGraph(navController: NavHostController) {
+private fun NavGraphBuilder.authGraph(navController: NavHostController, modifier: Modifier) {
     navigation(
         startDestination = AuthNavigationRoute.Login.route,
         route = NavigationGraph.Auth.route
@@ -42,10 +51,10 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
             route = AuthNavigationRoute.Login.route
         ) {
             LoginScreen(
-                onClick = {
+                modifier = modifier
+            ) {
 //                    navController.navigate(NavigationRoute.FETCH)
-                }
-            )
+            }
         }
     }
 }
@@ -57,9 +66,6 @@ fun ComposeAppPreview(
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 ) {
     MyApplicationTheme {
-        ComposeApp(
-            scope,
-            snackbarHostState
-        )
+        ComposeApp()
     }
 }

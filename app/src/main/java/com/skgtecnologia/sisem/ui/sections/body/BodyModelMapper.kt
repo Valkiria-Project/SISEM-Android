@@ -18,10 +18,10 @@ import com.skgtecnologia.sisem.domain.model.bodyrow.RichLabelModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.mapToUiModel
-import com.valkiria.uicomponents.theme.montserratFontFamily
 import com.valkiria.uicomponents.components.chip.ChipComponent
 import com.valkiria.uicomponents.props.button.ButtonComponent
 import com.valkiria.uicomponents.props.textfield.TextFieldComponent
+import com.valkiria.uicomponents.theme.montserratFontFamily
 
 @Composable
 fun BodyModelMapper(
