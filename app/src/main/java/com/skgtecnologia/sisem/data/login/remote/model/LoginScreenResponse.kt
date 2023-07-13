@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.data.login.remote.model
 
-import com.skgtecnologia.sisem.data.myscreen.remote.model.BodyRowResponse
+import com.skgtecnologia.sisem.data.model.bodyrow.BodyRowResponse
 import com.skgtecnologia.sisem.domain.login.model.LoginScreenModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

@@ -1,0 +1,23 @@
+package com.skgtecnologia.sisem.domain.model.bodyrow
+
+import com.skgtecnologia.sisem.domain.model.props.MarginsModel
+import com.skgtecnologia.sisem.domain.model.props.mapToUiModel
+import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType.TERMS_AND_CONDITIONS
+import com.valkiria.uicomponents.components.termandconditions.TermsAndConditionsUiModel
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class TermsAndConditionsModel(
+    val margins: MarginsModel?
+) : BodyRowModel {
+
+    @IgnoredOnParcel
+    override val type: BodyRowType = TERMS_AND_CONDITIONS
+}
+
+fun TermsAndConditionsModel.mapToUiModel(): TermsAndConditionsUiModel {
+    return TermsAndConditionsUiModel(
+        margins = margins?.mapToUiModel()
+    )
+}
