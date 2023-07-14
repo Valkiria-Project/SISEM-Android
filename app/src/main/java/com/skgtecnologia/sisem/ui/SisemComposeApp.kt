@@ -3,11 +3,7 @@ package com.skgtecnologia.sisem.ui
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavGraphBuilder
@@ -20,22 +16,17 @@ import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.NavigationGraph
 import com.valkiria.uicomponents.theme.MyApplicationTheme
-import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun ComposeApp() {
-    val snackbarHostState = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
-
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-        modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
     ) { paddingValues ->
         val modifier = Modifier.padding(paddingValues)
         val navController = rememberNavController()
         NavHost(
-            navController = navController,
-            startDestination = NavigationGraph.Auth.route
+                navController = navController,
+                startDestination = NavigationGraph.Auth.route
         ) {
             authGraph(navController, modifier)
         }
@@ -44,14 +35,14 @@ fun ComposeApp() {
 
 private fun NavGraphBuilder.authGraph(navController: NavHostController, modifier: Modifier) {
     navigation(
-        startDestination = AuthNavigationRoute.Login.route,
-        route = NavigationGraph.Auth.route
+            startDestination = AuthNavigationRoute.Login.route,
+            route = NavigationGraph.Auth.route
     ) {
         composable(
-            route = AuthNavigationRoute.Login.route
+                route = AuthNavigationRoute.Login.route
         ) {
             LoginScreen(
-                modifier = modifier
+                    modifier = modifier
             ) {
 //                    navController.navigate(NavigationRoute.FETCH)
             }
@@ -61,10 +52,7 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController, modifier
 
 @Preview(showBackground = true)
 @Composable
-fun ComposeAppPreview(
-    scope: CoroutineScope = rememberCoroutineScope(),
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
-) {
+fun ComposeAppPreview() {
     MyApplicationTheme {
         ComposeApp()
     }

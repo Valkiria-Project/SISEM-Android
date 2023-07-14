@@ -9,6 +9,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
+import timber.log.Timber
 
 @Composable
 fun LoginScreen(
@@ -38,6 +39,8 @@ fun LoginScreen(
                     height = Dimension.fillToConstraints
                 }
                 .padding(top = 20.dp)
-        )
+        ) {
+            Timber.d("This is going to be fun")
+        }
     }
 }

@@ -27,7 +27,8 @@ import com.valkiria.uicomponents.theme.montserratFontFamily
 @Composable
 fun BodySection(
     body: List<BodyRowModel>?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     if (body?.isNotEmpty() == true) {
         LazyColumn(
