@@ -1,12 +1,12 @@
 package com.skgtecnologia.sisem.domain.model.bodyrow
 
+import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType.TERMS_AND_CONDITIONS
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsUiModel
-import com.valkiria.uicomponents.props.MarginsUiModel
 
 data class TermsAndConditionsModel(
     val identifier: String?,
-    val margins: MarginsUiModel?
+    val margins: Modifier = Modifier
 ) : BodyRowModel {
 
     override val type: BodyRowType = TERMS_AND_CONDITIONS

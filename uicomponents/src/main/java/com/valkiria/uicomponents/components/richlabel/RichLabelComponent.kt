@@ -44,7 +44,7 @@ fun RichLabelComponentPreview() {
     val richLabelUiModel = RichLabelUiModel(
         text = "<font color=\"#FFFFFF\">Bienvenido al <b>SISEM</b></font>",
         textStyle = TextStyle.HEADLINE_1,
-        margins = null
+        margins = Modifier
     )
     Column {
         Color.WHITE

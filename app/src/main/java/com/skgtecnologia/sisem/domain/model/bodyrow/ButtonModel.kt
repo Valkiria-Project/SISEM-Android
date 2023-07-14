@@ -1,11 +1,11 @@
 package com.skgtecnologia.sisem.domain.model.bodyrow
 
+import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType.BUTTON
 import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.props.ButtonSize
 import com.valkiria.uicomponents.props.ButtonStyle
-import com.valkiria.uicomponents.props.MarginsUiModel
 
 data class ButtonModel(
     val identifier: String,
@@ -13,7 +13,7 @@ data class ButtonModel(
     val style: ButtonStyle,
     val onClick: OnClick,
     val size: ButtonSize,
-    val margins: MarginsUiModel?
+    val margins: Modifier
 ) : BodyRowModel {
 
     override val type: BodyRowType = BUTTON

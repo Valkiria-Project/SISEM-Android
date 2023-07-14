@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.bodyrow
 
+import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.props.MarginsResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToUi
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowModel
@@ -7,8 +8,8 @@ import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType
 import com.skgtecnologia.sisem.domain.model.bodyrow.ButtonModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.valkiria.uicomponents.props.ButtonSize
 import com.valkiria.uicomponents.components.button.OnClick
+import com.valkiria.uicomponents.props.ButtonSize
 import com.valkiria.uicomponents.props.ButtonStyle
 
 @JsonClass(generateAdapter = true)
@@ -29,6 +30,6 @@ data class ButtonResponse(
         style = style,
         onClick = onClick,
         size = size,
-        margins = margins?.mapToUi()
+        margins = margins?.mapToUi() ?: Modifier
     )
 }

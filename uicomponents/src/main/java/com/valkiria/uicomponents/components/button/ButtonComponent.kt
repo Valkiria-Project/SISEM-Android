@@ -1,6 +1,7 @@
 package com.valkiria.uicomponents.components.button
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -9,9 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.props.ButtonSize
 import com.valkiria.uicomponents.props.ButtonStyle
-import com.valkiria.uicomponents.props.MarginsUiModel
 
 @Composable
 fun ButtonComponent(
@@ -50,7 +51,7 @@ private fun ButtonTransparentComponent(
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent
         ),
-        modifier = modifier.fillMaxWidth()
+        modifier = model.margins.fillMaxWidth()
     ) {
         Text(text = model.label)
     }
@@ -65,12 +66,7 @@ fun ButtonLoudComponentPreview() {
             style = ButtonStyle.LOUD,
             onClick = OnClick.LOGIN,
             size = ButtonSize.DEFAULT,
-            margins = MarginsUiModel(
-                top = 8,
-                bottom = 8,
-                right = 8,
-                left = 8
-            )
+            margins = Modifier
         )
     )
 }
@@ -84,12 +80,7 @@ fun ButtonTransparentComponentPreview() {
             style = ButtonStyle.TRANSPARENT,
             onClick = OnClick.FORGOT_PASSWORD,
             size = ButtonSize.FULL_WIDTH,
-            margins = MarginsUiModel(
-                top = 8,
-                bottom = 8,
-                right = 8,
-                left = 8
-            )
+            margins = Modifier.padding(horizontal = 10.dp)
         )
     )
 }

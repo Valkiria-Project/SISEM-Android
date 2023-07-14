@@ -1,10 +1,10 @@
 package com.skgtecnologia.sisem.domain.model.bodyrow
 
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType.TEXT_FIELD
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
-import com.valkiria.uicomponents.props.MarginsUiModel
 
 data class TextFieldModel(
     val identifier: String?,
@@ -12,7 +12,7 @@ data class TextFieldModel(
     val hint: String?,
     val keyboardOptions: KeyboardOptions,
     val validations: List<ValidationUiModel>,
-    val margins: MarginsUiModel?
+    val margins: Modifier = Modifier
 ) : BodyRowModel {
 
     override val type: BodyRowType = TEXT_FIELD

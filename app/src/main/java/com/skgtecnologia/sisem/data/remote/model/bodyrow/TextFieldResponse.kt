@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.data.remote.model.bodyrow
 
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.props.MarginsResponse
 import com.skgtecnologia.sisem.data.remote.model.props.ValidationResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToUi
@@ -28,6 +29,6 @@ data class TextFieldResponse(
         hint = hint.orEmpty(),
         keyboardOptions = keyboardOptions,
         validations = validations.map { it.mapToUi() },
-        margins = margins?.mapToUi()
+        margins = margins?.mapToUi() ?: Modifier
     )
 }

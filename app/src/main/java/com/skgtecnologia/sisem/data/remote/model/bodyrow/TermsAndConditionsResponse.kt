@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.bodyrow
 
+import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.props.MarginsResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToUi
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowModel
@@ -16,6 +17,6 @@ data class TermsAndConditionsResponse(
 
     override fun mapToDomain(): BodyRowModel = TermsAndConditionsModel(
         identifier = identifier,
-        margins = margins?.mapToUi()
+        margins = margins?.mapToUi() ?: Modifier
     )
 }

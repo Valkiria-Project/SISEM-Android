@@ -1,7 +1,7 @@
 package com.valkiria.uicomponents.components.textfield
 
 import androidx.compose.foundation.text.KeyboardOptions
-import com.valkiria.uicomponents.props.MarginsUiModel
+import androidx.compose.ui.Modifier
 
 data class TextFieldUiModel(
     val identifier: String?,
@@ -9,5 +9,5 @@ data class TextFieldUiModel(
     val hint: String?,
     val keyboardOptions: KeyboardOptions,
     val validations: List<ValidationUiModel>,
-    val margins: MarginsUiModel?
+    val margins: Modifier = Modifier
 )
