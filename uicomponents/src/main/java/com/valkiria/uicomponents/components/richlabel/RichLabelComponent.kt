@@ -1,27 +1,35 @@
 package com.valkiria.uicomponents.components.richlabel
 
+import android.graphics.Color
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.text.HtmlCompat
+import com.ireward.htmlcompose.HtmlText
 import com.valkiria.uicomponents.props.TextStyleUi
+import timber.log.Timber
 
 @Composable
 fun RichLabelComponent(
     uiModel: RichLabelUiModel,
     modifier: Modifier = Modifier
 ) {
-    Text(
-        text = HtmlCompat.fromHtml(uiModel.text, HtmlCompat.FROM_HTML_MODE_COMPACT).toString(),
-        modifier = modifier
+    HtmlText(
+        text = "<font color=\"#FFFFFF\">${uiModel.text}</font>",
+        style = MaterialTheme.typography.headlineSmall,
+        linkClicked = { link ->
+            Timber.tag("linkClicked").d(link)
+        }
     )
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    backgroundColor = Color.GRAY.toLong()
+)
 @Composable
 fun RichLabelComponentPreview() {
     /*
@@ -34,11 +42,12 @@ fun RichLabelComponentPreview() {
     }
     */
     val richLabelUiModel = RichLabelUiModel(
-        text = "Bienvenido al <b>SISEM</b>",
+        text = "<font color=\"#FFFFFF\">Bienvenido al <b>SISEM</b></font>",
         textStyle = TextStyleUi.HEADLINE_1,
         margins = null
     )
     Column {
+        Color.WHITE
         RichLabelComponent(
             uiModel = richLabelUiModel,
             modifier = Modifier.padding(16.dp)

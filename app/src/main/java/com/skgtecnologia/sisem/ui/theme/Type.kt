@@ -8,9 +8,8 @@ import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.unit.sp
 import com.skgtecnologia.sisem.R
-import com.valkiria.uicomponents.theme.montserratFontName
 
-val fontName = GoogleFont("Montserrat")
+val montserratFontName = GoogleFont("Montserrat")
 
 val provider = GoogleFont.Provider(
     providerAuthority = "com.google.android.gms.fonts",
@@ -18,18 +17,20 @@ val provider = GoogleFont.Provider(
     certificates = R.array.com_google_android_gms_fonts_certs
 )
 val montserratFontFamily = FontFamily(
-    Font(googleFont = montserratFontName, fontProvider = com.valkiria.uicomponents.theme.provider),
-    Font(googleFont = montserratFontName, fontProvider = com.valkiria.uicomponents.theme.provider, weight = FontWeight.Bold)
+    Font(googleFont = montserratFontName, fontProvider = provider),
+    Font(googleFont = montserratFontName, fontProvider = provider, weight = FontWeight.Bold)
 )
 
 // Set of Material typography styles to start with
 val Typography = Typography(
-    bodyLarge = TextStyle(
+    headlineLarge = TextStyle(
         fontFamily = montserratFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+    ),
+    headlineMedium = TextStyle(
+        fontFamily = montserratFontFamily,
+    ),
+    headlineSmall = TextStyle(
+        fontFamily = montserratFontFamily,
     ),
     titleLarge = TextStyle(
         fontFamily = montserratFontFamily,
@@ -37,6 +38,13 @@ val Typography = Typography(
         fontSize = 22.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
+    ),
+    bodyLarge = TextStyle(
+        fontFamily = montserratFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
     ),
     labelSmall = TextStyle(
         fontFamily = montserratFontFamily,

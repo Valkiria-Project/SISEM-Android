@@ -47,6 +47,7 @@ dependencies {
     // Android
     implementation("androidx.activity:activity-compose:1.7.2")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation("com.google.android.material:material:1.9.0")
 
     // Compose
     implementation(platform("androidx.compose:compose-bom:2023.06.01"))
@@ -65,6 +66,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-placeholder-material:0.30.1")
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("com.airbnb.android:lottie-compose:6.0.1")
+    implementation("com.github.ireward:compose-html:1.0.2")
 
     // Unit Testing
     testImplementation("junit:junit:4.13.2")
