@@ -1,6 +1,7 @@
 package com.valkiria.uicomponents.components.richlabel
 
 import android.graphics.Color
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -10,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ireward.htmlcompose.HtmlText
 import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.theme.Green40
 import timber.log.Timber
 
 @Composable
@@ -28,7 +30,7 @@ fun RichLabelComponent(
 
 @Preview(
     showBackground = true,
-    backgroundColor = Color.GRAY.toLong()
+    backgroundColor = 0xFF00A650
 )
 @Composable
 fun RichLabelComponentPreview() {
@@ -44,10 +46,11 @@ fun RichLabelComponentPreview() {
     val richLabelUiModel = RichLabelUiModel(
         text = "<font color=\"#FFFFFF\">Bienvenido al <b>SISEM</b></font>",
         textStyle = TextStyle.HEADLINE_1,
-        margins = Modifier
+        modifier = Modifier
     )
-    Column {
-        Color.WHITE
+    Column(
+        modifier = Modifier.background(Green40)
+    ) {
         RichLabelComponent(
             uiModel = richLabelUiModel,
             modifier = Modifier.padding(16.dp)

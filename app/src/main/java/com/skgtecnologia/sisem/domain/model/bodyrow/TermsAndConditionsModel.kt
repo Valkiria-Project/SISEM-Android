@@ -6,7 +6,7 @@ import com.valkiria.uicomponents.components.termsandconditions.TermsAndCondition
 
 data class TermsAndConditionsModel(
     val identifier: String?,
-    val margins: Modifier = Modifier
+    val modifier: Modifier = Modifier
 ) : BodyRowModel {
 
     override val type: BodyRowType = TERMS_AND_CONDITIONS
@@ -14,6 +14,6 @@ data class TermsAndConditionsModel(
 
 fun TermsAndConditionsModel.mapToUiModel(): TermsAndConditionsUiModel {
     return TermsAndConditionsUiModel(
-        margins = margins
+        modifier = modifier
     )
 }

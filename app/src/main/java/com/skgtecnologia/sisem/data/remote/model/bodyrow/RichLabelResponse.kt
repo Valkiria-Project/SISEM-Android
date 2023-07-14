@@ -1,8 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.bodyrow
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.data.remote.model.props.MarginsResponse
-import com.skgtecnologia.sisem.data.remote.model.props.mapToUi
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType
 import com.skgtecnologia.sisem.domain.model.bodyrow.RichLabelModel
@@ -15,7 +13,7 @@ data class RichLabelResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "text") val text: String?,
     @Json(name = "text_style") val textStyle: TextStyle?,
-    @Json(name = "margins") val margins: MarginsResponse?
+    @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
     override val type: BodyRowType = BodyRowType.RICH_LABEL
@@ -24,6 +22,6 @@ data class RichLabelResponse(
         identifier = identifier ?: error("Identifier cannot be null"),
         text = text ?: error("Label text cannot be null"),
         textStyle = textStyle ?: error("Text style cannot be null"),
-        margins = margins?.mapToUi() ?: Modifier
+        modifier = modifier ?: Modifier
     )
 }

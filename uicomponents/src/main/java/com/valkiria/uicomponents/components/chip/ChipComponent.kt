@@ -40,7 +40,7 @@ fun ChipComponent(
                     fontFamily = fontFamily
                 )
             },
-//            modifier = uiModel.margins,
+            modifier = uiModel.modifier,
             leadingIcon = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_ambulancia), // FIXME: Create function to extract the ic from the input
@@ -80,7 +80,7 @@ fun ChipComponentPreview() {
         text = "5421244",
         textStyle = TextStyle.HEADLINE_5,
         style = ChipStyle.PRIMARY,
-        margins = Modifier
+        modifier = Modifier
     )
     Column {
         ChipComponent(

@@ -13,7 +13,7 @@ data class ButtonModel(
     val style: ButtonStyle,
     val onClick: OnClick,
     val size: ButtonSize,
-    val margins: Modifier
+    val modifier: Modifier
 ) : BodyRowModel {
 
     override val type: BodyRowType = BUTTON
@@ -25,6 +25,6 @@ fun ButtonModel.mapToUiModel(): ButtonUiModel {
         style = style,
         onClick = onClick,
         size = size,
-        margins = margins
+        modifier = modifier
     )
 }

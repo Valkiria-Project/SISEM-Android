@@ -35,7 +35,7 @@ private fun ButtonLoudComponent(
         colors = ButtonDefaults.buttonColors(
             containerColor = Color(0xFF42a4fa)
         ),
-        modifier = modifier.fillMaxWidth()
+        modifier = model.modifier.fillMaxWidth()
     ) {
         Text(text = model.label)
     }
@@ -51,7 +51,7 @@ private fun ButtonTransparentComponent(
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent
         ),
-        modifier = model.margins.fillMaxWidth()
+        modifier = model.modifier.fillMaxWidth()
     ) {
         Text(text = model.label)
     }
@@ -66,7 +66,7 @@ fun ButtonLoudComponentPreview() {
             style = ButtonStyle.LOUD,
             onClick = OnClick.LOGIN,
             size = ButtonSize.DEFAULT,
-            margins = Modifier
+            modifier = Modifier
         )
     )
 }
@@ -80,7 +80,7 @@ fun ButtonTransparentComponentPreview() {
             style = ButtonStyle.TRANSPARENT,
             onClick = OnClick.FORGOT_PASSWORD,
             size = ButtonSize.FULL_WIDTH,
-            margins = Modifier.padding(horizontal = 10.dp)
+            modifier = Modifier.padding(horizontal = 10.dp)
         )
     )
 }

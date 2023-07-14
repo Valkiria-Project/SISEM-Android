@@ -12,7 +12,7 @@ data class ChipModel(
     val text: String?,
     val textStyle: TextStyle,
     val style: ChipStyle,
-    val margins: Modifier = Modifier
+    val modifier: Modifier = Modifier
 ) : BodyRowModel {
 
     override val type: BodyRowType = CHIP
@@ -23,5 +23,5 @@ fun ChipModel.mapToUiModel() = ChipUiModel(
     text = text,
     textStyle = textStyle,
     style = style,
-    margins = margins
+    modifier = modifier
 )

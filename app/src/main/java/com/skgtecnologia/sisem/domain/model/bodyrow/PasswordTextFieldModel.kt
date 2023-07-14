@@ -25,6 +25,6 @@ fun PasswordTextFieldModel.mapToUiModel(): TextFieldUiModel {
         hint = hint,
         keyboardOptions = keyboardOptions,
         validations = validations,
-        margins = margins
+        modifier = margins
     )
 }

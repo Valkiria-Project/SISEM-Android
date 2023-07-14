@@ -1,8 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.bodyrow
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.data.remote.model.props.MarginsResponse
-import com.skgtecnologia.sisem.data.remote.model.props.mapToUi
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType
 import com.skgtecnologia.sisem.domain.model.bodyrow.ButtonModel
@@ -19,7 +17,7 @@ data class ButtonResponse(
     val style: ButtonStyle,
     @Json(name = "on_click") val onClick: OnClick,
     val size: ButtonSize,
-    val margins: MarginsResponse?
+    @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
     override val type: BodyRowType = BodyRowType.BUTTON
@@ -30,6 +28,6 @@ data class ButtonResponse(
         style = style,
         onClick = onClick,
         size = size,
-        margins = margins?.mapToUi() ?: Modifier
+        modifier = modifier ?: Modifier
     )
 }

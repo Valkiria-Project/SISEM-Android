@@ -12,7 +12,7 @@ data class TextFieldModel(
     val hint: String?,
     val keyboardOptions: KeyboardOptions,
     val validations: List<ValidationUiModel>,
-    val margins: Modifier = Modifier
+    val modifier: Modifier = Modifier
 ) : BodyRowModel {
 
     override val type: BodyRowType = TEXT_FIELD
@@ -25,6 +25,6 @@ fun TextFieldModel.mapToUiModel(): TextFieldUiModel {
         hint = hint,
         keyboardOptions = keyboardOptions,
         validations = validations,
-        margins = margins
+        modifier = modifier
     )
 }

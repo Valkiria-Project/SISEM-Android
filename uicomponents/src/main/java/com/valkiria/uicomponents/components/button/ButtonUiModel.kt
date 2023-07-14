@@ -9,5 +9,5 @@ data class ButtonUiModel(
     val style: ButtonStyle,
     val onClick: OnClick,
     val size: ButtonSize,
-    val margins: Modifier
+    val modifier: Modifier
 )

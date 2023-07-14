@@ -1,6 +1,7 @@
 package com.valkiria.uicomponents.props
 
 import android.os.Parcelable
+import androidx.compose.ui.text.TextStyle
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -16,4 +17,10 @@ enum class TextStyle : Parcelable {
     HEADLINE_6,
     HEADLINE_7,
     HEADLINE_8;
+}
+
+fun aja() {
+    TextStyle.Default.copy(
+
+    )
 }

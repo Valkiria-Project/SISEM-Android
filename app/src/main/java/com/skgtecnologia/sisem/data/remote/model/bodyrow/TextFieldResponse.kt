@@ -2,7 +2,6 @@ package com.skgtecnologia.sisem.data.remote.model.bodyrow
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.data.remote.model.props.MarginsResponse
 import com.skgtecnologia.sisem.data.remote.model.props.ValidationResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToUi
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowModel
@@ -18,7 +17,7 @@ data class TextFieldResponse(
     val hint: String?,
     @Json(name = "keyboard_type") val keyboardOptions: KeyboardOptions,
     val validations: List<ValidationResponse>,
-    val margins: MarginsResponse?
+    val margins: Modifier?
 ) : BodyRowResponse {
 
     override val type: BodyRowType = BodyRowType.TEXT_FIELD
@@ -29,6 +28,6 @@ data class TextFieldResponse(
         hint = hint.orEmpty(),
         keyboardOptions = keyboardOptions,
         validations = validations.map { it.mapToUi() },
-        margins = margins?.mapToUi() ?: Modifier
+        modifier = margins ?: Modifier
     )
 }

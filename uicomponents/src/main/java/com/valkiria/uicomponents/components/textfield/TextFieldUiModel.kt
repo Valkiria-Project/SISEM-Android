@@ -9,5 +9,5 @@ data class TextFieldUiModel(
     val hint: String?,
     val keyboardOptions: KeyboardOptions,
     val validations: List<ValidationUiModel>,
-    val margins: Modifier = Modifier
+    val modifier: Modifier = Modifier
 )

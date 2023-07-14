@@ -9,5 +9,5 @@ data class ChipUiModel(
     val text: String?,
     val textStyle: TextStyle,
     val style: ChipStyle,
-    val margins: Modifier = Modifier
+    val modifier: Modifier = Modifier
 )

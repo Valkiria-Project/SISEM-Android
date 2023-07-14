@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.theme
+package com.valkiria.uicomponents.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
@@ -7,7 +7,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.unit.sp
-import com.skgtecnologia.sisem.R
+import com.valkiria.uicomponents.R
 
 val montserratFontName = GoogleFont("Montserrat")
 
@@ -16,6 +16,7 @@ val provider = GoogleFont.Provider(
     providerPackage = "com.google.android.gms",
     certificates = R.array.com_google_android_gms_fonts_certs
 )
+
 val montserratFontFamily = FontFamily(
     Font(googleFont = montserratFontName, fontProvider = provider),
     Font(googleFont = montserratFontName, fontProvider = provider, weight = FontWeight.Bold)
@@ -23,7 +24,7 @@ val montserratFontFamily = FontFamily(
 
 // Set of Material typography styles to start with
 val Typography = Typography(
-    headlineLarge = TextStyle(
+    bodyLarge = TextStyle(
         fontFamily = montserratFontFamily,
     ),
     headlineMedium = TextStyle(
@@ -38,13 +39,6 @@ val Typography = Typography(
         fontSize = 22.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
-    ),
-    bodyLarge = TextStyle(
-        fontFamily = montserratFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
     ),
     labelSmall = TextStyle(
         fontFamily = montserratFontFamily,

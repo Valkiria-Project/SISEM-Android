@@ -9,7 +9,7 @@ data class LabeledSwitchModel(
     val identifier: String,
     val text: String,
     val textStyle: TextStyle,
-    val margins: Modifier = Modifier
+    val modifier: Modifier = Modifier
 ) : BodyRowModel {
 
     override val type: BodyRowType = RICH_LABEL
@@ -18,5 +18,5 @@ data class LabeledSwitchModel(
 fun LabeledSwitchModel.mapToUiModel() = LabeledSwitchUiModel(
     text = text,
     textStyle = textStyle,
-    margins = margins
+    modifier = modifier
 )

@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.di
 
 import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.data.remote.adapters.KeyboardOptionsAdapter
+import com.skgtecnologia.sisem.data.remote.adapters.ModifierAdapter
 import com.skgtecnologia.sisem.data.remote.model.bodyrow.BodyRowResponse
 import com.skgtecnologia.sisem.data.remote.model.bodyrow.ButtonResponse
 import com.skgtecnologia.sisem.data.remote.model.bodyrow.ChipResponse
@@ -47,6 +48,7 @@ object CoreNetworkModule {
             provideMoshiBodyRows()
             add(KotlinJsonAdapterFactory())
             add(KeyboardOptionsAdapter())
+            add(ModifierAdapter())
         }.build()
     }
 
