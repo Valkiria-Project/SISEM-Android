@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.domain.model.props
 
-import com.valkiria.uicomponents.props.ChipStyleUi
+import com.valkiria.uicomponents.props.ChipStyle
 
 enum class ChipStyle {
     PRIMARY,
@@ -8,7 +8,7 @@ enum class ChipStyle {
 
     // FIXME
     fun mapToUiModel() = when (this) {
-        PRIMARY -> ChipStyleUi.PRIMARY
-        SECONDARY -> ChipStyleUi.SECONDARY
+        PRIMARY -> ChipStyle.PRIMARY
+        SECONDARY -> ChipStyle.SECONDARY
     }
 }

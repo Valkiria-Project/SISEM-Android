@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.data.model.props
 
-import com.valkiria.uicomponents.props.textfield.ValidationUiModel
+import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 
 data class ValidationResponse(
     val regex: String?,

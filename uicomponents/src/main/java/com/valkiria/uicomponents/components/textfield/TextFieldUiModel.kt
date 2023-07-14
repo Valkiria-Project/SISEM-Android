@@ -1,13 +1,16 @@
-package com.valkiria.uicomponents.props.textfield
+package com.valkiria.uicomponents.components.textfield
 
-import com.valkiria.uicomponents.props.KeyBoardUiType
+import android.os.Parcelable
+import com.valkiria.uicomponents.props.KeyBoardType
 import com.valkiria.uicomponents.props.MarginsUiModel
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class TextFieldUiModel(
     val identifier: String?,
     val icon: String?,
     val hint: String?,
-    val keyboardType: KeyBoardUiType,
+    val keyboardType: KeyBoardType,
     val validations: List<ValidationUiModel>,
     val margins: MarginsUiModel?
-)
+) : Parcelable

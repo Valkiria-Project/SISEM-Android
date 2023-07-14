@@ -20,8 +20,8 @@ import com.skgtecnologia.sisem.domain.model.bodyrow.mapToUiModel
 import com.valkiria.uicomponents.components.chip.ChipComponent
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
-import com.valkiria.uicomponents.props.button.ButtonComponent
-import com.valkiria.uicomponents.props.textfield.TextFieldComponent
+import com.valkiria.uicomponents.components.button.ButtonComponent
+import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.theme.montserratFontFamily
 
 @Composable

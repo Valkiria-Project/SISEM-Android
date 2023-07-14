@@ -19,8 +19,8 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.EnumJsonAdapter
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.valkiria.uicomponents.props.button.ButtonSize
-import com.valkiria.uicomponents.props.button.OnClick
+import com.valkiria.uicomponents.props.ButtonSize
+import com.valkiria.uicomponents.components.button.OnClick
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

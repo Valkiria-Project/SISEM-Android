@@ -18,8 +18,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.valkiria.uicomponents.R
-import com.valkiria.uicomponents.props.ChipStyleUi
-import com.valkiria.uicomponents.props.TextStyleUi
+import com.valkiria.uicomponents.props.ChipStyle
+import com.valkiria.uicomponents.props.TextStyle
 import com.valkiria.uicomponents.theme.lobsterTwoFontFamily
 import com.valkiria.uicomponents.theme.montserratFontFamily
 
@@ -77,8 +77,8 @@ fun ChipComponentPreview() {
     val chipUiModel = ChipUiModel(
         icon = "ic_ambulance",
         text = "5421244",
-        textStyle = TextStyleUi.HEADLINE_5,
-        style = ChipStyleUi.PRIMARY,
+        textStyle = TextStyle.HEADLINE_5,
+        style = ChipStyle.PRIMARY,
         margins = null
     )
     Column {

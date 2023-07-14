@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.props.TextStyleUi
+import com.valkiria.uicomponents.props.TextStyle
 
 @Composable
 fun LabelComponent(
@@ -33,7 +33,7 @@ fun LabelComponentPreview() {
     */
     val labelUiModel = LabelUiModel(
         text = "Serial dispositivo",
-        textStyle = TextStyleUi.BUTTON_1,
+        textStyle = TextStyle.BUTTON_1,
         margins = null
     )
     Column {

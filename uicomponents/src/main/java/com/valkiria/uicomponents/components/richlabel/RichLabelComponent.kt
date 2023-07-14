@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ireward.htmlcompose.HtmlText
-import com.valkiria.uicomponents.props.TextStyleUi
+import com.valkiria.uicomponents.props.TextStyle
 import timber.log.Timber
 
 @Composable
@@ -43,7 +43,7 @@ fun RichLabelComponentPreview() {
     */
     val richLabelUiModel = RichLabelUiModel(
         text = "<font color=\"#FFFFFF\">Bienvenido al <b>SISEM</b></font>",
-        textStyle = TextStyleUi.HEADLINE_1,
+        textStyle = TextStyle.HEADLINE_1,
         margins = null
     )
     Column {

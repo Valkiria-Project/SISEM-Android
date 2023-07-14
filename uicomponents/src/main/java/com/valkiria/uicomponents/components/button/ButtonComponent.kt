@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.props.button
+package com.valkiria.uicomponents.components.button
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import com.valkiria.uicomponents.props.ButtonSize
+import com.valkiria.uicomponents.props.ButtonStyle
 import com.valkiria.uicomponents.props.MarginsUiModel
 
 @Composable
@@ -44,7 +46,7 @@ private fun ButtonTransparentComponent(
     modifier: Modifier = Modifier
 ) {
     TextButton(
-        onClick = {  },
+        onClick = { },
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent
         ),

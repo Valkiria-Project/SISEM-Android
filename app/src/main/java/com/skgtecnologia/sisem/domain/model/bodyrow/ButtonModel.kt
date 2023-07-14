@@ -2,11 +2,10 @@ package com.skgtecnologia.sisem.domain.model.bodyrow
 
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType.BUTTON
 import com.skgtecnologia.sisem.domain.model.props.ButtonStyle
-import com.skgtecnologia.sisem.domain.model.props.MarginsModel
-import com.skgtecnologia.sisem.domain.model.props.mapToUiModel
-import com.valkiria.uicomponents.props.button.ButtonSize
-import com.valkiria.uicomponents.props.button.ButtonUiModel
-import com.valkiria.uicomponents.props.button.OnClick
+import com.valkiria.uicomponents.props.MarginsUiModel
+import com.valkiria.uicomponents.props.ButtonSize
+import com.valkiria.uicomponents.components.button.ButtonUiModel
+import com.valkiria.uicomponents.components.button.OnClick
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
@@ -17,7 +16,7 @@ data class ButtonModel(
     val style: ButtonStyle,
     val onClick: OnClick,
     val size: ButtonSize,
-    val margins: MarginsModel?
+    val margins: MarginsUiModel?
 ) : BodyRowModel {
 
     @IgnoredOnParcel
@@ -30,6 +29,6 @@ fun ButtonModel.mapToUiModel(): ButtonUiModel {
         style = style.mapToUiModel(),
         onClick = onClick,
         size = size,
-        margins = margins?.mapToUiModel()
+        margins = margins
     )
 }

@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.props.textfield
+package com.valkiria.uicomponents.components.textfield
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row

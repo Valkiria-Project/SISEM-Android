@@ -1,13 +1,10 @@
-package com.valkiria.uicomponents.components.label
+package com.valkiria.uicomponents.components.termsandconditions
 
 import android.os.Parcelable
 import com.valkiria.uicomponents.props.MarginsUiModel
-import com.valkiria.uicomponents.props.TextStyle
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class LabelUiModel(
-    val text: String,
-    val textStyle: TextStyle,
+data class TermsAndConditionsUiModel(
     val margins: MarginsUiModel?
 ) : Parcelable

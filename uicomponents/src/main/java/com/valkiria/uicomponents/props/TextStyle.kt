@@ -1,6 +1,10 @@
 package com.valkiria.uicomponents.props
 
-enum class TextStyleUi {
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+enum class TextStyle : Parcelable {
     BODY_1,
     BUTTON_1,
     BUTTON_2,
