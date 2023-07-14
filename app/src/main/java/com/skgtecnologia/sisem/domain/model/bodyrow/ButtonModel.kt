@@ -1,12 +1,12 @@
 package com.skgtecnologia.sisem.domain.model.bodyrow
 
-import com.skgtecnologia.sisem.domain.model.props.ButtonSize
+import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType.BUTTON
 import com.skgtecnologia.sisem.domain.model.props.ButtonStyle
 import com.skgtecnologia.sisem.domain.model.props.MarginsModel
-import com.skgtecnologia.sisem.domain.model.props.OnClick
 import com.skgtecnologia.sisem.domain.model.props.mapToUiModel
-import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType.BUTTON
+import com.valkiria.uicomponents.props.button.ButtonSize
 import com.valkiria.uicomponents.props.button.ButtonUiModel
+import com.valkiria.uicomponents.props.button.OnClick
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
@@ -28,8 +28,8 @@ fun ButtonModel.mapToUiModel(): ButtonUiModel {
     return ButtonUiModel(
         label = label,
         style = style.mapToUiModel(),
-        onClick = onClick.mapToUiModel(),
-        size = size.mapToUiModel(),
+        onClick = onClick,
+        size = size,
         margins = margins?.mapToUiModel()
     )
 }

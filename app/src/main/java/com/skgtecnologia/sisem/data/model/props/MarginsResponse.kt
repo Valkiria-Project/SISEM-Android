@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.data.model.props
 
-import com.skgtecnologia.sisem.domain.model.props.MarginsModel
+import com.valkiria.uicomponents.props.MarginsUiModel
 
 data class MarginsResponse(
     val top: Int?,
@@ -9,7 +9,7 @@ data class MarginsResponse(
     val right: Int?
 )
 
-fun MarginsResponse.mapToDomain() : MarginsModel = MarginsModel(
+fun MarginsResponse.mapToUi() : MarginsUiModel = MarginsUiModel(
     top = top,
     bottom = bottom,
     left = left,

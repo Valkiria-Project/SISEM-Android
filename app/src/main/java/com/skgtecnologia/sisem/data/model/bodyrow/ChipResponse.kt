@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.data.model.bodyrow
 
 import com.skgtecnologia.sisem.data.model.props.MarginsResponse
-import com.skgtecnologia.sisem.data.model.props.mapToDomain
+import com.skgtecnologia.sisem.data.model.props.mapToUi
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType
 import com.skgtecnologia.sisem.domain.model.bodyrow.ChipModel
@@ -28,6 +28,6 @@ data class ChipResponse(
         text = text ?: error("Chip text cannot be null"),
         textStyle = textStyle ?: error("Text style cannot be null"),
         style = style ?: error("Chip style cannot be null"),
-        margins = margins?.mapToDomain()
+        margins = margins?.mapToUi()
     )
 }

@@ -14,13 +14,13 @@ import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType
 import com.skgtecnologia.sisem.domain.model.props.ButtonStyle
 import com.skgtecnologia.sisem.domain.model.props.ChipStyle
 import com.skgtecnologia.sisem.domain.model.props.KeyboardType
-import com.skgtecnologia.sisem.domain.model.props.OnClick
 import com.skgtecnologia.sisem.domain.model.props.TextStyle
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.EnumJsonAdapter
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.valkiria.uicomponents.props.button.ButtonSize
+import com.valkiria.uicomponents.props.button.OnClick
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -63,7 +63,7 @@ object CoreNetworkModule {
         EnumJsonAdapter.create(KeyboardType::class.java).withUnknownFallback(KeyboardType.TEXT)
     ).add(
         OnClick::class.java,
-        EnumJsonAdapter.create(OnClick::class.java).withUnknownFallback(OnClick.LOGIN)
+        EnumJsonAdapter.create(OnClick::class.java)
     ).add(
         TextStyle::class.java,
         EnumJsonAdapter.create(TextStyle::class.java).withUnknownFallback(TextStyle.BODY_1)

@@ -61,7 +61,7 @@ fun ButtonLoudComponentPreview() {
         model = ButtonUiModel(
             label = "Button",
             style = ButtonStyle.LOUD,
-            onClick = OnClickType.LOGIN,
+            onClick = OnClick.LOGIN,
             size = ButtonSize.DEFAULT,
             margins = MarginsUiModel(
                 top = 8,
@@ -80,7 +80,7 @@ fun ButtonTransparentComponentPreview() {
         model = ButtonUiModel(
             label = "Button",
             style = ButtonStyle.TRANSPARENT,
-            onClick = OnClickType.FORGOT_PASSWORD,
+            onClick = OnClick.FORGOT_PASSWORD,
             size = ButtonSize.FULL_WIDTH,
             margins = MarginsUiModel(
                 top = 8,

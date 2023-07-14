@@ -5,7 +5,7 @@ import com.valkiria.uicomponents.props.MarginsUiModel
 data class ButtonUiModel(
     val label: String,
     val style: ButtonStyle,
-    val onClick: OnClickType,
+    val onClick: OnClick,
     val size: ButtonSize,
     val margins: MarginsUiModel?
 )

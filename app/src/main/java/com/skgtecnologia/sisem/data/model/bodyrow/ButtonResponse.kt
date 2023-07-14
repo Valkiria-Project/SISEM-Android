@@ -1,15 +1,15 @@
 package com.skgtecnologia.sisem.data.model.bodyrow
 
 import com.skgtecnologia.sisem.data.model.props.MarginsResponse
-import com.skgtecnologia.sisem.data.model.props.mapToDomain
+import com.skgtecnologia.sisem.data.model.props.mapToUi
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType
 import com.skgtecnologia.sisem.domain.model.bodyrow.ButtonModel
-import com.skgtecnologia.sisem.domain.model.props.ButtonSize
 import com.skgtecnologia.sisem.domain.model.props.ButtonStyle
-import com.skgtecnologia.sisem.domain.model.props.OnClick
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.valkiria.uicomponents.props.button.ButtonSize
+import com.valkiria.uicomponents.props.button.OnClick
 
 @JsonClass(generateAdapter = true)
 data class ButtonResponse(
@@ -29,6 +29,6 @@ data class ButtonResponse(
         style = style,
         onClick = onClick,
         size = size,
-        margins = margins?.mapToDomain()
+        margins = margins?.mapToUi()
     )
 }

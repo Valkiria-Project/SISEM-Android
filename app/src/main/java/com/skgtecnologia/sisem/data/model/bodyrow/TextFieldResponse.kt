@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.data.model.bodyrow
 
 import com.skgtecnologia.sisem.data.model.props.MarginsResponse
 import com.skgtecnologia.sisem.data.model.props.ValidationResponse
-import com.skgtecnologia.sisem.data.model.props.mapToDomain
+import com.skgtecnologia.sisem.data.model.props.mapToUi
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType
 import com.skgtecnologia.sisem.domain.model.props.KeyboardType
@@ -27,7 +27,7 @@ data class TextFieldResponse(
         icon = icon.orEmpty(),
         hint = hint.orEmpty(),
         keyboardType = keyboardType,
-        validations = validations.map { it.mapToDomain() },
-        margins = margins?.mapToDomain()
+        validations = validations.map { it.mapToUi() },
+        margins = margins?.mapToUi()
     )
 }
