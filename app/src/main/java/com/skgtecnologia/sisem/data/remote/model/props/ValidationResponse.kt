@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.data.model.props
+package com.skgtecnologia.sisem.data.remote.model.props
 
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 

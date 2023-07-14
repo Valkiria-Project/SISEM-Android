@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.data.model.header
+package com.skgtecnologia.sisem.data.remote.model.header
 
 import com.skgtecnologia.sisem.domain.model.header.HeaderModel
 

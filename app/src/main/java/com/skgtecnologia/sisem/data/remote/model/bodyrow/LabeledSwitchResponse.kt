@@ -1,16 +1,16 @@
-package com.skgtecnologia.sisem.data.model.bodyrow
+package com.skgtecnologia.sisem.data.remote.model.bodyrow
 
-import com.skgtecnologia.sisem.data.model.props.MarginsResponse
-import com.skgtecnologia.sisem.data.model.props.mapToUi
+import com.skgtecnologia.sisem.data.remote.model.props.MarginsResponse
+import com.skgtecnologia.sisem.data.remote.model.props.mapToUi
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType
-import com.skgtecnologia.sisem.domain.model.bodyrow.RichLabelModel
-import com.skgtecnologia.sisem.domain.model.props.TextStyle
+import com.skgtecnologia.sisem.domain.model.bodyrow.LabeledSwitchModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.valkiria.uicomponents.props.TextStyle
 
 @JsonClass(generateAdapter = true)
-data class RichLabelResponse(
+data class LabeledSwitchResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "text") val text: String?,
     @Json(name = "text_style") val textStyle: TextStyle?,
@@ -19,7 +19,7 @@ data class RichLabelResponse(
 
     override val type: BodyRowType = BodyRowType.RICH_LABEL
 
-    override fun mapToDomain(): BodyRowModel = RichLabelModel(
+    override fun mapToDomain(): BodyRowModel = LabeledSwitchModel(
         identifier = identifier ?: error("Identifier cannot be null"),
         text = text ?: error("Label text cannot be null"),
         textStyle = textStyle ?: error("Text style cannot be null"),

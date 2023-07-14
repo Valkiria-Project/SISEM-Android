@@ -1,12 +1,12 @@
-package com.skgtecnologia.sisem.data.model.bodyrow
+package com.skgtecnologia.sisem.data.remote.model.bodyrow
 
-import com.skgtecnologia.sisem.data.model.props.MarginsResponse
-import com.skgtecnologia.sisem.data.model.props.ValidationResponse
-import com.skgtecnologia.sisem.data.model.props.mapToUi
+import androidx.compose.foundation.text.KeyboardOptions
+import com.skgtecnologia.sisem.data.remote.model.props.MarginsResponse
+import com.skgtecnologia.sisem.data.remote.model.props.ValidationResponse
+import com.skgtecnologia.sisem.data.remote.model.props.mapToUi
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType
 import com.skgtecnologia.sisem.domain.model.bodyrow.TextFieldModel
-import com.skgtecnologia.sisem.domain.model.props.KeyboardType
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -15,18 +15,18 @@ data class PasswordTextFieldResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "icon") val icon: String?,
     @Json(name = "hint") val hint: String?,
-    @Json(name = "keyboard_type") val keyboardType: KeyboardType,
+    @Json(name = "keyboard_type") val keyboardType: KeyboardOptions,
     @Json(name = "validations") val validations: List<ValidationResponse>,
     @Json(name = "margins") val margins: MarginsResponse?
 ) : BodyRowResponse {
 
-    override val type: BodyRowType = BodyRowType.TEXT_FIELD
+    override val type: BodyRowType = BodyRowType.PASSWORD_TEXT_FIELD
 
     override fun mapToDomain(): BodyRowModel = TextFieldModel(
         identifier = identifier.orEmpty(),
         icon = icon.orEmpty(),
         hint = hint.orEmpty(),
-        keyboardType = keyboardType,
+        keyboardOptions = keyboardType,
         validations = validations.map { it.mapToUi() },
         margins = margins?.mapToUi()
     )

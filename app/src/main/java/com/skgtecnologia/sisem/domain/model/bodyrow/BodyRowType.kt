@@ -1,10 +1,6 @@
 package com.skgtecnologia.sisem.domain.model.bodyrow
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
-enum class BodyRowType : Parcelable {
+enum class BodyRowType {
     BUTTON,
     CHIP,
     LABEL,

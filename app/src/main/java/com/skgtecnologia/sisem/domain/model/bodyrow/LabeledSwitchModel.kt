@@ -1,27 +1,22 @@
 package com.skgtecnologia.sisem.domain.model.bodyrow
 
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType.RICH_LABEL
-import com.skgtecnologia.sisem.domain.model.props.MarginsModel
-import com.skgtecnologia.sisem.domain.model.props.TextStyle
-import com.skgtecnologia.sisem.domain.model.props.mapToUiModel
 import com.valkiria.uicomponents.components.switch.LabeledSwitchUiModel
-import kotlinx.parcelize.IgnoredOnParcel
-import kotlinx.parcelize.Parcelize
+import com.valkiria.uicomponents.props.MarginsUiModel
+import com.valkiria.uicomponents.props.TextStyle
 
-@Parcelize
 data class LabeledSwitchModel(
     val identifier: String,
     val text: String,
     val textStyle: TextStyle,
-    val margins: MarginsModel?
+    val margins: MarginsUiModel?
 ) : BodyRowModel {
 
-    @IgnoredOnParcel
     override val type: BodyRowType = RICH_LABEL
 }
 
 fun LabeledSwitchModel.mapToUiModel() = LabeledSwitchUiModel(
     text = text,
-    textStyle = textStyle.mapToUiModel(),
-    margins = margins?.mapToUiModel()
+    textStyle = textStyle,
+    margins = margins
 )

@@ -1,36 +1,36 @@
 package com.skgtecnologia.sisem.di
 
 import com.skgtecnologia.sisem.BuildConfig
-import com.skgtecnologia.sisem.data.model.bodyrow.BodyRowResponse
-import com.skgtecnologia.sisem.data.model.bodyrow.ButtonResponse
-import com.skgtecnologia.sisem.data.model.bodyrow.ChipResponse
-import com.skgtecnologia.sisem.data.model.bodyrow.LabelResponse
-import com.skgtecnologia.sisem.data.model.bodyrow.LabeledSwitchResponse
-import com.skgtecnologia.sisem.data.model.bodyrow.PasswordTextFieldResponse
-import com.skgtecnologia.sisem.data.model.bodyrow.RichLabelResponse
-import com.skgtecnologia.sisem.data.model.bodyrow.TermsAndConditionsResponse
-import com.skgtecnologia.sisem.data.model.bodyrow.TextFieldResponse
+import com.skgtecnologia.sisem.data.remote.adapters.KeyboardOptionsAdapter
+import com.skgtecnologia.sisem.data.remote.model.bodyrow.BodyRowResponse
+import com.skgtecnologia.sisem.data.remote.model.bodyrow.ButtonResponse
+import com.skgtecnologia.sisem.data.remote.model.bodyrow.ChipResponse
+import com.skgtecnologia.sisem.data.remote.model.bodyrow.LabelResponse
+import com.skgtecnologia.sisem.data.remote.model.bodyrow.LabeledSwitchResponse
+import com.skgtecnologia.sisem.data.remote.model.bodyrow.PasswordTextFieldResponse
+import com.skgtecnologia.sisem.data.remote.model.bodyrow.RichLabelResponse
+import com.skgtecnologia.sisem.data.remote.model.bodyrow.TermsAndConditionsResponse
+import com.skgtecnologia.sisem.data.remote.model.bodyrow.TextFieldResponse
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType
-import com.skgtecnologia.sisem.domain.model.props.ButtonStyle
-import com.skgtecnologia.sisem.domain.model.props.ChipStyle
-import com.skgtecnologia.sisem.domain.model.props.KeyboardType
-import com.skgtecnologia.sisem.domain.model.props.TextStyle
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.EnumJsonAdapter
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.valkiria.uicomponents.props.ButtonSize
 import com.valkiria.uicomponents.components.button.OnClick
+import com.valkiria.uicomponents.props.ButtonSize
+import com.valkiria.uicomponents.props.ButtonStyle
+import com.valkiria.uicomponents.props.ChipStyle
+import com.valkiria.uicomponents.props.TextStyle
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 
 private const val OK_HTTP_CLIENT_TIMEOUT_DEFAULTS = 15_000L
 private const val BASE_URL = "http://34.69.190.119:8080/"
@@ -46,6 +46,7 @@ object CoreNetworkModule {
             provideMoshiProps()
             provideMoshiBodyRows()
             add(KotlinJsonAdapterFactory())
+            add(KeyboardOptionsAdapter())
         }.build()
     }
 
@@ -58,9 +59,6 @@ object CoreNetworkModule {
     ).add(
         ChipStyle::class.java,
         EnumJsonAdapter.create(ChipStyle::class.java).withUnknownFallback(ChipStyle.PRIMARY)
-    ).add(
-        KeyboardType::class.java,
-        EnumJsonAdapter.create(KeyboardType::class.java).withUnknownFallback(KeyboardType.TEXT)
     ).add(
         OnClick::class.java,
         EnumJsonAdapter.create(OnClick::class.java)

@@ -31,7 +31,7 @@ fun LoginScreen(
         )
 
         BodySection(
-            body = uiState.loginScreenModel?.body,
+            body = uiState.screenModel?.body,
             modifier = modifier
                 .constrainAs(body) {
                     top.linkTo(header.bottom)

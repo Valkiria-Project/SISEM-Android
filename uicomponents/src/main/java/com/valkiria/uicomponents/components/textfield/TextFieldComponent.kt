@@ -15,7 +15,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import com.valkiria.uicomponents.R
-import com.valkiria.uicomponents.props.toKeyBoardOption
 
 @Composable
 fun TextFieldComponent(
@@ -49,6 +48,6 @@ private fun TextFieldUi(
         },
         label = { Text(text = "Your Label") },
         placeholder = { Text(text = model.hint.orEmpty()) },
-        keyboardOptions = model.keyboardType.toKeyBoardOption(),
+        keyboardOptions = model.keyboardOptions
     )
 }

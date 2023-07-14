@@ -1,11 +1,11 @@
-package com.skgtecnologia.sisem.data.model.bodyrow
+package com.skgtecnologia.sisem.data.remote.model.bodyrow
 
-import com.skgtecnologia.sisem.data.model.props.MarginsResponse
-import com.skgtecnologia.sisem.data.model.props.ValidationResponse
-import com.skgtecnologia.sisem.data.model.props.mapToUi
+import androidx.compose.foundation.text.KeyboardOptions
+import com.skgtecnologia.sisem.data.remote.model.props.MarginsResponse
+import com.skgtecnologia.sisem.data.remote.model.props.ValidationResponse
+import com.skgtecnologia.sisem.data.remote.model.props.mapToUi
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType
-import com.skgtecnologia.sisem.domain.model.props.KeyboardType
 import com.skgtecnologia.sisem.domain.model.bodyrow.TextFieldModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -15,7 +15,7 @@ data class TextFieldResponse(
     val identifier: String?,
     val icon: String?,
     val hint: String?,
-    @Json(name = "keyboard_type") val keyboardType: KeyboardType,
+    @Json(name = "keyboard_type") val keyboardOptions: KeyboardOptions,
     val validations: List<ValidationResponse>,
     val margins: MarginsResponse?
 ) : BodyRowResponse {
@@ -26,7 +26,7 @@ data class TextFieldResponse(
         identifier = identifier.orEmpty(),
         icon = icon.orEmpty(),
         hint = hint.orEmpty(),
-        keyboardType = keyboardType,
+        keyboardOptions = keyboardOptions,
         validations = validations.map { it.mapToUi() },
         margins = margins?.mapToUi()
     )

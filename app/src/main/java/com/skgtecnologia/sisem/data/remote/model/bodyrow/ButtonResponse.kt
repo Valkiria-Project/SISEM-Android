@@ -1,15 +1,15 @@
-package com.skgtecnologia.sisem.data.model.bodyrow
+package com.skgtecnologia.sisem.data.remote.model.bodyrow
 
-import com.skgtecnologia.sisem.data.model.props.MarginsResponse
-import com.skgtecnologia.sisem.data.model.props.mapToUi
+import com.skgtecnologia.sisem.data.remote.model.props.MarginsResponse
+import com.skgtecnologia.sisem.data.remote.model.props.mapToUi
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType
 import com.skgtecnologia.sisem.domain.model.bodyrow.ButtonModel
-import com.skgtecnologia.sisem.domain.model.props.ButtonStyle
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.props.ButtonSize
 import com.valkiria.uicomponents.components.button.OnClick
+import com.valkiria.uicomponents.props.ButtonStyle
 
 @JsonClass(generateAdapter = true)
 data class ButtonResponse(

@@ -1,14 +1,14 @@
-package com.skgtecnologia.sisem.data.model.bodyrow
+package com.skgtecnologia.sisem.data.remote.model.bodyrow
 
-import com.skgtecnologia.sisem.data.model.props.MarginsResponse
-import com.skgtecnologia.sisem.data.model.props.mapToUi
+import com.skgtecnologia.sisem.data.remote.model.props.MarginsResponse
+import com.skgtecnologia.sisem.data.remote.model.props.mapToUi
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType
 import com.skgtecnologia.sisem.domain.model.bodyrow.ChipModel
-import com.skgtecnologia.sisem.domain.model.props.ChipStyle
-import com.skgtecnologia.sisem.domain.model.props.TextStyle
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.valkiria.uicomponents.props.ChipStyle
+import com.valkiria.uicomponents.props.TextStyle
 
 @JsonClass(generateAdapter = true)
 data class ChipResponse(

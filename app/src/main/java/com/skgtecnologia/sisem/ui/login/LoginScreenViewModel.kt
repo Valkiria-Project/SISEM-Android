@@ -30,7 +30,7 @@ class LoginScreenViewModel @Inject constructor(
             getLoginScreen.invoke("123")
                 .onSuccess { loginScreenModel ->
                     withContext(Dispatchers.Main) {
-                        uiState = uiState.copy(loginScreenModel = loginScreenModel)
+                        uiState = uiState.copy(screenModel = loginScreenModel)
                     }
                 }
                 .onFailure { throwable ->

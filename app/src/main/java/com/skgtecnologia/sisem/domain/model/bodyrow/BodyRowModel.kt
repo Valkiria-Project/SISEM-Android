@@ -1,9 +1,5 @@
 package com.skgtecnologia.sisem.domain.model.bodyrow
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
-sealed interface BodyRowModel : Parcelable {
+sealed interface BodyRowModel {
     val type: BodyRowType
 }

@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.ui.login
 
-import com.skgtecnologia.sisem.domain.login.model.LoginScreenModel
+import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 
 data class LoginUiState(
-    val loginScreenModel: LoginScreenModel? = null
+    val screenModel: ScreenModel? = null
 )
