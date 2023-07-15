@@ -12,12 +12,12 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class TextFieldResponse(
-    val identifier: String?,
-    val icon: String?,
-    val hint: String?,
+    @Json(name = "identifier") val identifier: String?,
+    @Json(name = "icon") val icon: String?,
+    @Json(name = "hint") val hint: String?,
     @Json(name = "keyboard_type") val keyboardOptions: KeyboardOptions,
-    val validations: List<ValidationResponse>,
-    val margins: Modifier?
+    @Json(name = "validations") val validations: List<ValidationResponse>,
+    @Json(name = "margins") val margins: Modifier?
 ) : BodyRowResponse {
 
     override val type: BodyRowType = BodyRowType.TEXT_FIELD

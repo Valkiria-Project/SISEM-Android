@@ -10,7 +10,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
@@ -18,11 +17,10 @@ import com.valkiria.uicomponents.R
 
 @Composable
 fun TextFieldComponent(
-    model: TextFieldUiModel,
-    modifier: Modifier = Modifier
+    uiModel: TextFieldUiModel
 ) {
-    Row(modifier = modifier.fillMaxWidth()) {
-        model.icon?.let {
+    Row(modifier = uiModel.modifier.fillMaxWidth()) {
+        uiModel.icon?.let {
             Image(
                 painter = painterResource(id = R.drawable.ic_usuario),
                 contentDescription = null,
@@ -30,23 +28,15 @@ fun TextFieldComponent(
             )
         }
 
-        TextFieldUi(model = model)
+        var text by remember { mutableStateOf(TextFieldValue("")) }
+        OutlinedTextField(
+            value = text,
+            onValueChange = {
+                text = it
+            },
+            label = { Text(text = "Your Label") },
+            placeholder = { Text(text = uiModel.hint.orEmpty()) },
+            keyboardOptions = uiModel.keyboardOptions
+        )
     }
-}
-
-@Composable
-private fun TextFieldUi(
-    model: TextFieldUiModel,
-    modifier: Modifier = Modifier
-) {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
-    OutlinedTextField(
-        value = text,
-        onValueChange = {
-            text = it
-        },
-        label = { Text(text = "Your Label") },
-        placeholder = { Text(text = model.hint.orEmpty()) },
-        keyboardOptions = model.keyboardOptions
-    )
 }

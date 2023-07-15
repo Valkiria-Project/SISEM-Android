@@ -69,7 +69,7 @@ fun BodySection(
                     }
 
                     is TextFieldModel -> item(key = model.identifier) {
-                        TextFieldComponent(model = model.mapToUiModel())
+                        TextFieldComponent(uiModel = model.mapToUiModel())
                     }
                 }
             }
