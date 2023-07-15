@@ -5,6 +5,6 @@ import com.valkiria.uicomponents.props.TextStyle
 
 data class RichLabelUiModel(
     val text: String,
-    val textStyle: TextStyle,
+    val textStylessss: TextStyle,
     val modifier: Modifier = Modifier
 )

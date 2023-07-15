@@ -44,15 +44,13 @@ object CoreNetworkModule {
     @Provides
     fun providesMoshi(): Moshi {
         return Moshi.Builder().apply {
-            provideMoshiProps()
-            provideMoshiBodyRows()
-            add(KotlinJsonAdapterFactory())
-            add(KeyboardOptionsAdapter())
-            add(ModifierAdapter())
+            provideEnumAdapters()
+            provideBodyPolymorphicAdapter()
+            provideAdapters()
         }.build()
     }
 
-    private fun Moshi.Builder.provideMoshiProps() = this.add(
+    private fun Moshi.Builder.provideEnumAdapters() = this.add(
         ButtonSize::class.java,
         EnumJsonAdapter.create(ButtonSize::class.java).withUnknownFallback(ButtonSize.DEFAULT)
     ).add(
@@ -69,7 +67,7 @@ object CoreNetworkModule {
         EnumJsonAdapter.create(TextStyle::class.java).withUnknownFallback(TextStyle.BODY_1)
     )
 
-    private fun Moshi.Builder.provideMoshiBodyRows() = this.add(
+    private fun Moshi.Builder.provideBodyPolymorphicAdapter() = this.add(
         BodyRowType::class.java,
         EnumJsonAdapter.create(BodyRowType::class.java).withUnknownFallback(null)
     ).add(
@@ -101,6 +99,14 @@ object CoreNetworkModule {
             TextFieldResponse::class.java,
             BodyRowType.TEXT_FIELD.name
         )
+    )
+
+    private fun Moshi.Builder.provideAdapters() = this.add(
+        KeyboardOptionsAdapter()
+    ).add(
+        ModifierAdapter()
+    ).add(
+        KotlinJsonAdapterFactory()
     )
 
     @Singleton

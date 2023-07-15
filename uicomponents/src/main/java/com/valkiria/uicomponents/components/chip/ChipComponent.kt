@@ -78,7 +78,7 @@ fun ChipComponentPreview() {
     val chipUiModel = ChipUiModel(
         icon = "ic_ambulance",
         text = "5421244",
-        textStyle = TextStyle.HEADLINE_5,
+        textStylessss = TextStyle.HEADLINE_5,
         style = ChipStyle.PRIMARY,
         modifier = Modifier
     )

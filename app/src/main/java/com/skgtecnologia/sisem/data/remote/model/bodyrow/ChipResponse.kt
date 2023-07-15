@@ -14,7 +14,7 @@ data class ChipResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "icon") val icon: String?,
     @Json(name = "text") val text: String?,
-    @Json(name = "text_style") val textStyle: TextStyle?,
+    @Json(name = "text_style") val textStylessss: TextStyle?,
     @Json(name = "style") val style: ChipStyle?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
@@ -25,7 +25,7 @@ data class ChipResponse(
         identifier = identifier,
         icon = icon,
         text = text ?: error("Chip text cannot be null"),
-        textStyle = textStyle ?: error("Text style cannot be null"),
+        textStylessss = textStylessss ?: error("Text style cannot be null"),
         style = style ?: error("Chip style cannot be null"),
         modifier = modifier ?: Modifier
     )

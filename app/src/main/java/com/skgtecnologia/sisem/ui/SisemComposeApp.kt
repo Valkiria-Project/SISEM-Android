@@ -15,7 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.NavigationGraph
-import com.valkiria.uicomponents.theme.MyApplicationTheme
+import com.skgtecnologia.sisem.ui.theme.SisemTheme
 
 @Composable
 fun ComposeApp() {
@@ -53,7 +53,7 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController, modifier
 @Preview(showBackground = true)
 @Composable
 fun ComposeAppPreview() {
-    MyApplicationTheme {
+    SisemTheme {
         ComposeApp()
     }
 }

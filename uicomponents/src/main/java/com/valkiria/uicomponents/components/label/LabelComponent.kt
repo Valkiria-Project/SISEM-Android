@@ -33,7 +33,7 @@ fun LabelComponentPreview() {
     */
     val labelUiModel = LabelUiModel(
         text = "Serial dispositivo",
-        textStyle = TextStyle.BUTTON_1,
+        textStylessss = TextStyle.BUTTON_1,
         modifier = Modifier
     )
     Column {

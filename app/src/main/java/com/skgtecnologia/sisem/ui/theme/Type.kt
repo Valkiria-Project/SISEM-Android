@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.theme
+package com.skgtecnologia.sisem.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
@@ -24,6 +24,15 @@ val montserratFontFamily = FontFamily(
 
 // Set of Material typography styles to start with
 val Typography = Typography(
+    displayLarge = TextStyle(
+        fontFamily = montserratFontFamily,
+    ),
+    displayMedium = TextStyle(
+        fontFamily = montserratFontFamily,
+    ),
+    displaySmall = TextStyle(
+        fontFamily = montserratFontFamily,
+    ),
     bodyLarge = TextStyle(
         fontFamily = montserratFontFamily,
     ),
@@ -39,6 +48,18 @@ val Typography = Typography(
         fontSize = 22.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
+    ),
+    titleMedium = TextStyle(
+        fontFamily = montserratFontFamily,
+    ),
+    titleSmall = TextStyle(
+        fontFamily = montserratFontFamily,
+    ),
+    labelLarge = TextStyle(
+        fontFamily = montserratFontFamily,
+    ),
+    labelMedium = TextStyle(
+        fontFamily = montserratFontFamily,
     ),
     labelSmall = TextStyle(
         fontFamily = montserratFontFamily,

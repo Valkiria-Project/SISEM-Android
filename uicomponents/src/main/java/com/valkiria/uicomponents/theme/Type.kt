@@ -29,7 +29,7 @@ val lobsterTwoFontFamily = FontFamily(
 )
 
 // Set of Material typography styles to start with
-val Typography = Typography(
+val UiComponentsTypography = Typography(
     bodyLarge = TextStyle(
         fontFamily = lobsterTwoFontFamily,
         fontWeight = FontWeight.Normal,

@@ -8,7 +8,7 @@ import com.valkiria.uicomponents.props.TextStyle
 data class RichLabelModel(
     val identifier: String,
     val text: String,
-    val textStyle: TextStyle,
+    val textStylessss: TextStyle,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {
 
@@ -17,6 +17,6 @@ data class RichLabelModel(
 
 fun RichLabelModel.mapToUiModel() = RichLabelUiModel(
     text = text,
-    textStyle = textStyle,
+    textStylessss = textStylessss,
     modifier = modifier
 )

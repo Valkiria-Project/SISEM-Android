@@ -8,7 +8,7 @@ import com.valkiria.uicomponents.props.TextStyle
 data class LabelModel(
     val identifier: String,
     val text: String,
-    val textStyle: TextStyle,
+    val textStylessss: TextStyle,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {
 
@@ -17,6 +17,6 @@ data class LabelModel(
 
 fun LabelModel.mapToUiModel() = LabelUiModel(
     text = text,
-    textStyle = textStyle,
+    textStylessss = textStylessss,
     modifier = modifier
 )

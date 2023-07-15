@@ -22,7 +22,7 @@ import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
-import com.valkiria.uicomponents.theme.montserratFontFamily
+import com.skgtecnologia.sisem.ui.theme.montserratFontFamily
 
 @Composable
 fun BodySection(

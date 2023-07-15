@@ -8,7 +8,7 @@ import com.valkiria.uicomponents.props.TextStyle
 data class LabeledSwitchModel(
     val identifier: String,
     val text: String,
-    val textStyle: TextStyle,
+    val textStylessss: TextStyle,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {
 
@@ -17,6 +17,6 @@ data class LabeledSwitchModel(
 
 fun LabeledSwitchModel.mapToUiModel() = LabeledSwitchUiModel(
     text = text,
-    textStyle = textStyle,
+    textStylessss = textStylessss,
     modifier = modifier
 )

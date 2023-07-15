@@ -10,7 +10,7 @@ data class ChipModel(
     val identifier: String?,
     val icon: String?,
     val text: String?,
-    val textStyle: TextStyle,
+    val textStylessss: TextStyle,
     val style: ChipStyle,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {
@@ -21,7 +21,7 @@ data class ChipModel(
 fun ChipModel.mapToUiModel() = ChipUiModel(
     icon = icon,
     text = text,
-    textStyle = textStyle,
+    textStylessss = textStylessss,
     style = style,
     modifier = modifier
 )

@@ -36,7 +36,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun MyApplicationTheme(
+fun UiComponentsTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     /*
     // Dynamic color is available on Android 12+
@@ -44,7 +44,7 @@ fun MyApplicationTheme(
     */
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
+    val uiComponentsColorScheme = when {
         /*
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
@@ -59,14 +59,14 @@ fun MyApplicationTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
+            window.statusBarColor = uiComponentsColorScheme.primary.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = true
         }
     }
 
     MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
+        colorScheme = uiComponentsColorScheme,
+        typography = UiComponentsTypography,
         content = content
     )
 }

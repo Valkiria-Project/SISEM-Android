@@ -10,7 +10,6 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import com.valkiria.uicomponents.theme.Typography
 
 private val DarkColorScheme = darkColorScheme(
     primary = DodgerBlue,
@@ -37,7 +36,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun MyApplicationTheme(
+fun SisemTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     /*
     // Dynamic color is available on Android 12+
