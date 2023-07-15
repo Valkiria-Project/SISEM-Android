@@ -34,7 +34,7 @@ fun BodySection(
         LazyColumn(
             modifier = modifier,
             contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top),
+            verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Top),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             body.map { model ->

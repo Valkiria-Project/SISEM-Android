@@ -4,7 +4,6 @@ import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.font.FontWeight.Companion
 import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.unit.sp
@@ -28,47 +27,53 @@ val Typography = Typography(
     displayLarge = TextStyle(
         fontSize = 25.sp,
         fontWeight = FontWeight.W500,
-        fontFamily = montserratFontFamily,
+        fontFamily = montserratFontFamily
     ),
     displayMedium = TextStyle(
-        fontFamily = montserratFontFamily,
+        fontSize = 18.sp,
+        fontWeight = FontWeight.W700,
+        fontFamily = montserratFontFamily
     ),
     displaySmall = TextStyle(
-        fontFamily = montserratFontFamily,
-    ),
-    bodyLarge = TextStyle(
-        fontFamily = montserratFontFamily,
+        fontSize = 18.sp,
+        fontWeight = FontWeight.W500,
+        fontFamily = montserratFontFamily
     ),
     headlineMedium = TextStyle(
-        fontFamily = montserratFontFamily,
+        fontSize = 16.sp,
+        fontWeight = FontWeight.W700,
+        fontFamily = montserratFontFamily
     ),
     headlineSmall = TextStyle(
-        fontFamily = montserratFontFamily,
+        fontSize = 16.sp,
+        fontWeight = FontWeight.W500,
+        fontFamily = montserratFontFamily
     ),
     titleLarge = TextStyle(
-        fontFamily = montserratFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
+        fontSize = 16.sp,
+        fontWeight = FontWeight.W400,
+        fontFamily = montserratFontFamily
     ),
     titleMedium = TextStyle(
-        fontFamily = montserratFontFamily,
+        fontFamily = montserratFontFamily
     ),
     titleSmall = TextStyle(
-        fontFamily = montserratFontFamily,
+        fontFamily = montserratFontFamily
+    ),
+    bodyLarge = TextStyle(
+        fontFamily = montserratFontFamily
     ),
     labelLarge = TextStyle(
-        fontFamily = montserratFontFamily,
+        fontFamily = montserratFontFamily
     ),
     labelMedium = TextStyle(
-        fontFamily = montserratFontFamily,
+        fontFamily = montserratFontFamily
     ),
     labelSmall = TextStyle(
-        fontFamily = montserratFontFamily,
-        fontWeight = FontWeight.Medium,
         fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
+        fontWeight = FontWeight.Medium,
+        fontFamily = montserratFontFamily,
+        letterSpacing = 0.5.sp,
+        lineHeight = 16.sp
     )
 )

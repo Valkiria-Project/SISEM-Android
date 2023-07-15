@@ -2,7 +2,6 @@ package com.valkiria.uicomponents.components.richlabel
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,11 +15,11 @@ import timber.log.Timber
 
 @Composable
 fun RichLabelComponent(
-    uiModel: RichLabelUiModel,
-    modifier: Modifier = Modifier
+    uiModel: RichLabelUiModel
 ) {
     HtmlText(
-        text = "<font color=\"#FFFFFF\">${uiModel.text}</font>",
+        text = "<font color=\"#FFFFFF\">${uiModel.text}</font>", // BACKEND: .yaml
+        modifier = uiModel.modifier,
         style = uiModel.textStyle.toTextStyle(),
         linkClicked = { link ->
             Timber.tag("linkClicked").d(link)
@@ -51,88 +50,77 @@ fun RichLabelComponentPreview() {
     ) {
         item {
             RichLabelComponent(
-                uiModel = richLabelUiModel,
-                modifier = Modifier.padding(16.dp)
+                uiModel = richLabelUiModel
             )
         }
         item {
             RichLabelComponent(
                 uiModel = richLabelUiModel.copy(
                     textStyle = TextStyle.HEADLINE_2
-                ),
-                modifier = Modifier.padding(16.dp)
+                )
             )
         }
         item {
             RichLabelComponent(
                 uiModel = richLabelUiModel.copy(
                     textStyle = TextStyle.HEADLINE_3
-                ),
-                modifier = Modifier.padding(16.dp)
+                )
             )
         }
         item {
             RichLabelComponent(
                 uiModel = richLabelUiModel.copy(
                     textStyle = TextStyle.HEADLINE_4
-                ),
-                modifier = Modifier.padding(16.dp)
+                )
             )
         }
         item {
             RichLabelComponent(
                 uiModel = richLabelUiModel.copy(
                     textStyle = TextStyle.HEADLINE_5
-                ),
-                modifier = Modifier.padding(16.dp)
+                )
             )
         }
         item {
             RichLabelComponent(
                 uiModel = richLabelUiModel.copy(
                     textStyle = TextStyle.HEADLINE_6
-                ),
-                modifier = Modifier.padding(16.dp)
+                )
             )
         }
         item {
             RichLabelComponent(
                 uiModel = richLabelUiModel.copy(
                     textStyle = TextStyle.HEADLINE_7
-                ),
-                modifier = Modifier.padding(16.dp)
+                )
             )
         }
         item {
             RichLabelComponent(
                 uiModel = richLabelUiModel.copy(
                     textStyle = TextStyle.HEADLINE_8
-                ),
-                modifier = Modifier.padding(16.dp)
+                )
             )
         }
         item {
             RichLabelComponent(
                 uiModel = richLabelUiModel.copy(
                     textStyle = TextStyle.BODY_1
-                ),
-                modifier = Modifier.padding(16.dp)
+                )
             )
         }
         item {
             RichLabelComponent(
                 uiModel = richLabelUiModel.copy(
                     textStyle = TextStyle.BUTTON_1
-                ),
-                modifier = Modifier.padding(16.dp)
+                )
             )
         }
         item {
             RichLabelComponent(
                 uiModel = richLabelUiModel.copy(
                     textStyle = TextStyle.BUTTON_2
-                ),
-                modifier = Modifier.padding(16.dp)
+                )
             )
         }
     }
