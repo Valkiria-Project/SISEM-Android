@@ -12,7 +12,7 @@ import com.valkiria.uicomponents.props.TextStyle
 data class LabeledSwitchResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "text") val text: String?,
-    @Json(name = "text_style") val textStylessss: TextStyle?,
+    @Json(name = "text_style") val textStyle: TextStyle?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
@@ -21,7 +21,7 @@ data class LabeledSwitchResponse(
     override fun mapToDomain(): BodyRowModel = LabeledSwitchModel(
         identifier = identifier ?: error("Identifier cannot be null"),
         text = text ?: error("Label text cannot be null"),
-        textStylessss = textStylessss ?: error("Text style cannot be null"),
+        textStyle = textStyle ?: error("Text style cannot be null"),
         modifier = modifier ?: Modifier
     )
 }
