@@ -25,7 +25,7 @@ fun TextFieldComponent(
         model.icon?.let {
             Image(
                 painter = painterResource(id = R.drawable.ic_usuario),
-                contentDescription = "Icono de usuario",
+                contentDescription = null,
                 contentScale = ContentScale.FillWidth
             )
         }

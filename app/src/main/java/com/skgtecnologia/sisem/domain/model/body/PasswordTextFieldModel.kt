@@ -1,8 +1,8 @@
-package com.skgtecnologia.sisem.domain.model.bodyrow
+package com.skgtecnologia.sisem.domain.model.body
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType.TEXT_FIELD
+import com.skgtecnologia.sisem.domain.model.body.BodyRowType.TEXT_FIELD
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 

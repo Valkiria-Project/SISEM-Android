@@ -7,22 +7,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowModel
-import com.skgtecnologia.sisem.domain.model.bodyrow.ButtonModel
-import com.skgtecnologia.sisem.domain.model.bodyrow.ChipModel
-import com.skgtecnologia.sisem.domain.model.bodyrow.LabelModel
-import com.skgtecnologia.sisem.domain.model.bodyrow.LabeledSwitchModel
-import com.skgtecnologia.sisem.domain.model.bodyrow.PasswordTextFieldModel
-import com.skgtecnologia.sisem.domain.model.bodyrow.RichLabelModel
-import com.skgtecnologia.sisem.domain.model.bodyrow.TermsAndConditionsModel
-import com.skgtecnologia.sisem.domain.model.bodyrow.TextFieldModel
-import com.skgtecnologia.sisem.domain.model.bodyrow.mapToUiModel
+import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
+import com.skgtecnologia.sisem.domain.model.body.ButtonModel
+import com.skgtecnologia.sisem.domain.model.body.ChipModel
+import com.skgtecnologia.sisem.domain.model.body.LabelModel
+import com.skgtecnologia.sisem.domain.model.body.LabeledSwitchModel
+import com.skgtecnologia.sisem.domain.model.body.PasswordTextFieldModel
+import com.skgtecnologia.sisem.domain.model.body.RichLabelModel
+import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
+import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
+import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
+import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
-import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
-import com.skgtecnologia.sisem.ui.theme.montserratFontFamily
 
 @Composable
 fun BodySection(
@@ -45,8 +44,7 @@ fun BodySection(
 
                     is ChipModel -> item(key = model.identifier) {
                         ChipComponent(
-                            uiModel = model.mapToUiModel(),
-                            fontFamily = montserratFontFamily
+                            uiModel = model.mapToUiModel()
                         )
                     }
 

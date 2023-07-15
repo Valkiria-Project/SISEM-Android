@@ -18,7 +18,7 @@ fun RichLabelComponent(
     uiModel: RichLabelUiModel
 ) {
     HtmlText(
-        text = "<font color=\"#FFFFFF\">${uiModel.text}</font>", // BACKEND: .yaml
+        text = "<font color=\"#FFFFFF\">${uiModel.text}</font>", // BACKEND: Send the font Color for this component
         modifier = uiModel.modifier,
         style = uiModel.textStyle.toTextStyle(),
         linkClicked = { link ->

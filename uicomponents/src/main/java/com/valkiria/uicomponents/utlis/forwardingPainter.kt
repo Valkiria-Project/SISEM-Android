@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.utlis
+package com.valkiria.uicomponents.utlis
 
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.DefaultAlpha

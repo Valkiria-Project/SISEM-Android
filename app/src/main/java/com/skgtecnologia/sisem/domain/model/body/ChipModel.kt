@@ -1,7 +1,7 @@
-package com.skgtecnologia.sisem.domain.model.bodyrow
+package com.skgtecnologia.sisem.domain.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType.CHIP
+import com.skgtecnologia.sisem.domain.model.body.BodyRowType.CHIP
 import com.valkiria.uicomponents.components.chip.ChipUiModel
 import com.valkiria.uicomponents.props.ChipStyle
 import com.valkiria.uicomponents.props.TextStyle

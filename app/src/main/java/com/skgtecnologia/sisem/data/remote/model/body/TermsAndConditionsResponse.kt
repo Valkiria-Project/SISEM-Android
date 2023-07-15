@@ -1,9 +1,9 @@
-package com.skgtecnologia.sisem.data.remote.model.bodyrow
+package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowModel
-import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType
-import com.skgtecnologia.sisem.domain.model.bodyrow.TermsAndConditionsModel
+import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
+import com.skgtecnologia.sisem.domain.model.body.BodyRowType
+import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.squareup.moshi.Json
 
 data class TermsAndConditionsResponse(

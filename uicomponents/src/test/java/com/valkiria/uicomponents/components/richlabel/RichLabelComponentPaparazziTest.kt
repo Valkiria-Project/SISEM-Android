@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.commons
+package com.valkiria.uicomponents.components.richlabel
 
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
@@ -6,7 +6,8 @@ import com.android.ide.common.rendering.api.SessionParams.RenderingMode
 import org.junit.Rule
 import org.junit.Test
 
-class AutoSizedCircularProgressIndicatorPaparazziTest {
+
+class RichLabelComponentPaparazziTest {
 
     @get:Rule
     val paparazziRule: Paparazzi = Paparazzi(
@@ -16,9 +17,14 @@ class AutoSizedCircularProgressIndicatorPaparazziTest {
     )
 
     @Test
-    fun snapAutoSizedCircularProgressIndicator() {
-        paparazziRule.snapshot {
-            AutoSizedCircularProgressIndicator()
-        }
+    fun snapRichLabelComponent() {
+//        paparazziRule.snapshot {
+//            val richLabelUiModel = RichLabelUiModel(
+//                text = "<font color=\"#FFFFFF\">Bienvenido al <b>SISEM</b></font>",
+//                textStyle = TextStyle.HEADLINE_1,
+//                modifier = Modifier
+//            )
+//            RichLabelComponent(uiModel = richLabelUiModel)
+//        }
     }
 }

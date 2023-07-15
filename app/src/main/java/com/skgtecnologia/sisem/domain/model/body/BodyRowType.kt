@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.domain.model.bodyrow
+package com.skgtecnologia.sisem.domain.model.body
 
 enum class BodyRowType {
     BUTTON,

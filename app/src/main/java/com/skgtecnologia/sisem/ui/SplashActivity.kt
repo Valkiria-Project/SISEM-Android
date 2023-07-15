@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.ui
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -15,7 +14,7 @@ import kotlinx.coroutines.launch
 
 private const val SPLASH_DURATION_MILLIS = 2_000L
 
-@SuppressLint("CustomSplashScreen")
+@Suppress("CustomSplashScreen")
 @AndroidEntryPoint
 class SplashActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

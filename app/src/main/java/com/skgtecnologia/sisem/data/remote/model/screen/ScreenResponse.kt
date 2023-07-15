@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.screen
 
-import com.skgtecnologia.sisem.data.remote.model.bodyrow.BodyRowResponse
+import com.skgtecnologia.sisem.data.remote.model.body.BodyRowResponse
 import com.skgtecnologia.sisem.data.remote.model.footer.FooterResponse
 import com.skgtecnologia.sisem.data.remote.model.footer.mapToDomain
 import com.skgtecnologia.sisem.data.remote.model.header.HeaderResponse

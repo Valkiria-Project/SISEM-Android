@@ -1,12 +1,12 @@
-package com.skgtecnologia.sisem.data.remote.model.bodyrow
+package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.props.ValidationResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToUi
-import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowModel
-import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType
-import com.skgtecnologia.sisem.domain.model.bodyrow.TextFieldModel
+import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
+import com.skgtecnologia.sisem.domain.model.body.BodyRowType
+import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

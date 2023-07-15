@@ -1,7 +1,7 @@
-package com.skgtecnologia.sisem.domain.model.bodyrow
+package com.skgtecnologia.sisem.domain.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType.RICH_LABEL
+import com.skgtecnologia.sisem.domain.model.body.BodyRowType.RICH_LABEL
 import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.props.TextStyle
 

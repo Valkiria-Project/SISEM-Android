@@ -12,7 +12,7 @@ class NoNetworkScreenPaparazziTest {
     @get:Rule
     val paparazziRule: Paparazzi = Paparazzi(
         theme = "android:Theme.MaterialComponents.Light.NoActionBar",
-        deviceConfig = DeviceConfig.NEXUS_5.copy(softButtons = false, screenHeight = 1),
+        deviceConfig = DeviceConfig.PIXEL_6_PRO.copy(softButtons = false, screenHeight = 1),
         renderingMode = SessionParams.RenderingMode.V_SCROLL
     )
 

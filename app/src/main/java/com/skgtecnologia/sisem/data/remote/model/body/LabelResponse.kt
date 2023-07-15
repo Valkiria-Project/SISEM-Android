@@ -1,15 +1,15 @@
-package com.skgtecnologia.sisem.data.remote.model.bodyrow
+package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowModel
-import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType
-import com.skgtecnologia.sisem.domain.model.bodyrow.RichLabelModel
+import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
+import com.skgtecnologia.sisem.domain.model.body.BodyRowType
+import com.skgtecnologia.sisem.domain.model.body.RichLabelModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.props.TextStyle
 
 @JsonClass(generateAdapter = true)
-data class RichLabelResponse(
+data class LabelResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "text") val text: String?,
     @Json(name = "text_style") val textStyle: TextStyle?,

@@ -1,10 +1,6 @@
 package com.valkiria.uicomponents.props
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
-enum class ButtonSize : Parcelable {
+enum class ButtonSize {
     DEFAULT,
     FULL_WIDTH
 }

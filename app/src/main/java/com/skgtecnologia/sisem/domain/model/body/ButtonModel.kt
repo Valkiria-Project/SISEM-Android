@@ -1,7 +1,7 @@
-package com.skgtecnologia.sisem.domain.model.bodyrow
+package com.skgtecnologia.sisem.domain.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.bodyrow.BodyRowType.BUTTON
+import com.skgtecnologia.sisem.domain.model.body.BodyRowType.BUTTON
 import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.props.ButtonSize
