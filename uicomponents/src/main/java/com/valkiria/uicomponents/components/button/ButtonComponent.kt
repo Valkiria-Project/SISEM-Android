@@ -17,21 +17,23 @@ import com.valkiria.uicomponents.props.ButtonStyle
 @Composable
 fun ButtonComponent(
     model: ButtonUiModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     when (model.style) {
-        ButtonStyle.LOUD -> ButtonLoudComponent(model, modifier)
-        ButtonStyle.TRANSPARENT -> ButtonTransparentComponent(model, modifier)
+        ButtonStyle.LOUD -> ButtonLoudComponent(model, modifier, onClick)
+        ButtonStyle.TRANSPARENT -> ButtonTransparentComponent(model, modifier, onClick)
     }
 }
 
 @Composable
 private fun ButtonLoudComponent(
     model: ButtonUiModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     Button(
-        onClick = { },
+        onClick = { onClick.invoke() },
         colors = ButtonDefaults.buttonColors(
             containerColor = Color(0xFF42a4fa)
         ),
@@ -44,10 +46,11 @@ private fun ButtonLoudComponent(
 @Composable
 private fun ButtonTransparentComponent(
     model: ButtonUiModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     TextButton(
-        onClick = { },
+        onClick = { onClick.invoke() },
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent
         ),
@@ -67,7 +70,8 @@ fun ButtonLoudComponentPreview() {
             onClick = OnClick.LOGIN,
             size = ButtonSize.DEFAULT,
             modifier = Modifier
-        )
+        ),
+        onClick = {}
     )
 }
 
@@ -81,6 +85,7 @@ fun ButtonTransparentComponentPreview() {
             onClick = OnClick.FORGOT_PASSWORD,
             size = ButtonSize.FULL_WIDTH,
             modifier = Modifier.padding(horizontal = 10.dp)
-        )
+        ),
+        onClick = {}
     )
 }

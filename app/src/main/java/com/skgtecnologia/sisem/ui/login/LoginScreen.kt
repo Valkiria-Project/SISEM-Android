@@ -45,6 +45,7 @@ fun LoginScreen(
                     .padding(top = 20.dp)
             ) {
                 Timber.d("This is going to be fun")
+                onClick.invoke()
             }
         }
     }
