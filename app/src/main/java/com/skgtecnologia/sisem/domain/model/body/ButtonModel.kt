@@ -8,7 +8,7 @@ import com.valkiria.uicomponents.props.ButtonSize
 import com.valkiria.uicomponents.props.ButtonStyle
 
 data class ButtonModel(
-    val identifier: String,
+    val identifier: String?,
     val label: String,
     val style: ButtonStyle,
     val onClick: OnClick,

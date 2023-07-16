@@ -12,7 +12,7 @@ import com.valkiria.uicomponents.props.ButtonStyle
 
 @JsonClass(generateAdapter = true)
 data class ButtonResponse(
-    @Json(name = "identifier") val identifier: String?,
+    @Json(name = "identifier") val identifier: String,
     @Json(name = "label") val label: String?,
     @Json(name = "style") val style: ButtonStyle,
     @Json(name = "on_click") val onClick: OnClick,
@@ -23,7 +23,7 @@ data class ButtonResponse(
     override val type: BodyRowType = BodyRowType.BUTTON
 
     override fun mapToDomain(): BodyRowModel = ButtonModel(
-        identifier = identifier ?: error("Button identifier cannot be null"),
+        identifier = identifier,
         label = label ?: error("Button label cannot be null"),
         style = style,
         onClick = onClick,
