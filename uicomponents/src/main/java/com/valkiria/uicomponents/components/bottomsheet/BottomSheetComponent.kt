@@ -10,10 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.Button
-import androidx.compose.material3.SheetValue.Hidden
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -34,6 +32,7 @@ fun BottomSheetComponent(
 ) {
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberBottomSheetScaffoldState()
+
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
         sheetPeekHeight = 128.dp,
@@ -56,9 +55,7 @@ fun BottomSheetComponent(
                 Spacer(Modifier.height(20.dp))
                 Button(
                     onClick = {
-                        scope.launch {
-                            scaffoldState.bottomSheetState.partialExpand()
-                        }
+                        scope.launch { scaffoldState.bottomSheetState.partialExpand() }
                     }
                 ) {
                     Text("Click to collapse sheet")

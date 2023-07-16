@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.ui.sections
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
@@ -92,9 +91,6 @@ fun BodySection(
                             uiModel = model.mapToUiModel(),
                             isTablet = isTablet
                         ) { link ->
-                            Toast.makeText(
-                                context, "Handle $link clicked", Toast.LENGTH_LONG
-                            ).show()
                             onClick(link)
                         }
                     }
