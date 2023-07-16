@@ -17,10 +17,10 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
-    val loginScreenViewModel = hiltViewModel<LoginScreenViewModel>()
-    val uiState = loginScreenViewModel.uiState
+    val loginViewModel = hiltViewModel<LoginViewModel>()
+    val uiState = loginViewModel.uiState
 
-    if (uiState.loading) {
+    if (uiState.isLoading) {
         LoaderComponent()
     } else {
         ConstraintLayout(

@@ -15,7 +15,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @HiltViewModel
-class LoginScreenViewModel @Inject constructor(
+class LoginViewModel @Inject constructor(
     private val getLoginScreen: GetLoginScreen
 ) : ViewModel() {
 
@@ -25,15 +25,16 @@ class LoginScreenViewModel @Inject constructor(
         private set
 
     init {
+        uiState = uiState.copy(isLoading = true)
+
         job?.cancel()
-        uiState = uiState.copy(loading = true)
         job = viewModelScope.launch(Dispatchers.IO) {
             getLoginScreen.invoke("123")
                 .onSuccess { loginScreenModel ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
                             screenModel = loginScreenModel,
-                            loading = false
+                            isLoading = false
                         )
                     }
                 }
