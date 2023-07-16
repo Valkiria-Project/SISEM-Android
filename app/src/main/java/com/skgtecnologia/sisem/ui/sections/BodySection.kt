@@ -28,6 +28,7 @@ import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 
+@Suppress("LongMethod")
 @Composable
 fun BodySection(
     body: List<BodyRowModel>?,
