@@ -1,17 +1,27 @@
 package com.skgtecnologia.sisem.di
 
 import com.skgtecnologia.sisem.BuildConfig
-import com.skgtecnologia.sisem.data.myscreen.remote.model.BodyRowResponse
-import com.skgtecnologia.sisem.data.myscreen.remote.model.CrossSellingResponse
-import com.skgtecnologia.sisem.data.myscreen.remote.model.MessageResponse
-import com.skgtecnologia.sisem.data.myscreen.remote.model.PaymentMethodInfoResponse
-import com.skgtecnologia.sisem.data.myscreen.remote.model.SectionResponse
-import com.skgtecnologia.sisem.domain.myscreen.model.BodyRowType
-import com.skgtecnologia.sisem.domain.myscreen.model.ScreenType
+import com.skgtecnologia.sisem.data.remote.adapters.KeyboardOptionsAdapter
+import com.skgtecnologia.sisem.data.remote.adapters.ModifierAdapter
+import com.skgtecnologia.sisem.data.remote.model.body.BodyRowResponse
+import com.skgtecnologia.sisem.data.remote.model.body.ButtonResponse
+import com.skgtecnologia.sisem.data.remote.model.body.ChipResponse
+import com.skgtecnologia.sisem.data.remote.model.body.LabelResponse
+import com.skgtecnologia.sisem.data.remote.model.body.LabeledSwitchResponse
+import com.skgtecnologia.sisem.data.remote.model.body.PasswordTextFieldResponse
+import com.skgtecnologia.sisem.data.remote.model.body.RichLabelResponse
+import com.skgtecnologia.sisem.data.remote.model.body.TermsAndConditionsResponse
+import com.skgtecnologia.sisem.data.remote.model.body.TextFieldResponse
+import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.EnumJsonAdapter
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.valkiria.uicomponents.components.button.OnClick
+import com.valkiria.uicomponents.props.ButtonSize
+import com.valkiria.uicomponents.props.ButtonStyle
+import com.valkiria.uicomponents.props.ChipStyle
+import com.valkiria.uicomponents.props.TextStyle
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,7 +33,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-const val OK_HTTP_CLIENT_TIMEOUT_DEFAULTS = 15_000L
+private const val OK_HTTP_CLIENT_TIMEOUT_DEFAULTS = 15_000L
+private const val BASE_URL = "http://34.69.190.119:8080/"
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -31,37 +42,72 @@ object CoreNetworkModule {
 
     @Singleton
     @Provides
-    fun providesMoshi(): Moshi = Moshi.Builder()
-        .add(
-            ScreenType::class.java,
-            EnumJsonAdapter.create(ScreenType::class.java).withUnknownFallback(
-                ScreenType.PROCESSING
-            )
+    fun providesMoshi(): Moshi {
+        return Moshi.Builder().apply {
+            provideEnumAdapters()
+            provideBodyPolymorphicAdapter()
+            provideAdapters()
+        }.build()
+    }
+
+    private fun Moshi.Builder.provideEnumAdapters() = this.add(
+        ButtonSize::class.java,
+        EnumJsonAdapter.create(ButtonSize::class.java).withUnknownFallback(ButtonSize.DEFAULT)
+    ).add(
+        ButtonStyle::class.java,
+        EnumJsonAdapter.create(ButtonStyle::class.java).withUnknownFallback(ButtonStyle.LOUD)
+    ).add(
+        ChipStyle::class.java,
+        EnumJsonAdapter.create(ChipStyle::class.java).withUnknownFallback(ChipStyle.PRIMARY)
+    ).add(
+        OnClick::class.java,
+        EnumJsonAdapter.create(OnClick::class.java)
+    ).add(
+        TextStyle::class.java,
+        EnumJsonAdapter.create(TextStyle::class.java).withUnknownFallback(TextStyle.BODY_1)
+    )
+
+    private fun Moshi.Builder.provideBodyPolymorphicAdapter() = this.add(
+        BodyRowType::class.java,
+        EnumJsonAdapter.create(BodyRowType::class.java).withUnknownFallback(null)
+    ).add(
+        PolymorphicJsonAdapterFactory.of(
+            BodyRowResponse::class.java,
+            "type"
+        ).withSubtype(
+            ButtonResponse::class.java,
+            BodyRowType.BUTTON.name
+        ).withSubtype(
+            ChipResponse::class.java,
+            BodyRowType.CHIP.name
+        ).withSubtype(
+            LabelResponse::class.java,
+            BodyRowType.LABEL.name
+        ).withSubtype(
+            LabeledSwitchResponse::class.java,
+            BodyRowType.LABELED_SWITCH.name
+        ).withSubtype(
+            PasswordTextFieldResponse::class.java,
+            BodyRowType.PASSWORD_TEXT_FIELD.name
+        ).withSubtype(
+            RichLabelResponse::class.java,
+            BodyRowType.RICH_LABEL.name
+        ).withSubtype(
+            TermsAndConditionsResponse::class.java,
+            BodyRowType.TERMS_AND_CONDITIONS.name
+        ).withSubtype(
+            TextFieldResponse::class.java,
+            BodyRowType.TEXT_FIELD.name
         )
-        .add(
-            BodyRowType::class.java,
-            EnumJsonAdapter.create(BodyRowType::class.java).withUnknownFallback(null)
-        )
-        .add(
-            PolymorphicJsonAdapterFactory.of(
-                BodyRowResponse::class.java,
-                "type"
-            ).withSubtype(
-                CrossSellingResponse::class.java,
-                BodyRowType.CROSS_SELLING.name
-            ).withSubtype(
-                MessageResponse::class.java,
-                BodyRowType.MESSAGE.name
-            ).withSubtype(
-                PaymentMethodInfoResponse::class.java,
-                BodyRowType.PAYMENT_METHOD_INFO.name
-            ).withSubtype(
-                SectionResponse::class.java,
-                BodyRowType.SECTION.name
-            )
-        )
-        .add(KotlinJsonAdapterFactory())
-        .build()
+    )
+
+    private fun Moshi.Builder.provideAdapters() = this.add(
+        KeyboardOptionsAdapter()
+    ).add(
+        ModifierAdapter()
+    ).add(
+        KotlinJsonAdapterFactory()
+    )
 
     @Singleton
     @Provides
@@ -101,7 +147,7 @@ object CoreNetworkModule {
         okHttpClient: OkHttpClient
     ): Retrofit =
         Retrofit.Builder()
-            .baseUrl("https://run.mocky.io/v3/")
+            .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()

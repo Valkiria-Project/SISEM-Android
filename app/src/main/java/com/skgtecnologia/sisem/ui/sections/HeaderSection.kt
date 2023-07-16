@@ -23,8 +23,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.skgtecnologia.sisem.R
-import com.skgtecnologia.sisem.ui.theme.Green40
-import com.skgtecnologia.sisem.ui.utlis.forwardingPainter
+import com.skgtecnologia.sisem.R.drawable
+import com.valkiria.uicomponents.theme.Green40
+import com.valkiria.uicomponents.utlis.forwardingPainter
 
 @Composable
 fun HeaderSection(
@@ -62,14 +63,14 @@ fun HeaderSection(
             )
             AsyncImage(
                 model = iconUrl,
-                contentDescription = "Header icon url $iconUrl",
+                contentDescription = null,
                 modifier = Modifier.size(56.dp),
                 placeholder = forwardingPainter(
-                    painter = painterResource(R.drawable.ic_bag),
+                    painter = painterResource(drawable.ic_launcher_foreground),
                     colorFilter = ColorFilter.tint(Green40),
                 ),
                 error = forwardingPainter(
-                    painter = painterResource(R.drawable.ic_bag),
+                    painter = painterResource(drawable.ic_launcher_foreground),
                     colorFilter = ColorFilter.tint(Green40),
                 ),
                 contentScale = ContentScale.FillBounds

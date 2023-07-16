@@ -1,12 +1,14 @@
 <project version="4">
   <component name="EntryPointsManager">
-    <list size="6">
+    <list size="8">
       <item index="0" class="java.lang.String" itemvalue="androidx.compose.runtime.Composable" />
       <item index="1" class="java.lang.String" itemvalue="androidx.room.TypeConverter" />
-      <item index="2" class="java.lang.String" itemvalue="dagger.Binds" />
-      <item index="3" class="java.lang.String" itemvalue="dagger.Module" />
-      <item index="4" class="java.lang.String" itemvalue="dagger.Provides" />
-      <item index="5" class="java.lang.String" itemvalue="dagger.hilt.InstallIn" />
+      <item index="2" class="java.lang.String" itemvalue="com.squareup.moshi.FromJson" />
+      <item index="3" class="java.lang.String" itemvalue="com.squareup.moshi.ToJson" />
+      <item index="4" class="java.lang.String" itemvalue="dagger.Binds" />
+      <item index="5" class="java.lang.String" itemvalue="dagger.Module" />
+      <item index="6" class="java.lang.String" itemvalue="dagger.Provides" />
+      <item index="7" class="java.lang.String" itemvalue="dagger.hilt.InstallIn" />
     </list>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
