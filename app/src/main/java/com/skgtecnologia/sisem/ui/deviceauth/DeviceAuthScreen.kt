@@ -9,6 +9,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
+import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 
 @Composable
@@ -26,22 +27,31 @@ fun DeviceAuthScreen(
         ) {
             val (header, body, footer) = createRefs()
 
-            /*DeviceAuthHeaderSection(
-                modifier = modifier.constrainAs(header) {
-                    top.linkTo(parent.top)
-                }
-            )*/
+            with(uiState.screenModel) {
 
-            BodySection(
-                body = uiState.screenModel?.body,
-                modifier = modifier
-                    .constrainAs(body) {
-                        top.linkTo(header.bottom)
-                        bottom.linkTo(parent.bottom)
-                        height = Dimension.fillToConstraints
-                    }
-                    .padding(top = 20.dp)
-            )
+                this?.header?.let { headerModel ->
+                    HeaderSection(
+                        headerModel = headerModel,
+                        modifier = modifier.constrainAs(header) {
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        }
+                    )
+                }
+
+
+                BodySection(
+                    body = uiState.screenModel?.body,
+                    modifier = modifier
+                        .constrainAs(body) {
+                            top.linkTo(header.bottom)
+                            bottom.linkTo(parent.bottom)
+                            height = Dimension.fillToConstraints
+                        }
+                        .padding(top = 20.dp)
+                )
+            }
         }
     }
 }
