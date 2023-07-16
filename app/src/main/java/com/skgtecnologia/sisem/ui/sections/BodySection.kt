@@ -40,7 +40,7 @@ fun BodySection(
             body.map { model ->
                 when (model) {
                     is ButtonModel -> item(key = model.identifier) {
-                        ButtonComponent(model = model.mapToUiModel(), onClick = onClick)
+                        ButtonComponent(model = model.mapToUiModel())
                     }
 
                     is ChipModel -> item(key = model.identifier) {
