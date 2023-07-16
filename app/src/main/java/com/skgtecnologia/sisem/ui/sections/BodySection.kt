@@ -20,6 +20,7 @@ import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
 import com.valkiria.uicomponents.components.label.LabelComponent
+import com.valkiria.uicomponents.components.passwordtextfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 
@@ -57,7 +58,7 @@ fun BodySection(
                     }
 
                     is PasswordTextFieldModel -> item(key = model.identifier) {
-
+                        PasswordTextFieldComponent(uiModel = model.mapToUiModel())
                     }
 
                     is RichLabelModel -> item(key = model.identifier) {

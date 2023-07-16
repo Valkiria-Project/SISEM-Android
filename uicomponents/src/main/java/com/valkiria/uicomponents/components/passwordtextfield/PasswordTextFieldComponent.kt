@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.components.textfield
+package com.valkiria.uicomponents.components.passwordtextfield
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,14 +24,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.mocks.getLoginTextFieldUiModel
+import com.valkiria.uicomponents.mocks.getLoginPasswordTextFieldUiModel
 import com.valkiria.uicomponents.theme.UiComponentsTheme
 import com.valkiria.uicomponents.utlis.DefType.DRAWABLE
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 
 @Composable
-fun TextFieldComponent(
-    uiModel: TextFieldUiModel
+fun PasswordTextFieldComponent(
+    uiModel: PasswordTextFieldUiModel
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon.orEmpty(), DRAWABLE
@@ -80,12 +80,12 @@ fun TextFieldComponent(
 
 @Preview(showBackground = true)
 @Composable
-fun TextFieldComponentPreview() {
+fun PasswordTextFieldComponentPreview() {
     UiComponentsTheme {
         Column(
             modifier = Modifier.background(Color.DarkGray)
         ) {
-            TextFieldComponent(uiModel = getLoginTextFieldUiModel())
+            PasswordTextFieldComponent(uiModel = getLoginPasswordTextFieldUiModel())
         }
     }
 }
