@@ -17,6 +17,7 @@ import com.valkiria.uicomponents.props.mapToTextColor
 import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.theme.UiComponentsTheme
 
+@Suppress("MaxLineLength")
 @Composable
 fun ButtonComponent(
     uiModel: ButtonUiModel,
