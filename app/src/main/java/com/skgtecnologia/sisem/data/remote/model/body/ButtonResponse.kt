@@ -12,11 +12,11 @@ import com.valkiria.uicomponents.props.ButtonStyle
 
 @JsonClass(generateAdapter = true)
 data class ButtonResponse(
-    val identifier: String?,
-    val label: String?,
-    val style: ButtonStyle,
+    @Json(name = "identifier") val identifier: String?,
+    @Json(name = "label") val label: String?,
+    @Json(name = "style") val style: ButtonStyle,
     @Json(name = "on_click") val onClick: OnClick,
-    val size: ButtonSize,
+    @Json(name = "size") val size: ButtonSize,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 

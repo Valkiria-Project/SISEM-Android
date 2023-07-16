@@ -5,7 +5,9 @@ import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class TermsAndConditionsResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "margins") val modifier: Modifier?
