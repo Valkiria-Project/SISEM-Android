@@ -33,7 +33,8 @@ import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 fun BodySection(
     body: List<BodyRowModel>?,
     isTablet: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: (link: String) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -91,8 +92,10 @@ fun BodySection(
                             uiModel = model.mapToUiModel(),
                             isTablet = isTablet
                         ) { link ->
-
-                            Toast.makeText(context, "Handle $link clicked", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                context, "Handle $link clicked", Toast.LENGTH_LONG
+                            ).show()
+                            onClick(link)
                         }
                     }
 

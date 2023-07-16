@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -42,5 +43,12 @@ class LoginViewModel @Inject constructor(
                     Timber.wtf(throwable, "This is a failure")
                 }
         }
+    }
+
+    fun showBottomSheet(link: LoginLink) {
+        uiState = uiState.copy(
+            isLoading = false,
+            bottomSheetLink = link
+        )
     }
 }

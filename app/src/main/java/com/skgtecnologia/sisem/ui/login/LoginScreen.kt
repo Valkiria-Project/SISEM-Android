@@ -8,7 +8,10 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.skgtecnologia.sisem.domain.login.model.LoginLink
+import com.skgtecnologia.sisem.domain.login.model.toBottomSheetUiModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
+import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 
 @Composable
@@ -16,12 +19,16 @@ fun LoginScreen(
     isTablet: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val loginViewModel = hiltViewModel<LoginViewModel>()
-    val uiState = loginViewModel.uiState
+    val viewModel = hiltViewModel<LoginViewModel>()
+    val uiState = viewModel.uiState
 
     if (uiState.isLoading) {
         LoaderComponent()
     } else {
+        if (uiState.bottomSheetLink != null) {
+            BottomSheetComponent(uiModel = uiState.bottomSheetLink.toBottomSheetUiModel())
+        }
+
         ConstraintLayout(
             modifier = modifier.fillMaxSize()
         ) {
@@ -43,7 +50,9 @@ fun LoginScreen(
                         height = Dimension.fillToConstraints
                     }
                     .padding(top = 20.dp)
-            )
+            ) {
+                viewModel.showBottomSheet(LoginLink.getLinkByName(it))
+            }
         }
     }
 }

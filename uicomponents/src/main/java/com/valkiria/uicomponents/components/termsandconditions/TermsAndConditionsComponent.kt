@@ -26,7 +26,7 @@ import timber.log.Timber
 fun TermsAndConditionsComponent(
     uiModel: TermsAndConditionsUiModel,
     isTablet: Boolean = false,
-    onClick: (link: String) -> Unit,
+    onClick: (link: String) -> Unit
 ) {
     Row(
         modifier = if (isTablet) {
@@ -40,10 +40,10 @@ fun TermsAndConditionsComponent(
         HtmlText(
             text =
             """<font color="#FFFFFF">Al ingresar aceptas nuestros</font> 
-                |<a href="${uiModel.termsAndConditionsLink}">términos y condiciones</a> 
-                |<font color="#FFFFFF">y nuestra</font> 
-                |<a href="${uiModel.privacyPolicyLink}">política de protección de datos personales.</a></font>
-            |""".trimMargin(), // BACKEND: Send the font Color for this component
+            |<a href="${uiModel.termsAndConditionsLink}">términos y condiciones</a> 
+            |<font color="#FFFFFF">y nuestra</font> 
+            |<a href="${uiModel.privacyPolicyLink}">política de protección de datos personales.</a>
+            |</font>""".trimMargin(), // BACKEND: Send the font Color for this component
             modifier = uiModel.modifier,
             style = MaterialTheme.typography.labelMedium,
             linkClicked = { link ->

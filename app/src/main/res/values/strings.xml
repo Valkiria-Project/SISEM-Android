@@ -1,6 +1,9 @@
 <resources>
-    <string name="app_name">SISEM</string>
+    <string name="app_name" translatable="false">SISEM</string>
 
-    <string name="fetch_input_error_message">Input is not as required, this is unexpected, needs to be handled</string>
-    <string name="fetch_result_error_message">Something is empty, this is unexpected, needs to be handled</string>
+    <!-- Terms & Conditions dialog -->
+    <string name="terms_and_conditions_title">Términos y condiciones</string>
+
+    <!-- Privacy policy dialog -->
+    <string name="privacy_policy_title">Política de protección de datos</string>
 </resources>
