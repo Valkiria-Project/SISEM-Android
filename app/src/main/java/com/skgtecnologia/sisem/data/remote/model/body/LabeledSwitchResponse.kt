@@ -19,9 +19,9 @@ data class LabeledSwitchResponse(
     override val type: BodyRowType = BodyRowType.RICH_LABEL
 
     override fun mapToDomain(): BodyRowModel = LabeledSwitchModel(
-        identifier = identifier ?: error("Identifier cannot be null"),
-        text = text ?: error("Label text cannot be null"),
-        textStyle = textStyle ?: error("Text style cannot be null"),
+        identifier = identifier ?: error("LabeledSwitch identifier cannot be null"),
+        text = text ?: error("LabeledSwitch text cannot be null"),
+        textStyle = textStyle ?: error("LabeledSwitch textStyle cannot be null"),
         modifier = modifier ?: Modifier
     )
 }

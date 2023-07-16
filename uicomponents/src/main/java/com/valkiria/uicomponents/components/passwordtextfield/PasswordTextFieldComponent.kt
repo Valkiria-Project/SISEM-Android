@@ -36,6 +36,7 @@ import com.valkiria.uicomponents.theme.UiComponentsTheme
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 
+@Suppress("LongMethod")
 @Composable
 fun PasswordTextFieldComponent(
     uiModel: PasswordTextFieldUiModel

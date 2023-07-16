@@ -1,7 +1,10 @@
 package com.valkiria.uicomponents.components.chip
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,28 +35,33 @@ fun ChipComponent(
         uiModel.icon.orEmpty(), DRAWABLE
     )
 
-    AssistChip(
-        onClick = { },
-        label = {
-            Text(
-                text = uiModel.text,
-                style = uiModel.textStyle.toTextStyle() // BACKEND: H5 is too small + not bold
-            )
-        },
-        modifier = uiModel.modifier,
-        leadingIcon = {
-            if (iconResourceId != null) {
-                Icon(
-                    painter = painterResource(id = iconResourceId),
-                    contentDescription = null,
-                    modifier = Modifier.size(40.dp)
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        AssistChip(
+            onClick = { },
+            label = {
+                Text(
+                    text = uiModel.text,
+                    style = uiModel.textStyle.toTextStyle() // BACKEND: H5 is too small + not bold
                 )
-            }
-        },
-        shape = RoundedCornerShape(25.dp),
-        colors = uiModel.style.toChipColors(),
-        border = uiModel.style.toChipBorder()
-    )
+            },
+            modifier = uiModel.modifier,
+            leadingIcon = {
+                if (iconResourceId != null) {
+                    Icon(
+                        painter = painterResource(id = iconResourceId),
+                        contentDescription = null,
+                        modifier = Modifier.size(40.dp)
+                    )
+                }
+            },
+            shape = RoundedCornerShape(25.dp),
+            colors = uiModel.style.toChipColors(),
+            border = uiModel.style.toChipBorder()
+        )
+    }
 }
 
 @Preview(showBackground = true)

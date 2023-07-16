@@ -26,13 +26,13 @@ data class TextFieldResponse(
     override val type: BodyRowType = BodyRowType.TEXT_FIELD
 
     override fun mapToDomain(): BodyRowModel = TextFieldModel(
-        identifier = identifier ?: error("Identifier cannot be null"),
+        identifier = identifier ?: error("TextField identifier cannot be null"),
         icon = icon,
         placeholder = placeholder,
         label = label,
-        keyboardOptions = keyboardOptions ?: error("KeyboardOptions cannot be null"),
-        textStyle = textStyle ?: error("Text style cannot be null"),
-        validations = validations?.map { it.mapToUi() } ?: error("Validations cannot be null"),
+        keyboardOptions = keyboardOptions ?: error("TextField keyboardOptions cannot be null"),
+        textStyle = textStyle ?: error("TextField textStyle cannot be null"),
+        validations = validations?.map { it.mapToUi() } ?: error("TextField validations cannot be null"),
         modifier = margins ?: Modifier
     )
 }

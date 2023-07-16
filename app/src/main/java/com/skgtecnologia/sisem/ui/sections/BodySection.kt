@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.skgtecnologia.sisem.domain.login.LoginIdentifier
 import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.ButtonModel
 import com.skgtecnologia.sisem.domain.model.body.ChipModel
@@ -39,7 +40,16 @@ fun BodySection(
             body.map { model ->
                 when (model) {
                     is ButtonModel -> item(key = model.identifier) {
-                        ButtonComponent(model = model.mapToUiModel())
+                        when (model.identifier) {
+                            LoginIdentifier.LOGIN_BUTTON.name -> ButtonComponent(
+                                uiModel = model.mapToUiModel()
+                            )
+
+                            LoginIdentifier.LOGIN_FORGOT_PASSWORD_BUTTON.name -> ButtonComponent(
+                                uiModel = model.mapToUiModel(),
+                                arrangement = Arrangement.Start
+                            )
+                        }
                     }
 
                     is ChipModel -> item(key = model.identifier) {

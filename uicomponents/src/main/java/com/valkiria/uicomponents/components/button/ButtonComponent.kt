@@ -1,86 +1,53 @@
 package com.valkiria.uicomponents.components.button
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.props.ButtonSize
-import com.valkiria.uicomponents.props.ButtonStyle
+import com.valkiria.uicomponents.mocks.getLoginForgotButtonUiModel
+import com.valkiria.uicomponents.props.mapToColors
+import com.valkiria.uicomponents.props.mapToTextColor
+import com.valkiria.uicomponents.props.toTextStyle
+import com.valkiria.uicomponents.theme.UiComponentsTheme
 
 @Composable
 fun ButtonComponent(
-    model: ButtonUiModel,
-    modifier: Modifier = Modifier
+    uiModel: ButtonUiModel,
+    arrangement: Arrangement.Horizontal = Arrangement.Center // BACKEND: This should be part of the ButtonUiModel <--> ButtonResponse
 ) {
-    when (model.style) {
-        ButtonStyle.LOUD -> ButtonLoudComponent(model, modifier)
-        ButtonStyle.TRANSPARENT -> ButtonTransparentComponent(model, modifier)
-    }
-}
-
-@Composable
-private fun ButtonLoudComponent(
-    model: ButtonUiModel,
-    modifier: Modifier = Modifier
-) {
-    Button(
-        onClick = { },
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF42a4fa)
-        ),
-        modifier = model.modifier.fillMaxWidth()
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = arrangement
     ) {
-        Text(text = model.label)
-    }
-}
-
-@Composable
-private fun ButtonTransparentComponent(
-    model: ButtonUiModel,
-    modifier: Modifier = Modifier
-) {
-    TextButton(
-        onClick = { },
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Transparent
-        ),
-        modifier = model.modifier.fillMaxWidth()
-    ) {
-        Text(text = model.label)
+        Button(
+            onClick = { },
+            colors = uiModel.style.mapToColors(),
+            modifier = uiModel.modifier
+        ) {
+            Text(
+                text = uiModel.label,
+                color = uiModel.style.mapToTextColor(),
+                style = uiModel.textStyle.toTextStyle()
+            )
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun ButtonLoudComponentPreview() {
-    ButtonLoudComponent(
-        model = ButtonUiModel(
-            label = "Button",
-            style = ButtonStyle.LOUD,
-            onClick = OnClick.LOGIN,
-            size = ButtonSize.DEFAULT,
-            modifier = Modifier
-        )
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ButtonTransparentComponentPreview() {
-    ButtonTransparentComponent(
-        model = ButtonUiModel(
-            label = "Button",
-            style = ButtonStyle.TRANSPARENT,
-            onClick = OnClick.FORGOT_PASSWORD,
-            size = ButtonSize.FULL_WIDTH,
-            modifier = Modifier.padding(horizontal = 10.dp)
-        )
-    )
+fun ButtonComponentPreview() {
+    UiComponentsTheme {
+        Column(
+            modifier = Modifier.background(Color.DarkGray)
+        ) {
+            ButtonComponent(uiModel = getLoginForgotButtonUiModel())
+        }
+    }
 }

@@ -18,6 +18,6 @@ data class ScreenResponse(
 
 fun ScreenResponse.mapToDomain(): ScreenModel = ScreenModel(
     header = header?.mapToDomain(),
-    body = body?.map { it.mapToDomain() } ?: error("body cannot be null"),
+    body = body?.map { it.mapToDomain() } ?: error("ScreenModel body cannot be null"),
     footer = footer?.mapToDomain()
 )

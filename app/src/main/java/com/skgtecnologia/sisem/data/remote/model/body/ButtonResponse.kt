@@ -9,14 +9,16 @@ import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.props.ButtonSize
 import com.valkiria.uicomponents.props.ButtonStyle
+import com.valkiria.uicomponents.props.TextStyle
 
 @JsonClass(generateAdapter = true)
 data class ButtonResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "label") val label: String?,
-    @Json(name = "style") val style: ButtonStyle,
-    @Json(name = "on_click") val onClick: OnClick,
-    @Json(name = "size") val size: ButtonSize,
+    @Json(name = "style") val style: ButtonStyle?,
+    @Json(name = "text_style") val textStyle: TextStyle?,
+    @Json(name = "on_click") val onClick: OnClick?,
+    @Json(name = "size") val size: ButtonSize?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
@@ -25,9 +27,10 @@ data class ButtonResponse(
     override fun mapToDomain(): BodyRowModel = ButtonModel(
         identifier = identifier ?: error("Button identifier cannot be null"),
         label = label ?: error("Button label cannot be null"),
-        style = style,
-        onClick = onClick,
-        size = size,
+        style = style ?: error("Button style cannot be null"),
+        textStyle = textStyle ?: error("Button textStyle cannot be null"),
+        onClick = onClick ?: error("Button onClick cannot be null"),
+        size = size ?: error("Button size cannot be null"),
         modifier = modifier ?: Modifier
     )
 }

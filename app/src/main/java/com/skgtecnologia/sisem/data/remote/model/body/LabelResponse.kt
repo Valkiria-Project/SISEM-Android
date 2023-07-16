@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.data.remote.model.body
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
+import com.skgtecnologia.sisem.domain.model.body.LabelModel
 import com.skgtecnologia.sisem.domain.model.body.RichLabelModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -18,10 +19,10 @@ data class LabelResponse(
 
     override val type: BodyRowType = BodyRowType.RICH_LABEL
 
-    override fun mapToDomain(): BodyRowModel = RichLabelModel(
-        identifier = identifier ?: error("Identifier cannot be null"),
+    override fun mapToDomain(): BodyRowModel = LabelModel(
+        identifier = identifier ?: error("Label identifier cannot be null"),
         text = text ?: error("Label text cannot be null"),
-        textStyle = textStyle ?: error("Text style cannot be null"),
+        textStyle = textStyle ?: error("Label textStyle cannot be null"),
         modifier = modifier ?: Modifier
     )
 }

@@ -1,11 +1,9 @@
 package com.valkiria.uicomponents.components.chip
 
-import androidx.compose.ui.Modifier
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.android.ide.common.rendering.api.SessionParams.RenderingMode
-import com.valkiria.uicomponents.props.ChipStyle
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.mocks.getLoginChipUiModel
 import org.junit.Rule
 import org.junit.Test
 
@@ -19,16 +17,9 @@ class ChipComponentPaparazziTest {
     )
 
     @Test
-    fun snapRichLabelComponent() {
+    fun snapLoginChipComponent() {
         paparazziRule.snapshot {
-            val chipUiModel = ChipUiModel(
-                icon = "ic_ambulance",
-                text = "5421244",
-                textStyle = TextStyle.HEADLINE_5,
-                style = ChipStyle.PRIMARY,
-                modifier = Modifier
-            )
-            ChipComponent(uiModel = chipUiModel)
+            ChipComponent(uiModel = getLoginChipUiModel())
         }
     }
 }

@@ -22,10 +22,10 @@ data class ChipResponse(
     override val type: BodyRowType = BodyRowType.CHIP
 
     override fun mapToDomain(): BodyRowModel = ChipModel(
-        identifier = identifier ?: error("Identifier cannot be null"),
+        identifier = identifier ?: error("Chip identifier cannot be null"),
         icon = icon,
         text = text ?: error("Chip text cannot be null"),
-        textStyle = textStyle ?: error("Text style cannot be null"),
+        textStyle = textStyle ?: error("Chip textStyle cannot be null"),
         style = style ?: error("Chip style cannot be null"),
         modifier = modifier ?: Modifier
     )

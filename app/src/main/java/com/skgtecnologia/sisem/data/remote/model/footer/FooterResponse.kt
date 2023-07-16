@@ -9,5 +9,5 @@ data class FooterResponse(
 )
 
 fun FooterResponse.mapToDomain(): FooterModel = FooterModel(
-    buttonModelList = buttonList?.map { it.mapToDomain() as ButtonModel } ?: error("buttonList cannot be null")
+    buttonModelList = buttonList?.map { it.mapToDomain() as ButtonModel } ?: error("Footer buttonList cannot be null")
 )

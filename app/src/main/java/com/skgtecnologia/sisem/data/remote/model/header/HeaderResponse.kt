@@ -12,6 +12,6 @@ data class HeaderResponse(
 )
 
 fun HeaderResponse.mapToDomain(): HeaderModel = HeaderModel(
-    title = this.title ?: error("title cannot be null"),
+    title = this.title ?: error("Header title cannot be null"),
     iconUrl = this.iconUrl ?: DEFAULT_ICON_URL
 )

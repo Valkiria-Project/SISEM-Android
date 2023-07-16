@@ -16,7 +16,7 @@ class LoaderComponentPaparazziTest {
     )
 
     @Test
-    fun snapRichLabelComponent() {
+    fun snapLoaderComponent() {
         paparazziRule.snapshot {
             LoaderComponent()
         }

@@ -16,9 +16,9 @@ class RichLabelComponentPaparazziTest {
     )
 
     @Test
-    fun snapRichLabelComponent() {
+    fun snapLoginWelcomeRichLabelComponent() {
 //        paparazziRule.snapshot {
-//            RichLabelComponent(uiModel = getLoginRichLabelUiModel())
+//            RichLabelComponent(uiModel = getLoginWelcomeRichLabelUiModel())
 //        }
     }
 }

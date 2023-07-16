@@ -17,7 +17,7 @@ class PasswordTextFieldComponentPaparazziTest {
     )
 
     @Test
-    fun snapRichLabelComponent() {
+    fun snapLoginPasswordTextFieldComponent() {
         paparazziRule.snapshot {
             PasswordTextFieldComponent(uiModel = getLoginPasswordTextFieldUiModel())
         }
