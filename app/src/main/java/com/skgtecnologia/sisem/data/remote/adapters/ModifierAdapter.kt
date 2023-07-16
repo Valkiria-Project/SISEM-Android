@@ -19,12 +19,10 @@ class ModifierAdapter {
 
     @Suppress("UNUSED_PARAMETER")
     @ToJson
-    fun toJson(modifier: Modifier): MarginsResponse {
-        return MarginsResponse(
-            top = 0,
-            bottom = 0,
-            left = 0,
-            right = 0
-        )
-    }
+    fun toJson(modifier: Modifier): MarginsResponse = MarginsResponse(
+        top = 0,
+        bottom = 0,
+        left = 0,
+        right = 0
+    )
 }

@@ -7,9 +7,9 @@ import com.valkiria.uicomponents.props.ChipStyle
 import com.valkiria.uicomponents.props.TextStyle
 
 data class ChipModel(
-    val identifier: String?,
+    val identifier: String,
     val icon: String?,
-    val text: String?,
+    val text: String,
     val textStyle: TextStyle,
     val style: ChipStyle,
     val modifier: Modifier = Modifier

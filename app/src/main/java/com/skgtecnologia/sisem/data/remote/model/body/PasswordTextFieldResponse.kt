@@ -9,15 +9,18 @@ import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.valkiria.uicomponents.props.TextStyle
 
 @JsonClass(generateAdapter = true)
 data class PasswordTextFieldResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "icon") val icon: String?,
+    @Json(name = "placeholder") val placeholder: String?,
     @Json(name = "hint") val hint: String?,
-    @Json(name = "keyboard_type") val keyboardType: KeyboardOptions,
+    @Json(name = "keyboard_type") val keyboardOptions: KeyboardOptions,
+    @Json(name = "text_style") val textStyle: TextStyle,
     @Json(name = "validations") val validations: List<ValidationResponse>,
-    @Json(name = "margins") val modifier: Modifier?
+    @Json(name = "margins") val margins: Modifier?
 ) : BodyRowResponse {
 
     override val type: BodyRowType = BodyRowType.PASSWORD_TEXT_FIELD
@@ -25,9 +28,11 @@ data class PasswordTextFieldResponse(
     override fun mapToDomain(): BodyRowModel = TextFieldModel(
         identifier = identifier.orEmpty(),
         icon = icon.orEmpty(),
-        hint = hint.orEmpty(),
-        keyboardOptions = keyboardType,
+        placeholder = placeholder.orEmpty(),
+        label = hint.orEmpty(),
+        keyboardOptions = keyboardOptions,
+        textStyle = textStyle,
         validations = validations.map { it.mapToUi() },
-        modifier = modifier ?: Modifier
+        modifier = margins ?: Modifier
     )
 }

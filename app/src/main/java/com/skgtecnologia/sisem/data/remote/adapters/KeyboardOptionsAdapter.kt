@@ -29,14 +29,12 @@ class KeyboardOptionsAdapter {
     }
 
     @ToJson
-    fun toJson(keyboardOptions: KeyboardOptions): String {
-        return when (keyboardOptions.keyboardType) {
-            KeyboardType.Text -> TEXT_KEYBOARD
-            KeyboardType.Number -> TEXT_NUMBER
-            KeyboardType.Email -> TEXT_EMAIL
-            KeyboardType.Phone -> TEXT_PHONE
-            KeyboardType.Password -> TEXT_PASSWORD
-            else -> TEXT_KEYBOARD
-        }
+    fun toJson(keyboardOptions: KeyboardOptions): String = when (keyboardOptions.keyboardType) {
+        KeyboardType.Text -> TEXT_KEYBOARD
+        KeyboardType.Number -> TEXT_NUMBER
+        KeyboardType.Email -> TEXT_EMAIL
+        KeyboardType.Phone -> TEXT_PHONE
+        KeyboardType.Password -> TEXT_PASSWORD
+        else -> TEXT_KEYBOARD
     }
 }

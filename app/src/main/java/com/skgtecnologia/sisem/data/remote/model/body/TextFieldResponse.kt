@@ -9,25 +9,30 @@ import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.valkiria.uicomponents.props.TextStyle
 
 @JsonClass(generateAdapter = true)
 data class TextFieldResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "icon") val icon: String?,
-    @Json(name = "hint") val hint: String?,
-    @Json(name = "keyboard_type") val keyboardOptions: KeyboardOptions,
-    @Json(name = "validations") val validations: List<ValidationResponse>,
+    @Json(name = "placeholder") val placeholder: String?,
+    @Json(name = "hint") val label: String?,
+    @Json(name = "keyboard_type") val keyboardOptions: KeyboardOptions?,
+    @Json(name = "text_style") val textStyle: TextStyle?,
+    @Json(name = "validations") val validations: List<ValidationResponse>?,
     @Json(name = "margins") val margins: Modifier?
 ) : BodyRowResponse {
 
     override val type: BodyRowType = BodyRowType.TEXT_FIELD
 
     override fun mapToDomain(): BodyRowModel = TextFieldModel(
-        identifier = identifier.orEmpty(),
-        icon = icon.orEmpty(),
-        hint = hint.orEmpty(),
-        keyboardOptions = keyboardOptions,
-        validations = validations.map { it.mapToUi() },
+        identifier = identifier ?: error("Identifier cannot be null"),
+        icon = icon,
+        placeholder = placeholder,
+        label = label,
+        keyboardOptions = keyboardOptions ?: error("KeyboardOptions cannot be null"),
+        textStyle = textStyle ?: error("Text style cannot be null"),
+        validations = validations?.map { it.mapToUi() } ?: error("Validations cannot be null"),
         modifier = margins ?: Modifier
     )
 }

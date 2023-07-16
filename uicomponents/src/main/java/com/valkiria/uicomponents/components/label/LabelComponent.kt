@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.theme.UiComponentsTheme
 
 @Composable
 fun LabelComponent(
@@ -23,7 +24,8 @@ fun LabelComponent(
 @Preview(showBackground = true)
 @Composable
 fun LabelComponentPreview() {
-    /*
+    UiComponentsTheme {
+        /*
     {
         "text": "Serial dispositivo",
         "text_style": "BUTTON_1",
@@ -31,19 +33,20 @@ fun LabelComponentPreview() {
         "margins": {"top": 30,"left": 20,"right": 0,"bottom": 0}
     }
     */
-    val labelUiModel = LabelUiModel(
-        text = "Serial dispositivo",
-        textStyle = TextStyle.BUTTON_1,
-        modifier = Modifier
-    )
-    Column {
-        LabelComponent(
-            uiModel = labelUiModel,
-            modifier = Modifier.padding(16.dp)
+        val labelUiModel = LabelUiModel(
+            text = "Serial dispositivo",
+            textStyle = TextStyle.BUTTON_1,
+            modifier = Modifier
         )
-        LabelComponent(
-            uiModel = labelUiModel,
-            modifier = Modifier.padding(0.dp)
-        )
+        Column {
+            LabelComponent(
+                uiModel = labelUiModel,
+                modifier = Modifier.padding(16.dp)
+            )
+            LabelComponent(
+                uiModel = labelUiModel,
+                modifier = Modifier.padding(0.dp)
+            )
+        }
     }
 }

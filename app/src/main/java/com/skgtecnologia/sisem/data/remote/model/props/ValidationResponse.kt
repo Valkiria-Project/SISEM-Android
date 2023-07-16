@@ -8,6 +8,6 @@ data class ValidationResponse(
 )
 
 fun ValidationResponse.mapToUi(): ValidationUiModel = ValidationUiModel(
-    regex = regex.orEmpty(),
-    message = message.orEmpty()
+    regex = regex ?: error("Validation regex cannot be null"),
+    message = message ?: error("Validation message cannot be null")
 )

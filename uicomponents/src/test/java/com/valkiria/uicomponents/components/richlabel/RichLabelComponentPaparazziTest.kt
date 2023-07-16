@@ -6,7 +6,6 @@ import com.android.ide.common.rendering.api.SessionParams.RenderingMode
 import org.junit.Rule
 import org.junit.Test
 
-
 class RichLabelComponentPaparazziTest {
 
     @get:Rule
@@ -19,12 +18,7 @@ class RichLabelComponentPaparazziTest {
     @Test
     fun snapRichLabelComponent() {
 //        paparazziRule.snapshot {
-//            val richLabelUiModel = RichLabelUiModel(
-//                text = "<font color=\"#FFFFFF\">Bienvenido al <b>SISEM</b></font>",
-//                textStyle = TextStyle.HEADLINE_1,
-//                modifier = Modifier
-//            )
-//            RichLabelComponent(uiModel = richLabelUiModel)
+//            RichLabelComponent(uiModel = getLoginRichLabelUiModel())
 //        }
     }
 }
