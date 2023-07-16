@@ -33,7 +33,7 @@ import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.mocks.getLoginPasswordTextFieldUiModel
 import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.theme.UiComponentsTheme
-import com.valkiria.uicomponents.utlis.DefType.DRAWABLE
+import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 
 @Composable
@@ -41,7 +41,7 @@ fun PasswordTextFieldComponent(
     uiModel: PasswordTextFieldUiModel
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
-        uiModel.icon.orEmpty(), DRAWABLE
+        uiModel.icon.orEmpty(), DefType.DRAWABLE
     )
     var showPassword by remember { mutableStateOf(value = false) }
 
@@ -56,7 +56,7 @@ fun PasswordTextFieldComponent(
                 contentDescription = null,
                 modifier = Modifier
                     .padding(top = 8.dp, end = 8.dp)
-                    .size(48.dp),
+                    .size(42.dp),
                 tint = MaterialTheme.colorScheme.primary
             )
         }
@@ -90,7 +90,7 @@ fun PasswordTextFieldComponent(
                             imageVector = ImageVector.vectorResource(
                                 id = R.drawable.ic_visibility_filled
                             ),
-                            contentDescription = "hide_password"
+                            contentDescription = null
                         )
                     }
                 } else {
@@ -101,7 +101,7 @@ fun PasswordTextFieldComponent(
                             imageVector = ImageVector.vectorResource(
                                 id = R.drawable.ic_visibility_off_filled
                             ),
-                            contentDescription = "hide_password"
+                            contentDescription = null
                         )
                     }
                 }

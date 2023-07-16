@@ -27,8 +27,7 @@ import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 @Composable
 fun BodySection(
     body: List<BodyRowModel>?,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    modifier: Modifier = Modifier
 ) {
     if (body?.isNotEmpty() == true) {
         LazyColumn(
