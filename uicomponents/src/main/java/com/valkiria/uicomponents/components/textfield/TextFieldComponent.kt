@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.mocks.getLoginTextFieldUiModel
+import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.theme.UiComponentsTheme
 import com.valkiria.uicomponents.utlis.DefType.DRAWABLE
 import com.valkiria.uicomponents.utlis.getResourceIdByName
@@ -59,6 +60,7 @@ fun TextFieldComponent(
             onValueChange = {
                 text = it
             },
+            textStyle = uiModel.textStyle.toTextStyle(),
             label = {
                 uiModel.label?.let { label ->
                     Text(text = label)
@@ -67,6 +69,7 @@ fun TextFieldComponent(
                 }
             },
             placeholder = {
+                // BACKEND: Check this with the team
                 /*
                 uiModel.placeholder?.let { placeholder ->
                     Text(text = placeholder)
