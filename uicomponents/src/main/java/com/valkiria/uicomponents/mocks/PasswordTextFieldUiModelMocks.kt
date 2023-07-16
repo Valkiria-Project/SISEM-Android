@@ -4,7 +4,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import com.valkiria.uicomponents.components.passwordtextfield.PasswordTextFieldUiModel
-import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 import com.valkiria.uicomponents.props.TextStyle
 
@@ -33,16 +32,16 @@ fun getLoginPasswordTextFieldUiModel(): PasswordTextFieldUiModel {
     */
     return PasswordTextFieldUiModel(
         icon = "ic_lock",
-        placeholder = "Usuario",
-        label = "Ingresar usuario",
+        placeholder = "Contraseña",
+        label = "Ingresar contraseña",
         keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.Text
+            keyboardType = KeyboardType.Password
         ),
         textStyle = TextStyle.HEADLINE_5,
         validations = listOf(
             ValidationUiModel(
-                regex = "^(?!\\s*$).+",
-                message = "El campo no debe estar vacío"
+                regex = "^\\d{3}$",
+                message = "La contraseña debe al menos tener 3 caracteres"
             )
         ),
         modifier = Modifier
