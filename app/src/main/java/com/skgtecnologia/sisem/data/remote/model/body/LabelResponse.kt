@@ -19,7 +19,7 @@ data class LabelResponse(
     override val type: BodyRowType = BodyRowType.RICH_LABEL
 
     override fun mapToDomain(): BodyRowModel = RichLabelModel(
-        identifier = identifier ?: error("Identifier cannot be null"),
+        identifier = identifier,
         text = text ?: error("Label text cannot be null"),
         textStyle = textStyle ?: error("Text style cannot be null"),
         modifier = modifier ?: Modifier
