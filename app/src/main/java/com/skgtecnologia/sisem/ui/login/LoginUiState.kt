@@ -4,5 +4,5 @@ import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 
 data class LoginUiState(
     val screenModel: ScreenModel? = null,
-    val loading: Boolean = false
+    val isLoading: Boolean = false
 )
