@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -32,14 +33,19 @@ import com.valkiria.uicomponents.utlis.getResourceIdByName
 
 @Composable
 fun TextFieldComponent(
-    uiModel: TextFieldUiModel
+    uiModel: TextFieldUiModel,
+    isTablet: Boolean = false,
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon.orEmpty(), DefType.DRAWABLE
     )
 
     Row(
-        modifier = uiModel.modifier.fillMaxWidth(),
+        modifier = if (isTablet) {
+            uiModel.modifier.width(300.dp)
+        } else {
+            uiModel.modifier.fillMaxWidth()
+        },
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {

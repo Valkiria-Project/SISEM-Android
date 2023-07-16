@@ -25,5 +25,5 @@ fun ButtonStyle.mapToColors(): ButtonColors = when (this) {
 @Composable
 fun ButtonStyle.mapToTextColor(): Color = when (this) {
     ButtonStyle.LOUD -> MaterialTheme.colorScheme.onPrimary
-    ButtonStyle.TRANSPARENT -> MaterialTheme.colorScheme.onPrimary
+    ButtonStyle.TRANSPARENT -> MaterialTheme.colorScheme.onBackground
 }

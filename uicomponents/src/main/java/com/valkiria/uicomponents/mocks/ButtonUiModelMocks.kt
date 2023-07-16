@@ -41,3 +41,36 @@ fun getLoginForgotButtonUiModel(): ButtonUiModel {
         )
     )
 }
+
+fun getLoginButtonUiModel(): ButtonUiModel {
+    /*
+    {
+        "label": "INGRESAR",
+        "style": "LOUD",
+        "text_style": "HEADLINE_5",
+        "on_click": "LOGIN",
+        "size": "FULL_WIDTH",
+        "identifier": "LOGIN_BUTTON",
+        "margins": {
+            "top": 20,
+            "left": 20,
+            "right": 20,
+            "bottom": 0
+        },
+        "type": "BUTTON"
+    }
+    */
+    return ButtonUiModel(
+        label = "INGRESAR",
+        style = ButtonStyle.LOUD,
+        textStyle = TextStyle.HEADLINE_5,
+        onClick = OnClick.LOGIN,
+        size = ButtonSize.FULL_WIDTH,
+        modifier = Modifier.padding(
+            start = 20.dp,
+            top = 20.dp,
+            end = 20.dp,
+            bottom = 0.dp
+        )
+    )
+}

@@ -28,6 +28,7 @@ import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 @Composable
 fun BodySection(
     body: List<BodyRowModel>?,
+    isTablet: Boolean,
     modifier: Modifier = Modifier
 ) {
     if (body?.isNotEmpty() == true) {
@@ -42,11 +43,13 @@ fun BodySection(
                     is ButtonModel -> item(key = model.identifier) {
                         when (model.identifier) {
                             LoginIdentifier.LOGIN_BUTTON.name -> ButtonComponent(
-                                uiModel = model.mapToUiModel()
+                                uiModel = model.mapToUiModel(),
+                                isTablet = isTablet
                             )
 
                             LoginIdentifier.LOGIN_FORGOT_PASSWORD_BUTTON.name -> ButtonComponent(
                                 uiModel = model.mapToUiModel(),
+                                isTablet = isTablet,
                                 arrangement = Arrangement.Start
                             )
                         }
@@ -67,7 +70,10 @@ fun BodySection(
                     }
 
                     is PasswordTextFieldModel -> item(key = model.identifier) {
-                        PasswordTextFieldComponent(uiModel = model.mapToUiModel())
+                        PasswordTextFieldComponent(
+                            uiModel = model.mapToUiModel(),
+                            isTablet = isTablet
+                        )
                     }
 
                     is RichLabelModel -> item(key = model.identifier) {
@@ -79,7 +85,10 @@ fun BodySection(
                     }
 
                     is TextFieldModel -> item(key = model.identifier) {
-                        TextFieldComponent(uiModel = model.mapToUiModel())
+                        TextFieldComponent(
+                            uiModel = model.mapToUiModel(),
+                            isTablet = isTablet
+                        )
                     }
                 }
             }

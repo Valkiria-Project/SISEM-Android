@@ -13,6 +13,7 @@ import com.valkiria.uicomponents.components.loader.LoaderComponent
 
 @Composable
 fun LoginScreen(
+    isTablet: Boolean,
     modifier: Modifier = Modifier
 ) {
     val loginViewModel = hiltViewModel<LoginViewModel>()
@@ -34,6 +35,7 @@ fun LoginScreen(
 
             BodySection(
                 body = uiState.screenModel?.body,
+                isTablet = isTablet,
                 modifier = modifier
                     .constrainAs(body) {
                         top.linkTo(header.bottom)
