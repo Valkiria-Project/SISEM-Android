@@ -9,6 +9,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
+import com.valkiria.uicomponents.components.loader.LoaderComponent
 import timber.log.Timber
 
 @Composable
@@ -19,28 +20,32 @@ fun LoginScreen(
     val loginScreenViewModel = hiltViewModel<LoginScreenViewModel>()
     val uiState = loginScreenViewModel.uiState
 
-    ConstraintLayout(
-        modifier = modifier.fillMaxSize()
-    ) {
-        val (header, body) = createRefs()
-
-        LoginHeaderSection(
-            modifier = modifier.constrainAs(header) {
-                top.linkTo(parent.top)
-            }
-        )
-
-        BodySection(
-            body = uiState.screenModel?.body,
-            modifier = modifier
-                .constrainAs(body) {
-                    top.linkTo(header.bottom)
-                    bottom.linkTo(parent.bottom)
-                    height = Dimension.fillToConstraints
-                }
-                .padding(top = 20.dp)
+    if (uiState.loading) {
+        LoaderComponent()
+    } else {
+        ConstraintLayout(
+            modifier = modifier.fillMaxSize()
         ) {
-            Timber.d("This is going to be fun")
+            val (header, body) = createRefs()
+
+            LoginHeaderSection(
+                modifier = modifier.constrainAs(header) {
+                    top.linkTo(parent.top)
+                }
+            )
+
+            BodySection(
+                body = uiState.screenModel?.body,
+                modifier = modifier
+                    .constrainAs(body) {
+                        top.linkTo(header.bottom)
+                        bottom.linkTo(parent.bottom)
+                        height = Dimension.fillToConstraints
+                    }
+                    .padding(top = 20.dp)
+            ) {
+                Timber.d("This is going to be fun")
+            }
         }
     }
 }

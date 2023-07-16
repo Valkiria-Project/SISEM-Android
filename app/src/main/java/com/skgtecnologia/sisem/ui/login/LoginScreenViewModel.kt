@@ -26,11 +26,15 @@ class LoginScreenViewModel @Inject constructor(
 
     init {
         job?.cancel()
+        uiState = uiState.copy(loading = true)
         job = viewModelScope.launch(Dispatchers.IO) {
             getLoginScreen.invoke("123")
                 .onSuccess { loginScreenModel ->
                     withContext(Dispatchers.Main) {
-                        uiState = uiState.copy(screenModel = loginScreenModel)
+                        uiState = uiState.copy(
+                            screenModel = loginScreenModel,
+                            loading = false
+                        )
                     }
                 }
                 .onFailure { throwable ->
