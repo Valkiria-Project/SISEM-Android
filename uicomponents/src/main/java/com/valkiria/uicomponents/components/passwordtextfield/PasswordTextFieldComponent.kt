@@ -118,7 +118,8 @@ fun PasswordTextFieldComponent(
             } else {
                 PasswordVisualTransformation()
             },
-            keyboardOptions = uiModel.keyboardOptions
+            keyboardOptions = uiModel.keyboardOptions,
+            singleLine = true
         )
     }
 }
