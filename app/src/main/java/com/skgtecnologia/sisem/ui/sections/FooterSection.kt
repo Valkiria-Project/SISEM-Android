@@ -1,33 +1,24 @@
 package com.skgtecnologia.sisem.ui.sections
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.body.ButtonModel
+import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
+import com.skgtecnologia.sisem.domain.model.footer.FooterModel
+import com.valkiria.uicomponents.components.button.ButtonComponent
 
 @Composable
 fun FooterSection(
-    buttonModelList: List<ButtonModel>?,
-    modifier: Modifier,
-    onClick: () -> Unit
+    footerModel: FooterModel?,
+    modifier: Modifier
 ) {
-    if (buttonModelList?.isNotEmpty() == true) {
-        Column(
-            modifier = modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            buttonModelList.map { button ->
-                Button(
-                    onClick = { onClick.invoke() }
-                ) {
-                    Text(text = button.label)
-                }
+    footerModel?.let {
+        Row {
+            footerModel.leftButton?.let {
+                ButtonComponent(model = it.mapToUiModel())
+            }
+            footerModel.rightButton?.let {
+                ButtonComponent(model = it.mapToUiModel())
             }
         }
     }

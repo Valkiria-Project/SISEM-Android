@@ -21,33 +21,44 @@ import com.valkiria.uicomponents.utlis.getResourceIdByName
 
 @Composable
 fun HeaderSection(
-    headerModel: HeaderModel,
+    headerModel: HeaderModel?,
     modifier: Modifier
 ) {
-    Column(
-        modifier = headerModel.modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+    headerModel?.let {
+        Column(
+            modifier = headerModel.modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val iconResourceId = LocalContext.current.getResourceIdByName(
-                headerModel.leftIcon.orEmpty(), DefType.DRAWABLE
-            )
-
-            iconResourceId?.let {
-                Icon(
-                    painter = painterResource(id = iconResourceId),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(end = 13.dp)
-                        .size(42.dp),
-                    tint = MaterialTheme.colorScheme.primary
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val iconResourceId = LocalContext.current.getResourceIdByName(
+                    headerModel.leftIcon.orEmpty(), DefType.DRAWABLE
                 )
+
+                iconResourceId?.let {
+                    Icon(
+                        painter = painterResource(id = iconResourceId),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(end = 13.dp)
+                            .size(42.dp),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+
+                headerModel.title?.let {
+                    RichLabelComponent(
+                        uiModel = RichLabelUiModel(
+                            text = it.text,
+                            textStyle = it.textStyle,
+                        )
+                    )
+                }
             }
 
-            headerModel.title?.let {
+            headerModel.subtitle?.let {
                 RichLabelComponent(
                     uiModel = RichLabelUiModel(
                         text = it.text,
@@ -55,15 +66,6 @@ fun HeaderSection(
                     )
                 )
             }
-        }
-
-        headerModel.subtitle?.let {
-            RichLabelComponent(
-                uiModel = RichLabelUiModel(
-                    text = it.text,
-                    textStyle = it.textStyle,
-                )
-            )
         }
     }
 }

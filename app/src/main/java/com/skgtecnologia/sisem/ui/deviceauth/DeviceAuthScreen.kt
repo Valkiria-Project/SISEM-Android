@@ -9,6 +9,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
+import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 
@@ -25,31 +26,36 @@ fun DeviceAuthScreen(
         ConstraintLayout(
             modifier = modifier.fillMaxSize()
         ) {
-            val (header, body, footer) = createRefs()
 
             with(uiState.screenModel) {
 
-                this?.header?.let { headerModel ->
-                    HeaderSection(
-                        headerModel = headerModel,
-                        modifier = modifier.constrainAs(header) {
-                            top.linkTo(parent.top)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                        }
-                    )
-                }
+                val (header, body, footer) = createRefs()
 
+                HeaderSection(
+                    headerModel = this?.header,
+                    modifier = modifier.constrainAs(header) {
+                        top.linkTo(parent.top)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+                )
 
                 BodySection(
-                    body = uiState.screenModel?.body,
+                    body = this?.body,
                     modifier = modifier
                         .constrainAs(body) {
                             top.linkTo(header.bottom)
-                            bottom.linkTo(parent.bottom)
+                            bottom.linkTo(footer.top)
                             height = Dimension.fillToConstraints
                         }
                         .padding(top = 20.dp)
+                )
+
+                FooterSection(
+                    footerModel = this?.footer,
+                    modifier = modifier.constrainAs(footer) {
+                        bottom.linkTo(parent.bottom)
+                    }
                 )
             }
         }
