@@ -10,12 +10,10 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.components.loader.LoaderComponent
-import timber.log.Timber
 
 @Composable
 fun DeviceAuthScreen(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    modifier: Modifier = Modifier
 ) {
     val deviceAuthViewModel = hiltViewModel<DeviceAuthViewModel>()
     val uiState = deviceAuthViewModel.uiState
@@ -43,9 +41,7 @@ fun DeviceAuthScreen(
                         height = Dimension.fillToConstraints
                     }
                     .padding(top = 20.dp)
-            ) {
-                Timber.d("This is going to be fun")
-            }
+            )
         }
     }
 }

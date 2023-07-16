@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
@@ -21,32 +20,30 @@ import com.skgtecnologia.sisem.ui.theme.SisemTheme
 @Composable
 fun ComposeApp() {
     Scaffold(
-            modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
     ) { paddingValues ->
         val modifier = Modifier.padding(paddingValues)
         val navController = rememberNavController()
         NavHost(
-                navController = navController,
-                startDestination = NavigationGraph.Auth.route
+            navController = navController,
+            startDestination = NavigationGraph.Auth.route
         ) {
-            authGraph(navController, modifier)
+            authGraph(modifier)
         }
     }
 }
 
-private fun NavGraphBuilder.authGraph(navController: NavHostController, modifier: Modifier) {
+private fun NavGraphBuilder.authGraph(modifier: Modifier) {
     navigation(
-            startDestination = AuthNavigationRoute.Login.route,
-            route = NavigationGraph.Auth.route
+        startDestination = AuthNavigationRoute.DeviceAuth.route,
+        route = NavigationGraph.Auth.route
     ) {
         composable(
-                route = AuthNavigationRoute.Login.route
+            route = AuthNavigationRoute.Login.route
         ) {
             LoginScreen(
-                    modifier = modifier
-            ) {
-                    navController.navigate(AuthNavigationRoute.DeviceAuth.route)
-            }
+                modifier = modifier
+            )
         }
 
         composable(
@@ -54,9 +51,7 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController, modifier
         ) {
             DeviceAuthScreen(
                 modifier = modifier
-            ) {
-                //navController.navigate(NavigationRoute.FETCH)
-            }
+            )
         }
     }
 }

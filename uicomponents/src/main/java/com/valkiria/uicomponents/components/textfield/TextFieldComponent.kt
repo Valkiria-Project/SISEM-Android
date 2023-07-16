@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.mocks.getLoginTextFieldUiModel
 import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.theme.UiComponentsTheme
-import com.valkiria.uicomponents.utlis.DefType.DRAWABLE
+import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 
 @Composable
@@ -35,7 +35,7 @@ fun TextFieldComponent(
     uiModel: TextFieldUiModel
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
-        uiModel.icon.orEmpty(), DRAWABLE
+        uiModel.icon.orEmpty(), DefType.DRAWABLE
     )
 
     Row(
@@ -49,7 +49,7 @@ fun TextFieldComponent(
                 contentDescription = null,
                 modifier = Modifier
                     .padding(top = 8.dp, end = 8.dp)
-                    .size(48.dp),
+                    .size(42.dp),
                 tint = MaterialTheme.colorScheme.primary
             )
         }
