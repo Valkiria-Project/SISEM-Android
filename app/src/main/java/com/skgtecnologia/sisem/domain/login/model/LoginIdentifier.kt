@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.domain.login
+package com.skgtecnologia.sisem.domain.login.model
 
 enum class LoginIdentifier {
     LOGIN_BUTTON,

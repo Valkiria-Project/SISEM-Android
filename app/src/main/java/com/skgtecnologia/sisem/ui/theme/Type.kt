@@ -26,32 +26,32 @@ val montserratFontFamily = FontFamily(
 val Typography = Typography(
     displayLarge = TextStyle(
         fontSize = 25.sp,
-        fontWeight = FontWeight.W500,
+        fontWeight = FontWeight.Medium,
         fontFamily = montserratFontFamily
     ),
     displayMedium = TextStyle(
         fontSize = 18.sp,
-        fontWeight = FontWeight.W700,
+        fontWeight = FontWeight.Bold,
         fontFamily = montserratFontFamily
     ),
     displaySmall = TextStyle(
         fontSize = 18.sp,
-        fontWeight = FontWeight.W500,
+        fontWeight = FontWeight.Medium,
         fontFamily = montserratFontFamily
     ),
     headlineMedium = TextStyle(
         fontSize = 16.sp,
-        fontWeight = FontWeight.W700,
+        fontWeight = FontWeight.Bold,
         fontFamily = montserratFontFamily
     ),
     headlineSmall = TextStyle(
         fontSize = 16.sp,
-        fontWeight = FontWeight.W500,
+        fontWeight = FontWeight.Medium,
         fontFamily = montserratFontFamily
     ),
     titleLarge = TextStyle(
         fontSize = 16.sp,
-        fontWeight = FontWeight.W400,
+        fontWeight = FontWeight.Normal,
         fontFamily = montserratFontFamily
     ),
     titleMedium = TextStyle(
@@ -62,15 +62,17 @@ val Typography = Typography(
     ),
     bodyLarge = TextStyle(
         fontSize = 14.sp,
-        fontWeight = FontWeight.W400,
+        fontWeight = FontWeight.Normal,
         fontFamily = montserratFontFamily
     ),
     labelLarge = TextStyle(
         fontSize = 13.sp,
-        fontWeight = FontWeight.W400,
+        fontWeight = FontWeight.Normal,
         fontFamily = montserratFontFamily
     ),
     labelMedium = TextStyle(
+        fontSize = 12.sp,
+        fontWeight = FontWeight.SemiBold,
         fontFamily = montserratFontFamily
     ),
     labelSmall = TextStyle(
