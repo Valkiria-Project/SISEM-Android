@@ -67,7 +67,7 @@ fun BodySection(
                         )
                     }
 
-                    is LabelModel -> item(key = model.identifier) {
+                    is LabelModel -> item {
                         LabelComponent(uiModel = model.mapToUiModel())
                     }
 

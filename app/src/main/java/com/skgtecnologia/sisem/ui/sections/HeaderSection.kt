@@ -1,80 +1,69 @@
 package com.skgtecnologia.sisem.ui.sections
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import com.skgtecnologia.sisem.R
-import com.skgtecnologia.sisem.R.drawable
-import com.valkiria.uicomponents.theme.Green40
-import com.valkiria.uicomponents.utlis.forwardingPainter
+import com.skgtecnologia.sisem.domain.model.header.HeaderModel
+import com.valkiria.uicomponents.components.label.LabelComponent
+import com.valkiria.uicomponents.components.label.LabelUiModel
+import com.valkiria.uicomponents.utlis.DefType
+import com.valkiria.uicomponents.utlis.getResourceIdByName
 
 @Composable
 fun HeaderSection(
-    title: String,
-    iconUrl: String?,
+    headerModel: HeaderModel?,
     modifier: Modifier
 ) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp)
-            .shadow(elevation = 16.dp)
-            .defaultMinSize(minHeight = 88.dp),
-        shape = MaterialTheme.shapes.medium,
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(all = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+    headerModel?.let {
+        Column(
+            modifier = headerModel.modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = title,
-                modifier = Modifier
-                    .padding(end = 16.dp)
-                    .weight(1f),
-                fontSize = 20.sp,
-                color = Color.Black.copy(alpha = 0.9f),
-                fontWeight = FontWeight.W600
-//            fontFamily = FontFamily(Font(R.font.proxima nova)),
-            )
-            AsyncImage(
-                model = iconUrl,
-                contentDescription = null,
-                modifier = Modifier.size(56.dp),
-                placeholder = forwardingPainter(
-                    painter = painterResource(drawable.ic_launcher_foreground),
-                    colorFilter = ColorFilter.tint(Green40),
-                ),
-                error = forwardingPainter(
-                    painter = painterResource(drawable.ic_launcher_foreground),
-                    colorFilter = ColorFilter.tint(Green40),
-                ),
-                contentScale = ContentScale.FillBounds
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val iconResourceId = LocalContext.current.getResourceIdByName(
+                    headerModel.leftIcon.orEmpty(), DefType.DRAWABLE
+                )
+
+                iconResourceId?.let {
+                    Icon(
+                        painter = painterResource(id = iconResourceId),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(end = 13.dp)
+                            .size(42.dp),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+
+                LabelComponent(
+                    uiModel = LabelUiModel(
+                        text = headerModel.title.text,
+                        textStyle = headerModel.title.textStyle
+                    )
+                )
+            }
+
+            headerModel.subtitle?.let {
+                LabelComponent(
+                    uiModel = LabelUiModel(
+                        text = it.text,
+                        textStyle = it.textStyle,
+                    )
+                )
+            }
         }
     }
 }

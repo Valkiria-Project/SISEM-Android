@@ -1,17 +1,21 @@
 package com.skgtecnologia.sisem.data.remote.model.header
 
+import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.domain.model.header.HeaderModel
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-const val DEFAULT_ICON_URL =
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/64px-Bitcoin.svg.png"
-
+@JsonClass(generateAdapter = true)
 data class HeaderResponse(
-    val title: String? = null,
-    val iconUrl: String? = null,
-//    val closeAction: Action
+    @Json(name = "title") val title: TitleResponse?,
+    @Json(name = "subtitle") val subtitle: SubtitleResponse?,
+    @Json(name = "left_icon") val leftIcon: String?,
+    @Json(name = "margins") val modifier: Modifier?
 )
 
 fun HeaderResponse.mapToDomain(): HeaderModel = HeaderModel(
-    title = this.title ?: error("Header title cannot be null"),
-    iconUrl = this.iconUrl ?: DEFAULT_ICON_URL
+    title = this.title?.mapToDomain() ?: error("Header title cannot be null"),
+    subtitle = this.subtitle?.mapToDomain(),
+    leftIcon = this.leftIcon,
+    modifier = this.modifier ?: Modifier
 )
