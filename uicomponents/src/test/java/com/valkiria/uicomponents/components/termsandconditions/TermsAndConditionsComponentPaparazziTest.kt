@@ -3,6 +3,7 @@ package com.valkiria.uicomponents.components.termsandconditions
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.android.ide.common.rendering.api.SessionParams
+import com.valkiria.uicomponents.action.TermsAndConditionsUiAction
 import com.valkiria.uicomponents.mocks.getLoginTermsAndConditionsUiModel
 import org.junit.Rule
 import org.junit.Test
@@ -20,9 +21,12 @@ class TermsAndConditionsComponentPaparazziTest {
     @Test
     fun snapLoginTermsAndConditionsComponent() {
         paparazziRule.snapshot {
-            TermsAndConditionsComponent(uiModel = getLoginTermsAndConditionsUiModel()) { link ->
-                Timber.d("$link clicked")
-            }
+            TermsAndConditionsComponent(
+                uiModel = getLoginTermsAndConditionsUiModel(),
+                uiAction = TermsAndConditionsUiAction { link ->
+                    Timber.d("$link clicked")
+                }
+            )
         }
     }
 }

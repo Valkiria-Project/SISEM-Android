@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
+import com.skgtecnologia.sisem.ui.error.ErrorUiModel
+import com.valkiria.uicomponents.props.TextStyle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -41,6 +43,16 @@ class LoginViewModel @Inject constructor(
                 }
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
+                    // BACKEND: How to handle errors?
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        errorModel = ErrorUiModel(
+                            title = "Error",
+                            titleTextStyle = TextStyle.BODY_1,
+                            text = "Error",
+                            textStyle = TextStyle.BODY_1
+                        )
+                    )
                 }
         }
     }

@@ -6,7 +6,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
@@ -19,6 +18,7 @@ import com.skgtecnologia.sisem.domain.model.body.RichLabelModel
 import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
+import com.valkiria.uicomponents.action.TermsAndConditionsUiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
 import com.valkiria.uicomponents.components.label.LabelComponent
@@ -35,8 +35,6 @@ fun BodySection(
     modifier: Modifier = Modifier,
     onClick: (link: String) -> Unit
 ) {
-    val context = LocalContext.current
-
     if (body?.isNotEmpty() == true) {
         LazyColumn(
             modifier = modifier,
@@ -89,10 +87,11 @@ fun BodySection(
                     is TermsAndConditionsModel -> item(key = model.identifier) {
                         TermsAndConditionsComponent(
                             uiModel = model.mapToUiModel(),
-                            isTablet = isTablet
-                        ) { link ->
-                            onClick(link)
-                        }
+                            isTablet = isTablet,
+                            uiAction = TermsAndConditionsUiAction { link ->
+                                onClick(link)
+                            }
+                        )
                     }
 
                     is TextFieldModel -> item(key = model.identifier) {
