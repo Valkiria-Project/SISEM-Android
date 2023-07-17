@@ -34,8 +34,7 @@ fun BodySection(
     body: List<BodyRowModel>?,
     isTablet: Boolean,
     modifier: Modifier = Modifier,
-    uiAction: UiAction? = null, // TODO: Finish this implementation (invoke generic fun?)
-    onClick: (link: String) -> Unit
+    onAction: (actionInput: UiAction) -> Unit
 ) {
     if (body?.isNotEmpty() == true) {
         LazyColumn(
@@ -89,11 +88,10 @@ fun BodySection(
                     is TermsAndConditionsModel -> item(key = model.identifier) {
                         TermsAndConditionsComponent(
                             uiModel = model.mapToUiModel(),
-                            isTablet = isTablet,
-                            uiAction = TermsAndConditionsUiAction { link ->
-                                onClick(link)
-                            }
-                        )
+                            isTablet = isTablet
+                        ) { link ->
+                            onAction(TermsAndConditionsUiAction(link = link))
+                        }
                     }
 
                     is TextFieldModel -> item(key = model.identifier) {

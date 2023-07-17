@@ -14,6 +14,7 @@ import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.model.toBottomSheetUiModel
 import com.skgtecnologia.sisem.ui.error.toBottomSheetUiModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
+import com.valkiria.uicomponents.action.TermsAndConditionsUiAction
 import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 import kotlinx.coroutines.launch
@@ -54,7 +55,13 @@ fun LoginScreen(
                     }
                     .padding(top = 20.dp)
             ) {
-                viewModel.showBottomSheet(LoginLink.getLinkByName(it))
+                when (it) {
+                    is TermsAndConditionsUiAction -> viewModel.showBottomSheet(
+                        LoginLink.getLinkByName(
+                            it.link
+                        )
+                    )
+                }
             }
         }
 

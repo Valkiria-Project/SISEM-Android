@@ -1,6 +1,5 @@
 package com.valkiria.uicomponents.components.termsandconditions
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,7 +17,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ireward.htmlcompose.HtmlText
-import com.valkiria.uicomponents.action.TermsAndConditionsUiAction
 import com.valkiria.uicomponents.mocks.getLoginTermsAndConditionsUiModel
 import com.valkiria.uicomponents.theme.UiComponentsTheme
 import timber.log.Timber
@@ -27,7 +25,7 @@ import timber.log.Timber
 fun TermsAndConditionsComponent(
     uiModel: TermsAndConditionsUiModel,
     isTablet: Boolean = false,
-    uiAction: TermsAndConditionsUiAction
+    onAction: (link: String) -> Unit
 ) {
     Row(
         modifier = if (isTablet) {
@@ -49,8 +47,7 @@ fun TermsAndConditionsComponent(
             style = MaterialTheme.typography.labelMedium,
             linkClicked = { link ->
                 Timber.d("$link clicked")
-
-                uiAction.onClick(link)
+                onAction(link)
             },
             URLSpanStyle = SpanStyle(
                 color = MaterialTheme.colorScheme.primary,
@@ -69,11 +66,10 @@ fun TermsAndConditionsComponentPreview() {
             modifier = Modifier.background(Color.DarkGray)
         ) {
             TermsAndConditionsComponent(
-                uiModel = getLoginTermsAndConditionsUiModel(),
-                uiAction = TermsAndConditionsUiAction { link ->
-                    Toast.makeText(context, "Handle $link clicked", Toast.LENGTH_LONG).show()
-                }
-            )
+                uiModel = getLoginTermsAndConditionsUiModel()
+            ) { link ->
+                Timber.d("Handle $link clicked")
+            }
         }
     }
 }
