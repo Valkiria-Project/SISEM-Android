@@ -17,6 +17,7 @@ import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
 import com.valkiria.uicomponents.action.LoginUiAction.Login
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
+import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 import kotlinx.coroutines.launch
@@ -58,15 +59,7 @@ fun LoginScreen(
                     }
                     .padding(top = 20.dp)
             ) { uiAction ->
-                when (uiAction) {
-                    // FIXME: Navigate to ForgotPasswordScreen
-                    ForgotPassword -> Timber.d("ForgotPasswordButton clicked")
-                    // FIXME: Hardcoded data
-                    Login -> viewModel.login("JGARCíA", "Asd1026.")
-                    is TermsAndConditions -> viewModel.showBottomSheet(
-                        LoginLink.getLinkByName(link = uiAction.link)
-                    )
-                }
+                handleUiAction(uiAction, viewModel)
             }
         }
 
@@ -97,5 +90,20 @@ fun LoginScreen(
                 viewModel.handleShownBottomSheet()
             }
         }
+    }
+}
+
+private fun handleUiAction(
+    uiAction: UiAction,
+    viewModel: LoginViewModel
+) {
+    when (uiAction) {
+        // FIXME: Navigate to ForgotPasswordScreen
+        ForgotPassword -> Timber.d("ForgotPasswordButton clicked")
+        // FIXME: Hardcoded data
+        Login -> viewModel.login("JGARCíA", "Asd1026.")
+        is TermsAndConditions -> viewModel.showBottomSheet(
+            LoginLink.getLinkByName(link = uiAction.link)
+        )
     }
 }

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.login.usecases.Login
@@ -21,7 +22,8 @@ import timber.log.Timber
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val getLoginScreen: GetLoginScreen,
-    private val login: Login
+    private val login: Login,
+    androidIdProvider: AndroidIdProvider
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -34,7 +36,7 @@ class LoginViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            getLoginScreen.invoke("123") // FIXME
+            getLoginScreen.invoke(androidIdProvider.getAndroidId())
                 .onSuccess { loginScreenModel ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
@@ -65,8 +67,8 @@ class LoginViewModel @Inject constructor(
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
             login.invoke(username, password)
-                .onSuccess { username ->
-                    Timber.d("Successful login with $username")
+                .onSuccess { loginModel ->
+                    Timber.d("Successful login with ${loginModel.username}")
                     uiState = uiState.copy(
                         isLoading = false
                     )

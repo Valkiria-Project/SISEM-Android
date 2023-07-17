@@ -11,7 +11,6 @@ import com.valkiria.uicomponents.props.TextStyle
 import com.valkiria.uicomponents.theme.UiComponentsTheme
 
 // TODO: Finish this component
-@Suppress("ForbiddenComment")
 @Composable
 fun LabelComponent(
     uiModel: LabelUiModel,

@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.data.login
 
 import com.skgtecnologia.sisem.data.login.remote.LoginRemoteDataSource
 import com.skgtecnologia.sisem.domain.login.LoginRepository
+import com.skgtecnologia.sisem.domain.login.model.LoginModel
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import javax.inject.Inject
 
@@ -12,6 +13,6 @@ class LoginRepositoryImpl @Inject constructor(
     override suspend fun getLoginScreen(serial: String): ScreenModel =
         loginRemoteDatasource.getLoginScreen(serial).getOrThrow()
 
-    override suspend fun login(username: String, password: String): String =
+    override suspend fun login(username: String, password: String): LoginModel =
         loginRemoteDatasource.login(username, password).getOrThrow()
 }

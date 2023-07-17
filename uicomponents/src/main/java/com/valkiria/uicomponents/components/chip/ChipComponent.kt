@@ -44,7 +44,7 @@ fun ChipComponent(
             label = {
                 Text(
                     text = uiModel.text,
-                    style = uiModel.textStyle.toTextStyle() // BACKEND: H5 is too small + not bold
+                    style = uiModel.textStyle.toTextStyle()
                 )
             },
             modifier = uiModel.modifier,

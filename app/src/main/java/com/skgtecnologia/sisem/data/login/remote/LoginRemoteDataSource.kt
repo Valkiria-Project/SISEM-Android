@@ -7,6 +7,7 @@ import com.skgtecnologia.sisem.data.login.remote.model.mapToDomain
 import com.skgtecnologia.sisem.data.remote.model.screen.Params
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
 import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
+import com.skgtecnologia.sisem.domain.login.model.LoginModel
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +33,7 @@ class LoginRemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun login(username: String, password: String): Result<String> = resultOf {
+    suspend fun login(username: String, password: String): Result<LoginModel> = resultOf {
         val response = withContext(Dispatchers.IO) {
             loginApi.login(loginBody = LoginBody(username = username, password = password))
         }

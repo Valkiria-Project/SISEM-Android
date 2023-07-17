@@ -37,6 +37,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 const val HTTP_HEADER_CLIENT_VERSION = "User-Agent"
+const val CLIENT_VERSION = "sisem/Android/" + BuildConfig.VERSION_NAME
 const val HTTP_HEADER_IMEI = "geolocation"
 private const val OK_HTTP_CLIENT_TIMEOUT_DEFAULTS = 15_000L
 private const val BASE_URL = "http://34.69.190.119:8080/"
@@ -133,7 +134,7 @@ object CoreNetworkModule {
         Interceptor { chain ->
             val request = chain.request()
                 .newBuilder()
-                .addHeader(HTTP_HEADER_CLIENT_VERSION, "sisem/Android/1.0.0") // FIXME: Hardcoded data
+                .addHeader(HTTP_HEADER_CLIENT_VERSION, CLIENT_VERSION)
                 .addHeader(HTTP_HEADER_IMEI, "6.155216, -75.327840") // FIXME: Hardcoded data
                 .build()
             chain.proceed(request)
