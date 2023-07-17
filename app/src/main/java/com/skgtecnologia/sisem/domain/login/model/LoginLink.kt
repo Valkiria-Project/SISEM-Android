@@ -28,7 +28,7 @@ fun LoginLink.toBottomSheetUiModel() = when (this) {
         titleTextStyle = TextStyle.HEADLINE_1,
         subtitle = stringResource(id = R.string.privacy_policy_subtitle),
         subtitleTextStyle = TextStyle.HEADLINE_6,
-        text = stringResource(id = R.string.privacy_policy_title),
+        text = stringResource(id = R.string.privacy_policy_text),
         textStyle = TextStyle.HEADLINE_5
     )
 
