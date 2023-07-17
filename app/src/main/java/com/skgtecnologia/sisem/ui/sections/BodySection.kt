@@ -18,7 +18,7 @@ import com.skgtecnologia.sisem.domain.model.body.RichLabelModel
 import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
-import com.valkiria.uicomponents.action.TermsAndConditionsUiAction
+import com.valkiria.uicomponents.action.LoginUiAction.LoginTermsAndConditions
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
@@ -90,7 +90,7 @@ fun BodySection(
                             uiModel = model.mapToUiModel(),
                             isTablet = isTablet
                         ) { link ->
-                            onAction(TermsAndConditionsUiAction(link = link))
+                            onAction(LoginTermsAndConditions(link = link))
                         }
                     }
 

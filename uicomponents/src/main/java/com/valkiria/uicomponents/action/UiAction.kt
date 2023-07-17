@@ -1,5 +1,7 @@
 package com.valkiria.uicomponents.action
 
-interface UiAction {
-    val type: UiActionType
+sealed interface UiAction
+
+sealed class LoginUiAction : UiAction {
+    data class LoginTermsAndConditions(val link: String) : LoginUiAction()
 }

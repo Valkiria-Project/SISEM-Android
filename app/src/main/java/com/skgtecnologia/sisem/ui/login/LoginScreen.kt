@@ -14,7 +14,7 @@ import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.model.toBottomSheetUiModel
 import com.skgtecnologia.sisem.ui.error.toBottomSheetUiModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
-import com.valkiria.uicomponents.action.TermsAndConditionsUiAction
+import com.valkiria.uicomponents.action.LoginUiAction.LoginTermsAndConditions
 import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 import kotlinx.coroutines.launch
@@ -54,12 +54,10 @@ fun LoginScreen(
                         height = Dimension.fillToConstraints
                     }
                     .padding(top = 20.dp)
-            ) {
-                when (it) {
-                    is TermsAndConditionsUiAction -> viewModel.showBottomSheet(
-                        LoginLink.getLinkByName(
-                            it.link
-                        )
+            ) { uiAction ->
+                when (uiAction) {
+                    is LoginTermsAndConditions -> viewModel.showBottomSheet(
+                        LoginLink.getLinkByName(link = uiAction.link)
                     )
                 }
             }
