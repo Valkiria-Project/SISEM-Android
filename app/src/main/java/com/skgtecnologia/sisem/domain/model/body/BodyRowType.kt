@@ -4,9 +4,9 @@ enum class BodyRowType {
     BUTTON,
     CHIP,
     LABEL,
-    LABELED_SWITCH,
     PASSWORD_TEXT_FIELD,
     RICH_LABEL,
+    SEGMENTED_SWITCH,
     TERMS_AND_CONDITIONS,
     TEXT_FIELD
 }

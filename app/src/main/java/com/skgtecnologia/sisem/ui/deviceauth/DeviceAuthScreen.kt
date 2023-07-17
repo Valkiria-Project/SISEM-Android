@@ -32,14 +32,16 @@ fun DeviceAuthScreen(
 
                 val (header, body, footer) = createRefs()
 
-                HeaderSection(
-                    headerModel = this?.header,
-                    modifier = modifier.constrainAs(header) {
-                        top.linkTo(parent.top)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
-                )
+                this?.header?.let {
+                    HeaderSection(
+                        headerModel = it,
+                        modifier = modifier.constrainAs(header) {
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        }
+                    )
+                }
 
                 BodySection(
                     body = this?.body,
@@ -53,12 +55,14 @@ fun DeviceAuthScreen(
                         .padding(top = 20.dp)
                 )
 
-                FooterSection(
-                    footerModel = this?.footer,
-                    modifier = modifier.constrainAs(footer) {
-                        bottom.linkTo(parent.bottom)
-                    }
-                )
+                this?.footer?.let {
+                    FooterSection(
+                        footerModel = it,
+                        modifier = modifier.constrainAs(footer) {
+                            bottom.linkTo(parent.bottom)
+                        }
+                    )
+                }
             }
         }
     }

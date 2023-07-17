@@ -21,49 +21,49 @@ import com.valkiria.uicomponents.utlis.getResourceIdByName
 
 @Composable
 fun HeaderSection(
-    headerModel: HeaderModel?,
+    headerModel: HeaderModel,
     modifier: Modifier
 ) {
-    headerModel?.let {
-        Column(
-            modifier = headerModel.modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+    Column(
+        modifier = headerModel.modifier
+            .fillMaxWidth()
+            .then(modifier),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                val iconResourceId = LocalContext.current.getResourceIdByName(
-                    headerModel.leftIcon.orEmpty(), DefType.DRAWABLE
-                )
+            val iconResourceId = LocalContext.current.getResourceIdByName(
+                headerModel.leftIcon.orEmpty(), DefType.DRAWABLE
+            )
 
-                iconResourceId?.let {
-                    Icon(
-                        painter = painterResource(id = iconResourceId),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .padding(end = 13.dp)
-                            .size(42.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
-
-                LabelComponent(
-                    uiModel = LabelUiModel(
-                        text = headerModel.title.text,
-                        textStyle = headerModel.title.textStyle
-                    )
+            iconResourceId?.let {
+                Icon(
+                    painter = painterResource(id = iconResourceId),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(end = 13.dp)
+                        .size(42.dp),
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
 
-            headerModel.subtitle?.let {
-                LabelComponent(
-                    uiModel = LabelUiModel(
-                        text = it.text,
-                        textStyle = it.textStyle,
-                    )
+            LabelComponent(
+                uiModel = LabelUiModel(
+                    text = headerModel.title.text,
+                    textStyle = headerModel.title.textStyle
                 )
-            }
+            )
+        }
+
+        headerModel.subtitle?.let {
+            LabelComponent(
+                uiModel = LabelUiModel(
+                    text = it.text,
+                    textStyle = it.textStyle,
+                )
+            )
         }
     }
 }

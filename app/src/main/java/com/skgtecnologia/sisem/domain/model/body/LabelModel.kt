@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.domain.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.body.BodyRowType.RICH_LABEL
+import com.skgtecnologia.sisem.domain.model.body.BodyRowType.SEGMENTED_SWITCH
 import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.props.TextStyle
 
@@ -11,7 +11,7 @@ data class LabelModel(
     val modifier: Modifier = Modifier
 ) : BodyRowModel {
 
-    override val type: BodyRowType = RICH_LABEL
+    override val type: BodyRowType = SEGMENTED_SWITCH
 }
 
 fun LabelModel.mapToUiModel() = LabelUiModel(

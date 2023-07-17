@@ -4,7 +4,6 @@ import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.LabelModel
-import com.skgtecnologia.sisem.domain.model.body.RichLabelModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.props.TextStyle
@@ -16,7 +15,7 @@ data class LabelResponse(
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
-    override val type: BodyRowType = BodyRowType.RICH_LABEL
+    override val type: BodyRowType = BodyRowType.SEGMENTED_SWITCH
 
     override fun mapToDomain(): BodyRowModel = LabelModel(
         text = text ?: error("Label text cannot be null"),
