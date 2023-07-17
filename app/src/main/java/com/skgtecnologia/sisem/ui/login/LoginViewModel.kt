@@ -59,8 +59,13 @@ class LoginViewModel @Inject constructor(
 
     fun showBottomSheet(link: LoginLink) {
         uiState = uiState.copy(
-            isLoading = false,
             bottomSheetLink = link
+        )
+    }
+
+    fun handleShownBottomSheet() {
+        uiState = uiState.copy(
+            bottomSheetLink = null
         )
     }
 }

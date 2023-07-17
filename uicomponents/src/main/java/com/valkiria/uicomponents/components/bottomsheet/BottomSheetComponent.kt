@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -26,25 +28,29 @@ import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.theme.UiComponentsTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
+import androidx.compose.ui.text.TextStyle.Companion as ComposeTextStyle
 
 @Composable
 fun BottomSheetComponent(
     uiModel: BottomSheetUiModel,
     modifier: Modifier = Modifier,
     sheetState: SheetState = rememberModalBottomSheetState(),
-    scope: CoroutineScope = rememberCoroutineScope()
+    scope: CoroutineScope = rememberCoroutineScope(),
+    onDismissRequest: () -> Unit
 ) {
     if (sheetState.isVisible) {
         ModalBottomSheet(
-            sheetState = sheetState,
             onDismissRequest = {
                 scope.launch {
                     sheetState.hide()
                 }
+                onDismissRequest()
             },
+            sheetState = sheetState
         ) {
             Row(
-                modifier = Modifier.padding(bottom = 20.dp),
+                modifier = Modifier.padding(20.dp),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 uiModel.icon?.let {
@@ -52,7 +58,7 @@ fun BottomSheetComponent(
                         painter = it,
                         contentDescription = null,
                         modifier = Modifier
-                            .padding(start = 20.dp, end = 16.dp)
+                            .padding(end = 16.dp)
                             .size(42.dp),
                         tint = MaterialTheme.colorScheme.primary
                     )
@@ -61,28 +67,24 @@ fun BottomSheetComponent(
                     text = uiModel.title,
                     style = uiModel.titleTextStyle.toTextStyle()
                 )
-//                CenterAlignedTopAppBar(
-//                    navigationIcon = {
-//                        IconButton(
-//                            onClick = {
-//                                scope.launch {
-//                                    sheetState.hide()
-//                                }
-//                            }
-//                        ) {
-//                            Icon(Icons.Rounded.Close, contentDescription = "Cancel")
-//                        }
-//                    },
-//                    title = {
-//                        Text("Content")
-//                    },
-//                    actions = {
-//                        IconButton(
-//                            onClick = { })
-//                        {
-//                            Icon(Icons.Rounded.Check, contentDescription = "Save")
-//                        }
-//                    })
+            }
+            uiModel.subtitle?.let {
+                Text(
+                    text = it,
+                    modifier = Modifier.padding(20.dp),
+                    style = uiModel.subtitleTextStyle?.toTextStyle() ?: ComposeTextStyle.Default
+                )
+            }
+            Column(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .fillMaxSize()
+            ) {
+                Text(
+                    text = uiModel.text,
+                    modifier = Modifier.padding(20.dp),
+                    style = uiModel.textStyle.toTextStyle()
+                )
             }
         }
     }
@@ -113,7 +115,9 @@ fun BottomSheetComponentPreview() {
                 ),
                 sheetState = sheetState,
                 scope = scope
-            )
+            ) {
+                Timber.d("Dismissed")
+            }
         }
     }
 }

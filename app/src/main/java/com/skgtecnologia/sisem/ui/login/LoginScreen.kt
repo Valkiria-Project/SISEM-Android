@@ -67,7 +67,9 @@ fun LoginScreen(
                 uiModel = link.toBottomSheetUiModel(),
                 sheetState = sheetState,
                 scope = scope
-            )
+            ) {
+                viewModel.handleShownBottomSheet()
+            }
         }
 
         uiState.errorModel?.let { errorUiModel ->
@@ -79,7 +81,9 @@ fun LoginScreen(
                 uiModel = errorUiModel.toBottomSheetUiModel(),
                 sheetState = sheetState,
                 scope = scope
-            )
+            ) {
+                viewModel.handleShownBottomSheet()
+            }
         }
     }
 }

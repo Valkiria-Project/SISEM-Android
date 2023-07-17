@@ -19,6 +19,7 @@ import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
 import com.valkiria.uicomponents.action.TermsAndConditionsUiAction
+import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
 import com.valkiria.uicomponents.components.label.LabelComponent
@@ -33,6 +34,7 @@ fun BodySection(
     body: List<BodyRowModel>?,
     isTablet: Boolean,
     modifier: Modifier = Modifier,
+    uiAction: UiAction? = null, // TODO: Finish this implementation (invoke generic fun?)
     onClick: (link: String) -> Unit
 ) {
     if (body?.isNotEmpty() == true) {
