@@ -44,7 +44,7 @@ fun TermsAndConditionsComponent(
             |<a href="${uiModel.termsAndConditionsLink}">términos y condiciones</a> 
             |<font color="#FFFFFF">y nuestra</font> 
             |<a href="${uiModel.privacyPolicyLink}">política de protección de datos personales.</a>
-            |</font>""".trimMargin(), // BACKEND: Send the font Color for this component
+            |</font>""".trimMargin(),
             modifier = uiModel.modifier,
             style = MaterialTheme.typography.labelMedium,
             linkClicked = { link ->
