@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
+import com.skgtecnologia.sisem.domain.login.usecases.Login
 import com.skgtecnologia.sisem.ui.error.ErrorUiModel
 import com.valkiria.uicomponents.props.TextStyle
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +20,8 @@ import timber.log.Timber
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val getLoginScreen: GetLoginScreen
+    private val getLoginScreen: GetLoginScreen,
+    private val login: Login
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -32,7 +34,7 @@ class LoginViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            getLoginScreen.invoke("123")
+            getLoginScreen.invoke("123") // FIXME
                 .onSuccess { loginScreenModel ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
@@ -44,6 +46,33 @@ class LoginViewModel @Inject constructor(
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
                     // BACKEND: How to handle errors?
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        errorModel = ErrorUiModel(
+                            title = "Error",
+                            titleTextStyle = TextStyle.BODY_1,
+                            text = "Error",
+                            textStyle = TextStyle.BODY_1
+                        )
+                    )
+                }
+        }
+    }
+
+    fun login(username: String, password: String) {
+        uiState = uiState.copy(isLoading = true)
+
+        job?.cancel()
+        job = viewModelScope.launch(Dispatchers.IO) {
+            login.invoke(username, password)
+                .onSuccess { username ->
+                    Timber.d("Successful login with $username")
+                    uiState = uiState.copy(
+                        isLoading = false
+                    )
+                }
+                .onFailure { throwable ->
+                    Timber.wtf(throwable, "This is a failure")
                     uiState = uiState.copy(
                         isLoading = false,
                         errorModel = ErrorUiModel(

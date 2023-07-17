@@ -14,10 +14,13 @@ import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.model.toBottomSheetUiModel
 import com.skgtecnologia.sisem.ui.error.toBottomSheetUiModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
-import com.valkiria.uicomponents.action.LoginUiAction.LoginTermsAndConditions
+import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
+import com.valkiria.uicomponents.action.LoginUiAction.Login
+import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
 fun LoginScreen(
@@ -56,7 +59,11 @@ fun LoginScreen(
                     .padding(top = 20.dp)
             ) { uiAction ->
                 when (uiAction) {
-                    is LoginTermsAndConditions -> viewModel.showBottomSheet(
+                    // FIXME: Navigate to ForgotPasswordScreen
+                    ForgotPassword -> Timber.d("ForgotPasswordButton clicked")
+                    // FIXME: Hardcoded data
+                    Login -> viewModel.login("JGARCíA", "Asd1026.")
+                    is TermsAndConditions -> viewModel.showBottomSheet(
                         LoginLink.getLinkByName(link = uiAction.link)
                     )
                 }

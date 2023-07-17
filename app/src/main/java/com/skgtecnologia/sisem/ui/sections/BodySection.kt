@@ -18,7 +18,9 @@ import com.skgtecnologia.sisem.domain.model.body.RichLabelModel
 import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
-import com.valkiria.uicomponents.action.LoginUiAction.LoginTermsAndConditions
+import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
+import com.valkiria.uicomponents.action.LoginUiAction.Login
+import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
@@ -47,16 +49,20 @@ fun BodySection(
                 when (model) {
                     is ButtonModel -> item(key = model.identifier) {
                         when (model.identifier) {
-                            LoginIdentifier.LOGIN_BUTTON.name -> ButtonComponent(
-                                uiModel = model.mapToUiModel(),
-                                isTablet = isTablet
-                            )
-
-                            LoginIdentifier.LOGIN_FORGOT_PASSWORD_BUTTON.name -> ButtonComponent(
+                            LoginIdentifier.FORGOT_PASSWORD_BUTTON.name -> ButtonComponent(
                                 uiModel = model.mapToUiModel(),
                                 isTablet = isTablet,
                                 arrangement = Arrangement.Start
-                            )
+                            ) {
+                                onAction(ForgotPassword)
+                            }
+
+                            LoginIdentifier.LOGIN_BUTTON.name -> ButtonComponent(
+                                uiModel = model.mapToUiModel(),
+                                isTablet = isTablet
+                            ) {
+                                onAction(Login)
+                            }
                         }
                     }
 
@@ -90,7 +96,7 @@ fun BodySection(
                             uiModel = model.mapToUiModel(),
                             isTablet = isTablet
                         ) { link ->
-                            onAction(LoginTermsAndConditions(link = link))
+                            onAction(TermsAndConditions(link = link))
                         }
                     }
 

@@ -11,4 +11,7 @@ class LoginRepositoryImpl @Inject constructor(
 
     override suspend fun getLoginScreen(serial: String): ScreenModel =
         loginRemoteDatasource.getLoginScreen(serial).getOrThrow()
+
+    override suspend fun login(username: String, password: String): String =
+        loginRemoteDatasource.login(username, password).getOrThrow()
 }

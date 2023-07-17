@@ -7,6 +7,7 @@ import com.valkiria.uicomponents.mocks.getLoginButtonUiModel
 import com.valkiria.uicomponents.mocks.getLoginForgotButtonUiModel
 import org.junit.Rule
 import org.junit.Test
+import timber.log.Timber
 
 class ButtonComponentPaparazziTest {
 
@@ -20,14 +21,18 @@ class ButtonComponentPaparazziTest {
     @Test
     fun snapLoginForgotButtonComponent() {
         paparazziRule.snapshot {
-            ButtonComponent(uiModel = getLoginForgotButtonUiModel())
+            ButtonComponent(uiModel = getLoginForgotButtonUiModel()) {
+                Timber.d("Button clicked")
+            }
         }
     }
 
     @Test
     fun snapLoginButtonComponent() {
         paparazziRule.snapshot {
-            ButtonComponent(uiModel = getLoginButtonUiModel())
+            ButtonComponent(uiModel = getLoginButtonUiModel()) {
+                Timber.d("Button clicked")
+            }
         }
     }
 }

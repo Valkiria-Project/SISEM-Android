@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.di
 
+import android.app.Application
 import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.data.remote.adapters.KeyboardOptionsAdapter
 import com.skgtecnologia.sisem.data.remote.adapters.ModifierAdapter
@@ -12,6 +13,7 @@ import com.skgtecnologia.sisem.data.remote.model.body.PasswordTextFieldResponse
 import com.skgtecnologia.sisem.data.remote.model.body.RichLabelResponse
 import com.skgtecnologia.sisem.data.remote.model.body.TermsAndConditionsResponse
 import com.skgtecnologia.sisem.data.remote.model.body.TextFieldResponse
+import com.skgtecnologia.sisem.di.qualifiers.ClientData
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.EnumJsonAdapter
@@ -28,11 +30,14 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
+const val HTTP_HEADER_CLIENT_VERSION = "User-Agent"
+const val HTTP_HEADER_IMEI = "geolocation"
 private const val OK_HTTP_CLIENT_TIMEOUT_DEFAULTS = 15_000L
 private const val BASE_URL = "http://34.69.190.119:8080/"
 
@@ -121,15 +126,30 @@ object CoreNetworkModule {
         else -> null
     }
 
+    @Provides
+    @Singleton
+    @ClientData
+    fun providesClientDataInterceptor(application: Application): Interceptor =
+        Interceptor { chain ->
+            val request = chain.request()
+                .newBuilder()
+                .addHeader(HTTP_HEADER_CLIENT_VERSION, "sisem/Android/1.0.0") // FIXME: Hardcoded data
+                .addHeader(HTTP_HEADER_IMEI, "6.155216, -75.327840") // FIXME: Hardcoded data
+                .build()
+            chain.proceed(request)
+        }
+
     @Singleton
     @Provides
     internal fun providesOkHttpClientBuilder(
-        loggingInterceptor: HttpLoggingInterceptor?
+        loggingInterceptor: HttpLoggingInterceptor?,
+        @ClientData clientDataInterceptor: Interceptor
     ): OkHttpClient.Builder = OkHttpClient.Builder().apply {
         connectTimeout(OK_HTTP_CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
         readTimeout(OK_HTTP_CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
         writeTimeout(OK_HTTP_CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
         loggingInterceptor?.also { addInterceptor(it) }
+        addInterceptor(clientDataInterceptor)
     }
 
     @Singleton

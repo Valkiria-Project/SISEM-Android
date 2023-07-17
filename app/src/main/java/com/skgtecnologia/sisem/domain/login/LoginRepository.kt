@@ -5,4 +5,6 @@ import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 interface LoginRepository {
 
     suspend fun getLoginScreen(serial: String): ScreenModel
+
+    suspend fun login(username: String, password: String): String
 }

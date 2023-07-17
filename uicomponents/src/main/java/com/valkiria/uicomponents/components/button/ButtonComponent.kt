@@ -21,13 +21,15 @@ import com.valkiria.uicomponents.props.mapToColors
 import com.valkiria.uicomponents.props.mapToTextColor
 import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.theme.UiComponentsTheme
+import timber.log.Timber
 
 @Suppress("MaxLineLength")
 @Composable
 fun ButtonComponent(
     uiModel: ButtonUiModel,
     isTablet: Boolean = false,
-    arrangement: Arrangement.Horizontal = Arrangement.Center // BACKEND: This should be part of the ButtonUiModel <--> ButtonResponse
+    arrangement: Arrangement.Horizontal = Arrangement.Center, // BACKEND: This should be part of the ButtonUiModel <--> ButtonResponse
+    onAction: () -> Unit
 ) {
     Row(
         modifier = if (isTablet) {
@@ -38,7 +40,9 @@ fun ButtonComponent(
         horizontalArrangement = arrangement
     ) {
         Button(
-            onClick = { },
+            onClick = {
+                onAction()
+            },
             colors = uiModel.style.mapToColors(),
             modifier = if (uiModel.size == ButtonSize.FULL_WIDTH) {
                 Modifier.fillMaxWidth()
@@ -64,8 +68,12 @@ fun ButtonComponentPreview() {
                 .fillMaxSize()
                 .background(Color.DarkGray)
         ) {
-            ButtonComponent(uiModel = getLoginForgotButtonUiModel())
-            ButtonComponent(uiModel = getLoginButtonUiModel())
+            ButtonComponent(uiModel = getLoginForgotButtonUiModel()) {
+                Timber.d("Button clicked")
+            }
+            ButtonComponent(uiModel = getLoginButtonUiModel()) {
+                Timber.d("Button clicked")
+            }
         }
     }
 }
