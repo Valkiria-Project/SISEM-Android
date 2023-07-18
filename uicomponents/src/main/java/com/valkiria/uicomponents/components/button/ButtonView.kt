@@ -13,10 +13,11 @@ import com.valkiria.uicomponents.props.toTextStyle
 @Composable
 fun ButtonView(
     uiModel: ButtonUiModel,
-    isTablet: Boolean
+    isTablet: Boolean,
+    onClick: () -> Unit
 ) {
     Button(
-        onClick = { },
+        onClick = { onClick() },
         colors = uiModel.style.mapToColors(),
         modifier = if (uiModel.size == ButtonSize.FULL_WIDTH) {
             Modifier.fillMaxWidth()

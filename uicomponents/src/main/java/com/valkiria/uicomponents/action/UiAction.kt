@@ -2,6 +2,10 @@ package com.valkiria.uicomponents.action
 
 sealed interface UiAction
 
+sealed class FooterUiAction(open val identifier: String) : UiAction {
+    data class Button(override val identifier: String) : FooterUiAction(identifier)
+}
+
 sealed class LoginUiAction : UiAction {
     object ForgotPassword : LoginUiAction()
     object Login : LoginUiAction()
