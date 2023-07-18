@@ -21,15 +21,13 @@ fun DeviceAuthScreen(
     val deviceAuthViewModel = hiltViewModel<DeviceAuthViewModel>()
     val uiState = deviceAuthViewModel.uiState
 
-    if (uiState.isLoading) {
+    if (uiState.isLoading) { // FIXME: Do same as LoginScreen
         LoaderComponent()
     } else {
         ConstraintLayout(
             modifier = modifier.fillMaxSize()
         ) {
-
             with(uiState.screenModel) {
-
                 val (header, body, footer) = createRefs()
 
                 this?.header?.let {

@@ -22,10 +22,10 @@ data class SegmentedSwitchResponse(
     override val type: BodyRowType = BodyRowType.SEGMENTED_SWITCH
 
     override fun mapToDomain(): BodyRowModel = SegmentedSwitchModel(
-        identifier = identifier ?: error("LabeledSwitch identifier cannot be null"),
-        text = text ?: error("LabeledSwitch text cannot be null"),
-        textStyle = textStyle ?: error("LabeledSwitch textStyle cannot be null"),
-        options = options?.map { it.mapToUi() } ?: error("LabeledSwitch options cannot be null"),
+        identifier = identifier ?: error("SegmentedSwitch identifier cannot be null"),
+        text = text ?: error("SegmentedSwitch text cannot be null"),
+        textStyle = textStyle ?: error("SegmentedSwitch textStyle cannot be null"),
+        options = options?.map { it.mapToUi() } ?: error("SegmentedSwitch options cannot be null"),
         modifier = modifier ?: Modifier
     )
 }

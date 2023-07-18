@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -96,9 +97,9 @@ fun SegmentedSwitchComponent(
                     colors = if (selectedIndex.value == index) {
                         ButtonDefaults.outlinedButtonColors(
                             containerColor = if (selectedIndex.value == 0) {
-                                Color(0xFF3cf2dd)
+                                MaterialTheme.colorScheme.tertiary
                             } else {
-                                Color(0xFFf55757)
+                                MaterialTheme.colorScheme.error
                             }
                         )
                     } else {

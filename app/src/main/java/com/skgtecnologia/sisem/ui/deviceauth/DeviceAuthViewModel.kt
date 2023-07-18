@@ -29,7 +29,7 @@ class DeviceAuthViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            getDeviceAuthScreen.invoke("123")
+            getDeviceAuthScreen.invoke("123") // FIXME: Do same as LoginViewModel
                 .onSuccess { deviceAuthScreenModel ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(

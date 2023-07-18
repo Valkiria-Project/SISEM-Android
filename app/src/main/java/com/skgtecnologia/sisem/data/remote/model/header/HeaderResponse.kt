@@ -7,8 +7,8 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class HeaderResponse(
-    @Json(name = "title") val title: TitleResponse?,
-    @Json(name = "subtitle") val subtitle: SubtitleResponse?,
+    @Json(name = "title") val title: TextResponse?,
+    @Json(name = "subtitle") val subtitle: TextResponse?,
     @Json(name = "left_icon") val leftIcon: String?,
     @Json(name = "margins") val modifier: Modifier?
 )

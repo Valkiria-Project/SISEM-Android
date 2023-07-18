@@ -43,7 +43,7 @@ fun HeaderSection(
                     painter = painterResource(id = iconResourceId),
                     contentDescription = null,
                     modifier = Modifier
-                        .padding(end = 13.dp)
+                        .padding(end = 12.dp)
                         .size(42.dp),
                     tint = MaterialTheme.colorScheme.primary
                 )
