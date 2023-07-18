@@ -16,7 +16,7 @@ data class RichLabelResponse(
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
-    override val type: BodyRowType = BodyRowType.SEGMENTED_SWITCH
+    override val type: BodyRowType = BodyRowType.RICH_LABEL
 
     override fun mapToDomain(): BodyRowModel = RichLabelModel(
         identifier = identifier ?: error("RichLabel identifier cannot be null"),

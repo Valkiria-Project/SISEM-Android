@@ -15,7 +15,7 @@ data class LabelResponse(
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
-    override val type: BodyRowType = BodyRowType.SEGMENTED_SWITCH
+    override val type: BodyRowType = BodyRowType.LABEL
 
     override fun mapToDomain(): BodyRowModel = LabelModel(
         text = text ?: error("Label text cannot be null"),
