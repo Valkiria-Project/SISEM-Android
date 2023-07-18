@@ -11,9 +11,8 @@ import retrofit2.http.POST
 interface LoginApi {
 
     @POST("sisem-api/v1/screen/login")
-    suspend fun getLoginScreen(@Body screenBody: ScreenBody) :
-        Response<ScreenResponse>
+    suspend fun getLoginScreen(@Body screenBody: ScreenBody): Response<ScreenResponse>
 
     @POST("sisem-api/auth")
-    suspend fun login(@Body loginBody: LoginBody) : Response<LoginResponse>
+    suspend fun login(@Body loginBody: LoginBody): Response<LoginResponse>
 }
