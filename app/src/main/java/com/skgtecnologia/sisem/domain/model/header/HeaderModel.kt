@@ -1,6 +1,10 @@
 package com.skgtecnologia.sisem.domain.model.header
 
+import androidx.compose.ui.Modifier
+
 data class HeaderModel(
-    val title: String,
-    val iconUrl: String?,
+    val title: TextModel,
+    val subtitle: TextModel?,
+    val leftIcon: String?,
+    val modifier: Modifier
 )
