@@ -30,11 +30,13 @@ import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.theme.UiComponentsTheme
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
+import timber.log.Timber
 
 @Composable
 fun TextFieldComponent(
     uiModel: TextFieldUiModel,
     isTablet: Boolean = false,
+    onAction: (updatedValue: String) -> Unit
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon.orEmpty(), DefType.DRAWABLE
@@ -63,8 +65,9 @@ fun TextFieldComponent(
         var text by remember { mutableStateOf(TextFieldValue("")) }
         OutlinedTextField(
             value = text,
-            onValueChange = {
-                text = it
+            onValueChange = { updatedValue ->
+                text = updatedValue
+                onAction(updatedValue.text)
             },
             textStyle = uiModel.textStyle.toTextStyle(),
             label = {
@@ -95,7 +98,11 @@ fun TextFieldComponentPreview() {
         Column(
             modifier = Modifier.background(Color.DarkGray)
         ) {
-            TextFieldComponent(uiModel = getLoginUserTextFieldUiModel())
+            TextFieldComponent(
+                uiModel = getLoginUserTextFieldUiModel()
+            ) { updatedValue ->
+                Timber.d("Handle $updatedValue on input")
+            }
         }
     }
 }

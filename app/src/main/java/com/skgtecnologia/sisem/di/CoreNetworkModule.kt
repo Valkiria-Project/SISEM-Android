@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.di
 
-import android.app.Application
 import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.data.remote.adapters.KeyboardOptionsAdapter
 import com.skgtecnologia.sisem.data.remote.adapters.ModifierAdapter
@@ -36,10 +35,10 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-const val HTTP_HEADER_CLIENT_VERSION = "User-Agent"
+const val HTTP_CLIENT_VERSION_HEADER = "User-Agent"
 const val CLIENT_VERSION = "sisem/Android/" + BuildConfig.VERSION_NAME
-const val HTTP_HEADER_IMEI = "geolocation"
-private const val OK_HTTP_CLIENT_TIMEOUT_DEFAULTS = 15_000L
+const val HTTP_LOCATION_HEADER = "geolocation"
+private const val CLIENT_TIMEOUT_DEFAULTS = 15_000L
 private const val BASE_URL = "http://34.69.190.119:8080/"
 
 @Module
@@ -130,12 +129,12 @@ object CoreNetworkModule {
     @Provides
     @Singleton
     @ClientData
-    fun providesClientDataInterceptor(application: Application): Interceptor =
+    fun providesClientDataInterceptor(): Interceptor =
         Interceptor { chain ->
             val request = chain.request()
                 .newBuilder()
-                .addHeader(HTTP_HEADER_CLIENT_VERSION, CLIENT_VERSION)
-                .addHeader(HTTP_HEADER_IMEI, "6.155216, -75.327840") // FIXME: Hardcoded data
+                .addHeader(HTTP_CLIENT_VERSION_HEADER, CLIENT_VERSION)
+                .addHeader(HTTP_LOCATION_HEADER, "6.155216, -75.327840") // FIXME: Hardcoded data
                 .build()
             chain.proceed(request)
         }
@@ -146,9 +145,9 @@ object CoreNetworkModule {
         loggingInterceptor: HttpLoggingInterceptor?,
         @ClientData clientDataInterceptor: Interceptor
     ): OkHttpClient.Builder = OkHttpClient.Builder().apply {
-        connectTimeout(OK_HTTP_CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
-        readTimeout(OK_HTTP_CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
-        writeTimeout(OK_HTTP_CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
+        connectTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
+        readTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
+        writeTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
         loggingInterceptor?.also { addInterceptor(it) }
         addInterceptor(clientDataInterceptor)
     }

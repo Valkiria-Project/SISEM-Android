@@ -31,6 +31,9 @@ class LoginViewModel @Inject constructor(
     var uiState by mutableStateOf(LoginUiState())
         private set
 
+    var username by mutableStateOf("")
+    var password by mutableStateOf("")
+
     init {
         uiState = uiState.copy(isLoading = true)
 
@@ -61,7 +64,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun login(username: String, password: String) {
+    fun login() {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
