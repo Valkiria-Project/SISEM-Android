@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -13,12 +14,9 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.model.toBottomSheetUiModel
+import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.sections.BodySection
-import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
-import com.valkiria.uicomponents.action.LoginUiAction.Login
-import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
-import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
-import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
+import com.valkiria.uicomponents.action.LoginUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
@@ -29,13 +27,23 @@ import timber.log.Timber
 @Composable
 fun LoginScreen(
     isTablet: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigation: (route: AuthNavigationRoute) -> Unit
 ) {
     val viewModel = hiltViewModel<LoginViewModel>()
     val uiState = viewModel.uiState
 
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(uiState) {
+        launch {
+            if (uiState.onLogin) {
+                viewModel.onLoginHandled()
+                onNavigation(AuthNavigationRoute.DeviceAuth)
+            }
+        }
+    }
 
     ConstraintLayout(
         modifier = modifier.fillMaxSize()
@@ -99,18 +107,22 @@ private fun handleUiAction(
     uiAction: UiAction,
     viewModel: LoginViewModel
 ) {
-    when (uiAction) {
-        // FIXME: Navigate to ForgotPasswordScreen
-        ForgotPassword -> Timber.d("ForgotPasswordButton clicked")
+    (uiAction as? LoginUiAction)?.let {
+        when (uiAction) {
+            LoginUiAction.ForgotPassword -> {
+                // FIXME: Navigate to ForgotPasswordScreen
+                Timber.d("ForgotPasswordButton clicked")
+            }
 
-        Login -> viewModel.login()
+            LoginUiAction.Login -> viewModel.login()
 
-        is LoginPasswordInput -> viewModel.password = uiAction.updatedValue
+            is LoginUiAction.LoginPasswordInput -> viewModel.password = uiAction.updatedValue
 
-        is LoginUserInput -> viewModel.username = uiAction.updatedValue
+            is LoginUiAction.LoginUserInput -> viewModel.username = uiAction.updatedValue
 
-        is TermsAndConditions -> viewModel.showBottomSheet(
-            LoginLink.getLinkByName(link = uiAction.link)
-        )
+            is LoginUiAction.TermsAndConditions -> viewModel.showBottomSheet(
+                LoginLink.getLinkByName(link = uiAction.link)
+            )
+        }
     }
 }

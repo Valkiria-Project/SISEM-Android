@@ -9,3 +9,7 @@ sealed class LoginUiAction : UiAction {
     data class LoginPasswordInput(val updatedValue: String) : LoginUiAction()
     data class LoginUserInput(val updatedValue: String) : LoginUiAction()
 }
+
+sealed class DeviceAuthUiAction : UiAction {
+    object DeviceAuth : DeviceAuthUiAction()
+}

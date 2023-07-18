@@ -1,5 +1,7 @@
 package com.skgtecnologia.sisem.data.remote.model.screen
 
+import com.squareup.moshi.Json
+
 data class ScreenBody(
-    val params: Params
+    @Json(name = "params") val params: Params
 )

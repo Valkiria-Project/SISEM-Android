@@ -1,6 +1,8 @@
 package com.skgtecnologia.sisem.data.login.remote.model
 
+import com.squareup.moshi.Json
+
 data class LoginBody(
-    val username: String,
-    val password: String
+    @Json(name = "username") val username: String,
+    @Json(name = "password") val password: String
 )

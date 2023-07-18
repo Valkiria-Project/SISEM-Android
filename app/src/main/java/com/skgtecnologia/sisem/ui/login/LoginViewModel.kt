@@ -68,7 +68,7 @@ class LoginViewModel @Inject constructor(
                 .onSuccess { accessTokenModel ->
                     Timber.d("Successful login with ${accessTokenModel.username}")
                     uiState = uiState.copy(
-                        isLoading = false
+                        onLogin = true
                     )
                 }
                 .onFailure { throwable ->
@@ -79,6 +79,10 @@ class LoginViewModel @Inject constructor(
                     )
                 }
         }
+    }
+
+    fun onLoginHandled() {
+        uiState = uiState.copy(onLogin = false)
     }
 
     fun showBottomSheet(link: LoginLink) {
