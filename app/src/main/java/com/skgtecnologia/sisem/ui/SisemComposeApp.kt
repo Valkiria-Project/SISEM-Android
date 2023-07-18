@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.NavigationGraph
@@ -34,13 +35,22 @@ fun SisemComposeApp(
 
 private fun NavGraphBuilder.authGraph(isTablet: Boolean, modifier: Modifier) {
     navigation(
-        startDestination = AuthNavigationRoute.Login.route,
+        startDestination = AuthNavigationRoute.DeviceAuth.route,
         route = NavigationGraph.Auth.route
     ) {
         composable(
             route = AuthNavigationRoute.Login.route
         ) {
             LoginScreen(
+                isTablet = isTablet,
+                modifier = modifier
+            )
+        }
+
+        composable(
+            route = AuthNavigationRoute.DeviceAuth.route
+        ) {
+            DeviceAuthScreen(
                 isTablet = isTablet,
                 modifier = modifier
             )

@@ -7,7 +7,7 @@ import com.skgtecnologia.sisem.data.remote.model.body.BodyRowResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ButtonResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ChipResponse
 import com.skgtecnologia.sisem.data.remote.model.body.LabelResponse
-import com.skgtecnologia.sisem.data.remote.model.body.LabeledSwitchResponse
+import com.skgtecnologia.sisem.data.remote.model.body.SegmentedSwitchResponse
 import com.skgtecnologia.sisem.data.remote.model.body.PasswordTextFieldResponse
 import com.skgtecnologia.sisem.data.remote.model.body.RichLabelResponse
 import com.skgtecnologia.sisem.data.remote.model.body.TermsAndConditionsResponse
@@ -84,8 +84,8 @@ object CoreNetworkModule {
             LabelResponse::class.java,
             BodyRowType.LABEL.name
         ).withSubtype(
-            LabeledSwitchResponse::class.java,
-            BodyRowType.LABELED_SWITCH.name
+            SegmentedSwitchResponse::class.java,
+            BodyRowType.SEGMENTED_SWITCH.name
         ).withSubtype(
             PasswordTextFieldResponse::class.java,
             BodyRowType.PASSWORD_TEXT_FIELD.name

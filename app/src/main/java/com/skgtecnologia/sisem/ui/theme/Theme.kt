@@ -16,18 +16,20 @@ private val DarkColorScheme = darkColorScheme(
     primary = DodgerBlue,
     onPrimary = Color.Black,
     secondary = PurpleGrey80,
-    tertiary = Pink80,
+    tertiary = Success,
     background = Shark,
-    onBackground = Color.White
+    onBackground = Color.White,
+    error = Error,
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = DodgerBlue,
     onPrimary = Color.Black,
     secondary = PurpleGrey40,
-    tertiary = Pink40,
+    tertiary = Success,
     background = Shark,
-    onBackground = Color.White
+    onBackground = Color.White,
+    error = Error,
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),

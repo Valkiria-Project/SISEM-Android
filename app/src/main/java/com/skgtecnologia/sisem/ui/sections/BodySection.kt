@@ -14,7 +14,7 @@ import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.ButtonModel
 import com.skgtecnologia.sisem.domain.model.body.ChipModel
 import com.skgtecnologia.sisem.domain.model.body.LabelModel
-import com.skgtecnologia.sisem.domain.model.body.LabeledSwitchModel
+import com.skgtecnologia.sisem.domain.model.body.SegmentedSwitchModel
 import com.skgtecnologia.sisem.domain.model.body.PasswordTextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.RichLabelModel
 import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
@@ -25,6 +25,7 @@ import com.valkiria.uicomponents.components.chip.ChipComponent
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.passwordtextfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
+import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 
@@ -67,12 +68,15 @@ fun BodySection(
                         )
                     }
 
-                    is LabelModel -> item(key = model.identifier) {
+                    is LabelModel -> item(key = model.text) {
                         LabelComponent(uiModel = model.mapToUiModel())
                     }
 
-                    is LabeledSwitchModel -> item(key = model.identifier) {
-
+                    is SegmentedSwitchModel -> item(key = model.identifier) {
+                        SegmentedSwitchComponent(
+                            uiModel = model.mapToUiModel(),
+                            isTablet = isTablet
+                        )
                     }
 
                     is PasswordTextFieldModel -> item(key = model.identifier) {

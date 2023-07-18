@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.theme.UiComponentsTheme
 
 // TODO: Finish this component
@@ -19,7 +20,8 @@ fun LabelComponent(
 ) {
     Text(
         text = uiModel.text,
-        modifier = modifier
+        style = uiModel.textStyle.toTextStyle(),
+        modifier = uiModel.modifier.then(modifier)
     )
 }
 
