@@ -21,7 +21,7 @@ import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
-import com.valkiria.uicomponents.components.errorbanner.toBottomSheetUiModel
+import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -82,12 +82,10 @@ fun LoginScreen(
             sheetState.show()
         }
 
-        BottomSheetComponent(
-            uiModel = errorUiModel.toBottomSheetUiModel(),
-            sheetState = sheetState,
-            scope = scope
+        ErrorBannerComponent(
+            uiModel = errorUiModel
         ) {
-            viewModel.handleShownBottomSheet()
+            viewModel.handleShownError()
         }
     }
 

@@ -19,12 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.R.drawable
 import com.valkiria.uicomponents.mocks.getLoginTermsBottomSheetUiModel
-import com.valkiria.uicomponents.props.TextStyle
 import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.theme.UiComponentsTheme
 import kotlinx.coroutines.CoroutineScope
@@ -38,7 +35,7 @@ fun BottomSheetComponent(
     modifier: Modifier = Modifier,
     sheetState: SheetState = rememberModalBottomSheetState(),
     scope: CoroutineScope = rememberCoroutineScope(),
-    onDismissRequest: () -> Unit
+    onAction: () -> Unit
 ) {
     if (sheetState.isVisible) {
         ModalBottomSheet(
@@ -46,10 +43,11 @@ fun BottomSheetComponent(
                 scope.launch {
                     sheetState.hide()
                 }
-                onDismissRequest()
+                onAction()
             },
             sheetState = sheetState,
-            scrimColor = MaterialTheme.colorScheme.background.copy(alpha = 0.5f)
+            containerColor = MaterialTheme.colorScheme.surface,
+            scrimColor = MaterialTheme.colorScheme.background.copy(alpha = 0.8f)
         ) {
             Row(
                 modifier = Modifier.padding(20.dp),

@@ -20,7 +20,7 @@ fun LoaderComponent(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background.copy(alpha = 0.5f)),
+            .background(MaterialTheme.colorScheme.background.copy(alpha = 0.8f)),
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator()

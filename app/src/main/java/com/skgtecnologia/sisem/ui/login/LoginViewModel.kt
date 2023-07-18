@@ -9,8 +9,8 @@ import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.login.usecases.Login
-import com.valkiria.uicomponents.components.errorbanner.ErrorUiModel
-import com.valkiria.uicomponents.props.TextStyle.BODY_1
+import com.valkiria.uicomponents.mocks.getLoginBlockedErrorUiModel
+import com.valkiria.uicomponents.mocks.getLoginDuplicatedErrorUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -53,12 +53,7 @@ class LoginViewModel @Inject constructor(
                     // BACKEND: How to handle errors?
                     uiState = uiState.copy(
                         isLoading = false,
-                        errorModel = ErrorUiModel(
-                            title = "Error",
-                            titleTextStyle = BODY_1,
-                            text = "Error",
-                            textStyle = BODY_1
-                        )
+                        errorModel = getLoginDuplicatedErrorUiModel() // FIXME: Map ErrorModel
                     )
                 }
         }
@@ -80,12 +75,7 @@ class LoginViewModel @Inject constructor(
                     Timber.wtf(throwable, "This is a failure")
                     uiState = uiState.copy(
                         isLoading = false,
-                        errorModel = ErrorUiModel(
-                            title = "Error",
-                            titleTextStyle = BODY_1,
-                            text = "Error",
-                            textStyle = BODY_1
-                        )
+                        errorModel = getLoginBlockedErrorUiModel() // FIXME: Map ErrorModel
                     )
                 }
         }
@@ -99,8 +89,13 @@ class LoginViewModel @Inject constructor(
 
     fun handleShownBottomSheet() {
         uiState = uiState.copy(
-            bottomSheetLink = null,
-            errorModel = null // FIXME: For now like this
+            bottomSheetLink = null
+        )
+    }
+
+    fun handleShownError() {
+        uiState = uiState.copy(
+            errorModel = null
         )
     }
 }

@@ -49,7 +49,7 @@ fun ChipComponent(
             },
             modifier = uiModel.modifier,
             leadingIcon = {
-                if (iconResourceId != null) {
+                iconResourceId?.let {
                     Icon(
                         painter = painterResource(id = iconResourceId),
                         contentDescription = null,
