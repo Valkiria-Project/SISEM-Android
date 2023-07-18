@@ -14,7 +14,9 @@ fun getLoginTermsBottomSheetUiModel(): BottomSheetUiModel {
         titleTextStyle = TextStyle.HEADLINE_1,
         subtitle = "Conozca los términos y condiciones.",
         subtitleTextStyle = TextStyle.HEADLINE_6,
-        text = "1. INTRODUCCIÓN\n\nLa Política de Seguridad de la Información del sitio web y términos de uso del Sitio Web de la Secretaría Distrital de Salud y el Fondo Financiero ...",
+        text = """1. INTRODUCCIÓN\n\nLa Política de Seguridad de la Información del 
+            |sitio web y términos de uso del Sitio Web de la Secretaría Distrital de 
+            |Salud y el Fondo Financiero ...""".trimMargin(),
         textStyle = TextStyle.HEADLINE_5
     )
 }
@@ -27,7 +29,9 @@ fun getLoginPrivacyBottomSheetUiModel(): BottomSheetUiModel {
         titleTextStyle = TextStyle.HEADLINE_1,
         subtitle = "Conozca la política de protección de datos.",
         subtitleTextStyle = TextStyle.HEADLINE_6,
-        text = "1. INTRODUCCIÓN El presente documento responde a la necesidad de dar cumplimiento a las disposiciones previstas en la Ley 1581 de 2012, que regula los deberes que asisten ...",
+        text = """1. INTRODUCCIÓN El presente documento responde a la necesidad de
+            | dar cumplimiento a las disposiciones previstas en la Ley 1581 de 2012, 
+            | que regula los deberes que asisten ...""".trimMargin(),
         textStyle = TextStyle.HEADLINE_5
     )
 }

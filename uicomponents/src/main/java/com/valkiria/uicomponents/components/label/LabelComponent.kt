@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.props.TextStyle
 import com.valkiria.uicomponents.theme.UiComponentsTheme
 
-// TODO: Finish this component
+// FIXME: Finish this component
 @Composable
 fun LabelComponent(
     uiModel: LabelUiModel,

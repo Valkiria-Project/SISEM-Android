@@ -61,7 +61,6 @@ fun TermsAndConditionsComponent(
 @Composable
 fun TermsAndConditionsComponentPreview() {
     UiComponentsTheme {
-        val context = LocalContext.current
         Column(
             modifier = Modifier.background(Color.DarkGray)
         ) {
