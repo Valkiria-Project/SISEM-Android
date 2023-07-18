@@ -109,7 +109,7 @@ private fun HandleButtonRows(
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
-        LoginIdentifier.FORGOT_PASSWORD_BUTTON.name -> ButtonComponent(
+        LoginIdentifier.LOGIN_FORGOT_PASSWORD_BUTTON.name -> ButtonComponent(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet,
             arrangement = Arrangement.Start

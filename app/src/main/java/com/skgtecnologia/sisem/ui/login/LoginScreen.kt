@@ -6,13 +6,13 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.model.toBottomSheetUiModel
-import com.valkiria.uicomponents.components.errorbanner.toBottomSheetUiModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
 import com.valkiria.uicomponents.action.LoginUiAction.Login
@@ -21,6 +21,7 @@ import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
+import com.valkiria.uicomponents.components.errorbanner.toBottomSheetUiModel
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -91,6 +92,7 @@ fun LoginScreen(
     }
 
     if (uiState.isLoading) {
+        LocalSoftwareKeyboardController.current?.hide()
         LoaderComponent(modifier)
     }
 }

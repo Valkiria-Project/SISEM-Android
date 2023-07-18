@@ -27,7 +27,7 @@ fun RichLabelComponent(
         horizontalArrangement = Arrangement.Center
     ) {
         HtmlText(
-            text = """<font color="#FFFFFF">${uiModel.text}</font>""",
+            text = uiModel.text,
             modifier = uiModel.modifier,
             style = uiModel.textStyle.toTextStyle(),
             linkClicked = { link ->
