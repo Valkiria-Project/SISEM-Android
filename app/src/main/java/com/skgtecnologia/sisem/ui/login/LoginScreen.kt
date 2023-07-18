@@ -1,12 +1,12 @@
 package com.skgtecnologia.sisem.ui.login
 
+import HideKeyboard
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -92,7 +92,7 @@ fun LoginScreen(
     }
 
     if (uiState.isLoading) {
-        LocalSoftwareKeyboardController.current?.hide()
+        HideKeyboard()
         LoaderComponent(modifier)
     }
 }
