@@ -47,7 +47,8 @@ fun BottomSheetComponent(
                 }
                 onDismissRequest()
             },
-            sheetState = sheetState
+            sheetState = sheetState,
+            scrimColor = MaterialTheme.colorScheme.background.copy(alpha = 0.5f)
         ) {
             Row(
                 modifier = Modifier.padding(20.dp),

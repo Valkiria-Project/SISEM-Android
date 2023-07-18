@@ -36,61 +36,61 @@ fun LoginScreen(
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
 
-    if (uiState.isLoading) {
-        LoaderComponent() // FIXME: This is causing the screen to be re rendered = state loss
-    } else {
-        ConstraintLayout(
-            modifier = modifier.fillMaxSize()
-        ) {
-            val (header, body) = createRefs()
+    ConstraintLayout(
+        modifier = modifier.fillMaxSize()
+    ) {
+        val (header, body) = createRefs()
 
-            LoginHeaderSection(
-                modifier = modifier.constrainAs(header) {
-                    top.linkTo(parent.top)
+        LoginHeaderSection(
+            modifier = modifier.constrainAs(header) {
+                top.linkTo(parent.top)
+            }
+        )
+
+        BodySection(
+            body = uiState.screenModel?.body,
+            isTablet = isTablet,
+            modifier = modifier
+                .constrainAs(body) {
+                    top.linkTo(header.bottom)
+                    bottom.linkTo(parent.bottom)
+                    height = Dimension.fillToConstraints
                 }
-            )
+                .padding(top = 20.dp)
+        ) { uiAction ->
+            handleUiAction(uiAction, viewModel)
+        }
+    }
 
-            BodySection(
-                body = uiState.screenModel?.body,
-                isTablet = isTablet,
-                modifier = modifier
-                    .constrainAs(body) {
-                        top.linkTo(header.bottom)
-                        bottom.linkTo(parent.bottom)
-                        height = Dimension.fillToConstraints
-                    }
-                    .padding(top = 20.dp)
-            ) { uiAction ->
-                handleUiAction(uiAction, viewModel)
-            }
+    if (uiState.isLoading) {
+        LoaderComponent(modifier)
+    }
+
+    uiState.bottomSheetLink?.let { link ->
+        scope.launch {
+            sheetState.show()
         }
 
-        uiState.bottomSheetLink?.let { link ->
-            scope.launch {
-                sheetState.show()
-            }
+        BottomSheetComponent(
+            uiModel = link.toBottomSheetUiModel(),
+            sheetState = sheetState,
+            scope = scope
+        ) {
+            viewModel.handleShownBottomSheet()
+        }
+    }
 
-            BottomSheetComponent(
-                uiModel = link.toBottomSheetUiModel(),
-                sheetState = sheetState,
-                scope = scope
-            ) {
-                viewModel.handleShownBottomSheet()
-            }
+    uiState.errorModel?.let { errorUiModel ->
+        scope.launch {
+            sheetState.show()
         }
 
-        uiState.errorModel?.let { errorUiModel ->
-            scope.launch {
-                sheetState.show()
-            }
-
-            BottomSheetComponent(
-                uiModel = errorUiModel.toBottomSheetUiModel(),
-                sheetState = sheetState,
-                scope = scope
-            ) {
-                viewModel.handleShownBottomSheet()
-            }
+        BottomSheetComponent(
+            uiModel = errorUiModel.toBottomSheetUiModel(),
+            sheetState = sheetState,
+            scope = scope
+        ) {
+            viewModel.handleShownBottomSheet()
         }
     }
 }
