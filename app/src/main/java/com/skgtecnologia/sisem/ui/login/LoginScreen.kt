@@ -12,7 +12,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.model.toBottomSheetUiModel
-import com.skgtecnologia.sisem.ui.error.toBottomSheetUiModel
+import com.valkiria.uicomponents.components.errorbanner.toBottomSheetUiModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
 import com.valkiria.uicomponents.action.LoginUiAction.Login
@@ -62,10 +62,6 @@ fun LoginScreen(
         }
     }
 
-    if (uiState.isLoading) {
-        LoaderComponent(modifier)
-    }
-
     uiState.bottomSheetLink?.let { link ->
         scope.launch {
             sheetState.show()
@@ -93,6 +89,10 @@ fun LoginScreen(
             viewModel.handleShownBottomSheet()
         }
     }
+
+    if (uiState.isLoading) {
+        LoaderComponent(modifier)
+    }
 }
 
 private fun handleUiAction(
@@ -105,9 +105,9 @@ private fun handleUiAction(
 
         Login -> viewModel.login()
 
-        is LoginUserInput -> viewModel.username = uiAction.updatedValue
-
         is LoginPasswordInput -> viewModel.password = uiAction.updatedValue
+
+        is LoginUserInput -> viewModel.username = uiAction.updatedValue
 
         is TermsAndConditions -> viewModel.showBottomSheet(
             LoginLink.getLinkByName(link = uiAction.link)

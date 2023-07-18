@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.error
+package com.valkiria.uicomponents.components.errorbanner
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

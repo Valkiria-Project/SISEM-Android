@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R.drawable
+import com.valkiria.uicomponents.mocks.getLoginTermsBottomSheetUiModel
 import com.valkiria.uicomponents.props.TextStyle
 import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.theme.UiComponentsTheme
@@ -107,13 +108,7 @@ fun BottomSheetComponentPreview() {
             }
 
             BottomSheetComponent(
-                uiModel = BottomSheetUiModel(
-                    icon = painterResource(id = drawable.ic_message),
-                    title = "Title",
-                    titleTextStyle = TextStyle.HEADLINE_2,
-                    text = "Text",
-                    textStyle = TextStyle.BODY_1
-                ),
+                uiModel = getLoginTermsBottomSheetUiModel(),
                 sheetState = sheetState,
                 scope = scope
             ) {

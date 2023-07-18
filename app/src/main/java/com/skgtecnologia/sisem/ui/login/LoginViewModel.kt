@@ -9,8 +9,8 @@ import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.login.usecases.Login
-import com.skgtecnologia.sisem.ui.error.ErrorUiModel
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.components.errorbanner.ErrorUiModel
+import com.valkiria.uicomponents.props.TextStyle.BODY_1
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -55,9 +55,9 @@ class LoginViewModel @Inject constructor(
                         isLoading = false,
                         errorModel = ErrorUiModel(
                             title = "Error",
-                            titleTextStyle = TextStyle.BODY_1,
+                            titleTextStyle = BODY_1,
                             text = "Error",
-                            textStyle = TextStyle.BODY_1
+                            textStyle = BODY_1
                         )
                     )
                 }
@@ -70,8 +70,8 @@ class LoginViewModel @Inject constructor(
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
             login.invoke(username, password)
-                .onSuccess { loginModel ->
-                    Timber.d("Successful login with ${loginModel.username}")
+                .onSuccess { accessTokenModel ->
+                    Timber.d("Successful login with ${accessTokenModel.username}")
                     uiState = uiState.copy(
                         isLoading = false
                     )
@@ -82,9 +82,9 @@ class LoginViewModel @Inject constructor(
                         isLoading = false,
                         errorModel = ErrorUiModel(
                             title = "Error",
-                            titleTextStyle = TextStyle.BODY_1,
+                            titleTextStyle = BODY_1,
                             text = "Error",
-                            textStyle = TextStyle.BODY_1
+                            textStyle = BODY_1
                         )
                     )
                 }
@@ -99,7 +99,8 @@ class LoginViewModel @Inject constructor(
 
     fun handleShownBottomSheet() {
         uiState = uiState.copy(
-            bottomSheetLink = null
+            bottomSheetLink = null,
+            errorModel = null // FIXME: For now like this
         )
     }
 }
