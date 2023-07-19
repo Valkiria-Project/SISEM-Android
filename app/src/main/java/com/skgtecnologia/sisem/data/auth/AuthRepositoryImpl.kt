@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.data.auth
 
-import com.skgtecnologia.sisem.data.auth.remote.AuthRemoteDataSource
 import com.skgtecnologia.sisem.data.auth.cache.AuthCacheDataSource
+import com.skgtecnologia.sisem.data.auth.remote.AuthRemoteDataSource
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
 import com.skgtecnologia.sisem.domain.login.model.AccessTokenModel
 import javax.inject.Inject

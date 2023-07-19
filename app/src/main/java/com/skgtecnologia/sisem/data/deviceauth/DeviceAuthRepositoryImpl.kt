@@ -17,5 +17,7 @@ class DeviceAuthRepositoryImpl @Inject constructor(
         licensePlate: String,
         serial: String,
         code: String
-    ): AssociateDeviceModel = deviceAuthRemoteDataSource.associateDevice(licensePlate, serial, code).getOrThrow()
+    ): AssociateDeviceModel = deviceAuthRemoteDataSource.associateDevice(
+        licensePlate, serial, code
+    ).getOrThrow()
 }

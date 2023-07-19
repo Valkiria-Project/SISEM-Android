@@ -28,7 +28,8 @@ import timber.log.Timber
 fun ButtonComponent(
     uiModel: ButtonUiModel,
     isTablet: Boolean = false,
-    arrangement: Arrangement.Horizontal = Arrangement.Center, // BACKEND: This should be part of the ButtonUiModel <--> ButtonResponse
+    // BACKEND: This should be part of the ButtonUiModel <--> ButtonResponse
+    arrangement: Arrangement.Horizontal = Arrangement.Center,
     onAction: () -> Unit
 ) {
     Row(

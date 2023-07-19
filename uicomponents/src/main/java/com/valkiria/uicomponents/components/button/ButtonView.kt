@@ -10,6 +10,7 @@ import com.valkiria.uicomponents.props.mapToColors
 import com.valkiria.uicomponents.props.mapToTextColor
 import com.valkiria.uicomponents.props.toTextStyle
 
+@Suppress("UnusedPrivateMember")
 @Composable
 fun ButtonView(
     uiModel: ButtonUiModel,

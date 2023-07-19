@@ -24,6 +24,7 @@ import com.valkiria.uicomponents.components.loader.LoaderComponent
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+@Suppress("LongMethod")
 @Composable
 fun LoginScreen(
     isTablet: Boolean,

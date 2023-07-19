@@ -28,6 +28,7 @@ fun LabelComponent(
 @Composable
 fun LabelComponentPreview() {
     UiComponentsTheme {
+        // FIXME: Create Mock
         /*
     {
         "text": "Serial dispositivo",

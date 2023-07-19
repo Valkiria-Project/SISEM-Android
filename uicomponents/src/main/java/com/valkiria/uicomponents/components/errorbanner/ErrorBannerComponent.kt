@@ -27,12 +27,11 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.mocks.getLoginBlockedErrorUiModel
 import com.valkiria.uicomponents.theme.UiComponentsTheme
-import com.valkiria.uicomponents.theme.primary700
-import com.valkiria.uicomponents.theme.primaryVariant400
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import timber.log.Timber
 
+@Suppress("LongMethod")
 @Composable
 fun ErrorBannerComponent(
     uiModel: ErrorUiModel,
