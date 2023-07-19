@@ -44,12 +44,12 @@ fun ChipComponent(
             label = {
                 Text(
                     text = uiModel.text,
-                    style = uiModel.textStyle.toTextStyle() // BACKEND: H5 is too small + not bold
+                    style = uiModel.textStyle.toTextStyle()
                 )
             },
             modifier = uiModel.modifier,
             leadingIcon = {
-                if (iconResourceId != null) {
+                iconResourceId?.let {
                     Icon(
                         painter = painterResource(id = iconResourceId),
                         contentDescription = null,

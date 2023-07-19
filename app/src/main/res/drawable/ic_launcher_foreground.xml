@@ -3,37 +3,38 @@
     android:height="108dp"
     android:viewportWidth="96"
     android:viewportHeight="96">
-  <group android:scaleX="0.5167925"
-      android:scaleY="0.5167925"
-      android:translateX="23.193962"
-      android:translateY="23.193962">
-    <path
-        android:pathData="M22.745,65.498C22.727,71.169 22.708,76.84 22.691,82.511L67.489,82.652H67.509H67.557H67.58C72.104,83.157 76.677,82.326 80.735,80.263C82.739,79.197 84.579,77.847 86.2,76.257C89.527,72.953 91.741,68.693 92.533,64.071C93.326,59.45 92.658,54.696 90.622,50.471C88.587,46.247 85.285,42.762 81.176,40.502C77.067,38.243 72.356,37.32 67.699,37.863V37.846H67.613C68.183,33.193 67.289,28.478 65.055,24.356C62.82,20.235 59.357,16.912 55.146,14.851C50.936,12.789 46.187,12.092 41.562,12.854C36.936,13.618 32.663,15.803 29.338,19.108C27.737,20.72 26.376,22.554 25.297,24.554C23.207,28.603 22.351,33.176 22.833,37.707V37.726C22.815,42.895 22.799,48.067 22.782,53.241"
-        android:strokeLineJoin="round"
-        android:strokeWidth="3.5"
-        android:fillColor="#00000000"
-        android:strokeColor="#5EA2F3"
-        android:strokeLineCap="round"/>
-    <path
-        android:pathData="M5.196,59.5H31.865C34.562,50.959 37.259,42.417 39.956,33.875C42.65,40.47 45.346,47.064 48.044,53.657L54.111,39.497L64.45,66.243L66.024,58.601H73.965"
-        android:strokeLineJoin="round"
-        android:strokeWidth="3.5"
-        android:fillColor="#00000000"
-        android:strokeColor="#5EA2F3"
-        android:strokeLineCap="round"/>
-    <path
-        android:pathData="M8.317,51.107H15.037"
-        android:strokeLineJoin="round"
-        android:strokeWidth="3.5"
-        android:fillColor="#00000000"
-        android:strokeColor="#29ABE2"
-        android:strokeLineCap="round"/>
-    <path
-        android:pathData="M2.954,67.195H15.444"
-        android:strokeLineJoin="round"
-        android:strokeWidth="3.5"
-        android:fillColor="#00000000"
-        android:strokeColor="#5EA2F3"
-        android:strokeLineCap="round"/>
-  </group>
+    <group
+        android:scaleX="0.5167925"
+        android:scaleY="0.5167925"
+        android:translateX="23.193962"
+        android:translateY="23.193962">
+        <path
+            android:fillColor="#00000000"
+            android:pathData="M22.745,65.498C22.727,71.169 22.708,76.84 22.691,82.511L67.489,82.652H67.509H67.557H67.58C72.104,83.157 76.677,82.326 80.735,80.263C82.739,79.197 84.579,77.847 86.2,76.257C89.527,72.953 91.741,68.693 92.533,64.071C93.326,59.45 92.658,54.696 90.622,50.471C88.587,46.247 85.285,42.762 81.176,40.502C77.067,38.243 72.356,37.32 67.699,37.863V37.846H67.613C68.183,33.193 67.289,28.478 65.055,24.356C62.82,20.235 59.357,16.912 55.146,14.851C50.936,12.789 46.187,12.092 41.562,12.854C36.936,13.618 32.663,15.803 29.338,19.108C27.737,20.72 26.376,22.554 25.297,24.554C23.207,28.603 22.351,33.176 22.833,37.707V37.726C22.815,42.895 22.799,48.067 22.782,53.241"
+            android:strokeWidth="3.5"
+            android:strokeColor="#5EA2F3"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round" />
+        <path
+            android:fillColor="#00000000"
+            android:pathData="M5.196,59.5H31.865C34.562,50.959 37.259,42.417 39.956,33.875C42.65,40.47 45.346,47.064 48.044,53.657L54.111,39.497L64.45,66.243L66.024,58.601H73.965"
+            android:strokeWidth="3.5"
+            android:strokeColor="#5EA2F3"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round" />
+        <path
+            android:fillColor="#00000000"
+            android:pathData="M8.317,51.107H15.037"
+            android:strokeWidth="3.5"
+            android:strokeColor="#29ABE2"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round" />
+        <path
+            android:fillColor="#00000000"
+            android:pathData="M2.954,67.195H15.444"
+            android:strokeWidth="3.5"
+            android:strokeColor="#5EA2F3"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round" />
+    </group>
 </vector>

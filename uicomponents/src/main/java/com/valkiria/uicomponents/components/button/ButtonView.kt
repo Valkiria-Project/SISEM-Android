@@ -10,13 +10,15 @@ import com.valkiria.uicomponents.props.mapToColors
 import com.valkiria.uicomponents.props.mapToTextColor
 import com.valkiria.uicomponents.props.toTextStyle
 
+@Suppress("UnusedPrivateMember")
 @Composable
 fun ButtonView(
     uiModel: ButtonUiModel,
-    isTablet: Boolean
+    isTablet: Boolean,
+    onClick: () -> Unit
 ) {
     Button(
-        onClick = { },
+        onClick = { onClick() },
         colors = uiModel.style.mapToColors(),
         modifier = if (uiModel.size == ButtonSize.FULL_WIDTH) {
             Modifier.fillMaxWidth()

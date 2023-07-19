@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -36,12 +37,14 @@ import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.theme.UiComponentsTheme
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
+import timber.log.Timber
 
 @Suppress("LongMethod")
 @Composable
 fun PasswordTextFieldComponent(
     uiModel: PasswordTextFieldUiModel,
     isTablet: Boolean = false,
+    onAction: (updatedValue: String) -> Unit
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon.orEmpty(), DefType.DRAWABLE
@@ -71,9 +74,11 @@ fun PasswordTextFieldComponent(
         var text by remember { mutableStateOf(TextFieldValue("")) }
         OutlinedTextField(
             value = text,
-            onValueChange = {
-                text = it
+            onValueChange = { updatedValue ->
+                text = updatedValue
+                onAction(updatedValue.text)
             },
+            modifier = Modifier.imePadding(),
             textStyle = uiModel.textStyle.toTextStyle(),
             label = {
                 uiModel.label?.let { label ->
@@ -118,7 +123,8 @@ fun PasswordTextFieldComponent(
             } else {
                 PasswordVisualTransformation()
             },
-            keyboardOptions = uiModel.keyboardOptions
+            keyboardOptions = uiModel.keyboardOptions,
+            singleLine = true
         )
     }
 }
@@ -130,7 +136,11 @@ fun PasswordTextFieldComponentPreview() {
         Column(
             modifier = Modifier.background(Color.DarkGray)
         ) {
-            PasswordTextFieldComponent(uiModel = getLoginPasswordTextFieldUiModel())
+            PasswordTextFieldComponent(
+                uiModel = getLoginPasswordTextFieldUiModel()
+            ) { updatedValue ->
+                Timber.d("Handle $updatedValue on input")
+            }
         }
     }
 }

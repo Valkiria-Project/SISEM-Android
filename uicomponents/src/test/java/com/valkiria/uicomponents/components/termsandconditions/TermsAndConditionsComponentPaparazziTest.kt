@@ -20,8 +20,10 @@ class TermsAndConditionsComponentPaparazziTest {
     @Test
     fun snapLoginTermsAndConditionsComponent() {
         paparazziRule.snapshot {
-            TermsAndConditionsComponent(uiModel = getLoginTermsAndConditionsUiModel()) { link ->
-                Timber.d("$link clicked")
+            TermsAndConditionsComponent(
+                uiModel = getLoginTermsAndConditionsUiModel()
+            ) { link ->
+                Timber.d("Handle $link clicked")
             }
         }
     }

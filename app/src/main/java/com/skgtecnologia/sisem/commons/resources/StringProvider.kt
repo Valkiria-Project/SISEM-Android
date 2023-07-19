@@ -4,7 +4,7 @@ import androidx.annotation.ArrayRes
 import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
 
-interface StringLookup {
+interface StringProvider {
 
     fun getString(@StringRes resId: Int): String
 

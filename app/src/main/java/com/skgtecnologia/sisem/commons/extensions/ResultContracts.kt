@@ -1,7 +1,7 @@
-import kotlin.contracts.ExperimentalContracts
+package com.skgtecnologia.sisem.commons.extensions
+
 import kotlin.contracts.contract
 
-@OptIn(ExperimentalContracts::class)
 fun validateOrThrow(value: Boolean, exception: () -> Exception) {
     contract {
         returns() implies value

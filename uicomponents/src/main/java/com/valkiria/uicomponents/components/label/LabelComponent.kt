@@ -11,8 +11,7 @@ import com.valkiria.uicomponents.props.TextStyle
 import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.theme.UiComponentsTheme
 
-// TODO: Finish this component
-@Suppress("ForbiddenComment")
+// FIXME: Finish this component
 @Composable
 fun LabelComponent(
     uiModel: LabelUiModel,
@@ -29,6 +28,7 @@ fun LabelComponent(
 @Composable
 fun LabelComponentPreview() {
     UiComponentsTheme {
+        // FIXME: Create Mock
         /*
     {
         "text": "Serial dispositivo",
