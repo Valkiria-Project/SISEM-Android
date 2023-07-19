@@ -23,6 +23,7 @@ import androidx.compose.ui.zIndex
 import com.valkiria.uicomponents.props.TextStyle
 import com.valkiria.uicomponents.props.toTextStyle
 
+@Suppress("LongMethod", "MagicNumber", "UnusedPrivateMember")
 @Composable
 fun SegmentedSwitchComponent(
     uiModel: SegmentedSwitchUiModel,
@@ -124,6 +125,7 @@ fun SegmentedSwitchComponent(
 @Composable
 private fun SegmentedSwitchComponentPreview() {
     SegmentedSwitchComponent(
+        // FIXME: Create Mock
         uiModel = SegmentedSwitchUiModel(
             text = "Prueba algo de texto",
             textStyle = TextStyle.HEADLINE_5,

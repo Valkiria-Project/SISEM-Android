@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.data.login.remote.api
+package com.skgtecnologia.sisem.data.login.remote
 
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenResponse
@@ -8,7 +8,6 @@ import retrofit2.http.POST
 
 interface LoginApi {
 
-    @POST("sisem-api/v1/screen/login")
-    suspend fun getLoginScreen(@Body screenBody: ScreenBody) :
-        Response<ScreenResponse>
+    @POST("screen/login")
+    suspend fun getLoginScreen(@Body screenBody: ScreenBody): Response<ScreenResponse>
 }

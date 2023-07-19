@@ -13,6 +13,7 @@ data class FooterResponse(
 )
 
 fun FooterResponse.mapToDomain(): FooterModel = FooterModel(
-    leftButton = leftButton?.mapToDomain() as? ButtonModel ?: error("Footer leftButton cannot be null"),
+    leftButton = leftButton?.mapToDomain() as? ButtonModel
+        ?: error("Footer leftButton cannot be null"),
     rightButton = rightButton?.mapToDomain() as? ButtonModel
 )

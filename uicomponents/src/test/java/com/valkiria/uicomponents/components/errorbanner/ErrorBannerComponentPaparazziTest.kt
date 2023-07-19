@@ -1,0 +1,3 @@
+package com.valkiria.uicomponents.components.errorbanner
+
+class ErrorBannerComponentPaparazziTest

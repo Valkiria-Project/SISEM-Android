@@ -7,11 +7,12 @@ import com.skgtecnologia.sisem.data.remote.model.body.BodyRowResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ButtonResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ChipResponse
 import com.skgtecnologia.sisem.data.remote.model.body.LabelResponse
-import com.skgtecnologia.sisem.data.remote.model.body.SegmentedSwitchResponse
 import com.skgtecnologia.sisem.data.remote.model.body.PasswordTextFieldResponse
 import com.skgtecnologia.sisem.data.remote.model.body.RichLabelResponse
+import com.skgtecnologia.sisem.data.remote.model.body.SegmentedSwitchResponse
 import com.skgtecnologia.sisem.data.remote.model.body.TermsAndConditionsResponse
 import com.skgtecnologia.sisem.data.remote.model.body.TextFieldResponse
+import com.skgtecnologia.sisem.di.qualifiers.Audit
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.EnumJsonAdapter
@@ -26,15 +27,14 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import okhttp3.OkHttpClient
+import okhttp3.Interceptor
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 
-private const val OK_HTTP_CLIENT_TIMEOUT_DEFAULTS = 15_000L
-private const val BASE_URL = "http://34.69.190.119:8080/"
+const val HTTP_CLIENT_VERSION_HEADER = "User-Agent"
+const val CLIENT_VERSION = "sisem/Android/" + BuildConfig.VERSION_NAME
+const val HTTP_LOCATION_HEADER = "geolocation"
+const val CLIENT_TIMEOUT_DEFAULTS = 15_000L
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -121,34 +121,16 @@ object CoreNetworkModule {
         else -> null
     }
 
+    @Audit
     @Singleton
     @Provides
-    internal fun providesOkHttpClientBuilder(
-        loggingInterceptor: HttpLoggingInterceptor?
-    ): OkHttpClient.Builder = OkHttpClient.Builder().apply {
-        connectTimeout(OK_HTTP_CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
-        readTimeout(OK_HTTP_CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
-        writeTimeout(OK_HTTP_CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
-        loggingInterceptor?.also { addInterceptor(it) }
-    }
-
-    @Singleton
-    @Provides
-    internal fun providesOkHttpClient(
-        builder: OkHttpClient.Builder
-    ): OkHttpClient = with(builder) {
-        build()
-    }
-
-    @Provides
-    @Singleton
-    internal fun providesRetrofit(
-        moshi: Moshi,
-        okHttpClient: OkHttpClient
-    ): Retrofit =
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .build()
+    fun providesAuditInterceptor(): Interceptor =
+        Interceptor { chain ->
+            val request = chain.request()
+                .newBuilder()
+                .addHeader(HTTP_CLIENT_VERSION_HEADER, CLIENT_VERSION)
+                .addHeader(HTTP_LOCATION_HEADER, "6.155216, -75.327840") // FIXME: Hardcoded data
+                .build()
+            chain.proceed(request)
+        }
 }

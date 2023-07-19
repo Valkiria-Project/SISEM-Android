@@ -30,9 +30,11 @@ data class PasswordTextFieldResponse(
         icon = icon,
         placeholder = placeholder,
         label = label,
-        keyboardOptions = keyboardOptions ?: error("PasswordTextField keyboardOptions cannot be null"),
+        keyboardOptions = keyboardOptions
+            ?: error("PasswordTextField keyboardOptions cannot be null"),
         textStyle = textStyle ?: error("PasswordTextField textStyle cannot be null"),
-        validations = validations?.map { it.mapToUi() } ?: error("PasswordTextField validations cannot be null"),
+        validations = validations?.map { it.mapToUi() }
+            ?: error("PasswordTextField validations cannot be null"),
         modifier = margins ?: Modifier
     )
 }

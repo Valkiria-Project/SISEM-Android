@@ -32,7 +32,8 @@ data class TextFieldResponse(
         label = label,
         keyboardOptions = keyboardOptions ?: error("TextField keyboardOptions cannot be null"),
         textStyle = textStyle ?: error("TextField textStyle cannot be null"),
-        validations = validations?.map { it.mapToUi() } ?: error("TextField validations cannot be null"),
+        validations = validations?.map { it.mapToUi() }
+            ?: error("TextField validations cannot be null"),
         modifier = margins ?: Modifier
     )
 }

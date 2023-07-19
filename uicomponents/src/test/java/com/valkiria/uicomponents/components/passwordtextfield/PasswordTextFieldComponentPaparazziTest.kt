@@ -6,6 +6,7 @@ import com.android.ide.common.rendering.api.SessionParams.RenderingMode.V_SCROLL
 import com.valkiria.uicomponents.mocks.getLoginPasswordTextFieldUiModel
 import org.junit.Rule
 import org.junit.Test
+import timber.log.Timber
 
 class PasswordTextFieldComponentPaparazziTest {
 
@@ -19,7 +20,11 @@ class PasswordTextFieldComponentPaparazziTest {
     @Test
     fun snapLoginPasswordTextFieldComponent() {
         paparazziRule.snapshot {
-            PasswordTextFieldComponent(uiModel = getLoginPasswordTextFieldUiModel())
+            PasswordTextFieldComponent(
+                uiModel = getLoginPasswordTextFieldUiModel()
+            ) { updatedValue ->
+                Timber.d("Handle $updatedValue on input")
+            }
         }
     }
 }
