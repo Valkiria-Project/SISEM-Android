@@ -30,13 +30,13 @@ fun LabelComponentPreview() {
     UiComponentsTheme {
         // FIXME: Create Mock
         /*
-    {
-        "text": "Serial dispositivo",
-        "text_style": "BUTTON_1",
-        "type": "LABEL",
-        "margins": {"top": 30,"left": 20,"right": 0,"bottom": 0}
-    }
-    */
+        {
+            "text": "Serial dispositivo",
+            "text_style": "BUTTON_1",
+            "type": "LABEL",
+            "margins": {"top": 30,"left": 20,"right": 0,"bottom": 0}
+        }
+        */
         val labelUiModel = LabelUiModel(
             text = "Serial dispositivo",
             textStyle = TextStyle.BUTTON_1,
