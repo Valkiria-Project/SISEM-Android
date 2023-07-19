@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.data.login.cache.model
+package com.skgtecnologia.sisem.data.auth.cache.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

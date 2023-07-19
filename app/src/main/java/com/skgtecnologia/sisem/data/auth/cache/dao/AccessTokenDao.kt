@@ -1,10 +1,10 @@
-package com.skgtecnologia.sisem.data.login.cache.dao
+package com.skgtecnologia.sisem.data.auth.cache.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.skgtecnologia.sisem.data.login.cache.model.AccessTokenEntity
+import com.skgtecnologia.sisem.data.auth.cache.model.AccessTokenEntity
 
 @Dao
 interface AccessTokenDao {

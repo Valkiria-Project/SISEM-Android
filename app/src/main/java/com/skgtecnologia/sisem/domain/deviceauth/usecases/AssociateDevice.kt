@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.domain.deviceauth.usecases
 import androidx.annotation.CheckResult
 import com.skgtecnologia.sisem.commons.extensions.resultOf
 import com.skgtecnologia.sisem.domain.deviceauth.DeviceAuthRepository
+import com.skgtecnologia.sisem.domain.deviceauth.model.AssociateDeviceModel
 import javax.inject.Inject
 
 class AssociateDevice @Inject constructor(
@@ -14,7 +15,7 @@ class AssociateDevice @Inject constructor(
         licensePlate: String,
         serial: String,
         code: String
-    ): Result<String> = resultOf {
+    ): Result<AssociateDeviceModel> = resultOf {
         deviceAuthRepository.associateDevice(licensePlate, serial, code)
     }
 }

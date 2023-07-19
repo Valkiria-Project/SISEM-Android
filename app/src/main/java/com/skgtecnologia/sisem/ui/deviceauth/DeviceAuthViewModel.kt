@@ -65,7 +65,7 @@ class DeviceAuthViewModel @Inject constructor(
                 "jarry", // FIXME: Hardcoded data
                 androidIdProvider.getAndroidId(),
                 "1" // FIXME: Hardcoded data, propagate vehicleCode
-            ).onSuccess {
+            ).onSuccess { associateDeviceModel ->
                 uiState = uiState.copy(
                     isLoading = false
                 )

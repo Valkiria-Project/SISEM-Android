@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.di
 import android.content.Context
 import androidx.room.Room
 import com.skgtecnologia.sisem.data.cache.SisemDatabase
-import com.skgtecnologia.sisem.data.login.cache.dao.AccessTokenDao
+import com.skgtecnologia.sisem.data.auth.cache.dao.AccessTokenDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

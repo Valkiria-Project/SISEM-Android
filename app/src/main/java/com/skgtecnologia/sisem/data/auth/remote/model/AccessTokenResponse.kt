@@ -1,11 +1,11 @@
-package com.skgtecnologia.sisem.data.login.remote.model
+package com.skgtecnologia.sisem.data.auth.remote.model
 
 import com.skgtecnologia.sisem.domain.login.model.AccessTokenModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class LoginResponse(
+data class AccessTokenResponse(
     @Json(name = "token") val accessToken: String,
     @Json(name = "refresh_token") val refreshToken: String,
     @Json(name = "type") val tokenType: String,
@@ -13,7 +13,7 @@ data class LoginResponse(
     @Json(name = "role") val role: String
 )
 
-fun LoginResponse.mapToDomain(): AccessTokenModel = AccessTokenModel(
+fun AccessTokenResponse.mapToDomain(): AccessTokenModel = AccessTokenModel(
     accessToken = accessToken,
     refreshToken = refreshToken,
     tokenType = tokenType,
