@@ -26,6 +26,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.mocks.getLoginBlockedErrorUiModel
+import com.valkiria.uicomponents.mocks.getLoginDuplicatedErrorUiModel
+import com.valkiria.uicomponents.mocks.getLoginIncorrectErrorUiModel
+import com.valkiria.uicomponents.mocks.getLoginPasswordErrorUiModel
+import com.valkiria.uicomponents.mocks.getLoginUnassignedErrorUiModel
 import com.valkiria.uicomponents.theme.UiComponentsTheme
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
@@ -62,12 +66,12 @@ fun ErrorBannerComponent(
                         bottomStart = 0.dp
                     )
                 )
-                .background(color = MaterialTheme.colorScheme.surface),
+                .background(color = Color.DarkGray),
             contentAlignment = Alignment.TopCenter
         ) {
             Column {
                 Row(
-                    modifier = Modifier.padding(20.dp),
+                    modifier = Modifier.padding(horizontal = 20.dp),
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
                     iconResourceId?.let {
@@ -75,21 +79,23 @@ fun ErrorBannerComponent(
                             painter = painterResource(id = it),
                             contentDescription = null,
                             modifier = Modifier
-                                .padding(end = 16.dp)
+                                .padding(top = 20.dp, end = 16.dp)
                                 .size(42.dp),
                             tint = MaterialTheme.colorScheme.error
                         )
                     }
                     Text(
                         text = uiModel.title,
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .padding(top = 20.dp)
+                            .weight(1f),
                         color = Color.White,
                         style = MaterialTheme.typography.displayLarge
                     )
                     IconButton(
                         onClick = { onAction() },
                         modifier = Modifier
-                            .padding(start = 16.dp)
+                            .padding(start = 16.dp, top = 12.dp)
                             .size(42.dp),
                     ) {
                         Icon(
@@ -114,10 +120,32 @@ fun ErrorBannerComponent(
 @Composable
 fun ErrorBannerComponentPreview() {
     UiComponentsTheme {
-        ErrorBannerComponent(
-            uiModel = getLoginBlockedErrorUiModel()
-        ) {
-            Timber.d("Closed")
+        Column {
+            ErrorBannerComponent(
+                uiModel = getLoginBlockedErrorUiModel()
+            ) {
+                Timber.d("Closed")
+            }
+            ErrorBannerComponent(
+                uiModel = getLoginIncorrectErrorUiModel()
+            ) {
+                Timber.d("Closed")
+            }
+            ErrorBannerComponent(
+                uiModel = getLoginPasswordErrorUiModel()
+            ) {
+                Timber.d("Closed")
+            }
+            ErrorBannerComponent(
+                uiModel = getLoginDuplicatedErrorUiModel()
+            ) {
+                Timber.d("Closed")
+            }
+            ErrorBannerComponent(
+                uiModel = getLoginUnassignedErrorUiModel()
+            ) {
+                Timber.d("Closed")
+            }
         }
     }
 }

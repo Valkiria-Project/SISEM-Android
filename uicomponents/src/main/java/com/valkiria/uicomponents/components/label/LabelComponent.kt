@@ -7,11 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.mocks.getDeviceAuthLicensePlateLabelUiModel
+import com.valkiria.uicomponents.mocks.getDeviceAuthSerialLabelUiModel
 import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.theme.UiComponentsTheme
 
-// FIXME: Finish this component
 @Composable
 fun LabelComponent(
     uiModel: LabelUiModel,
@@ -28,27 +28,13 @@ fun LabelComponent(
 @Composable
 fun LabelComponentPreview() {
     UiComponentsTheme {
-        // FIXME: Create Mock
-        /*
-    {
-        "text": "Serial dispositivo",
-        "text_style": "BUTTON_1",
-        "type": "LABEL",
-        "margins": {"top": 30,"left": 20,"right": 0,"bottom": 0}
-    }
-    */
-        val labelUiModel = LabelUiModel(
-            text = "Serial dispositivo",
-            textStyle = TextStyle.BUTTON_1,
-            modifier = Modifier
-        )
         Column {
             LabelComponent(
-                uiModel = labelUiModel,
+                uiModel = getDeviceAuthSerialLabelUiModel(),
                 modifier = Modifier.padding(16.dp)
             )
             LabelComponent(
-                uiModel = labelUiModel,
+                uiModel = getDeviceAuthLicensePlateLabelUiModel(),
                 modifier = Modifier.padding(0.dp)
             )
         }

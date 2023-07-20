@@ -4,3 +4,6 @@
 # Note that rules in any ruleset other than the standard ruleset will need to be prefixed
 # by the ruleset identifier.
 disabled_rules = import-ordering
+
+[build.gradle.kts]
+max_line_length = off

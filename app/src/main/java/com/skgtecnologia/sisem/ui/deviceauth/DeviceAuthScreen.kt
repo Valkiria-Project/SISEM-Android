@@ -93,17 +93,6 @@ fun DeviceAuthScreen(
     }
 }
 
-private fun handleFooterUiAction(
-    uiAction: UiAction,
-    viewModel: DeviceAuthViewModel
-) {
-    (uiAction as? FooterUiAction)?.let {
-        when (uiAction.identifier) {
-            DeviceAuthIdentifier.DEVICE_AUTH_BUTTON.name -> viewModel.associateDevice()
-        }
-    }
-}
-
 private fun handleUiAction(
     uiAction: UiAction,
     viewModel: DeviceAuthViewModel
@@ -112,6 +101,17 @@ private fun handleUiAction(
         when (uiAction) {
             // FIXME: Add Actions for DeviceAuth
             DeviceAuthUiAction.DeviceAuth -> viewModel.associateDevice()
+        }
+    }
+}
+
+private fun handleFooterUiAction(
+    uiAction: UiAction,
+    viewModel: DeviceAuthViewModel
+) {
+    (uiAction as? FooterUiAction)?.let {
+        when (uiAction.identifier) {
+            DeviceAuthIdentifier.DEVICE_AUTH_BUTTON.name -> viewModel.associateDevice()
         }
     }
 }
