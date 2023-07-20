@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -27,6 +26,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.mocks.getLoginBlockedErrorUiModel
+import com.valkiria.uicomponents.mocks.getLoginDuplicatedErrorUiModel
+import com.valkiria.uicomponents.mocks.getLoginIncorrectErrorUiModel
+import com.valkiria.uicomponents.mocks.getLoginPasswordErrorUiModel
+import com.valkiria.uicomponents.mocks.getLoginUnassignedErrorUiModel
 import com.valkiria.uicomponents.theme.UiComponentsTheme
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
@@ -117,10 +120,32 @@ fun ErrorBannerComponent(
 @Composable
 fun ErrorBannerComponentPreview() {
     UiComponentsTheme {
-        ErrorBannerComponent(
-            uiModel = getLoginBlockedErrorUiModel()
-        ) {
-            Timber.d("Closed")
+        Column {
+            ErrorBannerComponent(
+                uiModel = getLoginBlockedErrorUiModel()
+            ) {
+                Timber.d("Closed")
+            }
+            ErrorBannerComponent(
+                uiModel = getLoginIncorrectErrorUiModel()
+            ) {
+                Timber.d("Closed")
+            }
+            ErrorBannerComponent(
+                uiModel = getLoginPasswordErrorUiModel()
+            ) {
+                Timber.d("Closed")
+            }
+            ErrorBannerComponent(
+                uiModel = getLoginDuplicatedErrorUiModel()
+            ) {
+                Timber.d("Closed")
+            }
+            ErrorBannerComponent(
+                uiModel = getLoginUnassignedErrorUiModel()
+            ) {
+                Timber.d("Closed")
+            }
         }
     }
 }

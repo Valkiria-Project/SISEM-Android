@@ -7,32 +7,6 @@ import com.valkiria.uicomponents.props.TextStyle
 import com.valkiria.uicomponents.props.TextStyle.BUTTON_2
 
 fun getDeviceAuthSegmentedSwitchUiModel(): SegmentedSwitchUiModel {
-    /*
-    {
-        "identifier": "DEVICE_AUTH_SWITCH",
-        "text": "¿Desea desvincular el vehículo del dispositivo?",
-        "text_style": "HEADLINE_4",
-        "options": [
-            {
-                "text": "No",
-                "text_style": "BUTTON_2",
-                "color": "blueColor"
-            },
-            {
-                "text": "Si",
-                "text_style": "BUTTON_2",
-                "color": "red"
-            }
-        ],
-        "type": "SEGMENTED_SWITCH",
-        "margins": {
-            "top": 20,
-            "left": 20,
-            "right": 20,
-            "bottom": 0
-        }
-    }
-    */
     return SegmentedSwitchUiModel(
         text = "Prueba algo de texto",
         textStyle = TextStyle.HEADLINE_5,
