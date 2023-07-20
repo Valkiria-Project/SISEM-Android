@@ -34,7 +34,9 @@ fun LoginScreen(
     val viewModel = hiltViewModel<LoginViewModel>()
     val uiState = viewModel.uiState
 
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = false
+    )
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(uiState) {

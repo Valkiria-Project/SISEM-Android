@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -62,12 +63,12 @@ fun ErrorBannerComponent(
                         bottomStart = 0.dp
                     )
                 )
-                .background(color = MaterialTheme.colorScheme.surface),
+                .background(color = Color.DarkGray),
             contentAlignment = Alignment.TopCenter
         ) {
             Column {
                 Row(
-                    modifier = Modifier.padding(20.dp),
+                    modifier = Modifier.padding(horizontal = 20.dp),
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
                     iconResourceId?.let {
@@ -75,21 +76,23 @@ fun ErrorBannerComponent(
                             painter = painterResource(id = it),
                             contentDescription = null,
                             modifier = Modifier
-                                .padding(end = 16.dp)
+                                .padding(top = 20.dp, end = 16.dp)
                                 .size(42.dp),
                             tint = MaterialTheme.colorScheme.error
                         )
                     }
                     Text(
                         text = uiModel.title,
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .padding(top = 20.dp)
+                            .weight(1f),
                         color = Color.White,
                         style = MaterialTheme.typography.displayLarge
                     )
                     IconButton(
                         onClick = { onAction() },
                         modifier = Modifier
-                            .padding(start = 16.dp)
+                            .padding(start = 16.dp, top = 12.dp)
                             .size(42.dp),
                     ) {
                         Icon(
