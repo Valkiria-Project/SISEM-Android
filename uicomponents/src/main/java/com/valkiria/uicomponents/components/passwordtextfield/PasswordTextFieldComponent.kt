@@ -97,7 +97,9 @@ fun PasswordTextFieldComponent(
             },
             trailingIcon = {
                 if (showPassword) {
-                    IconButton(onClick = { showPassword = false }) {
+                    IconButton(
+                        onClick = { showPassword = false }
+                    ) {
                         Icon(
                             imageVector = ImageVector.vectorResource(
                                 id = R.drawable.ic_visibility_filled

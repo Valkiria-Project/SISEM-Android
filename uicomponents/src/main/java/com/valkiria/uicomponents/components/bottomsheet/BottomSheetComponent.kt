@@ -16,6 +16,7 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,7 +47,7 @@ fun BottomSheetComponent(
                 onAction()
             },
             sheetState = sheetState,
-            containerColor = MaterialTheme.colorScheme.surface,
+            containerColor = Color.DarkGray,
             scrimColor = MaterialTheme.colorScheme.background.copy(alpha = 0.8f)
         ) {
             Row(
@@ -99,10 +100,15 @@ fun BottomSheetComponentPreview() {
                 .fillMaxSize()
                 .background(Color.DarkGray)
         ) {
-            val sheetState = rememberModalBottomSheetState()
+            val sheetState = rememberModalBottomSheetState(
+                skipPartiallyExpanded = true
+            )
             val scope = rememberCoroutineScope()
-            scope.launch {
-                sheetState.show()
+
+            LaunchedEffect(sheetState) {
+                scope.launch {
+                    sheetState.show()
+                }
             }
 
             BottomSheetComponent(

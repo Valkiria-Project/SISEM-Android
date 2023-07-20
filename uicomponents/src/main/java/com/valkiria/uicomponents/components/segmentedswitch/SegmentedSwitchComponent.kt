@@ -20,14 +20,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.mocks.getDeviceAuthSegmentedSwitchUiModel
 import com.valkiria.uicomponents.props.toTextStyle
+import com.valkiria.uicomponents.theme.UiComponentsTheme
 
 @Suppress("LongMethod", "MagicNumber", "UnusedPrivateMember")
 @Composable
 fun SegmentedSwitchComponent(
     uiModel: SegmentedSwitchUiModel,
-    isTablet: Boolean
+    isTablet: Boolean = false
 ) {
     Row(
         modifier = uiModel.modifier.fillMaxWidth(),
@@ -123,26 +124,10 @@ fun SegmentedSwitchComponent(
 
 @Preview(showBackground = true)
 @Composable
-private fun SegmentedSwitchComponentPreview() {
-    SegmentedSwitchComponent(
-        // FIXME: Create Mock
-        uiModel = SegmentedSwitchUiModel(
-            text = "Prueba algo de texto",
-            textStyle = TextStyle.HEADLINE_5,
-            options = listOf(
-                OptionUiModel(
-                    text = "No",
-                    textStyle = TextStyle.BUTTON_2,
-                    color = "blueColor"
-                ),
-                OptionUiModel(
-                    text = "Si",
-                    textStyle = TextStyle.BUTTON_2,
-                    color = "red"
-                )
-            ),
-            modifier = Modifier
-        ),
-        isTablet = false
-    )
+fun SegmentedSwitchComponentPreview() {
+    UiComponentsTheme {
+        SegmentedSwitchComponent(
+            uiModel = getDeviceAuthSegmentedSwitchUiModel()
+        )
+    }
 }

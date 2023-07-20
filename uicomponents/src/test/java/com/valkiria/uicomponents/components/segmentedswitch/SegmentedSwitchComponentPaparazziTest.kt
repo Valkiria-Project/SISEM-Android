@@ -1,12 +1,13 @@
-package com.valkiria.uicomponents.components.loader
+package com.valkiria.uicomponents.components.segmentedswitch
 
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.android.ide.common.rendering.api.SessionParams.RenderingMode.V_SCROLL
+import com.valkiria.uicomponents.mocks.getDeviceAuthSegmentedSwitchUiModel
 import org.junit.Rule
 import org.junit.Test
 
-class LoaderComponentPaparazziTest {
+class SegmentedSwitchComponentPaparazziTest {
 
     @get:Rule
     val paparazziRule: Paparazzi = Paparazzi(
@@ -16,9 +17,11 @@ class LoaderComponentPaparazziTest {
     )
 
     @Test
-    fun snapLoaderComponent() {
+    fun snapDeviceAuthSegmentedSwitchComponent() {
         paparazziRule.snapshot {
-            LoaderComponent()
+            SegmentedSwitchComponent(
+                uiModel = getDeviceAuthSegmentedSwitchUiModel()
+            )
         }
     }
 }

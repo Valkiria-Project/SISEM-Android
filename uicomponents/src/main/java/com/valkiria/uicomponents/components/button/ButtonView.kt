@@ -14,7 +14,7 @@ import com.valkiria.uicomponents.props.toTextStyle
 @Composable
 fun ButtonView(
     uiModel: ButtonUiModel,
-    isTablet: Boolean,
+    isTablet: Boolean = false,
     onClick: () -> Unit
 ) {
     Button(
