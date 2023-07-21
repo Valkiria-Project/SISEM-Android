@@ -87,10 +87,15 @@ fun TextFieldComponent(
                 }
                 */
             },
+            isError = text.isInvalidInput(uiModel.validations),
             keyboardOptions = uiModel.keyboardOptions,
             singleLine = true
         )
     }
+}
+
+private fun TextFieldValue.isInvalidInput(validations: List<ValidationUiModel>): Boolean {
+    return this.text.isEmpty()
 }
 
 @Preview(showBackground = true)
