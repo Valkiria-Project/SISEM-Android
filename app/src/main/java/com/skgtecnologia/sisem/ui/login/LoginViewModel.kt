@@ -9,7 +9,7 @@ import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.login.usecases.Login
-import com.valkiria.uicomponents.mocks.getLoginBlockedErrorUiModel
+import com.skgtecnologia.sisem.domain.model.error.mapToUi
 import com.valkiria.uicomponents.mocks.getLoginDuplicatedErrorUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -50,10 +50,10 @@ class LoginViewModel @Inject constructor(
                 }
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
-                    // BACKEND: How to handle errors?
+
                     uiState = uiState.copy(
                         isLoading = false,
-                        errorModel = getLoginDuplicatedErrorUiModel() // FIXME: Map ErrorModel
+                        errorModel = throwable.mapToUi()
                     )
                 }
         }
@@ -73,9 +73,10 @@ class LoginViewModel @Inject constructor(
                 }
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
+
                     uiState = uiState.copy(
                         isLoading = false,
-                        errorModel = getLoginBlockedErrorUiModel() // FIXME: Map ErrorModel
+                        errorModel = throwable.mapToUi()
                     )
                 }
         }

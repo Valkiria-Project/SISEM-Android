@@ -31,7 +31,7 @@ class DeviceAuthRemoteDataSource @Inject constructor(
         if (response.isSuccessful && body != null) {
             body.mapToDomain()
         } else {
-            Timber.d("The retrieved response is not successful and/or body is empty")
+            Timber.wtf("The retrieved response is not successful and/or body is empty")
             error("The retrieved response is not successful and/or body is empty")
         }
     }
@@ -56,7 +56,7 @@ class DeviceAuthRemoteDataSource @Inject constructor(
         if (response.isSuccessful && body != null) {
             body.mapToDomain()
         } else {
-            Timber.d("The retrieved response is not successful and/or body is empty")
+            Timber.wtf("The retrieved response is not successful and/or body is empty")
             error("The retrieved response is not successful and/or body is empty")
         }
     }
