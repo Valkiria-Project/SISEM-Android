@@ -9,8 +9,6 @@ import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.AssociateDevice
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.GetDeviceAuthScreen
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
-import com.valkiria.uicomponents.mocks.getLoginBlockedErrorUiModel
-import com.valkiria.uicomponents.mocks.getLoginDuplicatedErrorUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -64,9 +62,9 @@ class DeviceAuthViewModel @Inject constructor(
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
             associateDevice.invoke(
-                "jarry", // FIXME: Hardcoded data
+                "KRV675", // FIXME: Hardcoded data
                 androidIdProvider.getAndroidId(),
-                "1" // FIXME: Hardcoded data, propagate vehicleCode
+                vehicleCode
             ).onSuccess { associateDeviceModel ->
                 uiState = uiState.copy(
                     isLoading = false

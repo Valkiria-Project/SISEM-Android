@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
 import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.ButtonModel
@@ -19,6 +20,7 @@ import com.skgtecnologia.sisem.domain.model.body.SegmentedSwitchModel
 import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
+import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
 import com.valkiria.uicomponents.action.LoginUiAction.Login
 import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
@@ -153,6 +155,13 @@ private fun HandleTextFieldRows(
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
+        DeviceAuthIdentifier.DEVICE_AUTH_CODE.name -> TextFieldComponent(
+            uiModel = model.mapToUiModel(),
+            isTablet = isTablet
+        ) { updatedValue ->
+            onAction(DeviceAuthCodeInput(updatedValue = updatedValue))
+        }
+
         LoginIdentifier.LOGIN_EMAIL.name -> TextFieldComponent(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet
