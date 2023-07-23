@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.AssociateDevice
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.GetDeviceAuthScreen
+import com.skgtecnologia.sisem.domain.model.error.mapToUi
 import com.valkiria.uicomponents.mocks.getLoginBlockedErrorUiModel
 import com.valkiria.uicomponents.mocks.getLoginDuplicatedErrorUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -48,9 +49,10 @@ class DeviceAuthViewModel @Inject constructor(
                 }
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
+
                     uiState = uiState.copy(
                         isLoading = false,
-                        errorModel = getLoginDuplicatedErrorUiModel() // FIXME: Map ErrorModel
+                        errorModel = throwable.mapToUi()
                     )
                 }
         }
@@ -71,9 +73,10 @@ class DeviceAuthViewModel @Inject constructor(
                 )
             }.onFailure { throwable ->
                 Timber.wtf(throwable, "This is a failure")
+
                 uiState = uiState.copy(
                     isLoading = false,
-                    errorModel = getLoginBlockedErrorUiModel() // FIXME: Map ErrorModel
+                    errorModel = throwable.mapToUi()
                 )
             }
         }
