@@ -33,7 +33,7 @@ class LoginViewModel @Inject constructor(
     var username by mutableStateOf("")
     var isValidUsername by mutableStateOf(false)
     var password by mutableStateOf("")
-    var isValidPassword by mutableStateOf(false)
+    var isValidPassword by mutableStateOf(true) // FIXME
 
     init {
         uiState = uiState.copy(isLoading = true)
@@ -64,9 +64,13 @@ class LoginViewModel @Inject constructor(
         uiState = uiState.copy(
             validateFields = true
         )
+
+        if (isValidUsername) {
+            authenticate()
+        }
     }
 
-    fun authenticate() {
+    private fun authenticate() {
         uiState = uiState.copy(
             isLoading = true
         )
@@ -89,12 +93,6 @@ class LoginViewModel @Inject constructor(
                     )
                 }
         }
-    }
-
-    fun onFieldsValidated() {
-        uiState = uiState.copy(
-            validateFields = false
-        )
     }
 
     fun onLoginHandled() {

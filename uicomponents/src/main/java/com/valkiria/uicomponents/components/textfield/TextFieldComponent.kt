@@ -104,7 +104,7 @@ fun TextFieldComponent(
                     )
                 }
             },
-            isError = validateFields,
+            isError = text.toFailedValidation(uiModel.validations, validateFields) != null,
             keyboardOptions = uiModel.keyboardOptions,
             singleLine = true
         )

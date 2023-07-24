@@ -46,13 +46,6 @@ fun LoginScreen(
                     viewModel.onLoginHandled()
                     onNavigation(AuthNavigationRoute.DeviceAuth)
                 }
-
-                uiState.validateFields -> {
-                    if (viewModel.isValidUsername) {
-                        viewModel.onFieldsValidated()
-                        viewModel.authenticate()
-                    }
-                }
             }
         }
     }
@@ -134,20 +127,11 @@ private fun handleUiAction(
             is LoginUiAction.LoginUserInput -> {
                 viewModel.username = uiAction.updatedValue
                 viewModel.isValidUsername = uiAction.fieldValidated
-
-                isLoginFormValidated(viewModel)
             }
 
             is LoginUiAction.TermsAndConditions -> viewModel.showBottomSheet(
                 LoginLink.getLinkByName(link = uiAction.link)
             )
         }
-    }
-}
-
-private fun isLoginFormValidated(viewModel: LoginViewModel) {
-    viewModel.isValidPassword = true
-    if (viewModel.isValidUsername && viewModel.isValidPassword) {
-        viewModel.onFieldsValidated()
     }
 }
