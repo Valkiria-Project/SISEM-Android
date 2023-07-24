@@ -17,6 +17,8 @@ import retrofit2.HttpException
 import retrofit2.Response
 import timber.log.Timber
 
+private const val FORBIDDEN_HTTP_STATUS_CODE = 403
+
 private val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
     Timber.wtf(exception)
 }
@@ -53,7 +55,7 @@ private fun Throwable.handleThrowable(): ErrorModel {
     Timber.e(this)
     return if (this is UnknownHostException)
         ErrorModel(icon = "", title = "Connection error", description = "")
-    else if ((this is HttpException) && (this.code() == 403))
+    else if ((this is HttpException) && (this.code() == FORBIDDEN_HTTP_STATUS_CODE))
         ErrorModel(icon = "", title = "Not authorized", description = "")
     else if (this is SocketTimeoutException)
         ErrorModel(
@@ -77,10 +79,11 @@ private val errorAdapter = Moshi.Builder()
     .build()
     .adapter(ErrorResponse::class.java)
 
+@Suppress("SwallowedException", "TooGenericExceptionCaught")
 private fun ResponseBody?.toError(): ErrorResponse? = if (this != null) {
     try {
         errorAdapter.fromJson(string())
-    } catch (e: Exception) {
+    } catch (exception: Exception) {
         null
     }
 } else {
