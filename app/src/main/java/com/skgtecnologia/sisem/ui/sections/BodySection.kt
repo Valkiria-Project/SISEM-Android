@@ -169,11 +169,11 @@ private fun HandleTextFieldRows(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet,
             validateFields = validateFields,
-        ) { updatedValue, validations ->
+        ) { updatedValue, fieldValidated ->
             onAction(
                 LoginUserInput(
                     updatedValue = updatedValue,
-                    fieldValidated = validations
+                    fieldValidated = fieldValidated
                 )
             )
         }

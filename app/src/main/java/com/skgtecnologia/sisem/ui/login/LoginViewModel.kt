@@ -33,6 +33,7 @@ class LoginViewModel @Inject constructor(
     var username by mutableStateOf("")
     var isValidUsername by mutableStateOf(false)
     var password by mutableStateOf("")
+    var isValidPassword by mutableStateOf(false)
 
     init {
         uiState = uiState.copy(isLoading = true)

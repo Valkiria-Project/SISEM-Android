@@ -72,7 +72,7 @@ fun TextFieldComponent(
                 text = updatedValue
                 onAction(
                     updatedValue.text,
-                    text.toFailedValidation(uiModel.validations) == null
+                    text.toFailedValidation(uiModel.validations, validateFields) == null
                 )
             },
             modifier = Modifier.imePadding(),
@@ -95,7 +95,10 @@ fun TextFieldComponent(
             supportingText = {
                 if (validateFields) {
                     Text(
-                        text = text.toFailedValidation(uiModel.validations)?.message.orEmpty(),
+                        text = text.toFailedValidation(
+                            uiModel.validations,
+                            validateFields
+                        )?.message.orEmpty(),
                         modifier = Modifier.fillMaxWidth(),
                         color = MaterialTheme.colorScheme.error
                     )
@@ -109,8 +112,13 @@ fun TextFieldComponent(
 }
 
 private fun TextFieldValue.toFailedValidation(
-    validations: List<ValidationUiModel>
+    validations: List<ValidationUiModel>,
+    validateFields: Boolean
 ): ValidationUiModel? {
+    if (validateFields.not()) {
+        return null
+    }
+
     val invalidRegex = validations.find {
         text.matches(it.regex.toRegex()).not()
     }
