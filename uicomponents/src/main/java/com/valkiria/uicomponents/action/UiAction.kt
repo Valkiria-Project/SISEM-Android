@@ -1,5 +1,7 @@
 package com.valkiria.uicomponents.action
 
+import com.valkiria.uicomponents.components.textfield.ValidationUiModel
+
 sealed interface UiAction
 
 sealed class FooterUiAction(open val identifier: String) : UiAction {
@@ -11,7 +13,10 @@ sealed class LoginUiAction : UiAction {
     object Login : LoginUiAction()
     data class TermsAndConditions(val link: String) : LoginUiAction()
     data class LoginPasswordInput(val updatedValue: String) : LoginUiAction()
-    data class LoginUserInput(val updatedValue: String) : LoginUiAction()
+    data class LoginUserInput(
+        val updatedValue: String,
+        val fieldValidated: Boolean
+    ) : LoginUiAction()
 }
 
 sealed class DeviceAuthUiAction : UiAction {

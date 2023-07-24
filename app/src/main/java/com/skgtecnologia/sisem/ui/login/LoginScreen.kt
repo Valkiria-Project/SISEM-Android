@@ -41,9 +41,18 @@ fun LoginScreen(
 
     LaunchedEffect(uiState) {
         launch {
-            if (uiState.onLogin) {
-                viewModel.onLoginHandled()
-                onNavigation(AuthNavigationRoute.DeviceAuth)
+            when {
+                uiState.onLogin -> {
+                    viewModel.onLoginHandled()
+                    onNavigation(AuthNavigationRoute.DeviceAuth)
+                }
+
+                uiState.validateFields -> {
+                    if (viewModel.isValidUsername) {
+                        viewModel.onFieldsValidated()
+                        viewModel.authenticate()
+                    }
+                }
             }
         }
     }
@@ -68,7 +77,8 @@ fun LoginScreen(
                     bottom.linkTo(parent.bottom)
                     height = Dimension.fillToConstraints
                 }
-                .padding(top = 20.dp)
+                .padding(top = 20.dp),
+            validateFields = uiState.validateFields
         ) { uiAction ->
             handleUiAction(uiAction, viewModel)
         }
@@ -121,7 +131,10 @@ private fun handleUiAction(
 
             is LoginUiAction.LoginPasswordInput -> viewModel.password = uiAction.updatedValue
 
-            is LoginUiAction.LoginUserInput -> viewModel.username = uiAction.updatedValue
+            is LoginUiAction.LoginUserInput -> {
+                viewModel.username = uiAction.updatedValue
+                viewModel.isValidUsername = uiAction.fieldValidated
+            }
 
             is LoginUiAction.TermsAndConditions -> viewModel.showBottomSheet(
                 LoginLink.getLinkByName(link = uiAction.link)

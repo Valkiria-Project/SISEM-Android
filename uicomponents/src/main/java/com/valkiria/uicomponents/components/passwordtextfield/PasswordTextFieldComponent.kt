@@ -72,6 +72,7 @@ fun PasswordTextFieldComponent(
         }
 
         var text by remember { mutableStateOf(TextFieldValue("")) }
+
         OutlinedTextField(
             value = text,
             onValueChange = { updatedValue ->

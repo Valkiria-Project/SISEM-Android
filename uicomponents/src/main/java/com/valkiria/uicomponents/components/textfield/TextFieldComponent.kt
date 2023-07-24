@@ -37,7 +37,8 @@ import timber.log.Timber
 fun TextFieldComponent(
     uiModel: TextFieldUiModel,
     isTablet: Boolean = false,
-    onAction: (updatedValue: String) -> Unit
+    validateFields: Boolean = false,
+    onAction: (updatedValue: String, fieldValidated: Boolean) -> Unit
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon.orEmpty(), DefType.DRAWABLE
@@ -64,11 +65,15 @@ fun TextFieldComponent(
         }
 
         var text by remember { mutableStateOf(TextFieldValue("")) }
+
         OutlinedTextField(
             value = text,
             onValueChange = { updatedValue ->
                 text = updatedValue
-                onAction(updatedValue.text)
+                onAction(
+                    updatedValue.text,
+                    text.toFailedValidation(uiModel.validations) == null
+                )
             },
             modifier = Modifier.imePadding(),
             textStyle = uiModel.textStyle.toTextStyle(),
@@ -87,15 +92,30 @@ fun TextFieldComponent(
                 }
                 */
             },
-            isError = text.isInvalidInput(uiModel.validations),
+            supportingText = {
+                if (validateFields) {
+                    Text(
+                        text = text.toFailedValidation(uiModel.validations)?.message.orEmpty(),
+                        modifier = Modifier.fillMaxWidth(),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            },
+            isError = validateFields,
             keyboardOptions = uiModel.keyboardOptions,
             singleLine = true
         )
     }
 }
 
-private fun TextFieldValue.isInvalidInput(validations: List<ValidationUiModel>): Boolean {
-    return this.text.isEmpty()
+private fun TextFieldValue.toFailedValidation(
+    validations: List<ValidationUiModel>
+): ValidationUiModel? {
+    val invalidRegex = validations.find {
+        text.matches(it.regex.toRegex()).not()
+    }
+
+    return invalidRegex
 }
 
 @Preview(showBackground = true)
@@ -107,8 +127,8 @@ fun TextFieldComponentPreview() {
         ) {
             TextFieldComponent(
                 uiModel = getLoginUserTextFieldUiModel()
-            ) { updatedValue ->
-                Timber.d("Handle $updatedValue on input")
+            ) { updatedValue, fieldValidated ->
+                Timber.d("Handle $updatedValue with $fieldValidated")
             }
         }
     }

@@ -10,7 +10,6 @@ import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.login.usecases.Login
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
-import com.valkiria.uicomponents.mocks.getLoginDuplicatedErrorUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -32,6 +31,7 @@ class LoginViewModel @Inject constructor(
         private set
 
     var username by mutableStateOf("")
+    var isValidUsername by mutableStateOf(false)
     var password by mutableStateOf("")
 
     init {
@@ -60,7 +60,15 @@ class LoginViewModel @Inject constructor(
     }
 
     fun login() {
-        uiState = uiState.copy(isLoading = true)
+        uiState = uiState.copy(
+            validateFields = true
+        )
+    }
+
+    fun authenticate() {
+        uiState = uiState.copy(
+            isLoading = true
+        )
 
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
@@ -82,8 +90,17 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    fun onFieldsValidated() {
+        uiState = uiState.copy(
+            validateFields = false
+        )
+    }
+
     fun onLoginHandled() {
-        uiState = uiState.copy(onLogin = false)
+        uiState = uiState.copy(
+            onLogin = false,
+            isLoading = false
+        )
     }
 
     fun showBottomSheet(link: LoginLink) {

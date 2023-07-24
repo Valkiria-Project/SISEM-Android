@@ -42,6 +42,7 @@ fun BodySection(
     body: List<BodyRowModel>?,
     isTablet: Boolean,
     modifier: Modifier = Modifier,
+    validateFields: Boolean = false,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     if (body?.isNotEmpty() == true) {
@@ -51,7 +52,7 @@ fun BodySection(
             verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Top),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            handleBodyRows(body, isTablet, onAction)
+            handleBodyRows(body, isTablet, validateFields, onAction)
         }
     }
 }
@@ -59,6 +60,7 @@ fun BodySection(
 private fun LazyListScope.handleBodyRows(
     body: List<BodyRowModel>,
     isTablet: Boolean,
+    validateFields: Boolean,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     body.map { model ->
@@ -102,7 +104,7 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is TextFieldModel -> item(key = model.identifier) {
-                HandleTextFieldRows(model, isTablet, onAction)
+                HandleTextFieldRows(model, isTablet, validateFields, onAction)
             }
         }
     }
@@ -152,21 +154,28 @@ private fun HandlePasswordTextFieldRows(
 private fun HandleTextFieldRows(
     model: TextFieldModel,
     isTablet: Boolean,
+    validateFields: Boolean,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
         DeviceAuthIdentifier.DEVICE_AUTH_CODE.name -> TextFieldComponent(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet
-        ) { updatedValue ->
+        ) { updatedValue, validations ->
             onAction(DeviceAuthCodeInput(updatedValue = updatedValue))
         }
 
         LoginIdentifier.LOGIN_EMAIL.name -> TextFieldComponent(
             uiModel = model.mapToUiModel(),
-            isTablet = isTablet
-        ) { updatedValue ->
-            onAction(LoginUserInput(updatedValue = updatedValue))
+            isTablet = isTablet,
+            validateFields = validateFields,
+        ) { updatedValue, validations ->
+            onAction(
+                LoginUserInput(
+                    updatedValue = updatedValue,
+                    fieldValidated = validations
+                )
+            )
         }
     }
 }
