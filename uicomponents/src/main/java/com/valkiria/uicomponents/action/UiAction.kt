@@ -1,7 +1,5 @@
 package com.valkiria.uicomponents.action
 
-import com.valkiria.uicomponents.components.textfield.ValidationUiModel
-
 sealed interface UiAction
 
 sealed class FooterUiAction(open val identifier: String) : UiAction {

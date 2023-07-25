@@ -95,10 +95,7 @@ fun TextFieldComponent(
             supportingText = {
                 if (validateFields) {
                     Text(
-                        text = text.toFailedValidation(
-                            uiModel.validations,
-                            validateFields
-                        )?.message.orEmpty(),
+                        text = text.toFailedValidation(uiModel.validations)?.message.orEmpty(),
                         modifier = Modifier.fillMaxWidth(),
                         color = MaterialTheme.colorScheme.error
                     )
@@ -113,7 +110,7 @@ fun TextFieldComponent(
 
 private fun TextFieldValue.toFailedValidation(
     validations: List<ValidationUiModel>,
-    validateFields: Boolean
+    validateFields: Boolean = true
 ): ValidationUiModel? {
     if (validateFields.not()) {
         return null

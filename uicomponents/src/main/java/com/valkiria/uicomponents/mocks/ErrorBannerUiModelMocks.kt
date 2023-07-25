@@ -14,7 +14,8 @@ fun getLoginIncorrectErrorUiModel(): ErrorUiModel {
     return ErrorUiModel(
         icon = "ic_alert",
         title = "Incorrecto",
-        description = "Los datos de  usuario y/o contraseña son incorrectos. Por favor verifíquelos."
+        description = """Los datos de  usuario y/o contraseña son incorrectos. 
+            |Por favor verifíquelos.""".trimMargin()
     )
 }
 

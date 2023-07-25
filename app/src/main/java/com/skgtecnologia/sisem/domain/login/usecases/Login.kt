@@ -12,7 +12,8 @@ class Login @Inject constructor(
 
     @CheckResult
     suspend operator fun invoke(
-        username: String, password: String
+        username: String,
+        password: String
     ): Result<AccessTokenModel> = resultOf {
         authRepository.authenticate(username, password)
     }

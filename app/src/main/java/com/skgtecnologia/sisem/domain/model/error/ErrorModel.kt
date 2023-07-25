@@ -9,7 +9,7 @@ data class ErrorModel(
 ) : RuntimeException()
 
 fun Throwable.mapToUi(): ErrorUiModel = (this as? ErrorModel)?.mapToUi() ?: ErrorUiModel(
-    icon = "Default icon",// FIXME: Add Default
+    icon = "Default icon", // FIXME: Add Default
     title = "Default title", // FIXME: Add Default
     description = "Default description" // FIXME: Add Default
 )
