@@ -9,8 +9,7 @@ import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.login.usecases.Login
-import com.valkiria.uicomponents.mocks.getLoginBlockedErrorUiModel
-import com.valkiria.uicomponents.mocks.getLoginDuplicatedErrorUiModel
+import com.skgtecnologia.sisem.domain.model.error.mapToUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +31,9 @@ class LoginViewModel @Inject constructor(
         private set
 
     var username by mutableStateOf("")
+    var isValidUsername by mutableStateOf(false)
     var password by mutableStateOf("")
+    var isValidPassword by mutableStateOf(false)
 
     init {
         uiState = uiState.copy(isLoading = true)
@@ -50,17 +51,29 @@ class LoginViewModel @Inject constructor(
                 }
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
-                    // BACKEND: How to handle errors?
+
                     uiState = uiState.copy(
                         isLoading = false,
-                        errorModel = getLoginDuplicatedErrorUiModel() // FIXME: Map ErrorModel
+                        errorModel = throwable.mapToUi()
                     )
                 }
         }
     }
 
     fun login() {
-        uiState = uiState.copy(isLoading = true)
+        uiState = uiState.copy(
+            validateFields = true
+        )
+
+        if (isValidUsername && isValidPassword) {
+            authenticate()
+        }
+    }
+
+    private fun authenticate() {
+        uiState = uiState.copy(
+            isLoading = true
+        )
 
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
@@ -73,16 +86,30 @@ class LoginViewModel @Inject constructor(
                 }
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
+
                     uiState = uiState.copy(
                         isLoading = false,
-                        errorModel = getLoginBlockedErrorUiModel() // FIXME: Map ErrorModel
+                        errorModel = throwable.mapToUi()
                     )
                 }
         }
     }
 
     fun onLoginHandled() {
-        uiState = uiState.copy(onLogin = false)
+        uiState = uiState.copy(
+            onLogin = false,
+            validateFields = false,
+            isLoading = false
+        )
+
+        resetForm()
+    }
+
+    private fun resetForm() {
+        username = ""
+        isValidUsername = false
+        password = ""
+        isValidPassword = false
     }
 
     fun showBottomSheet(link: LoginLink) {
