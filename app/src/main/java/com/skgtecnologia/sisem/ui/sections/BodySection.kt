@@ -87,7 +87,7 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is PasswordTextFieldModel -> item(key = model.identifier) {
-                HandlePasswordTextFieldRows(model, isTablet, onAction)
+                HandlePasswordTextFieldRows(model, isTablet, validateFields, onAction)
             }
 
             is RichLabelModel -> item(key = model.identifier) {
@@ -138,14 +138,21 @@ private fun HandleButtonRows(
 private fun HandlePasswordTextFieldRows(
     model: PasswordTextFieldModel,
     isTablet: Boolean,
+    validateFields: Boolean,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
         LoginIdentifier.LOGIN_PASSWORD.name -> PasswordTextFieldComponent(
             uiModel = model.mapToUiModel(),
-            isTablet = isTablet
-        ) { updatedValue ->
-            onAction(LoginPasswordInput(updatedValue = updatedValue))
+            isTablet = isTablet,
+            validateFields = validateFields
+        ) { updatedValue, fieldValidated ->
+            onAction(
+                LoginPasswordInput(
+                    updatedValue = updatedValue,
+                    fieldValidated = fieldValidated
+                )
+            )
         }
     }
 }
@@ -161,14 +168,14 @@ private fun HandleTextFieldRows(
         DeviceAuthIdentifier.DEVICE_AUTH_CODE.name -> TextFieldComponent(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet
-        ) { updatedValue, validations ->
+        ) { updatedValue, _ ->
             onAction(DeviceAuthCodeInput(updatedValue = updatedValue))
         }
 
         LoginIdentifier.LOGIN_EMAIL.name -> TextFieldComponent(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet,
-            validateFields = validateFields,
+            validateFields = validateFields
         ) { updatedValue, fieldValidated ->
             onAction(
                 LoginUserInput(

@@ -33,7 +33,7 @@ class LoginViewModel @Inject constructor(
     var username by mutableStateOf("")
     var isValidUsername by mutableStateOf(false)
     var password by mutableStateOf("")
-    var isValidPassword by mutableStateOf(true) // FIXME
+    var isValidPassword by mutableStateOf(false)
 
     init {
         uiState = uiState.copy(isLoading = true)
@@ -65,7 +65,7 @@ class LoginViewModel @Inject constructor(
             validateFields = true
         )
 
-        if (isValidUsername) {
+        if (isValidUsername && isValidPassword) {
             authenticate()
         }
     }
@@ -98,8 +98,18 @@ class LoginViewModel @Inject constructor(
     fun onLoginHandled() {
         uiState = uiState.copy(
             onLogin = false,
+            validateFields = false,
             isLoading = false
         )
+
+        resetForm()
+    }
+
+    private fun resetForm() {
+        username = ""
+        isValidUsername = false
+        password = ""
+        isValidPassword = false
     }
 
     fun showBottomSheet(link: LoginLink) {

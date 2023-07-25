@@ -122,7 +122,10 @@ private fun handleUiAction(
 
             LoginUiAction.Login -> viewModel.login()
 
-            is LoginUiAction.LoginPasswordInput -> viewModel.password = uiAction.updatedValue
+            is LoginUiAction.LoginPasswordInput -> {
+                viewModel.password = uiAction.updatedValue
+                viewModel.isValidPassword = uiAction.fieldValidated
+            }
 
             is LoginUiAction.LoginUserInput -> {
                 viewModel.username = uiAction.updatedValue

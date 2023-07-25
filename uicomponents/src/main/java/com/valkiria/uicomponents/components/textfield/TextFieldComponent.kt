@@ -26,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.mocks.getLoginUserTextFieldUiModel
 import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.theme.UiComponentsTheme
@@ -106,21 +107,6 @@ fun TextFieldComponent(
             singleLine = true
         )
     }
-}
-
-private fun TextFieldValue.toFailedValidation(
-    validations: List<ValidationUiModel>,
-    validateFields: Boolean = true
-): ValidationUiModel? {
-    if (validateFields.not()) {
-        return null
-    }
-
-    val invalidRegex = validations.find {
-        text.matches(it.regex.toRegex()).not()
-    }
-
-    return invalidRegex
 }
 
 @Preview(showBackground = true)
