@@ -8,7 +8,8 @@ data class LoginUiState(
     val screenModel: ScreenModel? = null,
     val onLogin: Boolean = false,
     val onForgotPassword: Boolean = false,
-    val isLoading: Boolean = false,
     val bottomSheetLink: LoginLink? = null,
+    val isLoading: Boolean = false,
+    val validateFields: Boolean = false,
     val errorModel: ErrorUiModel? = null
 )

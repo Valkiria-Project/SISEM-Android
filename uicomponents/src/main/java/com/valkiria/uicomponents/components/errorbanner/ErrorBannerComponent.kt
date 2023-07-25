@@ -106,7 +106,7 @@ fun ErrorBannerComponent(
                     }
                 }
                 Text(
-                    text = uiModel.text,
+                    text = uiModel.description,
                     modifier = Modifier.padding(20.dp),
                     color = Color.White,
                     style = MaterialTheme.typography.bodyLarge

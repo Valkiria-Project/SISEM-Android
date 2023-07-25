@@ -66,7 +66,7 @@ dependencies {
     // Media
     implementation("com.google.accompanist:accompanist-placeholder-material:0.30.1")
     implementation("io.coil-kt:coil-compose:2.4.0")
-    implementation("com.airbnb.android:lottie-compose:6.0.1")
+    implementation("com.airbnb.android:lottie-compose:6.1.0")
     implementation("com.github.ireward:compose-html:1.0.2")
 
     // Unit Testing

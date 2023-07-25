@@ -22,8 +22,8 @@ class TextFieldComponentPaparazziTest {
         paparazziRule.snapshot {
             TextFieldComponent(
                 uiModel = getLoginUserTextFieldUiModel()
-            ) { updatedValue ->
-                Timber.d("Handle $updatedValue on input")
+            ) { updatedValue, fieldValidated ->
+                Timber.d("Handle $updatedValue with $fieldValidated")
             }
         }
     }

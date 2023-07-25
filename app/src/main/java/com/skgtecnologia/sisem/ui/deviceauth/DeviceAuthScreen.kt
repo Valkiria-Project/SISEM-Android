@@ -16,6 +16,8 @@ import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.DeviceAuthUiAction
+import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuth
+import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
@@ -99,8 +101,9 @@ private fun handleUiAction(
 ) {
     (uiAction as? DeviceAuthUiAction)?.let {
         when (uiAction) {
-            // FIXME: Add Actions for DeviceAuth
-            DeviceAuthUiAction.DeviceAuth -> viewModel.associateDevice()
+            DeviceAuth -> viewModel.associateDevice()
+
+            is DeviceAuthCodeInput -> viewModel.vehicleCode = uiAction.updatedValue
         }
     }
 }

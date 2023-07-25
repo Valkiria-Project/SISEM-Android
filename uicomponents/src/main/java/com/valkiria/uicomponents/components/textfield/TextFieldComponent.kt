@@ -26,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.mocks.getLoginUserTextFieldUiModel
 import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.theme.UiComponentsTheme
@@ -37,7 +38,8 @@ import timber.log.Timber
 fun TextFieldComponent(
     uiModel: TextFieldUiModel,
     isTablet: Boolean = false,
-    onAction: (updatedValue: String) -> Unit
+    validateFields: Boolean = false,
+    onAction: (updatedValue: String, fieldValidated: Boolean) -> Unit
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon.orEmpty(), DefType.DRAWABLE
@@ -64,11 +66,15 @@ fun TextFieldComponent(
         }
 
         var text by remember { mutableStateOf(TextFieldValue("")) }
+
         OutlinedTextField(
             value = text,
             onValueChange = { updatedValue ->
                 text = updatedValue
-                onAction(updatedValue.text)
+                onAction(
+                    updatedValue.text,
+                    text.toFailedValidation(uiModel.validations, validateFields) == null
+                )
             },
             modifier = Modifier.imePadding(),
             textStyle = uiModel.textStyle.toTextStyle(),
@@ -87,6 +93,16 @@ fun TextFieldComponent(
                 }
                 */
             },
+            supportingText = {
+                if (validateFields) {
+                    Text(
+                        text = text.toFailedValidation(uiModel.validations)?.message.orEmpty(),
+                        modifier = Modifier.fillMaxWidth(),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            },
+            isError = text.toFailedValidation(uiModel.validations, validateFields) != null,
             keyboardOptions = uiModel.keyboardOptions,
             singleLine = true
         )
@@ -102,8 +118,8 @@ fun TextFieldComponentPreview() {
         ) {
             TextFieldComponent(
                 uiModel = getLoginUserTextFieldUiModel()
-            ) { updatedValue ->
-                Timber.d("Handle $updatedValue on input")
+            ) { updatedValue, fieldValidated ->
+                Timber.d("Handle $updatedValue with $fieldValidated")
             }
         }
     }
