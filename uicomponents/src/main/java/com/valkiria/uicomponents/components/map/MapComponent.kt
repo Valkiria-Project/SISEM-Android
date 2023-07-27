@@ -39,7 +39,7 @@ fun MapComponent(
     AndroidView(
         factory = {
             MapView(it).also { mapView ->
-                mapView.getMapboxMap().loadStyleUri(Style.TRAFFIC_DAY)
+                mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS)
                 val annotationApi = mapView.annotations
                 pointAnnotationManager = annotationApi.createPointAnnotationManager()
             }
