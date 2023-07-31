@@ -40,7 +40,7 @@ private fun NavGraphBuilder.authGraph(
     modifier: Modifier
 ) {
     navigation(
-        startDestination = AuthNavigationRoute.Login.route,
+        startDestination = AuthNavigationRoute.Test.route,
         route = NavigationGraph.Auth.route
     ) {
         composable(
@@ -58,6 +58,15 @@ private fun NavGraphBuilder.authGraph(
             route = AuthNavigationRoute.DeviceAuth.route
         ) {
             DeviceAuthScreen(
+                isTablet = isTablet,
+                modifier = modifier
+            )
+        }
+
+        composable(
+            route = AuthNavigationRoute.Test.route
+        ) {
+            SampleCardScreen(
                 isTablet = isTablet,
                 modifier = modifier
             )
