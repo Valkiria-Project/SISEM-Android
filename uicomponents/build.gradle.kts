@@ -69,6 +69,9 @@ dependencies {
     implementation("com.airbnb.android:lottie-compose:6.1.0")
     implementation("com.github.ireward:compose-html:1.0.2")
 
+    // Maps
+    implementation("com.mapbox.maps:android:10.14.0")
+
     // Unit Testing
     testImplementation("junit:junit:4.13.2")
 

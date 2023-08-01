@@ -16,7 +16,7 @@ data class AccessTokenEntity(
     @ColumnInfo(name = "refresh_token") val refreshToken: String,
     @ColumnInfo(name = "type") val tokenType: String,
     @ColumnInfo(name = "user_name") val username: String,
-    @ColumnInfo(name = "role") val role: String
+    @ColumnInfo(name = "role") val role: List<String>
 )
 
 fun AccessTokenEntity.mapToDomain(): AccessTokenModel {

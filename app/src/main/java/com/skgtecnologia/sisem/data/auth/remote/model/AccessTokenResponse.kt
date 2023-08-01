@@ -10,7 +10,7 @@ data class AccessTokenResponse(
     @Json(name = "refresh_token") val refreshToken: String,
     @Json(name = "type") val tokenType: String,
     @Json(name = "user_name") val username: String,
-    @Json(name = "role") val role: String
+    @Json(name = "role") val role: List<String>
 )
 
 fun AccessTokenResponse.mapToDomain(): AccessTokenModel = AccessTokenModel(

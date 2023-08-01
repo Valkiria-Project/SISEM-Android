@@ -16,7 +16,9 @@ class AuthRemoteDataSource @Inject constructor(
             authApi.authenticate(
                 authenticateBody = AuthenticateBody(
                     username = username,
-                    password = password
+                    password = password,
+                    code = "1", // FIXME: Hardcoded data
+                    idTurn = null, // FIXME: Hardcoded data
                 )
             )
         }.mapResult {

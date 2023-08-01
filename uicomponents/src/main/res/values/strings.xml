@@ -1,4 +1,6 @@
 <resources>
+    <string name="mapbox_access_token">sk.eyJ1IjoianZpbGxhZDEiLCJhIjoiY2xra3NrMHltMDZjaTNpcG1ya3hwamgzeiJ9.q1dD6a0zNNyB_9765lu-Tw</string>
+
     <string name="network_error_message">Please check your network connection</string>
     <string name="network_error_cta">Try again</string>
 </resources>
