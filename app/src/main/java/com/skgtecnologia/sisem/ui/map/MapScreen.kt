@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.map.MapComponent
 
+@Suppress("MagicNumber")
 @Composable
 fun MapScreen() {
     Column(
