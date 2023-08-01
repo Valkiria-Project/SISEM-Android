@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">SISEM</string>
 
-    <string name="mapbox_access_token">sk.eyJ1IjoianZpbGxhZDEiLCJhIjoiY2xra3NrMHltMDZjaTNpcG1ya3hwamgzeiJ9.q1dD6a0zNNyB_9765lu-Tw</string>
-
     <!-- Terms & Conditions dialog -->
     <string name="terms_and_conditions_title">Términos y condiciones</string>
     <string name="terms_and_conditions_subtitle">Conozca los términos y condiciones.</string>
