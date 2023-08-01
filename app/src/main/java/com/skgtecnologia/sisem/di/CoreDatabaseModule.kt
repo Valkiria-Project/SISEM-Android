@@ -17,7 +17,7 @@ object CoreDatabaseModule {
 
     @Singleton
     @Provides
-    fun provideMyScreenDatabase(@ApplicationContext appContext: Context): SisemDatabase {
+    fun provideSisemDatabase(@ApplicationContext appContext: Context): SisemDatabase {
         return Room.databaseBuilder(appContext, SisemDatabase::class.java, "sisem.db")
             .fallbackToDestructiveMigration()
             .build()
