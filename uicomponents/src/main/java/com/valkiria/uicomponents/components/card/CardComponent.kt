@@ -36,9 +36,9 @@ import com.valkiria.uicomponents.utlis.getResourceIdByName
 fun CardComponent(
     isNews: Boolean,
     isLogin: Boolean = false,
+    modifier: Modifier = Modifier,
     hallazgos: List<String> =
-        listOf("prueba1 es demaciado grande", "prueba2", "prueba3", "prueba4", "prueba5"),
-    modifier: Modifier = Modifier
+        listOf("prueba1 es demaciado grande", "prueba2", "prueba3", "prueba4", "prueba5")
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         "ic_ambulance", DefType.DRAWABLE
