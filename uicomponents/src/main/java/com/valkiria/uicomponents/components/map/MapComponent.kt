@@ -22,6 +22,7 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.valkiria.uicomponents.R
 
+@Suppress("MagicNumber")
 @Composable
 fun MapComponent(
     modifier: Modifier = Modifier,
