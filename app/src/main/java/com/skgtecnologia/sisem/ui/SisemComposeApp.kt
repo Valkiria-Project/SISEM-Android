@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.skgtecnologia.sisem.ui.authcards.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.map.MapScreen
@@ -43,9 +44,20 @@ private fun NavGraphBuilder.authGraph(
     modifier: Modifier
 ) {
     navigation(
-        startDestination = AuthNavigationRoute.Login.route,
+        startDestination = AuthNavigationRoute.AuthCards.route,
         route = NavigationGraph.Auth.route
     ) {
+        composable(
+            route = AuthNavigationRoute.AuthCards.route
+        ) {
+            AuthCardsScreen(
+                isTablet = isTablet,
+                modifier = modifier
+            ) {
+                navController.navigate(AuthNavigationRoute.Login.route)
+            }
+        }
+
         composable(
             route = AuthNavigationRoute.Login.route
         ) {
