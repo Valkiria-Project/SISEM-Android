@@ -31,11 +31,13 @@ import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 
+@Suppress("LongMethod", "UnusedPrivateMember")
 @Composable
 fun CardComponent(
     isNews: Boolean,
     isLogin: Boolean = false,
-    hallazgos: List<String> = listOf("prueba1 es demaciado grande", "prueba2", "prueba3", "prueba4", "prueba5"),
+    hallazgos: List<String> =
+        listOf("prueba1 es demaciado grande", "prueba2", "prueba3", "prueba4", "prueba5"),
     modifier: Modifier = Modifier
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
@@ -55,9 +57,8 @@ fun CardComponent(
             .shadow(
                 elevation = 25.dp,
                 ambientColor = Color.Black,
-                spotColor = Color.Black,
-
-                ),
+                spotColor = Color.Black
+            ),
         shape = RoundedCornerShape(20.dp),
     ) {
         Box(
@@ -192,6 +193,3 @@ fun ChipView(text: String) {
         shape = RoundedCornerShape(25.dp)
     )
 }
-
-
-
