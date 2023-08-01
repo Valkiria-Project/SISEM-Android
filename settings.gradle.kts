@@ -18,8 +18,8 @@ dependencyResolutionManagement {
                 create<BasicAuthentication>("basic")
             }
             credentials {
-                username = providers.gradleProperty("MAPBOX_USER").get()
-                password = providers.gradleProperty("MAPBOX_TOKEN").get()
+                username = "mapbox"
+                password = "sk.eyJ1IjoianZpbGxhZDEiLCJhIjoiY2xra3NrMHltMDZjaTNpcG1ya3hwamgzeiJ9.q1dD6a0zNNyB_9765lu-Tw"
             }
         }
     }
