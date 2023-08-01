@@ -32,6 +32,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
+import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.mocks.getLoginPasswordTextFieldUiModel
 import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.theme.UiComponentsTheme
@@ -44,12 +45,12 @@ import timber.log.Timber
 fun PasswordTextFieldComponent(
     uiModel: PasswordTextFieldUiModel,
     isTablet: Boolean = false,
-    onAction: (updatedValue: String) -> Unit
+    validateFields: Boolean = false,
+    onAction: (updatedValue: String, fieldValidated: Boolean) -> Unit
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon.orEmpty(), DefType.DRAWABLE
     )
-    var showPassword by remember { mutableStateOf(value = false) }
 
     Row(
         modifier = if (isTablet) {
@@ -72,11 +73,16 @@ fun PasswordTextFieldComponent(
         }
 
         var text by remember { mutableStateOf(TextFieldValue("")) }
+        var showPassword by remember { mutableStateOf(value = false) }
+
         OutlinedTextField(
             value = text,
             onValueChange = { updatedValue ->
                 text = updatedValue
-                onAction(updatedValue.text)
+                onAction(
+                    updatedValue.text,
+                    text.toFailedValidation(uiModel.validations, validateFields) == null
+                )
             },
             modifier = Modifier.imePadding(),
             textStyle = uiModel.textStyle.toTextStyle(),
@@ -120,6 +126,16 @@ fun PasswordTextFieldComponent(
                     }
                 }
             },
+            supportingText = {
+                if (validateFields) {
+                    Text(
+                        text = text.toFailedValidation(uiModel.validations)?.message.orEmpty(),
+                        modifier = Modifier.fillMaxWidth(),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            },
+            isError = text.toFailedValidation(uiModel.validations, validateFields) != null,
             visualTransformation = if (showPassword) {
                 VisualTransformation.None
             } else {
@@ -140,8 +156,8 @@ fun PasswordTextFieldComponentPreview() {
         ) {
             PasswordTextFieldComponent(
                 uiModel = getLoginPasswordTextFieldUiModel()
-            ) { updatedValue ->
-                Timber.d("Handle $updatedValue on input")
+            ) { updatedValue, fieldValidated ->
+                Timber.d("Handle $updatedValue with $fieldValidated")
             }
         }
     }
