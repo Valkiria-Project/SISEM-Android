@@ -10,7 +10,10 @@ data class AccessTokenResponse(
     @Json(name = "refresh_token") val refreshToken: String,
     @Json(name = "type") val tokenType: String,
     @Json(name = "user_name") val username: String,
-    @Json(name = "role") val role: List<String>
+    @Json(name = "role") val role: String,
+    @Json(name = "preoperational") val preoperational: PreoperationalResponse,
+    @Json(name = "turn") val turn: TurnResponse,
+    @Json(name = "is_admin") val isAdmin: Boolean
 )
 
 fun AccessTokenResponse.mapToDomain(): AccessTokenModel = AccessTokenModel(
@@ -18,5 +21,8 @@ fun AccessTokenResponse.mapToDomain(): AccessTokenModel = AccessTokenModel(
     refreshToken = refreshToken,
     tokenType = tokenType,
     username = username,
-    role = role
+    role = role,
+    preoperational = preoperational.mapToDomain(),
+    turn = turn.mapToDomain(),
+    isAdmin = isAdmin
 )

@@ -5,6 +5,8 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.skgtecnologia.sisem.domain.login.model.AccessTokenModel
+import com.skgtecnologia.sisem.domain.login.model.PreoperationalModel
+import com.skgtecnologia.sisem.domain.login.model.TurnModel
 
 @Entity(
     tableName = "access_tokens",
@@ -16,7 +18,10 @@ data class AccessTokenEntity(
     @ColumnInfo(name = "refresh_token") val refreshToken: String,
     @ColumnInfo(name = "type") val tokenType: String,
     @ColumnInfo(name = "user_name") val username: String,
-    @ColumnInfo(name = "role") val role: List<String>
+    @ColumnInfo(name = "role") val role: String,
+    @ColumnInfo(name = "preoperational") val preoperational: PreoperationalModel,
+    @ColumnInfo(name = "turn") val turn: TurnModel,
+    @ColumnInfo(name = "is_admin") val isAdmin: Boolean
 )
 
 fun AccessTokenEntity.mapToDomain(): AccessTokenModel {
@@ -26,7 +31,10 @@ fun AccessTokenEntity.mapToDomain(): AccessTokenModel {
             refreshToken = refreshToken,
             tokenType = tokenType,
             username = username,
-            role = role
+            role = role,
+            preoperational = preoperational,
+            turn = turn,
+            isAdmin = isAdmin
         )
     }
 }
@@ -38,7 +46,10 @@ fun AccessTokenModel.mapToCache(): AccessTokenEntity {
             refreshToken = refreshToken,
             tokenType = tokenType,
             username = username,
-            role = role
+            role = role,
+            preoperational = preoperational,
+            turn = turn,
+            isAdmin = isAdmin
         )
     }
 }

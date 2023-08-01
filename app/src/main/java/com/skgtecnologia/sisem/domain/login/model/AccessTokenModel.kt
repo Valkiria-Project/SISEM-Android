@@ -5,5 +5,8 @@ data class AccessTokenModel(
     val refreshToken: String,
     val tokenType: String,
     val username: String,
-    val role: List<String>
+    val role: String,
+    val preoperational: PreoperationalModel,
+    val turn: TurnModel,
+    val isAdmin: Boolean
 )
