@@ -9,9 +9,9 @@ data class AccessTokenResponse(
     @Json(name = "token") val accessToken: String,
     @Json(name = "refresh_token") val refreshToken: String,
     @Json(name = "type") val tokenType: String,
-    @Json(name = "user_name") val username: String,
+    @Json(name = "username") val username: String,
     @Json(name = "role") val role: String,
-    @Json(name = "preoperational") val preoperational: PreoperationalResponse,
+    @Json(name = "preoperational") val preoperational: PreOperationalResponse,
     @Json(name = "turn") val turn: TurnResponse,
     @Json(name = "is_admin") val isAdmin: Boolean
 )
