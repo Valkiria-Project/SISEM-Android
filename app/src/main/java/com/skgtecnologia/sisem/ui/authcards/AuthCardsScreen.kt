@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.valkiria.uicomponents.components.card.CardComponent
 
+@Suppress("UnusedPrivateMember")
 @Composable
 fun AuthCardsScreen(
     isTablet: Boolean,
