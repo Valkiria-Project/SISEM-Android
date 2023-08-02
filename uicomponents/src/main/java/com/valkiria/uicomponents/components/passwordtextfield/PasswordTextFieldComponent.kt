@@ -66,7 +66,7 @@ fun PasswordTextFieldComponent(
                 painter = painterResource(id = iconResourceId),
                 contentDescription = null,
                 modifier = Modifier
-                    .padding(end = 8.dp,  bottom = 8.dp)
+                    .padding(end = 8.dp, bottom = 8.dp)
                     .size(42.dp),
                 tint = MaterialTheme.colorScheme.primary
             )
