@@ -2,7 +2,6 @@ package com.skgtecnologia.sisem.data.auth.cache.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.skgtecnologia.sisem.domain.login.model.PreOperationalModel
 
