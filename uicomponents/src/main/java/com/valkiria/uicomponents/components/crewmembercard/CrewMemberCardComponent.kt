@@ -5,8 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,7 +27,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.props.TextStyle
@@ -74,6 +75,7 @@ fun CrewMemberCardComponent(
                             painter = painterResource(id = iconResourceId),
                             contentDescription = "",
                             tint = MaterialTheme.colorScheme.primary,
+                            //modifier = Modifier.size(40.dp)
                         )
                     }
 
@@ -148,7 +150,7 @@ fun CrewMemberCardComponent(
                     LazyColumn {
                         it.listText.forEach { text ->
                             item(key = text) {
-                                ChipView(text = text)
+                                ChipView(text = text, textStyle = it.listTextStyle)
                             }
                         }
                     }
@@ -167,6 +169,7 @@ fun CardComponentPreview() {
 @Composable
 fun BadgedBoxView(count: Int) {
     BadgedBox(
+        modifier = Modifier.size(25.dp),
         badge = {
             Badge {
                 Text(text = count.toString())
@@ -175,8 +178,7 @@ fun BadgedBoxView(count: Int) {
     ) {
         Icon(
             modifier = Modifier
-                .wrapContentSize()
-                .padding(start = 12.dp),
+                .fillMaxSize(),
             painter = painterResource(id = R.drawable.ic_news),
             contentDescription = "",
             tint = MaterialTheme.colorScheme.primary,
@@ -185,14 +187,14 @@ fun BadgedBoxView(count: Int) {
 }
 
 @Composable
-fun ChipView(text: String) {
+fun ChipView(text: String, textStyle: TextStyle) {
     SuggestionChip(
         onClick = { /*TODO*/ },
         modifier = Modifier.wrapContentSize(),
         label = {
             Text(
                 text = text,
-                style = TextStyle.HEADLINE_8.toTextStyle()
+                style = textStyle.toTextStyle()
             )
         },
         shape = RoundedCornerShape(25.dp)
