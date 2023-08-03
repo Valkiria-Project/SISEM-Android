@@ -19,7 +19,8 @@ private val DarkColorScheme = darkColorScheme(
     tertiary = BrightTurquoise,
     background = Shark,
     onBackground = Color.White,
-    error = Carnation
+    error = Carnation,
+    onSurface = Color.White
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -29,7 +30,8 @@ private val LightColorScheme = lightColorScheme(
     tertiary = BrightTurquoise,
     background = Shark,
     onBackground = Color.White,
-    error = Carnation
+    error = Carnation,
+    onSurface = Color.White
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
