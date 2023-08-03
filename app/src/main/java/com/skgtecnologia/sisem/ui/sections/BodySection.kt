@@ -1,18 +1,23 @@
 package com.skgtecnologia.sisem.ui.sections
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
 import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.ButtonModel
 import com.skgtecnologia.sisem.domain.model.body.ChipModel
+import com.skgtecnologia.sisem.domain.model.body.FingerprintModel
 import com.skgtecnologia.sisem.domain.model.body.LabelModel
 import com.skgtecnologia.sisem.domain.model.body.PasswordTextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.RichLabelModel
@@ -72,6 +77,15 @@ private fun LazyListScope.handleBodyRows(
             is ChipModel -> item(key = model.identifier) {
                 ChipComponent(
                     uiModel = model.mapToUiModel()
+                )
+            }
+
+            is FingerprintModel -> item(key = model.identifier) {
+                Image(
+                    modifier = Modifier
+                        .padding(vertical = 20.dp),
+                    painter = painterResource(id = R.drawable.ic_fingerprint),
+                    contentDescription = null
                 )
             }
 
