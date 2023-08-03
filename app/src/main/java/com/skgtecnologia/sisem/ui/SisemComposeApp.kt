@@ -18,6 +18,7 @@ import com.skgtecnologia.sisem.ui.map.MapScreen
 import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.NavigationGraph
+import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
 
 @Composable
 fun SisemComposeApp(
@@ -44,7 +45,7 @@ private fun NavGraphBuilder.authGraph(
     modifier: Modifier
 ) {
     navigation(
-        startDestination = AuthNavigationRoute.AuthCards.route,
+        startDestination = AuthNavigationRoute.PreOperational.route,
         route = NavigationGraph.Auth.route
     ) {
         composable(
@@ -75,7 +76,20 @@ private fun NavGraphBuilder.authGraph(
             DeviceAuthScreen(
                 isTablet = isTablet,
                 modifier = modifier
-            )
+            ) {
+                navController.navigate(AuthNavigationRoute.PreOperational.route)
+            }
+        }
+
+        composable(
+            route = AuthNavigationRoute.PreOperational.route
+        ) {
+            PreOperationalScreen(
+                isTablet = isTablet,
+                modifier = modifier
+            ) {
+                navController.navigate(NavigationGraph.Main.route)
+            }
         }
     }
 }
