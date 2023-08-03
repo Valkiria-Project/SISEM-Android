@@ -6,6 +6,7 @@ import com.skgtecnologia.sisem.data.remote.adapters.ModifierAdapter
 import com.skgtecnologia.sisem.data.remote.model.body.BodyRowResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ButtonResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ChipResponse
+import com.skgtecnologia.sisem.data.remote.model.body.CrewMemberCardResponse
 import com.skgtecnologia.sisem.data.remote.model.body.LabelResponse
 import com.skgtecnologia.sisem.data.remote.model.body.PasswordTextFieldResponse
 import com.skgtecnologia.sisem.data.remote.model.body.RichLabelResponse
@@ -80,6 +81,9 @@ object CoreNetworkModule {
         ).withSubtype(
             ChipResponse::class.java,
             BodyRowType.CHIP.name
+        ).withSubtype(
+            CrewMemberCardResponse::class.java,
+            BodyRowType.CREW_MEMBER_CARD.name
         ).withSubtype(
             LabelResponse::class.java,
             BodyRowType.LABEL.name

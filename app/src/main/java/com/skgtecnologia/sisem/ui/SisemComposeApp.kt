@@ -44,7 +44,7 @@ private fun NavGraphBuilder.authGraph(
     modifier: Modifier
 ) {
     navigation(
-        startDestination = AuthNavigationRoute.AuthCards.route,
+        startDestination = AuthNavigationRoute.Login.route,
         route = NavigationGraph.Auth.route
     ) {
         composable(
@@ -65,7 +65,7 @@ private fun NavGraphBuilder.authGraph(
                 isTablet = isTablet,
                 modifier = modifier
             ) {
-                navController.navigate(AuthNavigationRoute.DeviceAuth.route)
+                navController.navigate(AuthNavigationRoute.AuthCards.route)
             }
         }
 

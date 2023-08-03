@@ -17,6 +17,7 @@ import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.ButtonModel
 import com.skgtecnologia.sisem.domain.model.body.ChipModel
+import com.skgtecnologia.sisem.domain.model.body.CrewMemberCardModel
 import com.skgtecnologia.sisem.domain.model.body.FingerprintModel
 import com.skgtecnologia.sisem.domain.model.body.LabelModel
 import com.skgtecnologia.sisem.domain.model.body.PasswordTextFieldModel
@@ -34,12 +35,14 @@ import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
+import com.valkiria.uicomponents.components.crewmembercard.CrewMemberCardComponent
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.passwordtextfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
+import java.util.UUID
 
 @Suppress("LongMethod")
 @Composable
@@ -77,6 +80,13 @@ private fun LazyListScope.handleBodyRows(
             is ChipModel -> item(key = model.identifier) {
                 ChipComponent(
                     uiModel = model.mapToUiModel()
+                )
+            }
+
+            is CrewMemberCardModel -> item(key = UUID.randomUUID()) {
+                CrewMemberCardComponent(
+                    uiModel = model.mapToUiModel(),
+                    isTablet = isTablet
                 )
             }
 

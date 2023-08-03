@@ -1,5 +1,6 @@
-package com.valkiria.uicomponents.components.card
+package com.valkiria.uicomponents.components.crewmembercard
 
+import android.graphics.Color.parseColor
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
@@ -33,15 +35,12 @@ import com.valkiria.uicomponents.utlis.getResourceIdByName
 
 @Suppress("LongMethod", "UnusedPrivateMember")
 @Composable
-fun CardComponent(
-    isNews: Boolean,
-    isLogin: Boolean = false,
-    modifier: Modifier = Modifier,
-    hallazgos: List<String> =
-        listOf("prueba1 es demaciado grande", "prueba2", "prueba3", "prueba4", "prueba5")
+fun CrewMemberCardComponent(
+    uiModel: CrewMemberCardUiModel,
+    isTablet: Boolean = false
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
-        "ic_ambulance", DefType.DRAWABLE
+        uiModel.icon, DefType.DRAWABLE
     )
 
     val brush = Brush.horizontalGradient(
@@ -52,7 +51,7 @@ fun CardComponent(
     )
 
     ElevatedCard(
-        modifier = modifier
+        modifier = uiModel.modifier
             .fillMaxWidth()
             .shadow(
                 elevation = 25.dp,
@@ -80,29 +79,25 @@ fun CardComponent(
 
                     Column(modifier = Modifier.padding(start = 12.dp)) {
                         Text(
-                            text = "MÉDICO",
-                            style = TextStyle.HEADLINE_7.toTextStyle(),
+                            text = uiModel.titleText,
+                            style = uiModel.titleTextStyle.toTextStyle(),
                             color = Color.White
                         )
 
                         Text(
                             modifier = Modifier
                                 .background(
-                                    color = if (isLogin) {
-                                        MaterialTheme.colorScheme.tertiary
-                                    } else {
-                                        MaterialTheme.colorScheme.error
-                                    },
+                                    color = Color(parseColor(uiModel.pillColor)),
                                     shape = RoundedCornerShape(25.dp)
                                 )
                                 .padding(horizontal = 8.dp),
-                            text = "Anterior: Andres Perez",
-                            style = TextStyle.HEADLINE_8.toTextStyle()
+                            text = uiModel.pillText,
+                            style = uiModel.pillTextStyle.toTextStyle()
                         )
                     }
 
-                    if (isNews) {
-                        BadgedBoxView(count = 2)
+                    uiModel.reportsDetail?.let {
+                        BadgedBoxView(count = it.details.size)
                     }
                 }
 
@@ -120,8 +115,8 @@ fun CardComponent(
                     )
 
                     Text(
-                        text = "20/03/2023",
-                        style = TextStyle.HEADLINE_8.toTextStyle(),
+                        text = uiModel.dateText.split("-").first(),
+                        style = uiModel.dateTextStyle.toTextStyle(),
                         modifier = Modifier.padding(end = 12.dp),
                         color = Color.White
                     )
@@ -136,28 +131,38 @@ fun CardComponent(
                     )
 
                     Text(
-                        text = "13:00",
-                        style = TextStyle.HEADLINE_8.toTextStyle(),
+                        text = uiModel.dateText.split("-").last(),
+                        style = uiModel.dateTextStyle.toTextStyle(),
                         color = Color.White
                     )
                 }
 
-                Text(
-                    text = "Hallazgos",
-                    style = TextStyle.HEADLINE_7.toTextStyle(),
-                    modifier = Modifier.padding(top = 12.dp),
-                    color = Color.White
-                )
+                uiModel.chipSection?.let {
+                    Text(
+                        text = it.title,
+                        style = it.titleTextStyle.toTextStyle(),
+                        modifier = Modifier.padding(top = 12.dp),
+                        color = Color.White
+                    )
+
+                    LazyColumn {
+                        it.listText.forEach { text ->
+                            item(key = text) {
+                                ChipView(text = text)
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 }
 
-@Preview(showBackground = true)
+/*@Preview(showBackground = true)
 @Composable
 fun CardComponentPreview() {
-    CardComponent(isNews = true)
-}
+    CrewMemberCardComponent()
+}*/
 
 @Composable
 fun BadgedBoxView(count: Int) {
