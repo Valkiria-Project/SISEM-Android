@@ -2,6 +2,7 @@ package com.valkiria.uicomponents.components.crewmembercard
 
 import android.graphics.Color.parseColor
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,7 +43,9 @@ import com.valkiria.uicomponents.utlis.getResourceIdByName
 @Composable
 fun CrewMemberCardComponent(
     uiModel: CrewMemberCardUiModel,
-    isTablet: Boolean = false
+    isTablet: Boolean = false,
+    onAction: () -> Unit,
+    onNewsAction: () -> Unit
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon, DefType.DRAWABLE
@@ -67,6 +70,7 @@ fun CrewMemberCardComponent(
     ) {
         Box(
             modifier = Modifier
+                .clickable { onAction() }
                 .background(brush = brush)
                 .fillMaxWidth()
         ) {
@@ -103,7 +107,7 @@ fun CrewMemberCardComponent(
                     }
 
                     uiModel.reportsDetail?.let {
-                        BadgedBoxView(count = it.details.size)
+                        BadgedBoxView(count = it.details.size, onAction = onNewsAction)
                     }
                 }
 
@@ -164,16 +168,12 @@ fun CrewMemberCardComponent(
     }
 }
 
-/*@Preview(showBackground = true)
 @Composable
-fun CardComponentPreview() {
-    CrewMemberCardComponent()
-}*/
-
-@Composable
-fun BadgedBoxView(count: Int) {
+fun BadgedBoxView(count: Int, onAction: () -> Unit) {
     BadgedBox(
-        modifier = Modifier.size(25.dp),
+        modifier = Modifier
+            .clickable { onAction() }
+            .size(25.dp),
         badge = {
             Badge {
                 Text(text = count.toString())

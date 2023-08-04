@@ -26,3 +26,8 @@ sealed class DeviceAuthUiAction : UiAction {
     object DeviceAuth : DeviceAuthUiAction()
     data class DeviceAuthCodeInput(val updatedValue: String) : DeviceAuthUiAction()
 }
+
+sealed class AuthCardsUiAction : UiAction {
+    object AuthCard : AuthCardsUiAction()
+    object AuthCardNews : AuthCardsUiAction()
+}

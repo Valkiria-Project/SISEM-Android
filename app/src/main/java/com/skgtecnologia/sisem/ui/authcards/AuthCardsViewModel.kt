@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.authcards.usecases.GetAuthCardsScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -44,7 +43,7 @@ class AuthCardsViewModel @Inject constructor(
 
                     uiState = uiState.copy(
                         isLoading = false
-                        //errorModel = throwable.mapToUi()
+                        // errorModel = throwable.mapToUi()
                     )
                 }
         }

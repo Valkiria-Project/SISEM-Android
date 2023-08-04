@@ -9,6 +9,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
+import com.valkiria.uicomponents.action.AuthCardsUiAction
+import com.valkiria.uicomponents.action.UiAction
 
 @Suppress("UnusedPrivateMember")
 @Composable
@@ -45,8 +47,21 @@ fun AuthCardsScreen(
                     bottom.linkTo(parent.bottom)
                     height = Dimension.fillToConstraints
                 }
-        ) {
+        ) { uiAction ->
+            handleUiAction(uiAction, viewModel, onNavigation)
+        }
+    }
+}
 
+fun handleUiAction(
+    uiAction: UiAction,
+    viewModel: AuthCardsViewModel,
+    onNavigation: (route: AuthNavigationRoute) -> Unit
+) {
+    (uiAction as? AuthCardsUiAction)?.let {
+        when (uiAction) {
+            AuthCardsUiAction.AuthCard -> onNavigation(AuthNavigationRoute.Login)
+            AuthCardsUiAction.AuthCardNews -> {} // FIXME:
         }
     }
 }
