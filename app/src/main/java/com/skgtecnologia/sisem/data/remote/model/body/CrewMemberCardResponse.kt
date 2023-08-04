@@ -16,7 +16,7 @@ data class CrewMemberCardResponse(
     @Json(name = "title") val title: TextResponse?,
     @Json(name = "pill") val pill: PillResponse?,
     @Json(name = "date") val date: TextResponse?,
-    //@Json(name = "chip_section") val chipSection: ChipSectionResponse?,
+    @Json(name = "chip_section") val chipSection: ChipSectionResponse?,
     @Json(name = "reports_detail") val reportsDetail: ReportsDetailResponse?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
@@ -29,7 +29,7 @@ data class CrewMemberCardResponse(
         title = title?.mapToDomain() ?: error("CrewMemberCard title cannot be null"),
         pill = pill?.mapToDomain() ?: error("CrewMemberCard pill cannot be null"),
         date = date?.mapToDomain() ?: error("CrewMemberCard date cannot be null"),
-        //chipSection = chipSection?.mapToDomain(),
+        chipSection = chipSection?.mapToDomain(),
         reportsDetail = reportsDetail?.mapToDomain(),
         modifier = modifier ?: Modifier
     )

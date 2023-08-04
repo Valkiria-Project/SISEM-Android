@@ -42,7 +42,6 @@ import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
-import java.util.UUID
 
 @Suppress("LongMethod")
 @Composable
@@ -83,7 +82,7 @@ private fun LazyListScope.handleBodyRows(
                 )
             }
 
-            is CrewMemberCardModel -> item(key = UUID.randomUUID()) {
+            is CrewMemberCardModel -> item(key = model.identifier) {
                 CrewMemberCardComponent(
                     uiModel = model.mapToUiModel(),
                     isTablet = isTablet

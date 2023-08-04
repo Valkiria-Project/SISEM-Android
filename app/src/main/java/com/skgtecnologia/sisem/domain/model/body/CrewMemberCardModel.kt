@@ -10,7 +10,7 @@ data class CrewMemberCardModel(
     val title: TextModel,
     val pill: PillModel,
     val date: TextModel,
-    //val chipSection: ChipSectionModel?,
+    val chipSection: ChipSectionModel?,
     val reportsDetail: ReportsDetailModel?,
     val modifier: Modifier
 ) : BodyRowModel {
@@ -28,7 +28,7 @@ fun CrewMemberCardModel.mapToUiModel() = CrewMemberCardUiModel(
     pillColor = pill.color,
     dateText = date.text,
     dateTextStyle = date.textStyle,
-    //chipSection = chipSection?.mapToUiModel(),
+    chipSection = chipSection?.mapToUiModel(),
     reportsDetail = reportsDetail?.mapToUiModel(),
     modifier = modifier
 )

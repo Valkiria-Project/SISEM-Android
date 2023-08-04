@@ -7,7 +7,7 @@ import com.valkiria.uicomponents.props.TextStyle
 
 @JsonClass(generateAdapter = true)
 data class ListTextResponse(
-    @Json(name = "texts") val texts: List<String>?,
+    @Json(name = "text") val texts: List<String>?,
     @Json(name = "text_style") val textStyle: TextStyle?
 )
 

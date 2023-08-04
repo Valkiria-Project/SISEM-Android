@@ -2,15 +2,17 @@ package com.valkiria.uicomponents.components.crewmembercard
 
 import android.graphics.Color.parseColor
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
@@ -18,6 +20,7 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SuggestionChip
+import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,6 +37,7 @@ import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 
+@OptIn(ExperimentalLayoutApi::class)
 @Suppress("LongMethod", "UnusedPrivateMember")
 @Composable
 fun CrewMemberCardComponent(
@@ -75,7 +79,6 @@ fun CrewMemberCardComponent(
                             painter = painterResource(id = iconResourceId),
                             contentDescription = "",
                             tint = MaterialTheme.colorScheme.primary,
-                            //modifier = Modifier.size(40.dp)
                         )
                     }
 
@@ -83,18 +86,19 @@ fun CrewMemberCardComponent(
                         Text(
                             text = uiModel.titleText,
                             style = uiModel.titleTextStyle.toTextStyle(),
-                            color = Color.White
                         )
 
                         Text(
                             modifier = Modifier
+                                .padding(top = 5.dp)
                                 .background(
                                     color = Color(parseColor(uiModel.pillColor)),
                                     shape = RoundedCornerShape(25.dp)
                                 )
                                 .padding(horizontal = 8.dp),
                             text = uiModel.pillText,
-                            style = uiModel.pillTextStyle.toTextStyle()
+                            style = uiModel.pillTextStyle.toTextStyle(),
+                            color = Color.Black
                         )
                     }
 
@@ -104,7 +108,7 @@ fun CrewMemberCardComponent(
                 }
 
                 Row(
-                    modifier = Modifier.padding(top = 12.dp),
+                    modifier = Modifier.padding(top = 10.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
@@ -117,10 +121,9 @@ fun CrewMemberCardComponent(
                     )
 
                     Text(
-                        text = uiModel.dateText.split("-").first(),
+                        text = uiModel.dateText.split(" - ").first(),
                         style = uiModel.dateTextStyle.toTextStyle(),
                         modifier = Modifier.padding(end = 12.dp),
-                        color = Color.White
                     )
 
                     Icon(
@@ -133,9 +136,8 @@ fun CrewMemberCardComponent(
                     )
 
                     Text(
-                        text = uiModel.dateText.split("-").last(),
+                        text = uiModel.dateText.split(" - ").last(),
                         style = uiModel.dateTextStyle.toTextStyle(),
-                        color = Color.White
                     )
                 }
 
@@ -143,15 +145,17 @@ fun CrewMemberCardComponent(
                     Text(
                         text = it.title,
                         style = it.titleTextStyle.toTextStyle(),
-                        modifier = Modifier.padding(top = 12.dp),
-                        color = Color.White
+                        modifier = Modifier.padding(top = 10.dp),
                     )
 
-                    LazyColumn {
+                    FlowRow(
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
                         it.listText.forEach { text ->
-                            item(key = text) {
-                                ChipView(text = text, textStyle = it.listTextStyle)
-                            }
+                            ChipView(text = text, textStyle = it.listTextStyle)
                         }
                     }
                 }
@@ -194,9 +198,11 @@ fun ChipView(text: String, textStyle: TextStyle) {
         label = {
             Text(
                 text = text,
-                style = textStyle.toTextStyle()
+                style = textStyle.toTextStyle(),
+                color = Color.White
             )
         },
-        shape = RoundedCornerShape(25.dp)
+        shape = RoundedCornerShape(25.dp),
+        border = SuggestionChipDefaults.suggestionChipBorder(borderColor = MaterialTheme.colorScheme.primary)
     )
 }
