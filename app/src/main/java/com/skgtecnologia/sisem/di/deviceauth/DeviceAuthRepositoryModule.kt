@@ -12,7 +12,7 @@ import dagger.hilt.android.components.ViewModelComponent
 abstract class DeviceAuthRepositoryModule {
 
     @Binds
-    abstract fun bindDeviceAuthRepositoryImpl(
+    abstract fun bindDeviceAuthRepository(
         deviceAuthRepositoryImpl: DeviceAuthRepositoryImpl
     ): DeviceAuthRepository
 }

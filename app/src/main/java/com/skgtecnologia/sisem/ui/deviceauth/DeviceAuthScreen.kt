@@ -26,6 +26,7 @@ import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 import kotlinx.coroutines.launch
 
+@Suppress("LongMethod")
 @Composable
 fun DeviceAuthScreen(
     isTablet: Boolean,
