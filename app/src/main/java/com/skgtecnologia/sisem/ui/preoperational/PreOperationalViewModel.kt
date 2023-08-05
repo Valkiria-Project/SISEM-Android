@@ -5,11 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
-import com.skgtecnologia.sisem.domain.login.model.LoginLink
-import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
-import com.skgtecnologia.sisem.domain.login.usecases.Login
-import com.skgtecnologia.sisem.domain.model.body.FingerprintModel
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
 import dagger.hilt.android.lifecycle.HiltViewModel

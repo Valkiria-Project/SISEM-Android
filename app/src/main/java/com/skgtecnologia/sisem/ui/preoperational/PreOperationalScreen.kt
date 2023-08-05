@@ -18,6 +18,7 @@ import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Suppress("LongMethod")
 @Composable
@@ -65,7 +66,7 @@ fun PreOperationalScreen(
                 }
                 .padding(top = 20.dp)
         ) { uiAction ->
-
+            Timber.d("Handle $uiAction")
         }
     }
 
