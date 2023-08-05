@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.domain.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.body.BodyRowType.LABEL
 import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.props.TextStyle
 
@@ -11,7 +10,7 @@ data class LabelModel(
     val modifier: Modifier = Modifier
 ) : BodyRowModel {
 
-    override val type: BodyRowType = LABEL
+    override val type: BodyRowType = BodyRowType.LABEL
 }
 
 fun LabelModel.mapToUiModel() = LabelUiModel(

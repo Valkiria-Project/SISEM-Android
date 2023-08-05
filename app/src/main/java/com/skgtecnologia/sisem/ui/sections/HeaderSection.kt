@@ -23,7 +23,7 @@ import com.valkiria.uicomponents.utlis.getResourceIdByName
 @Composable
 fun HeaderSection(
     headerModel: HeaderModel,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = headerModel.modifier

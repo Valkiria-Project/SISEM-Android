@@ -6,7 +6,10 @@ import com.skgtecnologia.sisem.data.remote.adapters.ModifierAdapter
 import com.skgtecnologia.sisem.data.remote.model.body.BodyRowResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ButtonResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ChipResponse
-import com.skgtecnologia.sisem.data.remote.model.body.FilterChipsResponse
+import com.skgtecnologia.sisem.data.remote.model.body.CommentResponse
+import com.skgtecnologia.sisem.data.remote.model.body.ContentHeaderResponse
+import com.skgtecnologia.sisem.data.remote.model.body.DetailedInfoListResponse
+import com.skgtecnologia.sisem.data.remote.model.body.FiltersResponse
 import com.skgtecnologia.sisem.data.remote.model.body.LabelResponse
 import com.skgtecnologia.sisem.data.remote.model.body.PasswordTextFieldResponse
 import com.skgtecnologia.sisem.data.remote.model.body.RichLabelResponse
@@ -86,8 +89,17 @@ object CoreNetworkModule {
             ChipResponse::class.java,
             BodyRowType.CHIP.name
         ).withSubtype(
-            FilterChipsResponse::class.java,
-            BodyRowType.FILTER_CHIPS.name
+            CommentResponse::class.java,
+            BodyRowType.COMMENTS.name
+        ).withSubtype(
+            ContentHeaderResponse::class.java,
+            BodyRowType.CONTENT_HEADER.name
+        ).withSubtype(
+            DetailedInfoListResponse::class.java,
+            BodyRowType.DETAILED_INFO_LIST.name
+        ).withSubtype(
+            FiltersResponse::class.java,
+            BodyRowType.FILTERS.name
         ).withSubtype(
             LabelResponse::class.java,
             BodyRowType.LABEL.name

@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.domain.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.body.BodyRowType.CHIP
 import com.valkiria.uicomponents.components.chip.ChipUiModel
 import com.valkiria.uicomponents.props.ChipStyle
 import com.valkiria.uicomponents.props.TextStyle
@@ -15,7 +14,7 @@ data class ChipModel(
     val modifier: Modifier = Modifier
 ) : BodyRowModel {
 
-    override val type: BodyRowType = CHIP
+    override val type: BodyRowType = BodyRowType.CHIP
 }
 
 fun ChipModel.mapToUiModel() = ChipUiModel(

@@ -24,7 +24,7 @@ import com.valkiria.uicomponents.theme.UiComponentsTheme
 
 @Composable
 fun FilterChipsComponent(
-    uiModel: FilterChipsUiModel
+    uiModel: FiltersUiModel
 ) {
     Row(
         modifier = Modifier
@@ -32,7 +32,7 @@ fun FilterChipsComponent(
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
-        uiModel.chips.map { chipText ->
+        uiModel.options.map { chipText ->
             var selected by remember { mutableStateOf(false) }
 
             FilterChip(
@@ -49,8 +49,8 @@ fun FilterChipsComponent(
 @Composable
 fun ChipComponentPreview() {
     UiComponentsTheme {
-        val filterChipsUiModel = FilterChipsUiModel( // FIXME: Create Mock Model
-            chips = listOf("Líquidos", "Sistema eléctrico", "Interior", "Exterior"),
+        val filtersUiModel = FiltersUiModel( // FIXME: Create Mock Model
+            options = listOf("Líquidos", "Sistema eléctrico", "Interior", "Exterior"),
             textStyle = TextStyle.BUTTON_1
         )
 
@@ -60,7 +60,7 @@ fun ChipComponentPreview() {
                 .padding(16.dp)
         ) {
             FilterChipsComponent(
-                uiModel = filterChipsUiModel
+                uiModel = filtersUiModel
             )
         }
     }

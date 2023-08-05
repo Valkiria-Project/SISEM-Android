@@ -1,21 +1,21 @@
 package com.skgtecnologia.sisem.domain.model.body
 
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
+import com.valkiria.uicomponents.components.filterchips.FiltersUiModel
 import com.valkiria.uicomponents.props.TextStyle
 
-data class RichLabelModel(
+data class FiltersModel(
     val identifier: String,
-    val text: String,
+    val options: List<String>,
     val textStyle: TextStyle,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {
 
-    override val type: BodyRowType = BodyRowType.RICH_LABEL
+    override val type: BodyRowType = BodyRowType.FILTERS
 }
 
-fun RichLabelModel.mapToUiModel() = RichLabelUiModel(
-    text = text,
+fun FiltersModel.mapToUiModel() = FiltersUiModel(
+    options = options,
     textStyle = textStyle,
     modifier = modifier
 )

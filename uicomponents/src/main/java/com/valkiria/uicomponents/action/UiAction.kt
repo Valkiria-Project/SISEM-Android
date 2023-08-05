@@ -26,3 +26,10 @@ sealed class DeviceAuthUiAction : UiAction {
     object DeviceAuth : DeviceAuthUiAction()
     data class DeviceAuthCodeInput(val updatedValue: String) : DeviceAuthUiAction()
 }
+
+sealed class PreOperationalUiAction : UiAction {
+    data class VehicleKMInput(
+        val updatedValue: String,
+        val fieldValidated: Boolean
+    ) : PreOperationalUiAction()
+}

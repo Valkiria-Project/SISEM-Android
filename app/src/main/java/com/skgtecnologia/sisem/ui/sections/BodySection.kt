@@ -17,7 +17,10 @@ import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.ButtonModel
 import com.skgtecnologia.sisem.domain.model.body.ChipModel
-import com.skgtecnologia.sisem.domain.model.body.FilterChipsModel
+import com.skgtecnologia.sisem.domain.model.body.CommentsModel
+import com.skgtecnologia.sisem.domain.model.body.ContentHeaderModel
+import com.skgtecnologia.sisem.domain.model.body.DetailedInfoListModel
+import com.skgtecnologia.sisem.domain.model.body.FiltersModel
 import com.skgtecnologia.sisem.domain.model.body.FingerprintModel
 import com.skgtecnologia.sisem.domain.model.body.LabelModel
 import com.skgtecnologia.sisem.domain.model.body.PasswordTextFieldModel
@@ -25,13 +28,16 @@ import com.skgtecnologia.sisem.domain.model.body.RichLabelModel
 import com.skgtecnologia.sisem.domain.model.body.SegmentedSwitchModel
 import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
+import com.skgtecnologia.sisem.domain.model.body.mapToHeaderModel
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
+import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
 import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
 import com.valkiria.uicomponents.action.LoginUiAction.Login
 import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
 import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
+import com.valkiria.uicomponents.action.PreOperationalUiAction.VehicleKMInput
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
@@ -42,6 +48,7 @@ import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
+import timber.log.Timber
 
 @Suppress("LongMethod")
 @Composable
@@ -82,7 +89,17 @@ private fun LazyListScope.handleBodyRows(
                 )
             }
 
-            is FilterChipsModel -> item(key = model.identifier) {
+            is CommentsModel -> Timber.d("WIP") // FIXME: Add logic
+
+            is ContentHeaderModel -> item(key = model.identifier) {
+                HeaderSection(
+                    headerModel = model.mapToHeaderModel()
+                )
+            }
+
+            is DetailedInfoListModel -> Timber.d("WIP") // FIXME: Add logic
+
+            is FiltersModel -> item(key = model.identifier) {
                 FilterChipsComponent(
                     uiModel = model.mapToUiModel()
                 )
@@ -201,6 +218,19 @@ private fun HandleTextFieldRows(
         ) { updatedValue, fieldValidated ->
             onAction(
                 LoginUserInput(
+                    updatedValue = updatedValue,
+                    fieldValidated = fieldValidated
+                )
+            )
+        }
+
+        PreOperationalIdentifier.VEHICLE_KM.name -> TextFieldComponent(
+            uiModel = model.mapToUiModel(),
+            isTablet = isTablet,
+            validateFields = validateFields
+        ) { updatedValue, fieldValidated ->
+            onAction(
+                VehicleKMInput(
                     updatedValue = updatedValue,
                     fieldValidated = fieldValidated
                 )
