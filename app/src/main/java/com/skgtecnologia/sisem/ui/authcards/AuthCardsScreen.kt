@@ -48,14 +48,13 @@ fun AuthCardsScreen(
                     height = Dimension.fillToConstraints
                 }
         ) { uiAction ->
-            handleUiAction(uiAction, viewModel, onNavigation)
+            handleUiAction(uiAction, onNavigation)
         }
     }
 }
 
 fun handleUiAction(
     uiAction: UiAction,
-    viewModel: AuthCardsViewModel,
     onNavigation: (route: AuthNavigationRoute) -> Unit
 ) {
     (uiAction as? AuthCardsUiAction)?.let {

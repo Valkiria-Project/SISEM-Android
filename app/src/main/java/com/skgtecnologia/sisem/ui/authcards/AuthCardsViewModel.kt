@@ -57,8 +57,8 @@ class AuthCardsViewModel @Inject constructor(
                     uiState = uiState.copy(
                         isLoading = false
                         // errorModel = throwable.mapToUi()
-                    ) }
-
+                    )
+                }
         }
     }
 }

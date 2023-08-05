@@ -5,7 +5,7 @@ import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 
 interface AuthCardsRepository {
 
-    suspend fun config() : ConfigModel
+    suspend fun config(): ConfigModel
 
     suspend fun getConfig(): ConfigModel?
 
