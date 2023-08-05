@@ -6,6 +6,7 @@ import com.skgtecnologia.sisem.data.remote.adapters.ModifierAdapter
 import com.skgtecnologia.sisem.data.remote.model.body.BodyRowResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ButtonResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ChipResponse
+import com.skgtecnologia.sisem.data.remote.model.body.FilterChipsResponse
 import com.skgtecnologia.sisem.data.remote.model.body.LabelResponse
 import com.skgtecnologia.sisem.data.remote.model.body.PasswordTextFieldResponse
 import com.skgtecnologia.sisem.data.remote.model.body.RichLabelResponse
@@ -20,9 +21,13 @@ import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.props.ButtonSize
+import com.valkiria.uicomponents.props.ButtonSize.DEFAULT
 import com.valkiria.uicomponents.props.ButtonStyle
+import com.valkiria.uicomponents.props.ButtonStyle.LOUD
 import com.valkiria.uicomponents.props.ChipStyle
+import com.valkiria.uicomponents.props.ChipStyle.PRIMARY
 import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.props.TextStyle.BODY_1
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -52,19 +57,19 @@ object CoreNetworkModule {
 
     private fun Moshi.Builder.provideEnumAdapters() = this.add(
         ButtonSize::class.java,
-        EnumJsonAdapter.create(ButtonSize::class.java).withUnknownFallback(ButtonSize.DEFAULT)
+        EnumJsonAdapter.create(ButtonSize::class.java).withUnknownFallback(DEFAULT)
     ).add(
         ButtonStyle::class.java,
-        EnumJsonAdapter.create(ButtonStyle::class.java).withUnknownFallback(ButtonStyle.LOUD)
+        EnumJsonAdapter.create(ButtonStyle::class.java).withUnknownFallback(LOUD)
     ).add(
         ChipStyle::class.java,
-        EnumJsonAdapter.create(ChipStyle::class.java).withUnknownFallback(ChipStyle.PRIMARY)
+        EnumJsonAdapter.create(ChipStyle::class.java).withUnknownFallback(PRIMARY)
     ).add(
         OnClick::class.java,
         EnumJsonAdapter.create(OnClick::class.java)
     ).add(
         TextStyle::class.java,
-        EnumJsonAdapter.create(TextStyle::class.java).withUnknownFallback(TextStyle.BODY_1)
+        EnumJsonAdapter.create(TextStyle::class.java).withUnknownFallback(BODY_1)
     )
 
     private fun Moshi.Builder.provideBodyPolymorphicAdapter() = this.add(
@@ -80,6 +85,9 @@ object CoreNetworkModule {
         ).withSubtype(
             ChipResponse::class.java,
             BodyRowType.CHIP.name
+        ).withSubtype(
+            FilterChipsResponse::class.java,
+            BodyRowType.FILTER_CHIPS.name
         ).withSubtype(
             LabelResponse::class.java,
             BodyRowType.LABEL.name

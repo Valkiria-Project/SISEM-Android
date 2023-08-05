@@ -8,7 +8,7 @@ import retrofit2.http.POST
 
 interface PreOperationalApi {
 
-    @POST("https://run.mocky.io/v3/f86fd8db-615b-4e4e-bd79-6f276ab881ae")
+    @POST("https://run.mocky.io/v3/10016807-5fb1-42c0-83e0-4691753f5b03")
     suspend fun getPreOperationalScreen(
         @Body screenBody: ScreenBody
     ): Response<ScreenResponse>

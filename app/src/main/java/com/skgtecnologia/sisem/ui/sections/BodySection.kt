@@ -17,6 +17,7 @@ import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.ButtonModel
 import com.skgtecnologia.sisem.domain.model.body.ChipModel
+import com.skgtecnologia.sisem.domain.model.body.FilterChipsModel
 import com.skgtecnologia.sisem.domain.model.body.FingerprintModel
 import com.skgtecnologia.sisem.domain.model.body.LabelModel
 import com.skgtecnologia.sisem.domain.model.body.PasswordTextFieldModel
@@ -34,6 +35,7 @@ import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
+import com.valkiria.uicomponents.components.filterchips.FilterChipsComponent
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.passwordtextfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
@@ -76,6 +78,12 @@ private fun LazyListScope.handleBodyRows(
 
             is ChipModel -> item(key = model.identifier) {
                 ChipComponent(
+                    uiModel = model.mapToUiModel()
+                )
+            }
+
+            is FilterChipsModel -> item(key = model.identifier) {
+                FilterChipsComponent(
                     uiModel = model.mapToUiModel()
                 )
             }
