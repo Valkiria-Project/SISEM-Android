@@ -203,6 +203,8 @@ fun ChipView(text: String, textStyle: TextStyle) {
             )
         },
         shape = RoundedCornerShape(25.dp),
-        border = SuggestionChipDefaults.suggestionChipBorder(borderColor = MaterialTheme.colorScheme.primary)
+        border = SuggestionChipDefaults.suggestionChipBorder(
+            borderColor = MaterialTheme.colorScheme.primary
+        )
     )
 }
