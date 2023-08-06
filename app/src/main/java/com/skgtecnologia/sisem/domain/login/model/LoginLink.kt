@@ -20,8 +20,8 @@ enum class LoginLink {
 }
 
 @Composable
-fun LoginLink.toLegalModel() = when (this) {
-    PRIVACY_POLICY -> LegalModel(
+fun LoginLink.toLegalContentModel() = when (this) {
+    PRIVACY_POLICY -> LegalContentModel(
         icon = painterResource(id = drawable.ic_message),
         title = stringResource(id = R.string.privacy_policy_title),
         titleTextStyle = TextStyle.HEADLINE_1,
@@ -31,7 +31,7 @@ fun LoginLink.toLegalModel() = when (this) {
         textStyle = TextStyle.HEADLINE_5
     )
 
-    TERMS_AND_CONDITIONS -> LegalModel(
+    TERMS_AND_CONDITIONS -> LegalContentModel(
         icon = painterResource(id = drawable.ic_message),
         title = stringResource(id = R.string.terms_and_conditions_title),
         titleTextStyle = TextStyle.HEADLINE_1,

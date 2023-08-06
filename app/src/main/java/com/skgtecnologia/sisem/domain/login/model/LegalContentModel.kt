@@ -4,7 +4,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import com.valkiria.uicomponents.props.TextStyle
 
-data class LegalModel(
+data class LegalContentModel(
     val icon: Painter? = null,
     val title: String,
     val titleTextStyle: TextStyle,

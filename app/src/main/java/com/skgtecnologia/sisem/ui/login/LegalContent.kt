@@ -15,12 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import com.skgtecnologia.sisem.domain.login.model.LegalModel
+import com.skgtecnologia.sisem.domain.login.model.LegalContentModel
 import com.valkiria.uicomponents.props.toTextStyle
 
 @Composable
 fun LegalContent(
-    uiModel: LegalModel
+    uiModel: LegalContentModel
 ) {
     Row(
         modifier = Modifier.padding(20.dp),

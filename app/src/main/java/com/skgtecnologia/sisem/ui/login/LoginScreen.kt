@@ -13,7 +13,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
-import com.skgtecnologia.sisem.domain.login.model.toLegalModel
+import com.skgtecnologia.sisem.domain.login.model.toLegalContentModel
 import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.LoginUiAction
@@ -84,7 +84,7 @@ fun LoginScreen(
 
         BottomSheetComponent(
             content = {
-                LegalContent(uiModel = link.toLegalModel())
+                LegalContent(uiModel = link.toLegalContentModel())
             },
             sheetState = sheetState,
             scope = scope
