@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.components.filterchips
+package com.valkiria.uicomponents.components.filters
 
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.props.TextStyle

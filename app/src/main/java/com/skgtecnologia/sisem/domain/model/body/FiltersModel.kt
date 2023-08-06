@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.domain.model.body
 
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.components.filterchips.FiltersUiModel
+import com.valkiria.uicomponents.components.filters.FiltersUiModel
 import com.valkiria.uicomponents.props.TextStyle
 
 data class FiltersModel(

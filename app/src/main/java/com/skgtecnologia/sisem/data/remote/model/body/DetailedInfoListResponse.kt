@@ -9,11 +9,14 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class DetailedInfoListResponse(
     @Json(name = "identifier") val identifier: String?,
+    @Json(name = "details") val details: List<DetailedInfoResponse>?
 ) : BodyRowResponse {
 
     override val type: BodyRowType = BodyRowType.DETAILED_INFO_LIST
 
     override fun mapToDomain(): BodyRowModel = DetailedInfoListModel(
         identifier = identifier ?: error("Detailed info list identifier cannot be null"),
+        details = details?.map { it.mapToUi() }
+            ?: error("Detailed info list details cannot be null")
     )
 }

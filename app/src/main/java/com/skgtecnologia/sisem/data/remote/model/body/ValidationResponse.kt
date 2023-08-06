@@ -1,10 +1,13 @@
-package com.skgtecnologia.sisem.data.remote.model.props
+package com.skgtecnologia.sisem.data.remote.model.body
 
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 
+@JsonClass(generateAdapter = true)
 data class ValidationResponse(
-    val regex: String?,
-    val message: String?
+    @Json(name = "regex") val regex: String?,
+    @Json(name = "message") val message: String?
 )
 
 fun ValidationResponse.mapToUi(): ValidationUiModel = ValidationUiModel(

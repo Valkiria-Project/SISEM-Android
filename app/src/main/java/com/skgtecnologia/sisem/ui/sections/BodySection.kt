@@ -41,7 +41,8 @@ import com.valkiria.uicomponents.action.PreOperationalUiAction.DriverVehicleKMIn
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
-import com.valkiria.uicomponents.components.filterchips.FilterChipsComponent
+import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListComponent
+import com.valkiria.uicomponents.components.filters.FilterChipsComponent
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.passwordtextfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
@@ -98,7 +99,11 @@ private fun LazyListScope.handleBodyRows(
                 )
             }
 
-            is DetailedInfoListModel -> Timber.d("WIP") // FIXME: Add logic
+            is DetailedInfoListModel -> item(key = model.identifier) {
+                DetailedInfoListComponent(
+                    uiModel = model.mapToUiModel()
+                )
+            }
 
             is FiltersModel -> item(key = model.identifier) {
                 FilterChipsComponent(

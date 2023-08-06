@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.components.filterchips
+package com.valkiria.uicomponents.components.filters
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll

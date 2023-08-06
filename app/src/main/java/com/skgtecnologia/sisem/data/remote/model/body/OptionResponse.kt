@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.data.remote.model.props
+package com.skgtecnologia.sisem.data.remote.model.body
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
