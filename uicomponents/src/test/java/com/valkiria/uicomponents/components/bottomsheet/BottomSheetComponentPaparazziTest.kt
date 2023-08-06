@@ -1,10 +1,9 @@
 package com.valkiria.uicomponents.components.bottomsheet
 
+import androidx.compose.material3.Text
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.android.ide.common.rendering.api.SessionParams.RenderingMode.V_SCROLL
-import com.valkiria.uicomponents.mocks.getLoginPrivacyBottomSheetUiModel
-import com.valkiria.uicomponents.mocks.getLoginTermsBottomSheetUiModel
 import org.junit.Rule
 import org.junit.Test
 import timber.log.Timber
@@ -21,7 +20,11 @@ class BottomSheetComponentPaparazziTest {
     @Test
     fun snapLoginTermsBottomSheetComponent() {
         paparazziRule.snapshot {
-            BottomSheetComponent(uiModel = getLoginTermsBottomSheetUiModel()) {
+            BottomSheetComponent(
+                content = {
+                    Text(text = "prueba")
+                }
+            ) {
                 Timber.d("Dismissed")
             }
         }
@@ -30,7 +33,11 @@ class BottomSheetComponentPaparazziTest {
     @Test
     fun snapLoginPrivacyBottomSheetComponent() {
         paparazziRule.snapshot {
-            BottomSheetComponent(uiModel = getLoginPrivacyBottomSheetUiModel()) {
+            BottomSheetComponent(
+                content = {
+                    Text(text = "prueba")
+                }
+            ) {
                 Timber.d("Dismissed")
             }
         }
