@@ -7,7 +7,6 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.login.model.LoginLink.PRIVACY_POLICY
 import com.skgtecnologia.sisem.domain.login.model.LoginLink.TERMS_AND_CONDITIONS
 import com.valkiria.uicomponents.R.drawable
-import com.valkiria.uicomponents.components.bottomsheet.BottomSheetUiModel
 import com.valkiria.uicomponents.props.TextStyle
 import java.util.Locale
 
@@ -21,8 +20,8 @@ enum class LoginLink {
 }
 
 @Composable
-fun LoginLink.toBottomSheetUiModel() = when (this) {
-    PRIVACY_POLICY -> BottomSheetUiModel(
+fun LoginLink.toLegalContentModel() = when (this) {
+    PRIVACY_POLICY -> LegalContentModel(
         icon = painterResource(id = drawable.ic_message),
         title = stringResource(id = R.string.privacy_policy_title),
         titleTextStyle = TextStyle.HEADLINE_1,
@@ -32,7 +31,7 @@ fun LoginLink.toBottomSheetUiModel() = when (this) {
         textStyle = TextStyle.HEADLINE_5
     )
 
-    TERMS_AND_CONDITIONS -> BottomSheetUiModel(
+    TERMS_AND_CONDITIONS -> LegalContentModel(
         icon = painterResource(id = drawable.ic_message),
         title = stringResource(id = R.string.terms_and_conditions_title),
         titleTextStyle = TextStyle.HEADLINE_1,
