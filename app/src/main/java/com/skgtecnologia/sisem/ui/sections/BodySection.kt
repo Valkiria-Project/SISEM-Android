@@ -71,6 +71,7 @@ fun BodySection(
     }
 }
 
+@Suppress("LongMethod")
 private fun LazyListScope.handleBodyRows(
     body: List<BodyRowModel>,
     isTablet: Boolean,
