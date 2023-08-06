@@ -16,7 +16,7 @@ data class TermsAndConditionsResponse(
     override val type: BodyRowType = BodyRowType.TERMS_AND_CONDITIONS
 
     override fun mapToDomain(): BodyRowModel = TermsAndConditionsModel(
-        identifier = identifier ?: error("T&C identifier cannot be null"),
+        identifier = identifier,
         modifier = modifier ?: Modifier
     )
 }

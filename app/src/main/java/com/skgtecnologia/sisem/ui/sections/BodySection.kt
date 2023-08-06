@@ -37,7 +37,7 @@ import com.valkiria.uicomponents.action.LoginUiAction.Login
 import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
 import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
-import com.valkiria.uicomponents.action.PreOperationalUiAction.VehicleKMInput
+import com.valkiria.uicomponents.action.PreOperationalUiAction.DriverVehicleKMInput
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
@@ -62,7 +62,7 @@ fun BodySection(
     if (body?.isNotEmpty() == true) {
         LazyColumn(
             modifier = modifier,
-            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
+            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp), // FIXME: iOS?
             verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Top),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -224,13 +224,13 @@ private fun HandleTextFieldRows(
             )
         }
 
-        PreOperationalIdentifier.VEHICLE_KM.name -> TextFieldComponent(
+        PreOperationalIdentifier.DRIVER_VEHICLE_KM.name -> TextFieldComponent(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet,
             validateFields = validateFields
         ) { updatedValue, fieldValidated ->
             onAction(
-                VehicleKMInput(
+                DriverVehicleKMInput(
                     updatedValue = updatedValue,
                     fieldValidated = fieldValidated
                 )

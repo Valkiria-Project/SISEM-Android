@@ -28,7 +28,7 @@ sealed class DeviceAuthUiAction : UiAction {
 }
 
 sealed class PreOperationalUiAction : UiAction {
-    data class VehicleKMInput(
+    data class DriverVehicleKMInput(
         val updatedValue: String,
         val fieldValidated: Boolean
     ) : PreOperationalUiAction()

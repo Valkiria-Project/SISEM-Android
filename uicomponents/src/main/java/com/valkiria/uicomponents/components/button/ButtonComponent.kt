@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.mocks.getLoginButtonUiModel
 import com.valkiria.uicomponents.mocks.getLoginForgotButtonUiModel
 import com.valkiria.uicomponents.props.ButtonSize
+import com.valkiria.uicomponents.props.TabletWidth
 import com.valkiria.uicomponents.props.mapToColors
 import com.valkiria.uicomponents.props.mapToTextColor
 import com.valkiria.uicomponents.props.toTextStyle
@@ -34,7 +35,7 @@ fun ButtonComponent(
 ) {
     Row(
         modifier = if (isTablet) {
-            uiModel.modifier.width(300.dp)
+            uiModel.modifier.width(TabletWidth)
         } else {
             uiModel.modifier.fillMaxWidth()
         },
