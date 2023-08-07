@@ -7,8 +7,8 @@ data class DetailUiModel(
     val images: List<String>,
     val title: String,
     val titleTextStyle: TextStyle,
-    val subtitle: String? = null,
-    val subtitleTextStyle: TextStyle? = null,
+    val subtitle: String,
+    val subtitleTextStyle: TextStyle,
     val description: String,
     val descriptionTextStyle: TextStyle,
     val modifier: Modifier

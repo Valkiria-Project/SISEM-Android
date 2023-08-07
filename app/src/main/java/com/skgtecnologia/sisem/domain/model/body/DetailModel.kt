@@ -22,3 +22,11 @@ fun DetailModel.mapToUiModel() = DetailUiModel(
     descriptionTextStyle = description.textStyle,
     modifier = modifier
 )
+
+fun DetailUiModel.mapToDomain() = DetailModel(
+    images = images,
+    title = TextModel(text = title, textStyle = titleTextStyle),
+    subtitle = TextModel(text = subtitle, textStyle = subtitleTextStyle),
+    description = TextModel(text = description, textStyle = descriptionTextStyle),
+    modifier = modifier
+)

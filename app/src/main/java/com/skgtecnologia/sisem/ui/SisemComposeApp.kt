@@ -44,7 +44,7 @@ private fun NavGraphBuilder.authGraph(
     modifier: Modifier
 ) {
     navigation(
-        startDestination = AuthNavigationRoute.Login.route,
+        startDestination = AuthNavigationRoute.AuthCards.route,
         route = NavigationGraph.Auth.route
     ) {
         composable(

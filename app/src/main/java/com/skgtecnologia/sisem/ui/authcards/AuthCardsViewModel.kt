@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.domain.authcards.usecases.Config
 import com.skgtecnologia.sisem.domain.authcards.usecases.GetAuthCardsScreen
+import com.skgtecnologia.sisem.domain.model.body.ReportsDetailModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -60,5 +61,17 @@ class AuthCardsViewModel @Inject constructor(
                     )
                 }
         }
+    }
+
+    fun showBottomSheet(reportDetail: ReportsDetailModel) {
+        uiState = uiState.copy(
+            reportDetail = reportDetail
+        )
+    }
+
+    fun handleShownBottomSheet() {
+        uiState = uiState.copy(
+            reportDetail = null
+        )
     }
 }

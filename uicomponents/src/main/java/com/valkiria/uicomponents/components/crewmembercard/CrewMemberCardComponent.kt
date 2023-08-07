@@ -45,7 +45,7 @@ fun CrewMemberCardComponent(
     uiModel: CrewMemberCardUiModel,
     isTablet: Boolean = false,
     onAction: () -> Unit,
-    onNewsAction: () -> Unit
+    onNewsAction: (reportDetail: ReportsDetailUiModel) -> Unit
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon, DefType.DRAWABLE
@@ -107,7 +107,11 @@ fun CrewMemberCardComponent(
                     }
 
                     uiModel.reportsDetail?.let {
-                        BadgedBoxView(count = it.details.size, onAction = onNewsAction)
+                        BadgedBoxView(
+                            count = it.details.size,
+                            reportDetail = it,
+                            onAction = onNewsAction
+                        )
                     }
                 }
 
@@ -169,10 +173,14 @@ fun CrewMemberCardComponent(
 }
 
 @Composable
-fun BadgedBoxView(count: Int, onAction: () -> Unit) {
+fun BadgedBoxView(
+    count: Int,
+    reportDetail: ReportsDetailUiModel,
+    onAction: (reportDetail: ReportsDetailUiModel) -> Unit
+) {
     BadgedBox(
         modifier = Modifier
-            .clickable { onAction() }
+            .clickable { onAction(reportDetail) }
             .size(25.dp),
         badge = {
             Badge {

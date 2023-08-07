@@ -216,14 +216,14 @@ private fun HandleCrewMemberCardRows(
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
-        AuthCardsIdentifier.AUXILIAR_TAPH_CREW_MEMBER_CARD.name,
-        AuthCardsIdentifier.CONDUCTOR_CREW_MEMBER_CARD.name,
-        AuthCardsIdentifier.MEDICO_CREW_MEMBER_CARD.name -> {
+        AuthCardsIdentifier.ASSISTANT_CREW_MEMBER_CARD.name,
+        AuthCardsIdentifier.DRIVER_CREW_MEMBER_CARD.name,
+        AuthCardsIdentifier.DOCTOR_CREW_MEMBER_CARD.name -> {
             CrewMemberCardComponent(
                 uiModel = model.mapToUiModel(),
                 isTablet = isTablet,
                 onAction = { onAction(AuthCardsUiAction.AuthCard) },
-                onNewsAction = { onAction(AuthCardsUiAction.AuthCardNews) }
+                onNewsAction = { onAction(AuthCardsUiAction.AuthCardNews(it)) }
             )
         }
     }

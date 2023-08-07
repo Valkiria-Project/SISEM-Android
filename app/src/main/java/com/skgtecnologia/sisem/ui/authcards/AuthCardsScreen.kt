@@ -1,16 +1,23 @@
 package com.skgtecnologia.sisem.ui.authcards
 
+import HideKeyboard
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.skgtecnologia.sisem.domain.model.body.mapToDomain
 import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.UiAction
+import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
+import com.valkiria.uicomponents.components.loader.LoaderComponent
+import kotlinx.coroutines.launch
 
 @Suppress("UnusedPrivateMember")
 @Composable
@@ -21,6 +28,11 @@ fun AuthCardsScreen(
 ) {
     val viewModel = hiltViewModel<AuthCardsViewModel>()
     val uiState = viewModel.uiState
+
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
+    val scope = rememberCoroutineScope()
 
     ConstraintLayout(
         modifier = modifier.fillMaxSize()
@@ -48,19 +60,42 @@ fun AuthCardsScreen(
                     height = Dimension.fillToConstraints
                 }
         ) { uiAction ->
-            handleUiAction(uiAction, onNavigation)
+            handleUiAction(uiAction, viewModel, onNavigation)
         }
+    }
+
+    uiState.reportDetail?.let {
+        scope.launch {
+            sheetState.show()
+        }
+
+        BottomSheetComponent(
+            content = {
+                ReportDetailContent(model = uiState.reportDetail)
+            },
+            sheetState = sheetState,
+            scope = scope
+        ) {
+            viewModel.handleShownBottomSheet()
+        }
+    }
+
+    if (uiState.isLoading) {
+        HideKeyboard()
+        LoaderComponent(modifier)
     }
 }
 
 fun handleUiAction(
     uiAction: UiAction,
+    viewModel: AuthCardsViewModel,
     onNavigation: (route: AuthNavigationRoute) -> Unit
 ) {
     (uiAction as? AuthCardsUiAction)?.let {
         when (uiAction) {
             AuthCardsUiAction.AuthCard -> onNavigation(AuthNavigationRoute.Login)
-            AuthCardsUiAction.AuthCardNews -> {} // FIXME:
+            is AuthCardsUiAction.AuthCardNews ->
+                viewModel.showBottomSheet(uiAction.reportDetail.mapToDomain())
         }
     }
 }
