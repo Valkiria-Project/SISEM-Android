@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.ui.preoperational
 
 import HideKeyboard
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -36,11 +35,7 @@ fun PreOperationalScreen(
     val scope = rememberCoroutineScope()
 
     ConstraintLayout(
-        modifier = modifier
-            .fillMaxSize()
-            .clickable {
-                onNavigation(NavigationGraph.Main)
-            }
+        modifier = modifier.fillMaxSize()
     ) {
         val (header, body) = createRefs()
 
