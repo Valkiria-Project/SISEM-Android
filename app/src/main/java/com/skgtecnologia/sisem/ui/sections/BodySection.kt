@@ -41,6 +41,7 @@ import com.valkiria.uicomponents.action.PreOperationalUiAction.DriverVehicleKMIn
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
+import com.valkiria.uicomponents.components.comments.CommentsComponent
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListComponent
 import com.valkiria.uicomponents.components.filters.FilterChipsComponent
 import com.valkiria.uicomponents.components.label.LabelComponent
@@ -49,7 +50,6 @@ import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
-import timber.log.Timber
 
 @Suppress("LongMethod")
 @Composable
@@ -91,7 +91,11 @@ private fun LazyListScope.handleBodyRows(
                 )
             }
 
-            is CommentsModel -> Timber.d("WIP") // FIXME: Add logic
+            is CommentsModel -> item(key = model.identifier) {
+                CommentsComponent(
+                    uiModel = model.mapToUiModel()
+                )
+            }
 
             is ContentHeaderModel -> item(key = model.identifier) {
                 HeaderSection(

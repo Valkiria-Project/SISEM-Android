@@ -15,9 +15,9 @@ data class HeaderResponse(
 )
 
 fun HeaderResponse.mapToDomain(): HeaderModel = HeaderModel(
-    title = this.title?.mapToDomain() ?: error("Header title cannot be null"),
-    subtitle = this.subtitle?.mapToDomain(),
-    leftIcon = this.leftIcon,
-    rightIcon = this.rightIcon,
-    modifier = this.modifier ?: Modifier
+    title = title?.mapToDomain() ?: error("Header title cannot be null"),
+    subtitle = subtitle?.mapToDomain(),
+    leftIcon = leftIcon,
+    rightIcon = rightIcon,
+    modifier = modifier ?: Modifier
 )

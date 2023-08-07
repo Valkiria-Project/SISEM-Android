@@ -12,6 +12,6 @@ data class TextResponse(
 )
 
 fun TextResponse.mapToDomain(): TextModel = TextModel(
-    text = this.text ?: error("TextModel text cannot be null"),
-    textStyle = this.textStyle ?: error("TextModel textStyle cannot be null")
+    text = text ?: error("TextModel text cannot be null"),
+    textStyle = textStyle ?: error("TextModel textStyle cannot be null")
 )

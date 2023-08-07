@@ -22,8 +22,8 @@ data class ContentHeaderResponse(
     override fun mapToDomain(): BodyRowModel = ContentHeaderModel(
         identifier = identifier ?: error("Content Header identifier cannot be null"),
         text = text ?: error("Content Header text cannot be null"),
-        leftIcon = this.leftIcon,
+        leftIcon = leftIcon,
         textStyle = textStyle ?: error("Content Header textStyle cannot be null"),
-        modifier = this.modifier ?: Modifier
+        modifier = modifier ?: Modifier
     )
 }
