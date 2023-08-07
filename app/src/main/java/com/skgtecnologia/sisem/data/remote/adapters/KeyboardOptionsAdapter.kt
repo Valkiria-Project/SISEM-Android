@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonReader
 import com.squareup.moshi.ToJson
 
 const val TEXT_KEYBOARD = "TEXT"
-const val TEXT_NUMBER = "NUMBER"
+const val TEXT_NUMBER = "NUMERIC"
 const val TEXT_EMAIL = "EMAIL"
 const val TEXT_PHONE = "PHONE"
 const val TEXT_PASSWORD = "PASSWORD"
