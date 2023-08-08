@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.domain.model.body
 enum class BodyRowType {
     BUTTON,
     CHIP,
+    CREW_MEMBER_CARD,
     FINGERPRINT,
     LABEL,
     PASSWORD_TEXT_FIELD,

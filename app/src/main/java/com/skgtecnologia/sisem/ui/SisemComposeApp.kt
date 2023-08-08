@@ -65,7 +65,7 @@ private fun NavGraphBuilder.authGraph(
                 isTablet = isTablet,
                 modifier = modifier
             ) {
-                navController.navigate(AuthNavigationRoute.DeviceAuth.route)
+                navController.navigate(AuthNavigationRoute.AuthCards.route)
             }
         }
 

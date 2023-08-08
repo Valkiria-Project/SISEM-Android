@@ -1,11 +1,18 @@
-package com.valkiria.uicomponents.components.card
+package com.valkiria.uicomponents.components.crewmembercard
 
+import android.graphics.Color.parseColor
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Badge
@@ -14,6 +21,7 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SuggestionChip
+import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,7 +31,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.props.TextStyle
@@ -31,17 +38,17 @@ import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 
+@OptIn(ExperimentalLayoutApi::class)
 @Suppress("LongMethod", "UnusedPrivateMember")
 @Composable
-fun CardComponent(
-    isNews: Boolean,
-    isLogin: Boolean = false,
-    modifier: Modifier = Modifier,
-    hallazgos: List<String> =
-        listOf("prueba1 es demaciado grande", "prueba2", "prueba3", "prueba4", "prueba5")
+fun CrewMemberCardComponent(
+    uiModel: CrewMemberCardUiModel,
+    isTablet: Boolean = false,
+    onAction: () -> Unit,
+    onNewsAction: (reportDetail: ReportsDetailUiModel) -> Unit
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
-        "ic_ambulance", DefType.DRAWABLE
+        uiModel.icon, DefType.DRAWABLE
     )
 
     val brush = Brush.horizontalGradient(
@@ -52,7 +59,7 @@ fun CardComponent(
     )
 
     ElevatedCard(
-        modifier = modifier
+        modifier = uiModel.modifier
             .fillMaxWidth()
             .shadow(
                 elevation = 25.dp,
@@ -63,6 +70,7 @@ fun CardComponent(
     ) {
         Box(
             modifier = Modifier
+                .clickable { onAction() }
                 .background(brush = brush)
                 .fillMaxWidth()
         ) {
@@ -80,34 +88,35 @@ fun CardComponent(
 
                     Column(modifier = Modifier.padding(start = 12.dp)) {
                         Text(
-                            text = "MÉDICO",
-                            style = TextStyle.HEADLINE_7.toTextStyle(),
-                            color = Color.White
+                            text = uiModel.titleText,
+                            style = uiModel.titleTextStyle.toTextStyle(),
                         )
 
                         Text(
                             modifier = Modifier
+                                .padding(top = 5.dp)
                                 .background(
-                                    color = if (isLogin) {
-                                        MaterialTheme.colorScheme.tertiary
-                                    } else {
-                                        MaterialTheme.colorScheme.error
-                                    },
+                                    color = Color(parseColor(uiModel.pillColor)),
                                     shape = RoundedCornerShape(25.dp)
                                 )
                                 .padding(horizontal = 8.dp),
-                            text = "Anterior: Andres Perez",
-                            style = TextStyle.HEADLINE_8.toTextStyle()
+                            text = uiModel.pillText,
+                            style = uiModel.pillTextStyle.toTextStyle(),
+                            color = Color.Black
                         )
                     }
 
-                    if (isNews) {
-                        BadgedBoxView(count = 2)
+                    uiModel.reportsDetail?.let {
+                        BadgedBoxView(
+                            count = it.details.size,
+                            reportDetail = it,
+                            onAction = onNewsAction
+                        )
                     }
                 }
 
                 Row(
-                    modifier = Modifier.padding(top = 12.dp),
+                    modifier = Modifier.padding(top = 10.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
@@ -120,10 +129,9 @@ fun CardComponent(
                     )
 
                     Text(
-                        text = "20/03/2023",
-                        style = TextStyle.HEADLINE_8.toTextStyle(),
+                        text = uiModel.dateText.split(" - ").first(),
+                        style = uiModel.dateTextStyle.toTextStyle(),
                         modifier = Modifier.padding(end = 12.dp),
-                        color = Color.White
                     )
 
                     Icon(
@@ -136,32 +144,44 @@ fun CardComponent(
                     )
 
                     Text(
-                        text = "13:00",
-                        style = TextStyle.HEADLINE_8.toTextStyle(),
-                        color = Color.White
+                        text = uiModel.dateText.split(" - ").last(),
+                        style = uiModel.dateTextStyle.toTextStyle(),
                     )
                 }
 
-                Text(
-                    text = "Hallazgos",
-                    style = TextStyle.HEADLINE_7.toTextStyle(),
-                    modifier = Modifier.padding(top = 12.dp),
-                    color = Color.White
-                )
+                uiModel.chipSection?.let {
+                    Text(
+                        text = it.title,
+                        style = it.titleTextStyle.toTextStyle(),
+                        modifier = Modifier.padding(top = 10.dp),
+                    )
+
+                    FlowRow(
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        it.listText.forEach { text ->
+                            ChipView(text = text, textStyle = it.listTextStyle)
+                        }
+                    }
+                }
             }
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun CardComponentPreview() {
-    CardComponent(isNews = true)
-}
-
-@Composable
-fun BadgedBoxView(count: Int) {
+fun BadgedBoxView(
+    count: Int,
+    reportDetail: ReportsDetailUiModel,
+    onAction: (reportDetail: ReportsDetailUiModel) -> Unit
+) {
     BadgedBox(
+        modifier = Modifier
+            .clickable { onAction(reportDetail) }
+            .size(25.dp),
         badge = {
             Badge {
                 Text(text = count.toString())
@@ -170,8 +190,7 @@ fun BadgedBoxView(count: Int) {
     ) {
         Icon(
             modifier = Modifier
-                .wrapContentSize()
-                .padding(start = 12.dp),
+                .fillMaxSize(),
             painter = painterResource(id = R.drawable.ic_news),
             contentDescription = "",
             tint = MaterialTheme.colorScheme.primary,
@@ -180,16 +199,20 @@ fun BadgedBoxView(count: Int) {
 }
 
 @Composable
-fun ChipView(text: String) {
+fun ChipView(text: String, textStyle: TextStyle) {
     SuggestionChip(
         onClick = { /*TODO*/ },
         modifier = Modifier.wrapContentSize(),
         label = {
             Text(
                 text = text,
-                style = TextStyle.HEADLINE_8.toTextStyle()
+                style = textStyle.toTextStyle(),
+                color = Color.White
             )
         },
-        shape = RoundedCornerShape(25.dp)
+        shape = RoundedCornerShape(25.dp),
+        border = SuggestionChipDefaults.suggestionChipBorder(
+            borderColor = MaterialTheme.colorScheme.primary
+        )
     )
 }
