@@ -32,10 +32,9 @@ fun CommentsComponent(
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        val bubbleColor = MaterialTheme.colorScheme.secondary
         Surface(
             shape = MaterialTheme.shapes.medium.copy(bottomStart = CornerSize(4.dp)),
-            color = bubbleColor
+            color = MaterialTheme.colorScheme.secondary
         ) {
             Column {
                 Text(
@@ -44,7 +43,7 @@ fun CommentsComponent(
                     color = MaterialTheme.colorScheme.onBackground
                 )
 
-                if (uiModel.thread.size >= 1) {
+                if (uiModel.thread.size == 1) {
                     val iconResourceId = LocalContext.current.getResourceIdByName(
                         uiModel.replyIcon, DefType.DRAWABLE
                     )
@@ -58,6 +57,18 @@ fun CommentsComponent(
                                 .size(20.dp)
                                 .align(Alignment.End),
                             tint = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+                } else if (uiModel.thread.size > 1) {
+                    Surface(
+                        modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                        shape = MaterialTheme.shapes.medium.copy(bottomStart = CornerSize(4.dp)),
+                        color = MaterialTheme.colorScheme.background
+                    ) {
+                        Text(
+                            uiModel.thread[1],
+                            modifier = Modifier.padding(12.dp),
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                     }
                 }
