@@ -11,11 +11,9 @@ class AuthCardsCacheDataSource @Inject constructor(
     private val configDao: ConfigDao
 ) {
 
-    suspend fun storeConfig(configModel: ConfigModel) {
+    suspend fun storeConfig(configModel: ConfigModel) =
         configDao.insertConfig(configEntity = configModel.mapToCache())
-    }
 
     @CheckResult
-    suspend fun retrieveConfig(): ConfigModel? =
-        configDao.getConfig()?.mapToDomain()
+    suspend fun retrieveConfig(): ConfigModel? = configDao.getConfig()?.mapToDomain()
 }

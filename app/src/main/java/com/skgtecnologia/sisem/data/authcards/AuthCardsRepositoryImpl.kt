@@ -11,6 +11,7 @@ class AuthCardsRepositoryImpl @Inject constructor(
     private val authCardsCacheDataSource: AuthCardsCacheDataSource,
     private val authCardsRemoteDataSource: AuthCardsRemoteDataSource
 ) : AuthCardsRepository {
+
     override suspend fun config(): ConfigModel =
         authCardsRemoteDataSource.getConfig()
             .onSuccess {
