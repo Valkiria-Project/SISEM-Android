@@ -118,7 +118,7 @@ private fun LazyListScope.handleBodyRows(
                 )
             }
 
-            is FiltersModel -> item(key = model.identifier) {
+            is FiltersModel -> stickyHeader(key = model.identifier) {
                 FilterChipsComponent(
                     uiModel = model.mapToUiModel()
                 )
