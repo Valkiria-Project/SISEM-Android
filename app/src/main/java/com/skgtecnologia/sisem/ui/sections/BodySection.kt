@@ -20,6 +20,7 @@ import com.skgtecnologia.sisem.domain.model.body.ButtonModel
 import com.skgtecnologia.sisem.domain.model.body.ChipModel
 import com.skgtecnologia.sisem.domain.model.body.CommentsModel
 import com.skgtecnologia.sisem.domain.model.body.ContentHeaderModel
+import com.skgtecnologia.sisem.domain.model.body.CrewMemberCardModel
 import com.skgtecnologia.sisem.domain.model.body.DetailedInfoListModel
 import com.skgtecnologia.sisem.domain.model.body.FiltersModel
 import com.skgtecnologia.sisem.domain.model.body.FingerprintModel
@@ -32,6 +33,8 @@ import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.mapToHeaderModel
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
+import com.valkiria.uicomponents.action.AuthCardsUiAction.AuthCard
+import com.valkiria.uicomponents.action.AuthCardsUiAction.AuthCardNews
 import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
 import com.valkiria.uicomponents.action.LoginUiAction.Login
@@ -190,6 +193,26 @@ private fun HandleButtonRows(
 }
 
 @Composable
+private fun HandleCrewMemberCardRows(
+    model: CrewMemberCardModel,
+    isTablet: Boolean,
+    onAction: (actionInput: UiAction) -> Unit
+) {
+    when (model.identifier) {
+        AuthCardsIdentifier.ASSISTANT_CREW_MEMBER_CARD.name,
+        AuthCardsIdentifier.DRIVER_CREW_MEMBER_CARD.name,
+        AuthCardsIdentifier.DOCTOR_CREW_MEMBER_CARD.name -> {
+            CrewMemberCardComponent(
+                uiModel = model.mapToUiModel(),
+                isTablet = isTablet,
+                onAction = { onAction(AuthCard) },
+                onNewsAction = { onAction(AuthCardNews(it)) }
+            )
+        }
+    }
+}
+
+@Composable
 private fun HandlePasswordTextFieldRows(
     model: PasswordTextFieldModel,
     isTablet: Boolean,
@@ -250,26 +273,6 @@ private fun HandleTextFieldRows(
                     updatedValue = updatedValue,
                     fieldValidated = fieldValidated
                 )
-            )
-        }
-    }
-}
-
-@Composable
-private fun HandleCrewMemberCardRows(
-    model: CrewMemberCardModel,
-    isTablet: Boolean,
-    onAction: (actionInput: UiAction) -> Unit
-) {
-    when (model.identifier) {
-        AuthCardsIdentifier.ASSISTANT_CREW_MEMBER_CARD.name,
-        AuthCardsIdentifier.DRIVER_CREW_MEMBER_CARD.name,
-        AuthCardsIdentifier.DOCTOR_CREW_MEMBER_CARD.name -> {
-            CrewMemberCardComponent(
-                uiModel = model.mapToUiModel(),
-                isTablet = isTablet,
-                onAction = { onAction(AuthCardsUiAction.AuthCard) },
-                onNewsAction = { onAction(AuthCardsUiAction.AuthCardNews(it)) }
             )
         }
     }
