@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.domain.authcards.model.AuthCardsIdentifier
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
 import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
@@ -42,6 +43,7 @@ import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
 import com.valkiria.uicomponents.components.comments.CommentsComponent
+import com.valkiria.uicomponents.components.crewmembercard.CrewMemberCardComponent
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListComponent
 import com.valkiria.uicomponents.components.filters.FilterChipsComponent
 import com.valkiria.uicomponents.components.label.LabelComponent
@@ -101,6 +103,10 @@ private fun LazyListScope.handleBodyRows(
                 HeaderSection(
                     headerModel = model.mapToHeaderModel()
                 )
+            }
+
+            is CrewMemberCardModel -> item(key = model.identifier) {
+                HandleCrewMemberCardRows(model, isTablet, onAction)
             }
 
             is DetailedInfoListModel -> item(key = model.identifier) {
@@ -244,6 +250,26 @@ private fun HandleTextFieldRows(
                     updatedValue = updatedValue,
                     fieldValidated = fieldValidated
                 )
+            )
+        }
+    }
+}
+
+@Composable
+private fun HandleCrewMemberCardRows(
+    model: CrewMemberCardModel,
+    isTablet: Boolean,
+    onAction: (actionInput: UiAction) -> Unit
+) {
+    when (model.identifier) {
+        AuthCardsIdentifier.ASSISTANT_CREW_MEMBER_CARD.name,
+        AuthCardsIdentifier.DRIVER_CREW_MEMBER_CARD.name,
+        AuthCardsIdentifier.DOCTOR_CREW_MEMBER_CARD.name -> {
+            CrewMemberCardComponent(
+                uiModel = model.mapToUiModel(),
+                isTablet = isTablet,
+                onAction = { onAction(AuthCardsUiAction.AuthCard) },
+                onNewsAction = { onAction(AuthCardsUiAction.AuthCardNews(it)) }
             )
         }
     }

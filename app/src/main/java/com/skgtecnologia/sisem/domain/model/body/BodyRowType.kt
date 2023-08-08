@@ -5,6 +5,7 @@ enum class BodyRowType {
     CHIP,
     COMMENTS,
     CONTENT_HEADER,
+    CREW_MEMBER_CARD,
     DETAILED_INFO_LIST,
     FILTERS,
     FINGERPRINT,
