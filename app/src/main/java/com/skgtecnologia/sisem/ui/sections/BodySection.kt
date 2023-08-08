@@ -12,11 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.domain.authcards.model.AuthCardsIdentifier
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
 import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.ButtonModel
 import com.skgtecnologia.sisem.domain.model.body.ChipModel
+import com.skgtecnologia.sisem.domain.model.body.CrewMemberCardModel
 import com.skgtecnologia.sisem.domain.model.body.FingerprintModel
 import com.skgtecnologia.sisem.domain.model.body.LabelModel
 import com.skgtecnologia.sisem.domain.model.body.PasswordTextFieldModel
@@ -25,6 +27,7 @@ import com.skgtecnologia.sisem.domain.model.body.SegmentedSwitchModel
 import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
+import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
 import com.valkiria.uicomponents.action.LoginUiAction.Login
@@ -34,6 +37,7 @@ import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
+import com.valkiria.uicomponents.components.crewmembercard.CrewMemberCardComponent
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.passwordtextfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
@@ -78,6 +82,10 @@ private fun LazyListScope.handleBodyRows(
                 ChipComponent(
                     uiModel = model.mapToUiModel()
                 )
+            }
+
+            is CrewMemberCardModel -> item(key = model.identifier) {
+                HandleCrewMemberCardRows(model, isTablet, onAction)
             }
 
             is FingerprintModel -> item(key = model.identifier) {
@@ -196,6 +204,26 @@ private fun HandleTextFieldRows(
                     updatedValue = updatedValue,
                     fieldValidated = fieldValidated
                 )
+            )
+        }
+    }
+}
+
+@Composable
+private fun HandleCrewMemberCardRows(
+    model: CrewMemberCardModel,
+    isTablet: Boolean,
+    onAction: (actionInput: UiAction) -> Unit
+) {
+    when (model.identifier) {
+        AuthCardsIdentifier.ASSISTANT_CREW_MEMBER_CARD.name,
+        AuthCardsIdentifier.DRIVER_CREW_MEMBER_CARD.name,
+        AuthCardsIdentifier.DOCTOR_CREW_MEMBER_CARD.name -> {
+            CrewMemberCardComponent(
+                uiModel = model.mapToUiModel(),
+                isTablet = isTablet,
+                onAction = { onAction(AuthCardsUiAction.AuthCard) },
+                onNewsAction = { onAction(AuthCardsUiAction.AuthCardNews(it)) }
             )
         }
     }
