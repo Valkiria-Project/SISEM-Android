@@ -29,7 +29,8 @@ fun ConfigResponse.mapToDomain(): ConfigModel = ConfigModel(
         ?: error("Config numImgPreoperationalDriver cannot be null"),
     numImgPreoperationalDoctor = numImgPreoperationalDoctor
         ?: error("Config numImgPreoperationalDoctor cannot be null"),
-    numImgPreoperationalAux = numImgPreoperationalAux ?: error("Config numImgPreoperationalAux cannot be null"),
+    numImgPreoperationalAux = numImgPreoperationalAux
+        ?: error("Config numImgPreoperationalAux cannot be null"),
     numImgNovelty = numImgNovelty ?: error("Config numImgNovelty cannot be null"),
     authMethod = authMethod ?: error("Config authMethod cannot be null"),
     attentionsType = attentionsType ?: error("Config attentionsType cannot be null"),
