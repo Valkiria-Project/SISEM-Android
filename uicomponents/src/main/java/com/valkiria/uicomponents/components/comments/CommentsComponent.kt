@@ -33,6 +33,7 @@ fun CommentsComponent(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Surface(
+            modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.medium.copy(bottomStart = CornerSize(4.dp)),
             color = MaterialTheme.colorScheme.secondary
         ) {
