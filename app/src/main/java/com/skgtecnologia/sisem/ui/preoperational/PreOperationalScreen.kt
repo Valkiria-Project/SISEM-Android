@@ -11,7 +11,6 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.skgtecnologia.sisem.ui.navigation.NavigationGraph
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
@@ -23,8 +22,7 @@ import timber.log.Timber
 @Composable
 fun PreOperationalScreen(
     isTablet: Boolean,
-    modifier: Modifier = Modifier,
-    onNavigation: (route: NavigationGraph) -> Unit
+    modifier: Modifier = Modifier
 ) {
     val viewModel = hiltViewModel<PreOperationalViewModel>()
     val uiState = viewModel.uiState

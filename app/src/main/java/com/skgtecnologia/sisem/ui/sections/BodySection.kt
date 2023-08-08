@@ -56,7 +56,7 @@ import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchCompo
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 
-@Suppress("LongMethod")
+@Suppress("ComplexMethod", "LongMethod")
 @Composable
 fun BodySection(
     body: List<BodyRowModel>?,
