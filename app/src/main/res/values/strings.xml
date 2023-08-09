@@ -97,4 +97,16 @@
 
         La presente Política de Protección y Tratamiento de Datos Personales está rigiendo a partir de su publicación en la SDS y en el portal web de la entidad.
     </string>
+    <string name="drawer_incident">Incidentes</string>
+    <string name="drawer_specialty_auxiliar">Auxiliar</string>
+    <string name="drawer_notification">Notificaciones</string>
+    <string name="drawer_driving_guide">Guia para conducir</string>
+    <string name="drawer_centifications">Centificaciones</string>
+    <string name="drawer_news">Nueva pantalla</string>
+    <string name="drawer_HCEUD">HCEUD</string>
+    <string name="drawer_menu_description">Menu Descripcion</string>
+    <string name="dummy_name">Rodrigo Zuñiga</string>
+    <string name="drawer_medical_specialty">Medico</string>
+    <string name="drawer_drivers">Conductor</string>
+    <string name="drawer_specialty_inventory">Inventario</string>
 </resources>

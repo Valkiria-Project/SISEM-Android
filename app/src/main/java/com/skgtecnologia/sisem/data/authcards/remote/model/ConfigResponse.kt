@@ -6,7 +6,6 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class ConfigResponse(
-    @Json(name = "id") val id: Int?,
     @Json(name = "preoperational_time") val preoperationalTime: Long?,
     @Json(name = "clinic_hist_observations_time") val clinicHistObservationsTime: Long?,
     @Json(name = "login_time") val loginTime: Long?,
@@ -20,7 +19,6 @@ data class ConfigResponse(
 )
 
 fun ConfigResponse.mapToDomain(): ConfigModel = ConfigModel(
-    id = id ?: error("Config id cannot be null"),
     preoperationalTime = preoperationalTime ?: error("Config preoperationalTime cannot be null"),
     clinicHistObservationsTime = clinicHistObservationsTime
         ?: error("Config clinicHistObservationsTime cannot be null"),
@@ -29,7 +27,8 @@ fun ConfigResponse.mapToDomain(): ConfigModel = ConfigModel(
         ?: error("Config numImgPreoperationalDriver cannot be null"),
     numImgPreoperationalDoctor = numImgPreoperationalDoctor
         ?: error("Config numImgPreoperationalDoctor cannot be null"),
-    numImgPreoperationalAux = numImgPreoperationalAux ?: error("Config numImgPreoperationalAux cannot be null"),
+    numImgPreoperationalAux = numImgPreoperationalAux
+        ?: error("Config numImgPreoperationalAux cannot be null"),
     numImgNovelty = numImgNovelty ?: error("Config numImgNovelty cannot be null"),
     authMethod = authMethod ?: error("Config authMethod cannot be null"),
     attentionsType = attentionsType ?: error("Config attentionsType cannot be null"),

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.domain.authcards.usecases.Config
 import com.skgtecnologia.sisem.domain.authcards.usecases.GetAuthCardsScreen
 import com.skgtecnologia.sisem.domain.model.body.ReportsDetailModel
+import com.skgtecnologia.sisem.domain.model.error.mapToUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -34,30 +35,13 @@ class AuthCardsViewModel @Inject constructor(
         job = viewModelScope.launch(Dispatchers.IO) {
             config.invoke()
                 .onSuccess {
-                    getAuthCardsScreen.invoke(code = "1", turnId = "1")
-                        .onSuccess { authCardsScreenModel ->
-                            withContext(Dispatchers.Main) {
-                                uiState = uiState.copy(
-                                    screenModel = authCardsScreenModel,
-                                    isLoading = false
-                                )
-                            }
-                        }
-                        .onFailure { throwable ->
-                            Timber.wtf(throwable, "This is a failure")
-
-                            uiState = uiState.copy(
-                                isLoading = false
-                                // errorModel = throwable.mapToUi()
-                            )
-                        }
+                    getAuthCardsScreen()
                 }
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
-
                     uiState = uiState.copy(
-                        isLoading = false
-                        // errorModel = throwable.mapToUi()
+                        isLoading = false,
+                        errorModel = throwable.mapToUi()
                     )
                 }
         }
@@ -73,5 +57,30 @@ class AuthCardsViewModel @Inject constructor(
         uiState = uiState.copy(
             reportDetail = null
         )
+    }
+
+    fun handleShownError() {
+        uiState = uiState.copy(
+            errorModel = null
+        )
+    }
+
+    private suspend fun getAuthCardsScreen() {
+        getAuthCardsScreen.invoke()
+            .onSuccess { authCardsScreenModel ->
+                withContext(Dispatchers.Main) {
+                    uiState = uiState.copy(
+                        screenModel = authCardsScreenModel,
+                        isLoading = false
+                    )
+                }
+            }
+            .onFailure { throwable ->
+                Timber.wtf(throwable, "This is a failure")
+                uiState = uiState.copy(
+                    isLoading = false,
+                    errorModel = throwable.mapToUi()
+                )
+            }
     }
 }

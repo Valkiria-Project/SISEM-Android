@@ -7,4 +7,8 @@ interface AuthRepository {
     suspend fun authenticate(username: String, password: String): AccessTokenModel
 
     suspend fun getAccessToken(): String?
+
+    suspend fun getAllAccessToken(): List<AccessTokenModel>
+
+    suspend fun logout(username: String): String
 }

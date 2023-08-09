@@ -9,5 +9,5 @@ interface AuthCardsRepository {
 
     suspend fun getConfig(): ConfigModel?
 
-    suspend fun getAuthCardsScreen(code: String, turnId: String): ScreenModel
+    suspend fun getAuthCardsScreen(): ScreenModel
 }

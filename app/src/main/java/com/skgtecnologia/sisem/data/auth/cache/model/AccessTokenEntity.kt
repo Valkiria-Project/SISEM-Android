@@ -12,15 +12,16 @@ import com.skgtecnologia.sisem.domain.login.model.AccessTokenModel
     indices = [Index(value = ["role"], unique = true)]
 )
 data class AccessTokenEntity(
-    @PrimaryKey val id: Int = 1,
     @ColumnInfo(name = "token") val accessToken: String,
     @ColumnInfo(name = "refresh_token") val refreshToken: String,
     @ColumnInfo(name = "type") val tokenType: String,
     @ColumnInfo(name = "user_name") val username: String,
-    @ColumnInfo(name = "role") val role: String,
+    @PrimaryKey val role: String,
     @Embedded(prefix = "pre_operational_") val preoperational: PreOperationalEntity,
     @Embedded(prefix = "turn_") val turn: TurnEntity,
-    @ColumnInfo(name = "is_admin") val isAdmin: Boolean
+    @ColumnInfo(name = "is_admin") val isAdmin: Boolean,
+    @ColumnInfo(name = "user_id") val userId: Int,
+    @ColumnInfo(name = "name_user") val nameUser: String
 )
 
 fun AccessTokenEntity.mapToDomain(): AccessTokenModel {
@@ -33,7 +34,9 @@ fun AccessTokenEntity.mapToDomain(): AccessTokenModel {
             role = role,
             preoperational = preoperational.mapToDomain(),
             turn = turn.mapToDomain(),
-            isAdmin = isAdmin
+            isAdmin = isAdmin,
+            userId = userId,
+            nameUser = nameUser
         )
     }
 }
@@ -48,7 +51,9 @@ fun AccessTokenModel.mapToCache(): AccessTokenEntity {
             role = role,
             preoperational = preoperational.mapToCache(),
             turn = turn.mapToCache(),
-            isAdmin = isAdmin
+            isAdmin = isAdmin,
+            userId = userId,
+            nameUser = nameUser
         )
     }
 }

@@ -11,17 +11,27 @@ class AuthRemoteDataSource @Inject constructor(
     private val authApi: AuthApi
 ) {
 
-    suspend fun authenticate(username: String, password: String): Result<AccessTokenModel> =
+    suspend fun authenticate(
+        username: String,
+        password: String,
+        turnId: String
+    ): Result<AccessTokenModel> =
         apiCall {
             authApi.authenticate(
                 authenticateBody = AuthenticateBody(
                     username = username,
                     password = password,
                     code = "1", // FIXME: Hardcoded data
-                    idTurn = null, // FIXME: Hardcoded data
+                    idTurn = turnId
                 )
             )
         }.mapResult {
             it.mapToDomain()
         }
+
+    suspend fun logout(username: String): Result<String> = apiCall {
+        authApi.logout(username = username)
+    }.mapResult {
+        it.message
+    }
 }

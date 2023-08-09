@@ -25,6 +25,7 @@ fun TurnEntity.mapToDomain(): TurnModel {
 fun TurnModel.mapToCache(): TurnEntity {
     return with(this) {
         TurnEntity(
+            id = id,
             date = date,
             isComplete = isComplete
         )

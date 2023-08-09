@@ -12,11 +12,22 @@ class AuthRepositoryImpl @Inject constructor(
 ) : AuthRepository {
 
     override suspend fun authenticate(username: String, password: String): AccessTokenModel =
-        authRemoteDataSource.authenticate(username, password)
+        authRemoteDataSource.authenticate(
+            username = username,
+            password = password,
+            turnId = authCacheDataSource.retrieveAccessToken()?.turn?.id?.toString() ?: ""
+        )
             .onSuccess { accessTokenModel ->
                 authCacheDataSource.storeAccessToken(accessTokenModel)
             }
             .getOrThrow()
 
-    override suspend fun getAccessToken(): String? = authCacheDataSource.retrieveAccessToken()
+    override suspend fun getAccessToken(): String? =
+        authCacheDataSource.retrieveAccessToken()?.accessToken
+
+    override suspend fun getAllAccessToken(): List<AccessTokenModel> =
+        authCacheDataSource.getAllAccessTokenModel()
+
+    override suspend fun logout(username: String): String =
+        authRemoteDataSource.logout(username).getOrThrow()
 }

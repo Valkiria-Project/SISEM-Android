@@ -14,4 +14,7 @@ interface AccessTokenDao {
 
     @Query("SELECT * FROM access_token LIMIT 1") // FIXME: Adjust this query by Role
     suspend fun getAccessToken(): AccessTokenEntity?
+
+    @Query("SELECT * FROM access_token")
+    suspend fun getAllAccessToken(): List<AccessTokenEntity>
 }

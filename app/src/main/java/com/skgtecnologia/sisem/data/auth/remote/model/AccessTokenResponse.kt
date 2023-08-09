@@ -13,7 +13,9 @@ data class AccessTokenResponse(
     @Json(name = "role") val role: String,
     @Json(name = "preoperational") val preoperational: PreOperationalResponse,
     @Json(name = "turn") val turn: TurnResponse,
-    @Json(name = "is_admin") val isAdmin: Boolean
+    @Json(name = "is_admin") val isAdmin: Boolean,
+    @Json(name = "user_id") val userId: Int,
+    @Json(name = "name_user") val nameUser: String
 )
 
 fun AccessTokenResponse.mapToDomain(): AccessTokenModel = AccessTokenModel(
@@ -24,5 +26,7 @@ fun AccessTokenResponse.mapToDomain(): AccessTokenModel = AccessTokenModel(
     role = role,
     preoperational = preoperational.mapToDomain(),
     turn = turn.mapToDomain(),
-    isAdmin = isAdmin
+    isAdmin = isAdmin,
+    userId = userId,
+    nameUser = nameUser
 )
