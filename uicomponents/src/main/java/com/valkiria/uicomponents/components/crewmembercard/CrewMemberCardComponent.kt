@@ -82,11 +82,12 @@ fun CrewMemberCardComponent(
                         Icon(
                             painter = painterResource(id = iconResourceId),
                             contentDescription = "",
+                            modifier = Modifier.size(40.dp).align(Alignment.CenterVertically),
                             tint = MaterialTheme.colorScheme.primary,
                         )
                     }
 
-                    Column(modifier = Modifier.padding(start = 12.dp)) {
+                    Column(modifier = Modifier.padding(start = 12.dp, end = 8.dp)) {
                         Text(
                             text = uiModel.titleText,
                             style = uiModel.titleTextStyle.toTextStyle(),

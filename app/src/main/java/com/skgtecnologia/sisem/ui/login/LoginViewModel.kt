@@ -8,8 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
-import com.skgtecnologia.sisem.domain.login.usecases.Login
-import com.skgtecnologia.sisem.domain.model.body.FingerprintModel
+import com.skgtecnologia.sisem.domain.auth.usecases.Login
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -45,10 +44,8 @@ class LoginViewModel @Inject constructor(
                 .onSuccess { loginScreenModel ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
-                            screenModel = loginScreenModel.copy( // FIXME: use template for this
-                                body = loginScreenModel.body.toMutableList().apply {
-                                    add(FingerprintModel())
-                                }
+                            screenModel = loginScreenModel.copy(
+                                body = loginScreenModel.body
                             ),
                             isLoading = false
                         )
@@ -86,7 +83,8 @@ class LoginViewModel @Inject constructor(
                 .onSuccess { accessTokenModel ->
                     Timber.d("Successful login with ${accessTokenModel.username}")
                     uiState = uiState.copy(
-                        onLogin = true
+                        onLogin = true,
+                        isTurnComplete = accessTokenModel.turn.isComplete
                     )
                 }
                 .onFailure { throwable ->

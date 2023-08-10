@@ -16,10 +16,11 @@ import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
+import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 import kotlinx.coroutines.launch
 
-@Suppress("UnusedPrivateMember")
+@Suppress("LongMethod")
 @Composable
 fun AuthCardsScreen(
     isTablet: Boolean,
@@ -77,6 +78,18 @@ fun AuthCardsScreen(
             scope = scope
         ) {
             viewModel.handleShownBottomSheet()
+        }
+    }
+
+    uiState.errorModel?.let { errorUiModel ->
+        scope.launch {
+            sheetState.show()
+        }
+
+        ErrorBannerComponent(
+            uiModel = errorUiModel
+        ) {
+            viewModel.handleShownError()
         }
     }
 
