@@ -14,7 +14,6 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.model.toLegalContentModel
-import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.LoginUiAction
 import com.valkiria.uicomponents.action.UiAction
@@ -29,7 +28,7 @@ import timber.log.Timber
 fun LoginScreen(
     isTablet: Boolean,
     modifier: Modifier = Modifier,
-    onNavigation: (route: AuthNavigationRoute) -> Unit
+    onNavigation: (isTurnComplete: Boolean) -> Unit
 ) {
     val viewModel = hiltViewModel<LoginViewModel>()
     val uiState = viewModel.uiState
@@ -44,7 +43,7 @@ fun LoginScreen(
             when {
                 uiState.onLogin -> {
                     viewModel.onLoginHandled()
-                    onNavigation(AuthNavigationRoute.DeviceAuth)
+                    onNavigation(uiState.isTurnComplete)
                 }
             }
         }

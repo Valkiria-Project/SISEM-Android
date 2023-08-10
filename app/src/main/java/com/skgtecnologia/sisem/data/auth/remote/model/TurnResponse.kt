@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.data.auth.remote.model
 
-import com.skgtecnologia.sisem.domain.login.model.TurnModel
+import com.skgtecnologia.sisem.domain.auth.model.TurnModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

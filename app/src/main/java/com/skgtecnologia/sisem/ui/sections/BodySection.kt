@@ -153,6 +153,14 @@ private fun HandleButtonRows(
         ) {
             onAction(Login)
         }
+
+        AuthCardsIdentifier.CREW_MEMBER_CARD_ADMIN_BUTTON.name -> ButtonComponent(
+            uiModel = model.mapToUiModel(),
+            isTablet = isTablet,
+            arrangement = Arrangement.End
+        ) {
+            onAction(AuthCardsUiAction.AuthCard)
+        }
     }
 }
 
@@ -216,9 +224,9 @@ private fun HandleCrewMemberCardRows(
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
-        AuthCardsIdentifier.ASSISTANT_CREW_MEMBER_CARD.name,
-        AuthCardsIdentifier.DRIVER_CREW_MEMBER_CARD.name,
-        AuthCardsIdentifier.DOCTOR_CREW_MEMBER_CARD.name -> {
+        AuthCardsIdentifier.CREW_MEMBER_CARD_ASSISTANT.name,
+        AuthCardsIdentifier.CREW_MEMBER_CARD_DRIVER.name,
+        AuthCardsIdentifier.CREW_MEMBER_CARD_DOCTOR.name -> {
             CrewMemberCardComponent(
                 uiModel = model.mapToUiModel(),
                 isTablet = isTablet,

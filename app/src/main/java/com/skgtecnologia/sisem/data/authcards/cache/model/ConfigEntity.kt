@@ -23,7 +23,6 @@ data class ConfigEntity(
 fun ConfigEntity.mapToDomain(): ConfigModel {
     return with(this) {
         ConfigModel(
-            id = id,
             preoperationalTime = preoperationalTime,
             clinicHistObservationsTime = clinicHistObservationsTime,
             loginTime = loginTime,
@@ -41,7 +40,6 @@ fun ConfigEntity.mapToDomain(): ConfigModel {
 fun ConfigModel.mapToCache(): ConfigEntity {
     return with(this) {
         ConfigEntity(
-            id = id,
             preoperationalTime = preoperationalTime,
             clinicHistObservationsTime = clinicHistObservationsTime,
             loginTime = loginTime,
