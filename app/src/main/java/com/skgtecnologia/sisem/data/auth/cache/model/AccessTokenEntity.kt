@@ -20,7 +20,7 @@ data class AccessTokenEntity(
     @ColumnInfo(name = "role") val role: String,
     @ColumnInfo(name = "is_admin") val isAdmin: Boolean,
     @ColumnInfo(name = "name_user") val nameUser: String,
-    @Embedded(prefix = "pre_operational_") val preoperational: PreOperationalEntity,
+    @Embedded(prefix = "pre_operational_") val preoperational: PreOperationalEntity?,
     @Embedded(prefix = "turn_") val turn: TurnEntity
 )
 
@@ -35,7 +35,7 @@ fun AccessTokenEntity.mapToDomain(): AccessTokenModel {
             role = role,
             isAdmin = isAdmin,
             nameUser = nameUser,
-            preoperational = preoperational.mapToDomain(),
+            preoperational = preoperational?.mapToDomain(),
             turn = turn.mapToDomain()
         )
     }
@@ -52,7 +52,7 @@ fun AccessTokenModel.mapToCache(): AccessTokenEntity {
             role = role,
             isAdmin = isAdmin,
             nameUser = nameUser,
-            preoperational = preoperational.mapToCache(),
+            preoperational = preoperational?.mapToCache(),
             turn = turn.mapToCache()
         )
     }
