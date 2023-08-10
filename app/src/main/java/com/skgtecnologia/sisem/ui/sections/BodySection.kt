@@ -76,7 +76,7 @@ fun BodySection(
     }
 }
 
-@Suppress("LongMethod")
+@Suppress("LongMethod", "ComplexMethod")
 private fun LazyListScope.handleBodyRows(
     body: List<BodyRowModel>,
     isTablet: Boolean,
@@ -125,8 +125,7 @@ private fun LazyListScope.handleBodyRows(
 
             is FingerprintModel -> item(key = model.identifier) {
                 Image(
-                    modifier = Modifier
-                        .padding(vertical = 20.dp),
+                    modifier = Modifier.padding(vertical = 20.dp),
                     painter = painterResource(id = R.drawable.ic_fingerprint),
                     contentDescription = null
                 )
