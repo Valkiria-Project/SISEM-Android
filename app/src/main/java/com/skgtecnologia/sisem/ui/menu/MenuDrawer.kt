@@ -14,7 +14,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.skgtecnologia.sisem.ui.menu.header.toDrawerItemInfoPersonal
+import com.skgtecnologia.sisem.ui.menu.header.toCrewMemberItemModel
 import com.skgtecnologia.sisem.ui.menu.items.MenuItemModel
 import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute
 import kotlinx.coroutines.CoroutineScope
@@ -34,7 +34,7 @@ fun MenuDrawer(
 
     val menuItemsPersonal = uiState.accessTokenModelList?.let { list ->
         list.map { accessTokenModel ->
-            accessTokenModel.toDrawerItemInfoPersonal()
+            accessTokenModel.toCrewMemberItemModel()
         }
     } ?: emptyList()
 

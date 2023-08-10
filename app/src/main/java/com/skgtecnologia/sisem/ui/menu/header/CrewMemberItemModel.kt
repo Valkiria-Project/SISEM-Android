@@ -2,14 +2,14 @@ package com.skgtecnologia.sisem.ui.menu.header
 
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 
-data class DrawerItemInfoPersonal(
+data class CrewMemberItemModel(
     val name: String,
     val username: String,
     val specialty: String,
     val drawableProfession: String
 )
 
-fun AccessTokenModel.toDrawerItemInfoPersonal() = DrawerItemInfoPersonal(
+fun AccessTokenModel.toCrewMemberItemModel() = CrewMemberItemModel(
     name = nameUser,
     username = username,
     specialty = role,
