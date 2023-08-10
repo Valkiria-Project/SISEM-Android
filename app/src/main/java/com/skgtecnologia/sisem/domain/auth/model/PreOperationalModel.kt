@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.domain.login.model
+package com.skgtecnologia.sisem.domain.auth.model
 
 data class PreOperationalModel(
     val preoperational: String,

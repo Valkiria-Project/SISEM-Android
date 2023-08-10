@@ -4,7 +4,7 @@ import com.skgtecnologia.sisem.commons.extensions.mapResult
 import com.skgtecnologia.sisem.data.auth.remote.model.AuthenticateBody
 import com.skgtecnologia.sisem.data.auth.remote.model.mapToDomain
 import com.skgtecnologia.sisem.data.remote.extensions.apiCall
-import com.skgtecnologia.sisem.domain.login.model.AccessTokenModel
+import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import javax.inject.Inject
 
 class AuthRemoteDataSource @Inject constructor(

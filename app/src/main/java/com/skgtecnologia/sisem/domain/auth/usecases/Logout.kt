@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.domain.login.usecases
+package com.skgtecnologia.sisem.domain.auth.usecases
 
 import androidx.annotation.CheckResult
 import com.skgtecnologia.sisem.commons.extensions.resultOf

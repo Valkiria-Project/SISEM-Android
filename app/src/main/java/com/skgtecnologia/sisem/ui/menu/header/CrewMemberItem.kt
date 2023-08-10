@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.menu.itemsDrawer
+package com.skgtecnologia.sisem.ui.menu.header
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +17,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
-import com.skgtecnologia.sisem.ui.menu.DrawerItemInfoPersonal
 import com.valkiria.uicomponents.props.TextStyle
 import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.utlis.DefType
@@ -25,8 +24,7 @@ import com.valkiria.uicomponents.utlis.getResourceIdByName
 
 @Suppress("LongMethod", "MagicNumber")
 @Composable
-fun PersonalItems(item: DrawerItemInfoPersonal, onClick: () -> Unit) {
-
+fun CrewMemberItem(item: DrawerItemInfoPersonal, onClick: () -> Unit) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         item.drawableProfession, DefType.DRAWABLE
     )
@@ -56,7 +54,6 @@ fun PersonalItems(item: DrawerItemInfoPersonal, onClick: () -> Unit) {
                 style = TextStyle.HEADLINE_7.toTextStyle(),
                 modifier = Modifier.height(20.dp)
             )
-
             Text(
                 text = item.specialty,
                 textAlign = TextAlign.Start,
@@ -74,7 +71,6 @@ fun PersonalItems(item: DrawerItemInfoPersonal, onClick: () -> Unit) {
                     onClick.invoke()
                 },
             tint = MaterialTheme.colorScheme.primary
-
         )
     }
 }

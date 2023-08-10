@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.skgtecnologia.sisem.domain.login.usecases.GetAllAccessToken
-import com.skgtecnologia.sisem.domain.login.usecases.Logout
+import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
+import com.skgtecnologia.sisem.domain.auth.usecases.Logout
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -17,8 +17,8 @@ import timber.log.Timber
 
 @HiltViewModel
 class MenuViewModel @Inject constructor(
-    private val logout: Logout,
-    private val getAllAccessToken: GetAllAccessToken
+    private val getAllAccessTokens: GetAllAccessTokens,
+    private val logout: Logout
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -31,7 +31,7 @@ class MenuViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            getAllAccessToken.invoke()
+            getAllAccessTokens.invoke()
                 .onSuccess { accessTokenModel ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
@@ -45,7 +45,7 @@ class MenuViewModel @Inject constructor(
 
                     uiState = uiState.copy(
                         isLoading = false
-                        // errorModel = throwable.mapToUi()
+                        // errorModel = throwable.mapToUi() // FIXME
                     )
                 }
         }
@@ -70,7 +70,7 @@ class MenuViewModel @Inject constructor(
 
                     uiState = uiState.copy(
                         isLoading = false
-                        // errorModel = throwable.mapToUi()
+                        // errorModel = throwable.mapToUi() // FIXME
                     )
                 }
         }

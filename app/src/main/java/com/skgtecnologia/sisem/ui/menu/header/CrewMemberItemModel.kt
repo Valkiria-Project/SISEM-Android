@@ -1,6 +1,6 @@
-package com.skgtecnologia.sisem.ui.menu
+package com.skgtecnologia.sisem.ui.menu.header
 
-import com.skgtecnologia.sisem.domain.login.model.AccessTokenModel
+import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 
 data class DrawerItemInfoPersonal(
     val name: String,

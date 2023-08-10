@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.data.auth.remote.model
 
-import com.skgtecnologia.sisem.domain.login.model.AccessTokenModel
+import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
-import com.skgtecnologia.sisem.domain.login.usecases.Login
+import com.skgtecnologia.sisem.domain.auth.usecases.Login
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

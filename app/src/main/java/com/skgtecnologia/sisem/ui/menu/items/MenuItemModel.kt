@@ -1,43 +1,51 @@
-package com.skgtecnologia.sisem.ui.menu
+package com.skgtecnologia.sisem.ui.menu.items
 
 import androidx.annotation.DrawableRes
 import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.CertificationsScreen
+import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.DrivingGuideScreen
+import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.HCEUDCScreen
+import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.IncidentScreen
+import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.InventoryScreen
+import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.NewsScreen
+import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.NotificationsScreen
 import com.valkiria.uicomponents.R.drawable
 
-object DrawerItem {
+// FIXME
+object MenuItemModel {
     val drawerItems = arrayListOf(
         DrawerItemInfo(
-            MenuNavigationRoute.IncidentScreen,
+            IncidentScreen,
             "Incidentes",
             drawable.ic_incidents
         ),
         DrawerItemInfo(
-            MenuNavigationRoute.InventoryScreen,
-            "inventario",
+            InventoryScreen,
+            "Inventario",
             drawable.ic_inventory
         ),
         DrawerItemInfo(
-            MenuNavigationRoute.NotificationsScreen,
+            NotificationsScreen,
             "Notificacion",
             drawable.ic_notification
         ),
         DrawerItemInfo(
-            MenuNavigationRoute.DrivingGuideScreen,
+            DrivingGuideScreen,
             "Guia para conducir",
             drawable.ic_driver
         ),
         DrawerItemInfo(
-            MenuNavigationRoute.CertificationsScreen,
+            CertificationsScreen,
             "Certificaciones",
             drawable.ic_certifications
         ),
         DrawerItemInfo(
-            MenuNavigationRoute.NewsScreen,
+            NewsScreen,
             "Novedades",
             drawable.ic_news
         ),
         DrawerItemInfo(
-            MenuNavigationRoute.HCEUDCScreen,
+            HCEUDCScreen,
             "HCEUD",
             drawable.ic_hceud
         )

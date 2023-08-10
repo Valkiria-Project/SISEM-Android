@@ -97,6 +97,8 @@
 
         La presente Política de Protección y Tratamiento de Datos Personales está rigiendo a partir de su publicación en la SDS y en el portal web de la entidad.
     </string>
+
+    <!-- Drawer Menu -->
     <string name="drawer_incident">Incidentes</string>
     <string name="drawer_specialty_auxiliar">Auxiliar</string>
     <string name="drawer_notification">Notificaciones</string>

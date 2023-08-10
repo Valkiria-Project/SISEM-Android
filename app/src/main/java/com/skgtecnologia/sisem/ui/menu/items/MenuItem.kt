@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.menu.itemsDrawer
+package com.skgtecnologia.sisem.ui.menu.items
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -11,13 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.skgtecnologia.sisem.ui.menu.DrawerItemInfo
 import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute
 import com.valkiria.uicomponents.props.TextStyle
 import com.valkiria.uicomponents.props.toTextStyle
 
 @Composable
-fun MenuItems(
+fun MenuItem(
     item: DrawerItemInfo,
     onClick: (route: MenuNavigationRoute) -> Unit
 ) {

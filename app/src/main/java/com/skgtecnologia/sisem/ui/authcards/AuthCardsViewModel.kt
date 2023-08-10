@@ -39,6 +39,7 @@ class AuthCardsViewModel @Inject constructor(
                 }
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
+
                     uiState = uiState.copy(
                         isLoading = false,
                         errorModel = throwable.mapToUi()
@@ -77,6 +78,7 @@ class AuthCardsViewModel @Inject constructor(
             }
             .onFailure { throwable ->
                 Timber.wtf(throwable, "This is a failure")
+
                 uiState = uiState.copy(
                     isLoading = false,
                     errorModel = throwable.mapToUi()

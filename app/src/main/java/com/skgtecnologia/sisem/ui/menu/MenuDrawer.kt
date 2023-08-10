@@ -14,6 +14,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.skgtecnologia.sisem.ui.menu.header.toDrawerItemInfoPersonal
+import com.skgtecnologia.sisem.ui.menu.items.MenuItemModel
 import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -47,11 +49,11 @@ fun MenuDrawer(
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            AppDrawer(
+            DrawerContent(
                 drawerState = drawerState,
                 menuItemsPersonal = menuItemsPersonal,
-                menuItems = DrawerItem.drawerItems,
-                onClick = { onClick(it) },
+                menuItems = MenuItemModel.drawerItems,
+                onMenuItemClick = { onClick(it) },
                 onLogout = { viewModel.logout(it.username) }
             )
         }

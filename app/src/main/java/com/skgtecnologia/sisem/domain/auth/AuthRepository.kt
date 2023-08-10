@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.domain.auth
 
-import com.skgtecnologia.sisem.domain.login.model.AccessTokenModel
+import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 
 interface AuthRepository {
 
@@ -8,7 +8,7 @@ interface AuthRepository {
 
     suspend fun getAccessToken(): String?
 
-    suspend fun getAllAccessToken(): List<AccessTokenModel>
+    suspend fun getAllAccessTokens(): List<AccessTokenModel>
 
     suspend fun logout(username: String): String
 }

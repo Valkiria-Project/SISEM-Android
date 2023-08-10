@@ -8,12 +8,12 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class FingerprintResponse(
-    @Json(name = "identifier") val identifier: String?,
+    @Json(name = "identifier") val identifier: String?
 ) : BodyRowResponse {
 
     override val type: BodyRowType = BodyRowType.FINGERPRINT
 
     override fun mapToDomain(): BodyRowModel = FingerprintModel(
-        identifier = identifier ?: error("Fingerprint identifier cannot be null"),
+        identifier = identifier ?: error("Fingerprint identifier cannot be null")
     )
 }
