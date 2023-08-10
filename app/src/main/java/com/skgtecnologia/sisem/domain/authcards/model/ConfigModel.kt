@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.domain.authcards.model
 
 data class ConfigModel(
-    val id: Int,
     val preoperationalTime: Long,
     val clinicHistObservationsTime: Long,
     val loginTime: Long,

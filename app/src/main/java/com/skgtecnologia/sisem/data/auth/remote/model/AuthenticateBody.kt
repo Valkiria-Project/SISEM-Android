@@ -6,5 +6,5 @@ data class AuthenticateBody(
     @Json(name = "username") val username: String,
     @Json(name = "password") val password: String,
     @Json(name = "code") val code: String,
-    @Json(name = "idTurn") val idTurn: String?
+    @Json(name = "id_turn") val idTurn: String?
 )

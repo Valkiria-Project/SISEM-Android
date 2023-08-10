@@ -3,7 +3,8 @@ package com.skgtecnologia.sisem.data.auth.cache
 import androidx.annotation.CheckResult
 import com.skgtecnologia.sisem.data.auth.cache.dao.AccessTokenDao
 import com.skgtecnologia.sisem.data.auth.cache.model.mapToCache
-import com.skgtecnologia.sisem.domain.login.model.AccessTokenModel
+import com.skgtecnologia.sisem.data.auth.cache.model.mapToDomain
+import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import javax.inject.Inject
 
 class AuthCacheDataSource @Inject constructor(
@@ -15,6 +16,10 @@ class AuthCacheDataSource @Inject constructor(
     }
 
     @CheckResult
-    suspend fun retrieveAccessToken(): String? =
-        accessTokenDao.getAccessToken()?.accessToken
+    suspend fun retrieveAccessToken(): AccessTokenModel? =
+        accessTokenDao.getAccessToken()?.mapToDomain()
+
+    @CheckResult
+    suspend fun retrieveAllAccessTokens(): List<AccessTokenModel> =
+        accessTokenDao.getAllAccessTokens().map { it.mapToDomain() }
 }

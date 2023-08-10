@@ -9,14 +9,16 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
 import com.skgtecnologia.sisem.ui.authcards.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.map.MapScreen
+import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.NavigationGraph
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
 
@@ -34,6 +36,7 @@ fun SisemComposeApp(
             startDestination = NavigationGraph.Auth.route
         ) {
             authGraph(navController, isTablet, modifier)
+            menuGraph(navController, isTablet, modifier)
             mainGraph() // FIXME: Finish this work
         }
     }
@@ -65,8 +68,16 @@ private fun NavGraphBuilder.authGraph(
             LoginScreen(
                 isTablet = isTablet,
                 modifier = modifier
-            ) {
-                navController.navigate(AuthNavigationRoute.AuthCards.route)
+            ) { isTurnComplete ->
+                if (isTurnComplete) {
+                    navController.navigate(NavigationGraph.Menu.route) {
+                        popUpTo(AuthNavigationRoute.AuthCards.route) {
+                            inclusive = true
+                        }
+                    }
+                } else {
+                    navController.navigate(AuthNavigationRoute.AuthCards.route)
+                }
             }
         }
 
@@ -90,6 +101,77 @@ private fun NavGraphBuilder.authGraph(
             ) {
                 navController.navigate(NavigationGraph.Main.route)
             }
+        }
+    }
+}
+
+@Suppress("UnusedPrivateMember")
+private fun NavGraphBuilder.menuGraph(
+    navController: NavHostController,
+    isTablet: Boolean,
+    modifier: Modifier
+) {
+    navigation(
+        startDestination = MenuNavigationRoute.MenuScreen.route,
+        route = NavigationGraph.Menu.route
+    ) {
+        composable(
+            route = MenuNavigationRoute.MenuScreen.route
+        ) {
+            MenuDrawer(
+                onClick = { menuNavigationRoute ->
+                    navController.navigate(menuNavigationRoute.route)
+                },
+                onLogout = {
+                    navController.navigate(AuthNavigationRoute.AuthCards.route) {
+                        popUpTo(NavigationGraph.Menu.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
+
+        composable(
+            route = MenuNavigationRoute.IncidentScreen.route
+        ) {
+            // FIXME: Finish this work
+        }
+
+        composable(
+            route = MenuNavigationRoute.InventoryScreen.route
+        ) {
+            // FIXME: Finish this work
+        }
+
+        composable(
+            route = MenuNavigationRoute.NotificationsScreen.route
+        ) {
+            // FIXME: Finish this work
+        }
+
+        composable(
+            route = MenuNavigationRoute.DrivingGuideScreen.route
+        ) {
+            // FIXME: Finish this work
+        }
+
+        composable(
+            route = MenuNavigationRoute.CertificationsScreen.route
+        ) {
+            // FIXME: Finish this work
+        }
+
+        composable(
+            route = MenuNavigationRoute.NewsScreen.route
+        ) {
+            // FIXME: Finish this work
+        }
+
+        composable(
+            route = MenuNavigationRoute.HCEUDCScreen.route
+        ) {
+            // FIXME: Finish this work
         }
     }
 }

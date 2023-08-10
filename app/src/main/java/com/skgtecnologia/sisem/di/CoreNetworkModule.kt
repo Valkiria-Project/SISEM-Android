@@ -11,6 +11,7 @@ import com.skgtecnologia.sisem.data.remote.model.body.ContentHeaderResponse
 import com.skgtecnologia.sisem.data.remote.model.body.CrewMemberCardResponse
 import com.skgtecnologia.sisem.data.remote.model.body.DetailedInfoListResponse
 import com.skgtecnologia.sisem.data.remote.model.body.FiltersResponse
+import com.skgtecnologia.sisem.data.remote.model.body.FingerprintResponse
 import com.skgtecnologia.sisem.data.remote.model.body.LabelResponse
 import com.skgtecnologia.sisem.data.remote.model.body.PasswordTextFieldResponse
 import com.skgtecnologia.sisem.data.remote.model.body.RichLabelResponse
@@ -100,6 +101,9 @@ object CoreNetworkModule {
         ).withSubtype(
             FiltersResponse::class.java,
             BodyRowType.FILTERS.name
+        ).withSubtype(
+            FingerprintResponse::class.java,
+            BodyRowType.FINGERPRINT.name
         ).withSubtype(
             LabelResponse::class.java,
             BodyRowType.LABEL.name

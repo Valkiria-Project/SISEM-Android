@@ -22,6 +22,7 @@ private val DarkColorScheme = darkColorScheme(
     background = Shark,
     onBackground = Color.White,
     error = Carnation,
+    surface = Shark,
     onSurface = Color.White
 )
 
@@ -33,6 +34,7 @@ private val LightColorScheme = lightColorScheme(
     background = Shark,
     onBackground = Color.White,
     error = Carnation,
+    surface = Shark,
     onSurface = Color.White
 
     /* Other default colors to override
