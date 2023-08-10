@@ -26,7 +26,7 @@ data class DetailedInfoListResponse(
         labelTextStyle = labelTextStyle
             ?: error("Detailed info list labelTextStyle cannot be null"),
         textTextStyle = textTextStyle
-            ?: error("Detailed info list labelTextStyle cannot be null"),
+            ?: error("Detailed info list textTextStyle cannot be null"),
         modifier = modifier ?: Modifier
     )
 }

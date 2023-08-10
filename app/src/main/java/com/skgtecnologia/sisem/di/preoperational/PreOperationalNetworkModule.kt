@@ -16,6 +16,5 @@ object PreOperationalNetworkModule {
     @Provides
     internal fun providesPreOperationalApi(
         @BearerAuthentication retrofit: Retrofit
-    ): PreOperationalApi =
-        retrofit.create(PreOperationalApi::class.java)
+    ): PreOperationalApi = retrofit.create(PreOperationalApi::class.java)
 }

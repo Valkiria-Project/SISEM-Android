@@ -20,7 +20,7 @@ data class FiltersResponse(
 
     override fun mapToDomain(): BodyRowModel = FiltersModel(
         identifier = identifier ?: error("Filters identifier cannot be null"),
-        options = options.orEmpty(),
+        options = options ?: error("Filters options cannot be null"),
         textStyle = textStyle ?: error("Filters textStyle cannot be null"),
         modifier = modifier ?: Modifier
     )

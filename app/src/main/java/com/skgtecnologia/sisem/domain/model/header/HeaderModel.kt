@@ -4,8 +4,8 @@ import androidx.compose.ui.Modifier
 
 data class HeaderModel(
     val title: TextModel,
-    val subtitle: TextModel?,
-    val leftIcon: String?,
+    val subtitle: TextModel? = null,
+    val leftIcon: String? = null,
     val rightIcon: String? = null,
     val modifier: Modifier
 )

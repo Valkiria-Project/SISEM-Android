@@ -29,7 +29,7 @@ class DeviceAuthViewModel @Inject constructor(
     var uiState by mutableStateOf(DeviceAuthUiState())
         private set
 
-    var vehicleCode by mutableStateOf("")
+    var vehicleCode by mutableStateOf("") // FIXME
     var isValidVehicleCode by mutableStateOf(false)
 
     init {

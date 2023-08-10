@@ -7,9 +7,8 @@ import com.valkiria.uicomponents.props.TextStyle
 
 data class ContentHeaderModel(
     val identifier: String,
-    val text: String,
+    val title: TextModel,
     val leftIcon: String?,
-    val textStyle: TextStyle,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {
 
@@ -17,12 +16,7 @@ data class ContentHeaderModel(
 }
 
 fun ContentHeaderModel.mapToHeaderModel() = HeaderModel(
-    title = TextModel(
-        text = text,
-        textStyle = textStyle
-    ),
-    subtitle = null,
+    title = title,
     leftIcon = leftIcon,
-    rightIcon = null,
     modifier = modifier
 )
