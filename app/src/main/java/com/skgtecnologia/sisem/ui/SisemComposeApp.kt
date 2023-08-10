@@ -98,9 +98,7 @@ private fun NavGraphBuilder.authGraph(
             PreOperationalScreen(
                 isTablet = isTablet,
                 modifier = modifier
-            ) {
-                navController.navigate(NavigationGraph.Main.route)
-            }
+            )
         }
     }
 }

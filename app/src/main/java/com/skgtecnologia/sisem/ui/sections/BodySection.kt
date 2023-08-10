@@ -33,8 +33,7 @@ import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.mapToHeaderModel
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
-import com.valkiria.uicomponents.action.AuthCardsUiAction.AuthCard
-import com.valkiria.uicomponents.action.AuthCardsUiAction.AuthCardNews
+import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
 import com.valkiria.uicomponents.action.LoginUiAction.Login
@@ -207,14 +206,14 @@ private fun HandleCrewMemberCardRows(
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
-        AuthCardsIdentifier.ASSISTANT_CREW_MEMBER_CARD.name,
-        AuthCardsIdentifier.DRIVER_CREW_MEMBER_CARD.name,
-        AuthCardsIdentifier.DOCTOR_CREW_MEMBER_CARD.name -> {
+        AuthCardsIdentifier.CREW_MEMBER_CARD_ASSISTANT.name,
+        AuthCardsIdentifier.CREW_MEMBER_CARD_DRIVER.name,
+        AuthCardsIdentifier.CREW_MEMBER_CARD_DOCTOR.name -> {
             CrewMemberCardComponent(
                 uiModel = model.mapToUiModel(),
                 isTablet = isTablet,
-                onAction = { onAction(AuthCard) },
-                onNewsAction = { onAction(AuthCardNews(it)) }
+                onAction = { onAction(AuthCardsUiAction.AuthCard) },
+                onNewsAction = { onAction(AuthCardsUiAction.AuthCardNews(it)) }
             )
         }
     }
