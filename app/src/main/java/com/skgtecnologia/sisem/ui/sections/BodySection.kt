@@ -37,6 +37,7 @@ import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
 import com.valkiria.uicomponents.action.LoginUiAction.Login
+import com.valkiria.uicomponents.action.LoginUiAction.LoginCode
 import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
 import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
@@ -90,9 +91,7 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is ChipModel -> item(key = model.identifier) {
-                ChipComponent(
-                    uiModel = model.mapToUiModel()
-                )
+                HandleChipRows(model, isTablet, onAction)
             }
 
             is CommentsModel -> item(key = model.identifier) {
@@ -195,6 +194,27 @@ private fun HandleButtonRows(
         ) {
             onAction(Login)
         }
+    }
+}
+
+@Composable
+private fun HandleChipRows(
+    model: ChipModel,
+    isTablet: Boolean,
+    onAction: (actionInput: UiAction) -> Unit
+) {
+    when (model.identifier) {
+        LoginIdentifier.LOGIN_CODE_CHIP.name -> {
+            ChipComponent(
+                uiModel = model.mapToUiModel()
+            )
+
+            onAction(LoginCode(model.text))
+        }
+
+        else -> ChipComponent(
+            uiModel = model.mapToUiModel()
+        )
     }
 }
 

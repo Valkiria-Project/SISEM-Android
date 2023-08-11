@@ -12,8 +12,8 @@ private fun navigateToLoginNextStep(
     navController: NavHostController,
     loginNavigationModel: LoginNavigationModel
 ) = when {
-    // FIXME: Device Authenticated?
-    loginNavigationModel.isAdmin -> navController.navigate(AuthNavigationRoute.DeviceAuth.route)
+    loginNavigationModel.isAdmin && loginNavigationModel.requiresDeviceAuth ->
+        navController.navigate(AuthNavigationRoute.DeviceAuth.route)
 
     loginNavigationModel.isTurnComplete && loginNavigationModel.requiresPreOperational.not() ->
         navController.navigate(NavigationGraph.Menu.route) {

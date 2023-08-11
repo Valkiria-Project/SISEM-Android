@@ -16,7 +16,7 @@ sealed class AuthCardsUiAction : UiAction {
 sealed class LoginUiAction : UiAction {
     object ForgotPassword : LoginUiAction()
     object Login : LoginUiAction()
-    data class TermsAndConditions(val link: String) : LoginUiAction()
+    data class LoginCode(val code: String) : LoginUiAction()
 
     data class LoginPasswordInput(
         val updatedValue: String,
@@ -27,6 +27,8 @@ sealed class LoginUiAction : UiAction {
         val updatedValue: String,
         val fieldValidated: Boolean
     ) : LoginUiAction()
+
+    data class TermsAndConditions(val link: String) : LoginUiAction()
 }
 
 sealed class DeviceAuthUiAction : UiAction {

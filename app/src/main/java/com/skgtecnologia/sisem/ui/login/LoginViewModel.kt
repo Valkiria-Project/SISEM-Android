@@ -31,6 +31,7 @@ class LoginViewModel @Inject constructor(
     var uiState by mutableStateOf(LoginUiState())
         private set
 
+    var code by mutableStateOf("")
     var username by mutableStateOf("")
     var isValidUsername by mutableStateOf(false)
     var password by mutableStateOf("")
@@ -89,7 +90,8 @@ class LoginViewModel @Inject constructor(
                             LoginNavigationModel(
                                 isAdmin = this.isAdmin,
                                 isTurnComplete = this.turn?.isComplete == true,
-                                requiresPreOperational = this.preoperational?.status == true
+                                requiresPreOperational = this.preoperational?.status == true,
+                                requiresDeviceAuth = code.isEmpty()
                             )
                         }
                     )
