@@ -1,8 +1,10 @@
 package com.skgtecnologia.sisem.data.remote.model.props
 
+import com.squareup.moshi.Json
+
 data class MarginsResponse(
-    val top: Int?,
-    val bottom: Int?,
-    val left: Int?,
-    val right: Int?
+    @Json(name = "top") val top: Int?,
+    @Json(name = "bottom") val bottom: Int?,
+    @Json(name = "left") val left: Int?,
+    @Json(name = "right") val right: Int?
 )
