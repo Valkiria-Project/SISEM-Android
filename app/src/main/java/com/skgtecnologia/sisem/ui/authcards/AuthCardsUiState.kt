@@ -6,7 +6,7 @@ import com.valkiria.uicomponents.components.errorbanner.ErrorUiModel
 
 data class AuthCardsUiState(
     val screenModel: ScreenModel? = null,
-    val isLoading: Boolean = false,
     val reportDetail: ReportsDetailModel? = null,
+    val isLoading: Boolean = false,
     val errorModel: ErrorUiModel? = null
 )

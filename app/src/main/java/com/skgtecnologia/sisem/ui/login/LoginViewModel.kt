@@ -6,10 +6,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
+import com.skgtecnologia.sisem.domain.auth.usecases.Login
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
-import com.skgtecnologia.sisem.domain.auth.usecases.Login
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
+import com.skgtecnologia.sisem.ui.navigation.LoginNavigationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +31,7 @@ class LoginViewModel @Inject constructor(
     var uiState by mutableStateOf(LoginUiState())
         private set
 
+    var code by mutableStateOf("")
     var username by mutableStateOf("")
     var isValidUsername by mutableStateOf(false)
     var password by mutableStateOf("")
@@ -84,7 +86,14 @@ class LoginViewModel @Inject constructor(
                     Timber.d("Successful login with ${accessTokenModel.username}")
                     uiState = uiState.copy(
                         onLogin = true,
-                        isTurnComplete = accessTokenModel.turn?.isComplete == true
+                        loginNavigationModel = with(accessTokenModel) {
+                            LoginNavigationModel(
+                                isAdmin = this.isAdmin,
+                                isTurnComplete = this.turn?.isComplete == true,
+                                requiresPreOperational = this.preoperational?.status == true,
+                                requiresDeviceAuth = code.isEmpty()
+                            )
+                        }
                     )
                 }
                 .onFailure { throwable ->
@@ -102,6 +111,7 @@ class LoginViewModel @Inject constructor(
         uiState = uiState.copy(
             onLogin = false,
             validateFields = false,
+            loginNavigationModel = null,
             isLoading = false
         )
 
@@ -117,13 +127,13 @@ class LoginViewModel @Inject constructor(
 
     fun showBottomSheet(link: LoginLink) {
         uiState = uiState.copy(
-            bottomSheetLink = link
+            onLoginLink = link
         )
     }
 
     fun handleShownBottomSheet() {
         uiState = uiState.copy(
-            bottomSheetLink = null
+            onLoginLink = null
         )
     }
 
