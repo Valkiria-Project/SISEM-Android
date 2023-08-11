@@ -2,7 +2,6 @@ package com.skgtecnologia.sisem.domain.model.body
 
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
-import com.skgtecnologia.sisem.domain.model.body.BodyRowType.TERMS_AND_CONDITIONS
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsUiModel
 
 data class TermsAndConditionsModel(
@@ -10,7 +9,7 @@ data class TermsAndConditionsModel(
     val modifier: Modifier = Modifier
 ) : BodyRowModel {
 
-    override val type: BodyRowType = TERMS_AND_CONDITIONS
+    override val type: BodyRowType = BodyRowType.TERMS_AND_CONDITIONS
 }
 
 fun TermsAndConditionsModel.mapToUiModel(): TermsAndConditionsUiModel {

@@ -1,3 +1,5 @@
+@file:Suppress("PrivatePropertyName")
+
 package com.skgtecnologia.sisem.ui.theme
 
 import android.app.Activity
@@ -15,7 +17,7 @@ import androidx.core.view.WindowCompat
 private val DarkColorScheme = darkColorScheme(
     primary = DodgerBlue,
     onPrimary = Color.Black,
-    secondary = PurpleGrey80,
+    secondary = OuterSpace,
     tertiary = BrightTurquoise,
     background = Shark,
     onBackground = Color.White,
@@ -27,7 +29,7 @@ private val DarkColorScheme = darkColorScheme(
 private val LightColorScheme = lightColorScheme(
     primary = DodgerBlue,
     onPrimary = Color.Black,
-    secondary = PurpleGrey40,
+    secondary = OuterSpace,
     tertiary = BrightTurquoise,
     background = Shark,
     onBackground = Color.White,

@@ -8,6 +8,11 @@ sealed class FooterUiAction(open val identifier: String) : UiAction {
     data class Button(override val identifier: String) : FooterUiAction(identifier)
 }
 
+sealed class AuthCardsUiAction : UiAction {
+    object AuthCard : AuthCardsUiAction()
+    data class AuthCardNews(val reportDetail: ReportsDetailUiModel) : AuthCardsUiAction()
+}
+
 sealed class LoginUiAction : UiAction {
     object ForgotPassword : LoginUiAction()
     object Login : LoginUiAction()
@@ -29,7 +34,9 @@ sealed class DeviceAuthUiAction : UiAction {
     data class DeviceAuthCodeInput(val updatedValue: String) : DeviceAuthUiAction()
 }
 
-sealed class AuthCardsUiAction : UiAction {
-    object AuthCard : AuthCardsUiAction()
-    data class AuthCardNews(val reportDetail: ReportsDetailUiModel) : AuthCardsUiAction()
+sealed class PreOperationalUiAction : UiAction {
+    data class DriverVehicleKMInput(
+        val updatedValue: String,
+        val fieldValidated: Boolean
+    ) : PreOperationalUiAction()
 }

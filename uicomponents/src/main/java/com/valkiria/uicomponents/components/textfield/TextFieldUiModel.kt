@@ -5,9 +5,9 @@ import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.props.TextStyle
 
 data class TextFieldUiModel(
-    val icon: String?,
-    val placeholder: String?,
-    val label: String?,
+    val icon: String? = null,
+    val placeholder: String? = null,
+    val label: String? = null,
     val keyboardOptions: KeyboardOptions,
     val textStyle: TextStyle,
     val validations: List<ValidationUiModel>,

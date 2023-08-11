@@ -1,10 +1,13 @@
 package com.valkiria.uicomponents.components.segmentedswitch
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
@@ -30,6 +33,9 @@ fun SegmentedSwitchComponent(
     uiModel: SegmentedSwitchUiModel,
     isTablet: Boolean = false
 ) {
+    val items = uiModel.options.map { it.text }
+    val selectedIndex = remember { mutableStateOf(0) }
+
     Row(
         modifier = uiModel.modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -38,11 +44,11 @@ fun SegmentedSwitchComponent(
         Text(
             text = uiModel.text,
             style = uiModel.textStyle.toTextStyle(),
-            modifier = Modifier.fillMaxWidth(0.4f)
+            modifier = Modifier
+                .fillMaxWidth(0.35f)
+                .padding(end = 8.dp)
         )
 
-        val items = uiModel.options.map { it.text }
-        val selectedIndex = remember { mutableStateOf(0) }
         Row(
             modifier = Modifier.wrapContentSize(),
         ) {
@@ -105,7 +111,7 @@ fun SegmentedSwitchComponent(
                             }
                         )
                     } else {
-                        ButtonDefaults.outlinedButtonColors(containerColor = Color.Transparent)
+                        ButtonDefaults.outlinedButtonColors(containerColor = Color.DarkGray)
                     },
                 ) {
                     Text(
@@ -114,7 +120,8 @@ fun SegmentedSwitchComponent(
                             Color.Black
                         } else {
                             Color.White
-                        }
+                        },
+                        maxLines = 1
                     )
                 }
             }
@@ -126,8 +133,12 @@ fun SegmentedSwitchComponent(
 @Composable
 fun SegmentedSwitchComponentPreview() {
     UiComponentsTheme {
-        SegmentedSwitchComponent(
-            uiModel = getDeviceAuthSegmentedSwitchUiModel()
-        )
+        Column(
+            modifier = Modifier.background(Color.DarkGray)
+        ) {
+            SegmentedSwitchComponent(
+                uiModel = getDeviceAuthSegmentedSwitchUiModel()
+            )
+        }
     }
 }

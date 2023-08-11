@@ -12,7 +12,7 @@ import dagger.hilt.android.components.ViewModelComponent
 abstract class LoginRepositoryModule {
 
     @Binds
-    abstract fun bindLoginRepositoryImpl(
+    abstract fun bindLoginRepository(
         loginRepositoryImpl: LoginRepositoryImpl
     ): LoginRepository
 }

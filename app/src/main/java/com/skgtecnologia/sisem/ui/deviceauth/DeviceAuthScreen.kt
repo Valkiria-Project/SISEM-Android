@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -12,6 +13,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
+import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
@@ -24,16 +26,29 @@ import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 import kotlinx.coroutines.launch
 
+@Suppress("LongMethod")
 @Composable
 fun DeviceAuthScreen(
     isTablet: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigation: (route: AuthNavigationRoute) -> Unit
 ) {
     val viewModel = hiltViewModel<DeviceAuthViewModel>()
     val uiState = viewModel.uiState
 
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(uiState) {
+        launch {
+            when {
+                uiState.onDeviceAuthenticated -> {
+                    viewModel.onDeviceAuthHandled()
+                    onNavigation(AuthNavigationRoute.PreOperational)
+                }
+            }
+        }
+    }
 
     ConstraintLayout(
         modifier = modifier.fillMaxSize()

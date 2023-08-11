@@ -6,7 +6,11 @@ import com.skgtecnologia.sisem.data.remote.adapters.ModifierAdapter
 import com.skgtecnologia.sisem.data.remote.model.body.BodyRowResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ButtonResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ChipResponse
+import com.skgtecnologia.sisem.data.remote.model.body.CommentResponse
+import com.skgtecnologia.sisem.data.remote.model.body.ContentHeaderResponse
 import com.skgtecnologia.sisem.data.remote.model.body.CrewMemberCardResponse
+import com.skgtecnologia.sisem.data.remote.model.body.DetailedInfoListResponse
+import com.skgtecnologia.sisem.data.remote.model.body.FiltersResponse
 import com.skgtecnologia.sisem.data.remote.model.body.FingerprintResponse
 import com.skgtecnologia.sisem.data.remote.model.body.LabelResponse
 import com.skgtecnologia.sisem.data.remote.model.body.PasswordTextFieldResponse
@@ -83,8 +87,20 @@ object CoreNetworkModule {
             ChipResponse::class.java,
             BodyRowType.CHIP.name
         ).withSubtype(
+            CommentResponse::class.java,
+            BodyRowType.COMMENTS.name
+        ).withSubtype(
+            ContentHeaderResponse::class.java,
+            BodyRowType.CONTENT_HEADER.name
+        ).withSubtype(
             CrewMemberCardResponse::class.java,
             BodyRowType.CREW_MEMBER_CARD.name
+        ).withSubtype(
+            DetailedInfoListResponse::class.java,
+            BodyRowType.DETAILED_INFO_LIST.name
+        ).withSubtype(
+            FiltersResponse::class.java,
+            BodyRowType.FILTERS.name
         ).withSubtype(
             FingerprintResponse::class.java,
             BodyRowType.FINGERPRINT.name
