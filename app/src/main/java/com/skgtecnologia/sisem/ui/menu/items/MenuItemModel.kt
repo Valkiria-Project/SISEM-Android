@@ -9,6 +9,8 @@ import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.IncidentScreen
 import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.InventoryScreen
 import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.NewsScreen
 import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.NotificationsScreen
+import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.PreoperationalMenuScreen
+import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.ShiftScreen
 import com.valkiria.uicomponents.R.drawable
 
 // FIXME
@@ -43,6 +45,16 @@ object MenuItemModel {
             NewsScreen,
             "Novedades",
             drawable.ic_news
+        ),
+        DrawerItemInfo(
+            ShiftScreen,
+            "Entrega de turno",
+            drawable.ic_shift
+        ),
+        DrawerItemInfo(
+            PreoperationalMenuScreen,
+            "Preoperacional",
+            drawable.ic_check
         ),
         DrawerItemInfo(
             HCEUDCScreen,
