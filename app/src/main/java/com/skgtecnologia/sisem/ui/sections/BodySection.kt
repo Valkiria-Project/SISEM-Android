@@ -197,6 +197,7 @@ private fun HandleButtonRows(
     }
 }
 
+@Suppress("UnusedPrivateMember")
 @Composable
 private fun HandleChipRows(
     model: ChipModel,

@@ -130,7 +130,6 @@ private fun handleUiAction(
 
             Login -> viewModel.login()
 
-
             is LoginCode -> viewModel.code = uiAction.code // FIXME: Persist this in DB
 
             is LoginPasswordInput -> {
