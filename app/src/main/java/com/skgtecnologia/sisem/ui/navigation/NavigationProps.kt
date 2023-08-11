@@ -41,6 +41,8 @@ sealed class MenuNavigationRoute(val route: String) {
     object DrivingGuideScreen : MenuNavigationRoute("driving_guide_screen")
     object CertificationsScreen : MenuNavigationRoute("certifications_screen")
     object NewsScreen : MenuNavigationRoute("news_screen")
+    object ShiftScreen : MenuNavigationRoute("shift_screen")
+    object PreoperationalMenuScreen : MenuNavigationRoute("preoperational_menu_screen")
     object HCEUDCScreen : MenuNavigationRoute("hce_udc_screen")
 }
 
