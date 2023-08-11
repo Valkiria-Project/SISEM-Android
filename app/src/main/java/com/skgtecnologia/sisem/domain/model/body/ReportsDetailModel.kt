@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.domain.model.body
 
+import com.skgtecnologia.sisem.commons.extensions.biLet
 import com.skgtecnologia.sisem.domain.model.header.HeaderModel
 import com.skgtecnologia.sisem.domain.model.header.TextModel
 import com.valkiria.uicomponents.components.crewmembercard.ReportsDetailUiModel
@@ -23,7 +24,12 @@ fun ReportsDetailUiModel.mapToDomain() = ReportsDetailModel(
     header = HeaderModel(
         leftIcon = icon,
         title = TextModel(text = title, textStyle = titleTextStyle),
-        subtitle = subtitle?.let { TextModel(text = it, textStyle = subtitleTextStyle!!) },
+        subtitle = biLet(subtitle, subtitleTextStyle) { subtitle, subtitleTextStyle ->
+            TextModel(
+                text = subtitle,
+                textStyle = subtitleTextStyle
+            )
+        },
         modifier = modifier
     ),
     details = details.map { it.mapToDomain() }

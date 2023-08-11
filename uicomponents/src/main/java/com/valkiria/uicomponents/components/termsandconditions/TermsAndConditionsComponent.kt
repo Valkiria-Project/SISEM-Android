@@ -14,9 +14,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.ireward.htmlcompose.HtmlText
 import com.valkiria.uicomponents.mocks.getLoginTermsAndConditionsUiModel
+import com.valkiria.uicomponents.props.TabletWidth
 import com.valkiria.uicomponents.theme.UiComponentsTheme
 import timber.log.Timber
 
@@ -28,7 +28,7 @@ fun TermsAndConditionsComponent(
 ) {
     Row(
         modifier = if (isTablet) {
-            uiModel.modifier.width(300.dp)
+            uiModel.modifier.width(TabletWidth)
         } else {
             uiModel.modifier.fillMaxWidth()
         },

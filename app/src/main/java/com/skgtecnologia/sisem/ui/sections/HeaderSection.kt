@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.ui.sections
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,7 +23,7 @@ import com.valkiria.uicomponents.utlis.getResourceIdByName
 @Composable
 fun HeaderSection(
     headerModel: HeaderModel,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = headerModel.modifier
@@ -34,13 +35,13 @@ fun HeaderSection(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val iconResourceId = LocalContext.current.getResourceIdByName(
+            val leftIconResourceId = LocalContext.current.getResourceIdByName(
                 headerModel.leftIcon.orEmpty(), DefType.DRAWABLE
             )
 
-            iconResourceId?.let {
+            leftIconResourceId?.let {
                 Icon(
-                    painter = painterResource(id = iconResourceId),
+                    painter = painterResource(id = leftIconResourceId),
                     contentDescription = null,
                     modifier = Modifier
                         .padding(end = 12.dp)
@@ -55,6 +56,23 @@ fun HeaderSection(
                     textStyle = headerModel.title.textStyle
                 )
             )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            val rightIconResourceId = LocalContext.current.getResourceIdByName(
+                headerModel.rightIcon.orEmpty(), DefType.DRAWABLE
+            )
+
+            rightIconResourceId?.let {
+                Icon(
+                    painter = painterResource(id = rightIconResourceId),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(end = 12.dp)
+                        .size(24.dp),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
         }
 
         headerModel.subtitle?.let {
@@ -62,6 +80,7 @@ fun HeaderSection(
                 uiModel = LabelUiModel(
                     text = it.text,
                     textStyle = it.textStyle,
+                    modifier = Modifier.padding(top = 12.dp)
                 )
             )
         }

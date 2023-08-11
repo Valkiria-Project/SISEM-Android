@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.domain.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.body.BodyRowType.BUTTON
 import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.props.ButtonSize
@@ -18,7 +17,7 @@ data class ButtonModel(
     val modifier: Modifier
 ) : BodyRowModel {
 
-    override val type: BodyRowType = BUTTON
+    override val type: BodyRowType = BodyRowType.BUTTON
 }
 
 fun ButtonModel.mapToUiModel(): ButtonUiModel {

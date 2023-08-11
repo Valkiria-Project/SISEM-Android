@@ -8,7 +8,7 @@ import com.valkiria.uicomponents.props.TextStyle.BUTTON_2
 
 fun getDeviceAuthSegmentedSwitchUiModel(): SegmentedSwitchUiModel {
     return SegmentedSwitchUiModel(
-        text = "Prueba algo de texto",
+        text = "Prueba algo de texto y un poco más",
         textStyle = TextStyle.HEADLINE_5,
         options = listOf(
             OptionUiModel(

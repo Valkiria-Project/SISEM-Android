@@ -10,12 +10,14 @@ data class HeaderResponse(
     @Json(name = "title") val title: TextResponse?,
     @Json(name = "subtitle") val subtitle: TextResponse?,
     @Json(name = "left_icon") val leftIcon: String?,
+    @Json(name = "right_icon") val rightIcon: String?,
     @Json(name = "margins") val modifier: Modifier?
 )
 
 fun HeaderResponse.mapToDomain(): HeaderModel = HeaderModel(
-    title = this.title?.mapToDomain() ?: error("Header title cannot be null"),
-    subtitle = this.subtitle?.mapToDomain(),
-    leftIcon = this.leftIcon,
-    modifier = this.modifier ?: Modifier
+    title = title?.mapToDomain() ?: error("Header title cannot be null"),
+    subtitle = subtitle?.mapToDomain(),
+    leftIcon = leftIcon,
+    rightIcon = rightIcon,
+    modifier = modifier ?: Modifier
 )

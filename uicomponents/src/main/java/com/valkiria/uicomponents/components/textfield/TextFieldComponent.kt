@@ -28,6 +28,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.mocks.getLoginUserTextFieldUiModel
+import com.valkiria.uicomponents.mocks.getPreOpDriverVehicleKMTextFieldUiModel
+import com.valkiria.uicomponents.props.TabletWidth
 import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.theme.UiComponentsTheme
 import com.valkiria.uicomponents.utlis.DefType
@@ -47,7 +49,7 @@ fun TextFieldComponent(
 
     Row(
         modifier = if (isTablet) {
-            uiModel.modifier.width(300.dp)
+            uiModel.modifier.width(TabletWidth)
         } else {
             uiModel.modifier.fillMaxWidth()
         },
@@ -76,7 +78,7 @@ fun TextFieldComponent(
                     text.toFailedValidation(uiModel.validations, validateFields) == null
                 )
             },
-            modifier = Modifier.imePadding(),
+            modifier = Modifier.fillMaxWidth().imePadding(),
             textStyle = uiModel.textStyle.toTextStyle(),
             label = {
                 uiModel.label?.let { label ->
@@ -118,6 +120,11 @@ fun TextFieldComponentPreview() {
         ) {
             TextFieldComponent(
                 uiModel = getLoginUserTextFieldUiModel()
+            ) { updatedValue, fieldValidated ->
+                Timber.d("Handle $updatedValue with $fieldValidated")
+            }
+            TextFieldComponent(
+                uiModel = getPreOpDriverVehicleKMTextFieldUiModel()
             ) { updatedValue, fieldValidated ->
                 Timber.d("Handle $updatedValue with $fieldValidated")
             }

@@ -1,8 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.data.remote.model.props.OptionResponse
-import com.skgtecnologia.sisem.data.remote.model.props.mapToUi
 import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.SegmentedSwitchModel

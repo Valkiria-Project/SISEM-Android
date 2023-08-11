@@ -17,8 +17,9 @@ sealed class NavigationGraph(val route: String) {
 
 sealed class AuthNavigationRoute(val route: String) {
     object AuthCards : AuthNavigationRoute("auth_cards")
-    object DeviceAuth : AuthNavigationRoute("device_auth")
     object Login : AuthNavigationRoute("login")
+    object DeviceAuth : AuthNavigationRoute("device_auth")
+    object PreOperational : AuthNavigationRoute("pre_operational")
 }
 
 sealed class MainNavigationRoute(

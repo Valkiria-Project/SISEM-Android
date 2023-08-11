@@ -32,3 +32,25 @@ fun getLoginUserTextFieldUiModel(): TextFieldUiModel {
         )
     )
 }
+
+fun getPreOpDriverVehicleKMTextFieldUiModel(): TextFieldUiModel {
+    return TextFieldUiModel(
+        label = "Kilometraje del vehículo*",
+        keyboardOptions = KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Number
+        ),
+        textStyle = TextStyle.HEADLINE_5,
+        validations = listOf(
+            ValidationUiModel(
+                regex = "^(?!\\s*$).+",
+                message = "El campo no debe estar vacío"
+            )
+        ),
+        modifier = Modifier.padding(
+            start = 20.dp,
+            top = 20.dp,
+            end = 20.dp,
+            bottom = 0.dp
+        )
+    )
+}

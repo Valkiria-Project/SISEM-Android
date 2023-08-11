@@ -18,7 +18,11 @@ import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.ButtonModel
 import com.skgtecnologia.sisem.domain.model.body.ChipModel
+import com.skgtecnologia.sisem.domain.model.body.CommentsModel
+import com.skgtecnologia.sisem.domain.model.body.ContentHeaderModel
 import com.skgtecnologia.sisem.domain.model.body.CrewMemberCardModel
+import com.skgtecnologia.sisem.domain.model.body.DetailedInfoListModel
+import com.skgtecnologia.sisem.domain.model.body.FiltersModel
 import com.skgtecnologia.sisem.domain.model.body.FingerprintModel
 import com.skgtecnologia.sisem.domain.model.body.LabelModel
 import com.skgtecnologia.sisem.domain.model.body.PasswordTextFieldModel
@@ -26,7 +30,9 @@ import com.skgtecnologia.sisem.domain.model.body.RichLabelModel
 import com.skgtecnologia.sisem.domain.model.body.SegmentedSwitchModel
 import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
+import com.skgtecnologia.sisem.domain.model.body.mapToHeaderModel
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
+import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
@@ -34,10 +40,14 @@ import com.valkiria.uicomponents.action.LoginUiAction.Login
 import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
 import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
+import com.valkiria.uicomponents.action.PreOperationalUiAction.DriverVehicleKMInput
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
+import com.valkiria.uicomponents.components.comments.CommentsComponent
 import com.valkiria.uicomponents.components.crewmembercard.CrewMemberCardComponent
+import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListComponent
+import com.valkiria.uicomponents.components.filters.FilterChipsComponent
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.passwordtextfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
@@ -45,7 +55,7 @@ import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchCompo
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 
-@Suppress("LongMethod")
+@Suppress("ComplexMethod", "LongMethod")
 @Composable
 fun BodySection(
     body: List<BodyRowModel>?,
@@ -57,7 +67,7 @@ fun BodySection(
     if (body?.isNotEmpty() == true) {
         LazyColumn(
             modifier = modifier,
-            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
+            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp), // FIXME: iOS?
             verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Top),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -66,6 +76,7 @@ fun BodySection(
     }
 }
 
+@Suppress("LongMethod", "ComplexMethod")
 private fun LazyListScope.handleBodyRows(
     body: List<BodyRowModel>,
     isTablet: Boolean,
@@ -84,14 +95,37 @@ private fun LazyListScope.handleBodyRows(
                 )
             }
 
+            is CommentsModel -> item(key = model.identifier) {
+                CommentsComponent(
+                    uiModel = model.mapToUiModel()
+                )
+            }
+
+            is ContentHeaderModel -> item(key = model.identifier) {
+                HeaderSection(
+                    headerModel = model.mapToHeaderModel()
+                )
+            }
+
             is CrewMemberCardModel -> item(key = model.identifier) {
                 HandleCrewMemberCardRows(model, isTablet, onAction)
             }
 
+            is DetailedInfoListModel -> item(key = model.identifier) {
+                DetailedInfoListComponent(
+                    uiModel = model.mapToUiModel()
+                )
+            }
+
+            is FiltersModel -> stickyHeader(key = model.identifier) {
+                FilterChipsComponent(
+                    uiModel = model.mapToUiModel()
+                )
+            }
+
             is FingerprintModel -> item(key = model.identifier) {
                 Image(
-                    modifier = Modifier
-                        .padding(vertical = 20.dp),
+                    modifier = Modifier.padding(vertical = 20.dp),
                     painter = painterResource(id = R.drawable.ic_fingerprint),
                     contentDescription = null
                 )
@@ -139,6 +173,14 @@ private fun HandleButtonRows(
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
+        AuthCardsIdentifier.CREW_MEMBER_CARD_ADMIN_BUTTON.name -> ButtonComponent(
+            uiModel = model.mapToUiModel(),
+            isTablet = isTablet,
+            arrangement = Arrangement.End
+        ) {
+            onAction(AuthCardsUiAction.AuthCard)
+        }
+
         LoginIdentifier.LOGIN_FORGOT_PASSWORD_BUTTON.name -> ButtonComponent(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet,
@@ -153,13 +195,25 @@ private fun HandleButtonRows(
         ) {
             onAction(Login)
         }
+    }
+}
 
-        AuthCardsIdentifier.CREW_MEMBER_CARD_ADMIN_BUTTON.name -> ButtonComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
-            arrangement = Arrangement.End
-        ) {
-            onAction(AuthCardsUiAction.AuthCard)
+@Composable
+private fun HandleCrewMemberCardRows(
+    model: CrewMemberCardModel,
+    isTablet: Boolean,
+    onAction: (actionInput: UiAction) -> Unit
+) {
+    when (model.identifier) {
+        AuthCardsIdentifier.CREW_MEMBER_CARD_ASSISTANT.name,
+        AuthCardsIdentifier.CREW_MEMBER_CARD_DRIVER.name,
+        AuthCardsIdentifier.CREW_MEMBER_CARD_DOCTOR.name -> {
+            CrewMemberCardComponent(
+                uiModel = model.mapToUiModel(),
+                isTablet = isTablet,
+                onAction = { onAction(AuthCardsUiAction.AuthCard) },
+                onNewsAction = { onAction(AuthCardsUiAction.AuthCardNews(it)) }
+            )
         }
     }
 }
@@ -214,24 +268,17 @@ private fun HandleTextFieldRows(
                 )
             )
         }
-    }
-}
 
-@Composable
-private fun HandleCrewMemberCardRows(
-    model: CrewMemberCardModel,
-    isTablet: Boolean,
-    onAction: (actionInput: UiAction) -> Unit
-) {
-    when (model.identifier) {
-        AuthCardsIdentifier.CREW_MEMBER_CARD_ASSISTANT.name,
-        AuthCardsIdentifier.CREW_MEMBER_CARD_DRIVER.name,
-        AuthCardsIdentifier.CREW_MEMBER_CARD_DOCTOR.name -> {
-            CrewMemberCardComponent(
-                uiModel = model.mapToUiModel(),
-                isTablet = isTablet,
-                onAction = { onAction(AuthCardsUiAction.AuthCard) },
-                onNewsAction = { onAction(AuthCardsUiAction.AuthCardNews(it)) }
+        PreOperationalIdentifier.DRIVER_VEHICLE_KM.name -> TextFieldComponent(
+            uiModel = model.mapToUiModel(),
+            isTablet = isTablet,
+            validateFields = validateFields
+        ) { updatedValue, fieldValidated ->
+            onAction(
+                DriverVehicleKMInput(
+                    updatedValue = updatedValue,
+                    fieldValidated = fieldValidated
+                )
             )
         }
     }

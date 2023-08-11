@@ -2,7 +2,6 @@ package com.skgtecnologia.sisem.ui.authcards
 
 import android.graphics.BitmapFactory
 import android.util.Base64
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +30,6 @@ import com.skgtecnologia.sisem.domain.model.body.DetailModel
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.props.toTextStyle
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ReportContent(
     model: DetailModel

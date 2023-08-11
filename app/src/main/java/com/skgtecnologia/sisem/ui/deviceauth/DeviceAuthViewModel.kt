@@ -29,7 +29,8 @@ class DeviceAuthViewModel @Inject constructor(
     var uiState by mutableStateOf(DeviceAuthUiState())
         private set
 
-    var vehicleCode by mutableStateOf("")
+    var vehicleCode by mutableStateOf("") // FIXME
+    var isValidVehicleCode by mutableStateOf(false)
 
     init {
         uiState = uiState.copy(isLoading = true)
@@ -78,6 +79,21 @@ class DeviceAuthViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun onDeviceAuthHandled() {
+        uiState = uiState.copy(
+            onDeviceAuthenticated = false,
+            validateFields = false,
+            isLoading = false
+        )
+
+        resetForm()
+    }
+
+    private fun resetForm() {
+        vehicleCode = ""
+        isValidVehicleCode = false
     }
 
     fun handleShownError() {

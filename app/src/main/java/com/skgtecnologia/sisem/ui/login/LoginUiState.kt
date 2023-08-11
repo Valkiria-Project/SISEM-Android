@@ -9,8 +9,8 @@ data class LoginUiState(
     val onLogin: Boolean = false,
     val onForgotPassword: Boolean = false,
     val bottomSheetLink: LoginLink? = null,
-    val validateFields: Boolean = false,
     val isTurnComplete: Boolean = false,
     val isLoading: Boolean = false,
+    val validateFields: Boolean = false,
     val errorModel: ErrorUiModel? = null
 )

@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.mocks.getLoginPasswordTextFieldUiModel
+import com.valkiria.uicomponents.props.TabletWidth
 import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.theme.UiComponentsTheme
 import com.valkiria.uicomponents.utlis.DefType
@@ -54,7 +55,7 @@ fun PasswordTextFieldComponent(
 
     Row(
         modifier = if (isTablet) {
-            uiModel.modifier.width(300.dp)
+            uiModel.modifier.width(TabletWidth)
         } else {
             uiModel.modifier.fillMaxWidth()
         },

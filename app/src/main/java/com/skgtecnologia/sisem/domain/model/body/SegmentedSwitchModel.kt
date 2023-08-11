@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.domain.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.body.BodyRowType.SEGMENTED_SWITCH
 import com.valkiria.uicomponents.components.segmentedswitch.OptionUiModel
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import com.valkiria.uicomponents.props.TextStyle
@@ -14,7 +13,7 @@ data class SegmentedSwitchModel(
     val modifier: Modifier = Modifier
 ) : BodyRowModel {
 
-    override val type: BodyRowType = SEGMENTED_SWITCH
+    override val type: BodyRowType = BodyRowType.SEGMENTED_SWITCH
 }
 
 fun SegmentedSwitchModel.mapToUiModel() = SegmentedSwitchUiModel(
