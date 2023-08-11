@@ -171,6 +171,18 @@ private fun NavGraphBuilder.menuGraph(
         ) {
             // FIXME: Finish this work
         }
+
+        composable(
+            route = MenuNavigationRoute.ShiftScreen.route
+        ) {
+            // FIXME: Finish this work
+        }
+
+        composable(
+            route = MenuNavigationRoute.PreoperationalMenuScreen.route
+        ) {
+            // FIXME: Finish this work
+        }
     }
 }
 
