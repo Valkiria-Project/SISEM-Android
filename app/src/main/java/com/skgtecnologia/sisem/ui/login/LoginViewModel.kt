@@ -84,7 +84,7 @@ class LoginViewModel @Inject constructor(
                     Timber.d("Successful login with ${accessTokenModel.username}")
                     uiState = uiState.copy(
                         onLogin = true,
-                        isTurnComplete = accessTokenModel.turn.isComplete
+                        isTurnComplete = accessTokenModel.turn?.isComplete == true
                     )
                 }
                 .onFailure { throwable ->

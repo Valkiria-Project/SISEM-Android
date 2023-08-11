@@ -10,5 +10,5 @@ data class AccessTokenModel(
     val isAdmin: Boolean,
     val nameUser: String,
     val preoperational: PreOperationalModel?,
-    val turn: TurnModel
+    val turn: TurnModel?
 )
