@@ -14,6 +14,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.model.toLegalContentModel
+import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.LoginUiAction
 import com.valkiria.uicomponents.action.UiAction
@@ -28,7 +29,7 @@ import timber.log.Timber
 fun LoginScreen(
     isTablet: Boolean,
     modifier: Modifier = Modifier,
-    onNavigation: (isTurnComplete: Boolean) -> Unit
+    onNavigation: (loginNavigationModel: NavigationModel?) -> Unit
 ) {
     val viewModel = hiltViewModel<LoginViewModel>()
     val uiState = viewModel.uiState
@@ -43,7 +44,7 @@ fun LoginScreen(
             when {
                 uiState.onLogin -> {
                     viewModel.onLoginHandled()
-                    onNavigation(uiState.isTurnComplete)
+                    onNavigation(uiState.loginNavigationModel)
                 }
             }
         }
@@ -76,7 +77,7 @@ fun LoginScreen(
         }
     }
 
-    uiState.bottomSheetLink?.let { link ->
+    uiState.onLoginLink?.let { link ->
         scope.launch {
             sheetState.show()
         }
