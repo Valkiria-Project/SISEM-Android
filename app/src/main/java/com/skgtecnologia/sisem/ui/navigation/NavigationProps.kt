@@ -9,6 +9,8 @@ import androidx.compose.material.icons.outlined.Send
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.skgtecnologia.sisem.R
 
+sealed interface NavigationModel
+
 sealed class NavigationGraph(val route: String) {
     object Auth : NavigationGraph("auth")
     object Main : NavigationGraph("main")

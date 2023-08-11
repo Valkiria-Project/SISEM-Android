@@ -20,6 +20,7 @@ import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.NavigationGraph
+import com.skgtecnologia.sisem.ui.navigation.navigateToNextStep
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
 
 @Composable
@@ -68,38 +69,30 @@ private fun NavGraphBuilder.authGraph(
             LoginScreen(
                 isTablet = isTablet,
                 modifier = modifier
-            ) { isTurnComplete ->
-                if (isTurnComplete) {
-                    navController.navigate(NavigationGraph.Menu.route) {
-                        popUpTo(AuthNavigationRoute.AuthCards.route) {
-                            inclusive = true
-                        }
-                    }
-                } else {
-                    navController.navigate(AuthNavigationRoute.AuthCards.route)
-                }
+            ) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
             }
         }
+    }
 
-        composable(
-            route = AuthNavigationRoute.DeviceAuth.route
+    composable(
+        route = AuthNavigationRoute.DeviceAuth.route
+    ) {
+        DeviceAuthScreen(
+            isTablet = isTablet,
+            modifier = modifier
         ) {
-            DeviceAuthScreen(
-                isTablet = isTablet,
-                modifier = modifier
-            ) {
-                navController.navigate(AuthNavigationRoute.PreOperational.route) // FIXME
-            }
+            navController.navigate(AuthNavigationRoute.PreOperational.route) // FIXME
         }
+    }
 
-        composable(
-            route = AuthNavigationRoute.PreOperational.route
-        ) {
-            PreOperationalScreen(
-                isTablet = isTablet,
-                modifier = modifier
-            )
-        }
+    composable(
+        route = AuthNavigationRoute.PreOperational.route
+    ) {
+        PreOperationalScreen(
+            isTablet = isTablet,
+            modifier = modifier
+        )
     }
 }
 

@@ -14,8 +14,15 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.model.toLegalContentModel
+import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.LoginUiAction
+import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
+import com.valkiria.uicomponents.action.LoginUiAction.Login
+import com.valkiria.uicomponents.action.LoginUiAction.LoginCode
+import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
+import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
+import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
@@ -28,7 +35,7 @@ import timber.log.Timber
 fun LoginScreen(
     isTablet: Boolean,
     modifier: Modifier = Modifier,
-    onNavigation: (isTurnComplete: Boolean) -> Unit
+    onNavigation: (loginNavigationModel: NavigationModel?) -> Unit
 ) {
     val viewModel = hiltViewModel<LoginViewModel>()
     val uiState = viewModel.uiState
@@ -43,7 +50,7 @@ fun LoginScreen(
             when {
                 uiState.onLogin -> {
                     viewModel.onLoginHandled()
-                    onNavigation(uiState.isTurnComplete)
+                    onNavigation(uiState.loginNavigationModel)
                 }
             }
         }
@@ -76,7 +83,7 @@ fun LoginScreen(
         }
     }
 
-    uiState.bottomSheetLink?.let { link ->
+    uiState.onLoginLink?.let { link ->
         scope.launch {
             sheetState.show()
         }
@@ -116,24 +123,26 @@ private fun handleUiAction(
 ) {
     (uiAction as? LoginUiAction)?.let {
         when (uiAction) {
-            LoginUiAction.ForgotPassword -> {
+            ForgotPassword -> {
                 // FIXME: Navigate to ForgotPasswordScreen
                 Timber.d("ForgotPasswordButton clicked")
             }
 
-            LoginUiAction.Login -> viewModel.login()
+            Login -> viewModel.login()
 
-            is LoginUiAction.LoginPasswordInput -> {
+            is LoginCode -> viewModel.code = uiAction.code // FIXME: Persist this in DB
+
+            is LoginPasswordInput -> {
                 viewModel.password = uiAction.updatedValue
                 viewModel.isValidPassword = uiAction.fieldValidated
             }
 
-            is LoginUiAction.LoginUserInput -> {
+            is LoginUserInput -> {
                 viewModel.username = uiAction.updatedValue
                 viewModel.isValidUsername = uiAction.fieldValidated
             }
 
-            is LoginUiAction.TermsAndConditions -> viewModel.showBottomSheet(
+            is TermsAndConditions -> viewModel.showBottomSheet(
                 LoginLink.getLinkByName(link = uiAction.link)
             )
         }

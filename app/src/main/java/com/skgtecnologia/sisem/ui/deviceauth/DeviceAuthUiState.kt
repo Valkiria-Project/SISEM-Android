@@ -6,7 +6,7 @@ import com.valkiria.uicomponents.components.errorbanner.ErrorUiModel
 data class DeviceAuthUiState(
     val screenModel: ScreenModel? = null,
     val onDeviceAuthenticated: Boolean = false,
-    val isLoading: Boolean = false,
     val validateFields: Boolean = false,
+    val isLoading: Boolean = false,
     val errorModel: ErrorUiModel? = null
 )
