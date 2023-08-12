@@ -21,7 +21,7 @@ class AuthRemoteDataSource @Inject constructor(
                 authenticateBody = AuthenticateBody(
                     username = username,
                     password = password,
-                    code = "1", // FIXME: Hardcoded data
+                    code = "", // FIXME: Hardcoded data
                     idTurn = turnId
                 )
             )

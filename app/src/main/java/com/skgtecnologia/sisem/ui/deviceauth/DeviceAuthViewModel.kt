@@ -30,6 +30,7 @@ class DeviceAuthViewModel @Inject constructor(
         private set
 
     var vehicleCode by mutableStateOf("") // FIXME
+    var disassociateDeviceState by mutableStateOf(false)
     var isValidVehicleCode by mutableStateOf(false)
 
     init {
@@ -63,12 +64,13 @@ class DeviceAuthViewModel @Inject constructor(
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
             associateDevice.invoke(
-                "KRV675", // FIXME: Hardcoded data
                 androidIdProvider.getAndroidId(),
-                vehicleCode
+                vehicleCode,
+                disassociateDeviceState
             ).onSuccess { associateDeviceModel ->
                 uiState = uiState.copy(
-                    isLoading = false
+                    isLoading = false,
+                    onDeviceAuthenticated = true
                 )
             }.onFailure { throwable ->
                 Timber.wtf(throwable, "This is a failure")
