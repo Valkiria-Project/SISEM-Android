@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerScope
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
@@ -45,11 +46,13 @@ fun ReportContent(
 
     val pageCount = imagesBitmap.size
     Column(modifier = Modifier.padding(top = 16.dp)) {
-        val pagerState = rememberPagerState()
-        HorizontalPager(
-            state = pagerState,
-            pageCount = pageCount
-        ) { index ->
+        val pagerState = rememberPagerState(
+            initialPage = 0,
+            initialPageOffsetFraction = 0f
+        ) {
+            pageCount
+        }
+        HorizontalPager(state = pagerState, pageSpacing = 20.dp) { index ->
             Image(
                 bitmap = imagesBitmap[index].asImageBitmap(),
                 contentDescription = model.title.text,
@@ -66,9 +69,7 @@ fun ReportContent(
             pageCount = pageCount,
             currentPage = pagerState.currentPage
         )
-
-        reportTitle(model)
-
+        ReportTitle(model)
         Text(
             modifier = Modifier.padding(top = 8.dp),
             text = model.subtitle.text,
@@ -78,7 +79,7 @@ fun ReportContent(
 }
 
 @Composable
-private fun reportTitle(model: DetailModel) {
+private fun ReportTitle(model: DetailModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
