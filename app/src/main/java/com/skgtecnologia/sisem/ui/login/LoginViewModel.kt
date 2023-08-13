@@ -68,18 +68,15 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun List<BodyRowModel>.toAmbulanceCode() {
+    private suspend fun List<BodyRowModel>.toAmbulanceCode() {
         val ambulanceCode = (this.find {
             it is ChipModel && it.text.isNotBlank()
         } as? ChipModel)?.text
 
         if (ambulanceCode?.isNotEmpty() == true) {
-            job?.cancel()
-            job = viewModelScope.launch(Dispatchers.IO) {
-                storeAmbulanceCode.invoke(ambulanceCode).onSuccess {
-                    Timber.d("Successful ambulance code storage")
-                    code = ambulanceCode
-                }
+            storeAmbulanceCode.invoke(ambulanceCode).onSuccess {
+                Timber.d("Successful ambulance code storage")
+                code = ambulanceCode
             }
         }
     }
