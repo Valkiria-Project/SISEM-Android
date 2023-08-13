@@ -45,11 +45,13 @@ fun ReportContent(
 
     val pageCount = imagesBitmap.size
     Column(modifier = Modifier.padding(top = 16.dp)) {
-        val pagerState = rememberPagerState()
-        HorizontalPager(
-            state = pagerState,
-            pageCount = pageCount
-        ) { index ->
+        val pagerState = rememberPagerState(
+            initialPage = 0,
+            initialPageOffsetFraction = 0f
+        ) {
+            pageCount
+        }
+        HorizontalPager(state = pagerState) { index ->
             Image(
                 bitmap = imagesBitmap[index].asImageBitmap(),
                 contentDescription = model.title.text,
@@ -67,7 +69,7 @@ fun ReportContent(
             currentPage = pagerState.currentPage
         )
 
-        reportTitle(model)
+        ReportTitle(model)
 
         Text(
             modifier = Modifier.padding(top = 8.dp),
@@ -78,7 +80,7 @@ fun ReportContent(
 }
 
 @Composable
-private fun reportTitle(model: DetailModel) {
+private fun ReportTitle(model: DetailModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
