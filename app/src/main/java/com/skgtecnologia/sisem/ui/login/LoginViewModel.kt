@@ -10,6 +10,7 @@ import com.skgtecnologia.sisem.domain.auth.usecases.Login
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
+import com.skgtecnologia.sisem.domain.operation.usecases.StoreAmbulanceCode
 import com.skgtecnologia.sisem.ui.navigation.LoginNavigationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -23,6 +24,7 @@ import timber.log.Timber
 class LoginViewModel @Inject constructor(
     private val getLoginScreen: GetLoginScreen,
     private val login: Login,
+    private val storeAmbulanceCode: StoreAmbulanceCode,
     androidIdProvider: AndroidIdProvider
 ) : ViewModel() {
 
@@ -61,6 +63,15 @@ class LoginViewModel @Inject constructor(
                         errorModel = throwable.mapToUi()
                     )
                 }
+        }
+    }
+
+    fun storeAmbulanceCode(ambulanceCode: String) {
+        job?.cancel()
+        job = viewModelScope.launch(Dispatchers.IO) {
+            storeAmbulanceCode.invoke(ambulanceCode).onSuccess {
+                code = ambulanceCode
+            }
         }
     }
 

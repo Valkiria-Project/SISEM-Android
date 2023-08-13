@@ -1,12 +1,12 @@
-package com.skgtecnologia.sisem.data.authcards.cache.model
+package com.skgtecnologia.sisem.data.operation.cache.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.skgtecnologia.sisem.domain.authcards.model.ConfigModel
 
-@Entity(tableName = "config")
-data class ConfigEntity(
+@Entity(tableName = "operation")
+data class OperationEntity(
     @PrimaryKey val id: Int = 1,
     @ColumnInfo(name = "preoperational_time") val preoperationalTime: Long,
     @ColumnInfo(name = "clinic_hist_observations_time") val clinicHistObservationsTime: Long,
@@ -17,10 +17,11 @@ data class ConfigEntity(
     @ColumnInfo(name = "num_img_novelty") val numImgNovelty: Int,
     @ColumnInfo(name = "auth_method") val authMethod: String,
     @ColumnInfo(name = "attentions_type") val attentionsType: String,
-    @ColumnInfo(name = "status") val status: Boolean
+    @ColumnInfo(name = "status") val status: Boolean,
+    @ColumnInfo(name = "ambulance_code") val ambulanceCode: String? = null
 )
 
-fun ConfigEntity.mapToDomain(): ConfigModel {
+fun OperationEntity.mapToDomain(): ConfigModel {
     return with(this) {
         ConfigModel(
             preoperationalTime = preoperationalTime,
@@ -37,9 +38,9 @@ fun ConfigEntity.mapToDomain(): ConfigModel {
     }
 }
 
-fun ConfigModel.mapToCache(): ConfigEntity {
+fun ConfigModel.mapToCache(): OperationEntity {
     return with(this) {
-        ConfigEntity(
+        OperationEntity(
             preoperationalTime = preoperationalTime,
             clinicHistObservationsTime = clinicHistObservationsTime,
             loginTime = loginTime,
