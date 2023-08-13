@@ -1,11 +1,11 @@
-package com.skgtecnologia.sisem.data.authcards.remote.model
+package com.skgtecnologia.sisem.data.operation.remote.model
 
 import com.skgtecnologia.sisem.domain.authcards.model.ConfigModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class ConfigResponse(
+data class OperationResponse(
     @Json(name = "preoperational_time") val preoperationalTime: Long?,
     @Json(name = "clinic_hist_observations_time") val clinicHistObservationsTime: Long?,
     @Json(name = "login_time") val loginTime: Long?,
@@ -18,7 +18,7 @@ data class ConfigResponse(
     @Json(name = "status") val status: Boolean?
 )
 
-fun ConfigResponse.mapToDomain(): ConfigModel = ConfigModel(
+fun OperationResponse.mapToDomain(): ConfigModel = ConfigModel(
     preoperationalTime = preoperationalTime ?: error("Config preoperationalTime cannot be null"),
     clinicHistObservationsTime = clinicHistObservationsTime
         ?: error("Config clinicHistObservationsTime cannot be null"),
