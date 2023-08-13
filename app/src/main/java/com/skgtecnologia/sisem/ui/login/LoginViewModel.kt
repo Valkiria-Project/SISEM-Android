@@ -9,16 +9,18 @@ import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.usecases.Login
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
+import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
+import com.skgtecnologia.sisem.domain.model.body.ChipModel
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
 import com.skgtecnologia.sisem.domain.operation.usecases.StoreAmbulanceCode
 import com.skgtecnologia.sisem.ui.navigation.LoginNavigationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
@@ -33,7 +35,7 @@ class LoginViewModel @Inject constructor(
     var uiState by mutableStateOf(LoginUiState())
         private set
 
-    var code by mutableStateOf("")
+    private var code by mutableStateOf("")
     var username by mutableStateOf("")
     var isValidUsername by mutableStateOf(false)
     var password by mutableStateOf("")
@@ -46,15 +48,14 @@ class LoginViewModel @Inject constructor(
         job = viewModelScope.launch(Dispatchers.IO) {
             getLoginScreen.invoke(androidIdProvider.getAndroidId())
                 .onSuccess { loginScreenModel ->
+                    loginScreenModel.body.toAmbulanceCode()
+
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
-                            screenModel = loginScreenModel.copy(
-                                body = loginScreenModel.body
-                            ),
+                            screenModel = loginScreenModel,
                             isLoading = false
                         )
                     }
-                    storeAmbulanceCode()
                 }
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
@@ -67,12 +68,17 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun storeAmbulanceCode() {
-        if (code.isNotEmpty()) {
+    private fun List<BodyRowModel>.toAmbulanceCode() {
+        val ambulanceCode = (this.find {
+            it is ChipModel && it.text.isNotBlank()
+        } as? ChipModel)?.text
+
+        if (ambulanceCode?.isNotEmpty() == true) {
             job?.cancel()
             job = viewModelScope.launch(Dispatchers.IO) {
-                storeAmbulanceCode.invoke(code).onSuccess {
-                    Timber.d("Successful storeAmbulanceCode")
+                storeAmbulanceCode.invoke(ambulanceCode).onSuccess {
+                    Timber.d("Successful ambulance code storage")
+                    code = ambulanceCode
                 }
             }
         }

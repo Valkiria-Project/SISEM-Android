@@ -16,7 +16,6 @@ sealed class AuthCardsUiAction : UiAction {
 sealed class LoginUiAction : UiAction {
     object ForgotPassword : LoginUiAction()
     object Login : LoginUiAction()
-    data class LoginCode(val code: String) : LoginUiAction()
 
     data class LoginPasswordInput(
         val updatedValue: String,
