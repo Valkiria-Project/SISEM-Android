@@ -1,10 +1,9 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-parcelize")
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinAndroid)
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
-    id("app.cash.paparazzi") version "1.3.0"
+    alias(libs.plugins.paparazzi)
 }
 
 android {
@@ -21,10 +20,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     compileOptions {
