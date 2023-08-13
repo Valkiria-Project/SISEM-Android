@@ -118,7 +118,8 @@ private fun handleUiAction(
         when (uiAction) {
             DeviceAuth -> viewModel.associateDevice()
             is DeviceAuthCodeInput -> viewModel.vehicleCode = uiAction.updatedValue
-            is DeviceAuthUiAction.DeviceAuthSwitchState -> viewModel.disassociateDeviceState = uiAction.state
+            is DeviceAuthUiAction.DeviceAuthSwitchState ->
+                viewModel.disassociateDeviceState = uiAction.state
         }
     }
 }

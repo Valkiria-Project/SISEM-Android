@@ -87,8 +87,10 @@ class DeviceAuthViewModel @Inject constructor(
         }
     }
 
+    @Suppress("UnusedPrivateMember")
     private fun handleOnSuccess(associateDeviceModel: AssociateDeviceModel) {
         if (disassociateDeviceState) {
+            onDeviceAuthHandled() // FIXME: maintains the previous state, we must clean
             getScreen() // FIXME: show message?
         } else {
             job?.cancel()
@@ -116,6 +118,7 @@ class DeviceAuthViewModel @Inject constructor(
     private fun resetForm() {
         vehicleCode = ""
         isValidVehicleCode = false
+        disassociateDeviceState = false
     }
 
     fun handleShownError() {
