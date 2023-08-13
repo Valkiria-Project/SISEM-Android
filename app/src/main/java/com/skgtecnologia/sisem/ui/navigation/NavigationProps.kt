@@ -2,8 +2,8 @@ package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Upload
-import androidx.compose.material.icons.outlined.Download
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Send
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -31,8 +31,8 @@ sealed class MainNavigationRoute(
 ) {
     object Home : MainNavigationRoute("home", R.string.app_name, Icons.Outlined.Home)
     object Send : MainNavigationRoute("send", R.string.app_name, Icons.Outlined.Send)
-    object Deposit : MainNavigationRoute("deposit", R.string.app_name, Icons.Outlined.Download)
-    object Withdraw : MainNavigationRoute("withdraw", R.string.app_name, Icons.Filled.Upload)
+    object Deposit : MainNavigationRoute("deposit", R.string.app_name, Icons.Outlined.Delete)
+    object Withdraw : MainNavigationRoute("withdraw", R.string.app_name, Icons.Filled.Person)
 }
 
 sealed class MenuNavigationRoute(val route: String) {
