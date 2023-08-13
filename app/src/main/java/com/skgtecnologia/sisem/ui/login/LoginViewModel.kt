@@ -69,9 +69,8 @@ class LoginViewModel @Inject constructor(
     }
 
     private suspend fun List<BodyRowModel>.toAmbulanceCode() {
-        val ambulanceCode = (this.find {
-            it is ChipModel && it.text.isNotBlank()
-        } as? ChipModel)?.text
+        val ambulanceCode =
+            (this.find { it is ChipModel && it.text.isNotBlank() } as? ChipModel)?.text
 
         if (ambulanceCode?.isNotEmpty() == true) {
             storeAmbulanceCode.invoke(ambulanceCode).onSuccess {
