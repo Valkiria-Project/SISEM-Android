@@ -34,6 +34,8 @@ class LoginViewModel @Inject constructor(
         private set
 
     var code by mutableStateOf("")
+        private set
+
     var username by mutableStateOf("")
     var isValidUsername by mutableStateOf(false)
     var password by mutableStateOf("")
