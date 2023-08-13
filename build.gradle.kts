@@ -3,12 +3,12 @@ plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.daggerHilt) apply false
+    alias(libs.plugins.detekt) apply true
     alias(libs.plugins.kotlinAndroid) apply false
     alias(libs.plugins.kotlinKapt) apply false
     alias(libs.plugins.kotlinParcelize) apply false
-    id("org.jlleitschuh.gradle.ktlint") version "11.1.0" apply true
-    id("io.gitlab.arturbosch.detekt") version "1.17.0" apply true
-    id("com.github.ben-manes.versions") version "0.42.0" apply true
+    alias(libs.plugins.ktlint) apply true
+    alias(libs.plugins.versions) apply true
 }
 
 apply(from = "buildscripts/githooks.gradle")

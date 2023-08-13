@@ -2,10 +2,10 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.daggerHilt)
+    alias(libs.plugins.detekt)
     alias(libs.plugins.kotlinKapt)
     alias(libs.plugins.kotlinParcelize)
-    id("org.jlleitschuh.gradle.ktlint")
-    id("io.gitlab.arturbosch.detekt")
+    alias(libs.plugins.ktlint)
 }
 
 android {
@@ -75,7 +75,7 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.ui)
     implementation(libs.ui.graphics)
-    implementation("androidx.compose.ui:ui-text-google-fonts")
+    implementation(libs.ui.text.google.fonts)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.material3.window.size)
@@ -93,8 +93,8 @@ dependencies {
 
     // Networking
     implementation(platform(libs.okhttp.bom))
-    implementation("com.squareup.okhttp3:okhttp")
-    implementation("com.squareup.okhttp3:logging-interceptor")
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
 
     implementation(libs.retrofit)
     implementation(libs.converter.moshi)
@@ -102,12 +102,12 @@ dependencies {
     // Deserializer
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.15.0")
+    kapt(libs.moshi.codegen)
     implementation(libs.moshi.adapters)
 
     // Local Storage
     implementation(libs.androidx.room.runtime)
-    kapt("androidx.room:room-compiler:2.5.2")
+    kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
     // Media

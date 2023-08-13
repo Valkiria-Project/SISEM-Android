@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.detekt)
     alias(libs.plugins.kotlinAndroid)
-    id("org.jlleitschuh.gradle.ktlint")
-    id("io.gitlab.arturbosch.detekt")
+    alias(libs.plugins.ktlint)
     alias(libs.plugins.paparazzi)
 }
 
@@ -52,7 +52,7 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.ui)
     implementation(libs.ui.graphics)
-    implementation("androidx.compose.ui:ui-text-google-fonts")
+    implementation(libs.ui.text.google.fonts)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
 
