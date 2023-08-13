@@ -5,14 +5,14 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.skgtecnologia.sisem.data.auth.cache.dao.AccessTokenDao
 import com.skgtecnologia.sisem.data.auth.cache.model.AccessTokenEntity
-import com.skgtecnologia.sisem.data.authcards.cache.dao.ConfigDao
-import com.skgtecnologia.sisem.data.authcards.cache.model.ConfigEntity
+import com.skgtecnologia.sisem.data.operation.cache.dao.OperationDao
+import com.skgtecnologia.sisem.data.operation.cache.model.OperationEntity
 import com.skgtecnologia.sisem.data.cache.converters.CacheConverters
 
 @Database(
     entities = [
         AccessTokenEntity::class,
-        ConfigEntity::class
+        OperationEntity::class
     ],
     version = 1
 )
@@ -21,5 +21,5 @@ abstract class SisemDatabase : RoomDatabase() {
 
     abstract fun accessTokenDao(): AccessTokenDao
 
-    abstract fun configDao(): ConfigDao
+    abstract fun configDao(): OperationDao
 }

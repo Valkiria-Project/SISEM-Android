@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.di
 import android.content.Context
 import androidx.room.Room
 import com.skgtecnologia.sisem.data.auth.cache.dao.AccessTokenDao
-import com.skgtecnologia.sisem.data.authcards.cache.dao.ConfigDao
+import com.skgtecnologia.sisem.data.operation.cache.dao.OperationDao
 import com.skgtecnologia.sisem.data.cache.SisemDatabase
 import dagger.Module
 import dagger.Provides
@@ -30,7 +30,7 @@ object CoreDatabaseModule {
     }
 
     @Provides
-    fun provideConfigDao(sisemDatabase: SisemDatabase): ConfigDao {
+    fun provideOperationDao(sisemDatabase: SisemDatabase): OperationDao {
         return sisemDatabase.configDao()
     }
 }
