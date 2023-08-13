@@ -130,7 +130,7 @@ private fun handleUiAction(
 
             Login -> viewModel.login()
 
-            is LoginCode -> viewModel.storeAmbulanceCode(uiAction.code)
+            is LoginCode -> viewModel.code = uiAction.code
 
             is LoginPasswordInput -> {
                 viewModel.password = uiAction.updatedValue
