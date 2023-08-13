@@ -54,6 +54,7 @@ class LoginViewModel @Inject constructor(
                             isLoading = false
                         )
                     }
+                    storeAmbulanceCode()
                 }
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
@@ -66,11 +67,13 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun storeAmbulanceCode(ambulanceCode: String) {
-        job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
-            storeAmbulanceCode.invoke(ambulanceCode).onSuccess {
-                code = ambulanceCode
+    private fun storeAmbulanceCode() {
+        if (code.isNotEmpty()) {
+            job?.cancel()
+            job = viewModelScope.launch(Dispatchers.IO) {
+                storeAmbulanceCode.invoke(code).onSuccess {
+                    Timber.d("Successful storeAmbulanceCode")
+                }
             }
         }
     }

@@ -98,7 +98,7 @@ private fun NavGraphBuilder.authGraph(
     }
 }
 
-@Suppress("UnusedPrivateMember")
+@Suppress("UnusedPrivateMember", "LongMethod")
 private fun NavGraphBuilder.menuGraph(
     navController: NavHostController,
     isTablet: Boolean,
@@ -175,6 +175,18 @@ private fun NavGraphBuilder.menuGraph(
 
         composable(
             route = MenuNavigationRoute.PreoperationalMenuScreen.route
+        ) {
+            // FIXME: Finish this work
+        }
+
+        composable(
+            route = MenuNavigationRoute.DeviceAuth.route
+        ) {
+            navController.navigate(AuthNavigationRoute.DeviceAuth.route)
+        }
+
+        composable(
+            route = MenuNavigationRoute.SignatureAndFingerprint.route
         ) {
             // FIXME: Finish this work
         }
