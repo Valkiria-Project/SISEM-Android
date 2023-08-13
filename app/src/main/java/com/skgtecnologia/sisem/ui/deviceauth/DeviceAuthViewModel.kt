@@ -6,6 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
+import com.skgtecnologia.sisem.domain.auth.usecases.DeleteAccessToken
+import com.skgtecnologia.sisem.domain.deviceauth.model.AssociateDeviceModel
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.AssociateDevice
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.GetDeviceAuthScreen
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
@@ -21,6 +23,7 @@ import timber.log.Timber
 class DeviceAuthViewModel @Inject constructor(
     private val getDeviceAuthScreen: GetDeviceAuthScreen,
     private val associateDevice: AssociateDevice,
+    private val deleteAccessToken: DeleteAccessToken,
     private val androidIdProvider: AndroidIdProvider
 ) : ViewModel() {
 
@@ -34,6 +37,10 @@ class DeviceAuthViewModel @Inject constructor(
     var isValidVehicleCode by mutableStateOf(false)
 
     init {
+        getScreen()
+    }
+
+    private fun getScreen() {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
@@ -68,10 +75,7 @@ class DeviceAuthViewModel @Inject constructor(
                 vehicleCode,
                 disassociateDeviceState
             ).onSuccess { associateDeviceModel ->
-                uiState = uiState.copy(
-                    isLoading = false,
-                    onDeviceAuthenticated = true
-                )
+                handleOnSuccess(associateDeviceModel)
             }.onFailure { throwable ->
                 Timber.wtf(throwable, "This is a failure")
 
@@ -79,6 +83,22 @@ class DeviceAuthViewModel @Inject constructor(
                     isLoading = false,
                     errorModel = throwable.mapToUi()
                 )
+            }
+        }
+    }
+
+    private fun handleOnSuccess(associateDeviceModel: AssociateDeviceModel) {
+        if (disassociateDeviceState) {
+            getScreen() // FIXME: show message?
+        } else {
+            job?.cancel()
+            job = viewModelScope.launch(Dispatchers.IO) {
+                deleteAccessToken.invoke().onSuccess {
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        onDeviceAuthenticated = true
+                    )
+                }
             }
         }
     }

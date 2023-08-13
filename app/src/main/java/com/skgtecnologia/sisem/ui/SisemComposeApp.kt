@@ -82,7 +82,7 @@ private fun NavGraphBuilder.authGraph(
             isTablet = isTablet,
             modifier = modifier,
             onDeviceAuthenticated = {
-                navController.navigate(AuthNavigationRoute.PreOperational.route) // FIXME
+                navController.navigate(AuthNavigationRoute.AuthCards.route)
             },
             onCancel = { navController.navigateUp() }
         )

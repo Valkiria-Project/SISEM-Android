@@ -9,6 +9,6 @@ class AndroidIdProviderImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : AndroidIdProvider {
 
-    override fun getAndroidId(): String =
-        Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID).orEmpty()
+    override fun getAndroidId(): String = "asd123asd456"
+        // Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID).orEmpty()
 }
