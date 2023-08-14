@@ -240,7 +240,7 @@ fun HandleSegmentedSwitchRow(
     isTablet: Boolean,
     onAction: (actionInput: UiAction) -> Unit
 ) {
-    when(model.identifier) {
+    when (model.identifier) {
         DeviceAuthIdentifier.DEVICE_AUTH_SWITCH.name -> {
             SegmentedSwitchComponent(
                 uiModel = model.mapToUiModel(),
