@@ -16,7 +16,6 @@ sealed class AuthCardsUiAction : UiAction {
 sealed class LoginUiAction : UiAction {
     object ForgotPassword : LoginUiAction()
     object Login : LoginUiAction()
-    data class LoginCode(val code: String) : LoginUiAction()
 
     data class LoginPasswordInput(
         val updatedValue: String,
@@ -34,6 +33,7 @@ sealed class LoginUiAction : UiAction {
 sealed class DeviceAuthUiAction : UiAction {
     object DeviceAuth : DeviceAuthUiAction()
     data class DeviceAuthCodeInput(val updatedValue: String) : DeviceAuthUiAction()
+    data class DeviceAuthSwitchState(val state: Boolean) : DeviceAuthUiAction()
 }
 
 sealed class PreOperationalUiAction : UiAction {
@@ -41,4 +41,7 @@ sealed class PreOperationalUiAction : UiAction {
         val updatedValue: String,
         val fieldValidated: Boolean
     ) : PreOperationalUiAction()
+
+    data class PreOpSwitchState(val id: String, val status: Boolean) : PreOperationalUiAction()
+    object SavePreOperational : PreOperationalUiAction()
 }

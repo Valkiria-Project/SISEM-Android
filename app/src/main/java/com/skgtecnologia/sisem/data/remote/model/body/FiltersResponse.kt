@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.FiltersModel
 import com.squareup.moshi.Json
@@ -18,7 +17,7 @@ data class FiltersResponse(
 
     override val type: BodyRowType = BodyRowType.CHIP
 
-    override fun mapToDomain(): BodyRowModel = FiltersModel(
+    override fun mapToDomain(): FiltersModel = FiltersModel(
         identifier = identifier ?: error("Filters identifier cannot be null"),
         options = options ?: error("Filters options cannot be null"),
         textStyle = textStyle ?: error("Filters textStyle cannot be null"),

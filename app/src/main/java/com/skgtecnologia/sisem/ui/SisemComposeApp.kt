@@ -49,7 +49,7 @@ private fun NavGraphBuilder.authGraph(
     modifier: Modifier
 ) {
     navigation(
-        startDestination = AuthNavigationRoute.AuthCards.route,
+        startDestination = AuthNavigationRoute.PreOperational.route,
         route = NavigationGraph.Auth.route
     ) {
         composable(
@@ -73,30 +73,32 @@ private fun NavGraphBuilder.authGraph(
                 navigateToNextStep(navController, navigationModel)
             }
         }
-    }
 
-    composable(
-        route = AuthNavigationRoute.DeviceAuth.route
-    ) {
-        DeviceAuthScreen(
-            isTablet = isTablet,
-            modifier = modifier
+        composable(
+            route = AuthNavigationRoute.DeviceAuth.route
         ) {
-            navController.navigate(AuthNavigationRoute.PreOperational.route) // FIXME
+            DeviceAuthScreen(
+                isTablet = isTablet,
+                modifier = modifier,
+                onDeviceAuthenticated = {
+                    navController.navigate(AuthNavigationRoute.AuthCards.route)
+                },
+                onCancel = { navController.navigateUp() }
+            )
         }
-    }
 
-    composable(
-        route = AuthNavigationRoute.PreOperational.route
-    ) {
-        PreOperationalScreen(
-            isTablet = isTablet,
-            modifier = modifier
-        )
+        composable(
+            route = AuthNavigationRoute.PreOperational.route
+        ) {
+            PreOperationalScreen(
+                isTablet = isTablet,
+                modifier = modifier
+            )
+        }
     }
 }
 
-@Suppress("UnusedPrivateMember")
+@Suppress("UnusedPrivateMember", "LongMethod")
 private fun NavGraphBuilder.menuGraph(
     navController: NavHostController,
     isTablet: Boolean,
@@ -173,6 +175,18 @@ private fun NavGraphBuilder.menuGraph(
 
         composable(
             route = MenuNavigationRoute.PreoperationalMenuScreen.route
+        ) {
+            // FIXME: Finish this work
+        }
+
+        composable(
+            route = MenuNavigationRoute.DeviceAuth.route
+        ) {
+            navController.navigate(AuthNavigationRoute.DeviceAuth.route)
+        }
+
+        composable(
+            route = MenuNavigationRoute.SignatureAndFingerprint.route
         ) {
             // FIXME: Finish this work
         }

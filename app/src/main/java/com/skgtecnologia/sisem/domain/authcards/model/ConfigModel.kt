@@ -10,5 +10,6 @@ data class ConfigModel(
     val numImgNovelty: Int,
     val authMethod: String,
     val attentionsType: String,
-    val status: Boolean
+    val status: Boolean,
+    val ambulanceCode: String? = null
 )

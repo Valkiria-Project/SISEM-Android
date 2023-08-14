@@ -11,19 +11,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.R.drawable
 import com.skgtecnologia.sisem.domain.authcards.model.AuthCardsIdentifier
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
 import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.ButtonModel
 import com.skgtecnologia.sisem.domain.model.body.ChipModel
-import com.skgtecnologia.sisem.domain.model.body.CommentsModel
+import com.skgtecnologia.sisem.domain.model.body.ChipOptionsModel
 import com.skgtecnologia.sisem.domain.model.body.ContentHeaderModel
 import com.skgtecnologia.sisem.domain.model.body.CrewMemberCardModel
 import com.skgtecnologia.sisem.domain.model.body.DetailedInfoListModel
 import com.skgtecnologia.sisem.domain.model.body.FiltersModel
+import com.skgtecnologia.sisem.domain.model.body.FindingModel
 import com.skgtecnologia.sisem.domain.model.body.FingerprintModel
+import com.skgtecnologia.sisem.domain.model.body.InventoryCheckModel
 import com.skgtecnologia.sisem.domain.model.body.LabelModel
 import com.skgtecnologia.sisem.domain.model.body.PasswordTextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.RichLabelModel
@@ -34,21 +36,22 @@ import com.skgtecnologia.sisem.domain.model.body.mapToHeaderModel
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
 import com.valkiria.uicomponents.action.AuthCardsUiAction
+import com.valkiria.uicomponents.action.DeviceAuthUiAction
 import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
 import com.valkiria.uicomponents.action.LoginUiAction.Login
-import com.valkiria.uicomponents.action.LoginUiAction.LoginCode
 import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
 import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
+import com.valkiria.uicomponents.action.PreOperationalUiAction
 import com.valkiria.uicomponents.action.PreOperationalUiAction.DriverVehicleKMInput
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
-import com.valkiria.uicomponents.components.comments.CommentsComponent
 import com.valkiria.uicomponents.components.crewmembercard.CrewMemberCardComponent
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListComponent
 import com.valkiria.uicomponents.components.filters.FilterChipsComponent
+import com.valkiria.uicomponents.components.finding.FindingComponent
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.passwordtextfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
@@ -94,10 +97,8 @@ private fun LazyListScope.handleBodyRows(
                 HandleChipRows(model, isTablet, onAction)
             }
 
-            is CommentsModel -> item(key = model.identifier) {
-                CommentsComponent(
-                    uiModel = model.mapToUiModel()
-                )
+            is ChipOptionsModel -> item(key = model.identifier) {
+                // FIXME
             }
 
             is ContentHeaderModel -> item(key = model.identifier) {
@@ -122,12 +123,20 @@ private fun LazyListScope.handleBodyRows(
                 )
             }
 
+            is FindingModel -> item(key = model.identifier) {
+                HandleFindingRows(model, isTablet, onAction)
+            }
+
             is FingerprintModel -> item(key = model.identifier) {
                 Image(
                     modifier = Modifier.padding(vertical = 20.dp),
-                    painter = painterResource(id = R.drawable.ic_fingerprint),
+                    painter = painterResource(id = drawable.ic_fingerprint),
                     contentDescription = null
                 )
+            }
+
+            is InventoryCheckModel -> item(key = model.identifier) {
+                // FIXME
             }
 
             is LabelModel -> item(key = model.text) {
@@ -135,10 +144,7 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is SegmentedSwitchModel -> item(key = model.identifier) {
-                SegmentedSwitchComponent(
-                    uiModel = model.mapToUiModel(),
-                    isTablet = isTablet
-                )
+                HandleSegmentedSwitchRows(model, isTablet, onAction)
             }
 
             is PasswordTextFieldModel -> item(key = model.identifier) {
@@ -209,8 +215,6 @@ private fun HandleChipRows(
             ChipComponent(
                 uiModel = model.mapToUiModel()
             )
-
-            onAction(LoginCode(model.text))
         }
 
         else -> ChipComponent(
@@ -235,6 +239,49 @@ private fun HandleCrewMemberCardRows(
                 onAction = { onAction(AuthCardsUiAction.AuthCard) },
                 onNewsAction = { onAction(AuthCardsUiAction.AuthCardNews(it)) }
             )
+        }
+    }
+}
+
+@Composable
+fun HandleFindingRows(
+    model: FindingModel,
+    isTablet: Boolean,
+    onAction: (actionInput: UiAction) -> Unit
+) {
+    when {
+        model.identifier.contains(PreOperationalIdentifier.PREOP.name) -> {
+            FindingComponent(
+                uiModel = model.mapToUiModel(),
+                isTablet = isTablet
+            ) { id, status ->
+                onAction(PreOperationalUiAction.PreOpSwitchState(id = id, status = status))
+            }
+        }
+    }
+}
+
+@Composable
+fun HandleSegmentedSwitchRows(
+    model: SegmentedSwitchModel,
+    isTablet: Boolean,
+    onAction: (actionInput: UiAction) -> Unit
+) {
+    when (model.identifier) {
+        DeviceAuthIdentifier.DEVICE_AUTH_SWITCH.name -> {
+            SegmentedSwitchComponent(
+                uiModel = model.mapToUiModel(),
+                isTablet = isTablet
+            ) { _, status ->
+                onAction(DeviceAuthUiAction.DeviceAuthSwitchState(state = status))
+            }
+        }
+
+        else -> {
+            SegmentedSwitchComponent(
+                uiModel = model.mapToUiModel(),
+                isTablet = isTablet
+            ) { _, _ -> }
         }
     }
 }

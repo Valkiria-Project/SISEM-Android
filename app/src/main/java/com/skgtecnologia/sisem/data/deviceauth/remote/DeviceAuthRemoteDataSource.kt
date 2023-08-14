@@ -26,15 +26,15 @@ class DeviceAuthRemoteDataSource @Inject constructor(
     }
 
     suspend fun associateDevice(
-        licensePlate: String,
         serial: String,
-        code: String
+        code: String,
+        disassociateDevice: Boolean
     ): Result<AssociateDeviceModel> = apiCall {
         deviceAuthApi.associateDevice(
             associateDeviceBody = AssociateDeviceBody(
-                licensePlate = licensePlate,
                 serial = serial,
-                code = code
+                code = code,
+                disassociateDevice = disassociateDevice
             )
         )
     }.mapResult {

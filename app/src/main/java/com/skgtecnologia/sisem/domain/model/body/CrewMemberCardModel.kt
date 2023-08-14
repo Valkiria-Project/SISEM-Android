@@ -1,6 +1,10 @@
 package com.skgtecnologia.sisem.domain.model.body
 
 import androidx.compose.ui.Modifier
+import com.skgtecnologia.sisem.domain.model.bricks.ChipSectionModel
+import com.skgtecnologia.sisem.domain.model.bricks.PillModel
+import com.skgtecnologia.sisem.domain.model.bricks.ReportsDetailModel
+import com.skgtecnologia.sisem.domain.model.bricks.mapToUiModel
 import com.skgtecnologia.sisem.domain.model.header.TextModel
 import com.valkiria.uicomponents.components.crewmembercard.CrewMemberCardUiModel
 

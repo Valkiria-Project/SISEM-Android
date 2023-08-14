@@ -5,13 +5,15 @@ import com.skgtecnologia.sisem.data.remote.adapters.KeyboardOptionsAdapter
 import com.skgtecnologia.sisem.data.remote.adapters.ModifierAdapter
 import com.skgtecnologia.sisem.data.remote.model.body.BodyRowResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ButtonResponse
+import com.skgtecnologia.sisem.data.remote.model.body.ChipOptionsResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ChipResponse
-import com.skgtecnologia.sisem.data.remote.model.body.CommentResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ContentHeaderResponse
 import com.skgtecnologia.sisem.data.remote.model.body.CrewMemberCardResponse
 import com.skgtecnologia.sisem.data.remote.model.body.DetailedInfoListResponse
 import com.skgtecnologia.sisem.data.remote.model.body.FiltersResponse
+import com.skgtecnologia.sisem.data.remote.model.body.FindingResponse
 import com.skgtecnologia.sisem.data.remote.model.body.FingerprintResponse
+import com.skgtecnologia.sisem.data.remote.model.body.InventoryCheckResponse
 import com.skgtecnologia.sisem.data.remote.model.body.LabelResponse
 import com.skgtecnologia.sisem.data.remote.model.body.PasswordTextFieldResponse
 import com.skgtecnologia.sisem.data.remote.model.body.RichLabelResponse
@@ -87,8 +89,8 @@ object CoreNetworkModule {
             ChipResponse::class.java,
             BodyRowType.CHIP.name
         ).withSubtype(
-            CommentResponse::class.java,
-            BodyRowType.COMMENTS.name
+            ChipOptionsResponse::class.java,
+            BodyRowType.CHIP_OPTIONS.name
         ).withSubtype(
             ContentHeaderResponse::class.java,
             BodyRowType.CONTENT_HEADER.name
@@ -102,8 +104,14 @@ object CoreNetworkModule {
             FiltersResponse::class.java,
             BodyRowType.FILTERS.name
         ).withSubtype(
+            FindingResponse::class.java,
+            BodyRowType.FINDING.name
+        ).withSubtype(
             FingerprintResponse::class.java,
             BodyRowType.FINGERPRINT.name
+        ).withSubtype(
+            InventoryCheckResponse::class.java,
+            BodyRowType.INVENTORY_CHECK.name
         ).withSubtype(
             LabelResponse::class.java,
             BodyRowType.LABEL.name
