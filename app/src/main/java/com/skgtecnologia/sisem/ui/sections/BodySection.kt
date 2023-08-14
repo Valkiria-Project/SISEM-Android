@@ -50,7 +50,7 @@ import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
 import com.valkiria.uicomponents.components.crewmembercard.CrewMemberCardComponent
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListComponent
-import com.valkiria.uicomponents.components.filters.FilterChipsComponent
+import com.valkiria.uicomponents.components.filters.FiltersComponent
 import com.valkiria.uicomponents.components.finding.FindingComponent
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.passwordtextfield.PasswordTextFieldComponent
@@ -118,7 +118,7 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is FiltersModel -> stickyHeader(key = model.identifier) {
-                FilterChipsComponent(
+                FiltersComponent(
                     uiModel = model.mapToUiModel()
                 )
             }

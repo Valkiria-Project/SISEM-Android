@@ -10,7 +10,6 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.mocks.getDeviceAuthLicensePlateLabelUiModel
 import com.valkiria.uicomponents.mocks.getDeviceAuthSerialLabelUiModel
 import com.valkiria.uicomponents.props.toTextStyle
-import com.valkiria.uicomponents.theme.UiComponentsTheme
 
 @Composable
 fun LabelComponent(
@@ -24,19 +23,17 @@ fun LabelComponent(
     )
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = false)
 @Composable
 fun LabelComponentPreview() {
-    UiComponentsTheme {
-        Column {
-            LabelComponent(
-                uiModel = getDeviceAuthSerialLabelUiModel(),
-                modifier = Modifier.padding(16.dp)
-            )
-            LabelComponent(
-                uiModel = getDeviceAuthLicensePlateLabelUiModel(),
-                modifier = Modifier.padding(0.dp)
-            )
-        }
+    Column {
+        LabelComponent(
+            uiModel = getDeviceAuthSerialLabelUiModel(),
+            modifier = Modifier.padding(16.dp)
+        )
+        LabelComponent(
+            uiModel = getDeviceAuthLicensePlateLabelUiModel(),
+            modifier = Modifier.padding(0.dp)
+        )
     }
 }

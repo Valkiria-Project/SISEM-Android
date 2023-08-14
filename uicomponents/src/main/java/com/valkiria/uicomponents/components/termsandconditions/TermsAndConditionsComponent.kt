@@ -17,7 +17,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.ireward.htmlcompose.HtmlText
 import com.valkiria.uicomponents.mocks.getLoginTermsAndConditionsUiModel
 import com.valkiria.uicomponents.props.TabletWidth
-import com.valkiria.uicomponents.theme.UiComponentsTheme
 import timber.log.Timber
 
 @Composable
@@ -58,15 +57,13 @@ fun TermsAndConditionsComponent(
 @Preview(showBackground = true)
 @Composable
 fun TermsAndConditionsComponentPreview() {
-    UiComponentsTheme {
-        Column(
-            modifier = Modifier.background(Color.DarkGray)
-        ) {
-            TermsAndConditionsComponent(
-                uiModel = getLoginTermsAndConditionsUiModel()
-            ) { link ->
-                Timber.d("Handle $link clicked")
-            }
+    Column(
+        modifier = Modifier.background(Color.DarkGray)
+    ) {
+        TermsAndConditionsComponent(
+            uiModel = getLoginTermsAndConditionsUiModel()
+        ) { link ->
+            Timber.d("Handle $link clicked")
         }
     }
 }

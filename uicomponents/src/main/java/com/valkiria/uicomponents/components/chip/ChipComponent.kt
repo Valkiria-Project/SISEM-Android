@@ -23,7 +23,6 @@ import com.valkiria.uicomponents.props.ChipStyle
 import com.valkiria.uicomponents.props.toChipBorder
 import com.valkiria.uicomponents.props.toChipColors
 import com.valkiria.uicomponents.props.toTextStyle
-import com.valkiria.uicomponents.theme.UiComponentsTheme
 import com.valkiria.uicomponents.utlis.DefType.DRAWABLE
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 
@@ -67,20 +66,18 @@ fun ChipComponent(
 @Preview(showBackground = true)
 @Composable
 fun ChipComponentPreview() {
-    UiComponentsTheme {
-        Column(
-            modifier = Modifier
-                .background(Color.DarkGray)
-                .padding(16.dp)
-        ) {
-            ChipComponent(
-                uiModel = getLoginChipUiModel()
+    Column(
+        modifier = Modifier
+            .background(Color.DarkGray)
+            .padding(16.dp)
+    ) {
+        ChipComponent(
+            uiModel = getLoginChipUiModel()
+        )
+        ChipComponent(
+            uiModel = getLoginChipUiModel().copy(
+                style = ChipStyle.SECONDARY
             )
-            ChipComponent(
-                uiModel = getLoginChipUiModel().copy(
-                    style = ChipStyle.SECONDARY
-                )
-            )
-        }
+        )
     }
 }

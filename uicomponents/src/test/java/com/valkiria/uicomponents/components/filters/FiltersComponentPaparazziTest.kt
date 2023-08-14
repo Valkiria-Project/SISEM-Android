@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.components.textfield
+package com.valkiria.uicomponents.components.filters
 
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
@@ -6,7 +6,7 @@ import com.android.ide.common.rendering.api.SessionParams.RenderingMode.V_SCROLL
 import org.junit.Rule
 import org.junit.Test
 
-class TextFieldComponentPaparazziTest {
+class FiltersComponentPaparazziTest {
 
     @get:Rule
     val paparazziRule: Paparazzi = Paparazzi(
@@ -16,9 +16,9 @@ class TextFieldComponentPaparazziTest {
     )
 
     @Test
-    fun snapLoginUserTextFieldComponent() {
+    fun snapFiltersComponent() {
         paparazziRule.snapshot {
-            TextFieldComponentPreview()
+            FiltersComponentPreview()
         }
     }
 }
