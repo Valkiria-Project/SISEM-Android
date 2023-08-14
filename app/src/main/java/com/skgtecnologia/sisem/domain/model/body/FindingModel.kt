@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.domain.model.body
 
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.components.comments.FindingUiModel
+import com.valkiria.uicomponents.components.finding.FindingUiModel
 
 data class FindingModel(
     val identifier: String,

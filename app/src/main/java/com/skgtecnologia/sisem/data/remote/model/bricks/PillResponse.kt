@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.data.remote.model.bricks
 
 import com.skgtecnologia.sisem.data.remote.model.header.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.header.mapToDomain
-import com.skgtecnologia.sisem.domain.model.body.PillModel
+import com.skgtecnologia.sisem.domain.model.bricks.PillModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

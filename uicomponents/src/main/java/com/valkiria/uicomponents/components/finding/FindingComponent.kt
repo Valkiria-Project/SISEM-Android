@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.components.comments
+package com.valkiria.uicomponents.components.finding
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

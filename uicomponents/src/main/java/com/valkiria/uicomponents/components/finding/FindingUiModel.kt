@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.components.comments
+package com.valkiria.uicomponents.components.finding
 
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel

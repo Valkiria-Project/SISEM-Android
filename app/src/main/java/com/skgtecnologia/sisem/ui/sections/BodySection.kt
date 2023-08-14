@@ -33,7 +33,7 @@ import com.skgtecnologia.sisem.domain.model.body.SegmentedSwitchModel
 import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.mapToHeaderModel
-import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
+import com.skgtecnologia.sisem.domain.model.bricks.mapToUiModel
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
@@ -47,10 +47,10 @@ import com.valkiria.uicomponents.action.PreOperationalUiAction.DriverVehicleKMIn
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
-import com.valkiria.uicomponents.components.comments.FindingComponent
 import com.valkiria.uicomponents.components.crewmembercard.CrewMemberCardComponent
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListComponent
 import com.valkiria.uicomponents.components.filters.FilterChipsComponent
+import com.valkiria.uicomponents.components.finding.FindingComponent
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.passwordtextfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
