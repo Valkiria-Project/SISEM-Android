@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.data.remote.model.bricks.DetailedInfoBrickResponse
+import com.skgtecnologia.sisem.data.remote.model.bricks.DetailedInfoResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.DetailedInfoListModel
@@ -12,7 +12,7 @@ import com.valkiria.uicomponents.props.TextStyle
 @JsonClass(generateAdapter = true)
 data class DetailedInfoListResponse(
     @Json(name = "identifier") val identifier: String?,
-    @Json(name = "details") val details: List<DetailedInfoBrickResponse>?,
+    @Json(name = "details") val details: List<DetailedInfoResponse>?,
     @Json(name = "label_text_style") val labelTextStyle: TextStyle?,
     @Json(name = "text_text_style") val textTextStyle: TextStyle?,
     @Json(name = "margins") val modifier: Modifier?

@@ -1,9 +1,9 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.data.remote.model.bricks.ChipSectionBrickResponse
-import com.skgtecnologia.sisem.data.remote.model.bricks.PillBrickResponse
-import com.skgtecnologia.sisem.data.remote.model.bricks.ReportsDetailBrickResponse
+import com.skgtecnologia.sisem.data.remote.model.bricks.ChipSectionResponse
+import com.skgtecnologia.sisem.data.remote.model.bricks.PillResponse
+import com.skgtecnologia.sisem.data.remote.model.bricks.ReportsDetailResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToDomain
 import com.skgtecnologia.sisem.data.remote.model.header.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.header.mapToDomain
@@ -17,10 +17,10 @@ data class CrewMemberCardResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "icon") val icon: String?,
     @Json(name = "title") val title: TextResponse?,
-    @Json(name = "pill") val pill: PillBrickResponse?,
+    @Json(name = "pill") val pill: PillResponse?,
     @Json(name = "date") val date: TextResponse?,
-    @Json(name = "chip_section") val chipSection: ChipSectionBrickResponse?,
-    @Json(name = "reports_detail") val reportsDetail: ReportsDetailBrickResponse?,
+    @Json(name = "chip_section") val chipSection: ChipSectionResponse?,
+    @Json(name = "reports_detail") val reportsDetail: ReportsDetailResponse?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 

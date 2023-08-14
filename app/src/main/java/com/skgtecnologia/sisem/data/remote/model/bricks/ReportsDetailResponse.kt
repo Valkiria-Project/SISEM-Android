@@ -7,12 +7,12 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class ReportsDetailBrickResponse(
+data class ReportsDetailResponse(
     @Json(name = "header") val header: HeaderResponse?,
-    @Json(name = "details") val details: List<DetailBrickResponse>?
+    @Json(name = "details") val details: List<DetailResponse>?
 )
 
-fun ReportsDetailBrickResponse.mapToDomain(): ReportsDetailModel = ReportsDetailModel(
+fun ReportsDetailResponse.mapToDomain(): ReportsDetailModel = ReportsDetailModel(
     header = header?.mapToDomain() ?: error("ReportsDetail header cannot be null"),
     details = details?.map { it.mapToDomain() } ?: error("ReportsDetail details cannot be null")
 )

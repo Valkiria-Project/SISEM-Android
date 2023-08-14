@@ -47,11 +47,11 @@ fun SegmentedSwitchComponent(
             modifier = Modifier
                 .fillMaxWidth(0.35f)
                 .padding(end = 8.dp),
-           color = if (selectedIndex.intValue == 0){
-               Color.White
-           } else {
-               MaterialTheme.colorScheme.error
-           }
+            color = if (selectedIndex.intValue == 0) {
+                Color.White
+            } else {
+                MaterialTheme.colorScheme.error
+            }
         )
 
         Row(

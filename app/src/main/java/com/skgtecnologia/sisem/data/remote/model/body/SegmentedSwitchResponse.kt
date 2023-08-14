@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.data.remote.model.bricks.OptionBrickResponse
+import com.skgtecnologia.sisem.data.remote.model.bricks.OptionResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.SegmentedSwitchModel
@@ -14,7 +14,7 @@ data class SegmentedSwitchResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "text") val text: String?,
     @Json(name = "text_style") val textStyle: TextStyle?,
-    @Json(name = "options") val options: List<OptionBrickResponse>?,
+    @Json(name = "options") val options: List<OptionResponse>?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
