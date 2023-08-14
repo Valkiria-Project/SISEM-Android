@@ -31,7 +31,6 @@ import com.valkiria.uicomponents.mocks.getLoginUserTextFieldUiModel
 import com.valkiria.uicomponents.mocks.getPreOpDriverVehicleKMTextFieldUiModel
 import com.valkiria.uicomponents.props.TabletWidth
 import com.valkiria.uicomponents.props.toTextStyle
-import com.valkiria.uicomponents.theme.UiComponentsTheme
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import timber.log.Timber
@@ -78,7 +77,9 @@ fun TextFieldComponent(
                     text.toFailedValidation(uiModel.validations, validateFields) == null
                 )
             },
-            modifier = Modifier.fillMaxWidth().imePadding(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .imePadding(),
             textStyle = uiModel.textStyle.toTextStyle(),
             label = {
                 uiModel.label?.let { label ->
@@ -114,20 +115,18 @@ fun TextFieldComponent(
 @Preview(showBackground = true)
 @Composable
 fun TextFieldComponentPreview() {
-    UiComponentsTheme {
-        Column(
-            modifier = Modifier.background(Color.DarkGray)
-        ) {
-            TextFieldComponent(
-                uiModel = getLoginUserTextFieldUiModel()
-            ) { updatedValue, fieldValidated ->
-                Timber.d("Handle $updatedValue with $fieldValidated")
-            }
-            TextFieldComponent(
-                uiModel = getPreOpDriverVehicleKMTextFieldUiModel()
-            ) { updatedValue, fieldValidated ->
-                Timber.d("Handle $updatedValue with $fieldValidated")
-            }
+    Column(
+        modifier = Modifier.background(Color.DarkGray)
+    ) {
+        TextFieldComponent(
+            uiModel = getLoginUserTextFieldUiModel()
+        ) { updatedValue, fieldValidated ->
+            Timber.d("Handle $updatedValue with $fieldValidated")
+        }
+        TextFieldComponent(
+            uiModel = getPreOpDriverVehicleKMTextFieldUiModel()
+        ) { updatedValue, fieldValidated ->
+            Timber.d("Handle $updatedValue with $fieldValidated")
         }
     }
 }
