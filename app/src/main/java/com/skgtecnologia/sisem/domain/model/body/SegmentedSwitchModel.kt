@@ -17,6 +17,7 @@ data class SegmentedSwitchModel(
 }
 
 fun SegmentedSwitchModel.mapToUiModel() = SegmentedSwitchUiModel(
+    identifier = identifier,
     text = text,
     textStyle = textStyle,
     options = options,

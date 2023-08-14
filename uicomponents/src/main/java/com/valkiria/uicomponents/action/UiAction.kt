@@ -41,4 +41,7 @@ sealed class PreOperationalUiAction : UiAction {
         val updatedValue: String,
         val fieldValidated: Boolean
     ) : PreOperationalUiAction()
+
+    data class PreOpSwitchState(val id: String, val status: Boolean) : PreOperationalUiAction()
+    object SavePreOperational : PreOperationalUiAction()
 }

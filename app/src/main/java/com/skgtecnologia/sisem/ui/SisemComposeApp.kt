@@ -84,6 +84,7 @@ private fun NavGraphBuilder.authGraph(
                     navController.navigate(AuthNavigationRoute.AuthCards.route)
                 },
                 onCancel = { navController.navigateUp() }
+            )
         }
 
         composable(

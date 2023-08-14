@@ -20,8 +20,8 @@ class PreOperationalRemoteDataSource @Inject constructor(
         it.mapToDomain()
     }
 
-    suspend fun savePreOperational(): Result<Unit> = apiCall {
-        preOperationalApi.savePreOperational(
+    suspend fun sendPreOperational(): Result<Unit> = apiCall {
+        preOperationalApi.sendPreOperational(
             screenBody = ScreenBody(params = Params(serial = "serial")) // FIXME: Hardcoded data
         )
     }

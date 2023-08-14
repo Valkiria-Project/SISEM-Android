@@ -12,6 +12,6 @@ class PreOperationalRepositoryImpl @Inject constructor(
     override suspend fun getPreOperationalScreen(): ScreenModel =
         preOperationalRemoteDataSource.getPreOperationalScreen().getOrThrow()
 
-    override suspend fun savePreOperational() =
-        preOperationalRemoteDataSource.savePreOperational().getOrThrow()
+    override suspend fun sendPreOperational() =
+        preOperationalRemoteDataSource.sendPreOperational().getOrThrow()
 }

@@ -5,12 +5,12 @@ import com.skgtecnologia.sisem.commons.extensions.resultOf
 import com.skgtecnologia.sisem.domain.preoperational.PreOperationalRepository
 import javax.inject.Inject
 
-class SavePreOperational @Inject constructor(
+class SendPreOperational @Inject constructor(
     private val preOperationalRepository: PreOperationalRepository
 ) {
 
     @CheckResult
     suspend operator fun invoke(): Result<Unit> = resultOf {
-        preOperationalRepository.savePreOperational()
+        preOperationalRepository.sendPreOperational()
     }
 }

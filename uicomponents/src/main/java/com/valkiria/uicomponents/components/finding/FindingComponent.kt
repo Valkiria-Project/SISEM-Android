@@ -10,12 +10,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
 import com.valkiria.uicomponents.mocks.getPreOperationalOilFindingUiModel
 import com.valkiria.uicomponents.theme.UiComponentsTheme
+import timber.log.Timber
 
+@Suppress("UnusedPrivateMember")
 @Composable
 fun FindingComponent(
-    uiModel: FindingUiModel
+    uiModel: FindingUiModel,
+    isTablet: Boolean = false,
+    onAction: (id: String, status: Boolean) -> Unit
 ) {
-    SegmentedSwitchComponent(uiModel = uiModel.option)
+    SegmentedSwitchComponent(uiModel = uiModel.option) { id, status ->
+        onAction(id, status)
+    }
 //    Row(
 //        modifier = Modifier
 //            .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -77,7 +83,9 @@ fun FindingComponentPreview() {
                 .fillMaxSize()
                 .background(Color.DarkGray)
         ) {
-            FindingComponent(uiModel = getPreOperationalOilFindingUiModel())
+            FindingComponent(uiModel = getPreOperationalOilFindingUiModel()) { id, status ->
+                Timber.d("Finding with id $id set to $status")
+            }
         }
     }
 }

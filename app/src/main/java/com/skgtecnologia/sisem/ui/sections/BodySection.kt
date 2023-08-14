@@ -43,6 +43,7 @@ import com.valkiria.uicomponents.action.LoginUiAction.Login
 import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
 import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
+import com.valkiria.uicomponents.action.PreOperationalUiAction
 import com.valkiria.uicomponents.action.PreOperationalUiAction.DriverVehicleKMInput
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
@@ -100,12 +101,6 @@ private fun LazyListScope.handleBodyRows(
                 // FIXME
             }
 
-            is FindingModel -> item(key = model.identifier) {
-                FindingComponent(
-                    uiModel = model.mapToUiModel()
-                )
-            }
-
             is ContentHeaderModel -> item(key = model.identifier) {
                 HeaderSection(
                     headerModel = model.mapToHeaderModel()
@@ -128,6 +123,10 @@ private fun LazyListScope.handleBodyRows(
                 )
             }
 
+            is FindingModel -> item(key = model.identifier) {
+                HandleFindingRows(model, isTablet, onAction)
+            }
+
             is FingerprintModel -> item(key = model.identifier) {
                 Image(
                     modifier = Modifier.padding(vertical = 20.dp),
@@ -145,7 +144,7 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is SegmentedSwitchModel -> item(key = model.identifier) {
-                HandleSegmentedSwitchRow(model, isTablet, onAction)
+                HandleSegmentedSwitchRows(model, isTablet, onAction)
             }
 
             is PasswordTextFieldModel -> item(key = model.identifier) {
@@ -245,7 +244,25 @@ private fun HandleCrewMemberCardRows(
 }
 
 @Composable
-fun HandleSegmentedSwitchRow(
+fun HandleFindingRows(
+    model: FindingModel,
+    isTablet: Boolean,
+    onAction: (actionInput: UiAction) -> Unit
+) {
+    when {
+        model.identifier.contains(PreOperationalIdentifier.PREOP.name) -> {
+            FindingComponent(
+                uiModel = model.mapToUiModel(),
+                isTablet = isTablet
+            ) { id, status ->
+                onAction(PreOperationalUiAction.PreOpSwitchState(id = id, status = status))
+            }
+        }
+    }
+}
+
+@Composable
+fun HandleSegmentedSwitchRows(
     model: SegmentedSwitchModel,
     isTablet: Boolean,
     onAction: (actionInput: UiAction) -> Unit
@@ -255,8 +272,8 @@ fun HandleSegmentedSwitchRow(
             SegmentedSwitchComponent(
                 uiModel = model.mapToUiModel(),
                 isTablet = isTablet
-            ) {
-                onAction(DeviceAuthUiAction.DeviceAuthSwitchState(state = it))
+            ) { _, status ->
+                onAction(DeviceAuthUiAction.DeviceAuthSwitchState(state = status))
             }
         }
 
@@ -264,7 +281,7 @@ fun HandleSegmentedSwitchRow(
             SegmentedSwitchComponent(
                 uiModel = model.mapToUiModel(),
                 isTablet = isTablet
-            ) { }
+            ) { _, _ -> }
         }
     }
 }

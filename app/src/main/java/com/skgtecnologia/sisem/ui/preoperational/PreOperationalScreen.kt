@@ -16,6 +16,8 @@ import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
+import com.valkiria.uicomponents.action.PreOperationalUiAction
+import com.valkiria.uicomponents.action.PreOperationalUiAction.SavePreOperational
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
 import com.valkiria.uicomponents.components.loader.LoaderComponent
@@ -63,7 +65,7 @@ fun PreOperationalScreen(
                 }
                 .padding(top = 20.dp)
         ) { uiAction ->
-            Timber.d("Handle $uiAction")
+            handleUiAction(uiAction, viewModel)
         }
 
         uiState.screenModel?.footer?.let {
@@ -96,13 +98,34 @@ fun PreOperationalScreen(
     }
 }
 
+private fun handleUiAction(
+    uiAction: UiAction,
+    viewModel: PreOperationalViewModel
+) {
+    (uiAction as? PreOperationalUiAction)?.let {
+        when (uiAction) {
+            is PreOperationalUiAction.DriverVehicleKMInput -> {
+                // FIXME
+                Timber.d("Handle DriverVehicleKMInput ${uiAction.updatedValue}")
+            }
+
+            is PreOperationalUiAction.PreOpSwitchState -> {
+                // FIXME
+                Timber.d("Handle PreOpSwitchState with ${uiAction.id} and ${uiAction.status}")
+            }
+
+            SavePreOperational -> viewModel.sendPreOperational()
+        }
+    }
+}
+
 private fun handleFooterUiAction(
     uiAction: UiAction,
     viewModel: PreOperationalViewModel
 ) {
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
-            PreOperationalIdentifier.DRIVER_PREOP_SAVE_BUTTON.name -> viewModel.savePreOperational()
+            PreOperationalIdentifier.DRIVER_PREOP_SAVE_BUTTON.name -> viewModel.sendPreOperational()
         }
     }
 }

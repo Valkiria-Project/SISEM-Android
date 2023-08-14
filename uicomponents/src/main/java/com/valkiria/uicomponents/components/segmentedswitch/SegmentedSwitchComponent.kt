@@ -32,7 +32,7 @@ import com.valkiria.uicomponents.theme.UiComponentsTheme
 fun SegmentedSwitchComponent(
     uiModel: SegmentedSwitchUiModel,
     isTablet: Boolean = false,
-    onAction: (status: Boolean) -> Unit
+    onAction: (id: String, status: Boolean) -> Unit
 ) {
     val items = uiModel.options.map { it.text }
     val selectedIndex = remember { mutableIntStateOf(0) }
@@ -65,19 +65,19 @@ fun SegmentedSwitchComponent(
                             Modifier
                                 .wrapContentSize()
                                 .offset(0.dp, 0.dp)
-                                .zIndex(if (selectedIndex.value == index) 1f else 0f)
+                                .zIndex(if (selectedIndex.intValue == index) 1f else 0f)
                         }
 
                         else -> {
                             Modifier
                                 .wrapContentSize()
                                 .offset((-1 * index).dp, 0.dp)
-                                .zIndex(if (selectedIndex.value == index) 1f else 0f)
+                                .zIndex(if (selectedIndex.intValue == index) 1f else 0f)
                         }
                     },
                     onClick = {
                         selectedIndex.intValue = index
-                        onAction(index == 1)
+                        onAction(uiModel.identifier, index == 1)
                     },
                     shape = when (index) {
                         /**
@@ -144,7 +144,7 @@ fun SegmentedSwitchComponentPreview() {
         ) {
             SegmentedSwitchComponent(
                 uiModel = getDeviceAuthSegmentedSwitchUiModel(),
-                onAction = { }
+                onAction = { _, _ -> }
             )
         }
     }
