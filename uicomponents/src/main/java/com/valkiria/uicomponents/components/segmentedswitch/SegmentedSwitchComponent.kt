@@ -1,9 +1,7 @@
 package com.valkiria.uicomponents.components.segmentedswitch
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -25,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.valkiria.uicomponents.mocks.getDeviceAuthSegmentedSwitchUiModel
 import com.valkiria.uicomponents.props.toTextStyle
-import com.valkiria.uicomponents.theme.UiComponentsTheme
 
 @Suppress("LongMethod", "MagicNumber", "UnusedPrivateMember")
 @Composable
@@ -138,14 +135,8 @@ fun SegmentedSwitchComponent(
 @Preview(showBackground = true)
 @Composable
 fun SegmentedSwitchComponentPreview() {
-    UiComponentsTheme {
-        Column(
-            modifier = Modifier.background(Color.DarkGray)
-        ) {
-            SegmentedSwitchComponent(
-                uiModel = getDeviceAuthSegmentedSwitchUiModel(),
-                onAction = { _, _ -> }
-            )
-        }
-    }
+    SegmentedSwitchComponent(
+        uiModel = getDeviceAuthSegmentedSwitchUiModel(),
+        onAction = { _, _ -> }
+    )
 }
