@@ -20,11 +20,7 @@ class PasswordTextFieldComponentPaparazziTest {
     @Test
     fun snapLoginPasswordTextFieldComponent() {
         paparazziRule.snapshot {
-            PasswordTextFieldComponent(
-                uiModel = getLoginPasswordTextFieldUiModel()
-            ) { updatedValue, fieldValidated ->
-                Timber.d("Handle $updatedValue with $fieldValidated")
-            }
+            PasswordTextFieldComponentPreview()
         }
     }
 }
