@@ -39,7 +39,6 @@ import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
 import com.valkiria.uicomponents.action.LoginUiAction.Login
-import com.valkiria.uicomponents.action.LoginUiAction.LoginCode
 import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
 import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
@@ -219,8 +218,6 @@ private fun HandleChipRows(
             ChipComponent(
                 uiModel = model.mapToUiModel()
             )
-
-            onAction(LoginCode(model.text))
         }
 
         else -> ChipComponent(

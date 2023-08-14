@@ -38,6 +38,11 @@ fun MenuDrawer(
         }
     } ?: emptyList()
 
+    // FIXME: It is possible that the leader can authenticate when there are another users logged in?
+    val isAdmin = uiState.accessTokenModelList?.let { list ->
+        list.first().isAdmin
+    }
+
     LaunchedEffect(uiState) {
         launch {
             if (uiState.isLogout) {
@@ -52,7 +57,7 @@ fun MenuDrawer(
             DrawerContent(
                 drawerState = drawerState,
                 menuItemsPersonal = menuItemsPersonal,
-                menuItems = MenuItemModel.drawerItems,
+                menuItems = MenuItemModel.getDrawerInfoItemList(isAdmin),
                 onMenuItemClick = { onClick(it) },
                 onLogout = { viewModel.logout(it.username) }
             )
