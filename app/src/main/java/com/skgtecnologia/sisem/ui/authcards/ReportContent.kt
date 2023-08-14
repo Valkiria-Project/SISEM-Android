@@ -26,7 +26,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.skgtecnologia.sisem.domain.model.body.DetailModel
+import com.skgtecnologia.sisem.domain.model.bricks.DetailModel
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.props.toTextStyle
 

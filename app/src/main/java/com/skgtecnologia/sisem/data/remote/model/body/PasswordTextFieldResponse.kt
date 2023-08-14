@@ -2,7 +2,8 @@ package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
+import com.skgtecnologia.sisem.data.remote.model.bricks.ValidationResponse
+import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.PasswordTextFieldModel
 import com.squareup.moshi.Json
@@ -23,7 +24,7 @@ data class PasswordTextFieldResponse(
 
     override val type: BodyRowType = BodyRowType.PASSWORD_TEXT_FIELD
 
-    override fun mapToDomain(): BodyRowModel = PasswordTextFieldModel(
+    override fun mapToDomain(): PasswordTextFieldModel = PasswordTextFieldModel(
         identifier = identifier ?: error("PasswordTextField identifier cannot be null"),
         icon = icon,
         placeholder = placeholder,

@@ -13,7 +13,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
-import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
@@ -31,7 +30,8 @@ import kotlinx.coroutines.launch
 fun DeviceAuthScreen(
     isTablet: Boolean,
     modifier: Modifier = Modifier,
-    onNavigation: (route: AuthNavigationRoute) -> Unit
+    onDeviceAuthenticated: () -> Unit,
+    onCancel: () -> Unit
 ) {
     val viewModel = hiltViewModel<DeviceAuthViewModel>()
     val uiState = viewModel.uiState
@@ -44,7 +44,7 @@ fun DeviceAuthScreen(
             when {
                 uiState.onDeviceAuthenticated -> {
                     viewModel.onDeviceAuthHandled()
-                    onNavigation(AuthNavigationRoute.PreOperational)
+                    onDeviceAuthenticated()
                 }
             }
         }
@@ -87,7 +87,7 @@ fun DeviceAuthScreen(
                     bottom.linkTo(parent.bottom)
                 }
             ) { uiAction ->
-                handleFooterUiAction(uiAction, viewModel)
+                handleFooterUiAction(uiAction, viewModel, onCancel)
             }
         }
     }
@@ -117,19 +117,22 @@ private fun handleUiAction(
     (uiAction as? DeviceAuthUiAction)?.let {
         when (uiAction) {
             DeviceAuth -> viewModel.associateDevice()
-
             is DeviceAuthCodeInput -> viewModel.vehicleCode = uiAction.updatedValue
+            is DeviceAuthUiAction.DeviceAuthSwitchState ->
+                viewModel.disassociateDeviceState = uiAction.state
         }
     }
 }
 
 private fun handleFooterUiAction(
     uiAction: UiAction,
-    viewModel: DeviceAuthViewModel
+    viewModel: DeviceAuthViewModel,
+    onCancel: () -> Unit
 ) {
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
             DeviceAuthIdentifier.DEVICE_AUTH_BUTTON.name -> viewModel.associateDevice()
+            DeviceAuthIdentifier.DEVICE_AUTH_CANCEL_BUTTON.name -> onCancel()
         }
     }
 }

@@ -2,7 +2,8 @@ package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
+import com.skgtecnologia.sisem.data.remote.model.bricks.ValidationResponse
+import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.squareup.moshi.Json
@@ -23,7 +24,7 @@ data class TextFieldResponse(
 
     override val type: BodyRowType = BodyRowType.TEXT_FIELD
 
-    override fun mapToDomain(): BodyRowModel = TextFieldModel(
+    override fun mapToDomain(): TextFieldModel = TextFieldModel(
         identifier = identifier ?: error("TextField identifier cannot be null"),
         icon = icon,
         placeholder = placeholder,

@@ -38,7 +38,7 @@ fun MenuHeaderComponent(
     Column(modifier = modifier) {
         Row {
             Icon(
-                painter = painterResource(id = drawable.ic_ambulance),
+                painter = painterResource(id = drawable.ic_ambulance_box),
                 contentDescription = null,
                 modifier = Modifier
                     .padding(start = 33.dp, top = 30.dp, bottom = 10.dp)

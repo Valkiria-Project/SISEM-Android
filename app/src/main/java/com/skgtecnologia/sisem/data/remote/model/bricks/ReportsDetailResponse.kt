@@ -1,8 +1,8 @@
-package com.skgtecnologia.sisem.data.remote.model.body
+package com.skgtecnologia.sisem.data.remote.model.bricks
 
 import com.skgtecnologia.sisem.data.remote.model.header.HeaderResponse
 import com.skgtecnologia.sisem.data.remote.model.header.mapToDomain
-import com.skgtecnologia.sisem.domain.model.body.ReportsDetailModel
+import com.skgtecnologia.sisem.domain.model.bricks.ReportsDetailModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

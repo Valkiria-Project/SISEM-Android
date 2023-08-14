@@ -18,7 +18,7 @@ class LoaderComponentPaparazziTest {
     @Test
     fun snapLoaderComponent() {
         paparazziRule.snapshot {
-            LoaderComponent()
+            LoaderComponentPreview()
         }
     }
 }

@@ -33,7 +33,8 @@ fun OperationEntity.mapToDomain(): ConfigModel {
             numImgNovelty = numImgNovelty,
             authMethod = authMethod,
             attentionsType = attentionsType,
-            status = status
+            status = status,
+            ambulanceCode = ambulanceCode
         )
     }
 }
@@ -50,7 +51,8 @@ fun ConfigModel.mapToCache(): OperationEntity {
             numImgNovelty = numImgNovelty,
             authMethod = authMethod,
             attentionsType = attentionsType,
-            status = status
+            status = status,
+            ambulanceCode = ambulanceCode
         )
     }
 }

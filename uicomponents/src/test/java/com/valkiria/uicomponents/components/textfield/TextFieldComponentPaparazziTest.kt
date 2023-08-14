@@ -3,10 +3,8 @@ package com.valkiria.uicomponents.components.textfield
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.android.ide.common.rendering.api.SessionParams.RenderingMode.V_SCROLL
-import com.valkiria.uicomponents.mocks.getLoginUserTextFieldUiModel
 import org.junit.Rule
 import org.junit.Test
-import timber.log.Timber
 
 class TextFieldComponentPaparazziTest {
 
@@ -20,11 +18,7 @@ class TextFieldComponentPaparazziTest {
     @Test
     fun snapLoginUserTextFieldComponent() {
         paparazziRule.snapshot {
-            TextFieldComponent(
-                uiModel = getLoginUserTextFieldUiModel()
-            ) { updatedValue, fieldValidated ->
-                Timber.d("Handle $updatedValue with $fieldValidated")
-            }
+            TextFieldComponentPreview()
         }
     }
 }

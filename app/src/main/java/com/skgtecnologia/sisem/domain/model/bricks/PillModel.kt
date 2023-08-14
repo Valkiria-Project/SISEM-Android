@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.domain.model.body
+package com.skgtecnologia.sisem.domain.model.bricks
 
 import com.skgtecnologia.sisem.domain.model.header.TextModel
 

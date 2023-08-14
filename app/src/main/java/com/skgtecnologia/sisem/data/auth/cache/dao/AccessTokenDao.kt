@@ -17,4 +17,7 @@ interface AccessTokenDao {
 
     @Query("SELECT * FROM access_token")
     suspend fun getAllAccessTokens(): List<AccessTokenEntity>
+
+    @Query("DELETE FROM access_token")
+    suspend fun deleteAccessToken() // FIXME: review this method
 }

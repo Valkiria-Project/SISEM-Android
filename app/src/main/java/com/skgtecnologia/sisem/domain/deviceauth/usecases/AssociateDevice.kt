@@ -12,10 +12,10 @@ class AssociateDevice @Inject constructor(
 
     @CheckResult
     suspend operator fun invoke(
-        licensePlate: String,
         serial: String,
-        code: String
+        code: String,
+        disassociateDevice: Boolean
     ): Result<AssociateDeviceModel> = resultOf {
-        deviceAuthRepository.associateDevice(licensePlate, serial, code)
+        deviceAuthRepository.associateDevice(serial, code, disassociateDevice)
     }
 }

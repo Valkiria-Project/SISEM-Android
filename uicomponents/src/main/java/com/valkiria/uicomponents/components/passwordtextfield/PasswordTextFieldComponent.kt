@@ -36,7 +36,6 @@ import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.mocks.getLoginPasswordTextFieldUiModel
 import com.valkiria.uicomponents.props.TabletWidth
 import com.valkiria.uicomponents.props.toTextStyle
-import com.valkiria.uicomponents.theme.UiComponentsTheme
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import timber.log.Timber
@@ -151,15 +150,13 @@ fun PasswordTextFieldComponent(
 @Preview(showBackground = true)
 @Composable
 fun PasswordTextFieldComponentPreview() {
-    UiComponentsTheme {
-        Column(
-            modifier = Modifier.background(Color.DarkGray)
-        ) {
-            PasswordTextFieldComponent(
-                uiModel = getLoginPasswordTextFieldUiModel()
-            ) { updatedValue, fieldValidated ->
-                Timber.d("Handle $updatedValue with $fieldValidated")
-            }
+    Column(
+        modifier = Modifier.background(Color.DarkGray)
+    ) {
+        PasswordTextFieldComponent(
+            uiModel = getLoginPasswordTextFieldUiModel()
+        ) { updatedValue, fieldValidated ->
+            Timber.d("Handle $updatedValue with $fieldValidated")
         }
     }
 }

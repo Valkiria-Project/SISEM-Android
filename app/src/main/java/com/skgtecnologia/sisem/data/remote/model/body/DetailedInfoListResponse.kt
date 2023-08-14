@@ -1,7 +1,8 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
+import com.skgtecnologia.sisem.data.remote.model.bricks.DetailedInfoResponse
+import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.DetailedInfoListModel
 import com.squareup.moshi.Json
@@ -19,7 +20,7 @@ data class DetailedInfoListResponse(
 
     override val type: BodyRowType = BodyRowType.DETAILED_INFO_LIST
 
-    override fun mapToDomain(): BodyRowModel = DetailedInfoListModel(
+    override fun mapToDomain(): DetailedInfoListModel = DetailedInfoListModel(
         identifier = identifier ?: error("Detailed info list identifier cannot be null"),
         details = details?.map { it.mapToUi() }
             ?: error("Detailed info list details cannot be null"),

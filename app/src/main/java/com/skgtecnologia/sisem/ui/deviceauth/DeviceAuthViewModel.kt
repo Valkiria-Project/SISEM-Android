@@ -6,6 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
+import com.skgtecnologia.sisem.domain.auth.usecases.DeleteAccessToken
+import com.skgtecnologia.sisem.domain.deviceauth.model.AssociateDeviceModel
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.AssociateDevice
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.GetDeviceAuthScreen
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
@@ -21,6 +23,7 @@ import timber.log.Timber
 class DeviceAuthViewModel @Inject constructor(
     private val getDeviceAuthScreen: GetDeviceAuthScreen,
     private val associateDevice: AssociateDevice,
+    private val deleteAccessToken: DeleteAccessToken,
     private val androidIdProvider: AndroidIdProvider
 ) : ViewModel() {
 
@@ -30,9 +33,14 @@ class DeviceAuthViewModel @Inject constructor(
         private set
 
     var vehicleCode by mutableStateOf("") // FIXME
+    var disassociateDeviceState by mutableStateOf(false)
     var isValidVehicleCode by mutableStateOf(false)
 
     init {
+        getScreen()
+    }
+
+    private fun getScreen() {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
@@ -63,19 +71,32 @@ class DeviceAuthViewModel @Inject constructor(
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
             associateDevice.invoke(
-                "KRV675", // FIXME: Hardcoded data
                 androidIdProvider.getAndroidId(),
-                vehicleCode
+                vehicleCode,
+                disassociateDeviceState
             ).onSuccess { associateDeviceModel ->
-                uiState = uiState.copy(
-                    isLoading = false
-                )
+                handleOnSuccess(associateDeviceModel)
             }.onFailure { throwable ->
                 Timber.wtf(throwable, "This is a failure")
 
                 uiState = uiState.copy(
                     isLoading = false,
                     errorModel = throwable.mapToUi()
+                )
+            }
+        }
+    }
+
+    @Suppress("UnusedPrivateMember")
+    private suspend fun handleOnSuccess(associateDeviceModel: AssociateDeviceModel) {
+        if (disassociateDeviceState) {
+            onDeviceAuthHandled() // FIXME: maintains the previous state, we must clean
+            getScreen() // FIXME: show message?
+        } else {
+            deleteAccessToken.invoke().onSuccess {
+                uiState = uiState.copy(
+                    isLoading = false,
+                    onDeviceAuthenticated = true
                 )
             }
         }
@@ -94,6 +115,7 @@ class DeviceAuthViewModel @Inject constructor(
     private fun resetForm() {
         vehicleCode = ""
         isValidVehicleCode = false
+        disassociateDeviceState = false
     }
 
     fun handleShownError() {
