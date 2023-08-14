@@ -22,10 +22,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.props.TextStyle
-import com.valkiria.uicomponents.theme.UiComponentsTheme
 
 @Composable
-fun FilterChipsComponent(
+fun FiltersComponent(
     uiModel: FiltersUiModel
 ) {
     Row(
@@ -51,21 +50,19 @@ fun FilterChipsComponent(
 
 @Preview(showBackground = true)
 @Composable
-fun ChipComponentPreview() {
-    UiComponentsTheme {
-        val filtersUiModel = FiltersUiModel( // FIXME: Create Mock Model
-            options = listOf("Líquidos", "Sistema eléctrico", "Interior", "Exterior"),
-            textStyle = TextStyle.BUTTON_1
-        )
+fun FiltersComponentPreview() {
+    val filtersUiModel = FiltersUiModel( // FIXME: Create Mock Model
+        options = listOf("Líquidos", "Sistema eléctrico", "Interior", "Exterior"),
+        textStyle = TextStyle.BUTTON_1
+    )
 
-        Column(
-            modifier = Modifier
-                .background(Color.DarkGray)
-                .padding(16.dp)
-        ) {
-            FilterChipsComponent(
-                uiModel = filtersUiModel
-            )
-        }
+    Column(
+        modifier = Modifier
+            .background(Color.DarkGray)
+            .padding(16.dp)
+    ) {
+        FiltersComponent(
+            uiModel = filtersUiModel
+        )
     }
 }

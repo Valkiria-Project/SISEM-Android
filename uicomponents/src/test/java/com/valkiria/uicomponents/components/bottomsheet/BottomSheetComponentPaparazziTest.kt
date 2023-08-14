@@ -1,12 +1,10 @@
 package com.valkiria.uicomponents.components.bottomsheet
 
-import androidx.compose.material3.Text
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.android.ide.common.rendering.api.SessionParams.RenderingMode.V_SCROLL
 import org.junit.Rule
 import org.junit.Test
-import timber.log.Timber
 
 class BottomSheetComponentPaparazziTest {
 
@@ -18,28 +16,9 @@ class BottomSheetComponentPaparazziTest {
     )
 
     @Test
-    fun snapLoginTermsBottomSheetComponent() {
+    fun snapBottomSheetComponent() {
         paparazziRule.snapshot {
-            BottomSheetComponent(
-                content = {
-                    Text(text = "prueba")
-                }
-            ) {
-                Timber.d("Dismissed")
-            }
-        }
-    }
-
-    @Test
-    fun snapLoginPrivacyBottomSheetComponent() {
-        paparazziRule.snapshot {
-            BottomSheetComponent(
-                content = {
-                    Text(text = "prueba")
-                }
-            ) {
-                Timber.d("Dismissed")
-            }
+            BottomSheetComponentPreview()
         }
     }
 }

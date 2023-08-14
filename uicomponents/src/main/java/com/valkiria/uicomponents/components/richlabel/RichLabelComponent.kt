@@ -15,7 +15,6 @@ import com.ireward.htmlcompose.HtmlText
 import com.valkiria.uicomponents.mocks.getLoginWelcomeRichLabelUiModel
 import com.valkiria.uicomponents.props.TextStyle
 import com.valkiria.uicomponents.props.toTextStyle
-import com.valkiria.uicomponents.theme.UiComponentsTheme
 import timber.log.Timber
 
 @Composable
@@ -41,86 +40,84 @@ fun RichLabelComponent(
 @Preview(showBackground = true)
 @Composable
 fun RichLabelComponentPreview() {
-    UiComponentsTheme {
-        LazyColumn(
-            modifier = Modifier.background(Color.DarkGray),
-            contentPadding = PaddingValues(16.dp)
-        ) {
-            item {
-                RichLabelComponent(
-                    uiModel = getLoginWelcomeRichLabelUiModel()
+    LazyColumn(
+        modifier = Modifier.background(Color.DarkGray),
+        contentPadding = PaddingValues(16.dp)
+    ) {
+        item {
+            RichLabelComponent(
+                uiModel = getLoginWelcomeRichLabelUiModel()
+            )
+        }
+        item {
+            RichLabelComponent(
+                uiModel = getLoginWelcomeRichLabelUiModel().copy(
+                    textStyle = TextStyle.HEADLINE_2
                 )
-            }
-            item {
-                RichLabelComponent(
-                    uiModel = getLoginWelcomeRichLabelUiModel().copy(
-                        textStyle = TextStyle.HEADLINE_2
-                    )
+            )
+        }
+        item {
+            RichLabelComponent(
+                uiModel = getLoginWelcomeRichLabelUiModel().copy(
+                    textStyle = TextStyle.HEADLINE_3
                 )
-            }
-            item {
-                RichLabelComponent(
-                    uiModel = getLoginWelcomeRichLabelUiModel().copy(
-                        textStyle = TextStyle.HEADLINE_3
-                    )
+            )
+        }
+        item {
+            RichLabelComponent(
+                uiModel = getLoginWelcomeRichLabelUiModel().copy(
+                    textStyle = TextStyle.HEADLINE_4
                 )
-            }
-            item {
-                RichLabelComponent(
-                    uiModel = getLoginWelcomeRichLabelUiModel().copy(
-                        textStyle = TextStyle.HEADLINE_4
-                    )
+            )
+        }
+        item {
+            RichLabelComponent(
+                uiModel = getLoginWelcomeRichLabelUiModel().copy(
+                    textStyle = TextStyle.HEADLINE_5
                 )
-            }
-            item {
-                RichLabelComponent(
-                    uiModel = getLoginWelcomeRichLabelUiModel().copy(
-                        textStyle = TextStyle.HEADLINE_5
-                    )
+            )
+        }
+        item {
+            RichLabelComponent(
+                uiModel = getLoginWelcomeRichLabelUiModel().copy(
+                    textStyle = TextStyle.HEADLINE_6
                 )
-            }
-            item {
-                RichLabelComponent(
-                    uiModel = getLoginWelcomeRichLabelUiModel().copy(
-                        textStyle = TextStyle.HEADLINE_6
-                    )
+            )
+        }
+        item {
+            RichLabelComponent(
+                uiModel = getLoginWelcomeRichLabelUiModel().copy(
+                    textStyle = TextStyle.HEADLINE_7
                 )
-            }
-            item {
-                RichLabelComponent(
-                    uiModel = getLoginWelcomeRichLabelUiModel().copy(
-                        textStyle = TextStyle.HEADLINE_7
-                    )
+            )
+        }
+        item {
+            RichLabelComponent(
+                uiModel = getLoginWelcomeRichLabelUiModel().copy(
+                    textStyle = TextStyle.HEADLINE_8
                 )
-            }
-            item {
-                RichLabelComponent(
-                    uiModel = getLoginWelcomeRichLabelUiModel().copy(
-                        textStyle = TextStyle.HEADLINE_8
-                    )
+            )
+        }
+        item {
+            RichLabelComponent(
+                uiModel = getLoginWelcomeRichLabelUiModel().copy(
+                    textStyle = TextStyle.BODY_1
                 )
-            }
-            item {
-                RichLabelComponent(
-                    uiModel = getLoginWelcomeRichLabelUiModel().copy(
-                        textStyle = TextStyle.BODY_1
-                    )
+            )
+        }
+        item {
+            RichLabelComponent(
+                uiModel = getLoginWelcomeRichLabelUiModel().copy(
+                    textStyle = TextStyle.BUTTON_1
                 )
-            }
-            item {
-                RichLabelComponent(
-                    uiModel = getLoginWelcomeRichLabelUiModel().copy(
-                        textStyle = TextStyle.BUTTON_1
-                    )
+            )
+        }
+        item {
+            RichLabelComponent(
+                uiModel = getLoginWelcomeRichLabelUiModel().copy(
+                    textStyle = TextStyle.BUTTON_2
                 )
-            }
-            item {
-                RichLabelComponent(
-                    uiModel = getLoginWelcomeRichLabelUiModel().copy(
-                        textStyle = TextStyle.BUTTON_2
-                    )
-                )
-            }
+            )
         }
     }
 }

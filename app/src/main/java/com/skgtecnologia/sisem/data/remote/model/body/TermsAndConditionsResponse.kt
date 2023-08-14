@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.squareup.moshi.Json
@@ -15,7 +14,7 @@ data class TermsAndConditionsResponse(
 
     override val type: BodyRowType = BodyRowType.TERMS_AND_CONDITIONS
 
-    override fun mapToDomain(): BodyRowModel = TermsAndConditionsModel(
+    override fun mapToDomain(): TermsAndConditionsModel = TermsAndConditionsModel(
         identifier = identifier,
         modifier = modifier ?: Modifier
     )

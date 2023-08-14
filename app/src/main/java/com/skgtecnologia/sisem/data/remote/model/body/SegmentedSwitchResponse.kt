@@ -1,7 +1,8 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
+import com.skgtecnologia.sisem.data.remote.model.bricks.OptionResponse
+import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.SegmentedSwitchModel
 import com.squareup.moshi.Json
@@ -19,7 +20,7 @@ data class SegmentedSwitchResponse(
 
     override val type: BodyRowType = BodyRowType.SEGMENTED_SWITCH
 
-    override fun mapToDomain(): BodyRowModel = SegmentedSwitchModel(
+    override fun mapToDomain(): SegmentedSwitchModel = SegmentedSwitchModel(
         identifier = identifier ?: error("SegmentedSwitch identifier cannot be null"),
         text = text ?: error("SegmentedSwitch text cannot be null"),
         textStyle = textStyle ?: error("SegmentedSwitch textStyle cannot be null"),

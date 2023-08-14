@@ -3,7 +3,6 @@ package com.skgtecnologia.sisem.data.remote.model.body
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.header.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.header.mapToDomain
-import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.ContentHeaderModel
 import com.squareup.moshi.Json
@@ -19,7 +18,7 @@ data class ContentHeaderResponse(
 
     override val type: BodyRowType = BodyRowType.CONTENT_HEADER
 
-    override fun mapToDomain(): BodyRowModel = ContentHeaderModel(
+    override fun mapToDomain(): ContentHeaderModel = ContentHeaderModel(
         identifier = identifier ?: error("Content Header identifier cannot be null"),
         title = title?.mapToDomain() ?: error("Content Header title cannot be null"),
         leftIcon = leftIcon,

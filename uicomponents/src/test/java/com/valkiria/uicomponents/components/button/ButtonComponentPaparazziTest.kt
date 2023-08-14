@@ -3,11 +3,8 @@ package com.valkiria.uicomponents.components.button
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.android.ide.common.rendering.api.SessionParams.RenderingMode.V_SCROLL
-import com.valkiria.uicomponents.mocks.getLoginButtonUiModel
-import com.valkiria.uicomponents.mocks.getLoginForgotButtonUiModel
 import org.junit.Rule
 import org.junit.Test
-import timber.log.Timber
 
 class ButtonComponentPaparazziTest {
 
@@ -19,20 +16,9 @@ class ButtonComponentPaparazziTest {
     )
 
     @Test
-    fun snapLoginForgotButtonComponent() {
+    fun snapButtonComponent() {
         paparazziRule.snapshot {
-            ButtonComponent(uiModel = getLoginForgotButtonUiModel()) {
-                Timber.d("Button clicked")
-            }
-        }
-    }
-
-    @Test
-    fun snapLoginButtonComponent() {
-        paparazziRule.snapshot {
-            ButtonComponent(uiModel = getLoginButtonUiModel()) {
-                Timber.d("Button clicked")
-            }
+            ButtonComponentPreview()
         }
     }
 }

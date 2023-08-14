@@ -26,11 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.mocks.getLoginBlockedErrorUiModel
-import com.valkiria.uicomponents.mocks.getLoginDuplicatedErrorUiModel
-import com.valkiria.uicomponents.mocks.getLoginIncorrectErrorUiModel
-import com.valkiria.uicomponents.mocks.getLoginPasswordErrorUiModel
-import com.valkiria.uicomponents.mocks.getLoginUnassignedErrorUiModel
-import com.valkiria.uicomponents.theme.UiComponentsTheme
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import timber.log.Timber
@@ -119,33 +114,9 @@ fun ErrorBannerComponent(
 @Preview(showBackground = true)
 @Composable
 fun ErrorBannerComponentPreview() {
-    UiComponentsTheme {
-        Column {
-            ErrorBannerComponent(
-                uiModel = getLoginBlockedErrorUiModel()
-            ) {
-                Timber.d("Closed")
-            }
-            ErrorBannerComponent(
-                uiModel = getLoginIncorrectErrorUiModel()
-            ) {
-                Timber.d("Closed")
-            }
-            ErrorBannerComponent(
-                uiModel = getLoginPasswordErrorUiModel()
-            ) {
-                Timber.d("Closed")
-            }
-            ErrorBannerComponent(
-                uiModel = getLoginDuplicatedErrorUiModel()
-            ) {
-                Timber.d("Closed")
-            }
-            ErrorBannerComponent(
-                uiModel = getLoginUnassignedErrorUiModel()
-            ) {
-                Timber.d("Closed")
-            }
-        }
+    ErrorBannerComponent(
+        uiModel = getLoginBlockedErrorUiModel()
+    ) {
+        Timber.d("Closed")
     }
 }

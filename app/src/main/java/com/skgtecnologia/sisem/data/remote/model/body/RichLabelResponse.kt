@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.RichLabelModel
 import com.squareup.moshi.Json
@@ -18,7 +17,7 @@ data class RichLabelResponse(
 
     override val type: BodyRowType = BodyRowType.RICH_LABEL
 
-    override fun mapToDomain(): BodyRowModel = RichLabelModel(
+    override fun mapToDomain(): RichLabelModel = RichLabelModel(
         identifier = identifier ?: error("RichLabel identifier cannot be null"),
         text = text ?: error("RichLabel text cannot be null"),
         textStyle = textStyle ?: error("RichLabel textStyle cannot be null"),

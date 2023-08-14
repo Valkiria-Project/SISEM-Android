@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.ChipModel
 import com.squareup.moshi.Json
@@ -21,7 +20,7 @@ data class ChipResponse(
 
     override val type: BodyRowType = BodyRowType.CHIP
 
-    override fun mapToDomain(): BodyRowModel = ChipModel(
+    override fun mapToDomain(): ChipModel = ChipModel(
         identifier = identifier ?: error("Chip identifier cannot be null"),
         icon = icon,
         text = text ?: error("Chip text cannot be null"),
