@@ -11,8 +11,12 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
 import com.skgtecnologia.sisem.ui.sections.BodySection
+import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
+import com.valkiria.uicomponents.action.FooterUiAction
+import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 import kotlinx.coroutines.launch
@@ -35,7 +39,7 @@ fun PreOperationalScreen(
     ConstraintLayout(
         modifier = modifier.fillMaxSize()
     ) {
-        val (header, body) = createRefs()
+        val (header, body, footer) = createRefs()
 
         uiState.screenModel?.header?.let {
             HeaderSection(
@@ -54,12 +58,23 @@ fun PreOperationalScreen(
             modifier = modifier
                 .constrainAs(body) {
                     top.linkTo(header.bottom)
-                    bottom.linkTo(parent.bottom)
+                    bottom.linkTo(footer.top)
                     height = Dimension.fillToConstraints
                 }
                 .padding(top = 20.dp)
         ) { uiAction ->
             Timber.d("Handle $uiAction")
+        }
+
+        uiState.screenModel?.footer?.let {
+            FooterSection(
+                footerModel = it,
+                modifier = modifier.constrainAs(footer) {
+                    bottom.linkTo(parent.bottom)
+                }
+            ) { uiAction ->
+                handleFooterUiAction(uiAction, viewModel)
+            }
         }
     }
 
@@ -78,5 +93,16 @@ fun PreOperationalScreen(
     if (uiState.isLoading) {
         HideKeyboard()
         LoaderComponent(modifier)
+    }
+}
+
+private fun handleFooterUiAction(
+    uiAction: UiAction,
+    viewModel: PreOperationalViewModel
+) {
+    (uiAction as? FooterUiAction)?.let {
+        when (uiAction.identifier) {
+            PreOperationalIdentifier.DRIVER_PREOP_SAVE_BUTTON.name -> viewModel.savePreOperational()
+        }
     }
 }

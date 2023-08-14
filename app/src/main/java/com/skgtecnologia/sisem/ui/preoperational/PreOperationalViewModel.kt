@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
+import com.skgtecnologia.sisem.domain.preoperational.usecases.SavePreOperational
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +19,7 @@ import timber.log.Timber
 @HiltViewModel
 class PreOperationalViewModel @Inject constructor(
     private val getPreOperationalScreen: GetPreOperationalScreen,
+    private val savePreOperational: SavePreOperational
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -47,6 +49,26 @@ class PreOperationalViewModel @Inject constructor(
                         errorModel = throwable.mapToUi()
                     )
                 }
+        }
+    }
+
+    fun savePreOperational() {
+        uiState = uiState.copy(isLoading = true)
+
+        job?.cancel()
+        job = viewModelScope.launch(Dispatchers.IO) {
+            savePreOperational.invoke().onSuccess {
+                uiState = uiState.copy(
+                    isLoading = false
+                )
+            }.onFailure { throwable ->
+                Timber.wtf(throwable, "This is a failure")
+
+                uiState = uiState.copy(
+                    isLoading = false,
+                    errorModel = throwable.mapToUi()
+                )
+            }
         }
     }
 

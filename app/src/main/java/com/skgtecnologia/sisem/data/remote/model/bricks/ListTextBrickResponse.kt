@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.data.remote.model.body
+package com.skgtecnologia.sisem.data.remote.model.bricks
 
 import com.skgtecnologia.sisem.domain.model.body.ListTextModel
 import com.squareup.moshi.Json

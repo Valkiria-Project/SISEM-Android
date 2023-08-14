@@ -18,7 +18,7 @@ data class FiltersResponse(
 
     override val type: BodyRowType = BodyRowType.CHIP
 
-    override fun mapToDomain(): BodyRowModel = FiltersModel(
+    override fun mapToDomain(): FiltersModel = FiltersModel(
         identifier = identifier ?: error("Filters identifier cannot be null"),
         options = options ?: error("Filters options cannot be null"),
         textStyle = textStyle ?: error("Filters textStyle cannot be null"),

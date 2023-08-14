@@ -17,7 +17,7 @@ data class LabelResponse(
 
     override val type: BodyRowType = BodyRowType.LABEL
 
-    override fun mapToDomain(): BodyRowModel = LabelModel(
+    override fun mapToDomain(): LabelModel = LabelModel(
         text = text ?: error("Label text cannot be null"),
         textStyle = textStyle ?: error("Label textStyle cannot be null"),
         modifier = modifier ?: Modifier

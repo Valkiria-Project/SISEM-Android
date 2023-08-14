@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.data.remote.model.body
+package com.skgtecnologia.sisem.data.remote.model.bricks
 
 import com.skgtecnologia.sisem.data.remote.model.header.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.header.mapToDomain

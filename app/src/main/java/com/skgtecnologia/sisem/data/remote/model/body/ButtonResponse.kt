@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.ButtonModel
 import com.squareup.moshi.Json
@@ -24,7 +23,7 @@ data class ButtonResponse(
 
     override val type: BodyRowType = BodyRowType.BUTTON
 
-    override fun mapToDomain(): BodyRowModel = ButtonModel(
+    override fun mapToDomain(): ButtonModel = ButtonModel(
         identifier = identifier ?: error("Button identifier cannot be null"),
         label = label ?: error("Button label cannot be null"),
         style = style ?: error("Button style cannot be null"),

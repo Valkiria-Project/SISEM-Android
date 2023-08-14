@@ -13,7 +13,7 @@ data class FingerprintResponse(
 
     override val type: BodyRowType = BodyRowType.FINGERPRINT
 
-    override fun mapToDomain(): BodyRowModel = FingerprintModel(
+    override fun mapToDomain(): FingerprintModel = FingerprintModel(
         identifier = identifier ?: error("Fingerprint identifier cannot be null")
     )
 }

@@ -11,19 +11,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.R.drawable
 import com.skgtecnologia.sisem.domain.authcards.model.AuthCardsIdentifier
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
 import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.ButtonModel
 import com.skgtecnologia.sisem.domain.model.body.ChipModel
-import com.skgtecnologia.sisem.domain.model.body.CommentsModel
+import com.skgtecnologia.sisem.domain.model.body.ChipOptionsModel
 import com.skgtecnologia.sisem.domain.model.body.ContentHeaderModel
 import com.skgtecnologia.sisem.domain.model.body.CrewMemberCardModel
 import com.skgtecnologia.sisem.domain.model.body.DetailedInfoListModel
 import com.skgtecnologia.sisem.domain.model.body.FiltersModel
+import com.skgtecnologia.sisem.domain.model.body.FindingModel
 import com.skgtecnologia.sisem.domain.model.body.FingerprintModel
+import com.skgtecnologia.sisem.domain.model.body.InventoryCheckModel
 import com.skgtecnologia.sisem.domain.model.body.LabelModel
 import com.skgtecnologia.sisem.domain.model.body.PasswordTextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.RichLabelModel
@@ -45,7 +47,7 @@ import com.valkiria.uicomponents.action.PreOperationalUiAction.DriverVehicleKMIn
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
-import com.valkiria.uicomponents.components.comments.CommentsComponent
+import com.valkiria.uicomponents.components.comments.FindingComponent
 import com.valkiria.uicomponents.components.crewmembercard.CrewMemberCardComponent
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListComponent
 import com.valkiria.uicomponents.components.filters.FilterChipsComponent
@@ -94,8 +96,12 @@ private fun LazyListScope.handleBodyRows(
                 HandleChipRows(model, isTablet, onAction)
             }
 
-            is CommentsModel -> item(key = model.identifier) {
-                CommentsComponent(
+            is ChipOptionsModel -> item(key = model.identifier) {
+                // FIXME
+            }
+
+            is FindingModel -> item(key = model.identifier) {
+                FindingComponent(
                     uiModel = model.mapToUiModel()
                 )
             }
@@ -125,9 +131,13 @@ private fun LazyListScope.handleBodyRows(
             is FingerprintModel -> item(key = model.identifier) {
                 Image(
                     modifier = Modifier.padding(vertical = 20.dp),
-                    painter = painterResource(id = R.drawable.ic_fingerprint),
+                    painter = painterResource(id = drawable.ic_fingerprint),
                     contentDescription = null
                 )
+            }
+
+            is InventoryCheckModel -> item(key = model.identifier) {
+                // FIXME
             }
 
             is LabelModel -> item(key = model.text) {

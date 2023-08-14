@@ -49,7 +49,7 @@ private fun NavGraphBuilder.authGraph(
     modifier: Modifier
 ) {
     navigation(
-        startDestination = AuthNavigationRoute.AuthCards.route,
+        startDestination = AuthNavigationRoute.PreOperational.route,
         route = NavigationGraph.Auth.route
     ) {
         composable(
@@ -73,26 +73,26 @@ private fun NavGraphBuilder.authGraph(
                 navigateToNextStep(navController, navigationModel)
             }
         }
-    }
 
-    composable(
-        route = AuthNavigationRoute.DeviceAuth.route
-    ) {
-        DeviceAuthScreen(
-            isTablet = isTablet,
-            modifier = modifier
+        composable(
+            route = AuthNavigationRoute.DeviceAuth.route
         ) {
-            navController.navigate(AuthNavigationRoute.PreOperational.route) // FIXME
+            DeviceAuthScreen(
+                isTablet = isTablet,
+                modifier = modifier
+            ) {
+                navController.navigate(AuthNavigationRoute.PreOperational.route) // FIXME
+            }
         }
-    }
 
-    composable(
-        route = AuthNavigationRoute.PreOperational.route
-    ) {
-        PreOperationalScreen(
-            isTablet = isTablet,
-            modifier = modifier
-        )
+        composable(
+            route = AuthNavigationRoute.PreOperational.route
+        ) {
+            PreOperationalScreen(
+                isTablet = isTablet,
+                modifier = modifier
+            )
+        }
     }
 }
 

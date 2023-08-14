@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.data.remote.model.body
+package com.skgtecnologia.sisem.data.remote.model.bricks
 
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoUiModel
 import com.squareup.moshi.Json
