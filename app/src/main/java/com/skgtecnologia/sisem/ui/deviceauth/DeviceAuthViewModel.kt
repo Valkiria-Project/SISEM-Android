@@ -88,19 +88,16 @@ class DeviceAuthViewModel @Inject constructor(
     }
 
     @Suppress("UnusedPrivateMember")
-    private fun handleOnSuccess(associateDeviceModel: AssociateDeviceModel) {
+    private suspend fun handleOnSuccess(associateDeviceModel: AssociateDeviceModel) {
         if (disassociateDeviceState) {
             onDeviceAuthHandled() // FIXME: maintains the previous state, we must clean
             getScreen() // FIXME: show message?
         } else {
-            job?.cancel()
-            job = viewModelScope.launch(Dispatchers.IO) {
-                deleteAccessToken.invoke().onSuccess {
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        onDeviceAuthenticated = true
-                    )
-                }
+            deleteAccessToken.invoke().onSuccess {
+                uiState = uiState.copy(
+                    isLoading = false,
+                    onDeviceAuthenticated = true
+                )
             }
         }
     }

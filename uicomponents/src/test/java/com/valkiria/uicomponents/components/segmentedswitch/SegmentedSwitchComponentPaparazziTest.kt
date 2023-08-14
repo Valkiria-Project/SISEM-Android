@@ -21,7 +21,7 @@ class SegmentedSwitchComponentPaparazziTest {
         paparazziRule.snapshot {
             SegmentedSwitchComponent(
                 uiModel = getDeviceAuthSegmentedSwitchUiModel(),
-                onAction = onAction
+                onAction = { }
             )
         }
     }
