@@ -1,5 +1,6 @@
 package com.valkiria.uicomponents.action
 
+import com.valkiria.uicomponents.components.crewmembercard.ChipSectionUiModel
 import com.valkiria.uicomponents.components.crewmembercard.ReportsDetailUiModel
 
 sealed interface UiAction
@@ -11,6 +12,7 @@ sealed class FooterUiAction(open val identifier: String) : UiAction {
 sealed class AuthCardsUiAction : UiAction {
     object AuthCard : AuthCardsUiAction()
     data class AuthCardNews(val reportDetail: ReportsDetailUiModel) : AuthCardsUiAction()
+    data class AuthCardFindings(val chipSectionUiModel: ChipSectionUiModel) : AuthCardsUiAction()
 }
 
 sealed class LoginUiAction : UiAction {

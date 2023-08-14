@@ -14,3 +14,8 @@ fun ChipSectionModel.mapToUiModel() = ChipSectionUiModel(
     listText = listText.texts,
     listTextStyle = listText.textStyle
 )
+
+fun ChipSectionUiModel.mapToDomain() = ChipSectionModel(
+    title = TextModel(text = title, textStyle = titleTextStyle),
+    listText = ListTextModel(texts = listText, textStyle = listTextStyle)
+)

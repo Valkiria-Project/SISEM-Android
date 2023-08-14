@@ -38,6 +38,8 @@ import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 
+private const val MAX_FINDINGS = 3
+
 @OptIn(ExperimentalLayoutApi::class)
 @Suppress("LongMethod", "UnusedPrivateMember")
 @Composable
@@ -45,7 +47,8 @@ fun CrewMemberCardComponent(
     uiModel: CrewMemberCardUiModel,
     isTablet: Boolean = false,
     onAction: () -> Unit,
-    onNewsAction: (reportDetail: ReportsDetailUiModel) -> Unit
+    onNewsAction: (reportDetail: ReportsDetailUiModel) -> Unit,
+    onFindingsAction: (chipSection: ChipSectionUiModel) -> Unit
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon, DefType.DRAWABLE
@@ -82,7 +85,9 @@ fun CrewMemberCardComponent(
                         Icon(
                             painter = painterResource(id = iconResourceId),
                             contentDescription = "",
-                            modifier = Modifier.size(40.dp).align(Alignment.CenterVertically),
+                            modifier = Modifier
+                                .size(40.dp)
+                                .align(Alignment.CenterVertically),
                             tint = MaterialTheme.colorScheme.primary,
                         )
                     }
@@ -163,8 +168,17 @@ fun CrewMemberCardComponent(
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
-                        it.listText.forEach { text ->
-                            ChipView(text = text, textStyle = it.listTextStyle)
+                        it.listText.forEachIndexed { index, text ->
+                            if (index < MAX_FINDINGS) {
+                                ChipView(text = text, textStyle = it.listTextStyle)
+                            } else {
+                                ChipView(
+                                    text = "...",
+                                    textStyle = it.listTextStyle,
+                                    onClick = { onFindingsAction(it) }
+                                )
+                                return@forEachIndexed
+                            }
                         }
                     }
                 }
@@ -200,9 +214,13 @@ fun BadgedBoxView(
 }
 
 @Composable
-fun ChipView(text: String, textStyle: TextStyle) {
+fun ChipView(
+    text: String,
+    textStyle: TextStyle,
+    onClick: () -> Unit = {}
+) {
     SuggestionChip(
-        onClick = { /*TODO*/ },
+        onClick = { onClick() },
         modifier = Modifier.wrapContentSize(),
         label = {
             Text(
