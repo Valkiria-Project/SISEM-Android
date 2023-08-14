@@ -77,7 +77,23 @@ fun AuthCardsScreen(
             sheetState = sheetState,
             scope = scope
         ) {
-            viewModel.handleShownBottomSheet()
+            viewModel.handleShownReportBottomSheet()
+        }
+    }
+
+    uiState.chipSection?.let {
+        scope.launch {
+            sheetState.show()
+        }
+
+        BottomSheetComponent(
+            content = {
+                FindingsContent(chipSection = uiState.chipSection)
+            },
+            sheetState = sheetState,
+            scope = scope
+        ) {
+            viewModel.handleShownFindingsBottomSheet()
         }
     }
 
@@ -108,7 +124,9 @@ fun handleUiAction(
         when (uiAction) {
             AuthCardsUiAction.AuthCard -> onNavigation(AuthNavigationRoute.Login)
             is AuthCardsUiAction.AuthCardNews ->
-                viewModel.showBottomSheet(uiAction.reportDetail.mapToDomain())
+                viewModel.showReportBottomSheet(uiAction.reportDetail.mapToDomain())
+            is AuthCardsUiAction.AuthCardFindings ->
+                viewModel.showFindingsBottomSheet(uiAction.chipSectionUiModel.mapToDomain())
         }
     }
 }
