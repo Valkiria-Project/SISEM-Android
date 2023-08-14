@@ -9,7 +9,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
 import com.valkiria.uicomponents.mocks.getPreOperationalOilFindingUiModel
-import com.valkiria.uicomponents.theme.UiComponentsTheme
 import timber.log.Timber
 
 @Suppress("UnusedPrivateMember")
@@ -77,15 +76,13 @@ fun FindingComponent(
 @Preview(showBackground = true)
 @Composable
 fun FindingComponentPreview() {
-    UiComponentsTheme {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.DarkGray)
-        ) {
-            FindingComponent(uiModel = getPreOperationalOilFindingUiModel()) { id, status ->
-                Timber.d("Finding with id $id set to $status")
-            }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.DarkGray)
+    ) {
+        FindingComponent(uiModel = getPreOperationalOilFindingUiModel()) { id, status ->
+            Timber.d("Finding with id $id set to $status")
         }
     }
 }
