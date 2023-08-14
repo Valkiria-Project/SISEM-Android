@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.skgtecnologia.sisem.domain.model.bricks.mapToUiModel
+import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
 import com.skgtecnologia.sisem.domain.model.footer.FooterModel
 import com.valkiria.uicomponents.action.FooterUiAction.Button
 import com.valkiria.uicomponents.action.UiAction
