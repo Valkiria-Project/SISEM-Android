@@ -20,7 +20,6 @@ import com.valkiria.uicomponents.props.TabletWidth
 import com.valkiria.uicomponents.props.mapToColors
 import com.valkiria.uicomponents.props.mapToTextColor
 import com.valkiria.uicomponents.props.toTextStyle
-import com.valkiria.uicomponents.theme.UiComponentsTheme
 import timber.log.Timber
 
 @Suppress("MaxLineLength")
@@ -63,18 +62,16 @@ fun ButtonComponent(
 @Preview(showBackground = true)
 @Composable
 fun ButtonComponentPreview() {
-    UiComponentsTheme {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.DarkGray)
-        ) {
-            ButtonComponent(uiModel = getLoginForgotButtonUiModel()) {
-                Timber.d("Button clicked")
-            }
-            ButtonComponent(uiModel = getLoginButtonUiModel()) {
-                Timber.d("Button clicked")
-            }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.DarkGray)
+    ) {
+        ButtonComponent(uiModel = getLoginForgotButtonUiModel()) {
+            Timber.d("Button clicked")
+        }
+        ButtonComponent(uiModel = getLoginButtonUiModel()) {
+            Timber.d("Button clicked")
         }
     }
 }

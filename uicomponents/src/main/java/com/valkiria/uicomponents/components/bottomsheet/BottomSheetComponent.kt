@@ -14,7 +14,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import com.valkiria.uicomponents.theme.UiComponentsTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -46,36 +45,34 @@ fun BottomSheetComponent(
 @Preview(showBackground = true)
 @Composable
 fun BottomSheetComponentPreview() {
-    UiComponentsTheme {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.DarkGray)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.DarkGray)
+    ) {
+        val sheetState = rememberModalBottomSheetState(
+            skipPartiallyExpanded = true
+        )
+        val scope = rememberCoroutineScope()
+
+        LaunchedEffect(sheetState) {
+            scope.launch {
+                sheetState.show()
+            }
+        }
+
+        BottomSheetComponent(
+            content = {
+                Text(
+                    text = """1. INTRODUCCIÓN\n\nLa Política de Seguridad de la Información del 
+                        |sitio web y términos de uso del Sitio Web de la Secretaría Distrital de 
+                        |Salud y el Fondo Financiero ...""".trimMargin()
+                )
+            },
+            sheetState = sheetState,
+            scope = scope
         ) {
-            val sheetState = rememberModalBottomSheetState(
-                skipPartiallyExpanded = true
-            )
-            val scope = rememberCoroutineScope()
-
-            LaunchedEffect(sheetState) {
-                scope.launch {
-                    sheetState.show()
-                }
-            }
-
-            BottomSheetComponent(
-                content = {
-                    Text(
-                        text = """1. INTRODUCCIÓN\n\nLa Política de Seguridad de la Información del 
-            |sitio web y términos de uso del Sitio Web de la Secretaría Distrital de 
-            |Salud y el Fondo Financiero ...""".trimMargin()
-                    )
-                },
-                sheetState = sheetState,
-                scope = scope
-            ) {
-                Timber.d("Dismissed")
-            }
+            Timber.d("Dismissed")
         }
     }
 }

@@ -35,6 +35,7 @@ import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import timber.log.Timber
 
+@Suppress("LongMethod")
 @Composable
 fun TextFieldComponent(
     uiModel: TextFieldUiModel,
