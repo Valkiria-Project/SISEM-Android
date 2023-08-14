@@ -33,6 +33,7 @@ sealed class LoginUiAction : UiAction {
 sealed class DeviceAuthUiAction : UiAction {
     object DeviceAuth : DeviceAuthUiAction()
     data class DeviceAuthCodeInput(val updatedValue: String) : DeviceAuthUiAction()
+    data class DeviceAuthSwitchState(val state: Boolean) : DeviceAuthUiAction()
 }
 
 sealed class PreOperationalUiAction : UiAction {

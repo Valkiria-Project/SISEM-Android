@@ -14,6 +14,7 @@ class AuthRemoteDataSource @Inject constructor(
     suspend fun authenticate(
         username: String,
         password: String,
+        code: String,
         turnId: String
     ): Result<AccessTokenModel> =
         apiCall {
@@ -21,7 +22,7 @@ class AuthRemoteDataSource @Inject constructor(
                 authenticateBody = AuthenticateBody(
                     username = username,
                     password = password,
-                    code = "1", // FIXME: Hardcoded data
+                    code = code,
                     idTurn = turnId
                 )
             )

@@ -22,4 +22,9 @@ class AuthCacheDataSource @Inject constructor(
     @CheckResult
     suspend fun retrieveAllAccessTokens(): List<AccessTokenModel> =
         accessTokenDao.getAllAccessTokens().map { it.mapToDomain() }
+
+    @CheckResult
+    suspend fun deleteAccessToken() {
+        accessTokenDao.deleteAccessToken()
+    }
 }

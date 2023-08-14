@@ -14,10 +14,10 @@ class DeviceAuthRepositoryImpl @Inject constructor(
         deviceAuthRemoteDataSource.getDeviceAuthScreen(serial).getOrThrow()
 
     override suspend fun associateDevice(
-        licensePlate: String,
         serial: String,
-        code: String
+        code: String,
+        disassociateDevice: Boolean
     ): AssociateDeviceModel = deviceAuthRemoteDataSource.associateDevice(
-        licensePlate, serial, code
+        serial, code, disassociateDevice
     ).getOrThrow()
 }
