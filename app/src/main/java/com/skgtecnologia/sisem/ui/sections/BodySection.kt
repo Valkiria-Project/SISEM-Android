@@ -237,7 +237,8 @@ private fun HandleCrewMemberCardRows(
                 uiModel = model.mapToUiModel(),
                 isTablet = isTablet,
                 onAction = { onAction(AuthCardsUiAction.AuthCard) },
-                onNewsAction = { onAction(AuthCardsUiAction.AuthCardNews(it)) }
+                onNewsAction = { onAction(AuthCardsUiAction.AuthCardNews(it)) },
+                onFindingsAction = { onAction(AuthCardsUiAction.AuthCardFindings(it)) }
             )
         }
     }

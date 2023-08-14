@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.domain.authcards.usecases.GetAuthCardsScreen
+import com.skgtecnologia.sisem.domain.model.bricks.ChipSectionModel
 import com.skgtecnologia.sisem.domain.model.bricks.ReportsDetailModel
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
 import com.skgtecnologia.sisem.domain.operation.usecases.GetConfig
@@ -48,15 +49,27 @@ class AuthCardsViewModel @Inject constructor(
         }
     }
 
-    fun showBottomSheet(reportDetail: ReportsDetailModel) {
+    fun showReportBottomSheet(reportDetail: ReportsDetailModel) {
         uiState = uiState.copy(
             reportDetail = reportDetail
         )
     }
 
-    fun handleShownBottomSheet() {
+    fun handleShownReportBottomSheet() {
         uiState = uiState.copy(
             reportDetail = null
+        )
+    }
+
+    fun showFindingsBottomSheet(chipSection: ChipSectionModel) {
+        uiState = uiState.copy(
+            chipSection = chipSection
+        )
+    }
+
+    fun handleShownFindingsBottomSheet() {
+        uiState = uiState.copy(
+            chipSection = null
         )
     }
 
