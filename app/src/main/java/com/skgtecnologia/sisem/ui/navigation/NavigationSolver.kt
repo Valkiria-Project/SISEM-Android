@@ -15,6 +15,13 @@ private fun navigateToLoginNextStep(
     loginNavigationModel.isAdmin && loginNavigationModel.requiresDeviceAuth ->
         navController.navigate(AuthNavigationRoute.DeviceAuth.route)
 
+    loginNavigationModel.isAdmin && !loginNavigationModel.requiresDeviceAuth ->
+        navController.navigate(NavigationGraph.Menu.route) {
+            popUpTo(AuthNavigationRoute.AuthCards.route) {
+                inclusive = true
+            }
+        }
+
     loginNavigationModel.isTurnComplete && loginNavigationModel.requiresPreOperational.not() ->
         navController.navigate(NavigationGraph.Menu.route) {
             popUpTo(AuthNavigationRoute.AuthCards.route) {

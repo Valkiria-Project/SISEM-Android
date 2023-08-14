@@ -46,6 +46,8 @@ sealed class MenuNavigationRoute(val route: String) {
     object ShiftScreen : MenuNavigationRoute("shift_screen")
     object PreoperationalMenuScreen : MenuNavigationRoute("preoperational_menu_screen")
     object HCEUDCScreen : MenuNavigationRoute("hce_udc_screen")
+    object DeviceAuth : MenuNavigationRoute("device_auth")
+    object SignatureAndFingerprint : MenuNavigationRoute("signature_and_fingerprint")
 }
 
 object NavigationArgument {

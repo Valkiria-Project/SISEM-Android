@@ -19,7 +19,6 @@ import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.LoginUiAction
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
 import com.valkiria.uicomponents.action.LoginUiAction.Login
-import com.valkiria.uicomponents.action.LoginUiAction.LoginCode
 import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
 import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
@@ -129,8 +128,6 @@ private fun handleUiAction(
             }
 
             Login -> viewModel.login()
-
-            is LoginCode -> viewModel.storeAmbulanceCode(uiAction.code)
 
             is LoginPasswordInput -> {
                 viewModel.password = uiAction.updatedValue
