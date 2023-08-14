@@ -25,3 +25,23 @@ fun getDeviceAuthSegmentedSwitchUiModel(): SegmentedSwitchUiModel {
         modifier = Modifier
     )
 }
+
+fun getPreOperationalOilSegmentedSwitchUiModel(): SegmentedSwitchUiModel {
+    return SegmentedSwitchUiModel(
+        text = "Aceite del motor",
+        textStyle = TextStyle.HEADLINE_4,
+        options = listOf(
+            OptionUiModel(
+                text = "Óptimo",
+                textStyle = BUTTON_2,
+                color = "blueColor"
+            ),
+            OptionUiModel(
+                text = "Hallazgo",
+                textStyle = BUTTON_2,
+                color = "red"
+            )
+        ),
+        modifier = Modifier
+    )
+}

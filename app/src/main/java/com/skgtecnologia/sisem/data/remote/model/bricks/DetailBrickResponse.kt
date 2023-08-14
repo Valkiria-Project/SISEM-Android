@@ -8,7 +8,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class DetailResponse(
+data class DetailBrickResponse(
     @Json(name = "images") val images: List<String>?,
     @Json(name = "title") val title: TextResponse?,
     @Json(name = "subtitle") val subtitle: TextResponse?,
@@ -16,7 +16,7 @@ data class DetailResponse(
     @Json(name = "margins") val modifier: Modifier?
 )
 
-fun DetailResponse.mapToDomain(): DetailModel = DetailModel(
+fun DetailBrickResponse.mapToDomain(): DetailModel = DetailModel(
     images = images ?: error("Detail images cannot be null"),
     title = title?.mapToDomain() ?: error("Detail title cannot be null"),
     subtitle = subtitle?.mapToDomain() ?: error("Detail subtitle cannot be null"),

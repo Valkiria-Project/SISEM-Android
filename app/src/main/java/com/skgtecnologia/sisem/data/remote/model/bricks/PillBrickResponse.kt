@@ -7,12 +7,12 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class PillResponse(
+data class PillBrickResponse(
     @Json(name = "title") val title: TextResponse?,
     @Json(name = "color") val color: String?
 )
 
-fun PillResponse.mapToDomain(): PillModel = PillModel(
+fun PillBrickResponse.mapToDomain(): PillModel = PillModel(
     title = title?.mapToDomain() ?: error("Pill title cannot be null"),
     color = color ?: error("Pill color cannot be null")
 )

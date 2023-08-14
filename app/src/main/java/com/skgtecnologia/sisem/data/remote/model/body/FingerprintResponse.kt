@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
-import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.FingerprintModel
 import com.squareup.moshi.Json

@@ -7,12 +7,12 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class ChipSectionResponse(
+data class ChipSectionBrickResponse(
     @Json(name = "title") val title: TextResponse?,
-    @Json(name = "list_text") val listText: ListTextResponse?
+    @Json(name = "list_text") val listText: ListTextBrickResponse?
 )
 
-fun ChipSectionResponse.mapToDomain(): ChipSectionModel = ChipSectionModel(
+fun ChipSectionBrickResponse.mapToDomain(): ChipSectionModel = ChipSectionModel(
     title = title?.mapToDomain() ?: error("ChipSection title cannot be null"),
     listText = listText?.mapToDomain() ?: error("ChipSection listText cannot be null")
 )

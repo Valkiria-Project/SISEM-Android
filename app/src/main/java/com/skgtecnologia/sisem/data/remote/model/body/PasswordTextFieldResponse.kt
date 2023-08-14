@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.data.remote.model.bricks.ValidationResponse
+import com.skgtecnologia.sisem.data.remote.model.bricks.ValidationBrickResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.PasswordTextFieldModel
@@ -18,7 +18,7 @@ data class PasswordTextFieldResponse(
     @Json(name = "hint") val label: String?,
     @Json(name = "keyboard_type") val keyboardOptions: KeyboardOptions?,
     @Json(name = "text_style") val textStyle: TextStyle?,
-    @Json(name = "validations") val validations: List<ValidationResponse>?,
+    @Json(name = "validations") val validations: List<ValidationBrickResponse>?,
     @Json(name = "margins") val margins: Modifier?
 ) : BodyRowResponse {
 

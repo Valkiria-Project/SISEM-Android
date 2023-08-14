@@ -3,7 +3,6 @@ package com.skgtecnologia.sisem.data.remote.model.body
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.header.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.header.mapToDomain
-import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.ChipOptionsModel
 import com.squareup.moshi.Json
