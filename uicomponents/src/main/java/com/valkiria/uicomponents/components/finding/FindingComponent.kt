@@ -21,6 +21,7 @@ fun FindingComponent(
     SegmentedSwitchComponent(uiModel = uiModel.option) { id, status ->
         onAction(id, status)
     }
+    // FIXME: Delete this
 //    Row(
 //        modifier = Modifier
 //            .padding(horizontal = 16.dp, vertical = 8.dp)

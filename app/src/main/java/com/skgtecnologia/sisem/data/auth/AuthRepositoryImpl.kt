@@ -9,8 +9,8 @@ import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val authCacheDataSource: AuthCacheDataSource,
-    private val operationCacheDataSource: OperationCacheDataSource,
-    private val authRemoteDataSource: AuthRemoteDataSource
+    private val authRemoteDataSource: AuthRemoteDataSource,
+    private val operationCacheDataSource: OperationCacheDataSource
 ) : AuthRepository {
 
     override suspend fun authenticate(username: String, password: String): AccessTokenModel =

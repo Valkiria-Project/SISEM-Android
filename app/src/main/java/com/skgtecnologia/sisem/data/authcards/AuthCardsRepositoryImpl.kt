@@ -9,8 +9,8 @@ import javax.inject.Inject
 
 class AuthCardsRepositoryImpl @Inject constructor(
     private val authCacheDataSource: AuthCacheDataSource,
-    private val operationCacheDataSource: OperationCacheDataSource,
-    private val authCardsRemoteDataSource: AuthCardsRemoteDataSource
+    private val authCardsRemoteDataSource: AuthCardsRemoteDataSource,
+    private val operationCacheDataSource: OperationCacheDataSource
 ) : AuthCardsRepository {
 
     override suspend fun getAuthCardsScreen(): ScreenModel =

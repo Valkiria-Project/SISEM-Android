@@ -337,7 +337,7 @@ private fun HandleTextFieldRows(
             )
         }
 
-        PreOperationalIdentifier.DRIVER_VEHICLE_KM.name -> TextFieldComponent(
+        PreOperationalIdentifier.DRIVER_PREOP_VEHICLE_KM.name -> TextFieldComponent(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet,
             validateFields = validateFields
