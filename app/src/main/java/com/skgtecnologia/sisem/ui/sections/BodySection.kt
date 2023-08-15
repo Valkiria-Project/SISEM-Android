@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R.drawable
 import com.skgtecnologia.sisem.domain.authcards.model.AuthCardsIdentifier
+import com.skgtecnologia.sisem.domain.changepassword.model.ChangePasswordIdentifier
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
 import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
@@ -36,6 +37,9 @@ import com.skgtecnologia.sisem.domain.model.body.mapToHeaderModel
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
 import com.valkiria.uicomponents.action.AuthCardsUiAction
+import com.valkiria.uicomponents.action.ChangePasswordUiAction.ConfirmPasswordInput
+import com.valkiria.uicomponents.action.ChangePasswordUiAction.NewPasswordInput
+import com.valkiria.uicomponents.action.ChangePasswordUiAction.OldPasswordInput
 import com.valkiria.uicomponents.action.DeviceAuthUiAction
 import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
@@ -307,6 +311,34 @@ private fun HandlePasswordTextFieldRows(
                 )
             )
         }
+
+        ChangePasswordIdentifier.CHANGE_PASSWORD_CHANGE_NEW.name ->
+            PasswordTextFieldComponent(
+                uiModel = model.mapToUiModel(),
+                isTablet = isTablet,
+                validateFields = validateFields
+            ) { updatedValue, fieldValidated ->
+                onAction(
+                    ConfirmPasswordInput(
+                        updatedValue = updatedValue,
+                        fieldValidated = fieldValidated
+                    )
+                )
+            }
+
+        ChangePasswordIdentifier.CHANGE_PASSWORD_NEW.name ->
+            PasswordTextFieldComponent(
+                uiModel = model.mapToUiModel(),
+                isTablet = isTablet,
+                validateFields = validateFields
+            ) { updatedValue, fieldValidated ->
+                onAction(
+                    NewPasswordInput(
+                        updatedValue = updatedValue,
+                        fieldValidated = fieldValidated
+                    )
+                )
+            }
     }
 }
 
@@ -347,6 +379,18 @@ private fun HandleTextFieldRows(
                 DriverVehicleKMInput(
                     updatedValue = updatedValue,
                     fieldValidated = fieldValidated
+                )
+            )
+        }
+
+        ChangePasswordIdentifier.CHANGE_PASSWORD_CURRENT.name -> TextFieldComponent(
+            uiModel = model.mapToUiModel(),
+            isTablet = isTablet,
+            validateFields = validateFields
+        ) { updatedValue, _ ->
+            onAction(
+                OldPasswordInput(
+                    updatedValue = updatedValue
                 )
             )
         }
