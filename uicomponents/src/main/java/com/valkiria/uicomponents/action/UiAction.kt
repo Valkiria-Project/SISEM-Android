@@ -47,3 +47,19 @@ sealed class PreOperationalUiAction : UiAction {
     data class PreOpSwitchState(val id: String, val status: Boolean) : PreOperationalUiAction()
     object SavePreOperational : PreOperationalUiAction()
 }
+
+sealed class ChangePasswordUiAction : UiAction {
+    data class OldPasswordInput(
+        val updatedValue: String
+    ) : ChangePasswordUiAction()
+
+    data class NewPasswordInput(
+        val updatedValue: String,
+        val fieldValidated: Boolean
+    ) : ChangePasswordUiAction()
+
+    data class ConfirmPasswordInput(
+        val updatedValue: String,
+        val fieldValidated: Boolean
+    ) : ChangePasswordUiAction()
+}

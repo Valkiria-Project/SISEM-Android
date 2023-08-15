@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.skgtecnologia.sisem.ui.authcards.AuthCardsScreen
+import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.map.MapScreen
@@ -70,7 +71,8 @@ private fun NavGraphBuilder.authGraph(
                 isTablet = isTablet,
                 modifier = modifier
             ) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
+                navController.navigate(AuthNavigationRoute.ChangePassword.route)
+                // navigateToNextStep(navController, navigationModel)
             }
         }
 
@@ -93,6 +95,17 @@ private fun NavGraphBuilder.authGraph(
             PreOperationalScreen(
                 isTablet = isTablet,
                 modifier = modifier
+            )
+        }
+
+        composable(
+            route = AuthNavigationRoute.ChangePassword.route
+        ) {
+            ChangePasswordScreen(
+                isTablet = isTablet,
+                modifier = modifier,
+                onNavigation = { navController.navigateUp() },
+                onCancel = { navController.navigateUp() }
             )
         }
     }
