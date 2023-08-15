@@ -18,7 +18,7 @@ data class OperationEntity(
     @ColumnInfo(name = "auth_method") val authMethod: String,
     @ColumnInfo(name = "attentions_type") val attentionsType: String,
     @ColumnInfo(name = "status") val status: Boolean,
-    @ColumnInfo(name = "ambulance_code") val ambulanceCode: String? = null
+    @ColumnInfo(name = "ambulance_code") val ambulanceCode: String
 )
 
 fun OperationEntity.mapToDomain(): ConfigModel {

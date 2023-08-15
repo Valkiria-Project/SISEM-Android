@@ -11,7 +11,7 @@ class GetConfig @Inject constructor(
 ) {
 
     @CheckResult
-    suspend operator fun invoke(): Result<ConfigModel> = resultOf {
-        operationRepository.getConfig()
+    suspend operator fun invoke(serial: String): Result<ConfigModel> = resultOf {
+        operationRepository.getConfig(serial)
     }
 }
