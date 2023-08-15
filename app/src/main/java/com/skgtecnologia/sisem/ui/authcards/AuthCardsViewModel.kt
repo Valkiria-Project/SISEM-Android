@@ -10,7 +10,7 @@ import com.skgtecnologia.sisem.domain.authcards.usecases.GetAuthCardsScreen
 import com.skgtecnologia.sisem.domain.model.bricks.ChipSectionModel
 import com.skgtecnologia.sisem.domain.model.bricks.ReportsDetailModel
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
-import com.skgtecnologia.sisem.domain.operation.usecases.GetConfig
+import com.skgtecnologia.sisem.domain.operation.usecases.GetOperationConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +21,7 @@ import timber.log.Timber
 
 @HiltViewModel
 class AuthCardsViewModel @Inject constructor(
-    private val getConfig: GetConfig,
+    private val getOperationConfig: GetOperationConfig,
     private val getAuthCardsScreen: GetAuthCardsScreen,
     private val androidIdProvider: AndroidIdProvider
 ) : ViewModel() {
@@ -36,7 +36,7 @@ class AuthCardsViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            getConfig.invoke(androidIdProvider.getAndroidId())
+            getOperationConfig.invoke(androidIdProvider.getAndroidId())
                 .onSuccess {
                     getAuthCardsScreen()
                 }

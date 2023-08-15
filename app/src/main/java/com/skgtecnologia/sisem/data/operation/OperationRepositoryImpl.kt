@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.data.operation
 
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.data.operation.remote.OperationRemoteDataSource
-import com.skgtecnologia.sisem.domain.authcards.model.ConfigModel
+import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.skgtecnologia.sisem.domain.operation.OperationRepository
 import javax.inject.Inject
 
@@ -11,11 +11,12 @@ class OperationRepositoryImpl @Inject constructor(
     private val operationRemoteDataSource: OperationRemoteDataSource
 ) : OperationRepository {
 
-    override suspend fun getConfig(serial: String): ConfigModel =
-        operationRemoteDataSource.getConfig(serial)
+    override suspend fun getOperationConfig(serial: String): OperationModel =
+        operationRemoteDataSource.getOperationConfig(serial)
             .onSuccess {
-                operationCacheDataSource.storeConfig(it)
+                operationCacheDataSource.storeOperationConfig(it)
             }.getOrThrow()
 
-    override suspend fun retrieveConfig(): ConfigModel? = operationCacheDataSource.retrieveConfig()
+    override suspend fun retrieveOperationConfig(): OperationModel? =
+        operationCacheDataSource.retrieveOperationConfig()
 }

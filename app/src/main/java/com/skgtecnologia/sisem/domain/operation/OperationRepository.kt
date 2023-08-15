@@ -1,10 +1,10 @@
 package com.skgtecnologia.sisem.domain.operation
 
-import com.skgtecnologia.sisem.domain.authcards.model.ConfigModel
+import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 
 interface OperationRepository {
 
-    suspend fun getConfig(serial: String): ConfigModel
+    suspend fun getOperationConfig(serial: String): OperationModel
 
-    suspend fun retrieveConfig(): ConfigModel?
+    suspend fun retrieveOperationConfig(): OperationModel?
 }

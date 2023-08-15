@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.domain.authcards.model
 
-data class ConfigModel(
+data class OperationModel(
     val preoperationalTime: Long,
     val clinicHistObservationsTime: Long,
     val loginTime: Long,
@@ -11,5 +11,5 @@ data class ConfigModel(
     val authMethod: String,
     val attentionsType: String,
     val status: Boolean,
-    val ambulanceCode: String
+    val vehicleCode: String
 )

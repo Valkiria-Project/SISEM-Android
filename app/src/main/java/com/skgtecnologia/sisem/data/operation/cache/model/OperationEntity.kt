@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.data.operation.cache.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.skgtecnologia.sisem.domain.authcards.model.ConfigModel
+import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 
 @Entity(tableName = "operation")
 data class OperationEntity(
@@ -18,12 +18,12 @@ data class OperationEntity(
     @ColumnInfo(name = "auth_method") val authMethod: String,
     @ColumnInfo(name = "attentions_type") val attentionsType: String,
     @ColumnInfo(name = "status") val status: Boolean,
-    @ColumnInfo(name = "ambulance_code") val ambulanceCode: String
+    @ColumnInfo(name = "vehicle_code") val vehicleCode: String
 )
 
-fun OperationEntity.mapToDomain(): ConfigModel {
+fun OperationEntity.mapToDomain(): OperationModel {
     return with(this) {
-        ConfigModel(
+        OperationModel(
             preoperationalTime = preoperationalTime,
             clinicHistObservationsTime = clinicHistObservationsTime,
             loginTime = loginTime,
@@ -34,12 +34,12 @@ fun OperationEntity.mapToDomain(): ConfigModel {
             authMethod = authMethod,
             attentionsType = attentionsType,
             status = status,
-            ambulanceCode = ambulanceCode
+            vehicleCode = vehicleCode
         )
     }
 }
 
-fun ConfigModel.mapToCache(): OperationEntity {
+fun OperationModel.mapToCache(): OperationEntity {
     return with(this) {
         OperationEntity(
             preoperationalTime = preoperationalTime,
@@ -52,7 +52,7 @@ fun ConfigModel.mapToCache(): OperationEntity {
             authMethod = authMethod,
             attentionsType = attentionsType,
             status = status,
-            ambulanceCode = ambulanceCode
+            vehicleCode = vehicleCode
         )
     }
 }

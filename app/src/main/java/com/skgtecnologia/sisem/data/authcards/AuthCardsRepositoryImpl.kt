@@ -15,7 +15,7 @@ class AuthCardsRepositoryImpl @Inject constructor(
 
     override suspend fun getAuthCardsScreen(serial: String): ScreenModel =
         authCardsRemoteDataSource.getAuthCardsScreen(
-            code = operationCacheDataSource.retrieveConfig()?.ambulanceCode.orEmpty(),
+            code = operationCacheDataSource.retrieveOperationConfig()?.vehicleCode.orEmpty(),
             turnId = authCacheDataSource.retrieveAccessToken()?.turn?.id?.toString().orEmpty(),
             serial = serial
         ).getOrThrow()

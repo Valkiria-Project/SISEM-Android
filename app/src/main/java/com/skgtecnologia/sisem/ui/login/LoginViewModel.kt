@@ -46,7 +46,7 @@ class LoginViewModel @Inject constructor(
         job = viewModelScope.launch(Dispatchers.IO) {
             getLoginScreen.invoke(androidIdProvider.getAndroidId())
                 .onSuccess { loginScreenModel ->
-                    loginScreenModel.body.toAmbulanceCode()
+                    loginScreenModel.body.toVehicleCode()
 
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
@@ -66,7 +66,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun List<BodyRowModel>.toAmbulanceCode() {
+    private fun List<BodyRowModel>.toVehicleCode() {
         code = (this.find { it is ChipModel && it.text.isNotBlank() } as? ChipModel)?.text.orEmpty()
     }
 
