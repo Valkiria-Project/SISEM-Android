@@ -9,11 +9,12 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 
-@Module(includes = [BearerNetworkModule::class]) // FIXME: should include?
+@Module(includes = [BearerNetworkModule::class])
 @InstallIn(SingletonComponent::class)
 object ChangePasswordNetworkModule {
 
     @Provides
-    internal fun providesChangePasswordApi(@BearerAuthentication retrofit: Retrofit): ChangePasswordApi =
-        retrofit.create(ChangePasswordApi::class.java)
+    internal fun providesChangePasswordApi(
+        @BearerAuthentication retrofit: Retrofit
+    ): ChangePasswordApi = retrofit.create(ChangePasswordApi::class.java)
 }
