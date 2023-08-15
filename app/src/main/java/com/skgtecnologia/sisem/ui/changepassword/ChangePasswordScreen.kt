@@ -23,6 +23,7 @@ import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 import kotlinx.coroutines.launch
 
+@Suppress("LongMethod")
 @Composable
 fun ChangePasswordScreen(
     isTablet: Boolean,
@@ -115,7 +116,7 @@ private fun handleUiAction(
     viewModel: ChangePasswordViewModel
 ) {
     (uiAction as? ChangePasswordUiAction)?.let {
-        when(uiAction) {
+        when (uiAction) {
             is ChangePasswordUiAction.ConfirmPasswordInput -> {
                 viewModel.confirmNewPassword = uiAction.updatedValue
                 viewModel.isValidConfirmNewPassword = uiAction.fieldValidated
