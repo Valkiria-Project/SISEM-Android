@@ -12,7 +12,6 @@ import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.ChipModel
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
-import com.skgtecnologia.sisem.domain.operation.usecases.StoreAmbulanceCode
 import com.skgtecnologia.sisem.ui.navigation.LoginNavigationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +25,6 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val getLoginScreen: GetLoginScreen,
     private val login: Login,
-    private val storeAmbulanceCode: StoreAmbulanceCode,
     androidIdProvider: AndroidIdProvider
 ) : ViewModel() {
 
@@ -68,16 +66,8 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private suspend fun List<BodyRowModel>.toAmbulanceCode() {
-        val ambulanceCode =
-            (this.find { it is ChipModel && it.text.isNotBlank() } as? ChipModel)?.text
-
-        if (ambulanceCode?.isNotEmpty() == true) {
-            storeAmbulanceCode.invoke(ambulanceCode).onSuccess {
-                Timber.d("Successful ambulance code storage")
-                code = ambulanceCode
-            }
-        }
+    private fun List<BodyRowModel>.toAmbulanceCode() {
+        code = (this.find { it is ChipModel && it.text.isNotBlank() } as? ChipModel)?.text.orEmpty()
     }
 
     fun login() {

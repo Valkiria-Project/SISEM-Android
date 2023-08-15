@@ -4,9 +4,7 @@ import com.skgtecnologia.sisem.domain.authcards.model.ConfigModel
 
 interface OperationRepository {
 
-    suspend fun getConfig(): ConfigModel
+    suspend fun getConfig(serial: String): ConfigModel
 
     suspend fun retrieveConfig(): ConfigModel?
-
-    suspend fun storeAmbulanceCode(code: String)
 }

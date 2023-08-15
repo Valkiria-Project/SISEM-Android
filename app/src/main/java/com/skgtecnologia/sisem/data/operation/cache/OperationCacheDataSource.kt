@@ -16,12 +16,4 @@ class OperationCacheDataSource @Inject constructor(
 
     @CheckResult
     suspend fun retrieveConfig(): ConfigModel? = operationDao.getOperation()?.mapToDomain()
-
-    suspend fun storeAmbulanceCode(code: String) {
-        operationDao.getOperation()?.copy(
-            ambulanceCode = code
-        )?.let { currentOperation ->
-            operationDao.updateAmbulanceCode(currentOperation)
-        }
-    }
 }

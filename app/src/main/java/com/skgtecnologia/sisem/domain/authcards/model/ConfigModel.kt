@@ -11,5 +11,5 @@ data class ConfigModel(
     val authMethod: String,
     val attentionsType: String,
     val status: Boolean,
-    val ambulanceCode: String? = null
+    val ambulanceCode: String
 )

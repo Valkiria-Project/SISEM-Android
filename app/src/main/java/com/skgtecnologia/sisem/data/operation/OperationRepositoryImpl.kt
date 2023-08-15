@@ -11,14 +11,11 @@ class OperationRepositoryImpl @Inject constructor(
     private val operationRemoteDataSource: OperationRemoteDataSource
 ) : OperationRepository {
 
-    override suspend fun getConfig(): ConfigModel =
-        operationRemoteDataSource.getConfig()
+    override suspend fun getConfig(serial: String): ConfigModel =
+        operationRemoteDataSource.getConfig(serial)
             .onSuccess {
                 operationCacheDataSource.storeConfig(it)
             }.getOrThrow()
 
     override suspend fun retrieveConfig(): ConfigModel? = operationCacheDataSource.retrieveConfig()
-
-    override suspend fun storeAmbulanceCode(code: String) =
-        operationCacheDataSource.storeAmbulanceCode(code)
 }

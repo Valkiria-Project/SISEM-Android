@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.authcards.usecases.GetAuthCardsScreen
 import com.skgtecnologia.sisem.domain.model.bricks.ChipSectionModel
 import com.skgtecnologia.sisem.domain.model.bricks.ReportsDetailModel
@@ -21,7 +22,8 @@ import timber.log.Timber
 @HiltViewModel
 class AuthCardsViewModel @Inject constructor(
     private val getConfig: GetConfig,
-    private val getAuthCardsScreen: GetAuthCardsScreen
+    private val getAuthCardsScreen: GetAuthCardsScreen,
+    private val androidIdProvider: AndroidIdProvider
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -34,7 +36,7 @@ class AuthCardsViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            getConfig.invoke()
+            getConfig.invoke(androidIdProvider.getAndroidId())
                 .onSuccess {
                     getAuthCardsScreen()
                 }
@@ -80,7 +82,7 @@ class AuthCardsViewModel @Inject constructor(
     }
 
     private suspend fun getAuthCardsScreen() {
-        getAuthCardsScreen.invoke()
+        getAuthCardsScreen.invoke(androidIdProvider.getAndroidId())
             .onSuccess { authCardsScreenModel ->
                 withContext(Dispatchers.Main) {
                     uiState = uiState.copy(

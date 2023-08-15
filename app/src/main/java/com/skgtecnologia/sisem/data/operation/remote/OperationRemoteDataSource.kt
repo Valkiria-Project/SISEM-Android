@@ -10,8 +10,8 @@ class OperationRemoteDataSource @Inject constructor(
     private val operationApi: OperationApi
 ) {
 
-    suspend fun getConfig(): Result<ConfigModel> = apiCall {
-        operationApi.getConfig()
+    suspend fun getConfig(serial: String): Result<ConfigModel> = apiCall {
+        operationApi.getConfig(serial = serial)
     }.mapResult {
         it.mapToDomain()
     }
