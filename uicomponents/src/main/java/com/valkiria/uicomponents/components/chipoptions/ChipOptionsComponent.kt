@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.bricks.FilterChipView
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.LabelUiModel
+import com.valkiria.uicomponents.mocks.getPreOperationalChipOptionsUiModel
 import com.valkiria.uicomponents.props.TextStyle
-import kotlin.random.Random
 import timber.log.Timber
 
 @Suppress("UnusedPrivateMember")
@@ -106,7 +106,6 @@ fun ChipOptionsComponent(
     }
 }
 
-@Suppress("MagicNumber")
 @Preview(showBackground = true)
 @Composable
 fun ChipOptionsComponentPreview() {
@@ -115,24 +114,9 @@ fun ChipOptionsComponentPreview() {
             .fillMaxSize()
             .background(Color.DarkGray)
     ) {
-        // FIXME: Finish this up
-        val chipOptionsUiModel = ChipOptionsUiModel(
-            identifier = Random(100).toString(),
-            title = "Seleccione las herramientas que hacen falta",
-            textStyle = TextStyle.BODY_1,
-            items = listOf(
-                "Cruceta",
-                "Direcciones",
-                "Alicate pala",
-                "Bisturí",
-                "Caja de fusibles",
-                "Lampara busca",
-                "Chaleco reflectivo",
-                "Gato hidráulico",
-                "Juego de destornilladores"
-            )
-        )
-        ChipOptionsComponent(uiModel = chipOptionsUiModel) { selected, isSelection ->
+        ChipOptionsComponent(
+            uiModel = getPreOperationalChipOptionsUiModel()
+        ) { selected, isSelection ->
             Timber.d("Selected $selected and is $isSelection")
         }
     }

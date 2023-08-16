@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.bricks.FilterChipView
+import com.valkiria.uicomponents.mocks.getPreOperationalFiltersUiModel
 import com.valkiria.uicomponents.props.TextStyle
 import timber.log.Timber
 
@@ -28,7 +30,7 @@ fun FiltersComponent(
             .horizontalScroll(rememberScrollState())
             .fillMaxWidth()
             .height(60.dp)
-            .background(color = Color.Transparent),
+            .background(color = MaterialTheme.colorScheme.background),
         horizontalArrangement = Arrangement.Center
     ) {
         uiModel.options.forEach { chipText ->
@@ -47,18 +49,13 @@ fun FiltersComponent(
 @Preview(showBackground = true)
 @Composable
 fun FiltersComponentPreview() {
-    val filtersUiModel = FiltersUiModel( // FIXME: Create Mock Model
-        options = listOf("Líquidos", "Sistema eléctrico", "Interior", "Exterior"),
-        textStyle = TextStyle.BUTTON_1
-    )
-
     Column(
         modifier = Modifier
             .background(Color.DarkGray)
             .padding(16.dp)
     ) {
         FiltersComponent(
-            uiModel = filtersUiModel
+            uiModel = getPreOperationalFiltersUiModel()
         ) { selected, isSelection ->
             Timber.d("Selected $selected and is $isSelection")
         }

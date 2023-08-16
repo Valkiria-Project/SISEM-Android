@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.detekt)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.detekt)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.paparazzi)
 }

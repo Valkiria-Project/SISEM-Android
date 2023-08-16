@@ -89,14 +89,6 @@ fun TextFieldComponent(
                     Text(text = label)
                 }
             },
-            placeholder = {
-                // BACKEND: Check this with the team
-                /*
-                uiModel.placeholder?.let { placeholder ->
-                    Text(text = placeholder)
-                }
-                */
-            },
             supportingText = {
                 if (validateFields) {
                     Text(

@@ -93,14 +93,6 @@ fun PasswordTextFieldComponent(
                     Text(text = label)
                 }
             },
-            placeholder = {
-                // BACKEND: Check this with the team
-                /*
-                uiModel.placeholder?.let { placeholder ->
-                    Text(text = placeholder)
-                }
-                */
-            },
             trailingIcon = {
                 if (showPassword) {
                     IconButton(

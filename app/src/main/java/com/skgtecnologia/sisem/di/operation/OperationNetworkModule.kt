@@ -9,7 +9,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 
-@Module(includes = [BearerNetworkModule::class]) // FIXME: should include?
+@Module(includes = [BearerNetworkModule::class])
 @InstallIn(SingletonComponent::class)
 object OperationNetworkModule {
 

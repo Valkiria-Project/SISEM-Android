@@ -77,7 +77,7 @@ fun BodySection(
     if (body?.isNotEmpty() == true) {
         LazyColumn(
             modifier = modifier,
-            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp), // FIXME: iOS?
+            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Top),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

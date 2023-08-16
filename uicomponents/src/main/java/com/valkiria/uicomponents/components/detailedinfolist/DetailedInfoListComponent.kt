@@ -18,7 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.mocks.getPreOperationalDetailedInfoListUiModel
 import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
@@ -68,25 +68,13 @@ fun DetailedInfoListComponent(
 @Preview(showBackground = true)
 @Composable
 fun DetailedInfoListComponentPreview() {
-    val detailedInfoListUiModel = DetailedInfoListUiModel( // FIXME: Create mock for this
-        details = listOf(
-            DetailedInfoUiModel(
-                label = "Registro",
-                icon = "ic_calendar",
-                text = "20/03/2023",
-            )
-        ),
-        labelTextStyle = TextStyle.BUTTON_1,
-        textTextStyle = TextStyle.HEADLINE_4
-    )
-
     Column(
         modifier = Modifier
             .background(Color.DarkGray)
             .padding(16.dp)
     ) {
         DetailedInfoListComponent(
-            uiModel = detailedInfoListUiModel
+            uiModel = getPreOperationalDetailedInfoListUiModel()
         )
     }
 }
