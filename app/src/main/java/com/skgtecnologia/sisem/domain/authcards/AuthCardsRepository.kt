@@ -4,5 +4,5 @@ import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 
 interface AuthCardsRepository {
 
-    suspend fun getAuthCardsScreen(): ScreenModel
+    suspend fun getAuthCardsScreen(serial: String): ScreenModel
 }

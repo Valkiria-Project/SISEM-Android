@@ -17,7 +17,7 @@ class AuthRepositoryImpl @Inject constructor(
         authRemoteDataSource.authenticate(
             username = username,
             password = password,
-            code = operationCacheDataSource.retrieveConfig()?.ambulanceCode.orEmpty(),
+            code = operationCacheDataSource.retrieveOperationConfig()?.vehicleCode.orEmpty(),
             turnId = authCacheDataSource.retrieveAccessToken()?.turn?.id?.toString().orEmpty()
         ).onSuccess { accessTokenModel ->
             authCacheDataSource.storeAccessToken(accessTokenModel)
