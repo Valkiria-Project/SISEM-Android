@@ -3,6 +3,7 @@ package com.valkiria.uicomponents.components.inventorycheck
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
@@ -14,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.props.TabletWidth
+import com.valkiria.uicomponents.props.toTextStyle
 
 @Composable
 fun InventoryCheckComponent(
@@ -28,6 +30,36 @@ fun InventoryCheckComponent(
             uiModel.modifier.fillMaxWidth()
         },
     ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Spacer(
+                modifier = Modifier
+                    .weight(0.4f)
+            )
+            Column(
+                modifier = Modifier
+                    .weight(0.3f),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = uiModel.registeredText,
+                    style = uiModel.registeredTextStyle.toTextStyle()
+                )
+            }
+            Column(
+                modifier = Modifier
+                    .weight(0.3f),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = uiModel.receivedText,
+                    style = uiModel.receivedTextStyle.toTextStyle()
+                )
+            }
+        }
+
         uiModel.items.forEach { checkItemUiModel ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -35,21 +67,21 @@ fun InventoryCheckComponent(
             ) {
                 Column(
                     modifier = Modifier
-                        .weight(0.5f),
+                        .weight(0.4f),
                     horizontalAlignment = Alignment.Start
                 ) {
                     RichLabelComponent(uiModel = checkItemUiModel.name)
                 }
                 Column(
                     modifier = Modifier
-                        .weight(0.25f),
+                        .weight(0.3f),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(text = checkItemUiModel.registeredValueText)
                 }
                 Column(
                     modifier = Modifier
-                        .weight(0.25f),
+                        .weight(0.3f),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(text = checkItemUiModel.receivedValueText)
