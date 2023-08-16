@@ -2,6 +2,7 @@
 
 package com.valkiria.uicomponents.mocks
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.segmentedswitch.OptionUiModel
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
@@ -26,6 +27,7 @@ fun getDeviceAuthSegmentedSwitchUiModel(): SegmentedSwitchUiModel {
                 color = "red"
             )
         ),
+        arrangement = Arrangement.Center,
         modifier = Modifier
     )
 }
@@ -47,6 +49,7 @@ fun getPreOperationalOilSegmentedSwitchUiModel(): SegmentedSwitchUiModel {
                 color = "red"
             )
         ),
+        arrangement = Arrangement.Center,
         modifier = Modifier
     )
 }

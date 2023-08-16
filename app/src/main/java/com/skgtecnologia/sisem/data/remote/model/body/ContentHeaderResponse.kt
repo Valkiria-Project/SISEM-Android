@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.header.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.header.mapToDomain
@@ -13,6 +14,7 @@ data class ContentHeaderResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "title") val title: TextResponse?,
     @Json(name = "left_icon") val leftIcon: String?,
+    @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
@@ -22,6 +24,7 @@ data class ContentHeaderResponse(
         identifier = identifier ?: error("Content Header identifier cannot be null"),
         title = title?.mapToDomain() ?: error("Content Header title cannot be null"),
         leftIcon = leftIcon,
+        arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )
 }
