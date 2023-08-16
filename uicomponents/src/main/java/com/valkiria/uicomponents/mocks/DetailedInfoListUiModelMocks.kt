@@ -1,5 +1,6 @@
 package com.valkiria.uicomponents.mocks
 
+import androidx.compose.foundation.layout.Arrangement
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListUiModel
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoUiModel
 import com.valkiria.uicomponents.props.TextStyle
@@ -14,6 +15,7 @@ fun getPreOperationalDetailedInfoListUiModel(): DetailedInfoListUiModel {
             )
         ),
         labelTextStyle = TextStyle.BUTTON_1,
-        textTextStyle = TextStyle.HEADLINE_4
+        textTextStyle = TextStyle.HEADLINE_4,
+        arrangement = Arrangement.Center
     )
 }
