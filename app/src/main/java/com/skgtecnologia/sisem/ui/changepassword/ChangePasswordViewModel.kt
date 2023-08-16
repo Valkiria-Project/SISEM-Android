@@ -31,8 +31,8 @@ class ChangePasswordViewModel @Inject constructor(
     var oldPassword by mutableStateOf("")
     var newPassword by mutableStateOf("")
     var isValidNewPassword by mutableStateOf(false)
-    var confirmNewPassword by mutableStateOf("")
-    var isValidConfirmNewPassword by mutableStateOf(false)
+    var confirmedNewPassword by mutableStateOf("")
+    var isValidConfirmedNewPassword by mutableStateOf(false)
 
     init {
         uiState = uiState.copy(isLoading = true)
@@ -58,11 +58,12 @@ class ChangePasswordViewModel @Inject constructor(
     }
 
     fun change() {
+        // FIXME: Move this to the Use Case
         uiState = uiState.copy(
             validateFields = true
         )
 
-        if (oldPassword.isEmpty() || newPassword.isEmpty() || confirmNewPassword.isEmpty()) {
+        if (oldPassword.isEmpty() || newPassword.isEmpty() || confirmedNewPassword.isEmpty()) {
             uiState = uiState.copy(
                 errorModel = changePasswordEmptyFields().mapToUi()
             )
@@ -70,7 +71,7 @@ class ChangePasswordViewModel @Inject constructor(
             return
         }
 
-        if (newPassword != confirmNewPassword) {
+        if (newPassword != confirmedNewPassword) {
             uiState = uiState.copy(
                 errorModel = changePasswordNoMatch().mapToUi()
             )
@@ -78,7 +79,7 @@ class ChangePasswordViewModel @Inject constructor(
             return
         }
 
-        if (isValidNewPassword && isValidConfirmNewPassword) {
+        if (isValidNewPassword && isValidConfirmedNewPassword) {
             changePassword()
         }
     }
@@ -121,9 +122,9 @@ class ChangePasswordViewModel @Inject constructor(
     private fun resetForm() {
         oldPassword = ""
         newPassword = ""
-        confirmNewPassword = ""
         isValidNewPassword = false
-        isValidConfirmNewPassword = false
+        confirmedNewPassword = ""
+        isValidConfirmedNewPassword = false
     }
 
     fun handleShownError() {

@@ -47,7 +47,6 @@ class LoginViewModel @Inject constructor(
             getLoginScreen.invoke(androidIdProvider.getAndroidId())
                 .onSuccess { loginScreenModel ->
                     loginScreenModel.body.toVehicleCode()
-
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
                             screenModel = loginScreenModel,
@@ -75,6 +74,7 @@ class LoginViewModel @Inject constructor(
             validateFields = true
         )
 
+        // FIXME: Move this to the Use Case
         if (isValidUsername && isValidPassword) {
             authenticate()
         }

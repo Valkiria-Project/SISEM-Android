@@ -118,13 +118,15 @@ private fun handleUiAction(
     (uiAction as? ChangePasswordUiAction)?.let {
         when (uiAction) {
             is ChangePasswordUiAction.ConfirmPasswordInput -> {
-                viewModel.confirmNewPassword = uiAction.updatedValue
-                viewModel.isValidConfirmNewPassword = uiAction.fieldValidated
+                viewModel.confirmedNewPassword = uiAction.updatedValue
+                viewModel.isValidConfirmedNewPassword = uiAction.fieldValidated
             }
+
             is ChangePasswordUiAction.NewPasswordInput -> {
                 viewModel.newPassword = uiAction.updatedValue
                 viewModel.isValidNewPassword = uiAction.fieldValidated
             }
+
             is ChangePasswordUiAction.OldPasswordInput -> {
                 viewModel.oldPassword = uiAction.updatedValue
             }

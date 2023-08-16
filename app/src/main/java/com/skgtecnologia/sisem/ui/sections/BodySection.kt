@@ -299,6 +299,32 @@ private fun HandlePasswordTextFieldRows(
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
+        ChangePasswordIdentifier.CHANGE_PASSWORD_CHANGE_NEW.name -> PasswordTextFieldComponent(
+            uiModel = model.mapToUiModel(),
+            isTablet = isTablet,
+            validateFields = validateFields
+        ) { updatedValue, fieldValidated ->
+            onAction(
+                ConfirmPasswordInput(
+                    updatedValue = updatedValue,
+                    fieldValidated = fieldValidated
+                )
+            )
+        }
+
+        ChangePasswordIdentifier.CHANGE_PASSWORD_NEW.name -> PasswordTextFieldComponent(
+            uiModel = model.mapToUiModel(),
+            isTablet = isTablet,
+            validateFields = validateFields
+        ) { updatedValue, fieldValidated ->
+            onAction(
+                NewPasswordInput(
+                    updatedValue = updatedValue,
+                    fieldValidated = fieldValidated
+                )
+            )
+        }
+
         LoginIdentifier.LOGIN_PASSWORD.name -> PasswordTextFieldComponent(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet,
@@ -311,34 +337,6 @@ private fun HandlePasswordTextFieldRows(
                 )
             )
         }
-
-        ChangePasswordIdentifier.CHANGE_PASSWORD_CHANGE_NEW.name ->
-            PasswordTextFieldComponent(
-                uiModel = model.mapToUiModel(),
-                isTablet = isTablet,
-                validateFields = validateFields
-            ) { updatedValue, fieldValidated ->
-                onAction(
-                    ConfirmPasswordInput(
-                        updatedValue = updatedValue,
-                        fieldValidated = fieldValidated
-                    )
-                )
-            }
-
-        ChangePasswordIdentifier.CHANGE_PASSWORD_NEW.name ->
-            PasswordTextFieldComponent(
-                uiModel = model.mapToUiModel(),
-                isTablet = isTablet,
-                validateFields = validateFields
-            ) { updatedValue, fieldValidated ->
-                onAction(
-                    NewPasswordInput(
-                        updatedValue = updatedValue,
-                        fieldValidated = fieldValidated
-                    )
-                )
-            }
     }
 }
 

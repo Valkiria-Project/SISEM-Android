@@ -49,8 +49,9 @@ sealed class PreOperationalUiAction : UiAction {
 }
 
 sealed class ChangePasswordUiAction : UiAction {
-    data class OldPasswordInput(
-        val updatedValue: String
+    data class ConfirmPasswordInput(
+        val updatedValue: String,
+        val fieldValidated: Boolean
     ) : ChangePasswordUiAction()
 
     data class NewPasswordInput(
@@ -58,8 +59,7 @@ sealed class ChangePasswordUiAction : UiAction {
         val fieldValidated: Boolean
     ) : ChangePasswordUiAction()
 
-    data class ConfirmPasswordInput(
-        val updatedValue: String,
-        val fieldValidated: Boolean
+    data class OldPasswordInput(
+        val updatedValue: String
     ) : ChangePasswordUiAction()
 }

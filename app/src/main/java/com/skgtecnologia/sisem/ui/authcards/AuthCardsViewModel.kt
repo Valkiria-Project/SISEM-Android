@@ -21,9 +21,9 @@ import timber.log.Timber
 
 @HiltViewModel
 class AuthCardsViewModel @Inject constructor(
-    private val getOperationConfig: GetOperationConfig,
+    private val androidIdProvider: AndroidIdProvider,
     private val getAuthCardsScreen: GetAuthCardsScreen,
-    private val androidIdProvider: AndroidIdProvider
+    private val getOperationConfig: GetOperationConfig
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -49,6 +49,26 @@ class AuthCardsViewModel @Inject constructor(
                     )
                 }
         }
+    }
+
+    private suspend fun getAuthCardsScreen() {
+        getAuthCardsScreen.invoke(androidIdProvider.getAndroidId())
+            .onSuccess { authCardsScreenModel ->
+                withContext(Dispatchers.Main) {
+                    uiState = uiState.copy(
+                        screenModel = authCardsScreenModel,
+                        isLoading = false
+                    )
+                }
+            }
+            .onFailure { throwable ->
+                Timber.wtf(throwable, "This is a failure")
+
+                uiState = uiState.copy(
+                    isLoading = false,
+                    errorModel = throwable.mapToUi()
+                )
+            }
     }
 
     fun showReportBottomSheet(reportDetail: ReportsDetailModel) {
@@ -79,25 +99,5 @@ class AuthCardsViewModel @Inject constructor(
         uiState = uiState.copy(
             errorModel = null
         )
-    }
-
-    private suspend fun getAuthCardsScreen() {
-        getAuthCardsScreen.invoke(androidIdProvider.getAndroidId())
-            .onSuccess { authCardsScreenModel ->
-                withContext(Dispatchers.Main) {
-                    uiState = uiState.copy(
-                        screenModel = authCardsScreenModel,
-                        isLoading = false
-                    )
-                }
-            }
-            .onFailure { throwable ->
-                Timber.wtf(throwable, "This is a failure")
-
-                uiState = uiState.copy(
-                    isLoading = false,
-                    errorModel = throwable.mapToUi()
-                )
-            }
     }
 }
