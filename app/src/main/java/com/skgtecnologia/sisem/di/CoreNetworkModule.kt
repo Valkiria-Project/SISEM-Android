@@ -137,11 +137,11 @@ object CoreNetworkModule {
     private fun Moshi.Builder.provideAdapters() = this.add(
         KeyboardOptionsAdapter()
     ).add(
+        ArrangementAdapter()
+    ).add(
         ModifierAdapter()
     ).add(
         KotlinJsonAdapterFactory()
-    ).add(
-        ArrangementAdapter()
     )
 
     @Singleton
