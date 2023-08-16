@@ -57,6 +57,7 @@ import com.valkiria.uicomponents.components.crewmembercard.CrewMemberCardCompone
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListComponent
 import com.valkiria.uicomponents.components.filters.FiltersComponent
 import com.valkiria.uicomponents.components.finding.FindingComponent
+import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckComponent
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.passwordtextfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
@@ -148,7 +149,10 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is InventoryCheckModel -> item(key = model.identifier) {
-                // FIXME
+                InventoryCheckComponent(uiModel = model.mapToUiModel(), isTablet) {
+                    // FIXME: Finish this stuff
+                    Timber.d("Action performed")
+                }
             }
 
             is LabelModel -> item(key = model.text) {
