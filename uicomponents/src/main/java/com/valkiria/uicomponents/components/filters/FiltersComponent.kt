@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,14 +28,14 @@ fun FiltersComponent(
             .horizontalScroll(rememberScrollState())
             .fillMaxWidth()
             .height(60.dp)
-            .background(color = MaterialTheme.colorScheme.background),
+            .background(color = Color.Transparent),
         horizontalArrangement = Arrangement.Center
     ) {
         uiModel.options.forEach { chipText ->
             FilterChipView(
                 text = chipText,
                 textStyle = TextStyle.BUTTON_1,
-                modifier = Modifier.padding(end = 18.dp),
+                modifier = Modifier.padding(horizontal = 8.dp),
                 onAction = { selected, isSelection ->
                     onAction(selected, isSelection)
                 }

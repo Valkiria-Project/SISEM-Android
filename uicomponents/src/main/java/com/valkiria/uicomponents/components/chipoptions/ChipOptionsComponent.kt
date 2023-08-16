@@ -106,6 +106,7 @@ fun ChipOptionsComponent(
     }
 }
 
+@Suppress("MagicNumber")
 @Preview(showBackground = true)
 @Composable
 fun ChipOptionsComponentPreview() {

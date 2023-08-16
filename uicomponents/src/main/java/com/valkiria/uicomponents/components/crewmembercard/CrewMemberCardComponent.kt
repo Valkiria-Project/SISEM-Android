@@ -208,4 +208,3 @@ fun BadgedBoxView(
         )
     }
 }
-
