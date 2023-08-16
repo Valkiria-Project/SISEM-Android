@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.bricks.ValidationResponse
@@ -19,6 +20,7 @@ data class TextFieldResponse(
     @Json(name = "keyboard_type") val keyboardOptions: KeyboardOptions?,
     @Json(name = "text_style") val textStyle: TextStyle?,
     @Json(name = "validations") val validations: List<ValidationResponse>?,
+    @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val margins: Modifier?
 ) : BodyRowResponse {
 
@@ -33,6 +35,7 @@ data class TextFieldResponse(
         textStyle = textStyle ?: error("TextField textStyle cannot be null"),
         validations = validations?.map { it.mapToUi() }
             ?: error("TextField validations cannot be null"),
+        arrangement = arrangement ?: Arrangement.Center,
         modifier = margins ?: Modifier
     )
 }

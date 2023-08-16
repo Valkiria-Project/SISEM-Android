@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
@@ -9,6 +10,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class TermsAndConditionsResponse(
     @Json(name = "identifier") val identifier: String?,
+    @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
@@ -16,6 +18,7 @@ data class TermsAndConditionsResponse(
 
     override fun mapToDomain(): TermsAndConditionsModel = TermsAndConditionsModel(
         identifier = identifier,
+        arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )
 }

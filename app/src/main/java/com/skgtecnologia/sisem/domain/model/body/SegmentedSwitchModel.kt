@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.domain.model.body
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.segmentedswitch.OptionUiModel
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
@@ -10,6 +11,7 @@ data class SegmentedSwitchModel(
     val text: String,
     val textStyle: TextStyle,
     val options: List<OptionUiModel>,
+    val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {
 
@@ -21,5 +23,6 @@ fun SegmentedSwitchModel.mapToUiModel() = SegmentedSwitchUiModel(
     text = text,
     textStyle = textStyle,
     options = options,
+    arrangement = arrangement,
     modifier = modifier
 )

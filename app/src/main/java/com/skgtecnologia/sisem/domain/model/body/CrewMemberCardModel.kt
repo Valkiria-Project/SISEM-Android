@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.domain.model.body
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.domain.model.bricks.ChipSectionModel
 import com.skgtecnologia.sisem.domain.model.bricks.PillModel
@@ -16,6 +17,7 @@ data class CrewMemberCardModel(
     val date: TextModel,
     val chipSection: ChipSectionModel?,
     val reportsDetail: ReportsDetailModel?,
+    val arrangement: Arrangement.Horizontal,
     val modifier: Modifier
 ) : BodyRowModel {
 
@@ -34,5 +36,6 @@ fun CrewMemberCardModel.mapToUiModel() = CrewMemberCardUiModel(
     dateTextStyle = date.textStyle,
     chipSection = chipSection?.mapToUiModel(),
     reportsDetail = reportsDetail?.mapToUiModel(),
+    arrangement = arrangement,
     modifier = modifier
 )

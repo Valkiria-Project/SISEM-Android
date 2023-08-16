@@ -1,5 +1,6 @@
 package com.valkiria.uicomponents.mocks
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -13,6 +14,7 @@ fun getLoginChipUiModel(): ChipUiModel {
         text = "5421244",
         textStyle = TextStyle.HEADLINE_5,
         style = ChipStyle.PRIMARY,
+        arrangement = Arrangement.Center,
         modifier = Modifier.padding(
             start = 0.dp,
             top = 20.dp,

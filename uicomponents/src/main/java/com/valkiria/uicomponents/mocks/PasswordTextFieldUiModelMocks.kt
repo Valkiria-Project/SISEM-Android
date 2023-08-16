@@ -1,5 +1,6 @@
 package com.valkiria.uicomponents.mocks
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
@@ -24,6 +25,7 @@ fun getLoginPasswordTextFieldUiModel(): PasswordTextFieldUiModel {
                 message = "La contraseña debe al menos tener 3 caracteres"
             )
         ),
+        arrangement = Arrangement.Center,
         modifier = Modifier.padding(
             start = 20.dp,
             top = 16.dp,

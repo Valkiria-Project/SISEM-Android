@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.domain.model.body
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListUiModel
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoUiModel
@@ -10,6 +11,7 @@ data class DetailedInfoListModel(
     val details: List<DetailedInfoUiModel>,
     val labelTextStyle: TextStyle,
     val textTextStyle: TextStyle,
+    val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {
 
@@ -20,5 +22,6 @@ fun DetailedInfoListModel.mapToUiModel() = DetailedInfoListUiModel(
     details = details,
     labelTextStyle = labelTextStyle,
     textTextStyle = textTextStyle,
+    arrangement = arrangement,
     modifier = modifier
 )

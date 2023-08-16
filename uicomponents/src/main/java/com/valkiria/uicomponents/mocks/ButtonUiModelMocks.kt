@@ -1,5 +1,6 @@
 package com.valkiria.uicomponents.mocks
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -16,6 +17,7 @@ fun getLoginForgotButtonUiModel(): ButtonUiModel {
         textStyle = TextStyle.BUTTON_1,
         onClick = OnClick.FORGOT_PASSWORD,
         size = ButtonSize.DEFAULT,
+        arrangement = Arrangement.Center,
         modifier = Modifier.padding(
             start = 52.dp,
             top = 12.dp,
@@ -32,6 +34,7 @@ fun getLoginButtonUiModel(): ButtonUiModel {
         textStyle = TextStyle.HEADLINE_5,
         onClick = OnClick.LOGIN,
         size = ButtonSize.FULL_WIDTH,
+        arrangement = Arrangement.Center,
         modifier = Modifier.padding(
             start = 20.dp,
             top = 20.dp,

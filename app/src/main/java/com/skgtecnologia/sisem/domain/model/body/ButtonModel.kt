@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.domain.model.body
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.button.OnClick
@@ -14,6 +15,7 @@ data class ButtonModel(
     val textStyle: TextStyle,
     val onClick: OnClick,
     val size: ButtonSize,
+    val arrangement: Arrangement.Horizontal,
     val modifier: Modifier
 ) : BodyRowModel {
 
@@ -27,6 +29,7 @@ fun ButtonModel.mapToUiModel(): ButtonUiModel {
         textStyle = textStyle,
         onClick = onClick,
         size = size,
+        arrangement = arrangement,
         modifier = modifier
     )
 }

@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.bricks.ChipSectionResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.PillResponse
@@ -21,6 +22,7 @@ data class CrewMemberCardResponse(
     @Json(name = "date") val date: TextResponse?,
     @Json(name = "chip_section") val chipSection: ChipSectionResponse?,
     @Json(name = "reports_detail") val reportsDetail: ReportsDetailResponse?,
+    @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
@@ -34,6 +36,7 @@ data class CrewMemberCardResponse(
         date = date?.mapToDomain() ?: error("CrewMemberCard date cannot be null"),
         chipSection = chipSection?.mapToDomain(),
         reportsDetail = reportsDetail?.mapToDomain(),
+        arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )
 }

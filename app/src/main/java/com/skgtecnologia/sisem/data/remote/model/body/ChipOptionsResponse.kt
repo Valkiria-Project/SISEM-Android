@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.header.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.header.mapToDomain
@@ -12,6 +13,7 @@ import com.squareup.moshi.JsonClass
 data class ChipOptionsResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "title") val title: TextResponse?,
+    @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
@@ -20,6 +22,7 @@ data class ChipOptionsResponse(
     override fun mapToDomain(): ChipOptionsModel = ChipOptionsModel(
         identifier = identifier ?: error("ChipOptions identifier cannot be null"),
         title = title?.mapToDomain() ?: error("ChipOptions title cannot be null"),
+        arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )
 }

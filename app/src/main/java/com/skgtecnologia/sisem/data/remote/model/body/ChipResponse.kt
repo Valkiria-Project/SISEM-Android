@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.ChipModel
@@ -15,6 +16,7 @@ data class ChipResponse(
     @Json(name = "text") val text: String?,
     @Json(name = "text_style") val textStyle: TextStyle?,
     @Json(name = "style") val style: ChipStyle?,
+    @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
@@ -26,6 +28,7 @@ data class ChipResponse(
         text = text ?: error("Chip text cannot be null"),
         textStyle = textStyle ?: error("Chip textStyle cannot be null"),
         style = style ?: error("Chip style cannot be null"),
+        arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )
 }

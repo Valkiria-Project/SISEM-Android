@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.domain.model.body
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.chip.ChipUiModel
 import com.valkiria.uicomponents.props.ChipStyle
@@ -11,6 +12,7 @@ data class ChipModel(
     val text: String,
     val textStyle: TextStyle,
     val style: ChipStyle,
+    val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {
 
@@ -22,5 +24,6 @@ fun ChipModel.mapToUiModel() = ChipUiModel(
     text = text,
     textStyle = textStyle,
     style = style,
+    arrangement = arrangement,
     modifier = modifier
 )
