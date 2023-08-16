@@ -27,7 +27,7 @@ import com.valkiria.uicomponents.utlis.getResourceIdByName
 fun DetailedInfoListComponent(
     uiModel: DetailedInfoListUiModel
 ) {
-    uiModel.details.map { detailedInfoUiModel ->
+    uiModel.details.forEach { detailedInfoUiModel ->
         Row(
             modifier = uiModel.modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Start

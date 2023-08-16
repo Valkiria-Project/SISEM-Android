@@ -1,8 +1,8 @@
 package com.skgtecnologia.sisem.data.remote.model.bricks
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.data.remote.model.header.TextResponse
-import com.skgtecnologia.sisem.data.remote.model.header.mapToDomain
+import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
+import com.skgtecnologia.sisem.data.remote.model.props.mapToDomain
 import com.skgtecnologia.sisem.domain.model.bricks.DetailModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
