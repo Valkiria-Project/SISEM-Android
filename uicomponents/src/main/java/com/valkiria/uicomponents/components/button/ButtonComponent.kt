@@ -27,8 +27,6 @@ import timber.log.Timber
 fun ButtonComponent(
     uiModel: ButtonUiModel,
     isTablet: Boolean = false,
-    // BACKEND: This should be part of the ButtonUiModel <--> ButtonResponse
-    arrangement: Arrangement.Horizontal = Arrangement.Center,
     onAction: () -> Unit
 ) {
     Row(
@@ -37,7 +35,7 @@ fun ButtonComponent(
         } else {
             uiModel.modifier.fillMaxWidth()
         },
-        horizontalArrangement = arrangement
+        horizontalArrangement = uiModel.arrangement
     ) {
         Button(
             onClick = {

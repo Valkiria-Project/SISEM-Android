@@ -117,7 +117,8 @@ private fun LazyListScope.handleBodyRows(
 
             is DetailedInfoListModel -> item(key = model.identifier) {
                 DetailedInfoListComponent(
-                    uiModel = model.mapToUiModel()
+                    uiModel = model.mapToUiModel(),
+                    isTablet = isTablet
                 )
             }
 
@@ -144,7 +145,10 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is LabelModel -> item(key = model.text) {
-                LabelComponent(uiModel = model.mapToUiModel())
+                LabelComponent(
+                    uiModel = model.mapToUiModel(),
+                    isTablet = isTablet
+                )
             }
 
             is SegmentedSwitchModel -> item(key = model.identifier) {
@@ -184,16 +188,14 @@ private fun HandleButtonRows(
     when (model.identifier) {
         AuthCardsIdentifier.CREW_MEMBER_CARD_ADMIN_BUTTON.name -> ButtonComponent(
             uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
-            arrangement = Arrangement.End
+            isTablet = isTablet
         ) {
             onAction(AuthCardsUiAction.AuthCard)
         }
 
         LoginIdentifier.LOGIN_FORGOT_PASSWORD_BUTTON.name -> ButtonComponent(
             uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
-            arrangement = Arrangement.Start
+            isTablet = isTablet
         ) {
             onAction(ForgotPassword)
         }
@@ -217,12 +219,14 @@ private fun HandleChipRows(
     when (model.identifier) {
         LoginIdentifier.LOGIN_CODE_CHIP.name -> {
             ChipComponent(
-                uiModel = model.mapToUiModel()
+                uiModel = model.mapToUiModel(),
+                isTablet = isTablet
             )
         }
 
         else -> ChipComponent(
-            uiModel = model.mapToUiModel()
+            uiModel = model.mapToUiModel(),
+            isTablet = isTablet
         )
     }
 }

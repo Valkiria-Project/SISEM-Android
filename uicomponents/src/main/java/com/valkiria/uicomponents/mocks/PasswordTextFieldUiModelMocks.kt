@@ -34,3 +34,28 @@ fun getLoginPasswordTextFieldUiModel(): PasswordTextFieldUiModel {
         )
     )
 }
+
+fun getLoginPasswordTextFieldUiModelWithoutIcon(): PasswordTextFieldUiModel {
+    return PasswordTextFieldUiModel(
+        icon = "",
+        placeholder = "Contraseña",
+        label = "Ingresar contraseña",
+        keyboardOptions = KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Password
+        ),
+        textStyle = TextStyle.HEADLINE_5,
+        validations = listOf(
+            ValidationUiModel(
+                regex = "^\\d{3}$",
+                message = "La contraseña debe al menos tener 3 caracteres"
+            )
+        ),
+        arrangement = Arrangement.Center,
+        modifier = Modifier.padding(
+            start = 20.dp,
+            top = 16.dp,
+            end = 20.dp,
+            bottom = 0.dp
+        )
+    )
+}

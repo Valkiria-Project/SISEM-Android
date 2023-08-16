@@ -20,9 +20,9 @@ object MenuItemModel {
 
     fun getDrawerInfoItemList(isAdmin: Boolean?): List<DrawerItemInfo> {
         return if (isAdmin == true) {
-            drawerItems
-        } else {
             drawerLeaderItems
+        } else {
+            drawerItems
         }
     }
 
