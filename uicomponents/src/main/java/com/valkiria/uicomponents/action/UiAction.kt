@@ -1,5 +1,6 @@
 package com.valkiria.uicomponents.action
 
+import com.valkiria.uicomponents.components.crewmembercard.ChipSectionUiModel
 import com.valkiria.uicomponents.components.crewmembercard.ReportsDetailUiModel
 
 sealed interface UiAction
@@ -11,6 +12,7 @@ sealed class FooterUiAction(open val identifier: String) : UiAction {
 sealed class AuthCardsUiAction : UiAction {
     object AuthCard : AuthCardsUiAction()
     data class AuthCardNews(val reportDetail: ReportsDetailUiModel) : AuthCardsUiAction()
+    data class AuthCardFindings(val chipSectionUiModel: ChipSectionUiModel) : AuthCardsUiAction()
 }
 
 sealed class LoginUiAction : UiAction {
@@ -44,4 +46,20 @@ sealed class PreOperationalUiAction : UiAction {
 
     data class PreOpSwitchState(val id: String, val status: Boolean) : PreOperationalUiAction()
     object SavePreOperational : PreOperationalUiAction()
+}
+
+sealed class ChangePasswordUiAction : UiAction {
+    data class ConfirmPasswordInput(
+        val updatedValue: String,
+        val fieldValidated: Boolean
+    ) : ChangePasswordUiAction()
+
+    data class NewPasswordInput(
+        val updatedValue: String,
+        val fieldValidated: Boolean
+    ) : ChangePasswordUiAction()
+
+    data class OldPasswordInput(
+        val updatedValue: String
+    ) : ChangePasswordUiAction()
 }

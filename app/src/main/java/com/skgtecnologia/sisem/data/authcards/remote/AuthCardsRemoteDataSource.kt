@@ -12,12 +12,17 @@ class AuthCardsRemoteDataSource @Inject constructor(
     private val authCardsApi: AuthCardsApi
 ) {
 
-    suspend fun getAuthCardsScreen(code: String, turnId: String): Result<ScreenModel> = apiCall {
+    suspend fun getAuthCardsScreen(
+        code: String,
+        turnId: String,
+        serial: String
+    ): Result<ScreenModel> = apiCall {
         authCardsApi.getAuthCardsScreen(
             screenBody = ScreenBody(
                 params = Params(
                     code = code,
-                    turnId = turnId
+                    turnId = turnId,
+                    serial = serial
                 )
             )
         )

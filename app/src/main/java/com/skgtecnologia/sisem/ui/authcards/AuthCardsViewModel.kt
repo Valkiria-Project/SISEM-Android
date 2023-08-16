@@ -5,10 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.authcards.usecases.GetAuthCardsScreen
+import com.skgtecnologia.sisem.domain.model.bricks.ChipSectionModel
 import com.skgtecnologia.sisem.domain.model.bricks.ReportsDetailModel
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
-import com.skgtecnologia.sisem.domain.operation.usecases.GetConfig
+import com.skgtecnologia.sisem.domain.operation.usecases.GetOperationConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -19,8 +21,9 @@ import timber.log.Timber
 
 @HiltViewModel
 class AuthCardsViewModel @Inject constructor(
-    private val getConfig: GetConfig,
-    private val getAuthCardsScreen: GetAuthCardsScreen
+    private val androidIdProvider: AndroidIdProvider,
+    private val getAuthCardsScreen: GetAuthCardsScreen,
+    private val getOperationConfig: GetOperationConfig
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -33,7 +36,7 @@ class AuthCardsViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            getConfig.invoke()
+            getOperationConfig.invoke(androidIdProvider.getAndroidId())
                 .onSuccess {
                     getAuthCardsScreen()
                 }
@@ -48,26 +51,8 @@ class AuthCardsViewModel @Inject constructor(
         }
     }
 
-    fun showBottomSheet(reportDetail: ReportsDetailModel) {
-        uiState = uiState.copy(
-            reportDetail = reportDetail
-        )
-    }
-
-    fun handleShownBottomSheet() {
-        uiState = uiState.copy(
-            reportDetail = null
-        )
-    }
-
-    fun handleShownError() {
-        uiState = uiState.copy(
-            errorModel = null
-        )
-    }
-
     private suspend fun getAuthCardsScreen() {
-        getAuthCardsScreen.invoke()
+        getAuthCardsScreen.invoke(androidIdProvider.getAndroidId())
             .onSuccess { authCardsScreenModel ->
                 withContext(Dispatchers.Main) {
                     uiState = uiState.copy(
@@ -84,5 +69,35 @@ class AuthCardsViewModel @Inject constructor(
                     errorModel = throwable.mapToUi()
                 )
             }
+    }
+
+    fun showReportBottomSheet(reportDetail: ReportsDetailModel) {
+        uiState = uiState.copy(
+            reportDetail = reportDetail
+        )
+    }
+
+    fun handleShownReportBottomSheet() {
+        uiState = uiState.copy(
+            reportDetail = null
+        )
+    }
+
+    fun showFindingsBottomSheet(chipSection: ChipSectionModel) {
+        uiState = uiState.copy(
+            chipSection = chipSection
+        )
+    }
+
+    fun handleShownFindingsBottomSheet() {
+        uiState = uiState.copy(
+            chipSection = null
+        )
+    }
+
+    fun handleShownError() {
+        uiState = uiState.copy(
+            errorModel = null
+        )
     }
 }
