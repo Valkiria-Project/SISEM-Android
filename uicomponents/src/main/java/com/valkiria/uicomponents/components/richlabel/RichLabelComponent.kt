@@ -23,7 +23,7 @@ fun RichLabelComponent(
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = uiModel.arrangement
     ) {
         HtmlText(
             text = uiModel.text,
