@@ -142,7 +142,7 @@ private fun handleFooterUiAction(
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
             ChangePasswordIdentifier.CHANGE_PASSWORD_CANCEL_BUTTON.name -> onCancel()
-            ChangePasswordIdentifier.CHANGE_PASSWORD_SEND_BUTTON.name -> viewModel.change()
+            ChangePasswordIdentifier.CHANGE_PASSWORD_SAVE_BUTTON.name -> viewModel.change()
         }
     }
 }

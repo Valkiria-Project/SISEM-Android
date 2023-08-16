@@ -299,7 +299,7 @@ private fun HandlePasswordTextFieldRows(
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
-        ChangePasswordIdentifier.CHANGE_PASSWORD_CHANGE_NEW.name -> PasswordTextFieldComponent(
+        ChangePasswordIdentifier.CHANGE_PASSWORD_CONFIRM.name -> PasswordTextFieldComponent(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet,
             validateFields = validateFields
