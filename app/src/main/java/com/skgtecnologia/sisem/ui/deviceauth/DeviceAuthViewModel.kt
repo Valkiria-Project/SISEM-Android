@@ -21,10 +21,10 @@ import timber.log.Timber
 
 @HiltViewModel
 class DeviceAuthViewModel @Inject constructor(
-    private val getDeviceAuthScreen: GetDeviceAuthScreen,
+    private val androidIdProvider: AndroidIdProvider,
     private val associateDevice: AssociateDevice,
-    private val deleteAccessToken: DeleteAccessToken,
-    private val androidIdProvider: AndroidIdProvider
+    private val getDeviceAuthScreen: GetDeviceAuthScreen,
+    private val deleteAccessToken: DeleteAccessToken
 ) : ViewModel() {
 
     private var job: Job? = null

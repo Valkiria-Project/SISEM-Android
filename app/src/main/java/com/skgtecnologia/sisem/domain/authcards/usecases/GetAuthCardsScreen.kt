@@ -11,7 +11,7 @@ class GetAuthCardsScreen @Inject constructor(
 ) {
 
     @CheckResult
-    suspend operator fun invoke(): Result<ScreenModel> = resultOf {
-        authCardsRepository.getAuthCardsScreen()
+    suspend operator fun invoke(serial: String): Result<ScreenModel> = resultOf {
+        authCardsRepository.getAuthCardsScreen(serial)
     }
 }

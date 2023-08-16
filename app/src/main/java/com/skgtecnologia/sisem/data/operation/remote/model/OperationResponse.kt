@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.data.operation.remote.model
 
-import com.skgtecnologia.sisem.domain.authcards.model.ConfigModel
+import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -15,10 +15,11 @@ data class OperationResponse(
     @Json(name = "num_img_novelty") val numImgNovelty: Int?,
     @Json(name = "auth_method") val authMethod: String?,
     @Json(name = "attentions_type") val attentionsType: String?,
-    @Json(name = "status") val status: Boolean?
+    @Json(name = "status") val status: Boolean?,
+    @Json(name = "vehicle_code") val vehicleCode: String?
 )
 
-fun OperationResponse.mapToDomain(): ConfigModel = ConfigModel(
+fun OperationResponse.mapToDomain(): OperationModel = OperationModel(
     preoperationalTime = preoperationalTime ?: error("Config preoperationalTime cannot be null"),
     clinicHistObservationsTime = clinicHistObservationsTime
         ?: error("Config clinicHistObservationsTime cannot be null"),
@@ -32,5 +33,6 @@ fun OperationResponse.mapToDomain(): ConfigModel = ConfigModel(
     numImgNovelty = numImgNovelty ?: error("Config numImgNovelty cannot be null"),
     authMethod = authMethod ?: error("Config authMethod cannot be null"),
     attentionsType = attentionsType ?: error("Config attentionsType cannot be null"),
-    status = status ?: error("Config status cannot be null")
+    status = status ?: error("Config status cannot be null"),
+    vehicleCode = vehicleCode ?: error("Config vehicleCode cannot be null")
 )

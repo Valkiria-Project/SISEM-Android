@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Upsert
 import com.skgtecnologia.sisem.data.operation.cache.model.OperationEntity
 
 @Dao
@@ -15,7 +14,4 @@ interface OperationDao {
 
     @Query("SELECT * FROM operation LIMIT 1")
     suspend fun getOperation(): OperationEntity?
-
-    @Upsert
-    suspend fun updateAmbulanceCode(operationEntity: OperationEntity)
 }
