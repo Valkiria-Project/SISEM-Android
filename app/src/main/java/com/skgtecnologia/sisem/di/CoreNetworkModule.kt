@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.di
 
 import com.skgtecnologia.sisem.BuildConfig
+import com.skgtecnologia.sisem.data.remote.adapters.ArrangementAdapter
 import com.skgtecnologia.sisem.data.remote.adapters.KeyboardOptionsAdapter
 import com.skgtecnologia.sisem.data.remote.adapters.ModifierAdapter
 import com.skgtecnologia.sisem.data.remote.model.body.BodyRowResponse
@@ -139,6 +140,8 @@ object CoreNetworkModule {
         ModifierAdapter()
     ).add(
         KotlinJsonAdapterFactory()
+    ).add(
+        ArrangementAdapter()
     )
 
     @Singleton

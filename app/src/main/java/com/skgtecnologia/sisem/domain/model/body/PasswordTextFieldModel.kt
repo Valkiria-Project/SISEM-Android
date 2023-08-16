@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.domain.model.body
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.passwordtextfield.PasswordTextFieldUiModel
@@ -14,6 +15,7 @@ data class PasswordTextFieldModel(
     val keyboardOptions: KeyboardOptions,
     val textStyle: TextStyle,
     val validations: List<ValidationUiModel>,
+    val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {
 
@@ -28,6 +30,7 @@ fun PasswordTextFieldModel.mapToUiModel(): PasswordTextFieldUiModel {
         keyboardOptions = keyboardOptions,
         textStyle = textStyle,
         validations = validations,
+        arrangement = arrangement,
         modifier = modifier
     )
 }

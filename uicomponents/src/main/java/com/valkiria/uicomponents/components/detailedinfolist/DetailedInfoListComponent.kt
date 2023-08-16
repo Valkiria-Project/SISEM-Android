@@ -77,7 +77,8 @@ fun DetailedInfoListComponentPreview() {
             )
         ),
         labelTextStyle = TextStyle.BUTTON_1,
-        textTextStyle = TextStyle.HEADLINE_4
+        textTextStyle = TextStyle.HEADLINE_4,
+        arrangement = Arrangement.Center
     )
 
     Column(
