@@ -1,5 +1,6 @@
 package com.valkiria.uicomponents.mocks
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
@@ -24,6 +25,7 @@ fun getLoginUserTextFieldUiModel(): TextFieldUiModel {
                 message = "El campo no debe estar vacío"
             )
         ),
+        arrangement = Arrangement.Center,
         modifier = Modifier.padding(
             start = 20.dp,
             top = 20.dp,
@@ -46,6 +48,7 @@ fun getPreOpDriverVehicleKMTextFieldUiModel(): TextFieldUiModel {
                 message = "El campo no debe estar vacío"
             )
         ),
+        arrangement = Arrangement.Center,
         modifier = Modifier.padding(
             start = 20.dp,
             top = 20.dp,

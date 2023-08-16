@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.bricks.OptionResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
@@ -15,6 +16,7 @@ data class SegmentedSwitchResponse(
     @Json(name = "text") val text: String?,
     @Json(name = "text_style") val textStyle: TextStyle?,
     @Json(name = "options") val options: List<OptionResponse>?,
+    @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
@@ -25,6 +27,7 @@ data class SegmentedSwitchResponse(
         text = text ?: error("SegmentedSwitch text cannot be null"),
         textStyle = textStyle ?: error("SegmentedSwitch textStyle cannot be null"),
         options = options?.map { it.mapToUi() } ?: error("SegmentedSwitch options cannot be null"),
+        arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )
 }

@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToDomain
@@ -13,6 +14,7 @@ data class ChipOptionsResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "title") val title: TextResponse?,
     @Json(name = "items") val items: List<String>?,
+    @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
@@ -22,6 +24,7 @@ data class ChipOptionsResponse(
         identifier = identifier ?: error("ChipOptions identifier cannot be null"),
         title = title?.mapToDomain() ?: error("ChipOptions title cannot be null"),
         items = items ?: error("ChipOptions items cannot be null"),
+        arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )
 }
