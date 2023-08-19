@@ -18,7 +18,6 @@ import com.valkiria.uicomponents.props.TextStyle
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun FindingsContent(chipSection: ChipSectionModel) {
-
     HeaderSection(
         headerModel = HeaderModel(
             title = TextModel(

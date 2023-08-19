@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.ui.sections
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -53,7 +54,8 @@ fun HeaderSection(
             LabelComponent(
                 uiModel = LabelUiModel(
                     text = headerModel.title.text,
-                    textStyle = headerModel.title.textStyle
+                    textStyle = headerModel.title.textStyle,
+                    arrangement = Arrangement.Start
                 )
             )
 

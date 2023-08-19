@@ -99,16 +99,17 @@
     </string>
 
     <!-- Drawer Menu -->
+    <string name="drawer_role_doctor">Médico</string>
+    <string name="drawer_role_aux">Auxiliar</string>
+    <string name="drawer_role_driver">Conductor</string>
+
     <string name="drawer_incident">Incidentes</string>
-    <string name="drawer_specialty_auxiliar">Auxiliar</string>
-    <string name="drawer_notification">Notificaciones</string>
-    <string name="drawer_driving_guide">Guia para conducir</string>
-    <string name="drawer_centifications">Centificaciones</string>
-    <string name="drawer_news">Nueva pantalla</string>
-    <string name="drawer_HCEUD">HCEUD</string>
-    <string name="drawer_menu_description">Menu Descripcion</string>
-    <string name="dummy_name">Rodrigo Zuñiga</string>
-    <string name="drawer_medical_specialty">Medico</string>
-    <string name="drawer_drivers">Conductor</string>
-    <string name="drawer_specialty_inventory">Inventario</string>
+    <string name="drawer_inventory">Inventario</string>
+    <string name="drawer_notifications">Notificaciones</string>
+    <string name="drawer_guides">Guías de manejo</string>
+    <string name="drawer_certifications">Certificados</string>
+    <string name="drawer_novelties">Novedades</string>
+    <string name="drawer_turn_shift">Entrega de turno</string>
+    <string name="drawer_pre_operational">Preoperacional</string>
+    <string name="drawer_hceud">HCEUD</string>
 </resources>

@@ -23,7 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.skgtecnologia.sisem.R.drawable
+import com.skgtecnologia.sisem.R
 import com.valkiria.uicomponents.props.TextStyle.BUTTON_1
 import com.valkiria.uicomponents.props.TextStyle.HEADLINE_5
 import com.valkiria.uicomponents.props.toTextStyle
@@ -38,7 +38,7 @@ fun MenuHeaderComponent(
     Column(modifier = modifier) {
         Row {
             Icon(
-                painter = painterResource(id = drawable.ic_ambulance_box),
+                painter = painterResource(id = R.drawable.ic_ambulance_box),
                 contentDescription = null,
                 modifier = Modifier
                     .padding(start = 33.dp, top = 30.dp, bottom = 10.dp)

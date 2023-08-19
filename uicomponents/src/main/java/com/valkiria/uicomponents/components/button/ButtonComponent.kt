@@ -1,7 +1,6 @@
 package com.valkiria.uicomponents.components.button
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,8 +26,6 @@ import timber.log.Timber
 fun ButtonComponent(
     uiModel: ButtonUiModel,
     isTablet: Boolean = false,
-    // BACKEND: This should be part of the ButtonUiModel <--> ButtonResponse
-    arrangement: Arrangement.Horizontal = Arrangement.Center,
     onAction: () -> Unit
 ) {
     Row(
@@ -37,7 +34,7 @@ fun ButtonComponent(
         } else {
             uiModel.modifier.fillMaxWidth()
         },
-        horizontalArrangement = arrangement
+        horizontalArrangement = uiModel.arrangement
     ) {
         Button(
             onClick = {
