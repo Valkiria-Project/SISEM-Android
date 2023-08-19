@@ -17,6 +17,12 @@ import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.ShiftScreen
 import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.SignatureAndFingerprint
 import com.valkiria.uicomponents.R.drawable
 
+data class DrawerItemInfo(
+    val drawerOption: MenuNavigationRoute,
+    val title: String,
+    @DrawableRes val drawableId: Int
+)
+
 fun getDrawerInfoItemList(context: Context, isAdmin: Boolean?): List<DrawerItemInfo> {
     return if (isAdmin == true) {
         getLeaderDrawerItems(context)
@@ -85,10 +91,4 @@ private fun getLeaderDrawerItems(context: Context) = listOf(
         "Registrar firma y huella", // FIXME: Hardcoded data
         drawable.ic_incidents // FIXME: update with figma
     )
-)
-
-data class DrawerItemInfo(
-    val drawerOption: MenuNavigationRoute,
-    val title: String,
-    @DrawableRes val drawableId: Int
 )
