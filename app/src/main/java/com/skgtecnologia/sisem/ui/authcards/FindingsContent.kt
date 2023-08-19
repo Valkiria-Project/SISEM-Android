@@ -16,7 +16,6 @@ import com.valkiria.uicomponents.props.TextStyle
 
 @Composable
 fun FindingsContent(chipSection: ChipSectionModel) {
-
     HeaderSection(
         headerModel = HeaderModel(
             title = TextModel(

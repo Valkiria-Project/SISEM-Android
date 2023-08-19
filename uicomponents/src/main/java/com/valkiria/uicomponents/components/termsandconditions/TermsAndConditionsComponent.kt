@@ -1,7 +1,6 @@
 package com.valkiria.uicomponents.components.termsandconditions
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,7 +30,7 @@ fun TermsAndConditionsComponent(
         } else {
             uiModel.modifier.fillMaxWidth()
         },
-        horizontalArrangement = Arrangement.Center,
+        horizontalArrangement = uiModel.arrangement,
         verticalAlignment = Alignment.CenterVertically
     ) {
         HtmlText(

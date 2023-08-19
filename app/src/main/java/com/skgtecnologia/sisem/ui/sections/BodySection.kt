@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.skgtecnologia.sisem.R.drawable
+import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.authcards.model.AuthCardsIdentifier
 import com.skgtecnologia.sisem.domain.changepassword.model.ChangePasswordIdentifier
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
@@ -123,7 +123,8 @@ private fun LazyListScope.handleBodyRows(
 
             is DetailedInfoListModel -> item(key = model.identifier) {
                 DetailedInfoListComponent(
-                    uiModel = model.mapToUiModel()
+                    uiModel = model.mapToUiModel(),
+                    isTablet = isTablet
                 )
             }
 
@@ -143,7 +144,7 @@ private fun LazyListScope.handleBodyRows(
             is FingerprintModel -> item(key = model.identifier) {
                 Image(
                     modifier = Modifier.padding(vertical = 20.dp),
-                    painter = painterResource(id = drawable.ic_fingerprint),
+                    painter = painterResource(id = R.drawable.ic_fingerprint),
                     contentDescription = null
                 )
             }
@@ -156,7 +157,10 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is LabelModel -> item(key = model.text) {
-                LabelComponent(uiModel = model.mapToUiModel())
+                LabelComponent(
+                    uiModel = model.mapToUiModel(),
+                    isTablet = isTablet
+                )
             }
 
             is SegmentedSwitchModel -> item(key = model.identifier) {
@@ -196,16 +200,14 @@ private fun HandleButtonRows(
     when (model.identifier) {
         AuthCardsIdentifier.CREW_MEMBER_CARD_ADMIN_BUTTON.name -> ButtonComponent(
             uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
-            arrangement = Arrangement.End
+            isTablet = isTablet
         ) {
             onAction(AuthCardsUiAction.AuthCard)
         }
 
         LoginIdentifier.LOGIN_FORGOT_PASSWORD_BUTTON.name -> ButtonComponent(
             uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
-            arrangement = Arrangement.Start
+            isTablet = isTablet
         ) {
             onAction(ForgotPassword)
         }
@@ -229,12 +231,14 @@ private fun HandleChipRows(
     when (model.identifier) {
         LoginIdentifier.LOGIN_CODE_CHIP.name -> {
             ChipComponent(
-                uiModel = model.mapToUiModel()
+                uiModel = model.mapToUiModel(),
+                isTablet = isTablet
             )
         }
 
         else -> ChipComponent(
-            uiModel = model.mapToUiModel()
+            uiModel = model.mapToUiModel(),
+            isTablet = isTablet
         )
     }
 }
