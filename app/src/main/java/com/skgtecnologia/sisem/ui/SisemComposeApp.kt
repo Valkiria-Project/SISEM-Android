@@ -35,7 +35,7 @@ fun SisemComposeApp(
         val navController = rememberNavController()
         NavHost(
             navController = navController,
-            startDestination = NavigationGraph.Auth.route
+            startDestination = NavigationGraph.Menu.route
         ) {
             authGraph(navController, isTablet, modifier)
             menuGraph(navController, isTablet, modifier)

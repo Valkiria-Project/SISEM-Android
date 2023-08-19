@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.mocks.getLoginPasswordTextFieldUiModel
-import com.valkiria.uicomponents.mocks.getLoginPasswordTextFieldUiModelWithoutIcon
+import com.valkiria.uicomponents.mocks.getNoIconPasswordTextFieldUiModel
 import com.valkiria.uicomponents.props.TabletWidth
 import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.utlis.DefType
@@ -162,7 +162,7 @@ fun PasswordTextFieldComponentPreview() {
         }
 
         PasswordTextFieldComponent(
-            uiModel = getLoginPasswordTextFieldUiModelWithoutIcon()
+            uiModel = getNoIconPasswordTextFieldUiModel()
         ) { updatedValue, fieldValidated ->
             Timber.d("Handle $updatedValue with $fieldValidated")
         }

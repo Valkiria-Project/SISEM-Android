@@ -12,10 +12,11 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.menu.header.toCrewMemberItemModel
-import com.skgtecnologia.sisem.ui.menu.items.MenuItemModel
+import com.skgtecnologia.sisem.ui.menu.items.getDrawerInfoItemList
 import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -25,7 +26,6 @@ fun MenuDrawer(
     onClick: (MenuNavigationRoute) -> Unit,
     onLogout: () -> Unit
 ) {
-
     val viewModel = hiltViewModel<MenuViewModel>()
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
     val drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -39,9 +39,7 @@ fun MenuDrawer(
     } ?: emptyList()
 
     // FIXME: It is possible that the leader can authenticate when there are another users logged in?
-    val isAdmin = uiState.accessTokenModelList?.let { list ->
-        list.first().isAdmin
-    }
+    val isAdmin = uiState.accessTokenModelList?.first()?.isAdmin
 
     LaunchedEffect(uiState) {
         launch {
@@ -57,7 +55,7 @@ fun MenuDrawer(
             DrawerContent(
                 drawerState = drawerState,
                 menuItemsPersonal = menuItemsPersonal,
-                menuItems = MenuItemModel.getDrawerInfoItemList(isAdmin),
+                menuItems = getDrawerInfoItemList(LocalContext.current, isAdmin),
                 onMenuItemClick = { onClick(it) },
                 onLogout = { viewModel.logout(it.username) }
             )

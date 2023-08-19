@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.skgtecnologia.sisem.R.drawable
+import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.authcards.model.AuthCardsIdentifier
 import com.skgtecnologia.sisem.domain.changepassword.model.ChangePasswordIdentifier
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
@@ -135,7 +135,7 @@ private fun LazyListScope.handleBodyRows(
             is FingerprintModel -> item(key = model.identifier) {
                 Image(
                     modifier = Modifier.padding(vertical = 20.dp),
-                    painter = painterResource(id = drawable.ic_fingerprint),
+                    painter = painterResource(id = R.drawable.ic_fingerprint),
                     contentDescription = null
                 )
             }

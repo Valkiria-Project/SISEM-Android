@@ -35,9 +35,8 @@ fun getLoginPasswordTextFieldUiModel(): PasswordTextFieldUiModel {
     )
 }
 
-fun getLoginPasswordTextFieldUiModelWithoutIcon(): PasswordTextFieldUiModel {
+fun getNoIconPasswordTextFieldUiModel(): PasswordTextFieldUiModel {
     return PasswordTextFieldUiModel(
-        icon = "",
         placeholder = "Contraseña",
         label = "Ingresar contraseña",
         keyboardOptions = KeyboardOptions.Default.copy(
