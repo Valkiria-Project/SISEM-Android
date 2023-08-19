@@ -1,7 +1,6 @@
 package com.valkiria.uicomponents.components.passwordtextfield
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.mocks.getLoginPasswordTextFieldUiModel
+import com.valkiria.uicomponents.mocks.getNoIconPasswordTextFieldUiModel
 import com.valkiria.uicomponents.props.TabletWidth
 import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.utlis.DefType
@@ -58,7 +58,7 @@ fun PasswordTextFieldComponent(
         } else {
             uiModel.modifier.fillMaxWidth()
         },
-        horizontalArrangement = Arrangement.Center,
+        horizontalArrangement = uiModel.arrangement,
         verticalAlignment = Alignment.CenterVertically
     ) {
         iconResourceId?.let {
@@ -84,7 +84,9 @@ fun PasswordTextFieldComponent(
                     text.toFailedValidation(uiModel.validations, validateFields) == null
                 )
             },
-            modifier = Modifier.imePadding(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .imePadding(),
             textStyle = uiModel.textStyle.toTextStyle(),
             label = {
                 uiModel.label?.let { label ->
@@ -155,6 +157,12 @@ fun PasswordTextFieldComponentPreview() {
     ) {
         PasswordTextFieldComponent(
             uiModel = getLoginPasswordTextFieldUiModel()
+        ) { updatedValue, fieldValidated ->
+            Timber.d("Handle $updatedValue with $fieldValidated")
+        }
+
+        PasswordTextFieldComponent(
+            uiModel = getNoIconPasswordTextFieldUiModel()
         ) { updatedValue, fieldValidated ->
             Timber.d("Handle $updatedValue with $fieldValidated")
         }
