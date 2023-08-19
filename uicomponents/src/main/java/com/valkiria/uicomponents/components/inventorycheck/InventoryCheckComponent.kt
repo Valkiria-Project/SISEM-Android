@@ -13,11 +13,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import com.valkiria.uicomponents.bricks.DigitsTextFieldView
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
+import com.valkiria.uicomponents.mocks.getPreOperationalInventoryCheckUiModel
+import com.valkiria.uicomponents.props.FORTY_PERCENT_WEIGHT
+import com.valkiria.uicomponents.props.THIRTY_PERCENT_WEIGHT
 import com.valkiria.uicomponents.props.TabletWidth
 import com.valkiria.uicomponents.props.toTextStyle
+import timber.log.Timber
 
-@Suppress("LongMethod", "MagicNumber", "UnusedPrivateMember")
+@Suppress("UnusedPrivateMember")
 @Composable
 fun InventoryCheckComponent(
     uiModel: InventoryCheckUiModel,
@@ -29,37 +34,9 @@ fun InventoryCheckComponent(
             uiModel.modifier.width(TabletWidth)
         } else {
             uiModel.modifier.fillMaxWidth()
-        },
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Spacer(
-                modifier = Modifier
-                    .weight(0.4f)
-            )
-            Column(
-                modifier = Modifier
-                    .weight(0.3f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = uiModel.registeredText,
-                    style = uiModel.registeredTextStyle.toTextStyle()
-                )
-            }
-            Column(
-                modifier = Modifier
-                    .weight(0.3f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = uiModel.receivedText,
-                    style = uiModel.receivedTextStyle.toTextStyle()
-                )
-            }
         }
+    ) {
+        InventoryHeaderRow(uiModel)
 
         uiModel.items.forEach { checkItemUiModel ->
             Row(
@@ -68,44 +45,79 @@ fun InventoryCheckComponent(
             ) {
                 Column(
                     modifier = Modifier
-                        .weight(0.4f),
+                        .weight(FORTY_PERCENT_WEIGHT),
                     horizontalAlignment = Alignment.Start
                 ) {
                     RichLabelComponent(uiModel = checkItemUiModel.name)
                 }
                 Column(
                     modifier = Modifier
-                        .weight(0.3f),
+                        .weight(THIRTY_PERCENT_WEIGHT),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = checkItemUiModel.registeredValueText)
+                    Text(
+                        text = checkItemUiModel.registeredValueText,
+                        style = checkItemUiModel.registeredValueTextStyle.toTextStyle()
+                    )
                 }
                 Column(
                     modifier = Modifier
-                        .weight(0.3f),
+                        .weight(THIRTY_PERCENT_WEIGHT),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = checkItemUiModel.receivedValueText)
+                    DigitsTextFieldView(
+                        style = checkItemUiModel.registeredValueTextStyle.toTextStyle()
+                    )
                 }
             }
         }
     }
 }
 
+@Composable
+private fun InventoryHeaderRow(uiModel: InventoryCheckUiModel) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Spacer(
+            modifier = Modifier
+                .weight(FORTY_PERCENT_WEIGHT)
+        )
+        Column(
+            modifier = Modifier
+                .weight(THIRTY_PERCENT_WEIGHT),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = uiModel.registeredText,
+                style = uiModel.registeredTextStyle.toTextStyle()
+            )
+        }
+        Column(
+            modifier = Modifier
+                .weight(THIRTY_PERCENT_WEIGHT),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = uiModel.receivedText,
+                style = uiModel.receivedTextStyle.toTextStyle()
+            )
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
-fun ButtonComponentPreview() {
+fun InventoryCheckComponentPreview() {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.DarkGray)
     ) {
-        // FIXME: Finish this
-//        InventoryCheckComponent(uiModel = getLoginForgotButtonUiModel()) {
-//            Timber.d("Button clicked")
-//        }
-//        InventoryCheckComponent(uiModel = getLoginButtonUiModel()) {
-//            Timber.d("Button clicked")
-//        }
+        InventoryCheckComponent(uiModel = getPreOperationalInventoryCheckUiModel()) {
+            Timber.d("Inventory action")
+        }
     }
 }
+
