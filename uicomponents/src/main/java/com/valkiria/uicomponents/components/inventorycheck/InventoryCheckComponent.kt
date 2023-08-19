@@ -17,6 +17,7 @@ import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.props.TabletWidth
 import com.valkiria.uicomponents.props.toTextStyle
 
+@Suppress("LongMethod", "MagicNumber", "UnusedPrivateMember")
 @Composable
 fun InventoryCheckComponent(
     uiModel: InventoryCheckUiModel,
