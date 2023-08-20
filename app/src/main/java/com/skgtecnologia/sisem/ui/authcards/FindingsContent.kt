@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.ui.authcards
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,10 +11,9 @@ import com.skgtecnologia.sisem.domain.model.bricks.ChipSectionModel
 import com.skgtecnologia.sisem.domain.model.header.HeaderModel
 import com.skgtecnologia.sisem.domain.model.header.TextModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
-import com.valkiria.uicomponents.components.crewmembercard.ChipView
+import com.valkiria.uicomponents.bricks.SuggestionChipView
 import com.valkiria.uicomponents.props.TextStyle
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun FindingsContent(chipSection: ChipSectionModel) {
     HeaderSection(
@@ -40,7 +38,7 @@ fun FindingsContent(chipSection: ChipSectionModel) {
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         chipSection.listText.texts.forEach { text ->
-            ChipView(text = text, textStyle = chipSection.listText.textStyle)
+            SuggestionChipView(text = text, textStyle = chipSection.listText.textStyle)
         }
     }
 }

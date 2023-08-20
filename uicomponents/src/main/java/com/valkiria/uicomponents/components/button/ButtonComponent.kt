@@ -21,7 +21,6 @@ import com.valkiria.uicomponents.props.mapToTextColor
 import com.valkiria.uicomponents.props.toTextStyle
 import timber.log.Timber
 
-@Suppress("MaxLineLength")
 @Composable
 fun ButtonComponent(
     uiModel: ButtonUiModel,

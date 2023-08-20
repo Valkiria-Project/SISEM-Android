@@ -52,16 +52,19 @@ import com.valkiria.uicomponents.action.PreOperationalUiAction.DriverVehicleKMIn
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
+import com.valkiria.uicomponents.components.chipoptions.ChipOptionsComponent
 import com.valkiria.uicomponents.components.crewmembercard.CrewMemberCardComponent
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListComponent
 import com.valkiria.uicomponents.components.filters.FiltersComponent
 import com.valkiria.uicomponents.components.finding.FindingComponent
+import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckComponent
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.passwordtextfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
+import timber.log.Timber
 
 @Suppress("ComplexMethod", "LongMethod")
 @Composable
@@ -75,7 +78,7 @@ fun BodySection(
     if (body?.isNotEmpty() == true) {
         LazyColumn(
             modifier = modifier,
-            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp), // FIXME: iOS?
+            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Top),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -91,7 +94,7 @@ private fun LazyListScope.handleBodyRows(
     validateFields: Boolean,
     onAction: (actionInput: UiAction) -> Unit
 ) {
-    body.map { model ->
+    body.forEach { model ->
         when (model) {
             is ButtonModel -> item(key = model.identifier) {
                 HandleButtonRows(model, isTablet, onAction)
@@ -102,7 +105,10 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is ChipOptionsModel -> item(key = model.identifier) {
-                // FIXME
+                ChipOptionsComponent(uiModel = model.mapToUiModel()) { selected, isSelection ->
+                    // FIXME: Finish this stuff, should be saved per interaction
+                    Timber.d("Selected $selected and is $isSelection")
+                }
             }
 
             is ContentHeaderModel -> item(key = model.identifier) {
@@ -125,7 +131,10 @@ private fun LazyListScope.handleBodyRows(
             is FiltersModel -> stickyHeader(key = model.identifier) {
                 FiltersComponent(
                     uiModel = model.mapToUiModel()
-                )
+                ) { selected, isSelection ->
+                    // FIXME: Finish this stuff
+                    Timber.d("Selected $selected and is $isSelection")
+                }
             }
 
             is FindingModel -> item(key = model.identifier) {
@@ -141,7 +150,10 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is InventoryCheckModel -> item(key = model.identifier) {
-                // FIXME
+                InventoryCheckComponent(uiModel = model.mapToUiModel(), isTablet) {
+                    // FIXME: Finish this stuff
+                    Timber.d("Action performed")
+                }
             }
 
             is LabelModel -> item(key = model.text) {

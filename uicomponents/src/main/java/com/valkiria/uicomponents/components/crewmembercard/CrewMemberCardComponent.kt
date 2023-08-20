@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,8 +19,6 @@ import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SuggestionChip
-import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,14 +30,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.bricks.SuggestionChipView
 import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 
 private const val MAX_FINDINGS = 3
 
-@OptIn(ExperimentalLayoutApi::class)
 @Suppress("LongMethod", "UnusedPrivateMember")
 @Composable
 fun CrewMemberCardComponent(
@@ -170,9 +166,9 @@ fun CrewMemberCardComponent(
                     ) {
                         it.listText.forEachIndexed { index, text ->
                             if (index < MAX_FINDINGS) {
-                                ChipView(text = text, textStyle = it.listTextStyle)
+                                SuggestionChipView(text = text, textStyle = it.listTextStyle)
                             } else {
-                                ChipView(
+                                SuggestionChipView(
                                     text = "...",
                                     textStyle = it.listTextStyle,
                                     onClick = { onFindingsAction(it) }
@@ -211,27 +207,4 @@ fun BadgedBoxView(
             tint = MaterialTheme.colorScheme.primary,
         )
     }
-}
-
-@Composable
-fun ChipView(
-    text: String,
-    textStyle: TextStyle,
-    onClick: () -> Unit = {}
-) {
-    SuggestionChip(
-        onClick = { onClick() },
-        modifier = Modifier.wrapContentSize(),
-        label = {
-            Text(
-                text = text,
-                style = textStyle.toTextStyle(),
-                color = Color.White
-            )
-        },
-        shape = RoundedCornerShape(25.dp),
-        border = SuggestionChipDefaults.suggestionChipBorder(
-            borderColor = MaterialTheme.colorScheme.primary
-        )
-    )
 }
