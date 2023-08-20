@@ -20,3 +20,19 @@ fun getLoginWelcomeRichLabelUiModel(): RichLabelUiModel {
         )
     )
 }
+
+fun getAlprazolamRichLabelUiModel(): RichLabelUiModel {
+    return RichLabelUiModel(
+        text = "<font color=\"#FFFFFF\"><b>Alprazolam</b><br>TAB 0.5 MG *",
+        textStyle = TextStyle.HEADLINE_6,
+        arrangement = Arrangement.Start
+    )
+}
+
+fun getDiazepamRichLabelUiModel(): RichLabelUiModel {
+    return RichLabelUiModel(
+        text = "<font color=\"#FFFFFF\"><b>Diazepam</b><br>Sol iny 1 MG/MLAMP1*",
+        textStyle = TextStyle.HEADLINE_6,
+        arrangement = Arrangement.Start
+    )
+}

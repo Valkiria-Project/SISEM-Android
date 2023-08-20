@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.detekt)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.detekt)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.paparazzi)
 }
@@ -30,6 +30,7 @@ android {
     kotlinOptions {
         jvmTarget = "17"
         freeCompilerArgs += listOf(
+            "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
         )
     }

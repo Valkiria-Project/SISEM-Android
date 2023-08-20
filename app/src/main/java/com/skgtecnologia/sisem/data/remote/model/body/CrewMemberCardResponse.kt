@@ -6,8 +6,8 @@ import com.skgtecnologia.sisem.data.remote.model.bricks.ChipSectionResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.PillResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.ReportsDetailResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToDomain
-import com.skgtecnologia.sisem.data.remote.model.header.TextResponse
-import com.skgtecnologia.sisem.data.remote.model.header.mapToDomain
+import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
+import com.skgtecnologia.sisem.data.remote.model.props.mapToDomain
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.CrewMemberCardModel
 import com.squareup.moshi.Json
