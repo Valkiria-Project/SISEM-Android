@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui
+package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -17,15 +17,10 @@ import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.map.MapScreen
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
-import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute
-import com.skgtecnologia.sisem.ui.navigation.NavigationGraph
-import com.skgtecnologia.sisem.ui.navigation.navigateToNextStep
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
 
 @Composable
-fun SisemComposeApp(
+fun SisemNavGraph(
     isTablet: Boolean
 ) {
     Scaffold(
