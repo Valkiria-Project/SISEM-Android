@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun MenuItemsComponent(
     modifier: Modifier,
-    menuItems: List<DrawerItemInfo>,
+    menuItems: List<DrawerMenuItemModel>,
     drawerState: DrawerState,
     onClick: (MenuNavigationRoute) -> Unit
 ) {

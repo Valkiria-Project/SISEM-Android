@@ -19,7 +19,8 @@ data class FindingResponse(
 
     override fun mapToDomain(): FindingModel = FindingModel(
         identifier = identifier ?: error("Finding identifier cannot be null"),
-        segmentedSwitchModel = segmentedSwitch?.mapToDomain() ?: error("Finding option cannot be null"),
+        segmentedSwitchModel = segmentedSwitch?.mapToDomain()
+            ?: error("Finding segmentedSwitchModel cannot be null"),
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

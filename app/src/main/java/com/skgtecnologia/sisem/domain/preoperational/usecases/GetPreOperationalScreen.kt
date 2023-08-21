@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.domain.preoperational.usecases
 
 import androidx.annotation.CheckResult
 import com.skgtecnologia.sisem.commons.extensions.resultOf
+import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.preoperational.PreOperationalRepository
 import javax.inject.Inject
@@ -11,7 +12,7 @@ class GetPreOperationalScreen @Inject constructor(
 ) {
 
     @CheckResult
-    suspend operator fun invoke(): Result<ScreenModel> = resultOf {
-        preOperationalRepository.getPreOperationalScreen()
+    suspend operator fun invoke(operationRole: OperationRole): Result<ScreenModel> = resultOf {
+        preOperationalRepository.getPreOperationalScreen(operationRole)
     }
 }

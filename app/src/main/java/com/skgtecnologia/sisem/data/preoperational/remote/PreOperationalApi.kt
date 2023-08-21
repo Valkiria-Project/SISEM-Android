@@ -8,9 +8,18 @@ import retrofit2.http.POST
 
 interface PreOperationalApi {
 
-    //    @POST("https://run.mocky.io/v3/d24a9108-d2aa-4b66-8676-a4ddbc74ad9e") // BACKEND
-    @POST("screen/pre-operational-driver") // BACKEND
-    suspend fun getPreOperationalScreen(
+    @POST("screen/pre-operational-assistant")
+    suspend fun getAuxPreOperationalScreen(
+        @Body screenBody: ScreenBody
+    ): Response<ScreenResponse>
+
+    @POST("screen/pre-operational-doctor")
+    suspend fun getDoctorPreOperationalScreen(
+        @Body screenBody: ScreenBody
+    ): Response<ScreenResponse>
+
+    @POST("screen/pre-operational-driver")
+    suspend fun getDriverPreOperationalScreen(
         @Body screenBody: ScreenBody
     ): Response<ScreenResponse>
 

@@ -17,7 +17,7 @@ import com.valkiria.uicomponents.props.toTextStyle
 
 @Composable
 fun MenuItem(
-    item: DrawerItemInfo,
+    item: DrawerMenuItemModel,
     onClick: (route: MenuNavigationRoute) -> Unit
 ) {
     Row(

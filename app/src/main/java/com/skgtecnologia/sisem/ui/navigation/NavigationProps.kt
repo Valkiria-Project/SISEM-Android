@@ -52,5 +52,5 @@ sealed class MenuNavigationRoute(val route: String) {
 }
 
 object NavigationArgument {
-    const val TBD = "tbd"
+    const val ROLE = "operation_role"
 }

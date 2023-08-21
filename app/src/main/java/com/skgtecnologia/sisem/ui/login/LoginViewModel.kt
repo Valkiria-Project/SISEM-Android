@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
+import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.usecases.Login
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
@@ -94,9 +95,10 @@ class LoginViewModel @Inject constructor(
                         onLogin = true,
                         loginNavigationModel = with(accessTokenModel) {
                             LoginNavigationModel(
-                                isAdmin = this.isAdmin,
-                                isTurnComplete = this.turn?.isComplete == true,
-                                requiresPreOperational = this.preoperational?.status == true,
+                                isAdmin = isAdmin,
+                                isTurnComplete = turn?.isComplete == true,
+                                requiresPreOperational = preoperational?.status == true,
+                                preOperationRole = OperationRole.getRoleByName(role),
                                 requiresDeviceAuth = code.isEmpty()
                             )
                         }

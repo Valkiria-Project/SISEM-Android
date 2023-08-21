@@ -29,12 +29,15 @@ private fun navigateToLoginNextStep(
             }
         }
 
-    loginNavigationModel.requiresPreOperational ->
-        navController.navigate(AuthNavigationRoute.PreOperational.route) {
+    loginNavigationModel.requiresPreOperational -> {
+        val operationRole = loginNavigationModel.preOperationRole?.name
+
+        navController.navigate("${AuthNavigationRoute.PreOperational.route}/$operationRole") {
             popUpTo(AuthNavigationRoute.AuthCards.route) {
                 inclusive = true
             }
         }
+    }
 
     else -> navController.navigate(AuthNavigationRoute.AuthCards.route)
 }

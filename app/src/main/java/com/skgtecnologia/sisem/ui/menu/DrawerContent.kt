@@ -10,19 +10,19 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.skgtecnologia.sisem.ui.menu.footer.MenuFooterComponent
-import com.skgtecnologia.sisem.ui.menu.header.CrewMemberItemModel
+import com.skgtecnologia.sisem.ui.menu.header.CrewMemberMenuItemModel
 import com.skgtecnologia.sisem.ui.menu.header.MenuHeaderComponent
-import com.skgtecnologia.sisem.ui.menu.items.DrawerItemInfo
+import com.skgtecnologia.sisem.ui.menu.items.DrawerMenuItemModel
 import com.skgtecnologia.sisem.ui.menu.items.MenuItemsComponent
 import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute
 
 @Composable
 fun DrawerContent(
     drawerState: DrawerState,
-    menuItemsPersonal: List<CrewMemberItemModel>,
-    menuItems: List<DrawerItemInfo>,
+    crewMenuItems: List<CrewMemberMenuItemModel>,
+    menuItems: List<DrawerMenuItemModel>,
     onMenuItemClick: (MenuNavigationRoute) -> Unit,
-    onLogout: (CrewMemberItemModel) -> Unit
+    onLogout: (CrewMemberMenuItemModel) -> Unit
 ) {
     ModalDrawerSheet {
         ConstraintLayout(
@@ -36,7 +36,7 @@ fun DrawerContent(
                         top.linkTo(parent.top)
                         start.linkTo(parent.start)
                     },
-                menuItemsPersonal = menuItemsPersonal,
+                menuItemsPersonal = crewMenuItems,
                 onLogout = onLogout
             )
             MenuItemsComponent(
