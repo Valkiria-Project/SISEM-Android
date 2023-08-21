@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
-import com.skgtecnologia.sisem.ui.navigation.SisemAppNavigation
+import com.skgtecnologia.sisem.ui.navigation.SisemNavGraph
 import com.skgtecnologia.sisem.ui.theme.SisemTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
                 val windowSizeClass = calculateWindowSizeClass(this)
                 val isTablet = windowSizeClass.widthSizeClass > WindowWidthSizeClass.Compact
 
-                SisemAppNavigation(isTablet)
+                SisemNavGraph(isTablet)
             }
         }
     }
