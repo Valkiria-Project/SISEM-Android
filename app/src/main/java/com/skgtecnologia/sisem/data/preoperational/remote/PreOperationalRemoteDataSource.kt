@@ -14,7 +14,13 @@ class PreOperationalRemoteDataSource @Inject constructor(
 
     suspend fun getPreOperationalScreen(): Result<ScreenModel> = apiCall {
         preOperationalApi.getPreOperationalScreen(
-            screenBody = ScreenBody(params = Params(serial = "serial")) // FIXME: Hardcoded data
+            screenBody = ScreenBody(
+                params = Params(
+                    serial = "12312JHJKG22",
+                    code = "0404",
+                    turnId = "1"
+                )
+            ) // FIXME: Hardcoded data
         )
     }.mapResult {
         it.mapToDomain()

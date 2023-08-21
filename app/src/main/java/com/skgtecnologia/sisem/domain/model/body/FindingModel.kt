@@ -6,7 +6,7 @@ import com.valkiria.uicomponents.components.finding.FindingUiModel
 
 data class FindingModel(
     val identifier: String,
-    val option: SegmentedSwitchModel,
+    val segmentedSwitchModel: SegmentedSwitchModel,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {
@@ -15,7 +15,7 @@ data class FindingModel(
 }
 
 fun FindingModel.mapToUiModel() = FindingUiModel(
-    option = option.mapToUiModel(),
+    option = segmentedSwitchModel.mapToUiModel(),
     arrangement = arrangement,
     modifier = modifier
 )
