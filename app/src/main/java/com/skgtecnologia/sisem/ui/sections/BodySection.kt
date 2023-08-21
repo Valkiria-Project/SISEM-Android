@@ -302,7 +302,9 @@ fun HandleSegmentedSwitchRows(
             SegmentedSwitchComponent(
                 uiModel = model.mapToUiModel(),
                 isTablet = isTablet
-            ) { _, _ -> }
+            ) { id, status ->
+                onAction(PreOperationalUiAction.PreOpSwitchState(id = id, status = status))
+            } // FIXME: Talk to Jairry
         }
     }
 }

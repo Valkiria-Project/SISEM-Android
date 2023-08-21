@@ -133,13 +133,13 @@ class LoginViewModel @Inject constructor(
         isValidPassword = false
     }
 
-    fun showBottomSheet(link: LoginLink) {
+    fun showLoginLink(link: LoginLink) {
         uiState = uiState.copy(
             onLoginLink = link
         )
     }
 
-    fun handleShownBottomSheet() {
+    fun handleShownLoginLink() {
         uiState = uiState.copy(
             onLoginLink = null
         )

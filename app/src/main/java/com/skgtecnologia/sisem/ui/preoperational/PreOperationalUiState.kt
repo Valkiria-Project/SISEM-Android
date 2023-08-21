@@ -5,6 +5,7 @@ import com.valkiria.uicomponents.components.errorbanner.ErrorUiModel
 
 data class PreOperationalUiState(
     val screenModel: ScreenModel? = null,
+    val onFindingForm: Boolean = false,
     val isLoading: Boolean = false,
     val errorModel: ErrorUiModel? = null
 )

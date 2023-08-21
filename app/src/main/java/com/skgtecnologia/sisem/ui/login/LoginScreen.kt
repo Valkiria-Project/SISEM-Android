@@ -94,7 +94,7 @@ fun LoginScreen(
             sheetState = sheetState,
             scope = scope
         ) {
-            viewModel.handleShownBottomSheet()
+            viewModel.handleShownLoginLink()
         }
     }
 
@@ -139,7 +139,7 @@ private fun handleUiAction(
                 viewModel.isValidUsername = uiAction.fieldValidated
             }
 
-            is TermsAndConditions -> viewModel.showBottomSheet(
+            is TermsAndConditions -> viewModel.showLoginLink(
                 LoginLink.getLinkByName(link = uiAction.link)
             )
         }

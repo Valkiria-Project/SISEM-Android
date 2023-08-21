@@ -19,6 +19,7 @@ import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.PreOperationalUiAction
 import com.valkiria.uicomponents.action.PreOperationalUiAction.SavePreOperational
 import com.valkiria.uicomponents.action.UiAction
+import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 import kotlinx.coroutines.launch
@@ -80,6 +81,22 @@ fun PreOperationalScreen(
         }
     }
 
+    if (uiState.onFindingForm) {
+        scope.launch {
+            sheetState.show()
+        }
+
+        BottomSheetComponent(
+            content = {
+                FindingFormContent()
+            },
+            sheetState = sheetState,
+            scope = scope
+        ) {
+            viewModel.handleShownError()
+        }
+    }
+
     uiState.errorModel?.let { errorUiModel ->
         scope.launch {
             sheetState.show()
@@ -109,10 +126,7 @@ private fun handleUiAction(
                 Timber.d("Handle DriverVehicleKMInput ${uiAction.updatedValue}")
             }
 
-            is PreOperationalUiAction.PreOpSwitchState -> {
-                // FIXME
-                Timber.d("Handle PreOpSwitchState with ${uiAction.id} and ${uiAction.status}")
-            }
+            is PreOperationalUiAction.PreOpSwitchState -> viewModel.showFindingForm()
 
             SavePreOperational -> viewModel.sendPreOperational()
         }

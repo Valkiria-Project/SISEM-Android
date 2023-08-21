@@ -58,6 +58,18 @@ class PreOperationalViewModel @Inject constructor(
         }
     }
 
+    fun showFindingForm() {
+        uiState = uiState.copy(
+            onFindingForm = true
+        )
+    }
+
+    fun handleShownFindingForm() {
+        uiState = uiState.copy(
+            onFindingForm = false
+        )
+    }
+
     fun sendPreOperational() {
         uiState = uiState.copy(isLoading = true)
 
