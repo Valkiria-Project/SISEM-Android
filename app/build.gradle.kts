@@ -35,6 +35,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "17"
@@ -80,6 +81,8 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.material3.window.size)
+
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 
     // Logging
     implementation(libs.timber)

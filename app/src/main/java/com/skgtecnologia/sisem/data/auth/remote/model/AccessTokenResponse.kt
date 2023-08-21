@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.data.auth.remote.model
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.time.LocalDateTime
 
 @JsonClass(generateAdapter = true)
 data class AccessTokenResponse(
@@ -19,6 +20,7 @@ data class AccessTokenResponse(
 )
 
 fun AccessTokenResponse.mapToDomain(): AccessTokenModel = AccessTokenModel(
+    dateTime = LocalDateTime.now(),
     accessToken = accessToken,
     refreshToken = refreshToken,
     tokenType = tokenType,

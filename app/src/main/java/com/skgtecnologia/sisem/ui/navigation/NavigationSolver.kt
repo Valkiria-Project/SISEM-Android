@@ -1,6 +1,9 @@
 package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.navigation.NavHostController
+import com.skgtecnologia.sisem.di.operation.OperationRole.AUXILIARY_AND_OR_TAPH
+import com.skgtecnologia.sisem.di.operation.OperationRole.DRIVER
+import com.skgtecnologia.sisem.di.operation.OperationRole.MEDIC_APH
 import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
@@ -8,6 +11,13 @@ import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 fun getStartDestination(navController: NavHostController, model: StartupNavigationModel): String {
     return when {
         model.isTurnStarted -> NavigationGraph.Menu.route
+
+        model.requiresPreOperational -> when (model.preOperationRole) {
+            AUXILIARY_AND_OR_TAPH -> TODO()
+            DRIVER -> TODO()
+            MEDIC_APH -> TODO()
+            else ->  TODO()
+        }
 
         else -> NavigationGraph.Auth.route
     }

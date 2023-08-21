@@ -4,6 +4,7 @@ import androidx.room.TypeConverter
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
+import java.time.LocalDateTime
 
 class CacheConverters {
 
@@ -22,5 +23,15 @@ class CacheConverters {
     @TypeConverter
     fun listToString(list: List<String>?): String? {
         return listOfStringAdapter.toJson(list)
+    }
+
+    @TypeConverter
+    fun localDateTimeToString(value: LocalDateTime): String {
+        return value.toString()
+    }
+
+    @TypeConverter
+    fun stringToLocalDateTime(value: String): LocalDateTime {
+        return LocalDateTime.parse(value)
     }
 }

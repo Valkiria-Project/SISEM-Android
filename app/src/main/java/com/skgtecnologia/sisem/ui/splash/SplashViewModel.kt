@@ -1,153 +1,51 @@
 package com.skgtecnologia.sisem.ui.splash
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
-import com.skgtecnologia.sisem.di.operation.OperationRole
-import com.skgtecnologia.sisem.domain.auth.usecases.Login
-import com.skgtecnologia.sisem.domain.login.model.LoginLink
-import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
-import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
-import com.skgtecnologia.sisem.domain.model.body.ChipModel
-import com.skgtecnologia.sisem.domain.model.error.mapToUi
-import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
+import com.skgtecnologia.sisem.domain.splash.usecases.GetStartupState
+import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val getLoginScreen: GetLoginScreen,
-    private val login: Login,
-    androidIdProvider: AndroidIdProvider
+    private val getStartupState: GetStartupState
 ) : ViewModel() {
 
     private var job: Job? = null
 
-    var uiState by mutableStateOf(LoginUiState())
+    var uiState = MutableStateFlow(StartupUiState())
         private set
 
-    private var code by mutableStateOf("")
-    var username by mutableStateOf("")
-    var isValidUsername by mutableStateOf(false)
-    var password by mutableStateOf("")
-    var isValidPassword by mutableStateOf(false)
-
     init {
-        uiState = uiState.copy(isLoading = true)
-
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            getLoginScreen.invoke(androidIdProvider.getAndroidId())
-                .onSuccess { loginScreenModel ->
-                    loginScreenModel.body.toVehicleCode()
+            getStartupState.invoke()
+                .onSuccess { navigationModel ->
                     withContext(Dispatchers.Main) {
-                        uiState = uiState.copy(
-                            screenModel = loginScreenModel,
-                            isLoading = false
-                        )
+                        uiState.update {
+                            StartupUiState(
+                                startupNavigationModel = navigationModel
+                            )
+                        }
                     }
                 }
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
 
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        errorModel = throwable.mapToUi()
-                    )
+                    uiState.update {
+                        StartupUiState(
+                            startupNavigationModel = StartupNavigationModel()
+                        )
+                    }
                 }
         }
-    }
-
-    private fun List<BodyRowModel>.toVehicleCode() {
-        code = (this.find { it is ChipModel && it.text.isNotBlank() } as? ChipModel)?.text.orEmpty()
-    }
-
-    fun login() {
-        uiState = uiState.copy(
-            validateFields = true
-        )
-
-        // FIXME: Move this to the Use Case
-        if (isValidUsername && isValidPassword) {
-            authenticate()
-        }
-    }
-
-    private fun authenticate() {
-        uiState = uiState.copy(
-            isLoading = true
-        )
-
-        job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
-            login.invoke(username, password)
-                .onSuccess { accessTokenModel ->
-                    Timber.d("Successful login with ${accessTokenModel.username}")
-                    uiState = uiState.copy(
-                        onLogin = true,
-                        loginNavigationModel = with(accessTokenModel) {
-                            LoginNavigationModel(
-                                isAdmin = isAdmin,
-                                isTurnComplete = turn?.isComplete == true,
-                                requiresPreOperational = preoperational?.status == true,
-                                preOperationRole = OperationRole.getRoleByName(role),
-                                requiresDeviceAuth = code.isEmpty()
-                            )
-                        }
-                    )
-                }
-                .onFailure { throwable ->
-                    Timber.wtf(throwable, "This is a failure")
-
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        errorModel = throwable.mapToUi()
-                    )
-                }
-        }
-    }
-
-    fun onLoginHandled() {
-        uiState = uiState.copy(
-            onLogin = false,
-            validateFields = false,
-            loginNavigationModel = null,
-            isLoading = false
-        )
-
-        resetForm()
-    }
-
-    private fun resetForm() {
-        username = ""
-        isValidUsername = false
-        password = ""
-        isValidPassword = false
-    }
-
-    fun showLoginLink(link: LoginLink) {
-        uiState = uiState.copy(
-            onLoginLink = link
-        )
-    }
-
-    fun handleShownLoginLink() {
-        uiState = uiState.copy(
-            onLoginLink = null
-        )
-    }
-
-    fun handleShownError() {
-        uiState = uiState.copy(
-            errorModel = null
-        )
     }
 }

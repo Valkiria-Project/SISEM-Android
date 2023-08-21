@@ -12,7 +12,7 @@ interface AccessTokenDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAccessToken(accessTokenEntity: AccessTokenEntity)
 
-    @Query("SELECT * FROM access_token LIMIT 1")
+    @Query("SELECT * FROM access_token order by date_time desc LIMIT 1")
     suspend fun getAccessToken(): AccessTokenEntity?
 
     @Query("SELECT * FROM access_token")

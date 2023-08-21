@@ -32,7 +32,7 @@ class AccessTokenInterceptor @Inject constructor(
     }
 
     private fun Request.signedRequest(): Request? = runBlocking {
-        authRepository.getAccessToken()?.let { accessToken ->
+        authRepository.getLastToken()?.let { accessToken ->
             signWithToken(accessToken)
         }
     }
