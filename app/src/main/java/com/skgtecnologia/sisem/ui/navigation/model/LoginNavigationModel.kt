@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.navigation
+package com.skgtecnologia.sisem.ui.navigation.model
 
 import com.skgtecnologia.sisem.di.operation.OperationRole
 

@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.ui.login
 
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
-import com.skgtecnologia.sisem.ui.navigation.LoginNavigationModel
+import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
 import com.valkiria.uicomponents.components.errorbanner.ErrorUiModel
 
 data class LoginUiState(

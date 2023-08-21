@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.login
+package com.skgtecnologia.sisem.ui.splash
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,7 +23,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(
+class SplashViewModel @Inject constructor(
     private val getLoginScreen: GetLoginScreen,
     private val login: Login,
     androidIdProvider: AndroidIdProvider

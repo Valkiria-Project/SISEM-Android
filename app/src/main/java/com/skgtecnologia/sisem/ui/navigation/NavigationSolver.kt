@@ -1,36 +1,47 @@
 package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.navigation.NavHostController
+import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
+import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
+import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
+
+fun getStartDestination(navController: NavHostController, model: StartupNavigationModel): String {
+    return when {
+        model.isTurnStarted -> NavigationGraph.Menu.route
+
+        else -> NavigationGraph.Auth.route
+    }
+}
 
 fun navigateToNextStep(navController: NavHostController, navigationModel: NavigationModel?) =
     when (navigationModel) {
-        is LoginNavigationModel -> navigateToLoginNextStep(navController, navigationModel)
+        is LoginNavigationModel -> loginToNextStep(navController, navigationModel)
         else -> {}
     }
 
-private fun navigateToLoginNextStep(
+private fun loginToNextStep(
     navController: NavHostController,
-    loginNavigationModel: LoginNavigationModel
+    model: LoginNavigationModel
 ) = when {
-    loginNavigationModel.isAdmin && loginNavigationModel.requiresDeviceAuth ->
+    model.isAdmin && model.requiresDeviceAuth ->
         navController.navigate(AuthNavigationRoute.DeviceAuth.route)
 
-    loginNavigationModel.isAdmin && !loginNavigationModel.requiresDeviceAuth ->
+    model.isAdmin && !model.requiresDeviceAuth ->
         navController.navigate(NavigationGraph.Menu.route) {
             popUpTo(AuthNavigationRoute.AuthCards.route) {
                 inclusive = true
             }
         }
 
-    loginNavigationModel.isTurnComplete && loginNavigationModel.requiresPreOperational.not() ->
+    model.isTurnComplete && model.requiresPreOperational.not() ->
         navController.navigate(NavigationGraph.Menu.route) {
             popUpTo(AuthNavigationRoute.AuthCards.route) {
                 inclusive = true
             }
         }
 
-    loginNavigationModel.requiresPreOperational -> {
-        val operationRole = loginNavigationModel.preOperationRole?.name
+    model.requiresPreOperational -> {
+        val operationRole = model.preOperationRole?.name
 
         navController.navigate("${AuthNavigationRoute.PreOperational.route}/$operationRole") {
             popUpTo(AuthNavigationRoute.AuthCards.route) {

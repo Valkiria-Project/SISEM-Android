@@ -30,6 +30,10 @@ fun SisemNavGraph(
     ) { paddingValues ->
         val modifier = Modifier.padding(paddingValues)
         val navController = rememberNavController()
+
+        // FIXME: Receive this model as param / do this on Splash and pass it to Main
+//        val startDestination = getStartDestination(navController, )
+        
         NavHost(
             navController = navController,
             startDestination = NavigationGraph.Auth.route
