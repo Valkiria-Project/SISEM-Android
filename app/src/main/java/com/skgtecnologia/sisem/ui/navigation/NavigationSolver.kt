@@ -5,7 +5,6 @@ import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.PreOpNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
-import timber.log.Timber
 
 fun getAppStartDestination(model: StartupNavigationModel?): String {
     return if (model == null) {
@@ -74,7 +73,7 @@ private fun preOpToNextStep(
         }
     }
 
-    model.isImageSelection -> Timber.d("FIXME") // FIXME: Finish this
+    model.isImageSelection -> navController.navigate(CommonNavigationRoute.ImageSelection.route)
 
     else -> navController.navigate(AuthNavigationRoute.AuthCards.route)
 }

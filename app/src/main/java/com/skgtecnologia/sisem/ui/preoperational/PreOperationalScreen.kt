@@ -54,7 +54,7 @@ fun PreOperationalScreen(
                     }
                 }
 
-                uiState.onFindingFormImages -> {
+                uiState.preOpNavigationModel != null -> {
                     viewModel.onFindingFormImagesHandled()
                     onNavigation(uiState.preOpNavigationModel)
                 }
@@ -146,6 +146,7 @@ private fun OnFindingForm(
             sheetState = sheetState,
             scope = scope
         ) {
+            // FIXME: Use dismissed instead of shown to revert the selection
             viewModel.handleShownFindingForm()
         }
     }
@@ -155,6 +156,7 @@ private fun handleFindingFormContentAction(
     uiAction: UiAction,
     viewModel: PreOperationalViewModel
 ) {
+    viewModel.handleShownFindingForm()
     (uiAction as GenericUiAction.ButtonAction).let { buttonAction ->
         when (buttonAction.identifier) {
             PreOperationalIdentifier.FINDING_FORM_IMAGE_BUTTON.name ->

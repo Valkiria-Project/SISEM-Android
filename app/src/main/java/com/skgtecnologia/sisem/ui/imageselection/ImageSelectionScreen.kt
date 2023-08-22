@@ -39,6 +39,6 @@ private fun getImageSelectionHeaderModel() = HeaderModel(
         "Tome la foto o selecciónela para adjuntarla al hallazgo.",
         TextStyle.HEADLINE_5
     ),
-    leftIcon = null, // FIXME: Add back icon
+    leftIcon = "ic_back", // FIXME: Add back icon
     modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 20.dp)
 )
