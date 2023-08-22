@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.components.crewmembercard
+package com.valkiria.uicomponents.bricks
 
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.props.TextStyle
@@ -10,5 +10,5 @@ data class ReportsDetailUiModel(
     val subtitle: String? = null,
     val subtitleTextStyle: TextStyle? = null,
     val modifier: Modifier = Modifier,
-    val details: List<DetailUiModel>
+    val details: List<ReportDetailUiModel>
 )

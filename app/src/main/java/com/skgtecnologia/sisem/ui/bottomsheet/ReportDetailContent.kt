@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.authcards
+package com.skgtecnologia.sisem.ui.bottomsheet
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,7 +22,7 @@ fun ReportDetailContent(
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 30.dp),
+            .padding(20.dp),
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
         model.details.forEachIndexed { index, detail ->

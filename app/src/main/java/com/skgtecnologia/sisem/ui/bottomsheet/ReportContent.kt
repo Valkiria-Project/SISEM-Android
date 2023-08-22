@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.authcards
+package com.skgtecnologia.sisem.ui.bottomsheet
 
 import android.graphics.BitmapFactory
 import android.util.Base64
@@ -26,13 +26,13 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.skgtecnologia.sisem.domain.model.bricks.DetailModel
+import com.skgtecnologia.sisem.domain.model.bricks.ReportDetailModel
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.props.toTextStyle
 
 @Composable
 fun ReportContent(
-    model: DetailModel
+    model: ReportDetailModel
 ) {
     val imagesBitmap = model.images.map { image ->
         val base64Image = image
@@ -44,7 +44,7 @@ fun ReportContent(
     }
 
     val pageCount = imagesBitmap.size
-    Column(modifier = Modifier.padding(top = 16.dp)) {
+    Column(modifier = Modifier.padding(top = 20.dp)) {
         val pagerState = rememberPagerState(
             initialPage = 0,
             initialPageOffsetFraction = 0f
@@ -80,7 +80,7 @@ fun ReportContent(
 }
 
 @Composable
-private fun ReportTitle(model: DetailModel) {
+private fun ReportTitle(model: ReportDetailModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

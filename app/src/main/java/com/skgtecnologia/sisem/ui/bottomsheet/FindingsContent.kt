@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.authcards
+package com.skgtecnologia.sisem.ui.bottomsheet
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.FlowRow
@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.bricks.ChipSectionModel
 import com.skgtecnologia.sisem.domain.model.header.HeaderModel
 import com.skgtecnologia.sisem.domain.model.header.TextModel
@@ -23,7 +25,7 @@ fun FindingsContent(chipSection: ChipSectionModel) {
                 textStyle = TextStyle.HEADLINE_1
             ),
             subtitle = TextModel(
-                text = "Revise los hallazgos registrados en el preoperacional del turno anterior.",
+                text = stringResource(R.string.finding_subtitle),
                 textStyle = TextStyle.HEADLINE_5
             ),
             leftIcon = "ic_finding",

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -12,6 +13,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
+import com.skgtecnologia.sisem.ui.bottomsheet.FindingFormContent
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
@@ -19,6 +21,7 @@ import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.PreOperationalUiAction
 import com.valkiria.uicomponents.action.PreOperationalUiAction.SavePreOperational
 import com.valkiria.uicomponents.action.UiAction
+import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 import kotlinx.coroutines.launch
@@ -37,6 +40,18 @@ fun PreOperationalScreen(
         skipPartiallyExpanded = false
     )
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(uiState) {
+        launch {
+            when {
+                uiState.onFindingForm -> {
+                    scope.launch {
+                        sheetState.show()
+                    }
+                }
+            }
+        }
+    }
 
     ConstraintLayout(
         modifier = modifier.fillMaxSize()
@@ -80,11 +95,19 @@ fun PreOperationalScreen(
         }
     }
 
-    uiState.errorModel?.let { errorUiModel ->
-        scope.launch {
-            sheetState.show()
+    if (uiState.onFindingForm) {
+        BottomSheetComponent(
+            content = {
+                FindingFormContent()
+            },
+            sheetState = sheetState,
+            scope = scope
+        ) {
+            viewModel.handleShownFindingForm()
         }
+    }
 
+    uiState.errorModel?.let { errorUiModel ->
         ErrorBannerComponent(
             uiModel = errorUiModel
         ) {
@@ -110,8 +133,9 @@ private fun handleUiAction(
             }
 
             is PreOperationalUiAction.PreOpSwitchState -> {
-                // FIXME
-                Timber.d("Handle PreOpSwitchState with ${uiAction.id} and ${uiAction.status}")
+                if (uiAction.status.not()) {
+                    viewModel.showFindingForm()
+                }
             }
 
             SavePreOperational -> viewModel.sendPreOperational()

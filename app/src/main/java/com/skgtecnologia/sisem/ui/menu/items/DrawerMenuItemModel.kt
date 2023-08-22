@@ -3,27 +3,27 @@ package com.skgtecnologia.sisem.ui.menu.items
 import android.content.Context
 import androidx.annotation.DrawableRes
 import com.skgtecnologia.sisem.R
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.CertificationsScreen
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.DeviceAuth
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.DrivingGuideScreen
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.HCEUDCScreen
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.IncidentScreen
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.InventoryScreen
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.NewsScreen
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.NotificationsScreen
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.PreoperationalMenuScreen
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.ShiftScreen
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.SignatureAndFingerprint
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.CertificationsScreen
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.DeviceAuth
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.DrivingGuideScreen
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.HCEUDCScreen
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.IncidentScreen
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.InventoryScreen
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.NewsScreen
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.NotificationsScreen
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.PreoperationalMainScreen
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.ShiftScreen
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.SignatureAndFingerprint
 import com.valkiria.uicomponents.R.drawable
 
-data class DrawerItemInfo(
-    val drawerOption: MenuNavigationRoute,
+data class DrawerMenuItemModel(
+    val drawerOption: MainNavigationRoute,
     val title: String,
     @DrawableRes val drawableId: Int
 )
 
-fun getDrawerInfoItemList(context: Context, isAdmin: Boolean?): List<DrawerItemInfo> {
+fun getDrawerMenuItemList(context: Context, isAdmin: Boolean?): List<DrawerMenuItemModel> {
     return if (isAdmin == true) {
         getLeaderDrawerItems(context)
     } else {
@@ -32,47 +32,47 @@ fun getDrawerInfoItemList(context: Context, isAdmin: Boolean?): List<DrawerItemI
 }
 
 private fun getDrawerItems(context: Context) = listOf(
-    DrawerItemInfo(
+    DrawerMenuItemModel(
         IncidentScreen,
         context.getString(R.string.drawer_incident),
         drawable.ic_incidents
     ),
-    DrawerItemInfo(
+    DrawerMenuItemModel(
         InventoryScreen,
         context.getString(R.string.drawer_inventory),
         drawable.ic_inventory
     ),
-    DrawerItemInfo(
+    DrawerMenuItemModel(
         NotificationsScreen,
         context.getString(R.string.drawer_notifications),
         drawable.ic_notification
     ),
-    DrawerItemInfo(
+    DrawerMenuItemModel(
         DrivingGuideScreen,
         context.getString(R.string.drawer_guides),
         drawable.ic_driver
     ),
-    DrawerItemInfo(
+    DrawerMenuItemModel(
         CertificationsScreen,
         context.getString(R.string.drawer_certifications),
         drawable.ic_certifications
     ),
-    DrawerItemInfo(
+    DrawerMenuItemModel(
         NewsScreen,
         context.getString(R.string.drawer_novelties),
         drawable.ic_news
     ),
-    DrawerItemInfo(
+    DrawerMenuItemModel(
         ShiftScreen,
         context.getString(R.string.drawer_turn_shift),
         drawable.ic_shift
     ),
-    DrawerItemInfo(
-        PreoperationalMenuScreen,
+    DrawerMenuItemModel(
+        PreoperationalMainScreen,
         context.getString(R.string.drawer_pre_operational),
         drawable.ic_check
     ),
-    DrawerItemInfo(
+    DrawerMenuItemModel(
         HCEUDCScreen,
         context.getString(R.string.drawer_hceud),
         drawable.ic_hceud
@@ -81,12 +81,12 @@ private fun getDrawerItems(context: Context) = listOf(
 
 @Suppress("UnusedPrivateMember")
 private fun getLeaderDrawerItems(context: Context) = listOf(
-    DrawerItemInfo(
+    DrawerMenuItemModel(
         DeviceAuth,
         "Asociar dispositivo al vehículo", // FIXME: Hardcoded data
         drawable.ic_incidents // FIXME: update with figma
     ),
-    DrawerItemInfo(
+    DrawerMenuItemModel(
         SignatureAndFingerprint,
         "Registrar firma y huella", // FIXME: Hardcoded data
         drawable.ic_incidents // FIXME: update with figma

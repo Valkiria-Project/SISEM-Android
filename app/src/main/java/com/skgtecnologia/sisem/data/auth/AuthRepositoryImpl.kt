@@ -23,8 +23,11 @@ class AuthRepositoryImpl @Inject constructor(
             authCacheDataSource.storeAccessToken(accessTokenModel)
         }.getOrThrow()
 
-    override suspend fun getAccessToken(): String? =
+    override suspend fun getLastToken(): String? =
         authCacheDataSource.retrieveAccessToken()?.accessToken
+
+    override suspend fun getLastAccessToken(): AccessTokenModel? =
+        authCacheDataSource.retrieveAccessToken()
 
     override suspend fun getAllAccessTokens(): List<AccessTokenModel> =
         authCacheDataSource.retrieveAllAccessTokens()

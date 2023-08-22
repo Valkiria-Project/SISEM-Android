@@ -11,6 +11,7 @@ constraintlayout-compose = "1.0.1"
 converter-moshi = "2.9.0"
 core-ktx = "1.10.1"
 core-splashscreen = "1.0.1"
+desugar_jdk_libs = "2.0.3"
 detekt = "1.17.0"
 espresso-core = "3.5.1"
 google-material = "1.9.0"
@@ -48,6 +49,7 @@ compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = 
 compose-html = { module = "com.github.ireward:compose-html", version.ref = "compose-html" }
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converter-moshi" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt-android" }

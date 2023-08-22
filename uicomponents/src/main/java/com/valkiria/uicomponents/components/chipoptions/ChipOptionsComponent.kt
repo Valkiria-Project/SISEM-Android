@@ -43,9 +43,9 @@ fun ChipOptionsComponent(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            uiModel.items.forEach { chipText ->
+            uiModel.items.forEach { chipOption ->
                 FilterChipView(
-                    text = chipText,
+                    text = chipOption.name,
                     textStyle = TextStyle.BUTTON_1,
                     onAction = { selected, isSelection ->
                         onAction(selected, isSelection)

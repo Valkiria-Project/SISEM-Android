@@ -1,7 +1,7 @@
 package com.valkiria.uicomponents.action
 
 import com.valkiria.uicomponents.components.crewmembercard.ChipSectionUiModel
-import com.valkiria.uicomponents.components.crewmembercard.ReportsDetailUiModel
+import com.valkiria.uicomponents.bricks.ReportsDetailUiModel
 
 sealed interface UiAction
 

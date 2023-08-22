@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name" translatable="false">SISEM</string>
 
+    <!-- Field validations -->
+    <string name="field_empty_validation_message">El campo no debe estar vacío</string>
+
     <!-- Terms & Conditions dialog -->
     <string name="terms_and_conditions_title">Términos y condiciones</string>
     <string name="terms_and_conditions_subtitle">Conozca los términos y condiciones.</string>
@@ -97,6 +100,14 @@
 
         La presente Política de Protección y Tratamiento de Datos Personales está rigiendo a partir de su publicación en la SDS y en el portal web de la entidad.
     </string>
+
+    <!-- Findings dialog -->
+    <string name="finding_subtitle">Revise los hallazgos registrados en el preoperacional del turno anterior.</string>
+
+    <!-- Finding form dialog -->
+    <string name="finding_input_label">Respuesta al hallazgo</string>
+    <string name="finding_input_hint">Escribe tu comentario…</string>
+    <string name="finding_input_save_cta">Guardar</string>
 
     <!-- Drawer Menu -->
     <string name="drawer_role_doctor">Médico</string>

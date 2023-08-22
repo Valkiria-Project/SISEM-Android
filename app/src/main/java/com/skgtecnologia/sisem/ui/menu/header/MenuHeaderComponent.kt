@@ -32,8 +32,8 @@ import com.valkiria.uicomponents.props.toTextStyle
 @Composable
 fun MenuHeaderComponent(
     modifier: Modifier,
-    menuItemsPersonal: List<CrewMemberItemModel>,
-    onLogout: (CrewMemberItemModel) -> Unit
+    menuItemsPersonal: List<CrewMemberMenuItemModel>,
+    onLogout: (CrewMemberMenuItemModel) -> Unit
 ) {
     Column(modifier = modifier) {
         Row {

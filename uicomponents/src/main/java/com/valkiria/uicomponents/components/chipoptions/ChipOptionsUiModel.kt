@@ -7,6 +7,6 @@ data class ChipOptionsUiModel(
     val identifier: String,
     val title: String,
     val textStyle: TextStyle,
-    val items: List<String>,
+    val items: List<ChipOptionUiModel>,
     val modifier: Modifier = Modifier
 )

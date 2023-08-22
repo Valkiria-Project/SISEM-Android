@@ -17,12 +17,12 @@ fun getDeviceAuthSegmentedSwitchUiModel(): SegmentedSwitchUiModel {
         textStyle = TextStyle.HEADLINE_5,
         options = listOf(
             OptionUiModel(
-                text = "No",
+                text = "Si",
                 textStyle = BUTTON_2,
                 color = "blueColor"
             ),
             OptionUiModel(
-                text = "Si",
+                text = "No",
                 textStyle = BUTTON_2,
                 color = "red"
             )

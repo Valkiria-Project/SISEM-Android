@@ -9,7 +9,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class ReportsDetailResponse(
     @Json(name = "header") val header: HeaderResponse?,
-    @Json(name = "details") val details: List<DetailResponse>?
+    @Json(name = "details") val details: List<ReportDetailResponse>?
 )
 
 fun ReportsDetailResponse.mapToDomain(): ReportsDetailModel = ReportsDetailModel(

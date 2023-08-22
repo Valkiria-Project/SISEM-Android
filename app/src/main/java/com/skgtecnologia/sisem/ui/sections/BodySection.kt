@@ -302,7 +302,9 @@ fun HandleSegmentedSwitchRows(
             SegmentedSwitchComponent(
                 uiModel = model.mapToUiModel(),
                 isTablet = isTablet
-            ) { _, _ -> }
+            ) { id, status ->
+                onAction(PreOperationalUiAction.PreOpSwitchState(id = id, status = status))
+            } // FIXME: Talk to Jairry
         }
     }
 }
@@ -384,7 +386,7 @@ private fun HandleTextFieldRows(
             )
         }
 
-        PreOperationalIdentifier.DRIVER_PREOP_VEHICLE_KM.name -> TextFieldComponent(
+        PreOperationalIdentifier.DRIVER_VEHICLE_KM.name -> TextFieldComponent(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet,
             validateFields = validateFields

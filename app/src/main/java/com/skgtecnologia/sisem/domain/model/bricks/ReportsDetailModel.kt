@@ -3,11 +3,11 @@ package com.skgtecnologia.sisem.domain.model.bricks
 import com.skgtecnologia.sisem.commons.extensions.biLet
 import com.skgtecnologia.sisem.domain.model.header.HeaderModel
 import com.skgtecnologia.sisem.domain.model.header.TextModel
-import com.valkiria.uicomponents.components.crewmembercard.ReportsDetailUiModel
+import com.valkiria.uicomponents.bricks.ReportsDetailUiModel
 
 data class ReportsDetailModel(
     val header: HeaderModel,
-    val details: List<DetailModel>
+    val details: List<ReportDetailModel>
 )
 
 fun ReportsDetailModel.mapToUiModel() = ReportsDetailUiModel(
