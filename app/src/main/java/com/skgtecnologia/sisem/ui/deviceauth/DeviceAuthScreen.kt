@@ -36,9 +36,6 @@ fun DeviceAuthScreen(
     val viewModel = hiltViewModel<DeviceAuthViewModel>()
     val uiState = viewModel.uiState
 
-    val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
-
     LaunchedEffect(uiState) {
         launch {
             when {
@@ -93,10 +90,6 @@ fun DeviceAuthScreen(
     }
 
     uiState.errorModel?.let { errorUiModel ->
-        scope.launch {
-            sheetState.show()
-        }
-
         ErrorBannerComponent(
             uiModel = errorUiModel
         ) {

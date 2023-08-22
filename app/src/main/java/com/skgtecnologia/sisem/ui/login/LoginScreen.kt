@@ -99,10 +99,6 @@ fun LoginScreen(
     }
 
     uiState.errorModel?.let { errorUiModel ->
-        scope.launch {
-            sheetState.show()
-        }
-
         ErrorBannerComponent(
             uiModel = errorUiModel
         ) {

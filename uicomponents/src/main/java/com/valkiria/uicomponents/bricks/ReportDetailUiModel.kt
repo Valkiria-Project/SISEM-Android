@@ -1,9 +1,9 @@
-package com.valkiria.uicomponents.components.crewmembercard
+package com.valkiria.uicomponents.bricks
 
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.props.TextStyle
 
-data class DetailUiModel(
+data class ReportDetailUiModel(
     val images: List<String>,
     val title: String,
     val titleTextStyle: TextStyle,

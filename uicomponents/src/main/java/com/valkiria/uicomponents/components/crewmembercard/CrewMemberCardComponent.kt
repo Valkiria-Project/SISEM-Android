@@ -30,6 +30,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
+import com.valkiria.uicomponents.bricks.ReportsDetailUiModel
 import com.valkiria.uicomponents.bricks.SuggestionChipView
 import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.utlis.DefType

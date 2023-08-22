@@ -3,10 +3,8 @@ package com.skgtecnologia.sisem.ui.changepassword
 import HideKeyboard
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -33,11 +31,6 @@ fun ChangePasswordScreen(
 ) {
     val viewModel = hiltViewModel<ChangePasswordViewModel>()
     val uiState = viewModel.uiState
-
-    val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = false
-    )
-    val scope = rememberCoroutineScope()
 
     LaunchedEffect(uiState) {
         launch {
@@ -94,10 +87,6 @@ fun ChangePasswordScreen(
     }
 
     uiState.errorModel?.let { errorUiModel ->
-        scope.launch {
-            sheetState.show()
-        }
-
         ErrorBannerComponent(
             uiModel = errorUiModel
         ) {

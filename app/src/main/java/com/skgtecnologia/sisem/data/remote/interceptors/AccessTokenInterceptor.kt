@@ -2,14 +2,14 @@ package com.skgtecnologia.sisem.data.remote.interceptors
 
 import com.skgtecnologia.sisem.data.remote.extensions.signWithToken
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
-import java.net.ConnectException
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 import timber.log.Timber
+import java.net.ConnectException
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @Singleton
 class AccessTokenInterceptor @Inject constructor(

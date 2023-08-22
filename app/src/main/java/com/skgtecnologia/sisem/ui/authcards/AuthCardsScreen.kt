@@ -98,10 +98,6 @@ fun AuthCardsScreen(
     }
 
     uiState.errorModel?.let { errorUiModel ->
-        scope.launch {
-            sheetState.show()
-        }
-
         ErrorBannerComponent(
             uiModel = errorUiModel
         ) {
@@ -125,6 +121,7 @@ fun handleUiAction(
             AuthCardsUiAction.AuthCard -> onNavigation(AuthNavigationRoute.Login)
             is AuthCardsUiAction.AuthCardNews ->
                 viewModel.showReportBottomSheet(uiAction.reportDetail.mapToDomain())
+
             is AuthCardsUiAction.AuthCardFindings ->
                 viewModel.showFindingsBottomSheet(uiAction.chipSectionUiModel.mapToDomain())
         }

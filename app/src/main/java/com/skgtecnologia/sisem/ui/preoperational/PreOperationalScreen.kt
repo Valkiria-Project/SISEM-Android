@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -38,6 +39,18 @@ fun PreOperationalScreen(
         skipPartiallyExpanded = false
     )
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(uiState) {
+        launch {
+            when {
+                uiState.onFindingForm -> {
+                    scope.launch {
+                        sheetState.show()
+                    }
+                }
+            }
+        }
+    }
 
     ConstraintLayout(
         modifier = modifier.fillMaxSize()
@@ -82,10 +95,6 @@ fun PreOperationalScreen(
     }
 
     if (uiState.onFindingForm) {
-        scope.launch {
-            sheetState.show()
-        }
-
         BottomSheetComponent(
             content = {
                 FindingFormContent()
@@ -98,10 +107,6 @@ fun PreOperationalScreen(
     }
 
     uiState.errorModel?.let { errorUiModel ->
-        scope.launch {
-            sheetState.show()
-        }
-
         ErrorBannerComponent(
             uiModel = errorUiModel
         ) {
@@ -126,7 +131,11 @@ private fun handleUiAction(
                 Timber.d("Handle DriverVehicleKMInput ${uiAction.updatedValue}")
             }
 
-            is PreOperationalUiAction.PreOpSwitchState -> viewModel.showFindingForm()
+            is PreOperationalUiAction.PreOpSwitchState -> {
+                if (uiAction.status.not()) {
+                    viewModel.showFindingForm()
+                }
+            }
 
             SavePreOperational -> viewModel.sendPreOperational()
         }

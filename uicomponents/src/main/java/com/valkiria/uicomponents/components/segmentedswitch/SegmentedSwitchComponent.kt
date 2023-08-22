@@ -74,7 +74,7 @@ fun SegmentedSwitchComponent(
                     },
                     onClick = {
                         selectedIndex.intValue = index
-                        onAction(uiModel.identifier, index == 1)
+                        onAction(uiModel.identifier, index == 0)
                     },
                     shape = when (index) {
                         /**

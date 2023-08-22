@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.domain.splash.usecases.GetStartupState
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,6 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(

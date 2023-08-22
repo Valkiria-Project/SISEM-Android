@@ -2,9 +2,9 @@ package com.skgtecnologia.sisem.domain.model.bricks
 
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.domain.model.header.TextModel
-import com.valkiria.uicomponents.components.crewmembercard.DetailUiModel
+import com.valkiria.uicomponents.bricks.ReportDetailUiModel
 
-data class DetailModel(
+data class ReportDetailModel(
     val images: List<String>,
     val title: TextModel,
     val subtitle: TextModel,
@@ -12,7 +12,7 @@ data class DetailModel(
     val modifier: Modifier
 )
 
-fun DetailModel.mapToUiModel() = DetailUiModel(
+fun ReportDetailModel.mapToUiModel() = ReportDetailUiModel(
     images = images,
     title = title.text,
     titleTextStyle = title.textStyle,
@@ -23,7 +23,7 @@ fun DetailModel.mapToUiModel() = DetailUiModel(
     modifier = modifier
 )
 
-fun DetailUiModel.mapToDomain() = DetailModel(
+fun ReportDetailUiModel.mapToDomain() = ReportDetailModel(
     images = images,
     title = TextModel(text = title, textStyle = titleTextStyle),
     subtitle = TextModel(text = subtitle, textStyle = subtitleTextStyle),
