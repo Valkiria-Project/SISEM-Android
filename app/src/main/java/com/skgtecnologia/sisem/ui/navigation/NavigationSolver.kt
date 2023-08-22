@@ -16,12 +16,10 @@ fun getAppStartDestination(model: StartupNavigationModel?): String {
 }
 
 fun getAuthStartDestination(model: StartupNavigationModel?): String {
-    return if (model == null) {
-        NavigationGraph.Auth.route
-    } else when {
-        model.requiresPreOperational -> AuthNavigationRoute.PreOperational.route
-
-        else -> NavigationGraph.Auth.route
+    return if (model?.requiresPreOperational == true) {
+        AuthNavigationRoute.PreOperational.route
+    } else {
+        AuthNavigationRoute.AuthCards.route
     }
 }
 
@@ -53,8 +51,6 @@ private fun loginToNextStep(
         }
 
     model.requiresPreOperational -> {
-        val operationRole = model.preOperationRole?.name
-
         navController.navigate(AuthNavigationRoute.PreOperational.route) {
             popUpTo(AuthNavigationRoute.AuthCards.route) {
                 inclusive = true
