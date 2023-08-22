@@ -34,12 +34,12 @@ class SplashActivity : ComponentActivity() {
                     keepSplashScreenOn = startupUiState.startupNavigationModel == null
 
                     if (keepSplashScreenOn.not()) {
+                        val role = startupUiState.startupNavigationModel?.preOperationRole
                         Toast.makeText(
                             this@SplashActivity,
-                            startupUiState.startupNavigationModel?.preOperationRole?.humanizedName ?: "Fresh install",
+                            role?.humanizedName ?: "Fresh install",
                             Toast.LENGTH_LONG
                         ).show()
-
 
                         launchMainActivity(
                             this@SplashActivity,

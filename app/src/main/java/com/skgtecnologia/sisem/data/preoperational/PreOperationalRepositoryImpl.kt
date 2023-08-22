@@ -13,7 +13,9 @@ class PreOperationalRepositoryImpl @Inject constructor(
 ) : PreOperationalRepository {
 
     override suspend fun getPreOperationalScreen(): ScreenModel {
-        val role = OperationRole.getRoleByName(authCacheDataSource.retrieveAccessToken()?.role.orEmpty())
+        val role = OperationRole.getRoleByName(
+            authCacheDataSource.retrieveAccessToken()?.role.orEmpty()
+        )
         checkNotNull(role)
 
         return preOperationalRemoteDataSource.getPreOperationalScreen(role).getOrThrow()
