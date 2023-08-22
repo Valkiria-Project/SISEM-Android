@@ -1,12 +1,16 @@
 package com.valkiria.uicomponents.action
 
-import com.valkiria.uicomponents.components.crewmembercard.ChipSectionUiModel
 import com.valkiria.uicomponents.bricks.ReportsDetailUiModel
+import com.valkiria.uicomponents.components.crewmembercard.ChipSectionUiModel
 
 sealed interface UiAction
 
+sealed class GenericUiAction(open val identifier: String) : UiAction {
+    data class ButtonAction(override val identifier: String) : GenericUiAction(identifier)
+}
+
 sealed class FooterUiAction(open val identifier: String) : UiAction {
-    data class Button(override val identifier: String) : FooterUiAction(identifier)
+    data class FooterButton(override val identifier: String) : FooterUiAction(identifier)
 }
 
 sealed class AuthCardsUiAction : UiAction {
@@ -45,7 +49,6 @@ sealed class PreOperationalUiAction : UiAction {
     ) : PreOperationalUiAction()
 
     data class PreOpSwitchState(val id: String, val status: Boolean) : PreOperationalUiAction()
-    object SavePreOperational : PreOperationalUiAction()
 }
 
 sealed class ChangePasswordUiAction : UiAction {

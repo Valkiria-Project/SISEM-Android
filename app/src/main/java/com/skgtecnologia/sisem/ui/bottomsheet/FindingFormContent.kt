@@ -15,8 +15,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
+import com.valkiria.uicomponents.action.GenericUiAction
+import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonUiModel
-import com.valkiria.uicomponents.components.button.ButtonView
+import com.valkiria.uicomponents.bricks.ButtonView
 import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.LabelUiModel
@@ -30,7 +33,9 @@ import timber.log.Timber
 
 @Suppress("LongMethod")
 @Composable
-fun FindingFormContent() {
+fun FindingFormContent(
+    onAction: (action: UiAction) -> Unit
+) {
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
@@ -73,16 +78,19 @@ fun FindingFormContent() {
         ) {
             ButtonView(
                 uiModel = ButtonUiModel(
-                    label = stringResource(R.string.finding_input_save_cta),
+                    icon = com.valkiria.uicomponents.R.drawable.ic_image,
                     style = ButtonStyle.LOUD,
-                    textStyle = TextStyle.BUTTON_1,
                     onClick = OnClick.FORGOT_PASSWORD, // FIXME: Use the onClick
                     size = ButtonSize.DEFAULT,
                     arrangement = Arrangement.Center,
                     modifier = Modifier
                 )
             ) {
-                Timber.d("Propagate this clicked button upstream")
+                onAction(
+                    GenericUiAction.ButtonAction(
+                        PreOperationalIdentifier.FINDING_FORM_IMAGE_BUTTON.name
+                    )
+                )
             }
 
             ButtonView(
@@ -96,7 +104,11 @@ fun FindingFormContent() {
                     modifier = Modifier
                 )
             ) {
-                Timber.d("Propagate this clicked button upstream")
+                onAction(
+                    GenericUiAction.ButtonAction(
+                        PreOperationalIdentifier.FINDING_FORM_SAVE_BUTTON.name
+                    )
+                )
             }
         }
     }

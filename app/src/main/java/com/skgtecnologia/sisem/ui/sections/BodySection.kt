@@ -156,7 +156,7 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
-            is LabelModel -> item(key = model.text) {
+            is LabelModel -> item(key = model.identifier) {
                 LabelComponent(
                     uiModel = model.mapToUiModel(),
                     isTablet = isTablet

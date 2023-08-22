@@ -9,9 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
 import com.skgtecnologia.sisem.domain.model.footer.FooterModel
-import com.valkiria.uicomponents.action.FooterUiAction.Button
+import com.valkiria.uicomponents.action.FooterUiAction.FooterButton
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.button.ButtonView
+import com.valkiria.uicomponents.bricks.ButtonView
 
 @Composable
 fun FooterSection(
@@ -28,7 +28,7 @@ fun FooterSection(
             uiModel = footerModel.leftButton.mapToUiModel(),
             isTablet = isTablet
         ) {
-            onAction(Button(footerModel.leftButton.identifier))
+            onAction(FooterButton(footerModel.leftButton.identifier))
         }
 
         footerModel.rightButton?.let {
@@ -36,7 +36,7 @@ fun FooterSection(
                 uiModel = it.mapToUiModel(),
                 isTablet = isTablet
             ) {
-                onAction(Button(footerModel.rightButton.identifier))
+                onAction(FooterButton(footerModel.rightButton.identifier))
             }
         }
     }

@@ -28,8 +28,8 @@ fun FindingsContent(chipSection: ChipSectionModel) {
                 text = stringResource(R.string.finding_subtitle),
                 textStyle = TextStyle.HEADLINE_5
             ),
-            leftIcon = "ic_finding",
-            modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp)
+            leftIcon = stringResource(R.string.finding_left_icon),
+            modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 20.dp)
         )
     )
 

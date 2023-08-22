@@ -18,7 +18,7 @@ enum class TextStyle {
 }
 
 @Composable
-fun TextStyle.toTextStyle() = when (this) {
+fun TextStyle?.toTextStyle() = when (this) {
     TextStyle.BODY_1 -> MaterialTheme.typography.bodyLarge
     TextStyle.BUTTON_1 -> MaterialTheme.typography.labelLarge
     TextStyle.BUTTON_2 -> MaterialTheme.typography.labelMedium
@@ -30,4 +30,5 @@ fun TextStyle.toTextStyle() = when (this) {
     TextStyle.HEADLINE_6 -> MaterialTheme.typography.titleLarge
     TextStyle.HEADLINE_7 -> MaterialTheme.typography.titleMedium
     TextStyle.HEADLINE_8 -> MaterialTheme.typography.titleSmall
+    else -> MaterialTheme.typography.bodyLarge
 }

@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.ui.navigation
 
 sealed class NavigationGraph(val route: String) {
     object Auth : NavigationGraph("auth")
+    object Common : NavigationGraph("common")
     object Main : NavigationGraph("main")
 }
 
@@ -10,7 +11,13 @@ sealed class AuthNavigationRoute(val route: String) {
     object Login : AuthNavigationRoute("login")
     object DeviceAuth : AuthNavigationRoute("device_auth")
     object PreOperational : AuthNavigationRoute("pre_operational")
+
+    // FIXME: This is not part of AuthGraph
     object ChangePassword : AuthNavigationRoute("change_password")
+}
+
+sealed class CommonNavigationRoute(val route: String) {
+    object ImageSelection : CommonNavigationRoute("image_selection")
 }
 
 sealed class MainNavigationRoute(val route: String) {
