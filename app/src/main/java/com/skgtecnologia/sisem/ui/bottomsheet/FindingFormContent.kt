@@ -28,6 +28,7 @@ import com.valkiria.uicomponents.props.ButtonStyle
 import com.valkiria.uicomponents.props.TextStyle
 import timber.log.Timber
 
+@Suppress("LongMethod")
 @Composable
 fun FindingFormContent() {
     Column(
