@@ -7,6 +7,7 @@ import com.valkiria.uicomponents.props.ButtonSize
 import com.valkiria.uicomponents.props.ButtonStyle
 import com.valkiria.uicomponents.props.TextStyle
 
+@Suppress("LongParameterList")
 class ButtonUiModel private constructor(
     @DrawableRes val iconResId: Int?,
     val label: String?,

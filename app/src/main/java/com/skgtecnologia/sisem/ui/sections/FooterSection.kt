@@ -11,7 +11,7 @@ import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
 import com.skgtecnologia.sisem.domain.model.footer.FooterModel
 import com.valkiria.uicomponents.action.FooterUiAction.FooterButton
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.button.ButtonView
+import com.valkiria.uicomponents.bricks.ButtonView
 
 @Composable
 fun FooterSection(

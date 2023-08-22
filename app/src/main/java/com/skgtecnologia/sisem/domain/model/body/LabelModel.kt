@@ -6,6 +6,7 @@ import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.props.TextStyle
 
 data class LabelModel(
+    val identifier: String,
     val text: String,
     val textStyle: TextStyle,
     val arrangement: Arrangement.Horizontal,

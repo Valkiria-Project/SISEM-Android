@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.components.button
+package com.valkiria.uicomponents.bricks
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
@@ -6,6 +6,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
+import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.props.ButtonSize
 import com.valkiria.uicomponents.props.mapToColors
 import com.valkiria.uicomponents.props.mapToTextColor

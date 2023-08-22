@@ -1,14 +1,18 @@
 package com.skgtecnologia.sisem.ui.imageselection
 
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.header.HeaderModel
 import com.skgtecnologia.sisem.domain.model.header.TextModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
+import com.valkiria.uicomponents.props.TabletWidth
 import com.valkiria.uicomponents.props.TextStyle
 
 @Suppress("LongMethod")
@@ -18,7 +22,11 @@ fun ImageSelectionScreen(
     modifier: Modifier = Modifier
 ) {
     ConstraintLayout(
-        modifier = modifier.fillMaxSize()
+        modifier = if (isTablet) {
+            modifier.width(TabletWidth)
+        } else {
+            modifier.fillMaxWidth()
+        },
     ) {
         val (header, body, footer) = createRefs()
 
@@ -33,12 +41,16 @@ fun ImageSelectionScreen(
     }
 }
 
+@Composable
 private fun getImageSelectionHeaderModel() = HeaderModel(
-    title = TextModel("Imágenes", TextStyle.HEADLINE_1),
+    title = TextModel(
+        stringResource(id = R.string.image_selection_title),
+        TextStyle.HEADLINE_1
+    ),
     subtitle = TextModel(
-        "Tome la foto o selecciónela para adjuntarla al hallazgo.",
+        stringResource(R.string.image_selection_subtitle),
         TextStyle.HEADLINE_5
     ),
-    leftIcon = "ic_back", // FIXME: Add back icon
+    leftIcon = stringResource(R.string.image_selection_left_icon),
     modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 20.dp)
 )

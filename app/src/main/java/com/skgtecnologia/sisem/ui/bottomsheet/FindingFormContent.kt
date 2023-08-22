@@ -19,7 +19,7 @@ import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentif
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonUiModel
-import com.valkiria.uicomponents.components.button.ButtonView
+import com.valkiria.uicomponents.bricks.ButtonView
 import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.LabelUiModel
