@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
+import com.skgtecnologia.sisem.ui.navigation.model.PreOpNavigationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -61,6 +62,18 @@ class PreOperationalViewModel @Inject constructor(
     fun handleShownFindingForm() {
         uiState = uiState.copy(
             onFindingForm = false
+        )
+    }
+
+    fun onFindingFormImages() {
+        uiState = uiState.copy(
+            preOpNavigationModel = PreOpNavigationModel(isImageSelection = true)
+        )
+    }
+
+    fun onFindingFormImagesHandled() {
+        uiState = uiState.copy(
+            preOpNavigationModel = null
         )
     }
 

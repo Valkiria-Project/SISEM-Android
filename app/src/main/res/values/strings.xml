@@ -103,6 +103,7 @@
 
     <!-- Findings dialog -->
     <string name="finding_subtitle">Revise los hallazgos registrados en el preoperacional del turno anterior.</string>
+    <string name="finding_left_icon">ic_finding</string>
 
     <!-- Finding form dialog -->
     <string name="finding_input_label">Respuesta al hallazgo</string>

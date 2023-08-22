@@ -92,7 +92,9 @@ private fun NavGraphBuilder.authGraph(
             PreOperationalScreen(
                 isTablet = isTablet,
                 modifier = modifier
-            )
+            ) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
         }
 
         composable(
