@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.ui.preoperational
 import HideKeyboard
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,16 +15,18 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
 import com.skgtecnologia.sisem.ui.bottomsheet.FindingFormContent
+import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
+import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.PreOperationalUiAction
-import com.valkiria.uicomponents.action.PreOperationalUiAction.SavePreOperational
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
 import com.valkiria.uicomponents.components.loader.LoaderComponent
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -31,7 +34,8 @@ import timber.log.Timber
 @Composable
 fun PreOperationalScreen(
     isTablet: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigation: (preOpNavigationModel: NavigationModel?) -> Unit
 ) {
     val viewModel = hiltViewModel<PreOperationalViewModel>()
     val uiState = viewModel.uiState
@@ -48,6 +52,11 @@ fun PreOperationalScreen(
                     scope.launch {
                         sheetState.show()
                     }
+                }
+
+                uiState.preOpNavigationModel != null -> {
+                    viewModel.onFindingFormImagesHandled()
+                    onNavigation(uiState.preOpNavigationModel)
                 }
             }
         }
@@ -80,7 +89,7 @@ fun PreOperationalScreen(
                 }
                 .padding(top = 20.dp)
         ) { uiAction ->
-            handleUiAction(uiAction, viewModel)
+            handleBodyAction(uiAction, viewModel)
         }
 
         uiState.screenModel?.footer?.let {
@@ -90,38 +99,17 @@ fun PreOperationalScreen(
                     bottom.linkTo(parent.bottom)
                 }
             ) { uiAction ->
-                handleFooterUiAction(uiAction, viewModel)
+                handleFooterAction(uiAction, viewModel)
             }
         }
     }
 
-    if (uiState.onFindingForm) {
-        BottomSheetComponent(
-            content = {
-                FindingFormContent()
-            },
-            sheetState = sheetState,
-            scope = scope
-        ) {
-            viewModel.handleShownFindingForm()
-        }
-    }
-
-    uiState.errorModel?.let { errorUiModel ->
-        ErrorBannerComponent(
-            uiModel = errorUiModel
-        ) {
-            viewModel.handleShownError()
-        }
-    }
-
-    if (uiState.isLoading) {
-        HideKeyboard()
-        LoaderComponent(modifier)
-    }
+    OnFindingForm(uiState, viewModel, sheetState, scope)
+    OnError(uiState, viewModel)
+    OnLoading(uiState, modifier)
 }
 
-private fun handleUiAction(
+private fun handleBodyAction(
     uiAction: UiAction,
     viewModel: PreOperationalViewModel
 ) {
@@ -137,13 +125,75 @@ private fun handleUiAction(
                     viewModel.showFindingForm()
                 }
             }
-
-            SavePreOperational -> viewModel.sendPreOperational()
         }
     }
 }
 
-private fun handleFooterUiAction(
+@Composable
+private fun OnFindingForm(
+    uiState: PreOperationalUiState,
+    viewModel: PreOperationalViewModel,
+    sheetState: SheetState,
+    scope: CoroutineScope
+) {
+    if (uiState.onFindingForm) {
+        BottomSheetComponent(
+            content = {
+                FindingFormContent { uiAction ->
+                    handleFindingFormContentAction(uiAction, viewModel)
+                }
+            },
+            sheetState = sheetState,
+            scope = scope
+        ) {
+            // FIXME: Use dismissed instead of shown to revert the selection
+            viewModel.handleShownFindingForm()
+        }
+    }
+}
+
+private fun handleFindingFormContentAction(
+    uiAction: UiAction,
+    viewModel: PreOperationalViewModel
+) {
+    viewModel.handleShownFindingForm()
+    (uiAction as GenericUiAction.ButtonAction).let { buttonAction ->
+        when (buttonAction.identifier) {
+            PreOperationalIdentifier.FINDING_FORM_IMAGE_BUTTON.name ->
+                viewModel.onFindingFormImages()
+
+            PreOperationalIdentifier.FINDING_FORM_SAVE_BUTTON.name ->
+                Timber.d("FIXME") // FIXME: Finish this
+        }
+    }
+}
+
+@Composable
+private fun OnError(
+    uiState: PreOperationalUiState,
+    viewModel: PreOperationalViewModel
+) {
+    uiState.errorModel?.let { errorUiModel ->
+        ErrorBannerComponent(
+            uiModel = errorUiModel
+        ) {
+            viewModel.handleShownError()
+        }
+    }
+}
+
+@Composable
+private fun OnLoading(
+    uiState: PreOperationalUiState,
+    modifier: Modifier
+) {
+    if (uiState.isLoading) {
+        HideKeyboard()
+        LoaderComponent(modifier)
+    }
+}
+
+private fun handleFooterAction(
     uiAction: UiAction,
     viewModel: PreOperationalViewModel
 ) {

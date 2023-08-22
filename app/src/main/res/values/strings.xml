@@ -103,11 +103,17 @@
 
     <!-- Findings dialog -->
     <string name="finding_subtitle">Revise los hallazgos registrados en el preoperacional del turno anterior.</string>
+    <string name="finding_left_icon">ic_finding</string>
 
     <!-- Finding form dialog -->
     <string name="finding_input_label">Respuesta al hallazgo</string>
     <string name="finding_input_hint">Escribe tu comentario…</string>
     <string name="finding_input_save_cta">Guardar</string>
+
+    <!-- Image selection screen -->
+    <string name="image_selection_title">Imágenes</string>
+    <string name="image_selection_subtitle">Tome la foto o selecciónela para adjuntarla al hallazgo.</string>
+    <string name="image_selection_left_icon">ic_back</string>
 
     <!-- Drawer Menu -->
     <string name="drawer_role_doctor">Médico</string>

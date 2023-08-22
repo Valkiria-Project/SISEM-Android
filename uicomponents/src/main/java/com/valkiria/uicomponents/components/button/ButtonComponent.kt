@@ -47,7 +47,7 @@ fun ButtonComponent(
             }
         ) {
             Text(
-                text = uiModel.label,
+                text = uiModel.label.orEmpty(),
                 color = uiModel.style.mapToTextColor(),
                 style = uiModel.textStyle.toTextStyle()
             )

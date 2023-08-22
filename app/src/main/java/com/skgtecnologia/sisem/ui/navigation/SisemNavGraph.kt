@@ -14,6 +14,7 @@ import androidx.navigation.navigation
 import com.skgtecnologia.sisem.ui.authcards.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
+import com.skgtecnologia.sisem.ui.imageselection.ImageSelectionScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
@@ -35,6 +36,7 @@ fun SisemNavGraph(
             startDestination = getAppStartDestination(navigationModel)
         ) {
             authGraph(navController, getAuthStartDestination(navigationModel), isTablet, modifier)
+            commonGraph(navController, isTablet, modifier)
             mainGraph(navController, isTablet, modifier)
         }
     }
@@ -92,9 +94,12 @@ private fun NavGraphBuilder.authGraph(
             PreOperationalScreen(
                 isTablet = isTablet,
                 modifier = modifier
-            )
+            ) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
         }
 
+        // FIXME: This is not part of AuthGraph
         composable(
             route = AuthNavigationRoute.ChangePassword.route
         ) {
@@ -105,6 +110,22 @@ private fun NavGraphBuilder.authGraph(
                 onCancel = { navController.navigateUp() }
             )
         }
+    }
+}
+
+@Suppress("UnusedPrivateMember")
+private fun NavGraphBuilder.commonGraph(
+    navController: NavHostController,
+    isTablet: Boolean,
+    modifier: Modifier
+) {
+    composable(
+        route = CommonNavigationRoute.ImageSelection.route
+    ) {
+        ImageSelectionScreen(
+            isTablet = isTablet,
+            modifier = modifier
+        )
     }
 }
 
