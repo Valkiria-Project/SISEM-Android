@@ -7,22 +7,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.skgtecnologia.sisem.ui.authcards.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
-import com.skgtecnologia.sisem.ui.map.MapScreen
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
+import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
 
 @Composable
 fun SisemNavGraph(
+    navigationModel: StartupNavigationModel?,
     isTablet: Boolean
 ) {
     Scaffold(
@@ -31,27 +30,25 @@ fun SisemNavGraph(
         val modifier = Modifier.padding(paddingValues)
         val navController = rememberNavController()
 
-        // FIXME: Receive this model as param / do this on Splash and pass it to Main
-//        val startDestination = getStartDestination(navController, )
-        
         NavHost(
             navController = navController,
-            startDestination = NavigationGraph.Auth.route
+            startDestination = getAppStartDestination(navigationModel)
         ) {
-            authGraph(navController, isTablet, modifier)
-            menuGraph(navController, isTablet, modifier)
-            mainGraph() // FIXME: Finish this work
+            authGraph(navController, getAuthStartDestination(navigationModel), isTablet, modifier)
+            mainGraph(navController, isTablet, modifier)
         }
     }
 }
 
+@Suppress("LongMethod")
 private fun NavGraphBuilder.authGraph(
     navController: NavHostController,
+    startDestination: String,
     isTablet: Boolean,
     modifier: Modifier
 ) {
     navigation(
-        startDestination = AuthNavigationRoute.AuthCards.route,
+        startDestination = startDestination,
         route = NavigationGraph.Auth.route
     ) {
         composable(
@@ -90,12 +87,7 @@ private fun NavGraphBuilder.authGraph(
         }
 
         composable(
-            route = "${AuthNavigationRoute.PreOperational.route}/{${NavigationArgument.ROLE}}",
-            arguments = listOf(
-                navArgument(NavigationArgument.ROLE) {
-                    type = NavType.StringType
-                }
-            )
+            route = AuthNavigationRoute.PreOperational.route
         ) {
             PreOperationalScreen(
                 isTablet = isTablet,
@@ -117,17 +109,17 @@ private fun NavGraphBuilder.authGraph(
 }
 
 @Suppress("UnusedPrivateMember", "LongMethod")
-private fun NavGraphBuilder.menuGraph(
+private fun NavGraphBuilder.mainGraph(
     navController: NavHostController,
     isTablet: Boolean,
     modifier: Modifier
 ) {
     navigation(
-        startDestination = MenuNavigationRoute.MenuScreen.route,
-        route = NavigationGraph.Menu.route
+        startDestination = MainNavigationRoute.MainScreen.route,
+        route = NavigationGraph.Main.route
     ) {
         composable(
-            route = MenuNavigationRoute.MenuScreen.route
+            route = MainNavigationRoute.MainScreen.route
         ) {
             MenuDrawer(
                 onClick = { menuNavigationRoute ->
@@ -135,7 +127,7 @@ private fun NavGraphBuilder.menuGraph(
                 },
                 onLogout = {
                     navController.navigate(AuthNavigationRoute.AuthCards.route) {
-                        popUpTo(NavigationGraph.Menu.route) {
+                        popUpTo(NavigationGraph.Main.route) {
                             inclusive = true
                         }
                     }
@@ -144,82 +136,69 @@ private fun NavGraphBuilder.menuGraph(
         }
 
         composable(
-            route = MenuNavigationRoute.IncidentScreen.route
+            route = MainNavigationRoute.IncidentScreen.route
         ) {
             // FIXME: Finish this work
         }
 
         composable(
-            route = MenuNavigationRoute.InventoryScreen.route
+            route = MainNavigationRoute.InventoryScreen.route
         ) {
             // FIXME: Finish this work
         }
 
         composable(
-            route = MenuNavigationRoute.NotificationsScreen.route
+            route = MainNavigationRoute.NotificationsScreen.route
         ) {
             // FIXME: Finish this work
         }
 
         composable(
-            route = MenuNavigationRoute.DrivingGuideScreen.route
+            route = MainNavigationRoute.DrivingGuideScreen.route
         ) {
             // FIXME: Finish this work
         }
 
         composable(
-            route = MenuNavigationRoute.CertificationsScreen.route
+            route = MainNavigationRoute.CertificationsScreen.route
         ) {
             // FIXME: Finish this work
         }
 
         composable(
-            route = MenuNavigationRoute.NewsScreen.route
+            route = MainNavigationRoute.NewsScreen.route
         ) {
             // FIXME: Finish this work
         }
 
         composable(
-            route = MenuNavigationRoute.HCEUDCScreen.route
+            route = MainNavigationRoute.HCEUDCScreen.route
         ) {
             // FIXME: Finish this work
         }
 
         composable(
-            route = MenuNavigationRoute.ShiftScreen.route
+            route = MainNavigationRoute.ShiftScreen.route
         ) {
             // FIXME: Finish this work
         }
 
         composable(
-            route = MenuNavigationRoute.PreoperationalMenuScreen.route
+            route = MainNavigationRoute.PreoperationalMainScreen.route
         ) {
             // FIXME: Finish this work
         }
 
         composable(
-            route = MenuNavigationRoute.DeviceAuth.route
+            route = MainNavigationRoute.DeviceAuth.route
         ) {
             navController.navigate(AuthNavigationRoute.DeviceAuth.route)
         }
 
         composable(
-            route = MenuNavigationRoute.SignatureAndFingerprint.route
+            route = MainNavigationRoute.SignatureAndFingerprint.route
         ) {
             // FIXME: Finish this work
-        }
-    }
-}
-
-private fun NavGraphBuilder.mainGraph() {
-    navigation(
-        startDestination = MainNavigationRoute.Home.route,
-        route = NavigationGraph.Main.route
-    ) {
-        composable(
-            route = MainNavigationRoute.Home.route
-        ) {
-            MapScreen()
         }
     }
 }

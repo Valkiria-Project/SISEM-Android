@@ -1,23 +1,25 @@
 package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.navigation.NavHostController
-import com.skgtecnologia.sisem.di.operation.OperationRole.AUXILIARY_AND_OR_TAPH
-import com.skgtecnologia.sisem.di.operation.OperationRole.DRIVER
-import com.skgtecnologia.sisem.di.operation.OperationRole.MEDIC_APH
 import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 
-fun getStartDestination(navController: NavHostController, model: StartupNavigationModel): String {
-    return when {
-        model.isTurnStarted -> NavigationGraph.Menu.route
+fun getAppStartDestination(model: StartupNavigationModel?): String {
+    return if (model == null) {
+        NavigationGraph.Auth.route
+    } else when {
+        model.isTurnStarted -> NavigationGraph.Main.route
 
-        model.requiresPreOperational -> when (model.preOperationRole) {
-            AUXILIARY_AND_OR_TAPH -> TODO()
-            DRIVER -> TODO()
-            MEDIC_APH -> TODO()
-            else ->  TODO()
-        }
+        else -> NavigationGraph.Auth.route
+    }
+}
+
+fun getAuthStartDestination(model: StartupNavigationModel?): String {
+    return if (model == null) {
+        NavigationGraph.Auth.route
+    } else when {
+        model.requiresPreOperational -> AuthNavigationRoute.PreOperational.route
 
         else -> NavigationGraph.Auth.route
     }
@@ -37,14 +39,14 @@ private fun loginToNextStep(
         navController.navigate(AuthNavigationRoute.DeviceAuth.route)
 
     model.isAdmin && !model.requiresDeviceAuth ->
-        navController.navigate(NavigationGraph.Menu.route) {
+        navController.navigate(NavigationGraph.Main.route) {
             popUpTo(AuthNavigationRoute.AuthCards.route) {
                 inclusive = true
             }
         }
 
     model.isTurnComplete && model.requiresPreOperational.not() ->
-        navController.navigate(NavigationGraph.Menu.route) {
+        navController.navigate(NavigationGraph.Main.route) {
             popUpTo(AuthNavigationRoute.AuthCards.route) {
                 inclusive = true
             }
@@ -53,7 +55,7 @@ private fun loginToNextStep(
     model.requiresPreOperational -> {
         val operationRole = model.preOperationRole?.name
 
-        navController.navigate("${AuthNavigationRoute.PreOperational.route}/$operationRole") {
+        navController.navigate(AuthNavigationRoute.PreOperational.route) {
             popUpTo(AuthNavigationRoute.AuthCards.route) {
                 inclusive = true
             }

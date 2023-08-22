@@ -17,13 +17,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.menu.header.toCrewMemberItemModel
 import com.skgtecnologia.sisem.ui.menu.items.getDrawerMenuItemList
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
 fun MenuDrawer(
-    onClick: (MenuNavigationRoute) -> Unit,
+    onClick: (MainNavigationRoute) -> Unit,
     onLogout: () -> Unit
 ) {
     val viewModel = hiltViewModel<MenuViewModel>()

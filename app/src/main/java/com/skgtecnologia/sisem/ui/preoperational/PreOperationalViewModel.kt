@@ -28,17 +28,15 @@ class PreOperationalViewModel @Inject constructor(
 
     private var job: Job? = null
 
-    private val operationRole: String? = savedStateHandle[NavigationArgument.ROLE]
     var uiState by mutableStateOf(PreOperationalUiState())
         private set
 
     init {
-        Timber.d("Role is $operationRole")
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            getPreOperationalScreen.invoke(OperationRole.getRoleByName(operationRole.orEmpty()))
+            getPreOperationalScreen.invoke()
                 .onSuccess { loginScreenModel ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(

@@ -3,22 +3,22 @@ package com.skgtecnologia.sisem.ui.menu.items
 import android.content.Context
 import androidx.annotation.DrawableRes
 import com.skgtecnologia.sisem.R
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.CertificationsScreen
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.DeviceAuth
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.DrivingGuideScreen
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.HCEUDCScreen
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.IncidentScreen
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.InventoryScreen
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.NewsScreen
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.NotificationsScreen
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.PreoperationalMenuScreen
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.ShiftScreen
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute.SignatureAndFingerprint
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.CertificationsScreen
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.DeviceAuth
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.DrivingGuideScreen
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.HCEUDCScreen
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.IncidentScreen
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.InventoryScreen
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.NewsScreen
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.NotificationsScreen
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.PreoperationalMainScreen
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.ShiftScreen
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.SignatureAndFingerprint
 import com.valkiria.uicomponents.R.drawable
 
 data class DrawerMenuItemModel(
-    val drawerOption: MenuNavigationRoute,
+    val drawerOption: MainNavigationRoute,
     val title: String,
     @DrawableRes val drawableId: Int
 )
@@ -68,7 +68,7 @@ private fun getDrawerItems(context: Context) = listOf(
         drawable.ic_shift
     ),
     DrawerMenuItemModel(
-        PreoperationalMenuScreen,
+        PreoperationalMainScreen,
         context.getString(R.string.drawer_pre_operational),
         drawable.ic_check
     ),

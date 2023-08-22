@@ -93,7 +93,7 @@ fun PreOperationalScreen(
             sheetState = sheetState,
             scope = scope
         ) {
-            viewModel.handleShownError()
+            viewModel.handleShownFindingForm()
         }
     }
 
