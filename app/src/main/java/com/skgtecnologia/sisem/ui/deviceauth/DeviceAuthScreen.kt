@@ -3,10 +3,8 @@ package com.skgtecnologia.sisem.ui.deviceauth
 import HideKeyboard
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -35,9 +33,6 @@ fun DeviceAuthScreen(
 ) {
     val viewModel = hiltViewModel<DeviceAuthViewModel>()
     val uiState = viewModel.uiState
-
-    val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
 
     LaunchedEffect(uiState) {
         launch {
@@ -93,10 +88,6 @@ fun DeviceAuthScreen(
     }
 
     uiState.errorModel?.let { errorUiModel ->
-        scope.launch {
-            sheetState.show()
-        }
-
         ErrorBannerComponent(
             uiModel = errorUiModel
         ) {

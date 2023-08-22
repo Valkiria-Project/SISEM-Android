@@ -16,14 +16,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.menu.header.toCrewMemberItemModel
-import com.skgtecnologia.sisem.ui.menu.items.getDrawerInfoItemList
-import com.skgtecnologia.sisem.ui.navigation.MenuNavigationRoute
+import com.skgtecnologia.sisem.ui.menu.items.getDrawerMenuItemList
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
 fun MenuDrawer(
-    onClick: (MenuNavigationRoute) -> Unit,
+    onClick: (MainNavigationRoute) -> Unit,
     onLogout: () -> Unit
 ) {
     val viewModel = hiltViewModel<MenuViewModel>()
@@ -32,7 +32,7 @@ fun MenuDrawer(
 
     val uiState = viewModel.uiState // FIXME: loading ???
 
-    val menuItemsPersonal = uiState.accessTokenModelList?.let { list ->
+    val crewMenuItems = uiState.accessTokenModelList?.let { list ->
         list.map { accessTokenModel ->
             accessTokenModel.toCrewMemberItemModel()
         }
@@ -54,8 +54,8 @@ fun MenuDrawer(
         drawerContent = {
             DrawerContent(
                 drawerState = drawerState,
-                menuItemsPersonal = menuItemsPersonal,
-                menuItems = getDrawerInfoItemList(LocalContext.current, isAdmin),
+                crewMenuItems = crewMenuItems,
+                menuItems = getDrawerMenuItemList(LocalContext.current, isAdmin),
                 onMenuItemClick = { onClick(it) },
                 onLogout = { viewModel.logout(it.username) }
             )
@@ -75,7 +75,7 @@ fun MenuDrawer(
 
 @Preview
 @Composable
-fun MenuRoot() {
+fun MenuDrawerPreview() {
     MenuDrawer(
         onClick = {},
         onLogout = {}

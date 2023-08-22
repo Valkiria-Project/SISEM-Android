@@ -24,7 +24,7 @@ import com.valkiria.uicomponents.utlis.getResourceIdByName
 
 @Suppress("LongMethod", "MagicNumber")
 @Composable
-fun CrewMemberItem(item: CrewMemberItemModel, onClick: () -> Unit) {
+fun CrewMemberItem(item: CrewMemberMenuItemModel, onClick: () -> Unit) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         item.drawableProfession, DefType.DRAWABLE
     )

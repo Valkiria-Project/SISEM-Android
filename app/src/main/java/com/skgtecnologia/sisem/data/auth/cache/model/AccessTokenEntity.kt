@@ -6,6 +6,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
+import java.time.LocalDateTime
 
 @Entity(
     tableName = "access_token",
@@ -13,6 +14,7 @@ import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 )
 data class AccessTokenEntity(
     @PrimaryKey @ColumnInfo(name = "user_id") val userId: Int,
+    @ColumnInfo(name = "date_time") val dateTime: LocalDateTime,
     @ColumnInfo(name = "token") val accessToken: String,
     @ColumnInfo(name = "refresh_token") val refreshToken: String,
     @ColumnInfo(name = "type") val tokenType: String,
@@ -28,6 +30,7 @@ fun AccessTokenEntity.mapToDomain(): AccessTokenModel {
     return with(this) {
         AccessTokenModel(
             userId = userId,
+            dateTime = dateTime,
             accessToken = accessToken,
             refreshToken = refreshToken,
             tokenType = tokenType,
@@ -45,6 +48,7 @@ fun AccessTokenModel.mapToCache(): AccessTokenEntity {
     return with(this) {
         AccessTokenEntity(
             userId = userId,
+            dateTime = dateTime,
             accessToken = accessToken,
             refreshToken = refreshToken,
             tokenType = tokenType,

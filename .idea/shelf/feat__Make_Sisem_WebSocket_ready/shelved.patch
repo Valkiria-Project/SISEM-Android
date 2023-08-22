@@ -1,0 +1,170 @@
+Index: app/src/main/java/com/skgtecnologia/sisem/ui/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.skgtecnologia.sisem.ui\n\nimport android.os.Bundle\nimport androidx.activity.ComponentActivity\nimport androidx.activity.compose.setContent\nimport androidx.compose.material3.windowsizeclass.WindowWidthSizeClass\nimport androidx.compose.material3.windowsizeclass.calculateWindowSizeClass\nimport com.skgtecnologia.sisem.ui.navigation.SisemAppNavigation\nimport com.skgtecnologia.sisem.ui.theme.SisemTheme\nimport dagger.hilt.android.AndroidEntryPoint\n\n@AndroidEntryPoint\nclass MainActivity : ComponentActivity() {\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        setContent {\n            SisemTheme {\n                val windowSizeClass = calculateWindowSizeClass(this)\n                val isTablet = windowSizeClass.widthSizeClass > WindowWidthSizeClass.Compact\n\n                SisemAppNavigation(isTablet)\n            }\n        }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/skgtecnologia/sisem/ui/MainActivity.kt b/app/src/main/java/com/skgtecnologia/sisem/ui/MainActivity.kt
+--- a/app/src/main/java/com/skgtecnologia/sisem/ui/MainActivity.kt	(revision fa48f8f917dc9511503b16cf22d3dd511df86dd6)
++++ b/app/src/main/java/com/skgtecnologia/sisem/ui/MainActivity.kt	(date 1692588791793)
+@@ -5,21 +5,157 @@
+ import androidx.activity.compose.setContent
+ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+ import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+-import com.skgtecnologia.sisem.ui.navigation.SisemAppNavigation
++import com.skgtecnologia.sisem.ui.navigation.SisemNavGraph
+ import com.skgtecnologia.sisem.ui.theme.SisemTheme
+ import dagger.hilt.android.AndroidEntryPoint
++import okhttp3.OkHttpClient
++import okhttp3.Request
++import okhttp3.Response
++import okhttp3.WebSocketListener
++import timber.log.Timber
+ 
+ @AndroidEntryPoint
+ class MainActivity : ComponentActivity() {
++
++    private lateinit var webSocketClient: WebSocketClient
++
++    //you can get your own socket key by registering to pieSocket form here
++    // https://www.piesocket.com/register?plan=free
++    private val socketKey = "OoxcCdu52cCwxFKF3SqRd6ZlLJW2g9OpMokNsIlw"
++
++    private val socketListener = object : WebSocketClient.SocketListener {
++        override fun onMessage(message: String) {
++            Timber.tag("WEB SOCKET").d("onMessage: $message")
++        }
++    }
++
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
++
++
++        webSocketClient = WebSocketClient.getInstance()
++        webSocketClient.setSocketUrl("ws://35.202.110.30:8080/our-websocket/websocket?code=0606")
++        webSocketClient.setListener(socketListener)
++        webSocketClient.connect()
++
+         setContent {
+             SisemTheme {
+                 val windowSizeClass = calculateWindowSizeClass(this)
+                 val isTablet = windowSizeClass.widthSizeClass > WindowWidthSizeClass.Compact
+ 
+-                SisemAppNavigation(isTablet)
++                SisemNavGraph(isTablet)
+             }
+         }
+     }
+ }
++
++class WebSocketClient {
++    private lateinit var webSocket: okhttp3.WebSocket
++    private var socketListener: SocketListener? = null
++    private var socketUrl = ""
++    private var shouldReconnect = true
++    private var client: OkHttpClient? = null
++
++    companion object {
++        private lateinit var instance: WebSocketClient
++
++        @JvmStatic
++        @Synchronized
++        //This function gives singleton instance of WebSocket.
++        fun getInstance(): WebSocketClient {
++            synchronized(WebSocketClient::class) {
++                if (!::instance.isInitialized) {
++                    instance = WebSocketClient()
++                }
++            }
++            return instance
++        }
++    }
++
++    fun setListener(listener: SocketListener) {
++        this.socketListener = listener
++    }
++
++    fun setSocketUrl(socketUrl: String) {
++        this.socketUrl = socketUrl
++    }
++
++    private fun initWebSocket() {
++        Timber.tag("WEB SOCKET").d("initWebSocket with socket url = $socketUrl")
++        client = OkHttpClient()
++        val request = Request.Builder().url(url = socketUrl).build()
++        webSocket = client!!.newWebSocket(request, webSocketListener)
++        //this must me done else memory leak will be caused
++        client!!.dispatcher.executorService.shutdown()
++    }
++
++    fun connect() {
++        Timber.tag("WEB SOCKET").d("connected")
++        shouldReconnect = true
++        initWebSocket()
++    }
++
++    fun reconnect() {
++        Timber.tag("WEB SOCKET").d("reconnect")
++        initWebSocket()
++    }
++
++    //send
++    fun sendMessage(message: String) {
++        Timber.tag("WEB SOCKET").d("sendMessage($message)")
++        if (::webSocket.isInitialized) webSocket.send(message)
++    }
++
++    //We can close socket by two way:
++
++    //1. websocket.webSocket.close(1000, "Dont need connection")
++    //This attempts to initiate a graceful shutdown of this web socket.
++    //Any already-enqueued messages will be transmitted before the close message is sent but
++    //subsequent calls to send will return false and their messages will not be enqueued.
++
++    //2. websocket.cancel()
++    //This immediately and violently release resources held by this web socket,
++    //discarding any enqueued messages.
++
++    //Both does nothing if the web socket has already been closed or canceled.
++    fun disconnect() {
++        if (::webSocket.isInitialized) webSocket.close(1000, "Do not need connection anymore.")
++        shouldReconnect = false
++    }
++
++    interface SocketListener {
++        fun onMessage(message: String)
++    }
++
++    private val webSocketListener = object : WebSocketListener() {
++        //called when connection succeeded
++        //we are sending a message just after the socket is opened
++        override fun onOpen(webSocket: okhttp3.WebSocket, response: Response) {
++            Timber.tag("WEB SOCKET").d("onOpen ${response.body}")
++            sendMessage("Hola Jarry")
++        }
++
++        //called when text message received
++        override fun onMessage(webSocket: okhttp3.WebSocket, text: String) {
++            socketListener?.onMessage(text)
++        }
++
++        //called when binary message received
++        override fun onClosing(webSocket: okhttp3.WebSocket, code: Int, reason: String) {
++            Timber.tag("WEB SOCKET").d("onClosing: code $code and reason $reason")
++        }
++
++        override fun onClosed(webSocket: okhttp3.WebSocket, code: Int, reason: String) {
++            //called when no more messages and the connection should be released
++            Timber.tag("WEB SOCKET").d("onClosed: code $code and reason $reason")
++            if (shouldReconnect) reconnect()
++        }
++
++        override fun onFailure(
++            webSocket: okhttp3.WebSocket, t: Throwable, response: Response?
++        ) {
++            Timber.tag("WEB SOCKET").e("onFailure: ${t.localizedMessage}")
++            if (shouldReconnect) reconnect()
++        }
++    }
++}

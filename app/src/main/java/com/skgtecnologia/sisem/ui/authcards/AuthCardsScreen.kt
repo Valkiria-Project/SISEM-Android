@@ -10,6 +10,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.model.bricks.mapToDomain
+import com.skgtecnologia.sisem.ui.bottomsheet.FindingsContent
+import com.skgtecnologia.sisem.ui.bottomsheet.ReportDetailContent
 import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
@@ -98,10 +100,6 @@ fun AuthCardsScreen(
     }
 
     uiState.errorModel?.let { errorUiModel ->
-        scope.launch {
-            sheetState.show()
-        }
-
         ErrorBannerComponent(
             uiModel = errorUiModel
         ) {
@@ -125,6 +123,7 @@ fun handleUiAction(
             AuthCardsUiAction.AuthCard -> onNavigation(AuthNavigationRoute.Login)
             is AuthCardsUiAction.AuthCardNews ->
                 viewModel.showReportBottomSheet(uiAction.reportDetail.mapToDomain())
+
             is AuthCardsUiAction.AuthCardFindings ->
                 viewModel.showFindingsBottomSheet(uiAction.chipSectionUiModel.mapToDomain())
         }

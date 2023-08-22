@@ -14,7 +14,8 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.model.toLegalContentModel
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
+import com.skgtecnologia.sisem.ui.bottomsheet.LegalContent
+import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.LoginUiAction
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
@@ -94,15 +95,11 @@ fun LoginScreen(
             sheetState = sheetState,
             scope = scope
         ) {
-            viewModel.handleShownBottomSheet()
+            viewModel.handleShownLoginLink()
         }
     }
 
     uiState.errorModel?.let { errorUiModel ->
-        scope.launch {
-            sheetState.show()
-        }
-
         ErrorBannerComponent(
             uiModel = errorUiModel
         ) {
@@ -139,7 +136,7 @@ private fun handleUiAction(
                 viewModel.isValidUsername = uiAction.fieldValidated
             }
 
-            is TermsAndConditions -> viewModel.showBottomSheet(
+            is TermsAndConditions -> viewModel.showLoginLink(
                 LoginLink.getLinkByName(link = uiAction.link)
             )
         }
