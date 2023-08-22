@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.authcards
+package com.skgtecnologia.sisem.ui.bottomsheet
 
 import android.graphics.BitmapFactory
 import android.util.Base64
@@ -44,7 +44,7 @@ fun ReportContent(
     }
 
     val pageCount = imagesBitmap.size
-    Column(modifier = Modifier.padding(top = 16.dp)) {
+    Column(modifier = Modifier.padding(top = 20.dp)) {
         val pagerState = rememberPagerState(
             initialPage = 0,
             initialPageOffsetFraction = 0f
