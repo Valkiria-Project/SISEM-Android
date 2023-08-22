@@ -3,27 +3,23 @@ package com.skgtecnologia.sisem.ui.preoperational
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltViewModel
 class PreOperationalViewModel @Inject constructor(
     private val getPreOperationalScreen: GetPreOperationalScreen,
-    private val sendPreOperational: SendPreOperational,
-    savedStateHandle: SavedStateHandle
+    private val sendPreOperational: SendPreOperational
 ) : ViewModel() {
 
     private var job: Job? = null
