@@ -64,7 +64,9 @@ fun ImageSelectionScreen(
                 Button(
                     onClick = {
                         multiplePhotoPickerLauncher.launch(
-                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                            PickVisualMediaRequest(
+                                ActivityResultContracts.PickVisualMedia.ImageOnly
+                            )
                         )
                     }
                 ) {
