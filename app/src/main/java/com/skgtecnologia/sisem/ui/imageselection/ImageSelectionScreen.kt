@@ -61,7 +61,7 @@ fun ImageSelectionScreen(
             },
             modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 20.dp)
         ) {
-            Text(text = "Pick photo")
+            Text(text = stringResource(R.string.image_selection_select_picture))
         }
 
         AsyncImage(
