@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,13 +35,13 @@ fun ImageSelectionScreen(
     isTablet: Boolean,
     modifier: Modifier = Modifier
 ) {
-    var selectedImageUri by remember {
-        mutableStateOf<Uri?>(null)
+    var selectedImageUris by remember {
+        mutableStateOf<List<Uri>>(emptyList())
     }
 
-    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri -> selectedImageUri = uri }
+    val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickMultipleVisualMedia(),
+        onResult = { uris -> selectedImageUris = uris }
     )
 
     Column(
@@ -53,25 +55,32 @@ fun ImageSelectionScreen(
             headerModel = getImageSelectionHeaderModel()
         )
 
-        Button(
-            onClick = {
-                singlePhotoPickerLauncher.launch(
-                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                )
-            },
-            modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 20.dp)
-        ) {
-            Text(text = stringResource(R.string.image_selection_select_picture))
-        }
-
-        AsyncImage(
-            model = selectedImageUri,
-            contentDescription = null,
+        LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 20.dp, top = 20.dp, end = 20.dp),
-            contentScale = ContentScale.Crop
-        )
+                .padding(start = 20.dp, top = 20.dp, end = 20.dp)
+        ) {
+            item {
+                Button(
+                    onClick = {
+                        multiplePhotoPickerLauncher.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    }
+                ) {
+                    Text(text = stringResource(id = R.string.image_selection_select_pictures))
+                }
+            }
+
+            items(selectedImageUris) { uri ->
+                AsyncImage(
+                    model = uri,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxWidth(),
+                    contentScale = ContentScale.Crop
+                )
+            }
+        }
     }
 }
 
