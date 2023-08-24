@@ -1,9 +1,9 @@
 [versions]
-accompanist-placeholder-material = "0.30.1"
+accompanist = "0.30.1"
 agp = "8.1.1"
 activity-compose = "1.7.2"
 androidx-test-ext-junit = "1.1.5"
-appcompat = "1.6.1"
+camera-x = "1.2.3"
 coil-compose = "2.4.0"
 compose-bom = "2023.08.00"
 compose-html = "1.0.2"
@@ -33,8 +33,14 @@ timber = "5.0.1"
 versions = "0.42.0"
 
 [libraries]
-accompanist-placeholder-material = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanist-placeholder-material" }
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
+accompanist-placeholder-material = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanist" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+androidx-camera-core = { module = "androidx.camera:camera-core", version.ref = "camera-x" }
+androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "camera-x" }
+androidx-camera-extensions = { module = "androidx.camera:camera-extensions", version.ref = "camera-x" }
+androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "camera-x" }
+androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "camera-x" }
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayout-compose" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "core-splashscreen" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
@@ -43,7 +49,6 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-html = { module = "com.github.ireward:compose-html", version.ref = "compose-html" }
@@ -58,6 +63,7 @@ leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", ve
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 mapbox-android = { module = "com.mapbox.maps:android", version.ref = "mapbox-android" }
 material = { module = "com.google.android.material:material", version.ref = "google-material" }
+material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
 material3-window-size = { group = "androidx.compose.material3", name = "material3-window-size-class" }
 moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
