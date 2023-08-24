@@ -31,6 +31,7 @@ import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.props.ButtonSize
 import com.valkiria.uicomponents.props.ButtonStyle
 import com.valkiria.uicomponents.props.ChipStyle
+import com.valkiria.uicomponents.props.TextFieldStyle
 import com.valkiria.uicomponents.props.TextStyle
 import dagger.Module
 import dagger.Provides
@@ -71,6 +72,9 @@ object CoreNetworkModule {
     ).add(
         OnClick::class.java,
         EnumJsonAdapter.create(OnClick::class.java)
+    ).add(
+        TextFieldStyle::class.java,
+        EnumJsonAdapter.create(TextFieldStyle::class.java).withUnknownFallback(TextFieldStyle.OUTLINED)
     ).add(
         TextStyle::class.java,
         EnumJsonAdapter.create(TextStyle::class.java).withUnknownFallback(TextStyle.BODY_1)

@@ -12,6 +12,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,6 +30,7 @@ import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.mocks.getLoginUserTextFieldUiModel
 import com.valkiria.uicomponents.mocks.getPreOpDriverVehicleKMTextFieldUiModel
 import com.valkiria.uicomponents.props.TabletWidth
+import com.valkiria.uicomponents.props.TextFieldStyle
 import com.valkiria.uicomponents.props.toTextStyle
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
@@ -66,41 +68,19 @@ fun TextFieldComponent(
             )
         }
 
-        var text by remember { mutableStateOf(TextFieldValue("")) }
-
-        OutlinedTextField(
-            value = text,
-            onValueChange = { updatedValue ->
-                text = updatedValue
-                onAction(
-                    updatedValue.text,
-                    text.toFailedValidation(uiModel.validations, validateFields) == null
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .imePadding(),
-            textStyle = uiModel.textStyle.toTextStyle(),
-            label = {
-                uiModel.label?.let { label ->
-                    Text(text = label)
-                } ?: uiModel.placeholder?.let { label ->
-                    Text(text = label)
-                }
-            },
-            supportingText = {
-                if (validateFields) {
-                    Text(
-                        text = text.toFailedValidation(uiModel.validations)?.message.orEmpty(),
-                        modifier = Modifier.fillMaxWidth(),
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
-            },
-            isError = text.toFailedValidation(uiModel.validations, validateFields) != null,
-            keyboardOptions = uiModel.keyboardOptions,
-            singleLine = true
-        )
+        if (uiModel.style == TextFieldStyle.OUTLINED) {
+            OutlinedTextFieldView(
+                uiModel = uiModel,
+                validateFields = validateFields,
+                onAction = onAction
+            )
+        } else {
+            FilledTextFieldView(
+                uiModel = uiModel,
+                validateFields = validateFields,
+                onAction = onAction
+            )
+        }
     }
 }
 
@@ -121,4 +101,90 @@ fun TextFieldComponentPreview() {
             Timber.d("Handle $updatedValue with $fieldValidated")
         }
     }
+}
+
+@Composable
+fun OutlinedTextFieldView(
+    uiModel: TextFieldUiModel,
+    onAction: (updatedValue: String, fieldValidated: Boolean) -> Unit,
+    validateFields: Boolean
+) {
+    var text by remember { mutableStateOf(TextFieldValue("")) }
+
+    OutlinedTextField(
+        value = text,
+        onValueChange = { updatedValue ->
+            text = updatedValue
+            onAction(
+                updatedValue.text,
+                text.toFailedValidation(uiModel.validations, validateFields) == null
+            )
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .imePadding(),
+        textStyle = uiModel.textStyle.toTextStyle(),
+        label = {
+            uiModel.label?.let { label ->
+                Text(text = label)
+            } ?: uiModel.placeholder?.let { label ->
+                Text(text = label)
+            }
+        },
+        supportingText = {
+            if (validateFields) {
+                Text(
+                    text = text.toFailedValidation(uiModel.validations)?.message.orEmpty(),
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        },
+        isError = text.toFailedValidation(uiModel.validations, validateFields) != null,
+        keyboardOptions = uiModel.keyboardOptions,
+        singleLine = true
+    )
+}
+
+@Composable
+fun FilledTextFieldView(
+    uiModel: TextFieldUiModel,
+    onAction: (updatedValue: String, fieldValidated: Boolean) -> Unit,
+    validateFields: Boolean
+) {
+    var text by remember { mutableStateOf(TextFieldValue("")) }
+
+    TextField(
+        value = text,
+        onValueChange = { updatedValue ->
+            text = updatedValue
+            onAction(
+                updatedValue.text,
+                text.toFailedValidation(uiModel.validations, validateFields) == null
+            )
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .imePadding(),
+        textStyle = uiModel.textStyle.toTextStyle(),
+        label = {
+            uiModel.label?.let { label ->
+                Text(text = label)
+            } ?: uiModel.placeholder?.let { label ->
+                Text(text = label)
+            }
+        },
+        supportingText = {
+            if (validateFields) {
+                Text(
+                    text = text.toFailedValidation(uiModel.validations)?.message.orEmpty(),
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        },
+        isError = text.toFailedValidation(uiModel.validations, validateFields) != null,
+        keyboardOptions = uiModel.keyboardOptions,
+        singleLine = true
+    )
 }

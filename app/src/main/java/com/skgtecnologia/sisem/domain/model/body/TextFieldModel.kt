@@ -5,6 +5,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
+import com.valkiria.uicomponents.props.TextFieldStyle
 import com.valkiria.uicomponents.props.TextStyle
 
 data class TextFieldModel(
@@ -14,6 +15,7 @@ data class TextFieldModel(
     val label: String?,
     val keyboardOptions: KeyboardOptions,
     val textStyle: TextStyle,
+    val style: TextFieldStyle,
     val validations: List<ValidationUiModel>,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
@@ -29,6 +31,7 @@ fun TextFieldModel.mapToUiModel(): TextFieldUiModel {
         label = label,
         keyboardOptions = keyboardOptions,
         textStyle = textStyle,
+        style = style,
         validations = validations,
         arrangement = arrangement,
         modifier = modifier
