@@ -16,7 +16,8 @@ data class OperationResponse(
     @Json(name = "auth_method") val authMethod: String?,
     @Json(name = "attentions_type") val attentionsType: String?,
     @Json(name = "status") val status: Boolean?,
-    @Json(name = "vehicle_code") val vehicleCode: String?
+    @Json(name = "vehicle_code") val vehicleCode: String?,
+    @Json(name = "vehicle_config") val vehicleConfig: VehicleConfigResponse?
 )
 
 fun OperationResponse.mapToDomain(): OperationModel = OperationModel(
@@ -34,5 +35,6 @@ fun OperationResponse.mapToDomain(): OperationModel = OperationModel(
     authMethod = authMethod ?: error("Config authMethod cannot be null"),
     attentionsType = attentionsType ?: error("Config attentionsType cannot be null"),
     status = status ?: error("Config status cannot be null"),
-    vehicleCode = vehicleCode ?: error("Config vehicleCode cannot be null")
+    vehicleCode = vehicleCode ?: error("Config vehicleCode cannot be null"),
+    vehicleConfig = vehicleConfig?.mapToDomain()
 )

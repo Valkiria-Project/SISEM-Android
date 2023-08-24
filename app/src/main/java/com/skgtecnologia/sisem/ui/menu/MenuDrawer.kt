@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.menu.header.toCrewMemberItemModel
 import com.skgtecnologia.sisem.ui.menu.items.getDrawerMenuItemList
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
+import com.valkiria.uicomponents.components.loader.LoaderComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -30,7 +31,7 @@ fun MenuDrawer(
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
     val drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
-    val uiState = viewModel.uiState // FIXME: loading ???
+    val uiState = viewModel.uiState
 
     val crewMenuItems = uiState.accessTokenModelList?.let { list ->
         list.map { accessTokenModel ->
@@ -54,6 +55,7 @@ fun MenuDrawer(
         drawerContent = {
             DrawerContent(
                 drawerState = drawerState,
+                vehicleConfig = uiState.vehicleConfig,
                 crewMenuItems = crewMenuItems,
                 menuItems = getDrawerMenuItemList(LocalContext.current, isAdmin),
                 onMenuItemClick = { onClick(it) },
@@ -70,6 +72,10 @@ fun MenuDrawer(
                 tint = MaterialTheme.colorScheme.primary
             )
         })
+    }
+
+    if (uiState.isLoading) {
+        LoaderComponent()
     }
 }
 
