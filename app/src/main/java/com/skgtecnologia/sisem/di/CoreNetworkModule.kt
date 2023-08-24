@@ -74,7 +74,8 @@ object CoreNetworkModule {
         EnumJsonAdapter.create(OnClick::class.java)
     ).add(
         TextFieldStyle::class.java,
-        EnumJsonAdapter.create(TextFieldStyle::class.java).withUnknownFallback(TextFieldStyle.OUTLINED)
+        EnumJsonAdapter.create(TextFieldStyle::class.java)
+            .withUnknownFallback(TextFieldStyle.OUTLINED)
     ).add(
         TextStyle::class.java,
         EnumJsonAdapter.create(TextStyle::class.java).withUnknownFallback(TextStyle.BODY_1)
