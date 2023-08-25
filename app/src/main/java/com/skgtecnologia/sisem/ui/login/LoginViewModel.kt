@@ -91,18 +91,35 @@ class LoginViewModel @Inject constructor(
             login.invoke(username, password)
                 .onSuccess { accessTokenModel ->
                     Timber.d("Successful login with ${accessTokenModel.username}")
-                    uiState = uiState.copy(
-                        onLogin = true,
-                        loginNavigationModel = with(accessTokenModel) {
-                            LoginNavigationModel(
-                                isAdmin = isAdmin,
-                                isTurnComplete = turn?.isComplete == true,
-                                requiresPreOperational = preoperational?.status == true,
-                                preOperationRole = OperationRole.getRoleByName(role),
-                                requiresDeviceAuth = code.isEmpty()
-                            )
-                        }
-                    )
+                    if (accessTokenModel.warning == null) {
+                        uiState = uiState.copy(
+                            onLogin = true,
+                            loginNavigationModel = with(accessTokenModel) {
+                                LoginNavigationModel(
+                                    isAdmin = isAdmin,
+                                    isTurnComplete = turn?.isComplete == true,
+                                    requiresPreOperational = preoperational?.status == true,
+                                    preOperationRole = OperationRole.getRoleByName(role),
+                                    requiresDeviceAuth = code.isEmpty()
+                                )
+                            }
+                        )
+                    } else {
+                        uiState = uiState.copy(
+                            warning = accessTokenModel.warning.mapToUi(),
+                            loginNavigationModel = with(accessTokenModel) {
+                                LoginNavigationModel(
+                                    isWarning = true,
+                                    isAdmin = isAdmin,
+                                    isTurnComplete = turn?.isComplete == true,
+                                    requiresPreOperational = preoperational?.status == true,
+                                    preOperationRole = OperationRole.getRoleByName(role),
+                                    requiresDeviceAuth = code.isEmpty()
+                                )
+                            },
+                            isLoading = false
+                        )
+                    }
                 }
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
@@ -148,6 +165,12 @@ class LoginViewModel @Inject constructor(
     fun handleShownError() {
         uiState = uiState.copy(
             errorModel = null
+        )
+    }
+
+    fun handleShownWarning() {
+        uiState = uiState.copy(
+            warning = null
         )
     }
 }

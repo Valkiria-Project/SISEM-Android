@@ -27,4 +27,8 @@ class AuthCacheDataSource @Inject constructor(
     suspend fun deleteAccessToken() {
         accessTokenDao.deleteAccessToken()
     }
+
+    @CheckResult
+    suspend fun deleteAccessTokenByUsername(username: String) =
+        accessTokenDao.deleteAccessTokenByUsername(username = username)
 }

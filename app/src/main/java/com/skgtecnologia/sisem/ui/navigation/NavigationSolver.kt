@@ -35,6 +35,8 @@ private fun loginToNextStep(
     navController: NavHostController,
     model: LoginNavigationModel
 ) = when {
+    model.isWarning -> navController.navigate(AuthNavigationRoute.ChangePassword.route)
+
     model.isAdmin && model.requiresDeviceAuth ->
         navController.navigate(AuthNavigationRoute.DeviceAuth.route)
 

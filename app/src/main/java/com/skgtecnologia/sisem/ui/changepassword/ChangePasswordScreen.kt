@@ -11,6 +11,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.changepassword.model.ChangePasswordIdentifier
+import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
@@ -26,7 +27,7 @@ import kotlinx.coroutines.launch
 fun ChangePasswordScreen(
     isTablet: Boolean,
     modifier: Modifier = Modifier,
-    onNavigation: () -> Unit,
+    onNavigation: (loginNavigationModel: NavigationModel?) -> Unit,
     onCancel: () -> Unit
 ) {
     val viewModel = hiltViewModel<ChangePasswordViewModel>()
@@ -35,9 +36,9 @@ fun ChangePasswordScreen(
     LaunchedEffect(uiState) {
         launch {
             when {
-                uiState.onChangePassword -> {
-                    viewModel.onChangePasswordHandled()
-                    onNavigation() // FIXME
+                uiState.onCancel -> {
+                    viewModel.onCancelHandled()
+                    onCancel()
                 }
             }
         }
@@ -81,8 +82,17 @@ fun ChangePasswordScreen(
                     bottom.linkTo(parent.bottom)
                 }
             ) { uiAction ->
-                handleFooterUiAction(uiAction, viewModel, onCancel)
+                handleFooterUiAction(uiAction, viewModel)
             }
+        }
+    }
+
+    uiState.successInfoModel?.let { infoUiModel ->
+        ErrorBannerComponent( // FIXME: with infoBannerComponent
+            uiModel = infoUiModel
+        ) {
+            viewModel.onChangePasswordHandled()
+            onNavigation(uiState.loginNavigationModel)
         }
     }
 
@@ -125,12 +135,11 @@ private fun handleUiAction(
 
 private fun handleFooterUiAction(
     uiAction: UiAction,
-    viewModel: ChangePasswordViewModel,
-    onCancel: () -> Unit
+    viewModel: ChangePasswordViewModel
 ) {
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
-            ChangePasswordIdentifier.CHANGE_PASSWORD_CANCEL_BUTTON.name -> onCancel()
+            ChangePasswordIdentifier.CHANGE_PASSWORD_CANCEL_BUTTON.name -> viewModel.cancel()
             ChangePasswordIdentifier.CHANGE_PASSWORD_SAVE_BUTTON.name -> viewModel.change()
         }
     }

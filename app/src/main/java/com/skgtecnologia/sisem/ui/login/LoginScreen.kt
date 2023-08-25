@@ -99,6 +99,16 @@ fun LoginScreen(
         }
     }
 
+    uiState.warning?.let { errorUiModel ->
+        ErrorBannerComponent(
+            uiModel = errorUiModel
+        ) {
+            viewModel.onLoginHandled()
+            viewModel.handleShownWarning()
+            onNavigation(uiState.loginNavigationModel)
+        }
+    }
+
     uiState.errorModel?.let { errorUiModel ->
         ErrorBannerComponent(
             uiModel = errorUiModel
