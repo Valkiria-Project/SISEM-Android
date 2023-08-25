@@ -79,16 +79,15 @@ private fun getDrawerItems(context: Context) = listOf(
     )
 )
 
-@Suppress("UnusedPrivateMember")
 private fun getLeaderDrawerItems(context: Context) = listOf(
     DrawerMenuItemModel(
         DeviceAuth,
-        "Asociar dispositivo al vehículo", // FIXME: Hardcoded data
-        drawable.ic_incidents // FIXME: update with figma
+        context.getString(R.string.drawer_device_auth),
+        drawable.ic_ambulance
     ),
     DrawerMenuItemModel(
         SignatureAndFingerprint,
-        "Registrar firma y huella", // FIXME: Hardcoded data
-        drawable.ic_incidents // FIXME: update with figma
+        context.getString(R.string.drawer_signature_and_fingerprint),
+        drawable.ic_fingerprint
     )
 )

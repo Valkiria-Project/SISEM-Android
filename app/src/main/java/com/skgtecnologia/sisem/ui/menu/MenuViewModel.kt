@@ -5,8 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
 import com.skgtecnologia.sisem.domain.auth.usecases.Logout
+import com.skgtecnologia.sisem.domain.model.error.mapToUi
+import com.skgtecnologia.sisem.domain.operation.usecases.RetrieveOperationConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -18,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MenuViewModel @Inject constructor(
     private val getAllAccessTokens: GetAllAccessTokens,
+    private val retrieveOperationConfig: RetrieveOperationConfig,
     private val logout: Logout
 ) : ViewModel() {
 
@@ -33,19 +37,14 @@ class MenuViewModel @Inject constructor(
         job = viewModelScope.launch(Dispatchers.IO) {
             getAllAccessTokens.invoke()
                 .onSuccess { accessTokenModel ->
-                    withContext(Dispatchers.Main) {
-                        uiState = uiState.copy(
-                            isLoading = false,
-                            accessTokenModelList = accessTokenModel
-                        )
-                    }
+                    retrieveOperationConfig(accessTokenModel)
                 }
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
 
                     uiState = uiState.copy(
-                        isLoading = false
-                        // errorModel = throwable.mapToUi() // FIXME
+                        isLoading = false,
+                        errorModel = throwable.mapToUi() // FIXME - this shouldn't happen
                     )
                 }
         }
@@ -69,10 +68,36 @@ class MenuViewModel @Inject constructor(
                     Timber.wtf(throwable, "This is a failure")
 
                     uiState = uiState.copy(
-                        isLoading = false
-                        // errorModel = throwable.mapToUi() // FIXME
+                        isLoading = false,
+                        errorModel = throwable.mapToUi()
                     )
                 }
         }
+    }
+
+    private suspend fun retrieveOperationConfig(accessTokenModel: List<AccessTokenModel>) {
+        retrieveOperationConfig.invoke()
+            .onSuccess { operationModel ->
+                withContext(Dispatchers.Main) {
+                    uiState = uiState.copy(
+                        vehicleConfig = operationModel.vehicleConfig,
+                        accessTokenModelList = accessTokenModel,
+                        isLoading = false
+                    )
+                }
+            }.onFailure { throwable ->
+                Timber.wtf(throwable, "This is a failure")
+
+                uiState = uiState.copy(
+                    isLoading = false,
+                    errorModel = throwable.mapToUi() // FIXME - this shouldn't happen
+                )
+            }
+    }
+
+    fun handleShownError() {
+        uiState = uiState.copy(
+            errorModel = null
+        )
     }
 }

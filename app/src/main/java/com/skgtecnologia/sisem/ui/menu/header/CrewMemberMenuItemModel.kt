@@ -19,5 +19,6 @@ fun AccessTokenModel.toCrewMemberItemModel() = CrewMemberMenuItemModel(
 private fun String.toDrawable() = when (this) {
     "MEDICO" -> "ic_doctor"
     "CONDUCTOR" -> "ic_driver"
-    else -> "ic_aux" // FIXME update with leader
+    "AUXILIAR" -> "ic_aux"
+    else -> "ic_lead"
 }

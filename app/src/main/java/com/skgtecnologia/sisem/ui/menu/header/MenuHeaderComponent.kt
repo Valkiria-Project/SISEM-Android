@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.ui.menu.header
 
+import android.graphics.Color.parseColor
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -24,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.domain.authcards.model.VehicleConfigModel
 import com.valkiria.uicomponents.props.TextStyle.BUTTON_1
 import com.valkiria.uicomponents.props.TextStyle.HEADLINE_5
 import com.valkiria.uicomponents.props.toTextStyle
@@ -32,9 +35,12 @@ import com.valkiria.uicomponents.props.toTextStyle
 @Composable
 fun MenuHeaderComponent(
     modifier: Modifier,
+    vehicleConfig: VehicleConfigModel?, // FIXME: nullable ?
     menuItemsPersonal: List<CrewMemberMenuItemModel>,
     onLogout: (CrewMemberMenuItemModel) -> Unit
 ) {
+    val color = vehicleConfig?.statusColor ?: "#FFFFFF"
+
     Column(modifier = modifier) {
         Row {
             Icon(
@@ -44,11 +50,11 @@ fun MenuHeaderComponent(
                     .padding(start = 33.dp, top = 30.dp, bottom = 10.dp)
                     .width(64.096.dp)
                     .height(54.342.dp),
-                tint = Color(android.graphics.Color.parseColor("#EB8FEB")) // FIXME: All
+                tint = Color(parseColor(color))
             )
             Column {
                 Text(
-                    text = "SMSOO",
+                    text = vehicleConfig?.plate.orEmpty(),
                     modifier = Modifier
                         .padding(start = 20.dp, top = 30.dp),
                     style = TextStyle(
@@ -58,16 +64,16 @@ fun MenuHeaderComponent(
                         fontWeight = FontWeight.W700,
                         lineHeight = 28.sp,
                         letterSpacing = (2).sp,
-                        color = Color(android.graphics.Color.parseColor("#EB8FEB"))
+                        color = Color(parseColor(color))
                     )
                 )
                 Text(
-                    text = "5185",
+                    text = vehicleConfig?.statusCode.orEmpty(),
                     modifier = Modifier.padding(
                         start = 20.dp
                     ),
                     style = HEADLINE_5.toTextStyle(),
-                    color = Color(android.graphics.Color.parseColor("#EB8FEB"))
+                    color = Color(parseColor(color))
                 )
             }
         }
@@ -79,7 +85,10 @@ fun MenuHeaderComponent(
         ) {
             val (subRedText, functionalUnitText, baseText) = createRefs()
             Text(
-                "Subred: Norte",
+                text = LocalContext.current.getString(
+                    R.string.drawer_header_zone,
+                    vehicleConfig?.zone.orEmpty()
+                ),
                 modifier = Modifier.constrainAs(subRedText) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
@@ -87,7 +96,10 @@ fun MenuHeaderComponent(
                 style = BUTTON_1.toTextStyle()
             )
             Text(
-                "Base:",
+                text = LocalContext.current.getString(
+                    R.string.drawer_header_provider,
+                    vehicleConfig?.provider.orEmpty()
+                ),
                 modifier = Modifier.constrainAs(functionalUnitText) {
                     top.linkTo(subRedText.bottom)
                     start.linkTo(parent.start)
@@ -95,7 +107,7 @@ fun MenuHeaderComponent(
                 style = BUTTON_1.toTextStyle()
             )
             Text(
-                "Unidad funcional",
+                text = LocalContext.current.getString(R.string.drawer_header_functional_unit),
                 modifier = Modifier
                     .constrainAs(baseText) {
                         end.linkTo(parent.end)

@@ -144,7 +144,7 @@ private fun LazyListScope.handleBodyRows(
             is FingerprintModel -> item(key = model.identifier) {
                 Image(
                     modifier = Modifier.padding(vertical = 20.dp),
-                    painter = painterResource(id = R.drawable.ic_fingerprint),
+                    painter = painterResource(id = R.drawable.ic_login_fingerprint),
                     contentDescription = null
                 )
             }
