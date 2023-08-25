@@ -11,5 +11,6 @@ data class OperationModel(
     val authMethod: String,
     val attentionsType: String,
     val status: Boolean,
-    val vehicleCode: String
+    val vehicleCode: String,
+    val vehicleConfig: VehicleConfigModel?
 )
