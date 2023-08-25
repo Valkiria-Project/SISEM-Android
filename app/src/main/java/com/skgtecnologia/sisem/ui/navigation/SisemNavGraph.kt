@@ -106,7 +106,9 @@ private fun NavGraphBuilder.authGraph(
             ChangePasswordScreen(
                 isTablet = isTablet,
                 modifier = modifier,
-                onNavigation = { navController.navigateUp() }, // FIXME: ???
+                onNavigation = { navigationModel ->
+                    navigateToNextStep(navController, navigationModel)
+                },
                 onCancel = { navController.navigateUp() }
             )
         }

@@ -15,4 +15,6 @@ interface AuthRepository {
     suspend fun logout(username: String): String
 
     suspend fun deleteAccessToken()
+
+    suspend fun deleteAccessTokenByUsername(username: String)
 }
