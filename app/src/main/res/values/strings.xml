@@ -117,6 +117,10 @@
     <string name="image_selection_select_pictures">Seleccionar fotos</string>
 
     <!-- Drawer Menu -->
+    <string name="drawer_header_zone">Subred: %s</string>
+    <string name="drawer_header_provider">Base: %s</string>
+    <string name="drawer_header_functional_unit">Unidad funcional</string>
+
     <string name="drawer_role_doctor">Médico</string>
     <string name="drawer_role_aux">Auxiliar</string>
     <string name="drawer_role_driver">Conductor</string>
@@ -132,8 +136,4 @@
     <string name="drawer_hceud">HCEUD</string>
     <string name="drawer_device_auth">Asociar dispositivo al vehículo</string>
     <string name="drawer_signature_and_fingerprint">Registrar firma y huella</string>
-
-    <string name="drawer_header_zone">Subred: %s</string>
-    <string name="drawer_header_provider">Base: %s</string>
-    <string name="drawer_header_functional_unit">Unidad funcional</string>
 </resources>
