@@ -7,8 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.domain.changepassword.usecases.ChangePassword
 import com.skgtecnologia.sisem.domain.changepassword.usecases.GetChangePasswordScreen
+import com.skgtecnologia.sisem.domain.changepassword.usecases.GetLoginNavigationModel
+import com.skgtecnologia.sisem.domain.changepassword.usecases.OnCancel
 import com.skgtecnologia.sisem.domain.model.error.changePasswordEmptyFields
 import com.skgtecnologia.sisem.domain.model.error.changePasswordNoMatch
+import com.skgtecnologia.sisem.domain.model.error.changePasswordSuccess
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ChangePasswordViewModel @Inject constructor(
     private val getChangePasswordScreen: GetChangePasswordScreen,
+    private val getLoginNavigationModel: GetLoginNavigationModel,
+    private val onCancel: OnCancel,
     private val changePassword: ChangePassword
 ) : ViewModel() {
 
@@ -93,10 +98,7 @@ class ChangePasswordViewModel @Inject constructor(
         job = viewModelScope.launch(Dispatchers.IO) {
             changePassword.invoke(oldPassword = oldPassword, newPassword = newPassword)
                 .onSuccess {
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        onChangePassword = true
-                    )
+                    getLoginNavigationModel()
                 }
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
@@ -109,10 +111,29 @@ class ChangePasswordViewModel @Inject constructor(
         }
     }
 
+    private suspend fun getLoginNavigationModel() {
+        getLoginNavigationModel.invoke()
+            .onSuccess { loginNavigationModel ->
+                uiState = uiState.copy(
+                    successInfoModel = changePasswordSuccess().mapToUi(),
+                    loginNavigationModel = loginNavigationModel,
+                    isLoading = false
+                )
+            }
+            .onFailure { throwable ->
+                Timber.wtf(throwable, "This is a failure")
+
+                uiState = uiState.copy(
+                    isLoading = false,
+                    errorModel = throwable.mapToUi()
+                )
+            }
+    }
+
     fun onChangePasswordHandled() {
         uiState = uiState.copy(
-            onChangePassword = false,
             validateFields = false,
+            successInfoModel = null,
             isLoading = false
         )
 
@@ -130,6 +151,37 @@ class ChangePasswordViewModel @Inject constructor(
     fun handleShownError() {
         uiState = uiState.copy(
             errorModel = null
+        )
+    }
+
+    fun cancel() {
+        uiState = uiState.copy(
+            isLoading = true
+        )
+
+        job?.cancel()
+        job = viewModelScope.launch(Dispatchers.IO) {
+            onCancel()
+                .onSuccess {
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        onCancel = true
+                    )
+                }
+                .onFailure { throwable ->
+                    Timber.wtf(throwable, "This is a failure")
+
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        errorModel = throwable.mapToUi()
+                    )
+                }
+        }
+    }
+
+    fun onCancelHandled() {
+        uiState = uiState.copy(
+            onCancel = false
         )
     }
 }

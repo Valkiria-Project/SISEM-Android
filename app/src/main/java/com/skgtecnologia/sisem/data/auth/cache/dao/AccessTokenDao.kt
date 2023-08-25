@@ -20,4 +20,7 @@ interface AccessTokenDao {
 
     @Query("DELETE FROM access_token")
     fun deleteAccessToken() // FIXME: review this method
+
+    @Query("DELETE FROM access_token WHERE user_name = :username")
+    fun deleteAccessTokenByUsername(username: String)
 }

@@ -13,5 +13,6 @@ data class LoginUiState(
     val validateFields: Boolean = false,
     val loginNavigationModel: LoginNavigationModel? = null,
     val isLoading: Boolean = false,
+    val warning: ErrorUiModel? = null,
     val errorModel: ErrorUiModel? = null
 )

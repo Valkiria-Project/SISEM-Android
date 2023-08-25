@@ -13,3 +13,10 @@ fun changePasswordNoMatch(): ErrorModel = ErrorModel(
     title = "Nueva contraseña",
     description = "Nueva contraseña y confirmar nueva contraseña no coinciden."
 )
+
+// FIXME: Delete this with refactor de banner commponent
+fun changePasswordSuccess(): ErrorModel = ErrorModel(
+    icon = "ic_alert",
+    title = "Nueva contraseña",
+    description = "La contraseña se ha cambiado con éxito."
+)
