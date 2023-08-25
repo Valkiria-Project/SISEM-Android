@@ -9,6 +9,7 @@ import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.valkiria.uicomponents.props.TextFieldStyle
 import com.valkiria.uicomponents.props.TextStyle
 
 @JsonClass(generateAdapter = true)
@@ -19,6 +20,7 @@ data class TextFieldResponse(
     @Json(name = "hint") val label: String?,
     @Json(name = "keyboard_type") val keyboardOptions: KeyboardOptions?,
     @Json(name = "text_style") val textStyle: TextStyle?,
+    @Json(name = "style") val style: TextFieldStyle?,
     @Json(name = "validations") val validations: List<ValidationResponse>?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val margins: Modifier?
@@ -33,6 +35,7 @@ data class TextFieldResponse(
         label = label,
         keyboardOptions = keyboardOptions ?: error("TextField keyboardOptions cannot be null"),
         textStyle = textStyle ?: error("TextField textStyle cannot be null"),
+        style = style ?: error("TextField style cannot be null"),
         validations = validations?.map { it.mapToUi() }
             ?: error("TextField validations cannot be null"),
         arrangement = arrangement ?: Arrangement.Center,

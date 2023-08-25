@@ -9,6 +9,7 @@ data class LabelModel(
     val identifier: String,
     val text: String,
     val textStyle: TextStyle,
+    val textColor: String,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {
@@ -19,6 +20,7 @@ data class LabelModel(
 fun LabelModel.mapToUiModel() = LabelUiModel(
     text = text,
     textStyle = textStyle,
+    textColor = textColor,
     arrangement = arrangement,
     modifier = modifier
 )

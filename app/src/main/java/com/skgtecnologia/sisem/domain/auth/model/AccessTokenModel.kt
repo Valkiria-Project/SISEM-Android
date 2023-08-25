@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.domain.auth.model
 
+import com.skgtecnologia.sisem.domain.model.error.ErrorModel
 import java.time.LocalDateTime
 
 data class AccessTokenModel(
@@ -13,5 +14,6 @@ data class AccessTokenModel(
     val isAdmin: Boolean,
     val nameUser: String,
     val preoperational: PreOperationalModel?,
-    val turn: TurnModel?
+    val turn: TurnModel?,
+    val warning: ErrorModel? = null
 )
