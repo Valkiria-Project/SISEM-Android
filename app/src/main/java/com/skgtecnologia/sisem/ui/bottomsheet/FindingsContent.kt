@@ -13,7 +13,7 @@ import com.skgtecnologia.sisem.domain.model.bricks.ChipSectionModel
 import com.skgtecnologia.sisem.domain.model.header.HeaderModel
 import com.skgtecnologia.sisem.domain.model.header.TextModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
-import com.valkiria.uicomponents.bricks.SuggestionChipView
+import com.valkiria.uicomponents.bricks.chip.SuggestionChipView
 import com.valkiria.uicomponents.props.TextStyle
 
 @Composable

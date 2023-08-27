@@ -17,8 +17,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.bricks.FilledTextFieldView
-import com.valkiria.uicomponents.bricks.OutlinedTextFieldView
+import com.valkiria.uicomponents.bricks.textfield.FilledTextFieldView
+import com.valkiria.uicomponents.bricks.textfield.OutlinedTextFieldView
 import com.valkiria.uicomponents.mocks.getLoginUserTextFieldUiModel
 import com.valkiria.uicomponents.mocks.getPreOpDriverVehicleKMTextFieldUiModel
 import com.valkiria.uicomponents.props.TabletWidth
