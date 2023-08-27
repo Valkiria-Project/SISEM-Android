@@ -18,7 +18,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-private const val BASE_URL = "//http://34.139.125.3:80/sisem-api/"
+private const val BASE_URL = "http://34.139.125.3:80/sisem-api/"
 
 @Module(includes = [CoreNetworkModule::class])
 @InstallIn(SingletonComponent::class)
