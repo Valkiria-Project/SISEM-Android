@@ -8,15 +8,15 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
-private const val BASE_URL = "http://34.69.190.119:8080/sisem-api/v1/"
+private const val BASE_URL = "http://34.139.125.3:80/sisem-api/v1/"
 
 @Module(includes = [CoreNetworkModule::class])
 @InstallIn(SingletonComponent::class)
