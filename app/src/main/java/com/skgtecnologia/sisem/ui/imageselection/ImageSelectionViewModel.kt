@@ -13,6 +13,18 @@ class ImageSelectionViewModel @Inject constructor() : ViewModel() {
     var uiState by mutableStateOf(ImageSelectionUiState())
         private set
 
+    fun goBack() {
+        uiState = uiState.copy(
+            onGoBack = true
+        )
+    }
+
+    fun handleGoBack() {
+        uiState = uiState.copy(
+            onGoBack = false
+        )
+    }
+
     fun takePicture() {
         uiState = uiState.copy(
             onTakePicture = true

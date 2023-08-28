@@ -50,10 +50,14 @@ private fun cameraToNextStep(
 private fun imageSelectionToNextStep(
     navController: NavHostController,
     model: ImageSelectionNavigationModel
-) = when {
-    model.showCamera -> navController.navigate(CommonNavigationRoute.Camera.route)
+) {
+    when {
+        model.showCamera -> navController.navigate(CommonNavigationRoute.Camera.route)
 
-    else -> Timber.d("no-op")
+        model.goBack -> navController.popBackStack()
+
+        else -> Timber.d("no-op")
+    }
 }
 
 private fun loginToNextStep(

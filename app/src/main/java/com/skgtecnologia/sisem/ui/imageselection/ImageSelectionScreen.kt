@@ -58,9 +58,16 @@ fun ImageSelectionScreen(
     )
 
     LaunchedEffect(uiState) {
-        if (uiState.onTakePicture) {
-            viewModel.handleTakePicture()
-            onNavigation(ImageSelectionNavigationModel(showCamera = true))
+        when {
+            uiState.onGoBack -> {
+                viewModel.handleGoBack()
+                onNavigation(ImageSelectionNavigationModel(goBack = true))
+            }
+
+            uiState.onTakePicture -> {
+                viewModel.handleTakePicture()
+                onNavigation(ImageSelectionNavigationModel(showCamera = true))
+            }
         }
     }
 
@@ -73,7 +80,9 @@ fun ImageSelectionScreen(
     ) {
         HeaderSection(
             headerModel = getImageSelectionHeaderModel()
-        )
+        ) {
+            viewModel.goBack()
+        }
 
         Row(
             modifier = Modifier
@@ -133,7 +142,7 @@ fun PhotoGrid(selectedImageUris: List<Uri>) {
                 model = uri,
                 contentDescription = null,
                 modifier = Modifier
-                    .padding(4.dp)
+                    .padding(2.dp)
                     .fillMaxWidth()
                     .height(100.dp),
                 contentScale = ContentScale.Crop
