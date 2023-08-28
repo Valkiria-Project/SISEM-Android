@@ -47,6 +47,7 @@ class MediaStoreUtils(private val context: Context) {
         return cursor
     }
 
+    @Suppress("ReturnCount")
     suspend fun getLatestImageFilename(): String? {
         var filename: String?
         if (mediaStoreCollection == null) return null

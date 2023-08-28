@@ -70,9 +70,7 @@ fun CameraScreen(
 
     if (cameraPermission.isGranted) {
         Timber.d("Show Camera")
-        CameraPreview(viewModel) {
-            onNavigation(it)
-        }
+        CameraPreview(viewModel)
     } else if (cameraPermission.shouldShowRationale) {
         Timber.d("Show rationale") // FIXME: Handle this scenario
     }
@@ -80,8 +78,7 @@ fun CameraScreen(
 
 @Composable
 private fun CameraPreview(
-    viewModel: CameraViewModel,
-    onNavigation: (cameraNavigationModel: NavigationModel?) -> Unit
+    viewModel: CameraViewModel
 ) {
     val context = LocalContext.current
     val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current

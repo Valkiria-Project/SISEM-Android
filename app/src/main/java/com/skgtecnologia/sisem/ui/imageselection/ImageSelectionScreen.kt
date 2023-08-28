@@ -36,6 +36,8 @@ import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.props.TabletWidth
 import com.valkiria.uicomponents.props.TextStyle
 
+const val PHOTO_GRID_ROWS = 3
+
 @Suppress("LongMethod")
 @Composable
 fun ImageSelectionScreen(
@@ -121,7 +123,7 @@ private fun getImageSelectionHeaderModel() = HeaderModel(
 @Composable
 fun PhotoGrid(selectedImageUris: List<Uri>) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
+        columns = GridCells.Fixed(PHOTO_GRID_ROWS),
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 20.dp, top = 20.dp, end = 20.dp)
