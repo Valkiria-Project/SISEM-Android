@@ -9,7 +9,7 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
     data class ButtonAction(override val identifier: String) : GenericUiAction(identifier)
 }
 
-sealed class HeaderUiAction() : UiAction {
+sealed class HeaderUiAction : UiAction {
     data object GoBack : HeaderUiAction()
 }
 
