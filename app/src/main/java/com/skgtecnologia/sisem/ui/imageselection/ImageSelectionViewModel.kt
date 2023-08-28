@@ -9,22 +9,34 @@ import kotlinx.coroutines.Job
 import javax.inject.Inject
 
 @HiltViewModel
-class CameraViewModel @Inject constructor() : ViewModel() {
+class ImageSelectionViewModel @Inject constructor() : ViewModel() {
 
     private var job: Job? = null
 
-    var uiState by mutableStateOf(CameraUiState())
+    var uiState by mutableStateOf(ImageSelectionUiState())
         private set
 
-    fun onPhotoAdded() {
+    fun takePicture() {
         uiState = uiState.copy(
-            onPhotoAdded = true
+            onTakePicture = true
         )
     }
 
-    fun handleOnPhotoAdded() {
+    fun handleTakePicture() {
         uiState = uiState.copy(
-            onPhotoAdded = false
+            onTakePicture = false
+        )
+    }
+
+    fun confirmImages() {
+        uiState = uiState.copy(
+            onImagesConfirmed = true
+        )
+    }
+
+    fun handleConfirmImages() {
+        uiState = uiState.copy(
+            onImagesConfirmed = false
         )
     }
 }

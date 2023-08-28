@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.imageselection
+package com.skgtecnologia.sisem.ui.camera
 
 import android.Manifest
 import android.content.Context
