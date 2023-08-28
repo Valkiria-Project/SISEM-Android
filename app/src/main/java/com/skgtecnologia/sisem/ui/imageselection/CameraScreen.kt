@@ -145,6 +145,7 @@ private fun CameraView(
     }
 }
 
+@Suppress("LongParameterList")
 private fun takePhoto(
     filenameFormat: String,
     imageCapture: ImageCapture,

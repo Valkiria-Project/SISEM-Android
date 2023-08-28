@@ -46,7 +46,9 @@ fun ExampleCameraScreen() {
         rememberPermissionState(Manifest.permission.CAMERA)
 
     LaunchedEffect(key1 = Unit) {
-        if (!cameraPermissionState.status.isGranted && !cameraPermissionState.status.shouldShowRationale) {
+        val cameraPermission = cameraPermissionState.status
+
+        if (!cameraPermission.isGranted && !cameraPermission.shouldShowRationale) {
             cameraPermissionState.launchPermissionRequest()
         }
     }
@@ -66,6 +68,7 @@ fun ExampleCameraScreen() {
 
 const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
 
+@Suppress("UnusedPrivateMember")
 @Composable
 private fun ExampleCameraPreview() {
     val context = LocalContext.current
@@ -78,7 +81,7 @@ private fun ExampleCameraPreview() {
     val contentValues = ContentValues().apply {
         put(MediaStore.MediaColumns.DISPLAY_NAME, name)
         put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
             put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/CameraX-Image")
         }
     }
@@ -117,7 +120,10 @@ private fun ExampleCameraPreview() {
             factory = { context ->
                 PreviewView(context).apply {
                     setBackgroundColor(Color.White.toArgb())
-                    layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                    layoutParams = LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                    )
                     scaleType = PreviewView.ScaleType.FILL_START
                     implementationMode = PreviewView.ImplementationMode.COMPATIBLE
                 }.also { previewView ->
