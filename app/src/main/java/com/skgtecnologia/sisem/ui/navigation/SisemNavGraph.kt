@@ -125,7 +125,9 @@ private fun NavGraphBuilder.commonGraph(
     composable(
         route = CommonNavigationRoute.Camera.route
     ) {
-        CameraScreen()
+        CameraScreen { navigationModel ->
+            navigateToNextStep(navController, navigationModel)
+        }
     }
 
     composable(

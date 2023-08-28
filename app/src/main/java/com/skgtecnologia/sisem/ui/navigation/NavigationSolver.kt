@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.navigation.NavHostController
+import com.skgtecnologia.sisem.ui.navigation.model.CameraNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.ImageSelectionNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
@@ -28,11 +29,23 @@ fun getAuthStartDestination(model: StartupNavigationModel?): String {
 
 fun navigateToNextStep(navController: NavHostController, navigationModel: NavigationModel?) =
     when (navigationModel) {
+        is CameraNavigationModel -> cameraToNextStep(navController, navigationModel)
         is ImageSelectionNavigationModel -> imageSelectionToNextStep(navController, navigationModel)
         is LoginNavigationModel -> loginToNextStep(navController, navigationModel)
         is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
         else -> {}
     }
+
+private fun cameraToNextStep(
+    navController: NavHostController,
+    model: CameraNavigationModel
+) {
+    when {
+        model.photoAdded -> navController.popBackStack() // FIXME: Send flag to retrieve this photo
+
+        else -> navController.popBackStack()
+    }
+}
 
 private fun imageSelectionToNextStep(
     navController: NavHostController,

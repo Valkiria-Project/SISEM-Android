@@ -103,6 +103,7 @@ fun ImageSelectionScreen(
 
         if (takePicture) {
             onNavigation(ImageSelectionNavigationModel(showCamera = true))
+            takePicture = false
         }
     }
 }

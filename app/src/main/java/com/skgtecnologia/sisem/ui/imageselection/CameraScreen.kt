@@ -1,112 +1,157 @@
 package com.skgtecnologia.sisem.ui.imageselection
 
 import android.Manifest
-import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.camera.core.ExperimentalGetImage
+import android.content.Context
+import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageProxy
-import androidx.camera.view.LifecycleCameraController
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.sharp.Lens
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.LifecycleOwner
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.ui.navigation.model.CameraNavigationModel
+import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
+import com.skgtecnologia.sisem.ui.utils.CameraUtils
 import timber.log.Timber
-import java.util.concurrent.Executor
+import java.util.concurrent.Executors
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun CameraScreen() {
+fun CameraScreen(
+    onNavigation: (cameraNavigationModel: NavigationModel?) -> Unit
+) {
+    val viewModel = hiltViewModel<CameraViewModel>()
+    val uiState = viewModel.uiState
+
     val cameraPermissionState: PermissionState =
         rememberPermissionState(Manifest.permission.CAMERA)
 
     val cameraPermission = cameraPermissionState.status
 
-    LaunchedEffect(key1 = Unit) {
+    LaunchedEffect(uiState) {
         if (!cameraPermission.isGranted && !cameraPermission.shouldShowRationale) {
             cameraPermissionState.launchPermissionRequest()
+        }
+
+        if (uiState.onPhotoAdded) {
+            viewModel.handleOnPhotoAdded()
+            onNavigation(CameraNavigationModel(photoAdded = true))
         }
     }
 
     if (cameraPermission.isGranted) {
         Timber.d("Show Camera")
-        CameraPreview()
+        CameraPreview(viewModel) {
+            onNavigation(it)
+        }
     } else if (cameraPermission.shouldShowRationale) {
         Timber.d("Show rationale") // FIXME: Handle this scenario
     }
 }
 
 @Composable
-private fun CameraPreview() {
+private fun CameraPreview(
+    viewModel: CameraViewModel,
+    onNavigation: (cameraNavigationModel: NavigationModel?) -> Unit
+) {
     val context = LocalContext.current
     val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
-    val cameraController: LifecycleCameraController = remember {
-        LifecycleCameraController(context)
+
+    val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+    val preview = Preview.Builder().build()
+    val previewView = remember { PreviewView(context) }
+    val imageCapture: ImageCapture = remember { ImageCapture.Builder().build() }
+    val cameraUtils = CameraUtils(context)
+
+    LaunchedEffect(cameraSelector) {
+        val cameraProvider = context.getCameraProvider()
+        cameraProvider.unbindAll()
+        cameraProvider.bindToLifecycle(
+            lifecycleOwner,
+            cameraSelector,
+            preview,
+            imageCapture
+        )
+
+        preview.setSurfaceProvider(previewView.surfaceProvider)
     }
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                onClick = {
-                    val mainExecutor: Executor = ContextCompat.getMainExecutor(context)
-                    cameraController.takePicture(
-                        mainExecutor,
-                        @ExperimentalGetImage object : ImageCapture.OnImageCapturedCallback() {
-                            override fun onCaptureSuccess(image: ImageProxy) {
-                                super.onCaptureSuccess(image)
-                                image.close()
-                            }
-                        }
-                    )
-                }
-            ) {
-                Text(text = stringResource(id = R.string.image_selection_take_picture))
-            }
-        }
-    ) { innerPadding: PaddingValues ->
-        AndroidView(
+    Box(contentAlignment = Alignment.BottomCenter, modifier = Modifier.fillMaxSize()) {
+        AndroidView({ previewView }, modifier = Modifier.fillMaxSize())
+
+        IconButton(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
-            factory = { context ->
-                PreviewView(context).apply {
-                    setBackgroundColor(Color.White.toArgb())
-                    layoutParams = LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT
-                    )
-                    scaleType = PreviewView.ScaleType.FILL_START
-                    implementationMode = PreviewView.ImplementationMode.COMPATIBLE
-                }.also { previewView ->
-                    previewView.controller = cameraController
-                    cameraController.bindToLifecycle(lifecycleOwner)
-                }
+                .padding(bottom = 20.dp)
+                .size(92.dp),
+            onClick = {
+                imageCapture.takePicture(
+                    cameraUtils.getOutputOptions(),
+                    Executors.newSingleThreadExecutor(),
+                    object : ImageCapture.OnImageSavedCallback {
+                        override fun onError(exc: ImageCaptureException) {
+                            Timber.e("Photo capture failed: ${exc.message}")
+                        }
+
+                        override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+                            val savedUri = output.savedUri
+                            Timber.d("Photo capture succeeded: $savedUri")
+
+                            // FIXME: Add this
+                            viewModel.onPhotoAdded()
+//                          setGalleryThumbnail(savedUri.toString())
+                        }
+                    }
+                )
             },
-            onRelease = {
-                cameraController.unbind()
+            content = {
+                Icon(
+                    imageVector = Icons.Sharp.Lens,
+                    contentDescription = stringResource(id = R.string.image_selection_take_picture),
+                    tint = Color.White,
+                    modifier = Modifier
+                        .size(92.dp)
+                        .padding(1.dp)
+                        .border(1.dp, Color.White, CircleShape)
+                )
             }
         )
     }
 }
+
+private suspend fun Context.getCameraProvider(): ProcessCameraProvider =
+    suspendCoroutine { continuation ->
+        ProcessCameraProvider.getInstance(this).also { cameraProvider ->
+            cameraProvider.addListener({
+                continuation.resume(cameraProvider.get())
+            }, ContextCompat.getMainExecutor(this))
+        }
+    }
