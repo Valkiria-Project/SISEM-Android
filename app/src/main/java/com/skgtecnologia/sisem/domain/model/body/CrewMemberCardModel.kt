@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.domain.model.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
+import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.model.bricks.ChipSectionModel
 import com.skgtecnologia.sisem.domain.model.bricks.PillModel
 import com.skgtecnologia.sisem.domain.model.bricks.ReportsDetailModel
@@ -27,7 +28,7 @@ data class CrewMemberCardModel(
 fun CrewMemberCardModel.mapToUiModel() = CrewMemberCardUiModel(
     identifier = identifier,
     icon = icon,
-    titleText = title.text,
+    titleText = OperationRole.getRoleByName(title.text)?.humanizedName ?: title.text,
     titleTextStyle = title.textStyle,
     pillText = pill.title.text,
     pillTextStyle = pill.title.textStyle,
