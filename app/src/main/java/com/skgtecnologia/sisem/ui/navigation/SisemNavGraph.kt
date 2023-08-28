@@ -7,9 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.skgtecnologia.sisem.ui.authcards.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
@@ -20,6 +22,7 @@ import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.news.NewsScreen
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
+import com.skgtecnologia.sisem.ui.recordnews.RecordNewsScreen
 
 @Composable
 fun SisemNavGraph(
@@ -137,17 +140,25 @@ private fun NavGraphBuilder.commonGraph(
         NewsScreen(
             isTablet = isTablet,
             modifier = modifier,
-            onNavigation = {
-                navController.navigate(CommonNavigationRoute.RecordNewsScreen.route)
+            onNavigation = { role ->
+                navController.navigate("${CommonNavigationRoute.RecordNewsScreen.route}/$role")
             },
             onCancel = { navController.navigateUp() }
         )
     }
 
     composable(
-        route = CommonNavigationRoute.RecordNewsScreen.route
-    ) {
-        // FIXME: Finish this work
+        route = "${CommonNavigationRoute.RecordNewsScreen.route}/{${NavigationArgument.ROLE}}",
+        arguments = listOf(navArgument(NavigationArgument.ROLE) { type = NavType.StringType })
+    ) { backStackEntry ->
+        RecordNewsScreen(
+            isTablet = isTablet,
+            role = backStackEntry.arguments?.getString(NavigationArgument.ROLE).orEmpty(),
+            onNavigation = {
+                // FIXME: Finish this work
+            },
+            onCancel = { navController.navigateUp() }
+        )
     }
 }
 

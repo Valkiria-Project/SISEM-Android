@@ -37,6 +37,7 @@ import com.skgtecnologia.sisem.domain.model.body.mapToHeaderModel
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
 import com.skgtecnologia.sisem.domain.news.model.NewsIdentifier
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
+import com.skgtecnologia.sisem.domain.recordnews.model.RecordNewsIdentifier
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.ConfirmPasswordInput
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.NewPasswordInput
@@ -51,6 +52,7 @@ import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.NewsUiAction
 import com.valkiria.uicomponents.action.PreOperationalUiAction
 import com.valkiria.uicomponents.action.PreOperationalUiAction.DriverVehicleKMInput
+import com.valkiria.uicomponents.action.RecordNewsUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
@@ -410,6 +412,32 @@ private fun HandleTextFieldRows(
             onAction(
                 OldPasswordInput(
                     updatedValue = updatedValue
+                )
+            )
+        }
+
+        RecordNewsIdentifier.ADD_REPORT_ENTRY_TOPIC.name -> TextFieldComponent(
+            uiModel = model.mapToUiModel(),
+            isTablet = isTablet,
+            validateFields = validateFields
+        ) { updatedValue, _ ->
+            onAction(
+                RecordNewsUiAction.TopicInput(
+                    updatedValue = updatedValue,
+                    fieldValidated = validateFields
+                )
+            )
+        }
+
+        RecordNewsIdentifier.ADD_REPORT_ENTRY_DESCRIPTION.name -> TextFieldComponent(
+            uiModel = model.mapToUiModel(),
+            isTablet = isTablet,
+            validateFields = validateFields
+        ) { updatedValue, _ ->
+            onAction(
+                RecordNewsUiAction.DescriptionInput(
+                    updatedValue = updatedValue,
+                    fieldValidated = validateFields
                 )
             )
         }

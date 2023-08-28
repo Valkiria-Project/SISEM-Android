@@ -70,3 +70,15 @@ sealed class ChangePasswordUiAction : UiAction {
 sealed class NewsUiAction : UiAction {
     data class NewsStepOneOnChipClick(val text: String) : NewsUiAction()
 }
+
+sealed class RecordNewsUiAction: UiAction {
+    data class TopicInput(
+        val updatedValue: String,
+        val fieldValidated: Boolean
+    ) : RecordNewsUiAction()
+
+    data class DescriptionInput(
+        val updatedValue: String,
+        val fieldValidated: Boolean
+    ) : RecordNewsUiAction()
+}
