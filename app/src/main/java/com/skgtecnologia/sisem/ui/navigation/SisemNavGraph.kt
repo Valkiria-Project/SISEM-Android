@@ -18,6 +18,7 @@ import com.skgtecnologia.sisem.ui.imageselection.ImageSelectionScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
+import com.skgtecnologia.sisem.ui.news.NewsScreen
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
 
 @Composable
@@ -129,6 +130,25 @@ private fun NavGraphBuilder.commonGraph(
             modifier = modifier
         )
     }
+
+    composable(
+        route = CommonNavigationRoute.NewsScreen.route
+    ) {
+        NewsScreen(
+            isTablet = isTablet,
+            modifier = modifier,
+            onNavigation = {
+                navController.navigate(CommonNavigationRoute.RecordNewsScreen.route)
+            },
+            onCancel = { navController.navigateUp() }
+        )
+    }
+
+    composable(
+        route = CommonNavigationRoute.RecordNewsScreen.route
+    ) {
+        // FIXME: Finish this work
+    }
 }
 
 @Suppress("UnusedPrivateMember", "LongMethod")
@@ -191,7 +211,7 @@ private fun NavGraphBuilder.mainGraph(
         composable(
             route = MainNavigationRoute.NewsScreen.route
         ) {
-            // FIXME: Finish this work
+            navController.navigate(CommonNavigationRoute.NewsScreen.route)
         }
 
         composable(

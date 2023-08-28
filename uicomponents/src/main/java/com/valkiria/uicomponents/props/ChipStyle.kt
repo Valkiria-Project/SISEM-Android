@@ -1,9 +1,12 @@
 package com.valkiria.uicomponents.props
 
+import android.graphics.Color.parseColor
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+
+private const val SECONDARY_CONTAINER_COLOR = "#3D3F42"
 
 enum class ChipStyle {
     PRIMARY,
@@ -19,7 +22,7 @@ fun ChipStyle.toChipColors() = when (this) {
     )
 
     ChipStyle.SECONDARY -> AssistChipDefaults.assistChipColors(
-        containerColor = MaterialTheme.colorScheme.background,
+        containerColor = Color(parseColor(SECONDARY_CONTAINER_COLOR)),
         labelColor = Color.White,
         leadingIconContentColor = Color.White
     )
@@ -32,6 +35,6 @@ fun ChipStyle.toChipBorder() = when (this) {
     )
 
     ChipStyle.SECONDARY -> AssistChipDefaults.assistChipBorder(
-        borderColor = MaterialTheme.colorScheme.background
+        borderColor = Color(parseColor(SECONDARY_CONTAINER_COLOR))
     )
 }

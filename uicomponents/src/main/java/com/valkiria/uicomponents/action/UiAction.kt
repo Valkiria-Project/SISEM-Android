@@ -66,3 +66,7 @@ sealed class ChangePasswordUiAction : UiAction {
         val updatedValue: String
     ) : ChangePasswordUiAction()
 }
+
+sealed class NewsUiAction : UiAction {
+    data class NewsStepOneOnChipClick(val text: String) : NewsUiAction()
+}

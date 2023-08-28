@@ -18,6 +18,8 @@ sealed class AuthNavigationRoute(val route: String) {
 
 sealed class CommonNavigationRoute(val route: String) {
     object ImageSelection : CommonNavigationRoute("image_selection")
+    object NewsScreen : CommonNavigationRoute("news_screen")
+    object RecordNewsScreen : CommonNavigationRoute("record_news_screen")
 }
 
 sealed class MainNavigationRoute(val route: String) {
