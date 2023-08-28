@@ -162,17 +162,21 @@ private fun takePhoto(
 
     val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
 
-    imageCapture.takePicture(outputOptions, executor, object : ImageCapture.OnImageSavedCallback {
-        override fun onError(exception: ImageCaptureException) {
-            Timber.e("Take photo error: $exception")
-            onError(exception)
-        }
+    imageCapture.takePicture(
+        outputOptions,
+        executor,
+        object : ImageCapture.OnImageSavedCallback {
+            override fun onError(exception: ImageCaptureException) {
+                Timber.e("Take photo error: $exception")
+                onError(exception)
+            }
 
-        override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-            val savedUri = Uri.fromFile(photoFile)
-            onImageCaptured(savedUri)
+            override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                val savedUri = Uri.fromFile(photoFile)
+                onImageCaptured(savedUri)
+            }
         }
-    })
+    )
 }
 
 private suspend fun Context.getCameraProvider(): ProcessCameraProvider =

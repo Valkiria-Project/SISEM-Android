@@ -106,7 +106,8 @@ private fun ExampleCameraPreview() {
                                 super.onCaptureSuccess(image)
                                 image.close()
                             }
-                        })
+                        }
+                    )
                 }
             ) {
                 Text(text = stringResource(id = R.string.image_selection_take_picture))
