@@ -8,8 +8,8 @@ sealed class NavigationGraph(val route: String) {
 
 sealed class AuthNavigationRoute(val route: String) {
     object AuthCards : AuthNavigationRoute("auth_cards")
-    object Login : AuthNavigationRoute("login")
     object DeviceAuth : AuthNavigationRoute("device_auth")
+    object Login : AuthNavigationRoute("login")
     object PreOperational : AuthNavigationRoute("pre_operational")
 
     // FIXME: This is not part of AuthGraph
@@ -17,21 +17,22 @@ sealed class AuthNavigationRoute(val route: String) {
 }
 
 sealed class CommonNavigationRoute(val route: String) {
+    object Camera : CommonNavigationRoute("camera")
     object ImageSelection : CommonNavigationRoute("image_selection")
 }
 
 sealed class MainNavigationRoute(val route: String) {
-    object MainScreen : MainNavigationRoute("menu_screen")
+    object CertificationsScreen : MainNavigationRoute("certifications_screen")
+    object DeviceAuth : MainNavigationRoute("device_auth")
+    object DrivingGuideScreen : MainNavigationRoute("driving_guide_screen")
+    object HCEUDCScreen : MainNavigationRoute("hce_udc_screen")
     object IncidentScreen : MainNavigationRoute("incident_screen")
     object InventoryScreen : MainNavigationRoute("inventory_screen")
-    object NotificationsScreen : MainNavigationRoute("notifications_screen")
-    object DrivingGuideScreen : MainNavigationRoute("driving_guide_screen")
-    object CertificationsScreen : MainNavigationRoute("certifications_screen")
+    object MainScreen : MainNavigationRoute("menu_screen")
     object NewsScreen : MainNavigationRoute("news_screen")
-    object ShiftScreen : MainNavigationRoute("shift_screen")
+    object NotificationsScreen : MainNavigationRoute("notifications_screen")
     object PreoperationalMainScreen : MainNavigationRoute("preoperational_menu_screen")
-    object HCEUDCScreen : MainNavigationRoute("hce_udc_screen")
-    object DeviceAuth : MainNavigationRoute("device_auth")
+    object ShiftScreen : MainNavigationRoute("shift_screen")
     object SignatureAndFingerprint : MainNavigationRoute("signature_and_fingerprint")
 }
 

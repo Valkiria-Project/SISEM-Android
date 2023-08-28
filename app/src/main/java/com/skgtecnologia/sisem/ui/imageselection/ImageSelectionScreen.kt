@@ -26,6 +26,8 @@ import coil.compose.AsyncImage
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.header.HeaderModel
 import com.skgtecnologia.sisem.domain.model.header.TextModel
+import com.skgtecnologia.sisem.ui.navigation.model.ImageSelectionNavigationModel
+import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.props.TabletWidth
 import com.valkiria.uicomponents.props.TextStyle
@@ -34,7 +36,8 @@ import com.valkiria.uicomponents.props.TextStyle
 @Composable
 fun ImageSelectionScreen(
     isTablet: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigation: (imageSelectionNavigationModel: NavigationModel?) -> Unit
 ) {
     var takePicture by remember { mutableStateOf(false) }
 
@@ -68,7 +71,8 @@ fun ImageSelectionScreen(
                     Button(
                         onClick = {
                             takePicture = true
-                        }
+                        },
+                        modifier = Modifier.padding(end = 12.dp)
                     ) {
                         Text(text = stringResource(id = R.string.image_selection_take_picture))
                     }
@@ -98,7 +102,7 @@ fun ImageSelectionScreen(
         }
 
         if (takePicture) {
-            CameraScreen()
+            onNavigation(ImageSelectionNavigationModel(showCamera = true))
         }
     }
 }
