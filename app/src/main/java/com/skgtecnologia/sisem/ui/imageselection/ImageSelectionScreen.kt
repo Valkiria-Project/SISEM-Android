@@ -33,6 +33,7 @@ import com.skgtecnologia.sisem.domain.model.header.TextModel
 import com.skgtecnologia.sisem.ui.navigation.model.ImageSelectionNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
+import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.props.TabletWidth
 import com.valkiria.uicomponents.props.TextStyle
 
@@ -80,8 +81,10 @@ fun ImageSelectionScreen(
     ) {
         HeaderSection(
             headerModel = getImageSelectionHeaderModel()
-        ) {
-            viewModel.goBack()
+        ) { uiAction ->
+            if (uiAction is HeaderUiAction.GoBack) {
+                viewModel.goBack()
+            }
         }
 
         Row(
