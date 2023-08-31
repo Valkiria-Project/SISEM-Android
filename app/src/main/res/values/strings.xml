@@ -114,6 +114,7 @@
     <string name="image_selection_title">Imágenes</string>
     <string name="image_selection_subtitle">Tome la foto o selecciónela para adjuntarla al hallazgo.</string>
     <string name="image_selection_left_icon">ic_back</string>
+    <string name="image_selection_take_picture">Tomar foto</string>
     <string name="image_selection_select_pictures">Seleccionar fotos</string>
 
     <!-- Drawer Menu -->

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,15 +17,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.domain.model.header.HeaderModel
+import com.valkiria.uicomponents.action.HeaderUiAction
+import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 
+@Suppress("LongMethod")
 @Composable
 fun HeaderSection(
     headerModel: HeaderModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onAction: (actionInput: UiAction) -> Unit = {}
 ) {
     Column(
         modifier = headerModel.modifier
@@ -41,14 +46,20 @@ fun HeaderSection(
             )
 
             leftIconResourceId?.let {
-                Icon(
-                    painter = painterResource(id = leftIconResourceId),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(end = 12.dp)
-                        .size(42.dp),
-                    tint = MaterialTheme.colorScheme.primary
-                )
+                IconButton(
+                    onClick = {
+                        onAction(HeaderUiAction.GoBack)
+                    }
+                ) {
+                    Icon(
+                        painter = painterResource(id = leftIconResourceId),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(end = 12.dp)
+                            .size(42.dp),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
             }
 
             LabelComponent(

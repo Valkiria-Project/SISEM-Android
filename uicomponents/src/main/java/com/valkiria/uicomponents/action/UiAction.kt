@@ -9,19 +9,23 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
     data class ButtonAction(override val identifier: String) : GenericUiAction(identifier)
 }
 
+sealed class HeaderUiAction : UiAction {
+    data object GoBack : HeaderUiAction()
+}
+
 sealed class FooterUiAction(open val identifier: String) : UiAction {
     data class FooterButton(override val identifier: String) : FooterUiAction(identifier)
 }
 
 sealed class AuthCardsUiAction : UiAction {
-    object AuthCard : AuthCardsUiAction()
+    data object AuthCard : AuthCardsUiAction()
     data class AuthCardNews(val reportDetail: ReportsDetailUiModel) : AuthCardsUiAction()
     data class AuthCardFindings(val chipSectionUiModel: ChipSectionUiModel) : AuthCardsUiAction()
 }
 
 sealed class LoginUiAction : UiAction {
-    object ForgotPassword : LoginUiAction()
-    object Login : LoginUiAction()
+    data object ForgotPassword : LoginUiAction()
+    data object Login : LoginUiAction()
 
     data class LoginPasswordInput(
         val updatedValue: String,
@@ -37,7 +41,7 @@ sealed class LoginUiAction : UiAction {
 }
 
 sealed class DeviceAuthUiAction : UiAction {
-    object DeviceAuth : DeviceAuthUiAction()
+    data object DeviceAuth : DeviceAuthUiAction()
     data class DeviceAuthCodeInput(val updatedValue: String) : DeviceAuthUiAction()
     data class DeviceAuthSwitchState(val state: Boolean) : DeviceAuthUiAction()
 }
