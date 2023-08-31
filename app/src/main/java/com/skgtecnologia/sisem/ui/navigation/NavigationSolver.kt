@@ -104,7 +104,7 @@ private fun preOpToNextStep(
         }
     }
 
-    model.isImageSelection -> navController.navigate(CommonNavigationRoute.ImageSelection.route)
+    model.isNewFinding -> navController.navigate(CommonNavigationRoute.ImageSelection.route)
 
     else -> navController.navigate(AuthNavigationRoute.AuthCards.route)
 }

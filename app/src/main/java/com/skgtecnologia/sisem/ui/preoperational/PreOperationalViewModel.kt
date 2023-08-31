@@ -55,8 +55,7 @@ class PreOperationalViewModel @Inject constructor(
 
     fun showFindingForm() {
         uiState = uiState.copy(
-            // FIXME: onFindingForm = true?
-            preOpNavigationModel = PreOpNavigationModel(isImageSelection = true)
+            preOpNavigationModel = PreOpNavigationModel(isNewFinding = true)
         )
     }
 
@@ -68,7 +67,7 @@ class PreOperationalViewModel @Inject constructor(
 
     fun onFindingFormImages() {
         uiState = uiState.copy(
-            preOpNavigationModel = PreOpNavigationModel(isImageSelection = true)
+            preOpNavigationModel = PreOpNavigationModel(isNewFinding = true)
         )
     }
 

@@ -27,9 +27,7 @@ class CameraUtils(private val context: Context) {
     private fun getContentValues() = ContentValues().apply {
         put(MediaStore.MediaColumns.DISPLAY_NAME, name)
         put(MediaStore.MediaColumns.MIME_TYPE, PHOTO_TYPE)
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-            val appName = context.resources.getString(R.string.app_name)
-            put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/$appName")
-        }
+        val appName = context.resources.getString(R.string.app_name)
+        put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/$appName")
     }
 }

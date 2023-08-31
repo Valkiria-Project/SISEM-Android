@@ -20,25 +20,20 @@ import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
-import android.os.Build
 import android.provider.MediaStore
-import androidx.core.net.toUri
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 
 class MediaStoreUtils(private val context: Context) {
 
-    val mediaStoreCollection: Uri? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+    val mediaStoreCollection: Uri? =
         MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
-    } else {
-        context.getExternalFilesDir(null)?.toUri()
-    }
 
     private suspend fun getMediaStoreImageCursor(mediaStoreCollection: Uri): Cursor? {
         var cursor: Cursor?
         withContext(Dispatchers.IO) {
-            val projection = arrayOf(imageDataColumnIndex, imageIdColumnIndex)
+            val projection = arrayOf(IMAGE_DATA_COLUMN_INDEX, IMAGE_ID_COLUMN_INDEX)
             val sortOrder = "DATE_ADDED DESC"
             cursor = context.contentResolver.query(
                 mediaStoreCollection, projection, null, null, sortOrder
@@ -54,7 +49,7 @@ class MediaStoreUtils(private val context: Context) {
 
         getMediaStoreImageCursor(mediaStoreCollection).use { cursor ->
             if (cursor?.moveToFirst() != true) return null
-            filename = cursor.getString(cursor.getColumnIndexOrThrow(imageDataColumnIndex))
+            filename = cursor.getString(cursor.getColumnIndexOrThrow(IMAGE_DATA_COLUMN_INDEX))
         }
 
         return filename
@@ -65,8 +60,8 @@ class MediaStoreUtils(private val context: Context) {
         if (mediaStoreCollection == null) return files
 
         getMediaStoreImageCursor(mediaStoreCollection).use { cursor ->
-            val imageDataColumn = cursor?.getColumnIndexOrThrow(imageDataColumnIndex)
-            val imageIdColumn = cursor?.getColumnIndexOrThrow(imageIdColumnIndex)
+            val imageDataColumn = cursor?.getColumnIndexOrThrow(IMAGE_DATA_COLUMN_INDEX)
+            val imageIdColumn = cursor?.getColumnIndexOrThrow(IMAGE_ID_COLUMN_INDEX)
 
             if (cursor != null && imageDataColumn != null && imageIdColumn != null) {
                 while (cursor.moveToNext()) {
@@ -86,9 +81,8 @@ class MediaStoreUtils(private val context: Context) {
 
     companion object {
         // Suppress DATA index deprecation warning since we need the file location for the Glide library
-        @Suppress("DEPRECATION")
-        private const val imageDataColumnIndex = MediaStore.Images.Media.DATA
-        private const val imageIdColumnIndex = MediaStore.Images.Media._ID
+        private const val IMAGE_DATA_COLUMN_INDEX = MediaStore.Images.Media.DATA
+        private const val IMAGE_ID_COLUMN_INDEX = MediaStore.Images.Media._ID
     }
 }
 
