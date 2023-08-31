@@ -5,11 +5,10 @@ plugins {
     alias(libs.plugins.daggerHilt) apply false
     alias(libs.plugins.detekt) apply true
     alias(libs.plugins.kotlinAndroid) apply false
-    alias(libs.plugins.kotlinKapt) apply false
     alias(libs.plugins.kotlinKsp) apply false
     alias(libs.plugins.kotlinParcelize) apply false
     alias(libs.plugins.ktlint) apply true
-    alias(libs.plugins.versions) apply true
+    alias(libs.plugins.benManesversions) apply true
 }
 
 apply(from = "buildscripts/githooks.gradle")
@@ -21,7 +20,7 @@ subprojects {
 }
 
 task("clean") {
-    delete(rootProject.buildDir)
+    delete(rootProject.layout.buildDirectory)
 }
 
 afterEvaluate {
