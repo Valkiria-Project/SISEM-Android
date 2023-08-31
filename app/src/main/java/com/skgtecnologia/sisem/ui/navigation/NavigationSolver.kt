@@ -104,6 +104,7 @@ private fun preOpToNextStep(
         }
     }
 
+    // FIXME: This should go first to the Screen with the TextArea, like register novelty
     model.isNewFinding -> navController.navigate(CommonNavigationRoute.ImageSelection.route)
 
     else -> navController.navigate(AuthNavigationRoute.AuthCards.route)
