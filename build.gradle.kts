@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.detekt) apply true
     alias(libs.plugins.kotlinAndroid) apply false
     alias(libs.plugins.kotlinKapt) apply false
+    alias(libs.plugins.kotlinKsp) apply false
     alias(libs.plugins.kotlinParcelize) apply false
     alias(libs.plugins.ktlint) apply true
     alias(libs.plugins.versions) apply true
