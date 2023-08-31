@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.bricks
+package com.valkiria.uicomponents.bricks.chip
 
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape

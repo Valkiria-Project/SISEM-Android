@@ -8,7 +8,7 @@ enum class OperationRole(val humanizedName: String) {
     MEDIC_APH("Médico");
 
     companion object {
-        fun getRoleByName(role: String): OperationRole? = values().firstOrNull {
+        fun getRoleByName(role: String): OperationRole? = entries.firstOrNull {
             it.name == role.uppercase(Locale.ROOT)
         }
     }

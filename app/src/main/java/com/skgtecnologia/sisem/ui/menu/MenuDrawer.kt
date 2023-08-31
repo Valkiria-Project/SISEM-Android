@@ -64,15 +64,19 @@ fun MenuDrawer(
             )
         }
     ) {
-        IconButton(onClick = {
-            coroutineScope.launch { drawerState.open() }
-        }, content = {
+        IconButton(
+            onClick = {
+                coroutineScope.launch {
+                    drawerState.open()
+                }
+            }
+        ) {
             Icon(
                 imageVector = Icons.Filled.Menu,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary
             )
-        })
+        }
     }
 
     uiState.errorModel?.let { errorUiModel ->

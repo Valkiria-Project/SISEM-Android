@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.bricks
+package com.valkiria.uicomponents.bricks.textfield
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

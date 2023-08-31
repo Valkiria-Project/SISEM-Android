@@ -14,6 +14,7 @@ import androidx.navigation.navigation
 import com.skgtecnologia.sisem.ui.authcards.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
+import com.skgtecnologia.sisem.ui.camera.CameraScreen
 import com.skgtecnologia.sisem.ui.imageselection.ImageSelectionScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
@@ -122,12 +123,22 @@ private fun NavGraphBuilder.commonGraph(
     modifier: Modifier
 ) {
     composable(
+        route = CommonNavigationRoute.Camera.route
+    ) {
+        CameraScreen { navigationModel ->
+            navigateToNextStep(navController, navigationModel)
+        }
+    }
+
+    composable(
         route = CommonNavigationRoute.ImageSelection.route
     ) {
         ImageSelectionScreen(
             isTablet = isTablet,
             modifier = modifier
-        )
+        ) { navigationModel ->
+            navigateToNextStep(navController, navigationModel)
+        }
     }
 }
 

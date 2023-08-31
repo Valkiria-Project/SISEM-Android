@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.bricks
+package com.valkiria.uicomponents.bricks.textfield
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions

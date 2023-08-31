@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.bricks.DigitsTextFieldView
+import com.valkiria.uicomponents.bricks.textfield.DigitsTextFieldView
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.mocks.getPreOperationalInventoryCheckUiModel
 import com.valkiria.uicomponents.props.FORTY_PERCENT_WEIGHT
