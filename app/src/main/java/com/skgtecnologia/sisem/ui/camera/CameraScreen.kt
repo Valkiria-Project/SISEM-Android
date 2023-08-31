@@ -127,7 +127,7 @@ private fun CameraPreview(
                             lifecycleOwner.lifecycleScope.launch {
                                 Timber.d(
                                     """"Photo capture succeeded: $savedUri with file name 
-                                    ${mediaStoreUtils.getLatestImageFilename()}""".trimMargin()
+                                        |${mediaStoreUtils.getLatestImageFilename()}""".trimMargin()
                                 )
                             }
 
