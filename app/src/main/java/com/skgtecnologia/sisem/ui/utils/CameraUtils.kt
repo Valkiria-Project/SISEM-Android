@@ -2,7 +2,6 @@ package com.skgtecnologia.sisem.ui.utils
 
 import android.content.ContentValues
 import android.content.Context
-import android.os.Build
 import android.provider.MediaStore
 import androidx.camera.core.ImageCapture
 import com.skgtecnologia.sisem.R

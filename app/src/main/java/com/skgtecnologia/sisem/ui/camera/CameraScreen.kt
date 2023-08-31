@@ -32,6 +32,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -40,6 +41,8 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.ui.navigation.model.CameraNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.utils.CameraUtils
+import com.skgtecnologia.sisem.ui.utils.MediaStoreUtils
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.Executors
 import kotlin.coroutines.resume
@@ -88,6 +91,7 @@ private fun CameraPreview(
     val previewView = remember { PreviewView(context) }
     val imageCapture: ImageCapture = remember { ImageCapture.Builder().build() }
     val cameraUtils = CameraUtils(context)
+    val mediaStoreUtils = MediaStoreUtils(context)
 
     LaunchedEffect(cameraSelector) {
         val cameraProvider = context.getCameraProvider()
@@ -120,7 +124,12 @@ private fun CameraPreview(
 
                         override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                             val savedUri = output.savedUri
-                            Timber.d("Photo capture succeeded: $savedUri")
+                            lifecycleOwner.lifecycleScope.launch {
+                                Timber.d(
+                                    """"Photo capture succeeded: $savedUri with file name 
+                                    ${mediaStoreUtils.getLatestImageFilename()}""".trimMargin()
+                                )
+                            }
 
                             // FIXME: Add this
                             viewModel.onPhotoAdded()
