@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.data.deviceauth.remote
 
 import com.skgtecnologia.sisem.commons.extensions.mapResult
-import com.skgtecnologia.sisem.commons.resources.StringProvider
 import com.skgtecnologia.sisem.data.deviceauth.remote.model.AssociateDeviceBody
 import com.skgtecnologia.sisem.data.deviceauth.remote.model.mapToDomain
 import com.skgtecnologia.sisem.data.remote.extensions.apiCall
@@ -18,15 +17,16 @@ class DeviceAuthRemoteDataSource @Inject constructor(
     private val errorModelFactory: ErrorModelFactory
 ) {
 
-    suspend fun getDeviceAuthScreen(serial: String): Result<ScreenModel> = apiCall(errorModelFactory) {
-        deviceAuthApi.getDeviceAuthScreen(
-            screenBody = ScreenBody(
-                params = Params(serial = serial)
+    suspend fun getDeviceAuthScreen(serial: String): Result<ScreenModel> =
+        apiCall(errorModelFactory) {
+            deviceAuthApi.getDeviceAuthScreen(
+                screenBody = ScreenBody(
+                    params = Params(serial = serial)
+                )
             )
-        )
-    }.mapResult {
-        it.mapToDomain()
-    }
+        }.mapResult {
+            it.mapToDomain()
+        }
 
     suspend fun associateDevice(
         serial: String,
