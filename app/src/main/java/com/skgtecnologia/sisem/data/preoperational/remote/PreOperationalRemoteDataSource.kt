@@ -1,21 +1,24 @@
 package com.skgtecnologia.sisem.data.preoperational.remote
 
 import com.skgtecnologia.sisem.commons.extensions.mapResult
+import com.skgtecnologia.sisem.commons.resources.StringProvider
 import com.skgtecnologia.sisem.data.preoperational.remote.model.SavePreOperationalBody
 import com.skgtecnologia.sisem.data.remote.extensions.apiCall
 import com.skgtecnologia.sisem.data.remote.model.screen.Params
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
 import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
 import com.skgtecnologia.sisem.di.operation.OperationRole
+import com.skgtecnologia.sisem.domain.model.error.ErrorModelFactory
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import javax.inject.Inject
 
 class PreOperationalRemoteDataSource @Inject constructor(
+    private val errorModelFactory: ErrorModelFactory,
     private val preOperationalApi: PreOperationalApi
 ) {
 
     suspend fun getPreOperationalScreen(operationRole: OperationRole): Result<ScreenModel> =
-        apiCall {
+        apiCall(errorModelFactory) {
             when (operationRole) {
                 OperationRole.AUXILIARY_AND_OR_TAPH -> preOperationalApi.getAuxPreOperationalScreen(
                     screenBody = ScreenBody(
@@ -55,7 +58,7 @@ class PreOperationalRemoteDataSource @Inject constructor(
         role: OperationRole,
         idTurn: String,
         extraData: Map<String, String>
-    ): Result<Unit> = apiCall {
+    ): Result<Unit> = apiCall(errorModelFactory) {
         preOperationalApi.sendPreOperational(
             savePreOperationalBody = SavePreOperationalBody(
                 type = role.name,

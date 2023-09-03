@@ -6,14 +6,16 @@ import com.skgtecnologia.sisem.data.remote.extensions.apiCall
 import com.skgtecnologia.sisem.data.remote.model.screen.Params
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
 import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
+import com.skgtecnologia.sisem.domain.model.error.ErrorModelFactory
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import javax.inject.Inject
 
 class ChangePasswordRemoteDataSource @Inject constructor(
-    private val changePasswordApi: ChangePasswordApi
+    private val changePasswordApi: ChangePasswordApi,
+    private val errorModelFactory: ErrorModelFactory
 ) {
 
-    suspend fun getChangePasswordScreen(): Result<ScreenModel> = apiCall {
+    suspend fun getChangePasswordScreen(): Result<ScreenModel> = apiCall(errorModelFactory) {
         changePasswordApi.getChangePasswordScreen(screenBody = ScreenBody(params = Params()))
     }.mapResult {
         it.mapToDomain()
@@ -22,7 +24,7 @@ class ChangePasswordRemoteDataSource @Inject constructor(
     suspend fun changePassword(
         oldPassword: String,
         newPassword: String
-    ): Result<String> = apiCall {
+    ): Result<String> = apiCall(errorModelFactory) {
         changePasswordApi.changePassword(
             ChangePasswordBody(
                 oldPassword = oldPassword,
