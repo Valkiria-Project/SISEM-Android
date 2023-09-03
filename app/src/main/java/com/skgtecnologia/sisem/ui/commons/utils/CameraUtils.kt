@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.utils
+package com.skgtecnologia.sisem.ui.commons.utils
 
 import android.content.ContentValues
 import android.content.Context

@@ -13,10 +13,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.skgtecnologia.sisem.ui.authcards.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
+import com.skgtecnologia.sisem.ui.commons.extensions.sharedViewModel
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
-import com.skgtecnologia.sisem.ui.camera.CameraScreen
-import com.skgtecnologia.sisem.ui.imageselection.ImageSelectionScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
+import com.skgtecnologia.sisem.ui.media.CameraScreen
+import com.skgtecnologia.sisem.ui.media.ImageSelectionScreen
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
@@ -37,8 +38,8 @@ fun SisemNavGraph(
             startDestination = getAppStartDestination(navigationModel)
         ) {
             authGraph(navController, getAuthStartDestination(navigationModel), isTablet, modifier)
-            commonGraph(navController, isTablet, modifier)
             mainGraph(navController, isTablet, modifier)
+            mediaGraph(navController, isTablet, modifier)
         }
     }
 }
@@ -112,32 +113,6 @@ private fun NavGraphBuilder.authGraph(
                 },
                 onCancel = { navController.navigateUp() }
             )
-        }
-    }
-}
-
-@Suppress("UnusedPrivateMember")
-private fun NavGraphBuilder.commonGraph(
-    navController: NavHostController,
-    isTablet: Boolean,
-    modifier: Modifier
-) {
-    composable(
-        route = CommonNavigationRoute.Camera.route
-    ) {
-        CameraScreen { navigationModel ->
-            navigateToNextStep(navController, navigationModel)
-        }
-    }
-
-    composable(
-        route = CommonNavigationRoute.ImageSelection.route
-    ) {
-        ImageSelectionScreen(
-            isTablet = isTablet,
-            modifier = modifier
-        ) { navigationModel ->
-            navigateToNextStep(navController, navigationModel)
         }
     }
 }
@@ -233,6 +208,40 @@ private fun NavGraphBuilder.mainGraph(
             route = MainNavigationRoute.SignatureAndFingerprint.route
         ) {
             // FIXME: Finish this work
+        }
+    }
+}
+
+@Suppress("UnusedPrivateMember")
+private fun NavGraphBuilder.mediaGraph(
+    navController: NavHostController,
+    isTablet: Boolean,
+    modifier: Modifier
+) {
+    navigation(
+        startDestination = MediaNavigationRoute.ImageSelection.route,
+        route = NavigationGraph.Media.route
+    ) {
+        composable(
+            route = MediaNavigationRoute.ImageSelection.route
+        ) {
+            ImageSelectionScreen(
+                viewModel = it.sharedViewModel(navController = navController),
+                isTablet = isTablet,
+                modifier = modifier
+            ) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = MediaNavigationRoute.Camera.route
+        ) {
+            CameraScreen(
+                viewModel = it.sharedViewModel(navController = navController)
+            ) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
         }
     }
 }
