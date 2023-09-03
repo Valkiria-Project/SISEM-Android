@@ -6,5 +6,5 @@ interface PreOperationalRepository {
 
     suspend fun getPreOperationalScreen(): ScreenModel
 
-    suspend fun sendPreOperational()
+    suspend fun sendPreOperational(extraData: Map<String, String>)
 }

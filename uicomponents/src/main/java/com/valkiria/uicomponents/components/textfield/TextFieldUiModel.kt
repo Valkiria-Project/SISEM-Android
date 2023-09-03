@@ -7,6 +7,7 @@ import com.valkiria.uicomponents.props.TextFieldStyle
 import com.valkiria.uicomponents.props.TextStyle
 
 data class TextFieldUiModel(
+    val identifier: String,
     val icon: String? = null,
     val placeholder: String? = null,
     val label: String? = null,

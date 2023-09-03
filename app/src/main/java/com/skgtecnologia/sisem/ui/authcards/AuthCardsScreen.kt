@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.ui.authcards
 
-import HideKeyboard
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -18,11 +17,10 @@ import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
-import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
-import com.valkiria.uicomponents.components.loader.LoaderComponent
+import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
+import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 
-@Suppress("LongMethod")
 @Composable
 fun AuthCardsScreen(
     isTablet: Boolean,
@@ -32,9 +30,7 @@ fun AuthCardsScreen(
     val viewModel = hiltViewModel<AuthCardsViewModel>()
     val uiState = viewModel.uiState
 
-    val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
-    )
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
 
     ConstraintLayout(
@@ -56,26 +52,21 @@ fun AuthCardsScreen(
         BodySection(
             body = uiState.screenModel?.body,
             isTablet = isTablet,
-            modifier = modifier
-                .constrainAs(body) {
-                    top.linkTo(header.bottom)
-                    bottom.linkTo(parent.bottom)
-                    height = Dimension.fillToConstraints
-                }
+            modifier = modifier.constrainAs(body) {
+                top.linkTo(header.bottom)
+                bottom.linkTo(parent.bottom)
+                height = Dimension.fillToConstraints
+            }
         ) { uiAction ->
             handleUiAction(uiAction, viewModel, onNavigation)
         }
     }
 
     uiState.reportDetail?.let {
-        scope.launch {
-            sheetState.show()
-        }
+        scope.launch { sheetState.show() }
 
         BottomSheetComponent(
-            content = {
-                ReportDetailContent(model = uiState.reportDetail)
-            },
+            content = { ReportDetailContent(model = uiState.reportDetail) },
             sheetState = sheetState,
             scope = scope
         ) {
@@ -84,9 +75,7 @@ fun AuthCardsScreen(
     }
 
     uiState.chipSection?.let {
-        scope.launch {
-            sheetState.show()
-        }
+        scope.launch { sheetState.show() }
 
         BottomSheetComponent(
             content = {
@@ -99,18 +88,11 @@ fun AuthCardsScreen(
         }
     }
 
-    uiState.errorModel?.let { errorUiModel ->
-        ErrorBannerComponent(
-            uiModel = errorUiModel
-        ) {
-            viewModel.handleShownError()
-        }
+    OnErrorHandler(uiState.errorModel) {
+        viewModel.handleShownError()
     }
 
-    if (uiState.isLoading) {
-        HideKeyboard()
-        LoaderComponent(modifier)
-    }
+    OnLoadingHandler(uiState.isLoading, modifier)
 }
 
 fun handleUiAction(
@@ -121,6 +103,7 @@ fun handleUiAction(
     (uiAction as? AuthCardsUiAction)?.let {
         when (uiAction) {
             AuthCardsUiAction.AuthCard -> onNavigation(AuthNavigationRoute.Login)
+
             is AuthCardsUiAction.AuthCardNews ->
                 viewModel.showReportBottomSheet(uiAction.reportDetail.mapToDomain())
 

@@ -32,7 +32,7 @@ fun TextFieldComponent(
     uiModel: TextFieldUiModel,
     isTablet: Boolean = false,
     validateFields: Boolean = false,
-    onAction: (updatedValue: String, fieldValidated: Boolean) -> Unit
+    onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon.orEmpty(), DefType.DRAWABLE
@@ -82,12 +82,12 @@ fun TextFieldComponentPreview() {
     ) {
         TextFieldComponent(
             uiModel = getLoginUserTextFieldUiModel()
-        ) { updatedValue, fieldValidated ->
+        ) { _, updatedValue, fieldValidated ->
             Timber.d("Handle $updatedValue with $fieldValidated")
         }
         TextFieldComponent(
             uiModel = getPreOpDriverVehicleKMTextFieldUiModel()
-        ) { updatedValue, fieldValidated ->
+        ) { _, updatedValue, fieldValidated ->
             Timber.d("Handle $updatedValue with $fieldValidated")
         }
     }

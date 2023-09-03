@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.data.preoperational.remote
 
+import com.skgtecnologia.sisem.data.preoperational.remote.model.SavePreOperationalBody
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenResponse
 import retrofit2.Response
@@ -23,8 +24,8 @@ interface PreOperationalApi {
         @Body screenBody: ScreenBody
     ): Response<ScreenResponse>
 
-    @POST("https://run.mocky.io/v3/e94e0473-9c06-4590-9060-d6b551389542") // BACKEND
+    @POST("/preoperational")
     suspend fun sendPreOperational(
-        @Body screenBody: ScreenBody
+        @Body savePreOperationalBody: SavePreOperationalBody
     ): Response<Unit>
 }

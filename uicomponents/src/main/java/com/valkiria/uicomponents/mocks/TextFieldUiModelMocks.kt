@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package com.valkiria.uicomponents.mocks
 
 import androidx.compose.foundation.layout.Arrangement
@@ -9,9 +11,11 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 import com.valkiria.uicomponents.props.TextStyle
+import kotlin.random.Random
 
 fun getLoginUserTextFieldUiModel(): TextFieldUiModel {
     return TextFieldUiModel(
+        identifier = Random(100).toString(),
         icon = "ic_user",
         placeholder = "Usuario",
         label = "Ingresar usuario",
@@ -37,6 +41,7 @@ fun getLoginUserTextFieldUiModel(): TextFieldUiModel {
 
 fun getPreOpDriverVehicleKMTextFieldUiModel(): TextFieldUiModel {
     return TextFieldUiModel(
+        identifier = Random(100).toString(),
         label = "Kilometraje del vehículo*",
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Number

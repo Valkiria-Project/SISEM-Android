@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.ui.login
 
-import HideKeyboard
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -26,11 +25,11 @@ import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
-import com.valkiria.uicomponents.components.loader.LoaderComponent
+import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
+import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-@Suppress("LongMethod")
 @Composable
 fun LoginScreen(
     isTablet: Boolean,
@@ -40,9 +39,7 @@ fun LoginScreen(
     val viewModel = hiltViewModel<LoginViewModel>()
     val uiState = viewModel.uiState
 
-    val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
-    )
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(uiState) {
@@ -62,9 +59,7 @@ fun LoginScreen(
         val (header, body) = createRefs()
 
         LoginHeaderSection(
-            modifier = modifier.constrainAs(header) {
-                top.linkTo(parent.top)
-            }
+            modifier = modifier.constrainAs(header) { top.linkTo(parent.top) }
         )
 
         BodySection(
@@ -84,14 +79,10 @@ fun LoginScreen(
     }
 
     uiState.onLoginLink?.let { link ->
-        scope.launch {
-            sheetState.show()
-        }
+        scope.launch { sheetState.show() }
 
         BottomSheetComponent(
-            content = {
-                LegalContent(uiModel = link.toLegalContentModel())
-            },
+            content = { LegalContent(uiModel = link.toLegalContentModel()) },
             sheetState = sheetState,
             scope = scope
         ) {
@@ -100,27 +91,18 @@ fun LoginScreen(
     }
 
     uiState.warning?.let { errorUiModel ->
-        ErrorBannerComponent(
-            uiModel = errorUiModel
-        ) {
+        ErrorBannerComponent(uiModel = errorUiModel) {
             viewModel.onLoginHandled()
             viewModel.handleShownWarning()
             onNavigation(uiState.loginNavigationModel)
         }
     }
 
-    uiState.errorModel?.let { errorUiModel ->
-        ErrorBannerComponent(
-            uiModel = errorUiModel
-        ) {
-            viewModel.handleShownError()
-        }
+    OnErrorHandler(uiState.errorModel) {
+        viewModel.handleShownError()
     }
 
-    if (uiState.isLoading) {
-        HideKeyboard()
-        LoaderComponent(modifier)
-    }
+    OnLoadingHandler(uiState.isLoading, modifier)
 }
 
 private fun handleUiAction(

@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.imageselection
+package com.skgtecnologia.sisem.ui.media
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -17,15 +17,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.header.HeaderModel
@@ -42,20 +37,16 @@ const val PHOTO_GRID_ROWS = 3
 @Suppress("LongMethod")
 @Composable
 fun ImageSelectionScreen(
+    viewModel: MediaViewModel,
     isTablet: Boolean,
     modifier: Modifier = Modifier,
     onNavigation: (imageSelectionNavigationModel: NavigationModel?) -> Unit
 ) {
-    val viewModel = hiltViewModel<ImageSelectionViewModel>()
     val uiState = viewModel.uiState
-
-    var selectedImageUris by remember {
-        mutableStateOf<List<Uri>>(emptyList())
-    }
 
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
-        onResult = { uris -> selectedImageUris = uris }
+        onResult = { uris -> viewModel.updateSelectedImages(uris) }
     )
 
     LaunchedEffect(uiState) {
@@ -65,8 +56,8 @@ fun ImageSelectionScreen(
                 onNavigation(ImageSelectionNavigationModel(goBack = true))
             }
 
-            uiState.onTakePicture -> {
-                viewModel.handleTakePicture()
+            uiState.onShowCamera -> {
+                viewModel.handleShowCamera()
                 onNavigation(ImageSelectionNavigationModel(showCamera = true))
             }
         }
@@ -94,7 +85,7 @@ fun ImageSelectionScreen(
         ) {
             Button(
                 onClick = {
-                    viewModel.takePicture()
+                    viewModel.showCamera()
                 },
                 modifier = Modifier.padding(end = 12.dp)
             ) {
@@ -114,7 +105,7 @@ fun ImageSelectionScreen(
             }
         }
 
-        PhotoGrid(selectedImageUris)
+        PhotoGrid(uiState.selectedImageUris)
     }
 }
 

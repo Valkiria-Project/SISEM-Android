@@ -10,17 +10,17 @@ import com.skgtecnologia.sisem.data.auth.cache.model.AccessTokenEntity
 interface AccessTokenDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAccessToken(accessTokenEntity: AccessTokenEntity)
+    suspend fun insertAccessToken(accessTokenEntity: AccessTokenEntity)
 
     @Query("SELECT * FROM access_token order by date_time desc LIMIT 1")
-    fun getAccessToken(): AccessTokenEntity?
+    suspend fun getAccessToken(): AccessTokenEntity?
 
     @Query("SELECT * FROM access_token")
-    fun getAllAccessTokens(): List<AccessTokenEntity>
+    suspend fun getAllAccessTokens(): List<AccessTokenEntity>
 
     @Query("DELETE FROM access_token")
-    fun deleteAccessToken() // FIXME: review this method
+    suspend fun deleteAccessToken() // FIXME: review this method
 
     @Query("DELETE FROM access_token WHERE user_name = :username")
-    fun deleteAccessTokenByUsername(username: String)
+    suspend fun deleteAccessTokenByUsername(username: String)
 }

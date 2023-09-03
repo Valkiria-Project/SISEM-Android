@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.ui.deviceauth
 
-import HideKeyboard
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -14,14 +13,15 @@ import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
-import com.valkiria.uicomponents.action.DeviceAuthUiAction
 import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuth
 import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.FooterUiAction
+import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
-import com.valkiria.uicomponents.components.loader.LoaderComponent
+import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
+import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Suppress("LongMethod")
 @Composable
@@ -87,31 +87,26 @@ fun DeviceAuthScreen(
         }
     }
 
-    uiState.errorModel?.let { errorUiModel ->
-        ErrorBannerComponent(
-            uiModel = errorUiModel
-        ) {
-            viewModel.handleShownError()
-        }
+    OnErrorHandler(uiState.errorModel) {
+        viewModel.handleShownError()
     }
 
-    if (uiState.isLoading) {
-        HideKeyboard()
-        LoaderComponent(modifier)
-    }
+    OnLoadingHandler(uiState.isLoading, modifier)
 }
 
 private fun handleUiAction(
     uiAction: UiAction,
     viewModel: DeviceAuthViewModel
 ) {
-    (uiAction as? DeviceAuthUiAction)?.let {
-        when (uiAction) {
-            DeviceAuth -> viewModel.associateDevice()
-            is DeviceAuthCodeInput -> viewModel.vehicleCode = uiAction.updatedValue
-            is DeviceAuthUiAction.DeviceAuthSwitchState ->
-                viewModel.disassociateDeviceState = uiAction.state
-        }
+    when (uiAction) {
+        DeviceAuth -> viewModel.associateDevice()
+
+        is DeviceAuthCodeInput -> viewModel.vehicleCode = uiAction.updatedValue
+
+        is GenericUiAction.SegmentedSwitchAction ->
+            viewModel.disassociateDeviceState = uiAction.status
+
+        else -> Timber.d("no-op")
     }
 }
 
