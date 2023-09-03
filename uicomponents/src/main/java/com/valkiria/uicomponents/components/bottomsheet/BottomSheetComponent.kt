@@ -50,9 +50,7 @@ fun BottomSheetComponentPreview() {
             .fillMaxSize()
             .background(Color.DarkGray)
     ) {
-        val sheetState = rememberModalBottomSheetState(
-            skipPartiallyExpanded = true
-        )
+        val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
         val scope = rememberCoroutineScope()
 
         LaunchedEffect(sheetState) {

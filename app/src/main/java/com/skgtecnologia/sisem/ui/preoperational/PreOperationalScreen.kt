@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.ui.preoperational
 
-import HideKeyboard
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -16,10 +15,10 @@ import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
-import com.valkiria.uicomponents.action.PreOperationalUiAction
+import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
-import com.valkiria.uicomponents.components.loader.LoaderComponent
+import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
+import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -86,52 +85,39 @@ fun PreOperationalScreen(
         }
     }
 
-    OnError(uiState, viewModel)
-    OnLoading(uiState, modifier)
+    OnErrorHandler(uiState.errorModel) {
+        viewModel.handleShownError()
+    }
+
+    OnLoadingHandler(uiState.isLoading, modifier)
 }
 
 private fun handleBodyAction(
     uiAction: UiAction,
     viewModel: PreOperationalViewModel
 ) {
-    (uiAction as? PreOperationalUiAction)?.let {
-        when (uiAction) {
-            is PreOperationalUiAction.DriverVehicleKMInput -> {
-                // FIXME
-                Timber.d("Handle DriverVehicleKMInput ${uiAction.updatedValue}")
-            }
+    when (uiAction) {
+        is GenericUiAction.ChipOptionAction -> if (uiAction.status) {
+            // FIXME: This must be dynamic
+            viewModel.extraData["DRIVER_TOOLS_COMPLETE"] = true.toString()
+        }
 
-            is PreOperationalUiAction.PreOpSwitchState -> {
-                if (uiAction.status.not()) {
-                    viewModel.showFindingForm()
-                }
+        is GenericUiAction.FindingAction -> {
+            if (uiAction.status.not()) {
+                viewModel.showFindingForm()
             }
         }
-    }
-}
 
-@Composable
-private fun OnError(
-    uiState: PreOperationalUiState,
-    viewModel: PreOperationalViewModel
-) {
-    uiState.errorModel?.let { errorUiModel ->
-        ErrorBannerComponent(
-            uiModel = errorUiModel
-        ) {
-            viewModel.handleShownError()
+        is GenericUiAction.InputAction -> {
+            viewModel.extraData[uiAction.identifier] = uiAction.updatedValue
+            // FIXME: This must be dynamic
+//            viewModel.isValidPassword = uiAction.fieldValidated
         }
-    }
-}
 
-@Composable
-private fun OnLoading(
-    uiState: PreOperationalUiState,
-    modifier: Modifier
-) {
-    if (uiState.isLoading) {
-        HideKeyboard()
-        LoaderComponent(modifier)
+        is GenericUiAction.SegmentedSwitchAction ->
+            viewModel.extraData[uiAction.identifier] = uiAction.status.toString()
+
+        else -> Timber.d("no-op")
     }
 }
 

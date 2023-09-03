@@ -41,9 +41,9 @@ private fun cameraToNextStep(
     model: CameraNavigationModel
 ) {
     when {
-        model.photoAdded -> navController.popBackStack() // FIXME: Send flag to retrieve this photo
+        model.photoTaken -> navController.popBackStack()
 
-        else -> navController.popBackStack()
+        else -> Timber.d("no-op")
     }
 }
 
@@ -52,7 +52,7 @@ private fun imageSelectionToNextStep(
     model: ImageSelectionNavigationModel
 ) {
     when {
-        model.showCamera -> navController.navigate(CommonNavigationRoute.Camera.route)
+        model.showCamera -> navController.navigate(MediaNavigationRoute.Camera.route)
 
         model.goBack -> navController.popBackStack()
 
@@ -105,7 +105,7 @@ private fun preOpToNextStep(
     }
 
     // FIXME: This should go first to the Screen with the TextArea, like register novelty
-    model.isNewFinding -> navController.navigate(CommonNavigationRoute.ImageSelection.route)
+    model.isNewFinding -> navController.navigate(MediaNavigationRoute.ImageSelection.route)
 
     else -> navController.navigate(AuthNavigationRoute.AuthCards.route)
 }

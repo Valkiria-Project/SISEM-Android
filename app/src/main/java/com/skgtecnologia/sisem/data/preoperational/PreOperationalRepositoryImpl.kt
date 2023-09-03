@@ -21,6 +21,15 @@ class PreOperationalRepositoryImpl @Inject constructor(
         return preOperationalRemoteDataSource.getPreOperationalScreen(role).getOrThrow()
     }
 
-    override suspend fun sendPreOperational() =
-        preOperationalRemoteDataSource.sendPreOperational().getOrThrow()
+    override suspend fun sendPreOperational(extraData: Map<String, String>) {
+        preOperationalRemoteDataSource.sendPreOperational(
+            role = checkNotNull(
+                OperationRole.getRoleByName(
+                    authCacheDataSource.retrieveAccessToken()?.role.orEmpty()
+                )
+            ),
+            idTurn = authCacheDataSource.retrieveAccessToken()?.turn?.id?.toString().orEmpty(),
+            extraData = extraData
+        ).getOrThrow()
+    }
 }

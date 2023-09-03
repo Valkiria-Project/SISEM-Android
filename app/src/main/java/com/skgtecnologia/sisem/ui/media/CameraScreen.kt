@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.camera
+package com.skgtecnologia.sisem.ui.media
 
 import android.Manifest
 import android.content.Context
@@ -30,7 +30,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.google.accompanist.permissions.PermissionState
@@ -38,10 +37,10 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.ui.commons.utils.CameraUtils
+import com.skgtecnologia.sisem.ui.commons.utils.MediaStoreUtils
 import com.skgtecnologia.sisem.ui.navigation.model.CameraNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
-import com.skgtecnologia.sisem.ui.utils.CameraUtils
-import com.skgtecnologia.sisem.ui.utils.MediaStoreUtils
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.Executors
@@ -50,9 +49,9 @@ import kotlin.coroutines.suspendCoroutine
 
 @Composable
 fun CameraScreen(
+    viewModel: MediaViewModel,
     onNavigation: (cameraNavigationModel: NavigationModel?) -> Unit
 ) {
-    val viewModel = hiltViewModel<CameraViewModel>()
     val uiState = viewModel.uiState
 
     val cameraPermissionState: PermissionState =
@@ -65,9 +64,9 @@ fun CameraScreen(
             cameraPermissionState.launchPermissionRequest()
         }
 
-        if (uiState.onPhotoAdded) {
-            viewModel.handleOnPhotoAdded()
-            onNavigation(CameraNavigationModel(photoAdded = true))
+        if (uiState.onPhotoTaken) {
+            viewModel.handleOnPhotoTaken()
+            onNavigation(CameraNavigationModel(photoTaken = true))
         }
     }
 
@@ -81,7 +80,7 @@ fun CameraScreen(
 
 @Composable
 private fun CameraPreview(
-    viewModel: CameraViewModel
+    viewModel: MediaViewModel
 ) {
     val context = LocalContext.current
     val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
@@ -127,12 +126,14 @@ private fun CameraPreview(
                             lifecycleOwner.lifecycleScope.launch {
                                 Timber.d(
                                     """"Photo capture succeeded: $savedUri with file name 
-                                    ${mediaStoreUtils.getLatestImageFilename()}""".trimMargin()
+                                        |${mediaStoreUtils.getLatestImageFilename()}""".trimMargin()
                                 )
                             }
 
+                            if (savedUri != null) {
+                                viewModel.onPhotoTaken(savedUri)
+                            }
                             // FIXME: Add this
-                            viewModel.onPhotoAdded()
 //                          setGalleryThumbnail(savedUri.toString())
                         }
                     }

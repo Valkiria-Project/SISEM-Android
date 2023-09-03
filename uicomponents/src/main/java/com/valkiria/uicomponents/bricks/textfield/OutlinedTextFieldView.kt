@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,16 +24,19 @@ import com.valkiria.uicomponents.props.toTextStyle
 @Composable
 fun OutlinedTextFieldView(
     uiModel: TextFieldUiModel,
-    onAction: (updatedValue: String, fieldValidated: Boolean) -> Unit,
+    onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit,
     validateFields: Boolean
 ) {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
+    var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue(""))
+    }
 
     OutlinedTextField(
         value = text,
         onValueChange = { updatedValue ->
             text = updatedValue
             onAction(
+                uiModel.identifier,
                 updatedValue.text,
                 text.toFailedValidation(uiModel.validations, validateFields) == null
             )
@@ -72,7 +75,7 @@ fun OutlinedTextFieldViewPreview() {
     ) {
         OutlinedTextFieldView(
             uiModel = getLoginUserTextFieldUiModel(),
-            onAction = { _, _ -> },
+            onAction = { _, _, _ -> },
             validateFields = true
         )
     }

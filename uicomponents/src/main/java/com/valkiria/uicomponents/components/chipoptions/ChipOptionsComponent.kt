@@ -24,7 +24,7 @@ import timber.log.Timber
 fun ChipOptionsComponent(
     uiModel: ChipOptionsUiModel,
     isTablet: Boolean = false,
-    onAction: (selected: String?, isSelection: Boolean) -> Unit
+    onAction: (id: String, text: String, isSelection: Boolean) -> Unit
 ) {
     Column(
         modifier = uiModel.modifier.fillMaxWidth(),
@@ -45,64 +45,15 @@ fun ChipOptionsComponent(
         ) {
             uiModel.items.forEach { chipOption ->
                 FilterChipView(
+                    id = chipOption.id,
                     text = chipOption.name,
                     textStyle = TextStyle.BUTTON_1,
-                    onAction = { selected, isSelection ->
-                        onAction(selected, isSelection)
+                    onAction = { id, text, isSelection ->
+                        onAction(id, text, isSelection)
                     }
                 )
-
-//            FilterChip(
-//                selected = selected,
-//                onClick = { selected = !selected },
-//                label = { Text(chipText) },
-//                modifier = Modifier.padding(end = 18.dp),
-//            )
             }
         }
-//        Surface(
-//            modifier = Modifier.fillMaxWidth(),
-//            shape = MaterialTheme.shapes.medium.copy(bottomStart = CornerSize(4.dp)),
-//            color = MaterialTheme.colorScheme.secondary
-//        ) {
-//            Column {
-//                Text(
-//                    "Hola",
-//                    modifier = Modifier.padding(12.dp),
-//                    color = MaterialTheme.colorScheme.onBackground
-//                )
-//
-//                if (2 == 1) {
-//                    val iconResourceId = LocalContext.current.getResourceIdByName(
-//                        "ic_comment", DefType.DRAWABLE
-//                    )
-//
-//                    iconResourceId?.let {
-//                        Icon(
-//                            painter = painterResource(id = iconResourceId),
-//                            contentDescription = null,
-//                            modifier = Modifier
-//                                .padding(end = 12.dp, bottom = 12.dp)
-//                                .size(20.dp)
-//                                .align(Alignment.End),
-//                            tint = MaterialTheme.colorScheme.onBackground
-//                        )
-//                    }
-//                } else if (2 > 1) {
-//                    Surface(
-//                        modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
-//                        shape = MaterialTheme.shapes.medium.copy(bottomStart = CornerSize(4.dp)),
-//                        color = MaterialTheme.colorScheme.background
-//                    ) {
-//                        Text(
-//                            "Parce",
-//                            modifier = Modifier.padding(12.dp),
-//                            color = MaterialTheme.colorScheme.onBackground
-//                        )
-//                    }
-//                }
-//            }
-//        }
     }
 }
 
@@ -116,7 +67,7 @@ fun ChipOptionsComponentPreview() {
     ) {
         ChipOptionsComponent(
             uiModel = getPreOperationalChipOptionsUiModel()
-        ) { selected, isSelection ->
+        ) { _, selected, isSelection ->
             Timber.d("Selected $selected and is $isSelection")
         }
     }
