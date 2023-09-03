@@ -16,6 +16,7 @@ import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
+import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.PreOperationalUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
@@ -94,19 +95,19 @@ private fun handleBodyAction(
     uiAction: UiAction,
     viewModel: PreOperationalViewModel
 ) {
-    (uiAction as? PreOperationalUiAction)?.let {
-        when (uiAction) {
-            is PreOperationalUiAction.DriverVehicleKMInput -> {
-                // FIXME
-                Timber.d("Handle DriverVehicleKMInput ${uiAction.updatedValue}")
-            }
+    when (uiAction) {
+        is PreOperationalUiAction.DriverVehicleKMInput -> {
+            // FIXME
+            Timber.d("Handle DriverVehicleKMInput ${uiAction.updatedValue}")
+        }
 
-            is PreOperationalUiAction.PreOpSwitchState -> {
-                if (uiAction.status.not()) {
-                    viewModel.showFindingForm()
-                }
+        is GenericUiAction.FindingAction -> {
+            if (uiAction.status.not()) {
+                viewModel.showFindingForm()
             }
         }
+
+        else -> Timber.d("no-op")
     }
 }
 
