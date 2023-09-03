@@ -102,9 +102,14 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is ChipOptionsModel -> item(key = model.identifier) {
-                ChipOptionsComponent(uiModel = model.mapToUiModel()) { selected, isSelection ->
-                    // FIXME: Finish this stuff, should be saved per interaction
-                    Timber.d("Selected $selected and is $isSelection")
+                ChipOptionsComponent(uiModel = model.mapToUiModel()) { id, text, isSelection ->
+                    onAction(
+                        GenericUiAction.ChipOptionAction(
+                            identifier = id,
+                            text = text,
+                            status = isSelection
+                        )
+                    )
                 }
             }
 

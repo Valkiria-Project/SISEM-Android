@@ -97,6 +97,11 @@ private fun handleBodyAction(
     viewModel: PreOperationalViewModel
 ) {
     when (uiAction) {
+        is GenericUiAction.ChipOptionAction -> if (uiAction.status) {
+            // FIXME: This must be dynamic
+            viewModel.extraData["DRIVER_TOOLS_COMPLETE"] = true.toString()
+        }
+
         is GenericUiAction.FindingAction -> {
             if (uiAction.status.not()) {
                 viewModel.showFindingForm()
@@ -109,9 +114,8 @@ private fun handleBodyAction(
 //            viewModel.isValidPassword = uiAction.fieldValidated
         }
 
-        is GenericUiAction.SegmentedSwitchAction -> {
+        is GenericUiAction.SegmentedSwitchAction ->
             viewModel.extraData[uiAction.identifier] = uiAction.status.toString()
-        }
 
         else -> Timber.d("no-op")
     }

@@ -17,10 +17,11 @@ import com.valkiria.uicomponents.props.toTextStyle
 
 @Composable
 fun FilterChipView(
+    id: String,
     text: String,
     textStyle: TextStyle,
     modifier: Modifier = Modifier,
-    onAction: (selected: String?, isSelection: Boolean) -> Unit
+    onAction: (id: String, text: String, isSelection: Boolean) -> Unit
 ) {
     var selected by remember { mutableStateOf(false) }
 
@@ -28,7 +29,7 @@ fun FilterChipView(
         selected = selected,
         onClick = {
             selected = !selected
-            onAction(text, selected)
+            onAction(id, text, selected)
         },
         label = {
             Text(

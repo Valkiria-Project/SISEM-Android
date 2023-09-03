@@ -24,7 +24,7 @@ import timber.log.Timber
 fun ChipOptionsComponent(
     uiModel: ChipOptionsUiModel,
     isTablet: Boolean = false,
-    onAction: (selected: String?, isSelection: Boolean) -> Unit
+    onAction: (id: String, text: String, isSelection: Boolean) -> Unit
 ) {
     Column(
         modifier = uiModel.modifier.fillMaxWidth(),
@@ -45,10 +45,11 @@ fun ChipOptionsComponent(
         ) {
             uiModel.items.forEach { chipOption ->
                 FilterChipView(
+                    id = chipOption.id,
                     text = chipOption.name,
                     textStyle = TextStyle.BUTTON_1,
-                    onAction = { selected, isSelection ->
-                        onAction(selected, isSelection)
+                    onAction = { id, text, isSelection ->
+                        onAction(id, text, isSelection)
                     }
                 )
             }
@@ -66,7 +67,7 @@ fun ChipOptionsComponentPreview() {
     ) {
         ChipOptionsComponent(
             uiModel = getPreOperationalChipOptionsUiModel()
-        ) { selected, isSelection ->
+        ) { _, selected, isSelection ->
             Timber.d("Selected $selected and is $isSelection")
         }
     }

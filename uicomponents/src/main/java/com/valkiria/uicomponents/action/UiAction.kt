@@ -8,6 +8,12 @@ sealed interface UiAction
 sealed class GenericUiAction(open val identifier: String) : UiAction {
     data class ButtonAction(override val identifier: String) : GenericUiAction(identifier)
 
+    data class ChipOptionAction(
+        override val identifier: String,
+        val text: String,
+        val status: Boolean
+    ) : GenericUiAction(identifier)
+
     data class FindingAction(
         override val identifier: String,
         val status: Boolean
