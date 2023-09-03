@@ -19,7 +19,9 @@ import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
+import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
 import com.valkiria.uicomponents.components.loader.LoaderComponent
+import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 
 @Suppress("LongMethod")
@@ -99,18 +101,11 @@ fun AuthCardsScreen(
         }
     }
 
-    uiState.errorModel?.let { errorUiModel ->
-        ErrorBannerComponent(
-            uiModel = errorUiModel
-        ) {
-            viewModel.handleShownError()
-        }
+    OnErrorHandler(uiState.errorModel) {
+        viewModel.handleShownError()
     }
 
-    if (uiState.isLoading) {
-        HideKeyboard()
-        LoaderComponent(modifier)
-    }
+    OnLoadingHandler(uiState.isLoading, modifier)
 }
 
 fun handleUiAction(

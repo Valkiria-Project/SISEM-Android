@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.ui.preoperational
 
-import HideKeyboard
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -19,8 +18,8 @@ import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.PreOperationalUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
-import com.valkiria.uicomponents.components.loader.LoaderComponent
+import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
+import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -87,8 +86,11 @@ fun PreOperationalScreen(
         }
     }
 
-    OnError(uiState, viewModel)
-    OnLoading(uiState, modifier)
+    OnErrorHandler(uiState.errorModel) {
+        viewModel.handleShownError()
+    }
+
+    OnLoadingHandler(uiState.isLoading, modifier)
 }
 
 private fun handleBodyAction(
@@ -108,31 +110,6 @@ private fun handleBodyAction(
         }
 
         else -> Timber.d("no-op")
-    }
-}
-
-@Composable
-private fun OnError(
-    uiState: PreOperationalUiState,
-    viewModel: PreOperationalViewModel
-) {
-    uiState.errorModel?.let { errorUiModel ->
-        ErrorBannerComponent(
-            uiModel = errorUiModel
-        ) {
-            viewModel.handleShownError()
-        }
-    }
-}
-
-@Composable
-private fun OnLoading(
-    uiState: PreOperationalUiState,
-    modifier: Modifier
-) {
-    if (uiState.isLoading) {
-        HideKeyboard()
-        LoaderComponent(modifier)
     }
 }
 

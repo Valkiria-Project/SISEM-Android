@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.ui.login
 
-import HideKeyboard
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -26,7 +25,8 @@ import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
-import com.valkiria.uicomponents.components.loader.LoaderComponent
+import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
+import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -109,18 +109,11 @@ fun LoginScreen(
         }
     }
 
-    uiState.errorModel?.let { errorUiModel ->
-        ErrorBannerComponent(
-            uiModel = errorUiModel
-        ) {
-            viewModel.handleShownError()
-        }
+    OnErrorHandler(uiState.errorModel) {
+        viewModel.handleShownError()
     }
 
-    if (uiState.isLoading) {
-        HideKeyboard()
-        LoaderComponent(modifier)
-    }
+    OnLoadingHandler(uiState.isLoading, modifier)
 }
 
 private fun handleUiAction(

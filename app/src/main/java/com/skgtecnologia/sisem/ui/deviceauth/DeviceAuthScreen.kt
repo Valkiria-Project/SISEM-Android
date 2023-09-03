@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.ui.deviceauth
 
-import HideKeyboard
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -19,8 +18,8 @@ import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
-import com.valkiria.uicomponents.components.loader.LoaderComponent
+import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
+import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -88,18 +87,11 @@ fun DeviceAuthScreen(
         }
     }
 
-    uiState.errorModel?.let { errorUiModel ->
-        ErrorBannerComponent(
-            uiModel = errorUiModel
-        ) {
-            viewModel.handleShownError()
-        }
+    OnErrorHandler(uiState.errorModel) {
+        viewModel.handleShownError()
     }
 
-    if (uiState.isLoading) {
-        HideKeyboard()
-        LoaderComponent(modifier)
-    }
+    OnLoadingHandler(uiState.isLoading, modifier)
 }
 
 private fun handleUiAction(

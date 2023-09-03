@@ -19,7 +19,9 @@ import com.valkiria.uicomponents.action.ChangePasswordUiAction
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
+import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
 import com.valkiria.uicomponents.components.loader.LoaderComponent
+import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 
 @Suppress("LongMethod")
@@ -96,18 +98,11 @@ fun ChangePasswordScreen(
         }
     }
 
-    uiState.errorModel?.let { errorUiModel ->
-        ErrorBannerComponent(
-            uiModel = errorUiModel
-        ) {
-            viewModel.handleShownError()
-        }
+    OnErrorHandler(uiState.errorModel) {
+        viewModel.handleShownError()
     }
 
-    if (uiState.isLoading) {
-        HideKeyboard()
-        LoaderComponent(modifier)
-    }
+    OnLoadingHandler(uiState.isLoading, modifier)
 }
 
 private fun handleUiAction(
