@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.data.preoperational.remote
 
 import com.skgtecnologia.sisem.commons.extensions.mapResult
+import com.skgtecnologia.sisem.data.preoperational.remote.model.SavePreOperationalBody
 import com.skgtecnologia.sisem.data.remote.extensions.apiCall
 import com.skgtecnologia.sisem.data.remote.model.screen.Params
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
@@ -50,9 +51,20 @@ class PreOperationalRemoteDataSource @Inject constructor(
             it.mapToDomain()
         }
 
-    suspend fun sendPreOperational(): Result<Unit> = apiCall {
+    suspend fun sendPreOperational(
+        role: OperationRole,
+        idTurn: String,
+        extraData: Map<String, String>
+    ): Result<Unit> = apiCall {
         preOperationalApi.sendPreOperational(
-            screenBody = ScreenBody(params = Params(serial = "serial")) // FIXME: Hardcoded data
+            savePreOperationalBody = SavePreOperationalBody(
+                type = role.name,
+                idTurn = idTurn.toInt(),
+                findingValues = mapOf(),
+                inventoryValues = mapOf(),
+                extraData = extraData,
+                novelties = listOf()
+            )
         )
     }
 }

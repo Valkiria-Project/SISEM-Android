@@ -7,12 +7,19 @@ sealed interface UiAction
 
 sealed class GenericUiAction(open val identifier: String) : UiAction {
     data class ButtonAction(override val identifier: String) : GenericUiAction(identifier)
-    data class SegmentedSwitchAction(
+
+    data class FindingAction(
         override val identifier: String,
         val status: Boolean
     ) : GenericUiAction(identifier)
 
-    data class FindingAction(
+    data class InputAction(
+        override val identifier: String,
+        val updatedValue: String,
+        val fieldValidated: Boolean
+    ) : GenericUiAction(identifier)
+
+    data class SegmentedSwitchAction(
         override val identifier: String,
         val status: Boolean
     ) : GenericUiAction(identifier)
@@ -52,13 +59,6 @@ sealed class LoginUiAction : UiAction {
 sealed class DeviceAuthUiAction : UiAction {
     data object DeviceAuth : DeviceAuthUiAction()
     data class DeviceAuthCodeInput(val updatedValue: String) : DeviceAuthUiAction()
-}
-
-sealed class PreOperationalUiAction : UiAction {
-    data class DriverVehicleKMInput(
-        val updatedValue: String,
-        val fieldValidated: Boolean
-    ) : PreOperationalUiAction()
 }
 
 sealed class ChangePasswordUiAction : UiAction {

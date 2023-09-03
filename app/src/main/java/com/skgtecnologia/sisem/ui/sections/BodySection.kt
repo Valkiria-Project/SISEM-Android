@@ -35,7 +35,6 @@ import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.mapToHeaderModel
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
-import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.ConfirmPasswordInput
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.NewPasswordInput
@@ -47,7 +46,6 @@ import com.valkiria.uicomponents.action.LoginUiAction.Login
 import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
 import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
-import com.valkiria.uicomponents.action.PreOperationalUiAction.DriverVehicleKMInput
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
@@ -338,7 +336,7 @@ private fun HandleTextFieldRows(
         DeviceAuthIdentifier.DEVICE_AUTH_CODE.name -> TextFieldComponent(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet
-        ) { updatedValue, _ ->
+        ) { _, updatedValue, _ ->
             onAction(DeviceAuthCodeInput(updatedValue = updatedValue))
         }
 
@@ -346,22 +344,9 @@ private fun HandleTextFieldRows(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet,
             validateFields = validateFields
-        ) { updatedValue, fieldValidated ->
+        ) { _, updatedValue, fieldValidated ->
             onAction(
                 LoginUserInput(
-                    updatedValue = updatedValue,
-                    fieldValidated = fieldValidated
-                )
-            )
-        }
-
-        PreOperationalIdentifier.DRIVER_VEHICLE_KM.name -> TextFieldComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
-            validateFields = validateFields
-        ) { updatedValue, fieldValidated ->
-            onAction(
-                DriverVehicleKMInput(
                     updatedValue = updatedValue,
                     fieldValidated = fieldValidated
                 )
@@ -372,10 +357,22 @@ private fun HandleTextFieldRows(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet,
             validateFields = validateFields
-        ) { updatedValue, _ ->
+        ) { _, updatedValue, _ ->
             onAction(
                 OldPasswordInput(
                     updatedValue = updatedValue
+                )
+            )
+        }
+
+        else -> TextFieldComponent(
+            uiModel = model.mapToUiModel(),
+            isTablet = isTablet,
+            validateFields = validateFields
+        ) { id, updatedValue, fieldValidated ->
+            onAction(
+                GenericUiAction.InputAction(
+                    identifier = id, updatedValue = updatedValue, fieldValidated = fieldValidated
                 )
             )
         }

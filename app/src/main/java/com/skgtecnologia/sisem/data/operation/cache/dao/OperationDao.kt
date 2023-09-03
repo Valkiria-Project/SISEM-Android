@@ -10,8 +10,8 @@ import com.skgtecnologia.sisem.data.operation.cache.model.OperationEntity
 interface OperationDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertConfig(operationEntity: OperationEntity)
+    suspend fun insertConfig(operationEntity: OperationEntity)
 
     @Query("SELECT * FROM operation LIMIT 1")
-    fun getOperation(): OperationEntity?
+    suspend fun getOperation(): OperationEntity?
 }

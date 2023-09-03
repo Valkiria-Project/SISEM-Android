@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.preoperational
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -27,6 +28,8 @@ class PreOperationalViewModel @Inject constructor(
 
     var uiState by mutableStateOf(PreOperationalUiState())
         private set
+
+    var extraData = mutableStateMapOf<String, String>()
 
     init {
         uiState = uiState.copy(isLoading = true)
@@ -82,18 +85,19 @@ class PreOperationalViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            sendPreOperational.invoke().onSuccess {
-                uiState = uiState.copy(
-                    isLoading = false
-                )
-            }.onFailure { throwable ->
-                Timber.wtf(throwable, "This is a failure")
+            sendPreOperational.invoke(extraData.toMap())
+                .onSuccess {
+                    uiState = uiState.copy(
+                        isLoading = false
+                    )
+                }.onFailure { throwable ->
+                    Timber.wtf(throwable, "This is a failure")
 
-                uiState = uiState.copy(
-                    isLoading = false,
-                    errorModel = throwable.mapToUi()
-                )
-            }
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        errorModel = throwable.mapToUi()
+                    )
+                }
         }
     }
 

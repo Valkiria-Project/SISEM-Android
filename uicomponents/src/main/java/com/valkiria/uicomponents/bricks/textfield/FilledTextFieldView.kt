@@ -24,7 +24,7 @@ import com.valkiria.uicomponents.props.toTextStyle
 @Composable
 fun FilledTextFieldView(
     uiModel: TextFieldUiModel,
-    onAction: (updatedValue: String, fieldValidated: Boolean) -> Unit,
+    onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit,
     validateFields: Boolean
 ) {
     var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
@@ -36,6 +36,7 @@ fun FilledTextFieldView(
         onValueChange = { updatedValue ->
             text = updatedValue
             onAction(
+                uiModel.identifier,
                 updatedValue.text,
                 text.toFailedValidation(uiModel.validations, validateFields) == null
             )
@@ -74,7 +75,7 @@ fun FilledTextFieldViewPreview() {
     ) {
         FilledTextFieldView(
             uiModel = getLoginUserTextFieldUiModel(),
-            onAction = { _, _ -> },
+            onAction = { _, _, _ -> },
             validateFields = true
         )
     }

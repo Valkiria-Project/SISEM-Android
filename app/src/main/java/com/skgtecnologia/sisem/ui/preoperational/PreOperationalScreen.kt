@@ -16,7 +16,6 @@ import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.GenericUiAction
-import com.valkiria.uicomponents.action.PreOperationalUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
@@ -98,15 +97,20 @@ private fun handleBodyAction(
     viewModel: PreOperationalViewModel
 ) {
     when (uiAction) {
-        is PreOperationalUiAction.DriverVehicleKMInput -> {
-            // FIXME
-            Timber.d("Handle DriverVehicleKMInput ${uiAction.updatedValue}")
-        }
-
         is GenericUiAction.FindingAction -> {
             if (uiAction.status.not()) {
                 viewModel.showFindingForm()
             }
+        }
+
+        is GenericUiAction.InputAction -> {
+            viewModel.extraData[uiAction.identifier] = uiAction.updatedValue
+            // FIXME: This must be dynamic
+//            viewModel.isValidPassword = uiAction.fieldValidated
+        }
+
+        is GenericUiAction.SegmentedSwitchAction -> {
+            viewModel.extraData[uiAction.identifier] = uiAction.status.toString()
         }
 
         else -> Timber.d("no-op")

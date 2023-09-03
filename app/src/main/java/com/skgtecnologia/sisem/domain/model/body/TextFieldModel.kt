@@ -26,6 +26,7 @@ data class TextFieldModel(
 
 fun TextFieldModel.mapToUiModel(): TextFieldUiModel {
     return TextFieldUiModel(
+        identifier = identifier,
         icon = icon,
         placeholder = placeholder,
         label = label,
