@@ -13,8 +13,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,7 +34,7 @@ fun SegmentedSwitchComponent(
     onAction: (id: String, status: Boolean) -> Unit
 ) {
     val items = uiModel.options.map { it.text }
-    val selectedIndex = rememberSaveable { mutableIntStateOf(0) }
+    var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
 
     Row(
         modifier = uiModel.modifier.fillMaxWidth(),
@@ -45,7 +47,7 @@ fun SegmentedSwitchComponent(
             modifier = Modifier
                 .fillMaxWidth(0.35f)
                 .padding(end = 8.dp),
-            color = if (selectedIndex.intValue == 0) {
+            color = if (selectedIndex == 0) {
                 Color.White
             } else {
                 MaterialTheme.colorScheme.error
@@ -62,18 +64,18 @@ fun SegmentedSwitchComponent(
                             Modifier
                                 .wrapContentSize()
                                 .offset(0.dp, 0.dp)
-                                .zIndex(if (selectedIndex.intValue == index) 1f else 0f)
+                                .zIndex(if (selectedIndex == index) 1f else 0f)
                         }
 
                         else -> {
                             Modifier
                                 .wrapContentSize()
                                 .offset((-1 * index).dp, 0.dp)
-                                .zIndex(if (selectedIndex.intValue == index) 1f else 0f)
+                                .zIndex(if (selectedIndex == index) 1f else 0f)
                         }
                     },
                     onClick = {
-                        selectedIndex.intValue = index
+                        selectedIndex = index
                         onAction(uiModel.identifier, index == 0)
                     },
                     shape = when (index) {
@@ -105,9 +107,9 @@ fun SegmentedSwitchComponent(
                         width = 1.dp,
                         color = Color.White
                     ),
-                    colors = if (selectedIndex.intValue == index) {
+                    colors = if (selectedIndex == index) {
                         ButtonDefaults.outlinedButtonColors(
-                            containerColor = if (selectedIndex.intValue == 0) {
+                            containerColor = if (selectedIndex == 0) {
                                 MaterialTheme.colorScheme.tertiary
                             } else {
                                 MaterialTheme.colorScheme.error
@@ -119,7 +121,7 @@ fun SegmentedSwitchComponent(
                 ) {
                     Text(
                         text = item,
-                        color = if (selectedIndex.intValue == index) {
+                        color = if (selectedIndex == index) {
                             Color.Black
                         } else {
                             Color.White
