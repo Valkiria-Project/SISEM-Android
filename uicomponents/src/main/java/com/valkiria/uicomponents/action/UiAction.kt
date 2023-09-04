@@ -7,6 +7,32 @@ sealed interface UiAction
 
 sealed class GenericUiAction(open val identifier: String) : UiAction {
     data class ButtonAction(override val identifier: String) : GenericUiAction(identifier)
+
+    data class ChipOptionAction(
+        override val identifier: String,
+        val text: String,
+        val status: Boolean
+    ) : GenericUiAction(identifier)
+
+    data class FindingAction(
+        override val identifier: String,
+        val status: Boolean
+    ) : GenericUiAction(identifier)
+
+    data class InputAction(
+        override val identifier: String,
+        val updatedValue: String,
+        val fieldValidated: Boolean
+    ) : GenericUiAction(identifier)
+
+    data class SegmentedSwitchAction(
+        override val identifier: String,
+        val status: Boolean
+    ) : GenericUiAction(identifier)
+}
+
+sealed class HeaderUiAction : UiAction {
+    data object GoBack : HeaderUiAction()
 }
 
 sealed class FooterUiAction(open val identifier: String) : UiAction {
@@ -14,14 +40,14 @@ sealed class FooterUiAction(open val identifier: String) : UiAction {
 }
 
 sealed class AuthCardsUiAction : UiAction {
-    object AuthCard : AuthCardsUiAction()
+    data object AuthCard : AuthCardsUiAction()
     data class AuthCardNews(val reportDetail: ReportsDetailUiModel) : AuthCardsUiAction()
     data class AuthCardFindings(val chipSectionUiModel: ChipSectionUiModel) : AuthCardsUiAction()
 }
 
 sealed class LoginUiAction : UiAction {
-    object ForgotPassword : LoginUiAction()
-    object Login : LoginUiAction()
+    data object ForgotPassword : LoginUiAction()
+    data object Login : LoginUiAction()
 
     data class LoginPasswordInput(
         val updatedValue: String,
@@ -37,18 +63,8 @@ sealed class LoginUiAction : UiAction {
 }
 
 sealed class DeviceAuthUiAction : UiAction {
-    object DeviceAuth : DeviceAuthUiAction()
+    data object DeviceAuth : DeviceAuthUiAction()
     data class DeviceAuthCodeInput(val updatedValue: String) : DeviceAuthUiAction()
-    data class DeviceAuthSwitchState(val state: Boolean) : DeviceAuthUiAction()
-}
-
-sealed class PreOperationalUiAction : UiAction {
-    data class DriverVehicleKMInput(
-        val updatedValue: String,
-        val fieldValidated: Boolean
-    ) : PreOperationalUiAction()
-
-    data class PreOpSwitchState(val id: String, val status: Boolean) : PreOperationalUiAction()
 }
 
 sealed class ChangePasswordUiAction : UiAction {

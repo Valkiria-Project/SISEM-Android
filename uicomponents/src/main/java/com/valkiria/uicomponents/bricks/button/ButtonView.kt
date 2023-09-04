@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.bricks
+package com.valkiria.uicomponents.bricks.button
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button

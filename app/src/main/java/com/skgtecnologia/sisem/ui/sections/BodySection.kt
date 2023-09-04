@@ -42,16 +42,14 @@ import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.ConfirmPasswordInput
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.NewPasswordInput
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.OldPasswordInput
-import com.valkiria.uicomponents.action.DeviceAuthUiAction
 import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
+import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
 import com.valkiria.uicomponents.action.LoginUiAction.Login
 import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
 import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.NewsUiAction
-import com.valkiria.uicomponents.action.PreOperationalUiAction
-import com.valkiria.uicomponents.action.PreOperationalUiAction.DriverVehicleKMInput
 import com.valkiria.uicomponents.action.RecordNewsUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
@@ -109,9 +107,14 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is ChipOptionsModel -> item(key = model.identifier) {
-                ChipOptionsComponent(uiModel = model.mapToUiModel()) { selected, isSelection ->
-                    // FIXME: Finish this stuff, should be saved per interaction
-                    Timber.d("Selected $selected and is $isSelection")
+                ChipOptionsComponent(uiModel = model.mapToUiModel()) { id, text, isSelection ->
+                    onAction(
+                        GenericUiAction.ChipOptionAction(
+                            identifier = id,
+                            text = text,
+                            status = isSelection
+                        )
+                    )
                 }
             }
 
@@ -142,7 +145,12 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is FindingModel -> item(key = model.identifier) {
-                HandleFindingRows(model, isTablet, onAction)
+                FindingComponent(
+                    uiModel = model.mapToUiModel(),
+                    isTablet = isTablet
+                ) { id, status ->
+                    onAction(GenericUiAction.FindingAction(identifier = id, status = status))
+                }
             }
 
             is FingerprintModel -> item(key = model.identifier) {
@@ -168,7 +176,17 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is SegmentedSwitchModel -> item(key = model.identifier) {
-                HandleSegmentedSwitchRows(model, isTablet, onAction)
+                SegmentedSwitchComponent(
+                    uiModel = model.mapToUiModel(),
+                    isTablet = isTablet
+                ) { id, status ->
+                    onAction(
+                        GenericUiAction.SegmentedSwitchAction(
+                            identifier = id,
+                            status = status
+                        )
+                    )
+                }
             }
 
             is PasswordTextFieldModel -> item(key = model.identifier) {
@@ -270,51 +288,6 @@ private fun HandleCrewMemberCardRows(
 }
 
 @Composable
-fun HandleFindingRows(
-    model: FindingModel,
-    isTablet: Boolean,
-    onAction: (actionInput: UiAction) -> Unit
-) {
-    when {
-        model.identifier.contains(PreOperationalIdentifier.PREOP.name) -> {
-            FindingComponent(
-                uiModel = model.mapToUiModel(),
-                isTablet = isTablet
-            ) { id, status ->
-                onAction(PreOperationalUiAction.PreOpSwitchState(id = id, status = status))
-            }
-        }
-    }
-}
-
-@Composable
-fun HandleSegmentedSwitchRows(
-    model: SegmentedSwitchModel,
-    isTablet: Boolean,
-    onAction: (actionInput: UiAction) -> Unit
-) {
-    when (model.identifier) {
-        DeviceAuthIdentifier.DEVICE_AUTH_SWITCH.name -> {
-            SegmentedSwitchComponent(
-                uiModel = model.mapToUiModel(),
-                isTablet = isTablet
-            ) { _, status ->
-                onAction(DeviceAuthUiAction.DeviceAuthSwitchState(state = status))
-            }
-        }
-
-        else -> {
-            SegmentedSwitchComponent(
-                uiModel = model.mapToUiModel(),
-                isTablet = isTablet
-            ) { id, status ->
-                onAction(PreOperationalUiAction.PreOpSwitchState(id = id, status = status))
-            } // FIXME: Talk to Jairry
-        }
-    }
-}
-
-@Composable
 private fun HandlePasswordTextFieldRows(
     model: PasswordTextFieldModel,
     isTablet: Boolean,
@@ -374,7 +347,7 @@ private fun HandleTextFieldRows(
         DeviceAuthIdentifier.DEVICE_AUTH_CODE.name -> TextFieldComponent(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet
-        ) { updatedValue, _ ->
+        ) { _, updatedValue, _ ->
             onAction(DeviceAuthCodeInput(updatedValue = updatedValue))
         }
 
@@ -382,22 +355,9 @@ private fun HandleTextFieldRows(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet,
             validateFields = validateFields
-        ) { updatedValue, fieldValidated ->
+        ) { _, updatedValue, fieldValidated ->
             onAction(
                 LoginUserInput(
-                    updatedValue = updatedValue,
-                    fieldValidated = fieldValidated
-                )
-            )
-        }
-
-        PreOperationalIdentifier.DRIVER_VEHICLE_KM.name -> TextFieldComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
-            validateFields = validateFields
-        ) { updatedValue, fieldValidated ->
-            onAction(
-                DriverVehicleKMInput(
                     updatedValue = updatedValue,
                     fieldValidated = fieldValidated
                 )
@@ -408,7 +368,7 @@ private fun HandleTextFieldRows(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet,
             validateFields = validateFields
-        ) { updatedValue, _ ->
+        ) { _, updatedValue, _ ->
             onAction(
                 OldPasswordInput(
                     updatedValue = updatedValue
@@ -420,7 +380,7 @@ private fun HandleTextFieldRows(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet,
             validateFields = validateFields
-        ) { updatedValue, _ ->
+        ) { _, updatedValue, _ ->
             onAction(
                 RecordNewsUiAction.TopicInput(
                     updatedValue = updatedValue,
@@ -433,11 +393,23 @@ private fun HandleTextFieldRows(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet,
             validateFields = validateFields
-        ) { updatedValue, _ ->
+        ) { _, updatedValue, _ ->
             onAction(
                 RecordNewsUiAction.DescriptionInput(
                     updatedValue = updatedValue,
                     fieldValidated = validateFields
+                )
+            )
+        }
+
+        else -> TextFieldComponent(
+            uiModel = model.mapToUiModel(),
+            isTablet = isTablet,
+            validateFields = validateFields
+        ) { id, updatedValue, fieldValidated ->
+            onAction(
+                GenericUiAction.InputAction(
+                    identifier = id, updatedValue = updatedValue, fieldValidated = fieldValidated
                 )
             )
         }

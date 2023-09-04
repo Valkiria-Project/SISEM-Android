@@ -17,8 +17,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.bricks.FilledTextFieldView
-import com.valkiria.uicomponents.bricks.OutlinedTextFieldView
+import com.valkiria.uicomponents.bricks.textfield.FilledTextFieldView
+import com.valkiria.uicomponents.bricks.textfield.OutlinedTextFieldView
 import com.valkiria.uicomponents.mocks.getLoginUserTextFieldUiModel
 import com.valkiria.uicomponents.mocks.getPreOpDriverVehicleKMTextFieldUiModel
 import com.valkiria.uicomponents.props.TabletWidth
@@ -32,7 +32,7 @@ fun TextFieldComponent(
     uiModel: TextFieldUiModel,
     isTablet: Boolean = false,
     validateFields: Boolean = false,
-    onAction: (updatedValue: String, fieldValidated: Boolean) -> Unit
+    onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon.orEmpty(), DefType.DRAWABLE
@@ -82,12 +82,12 @@ fun TextFieldComponentPreview() {
     ) {
         TextFieldComponent(
             uiModel = getLoginUserTextFieldUiModel()
-        ) { updatedValue, fieldValidated ->
+        ) { _, updatedValue, fieldValidated ->
             Timber.d("Handle $updatedValue with $fieldValidated")
         }
         TextFieldComponent(
             uiModel = getPreOpDriverVehicleKMTextFieldUiModel()
-        ) { updatedValue, fieldValidated ->
+        ) { _, updatedValue, fieldValidated ->
             Timber.d("Handle $updatedValue with $fieldValidated")
         }
     }

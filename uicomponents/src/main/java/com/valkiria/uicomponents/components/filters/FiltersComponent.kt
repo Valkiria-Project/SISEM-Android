@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.bricks.FilterChipView
+import com.valkiria.uicomponents.bricks.chip.FilterChipView
 import com.valkiria.uicomponents.mocks.getPreOperationalFiltersUiModel
 import com.valkiria.uicomponents.props.TextStyle
 import timber.log.Timber
@@ -23,7 +23,7 @@ import timber.log.Timber
 @Composable
 fun FiltersComponent(
     uiModel: FiltersUiModel,
-    onAction: (selected: String?, isSelection: Boolean) -> Unit
+    onAction: (text: String, isSelection: Boolean) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -35,11 +35,12 @@ fun FiltersComponent(
     ) {
         uiModel.options.forEach { chipText ->
             FilterChipView(
+                id = "",
                 text = chipText,
                 textStyle = TextStyle.BUTTON_1,
                 modifier = Modifier.padding(horizontal = 8.dp),
-                onAction = { selected, isSelection ->
-                    onAction(selected, isSelection)
+                onAction = { _, text, isSelection ->
+                    onAction(text, isSelection)
                 }
             )
         }

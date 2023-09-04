@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name" translatable="false">SISEM</string>
 
+    <!-- Error dialog -->
+    <string name="error_connectivity_title">Revise su conexión a Internet</string>
+    <string name="error_forbidden_title">Autorización denegada</string>
+    <string name="error_general_title">Ha ocurrido un error</string>
+    <string name="error_server_title">Error en servidor</string>
+
     <!-- Field validations -->
     <string name="field_empty_validation_message">El campo no debe estar vacío</string>
 
@@ -114,6 +120,7 @@
     <string name="image_selection_title">Imágenes</string>
     <string name="image_selection_subtitle">Tome la foto o selecciónela para adjuntarla al hallazgo.</string>
     <string name="image_selection_left_icon">ic_back</string>
+    <string name="image_selection_take_picture">Tomar foto</string>
     <string name="image_selection_select_pictures">Seleccionar fotos</string>
 
     <!-- Drawer Menu -->

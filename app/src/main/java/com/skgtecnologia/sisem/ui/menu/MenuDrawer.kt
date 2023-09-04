@@ -18,7 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.menu.header.toCrewMemberItemModel
 import com.skgtecnologia.sisem.ui.menu.items.getDrawerMenuItemList
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
-import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
+import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -64,23 +64,23 @@ fun MenuDrawer(
             )
         }
     ) {
-        IconButton(onClick = {
-            coroutineScope.launch { drawerState.open() }
-        }, content = {
+        IconButton(
+            onClick = {
+                coroutineScope.launch {
+                    drawerState.open()
+                }
+            }
+        ) {
             Icon(
                 imageVector = Icons.Filled.Menu,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary
             )
-        })
+        }
     }
 
-    uiState.errorModel?.let { errorUiModel ->
-        ErrorBannerComponent(
-            uiModel = errorUiModel
-        ) {
-            viewModel.handleShownError()
-        }
+    OnErrorHandler(uiState.errorModel) {
+        viewModel.handleShownError()
     }
 
     if (uiState.isLoading) {

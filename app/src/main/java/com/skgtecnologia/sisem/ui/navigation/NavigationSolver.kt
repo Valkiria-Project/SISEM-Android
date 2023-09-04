@@ -1,10 +1,13 @@
 package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.navigation.NavHostController
+import com.skgtecnologia.sisem.ui.navigation.model.CameraNavigationModel
+import com.skgtecnologia.sisem.ui.navigation.model.ImageSelectionNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.PreOpNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
+import timber.log.Timber
 
 fun getAppStartDestination(model: StartupNavigationModel?): String {
     return if (model == null) {
@@ -26,10 +29,36 @@ fun getAuthStartDestination(model: StartupNavigationModel?): String {
 
 fun navigateToNextStep(navController: NavHostController, navigationModel: NavigationModel?) =
     when (navigationModel) {
+        is CameraNavigationModel -> cameraToNextStep(navController, navigationModel)
+        is ImageSelectionNavigationModel -> imageSelectionToNextStep(navController, navigationModel)
         is LoginNavigationModel -> loginToNextStep(navController, navigationModel)
         is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
         else -> {}
     }
+
+private fun cameraToNextStep(
+    navController: NavHostController,
+    model: CameraNavigationModel
+) {
+    when {
+        model.photoTaken -> navController.popBackStack()
+
+        else -> Timber.d("no-op")
+    }
+}
+
+private fun imageSelectionToNextStep(
+    navController: NavHostController,
+    model: ImageSelectionNavigationModel
+) {
+    when {
+        model.showCamera -> navController.navigate(MediaNavigationRoute.Camera.route)
+
+        model.goBack -> navController.popBackStack()
+
+        else -> Timber.d("no-op")
+    }
+}
 
 private fun loginToNextStep(
     navController: NavHostController,
@@ -75,7 +104,8 @@ private fun preOpToNextStep(
         }
     }
 
-    model.isImageSelection -> navController.navigate(CommonNavigationRoute.ImageSelection.route)
+    // FIXME: This should go first to the Screen with the TextArea, like register novelty
+    model.isNewFinding -> navController.navigate(MediaNavigationRoute.ImageSelection.route)
 
     else -> navController.navigate(AuthNavigationRoute.AuthCards.route)
 }
