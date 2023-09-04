@@ -42,6 +42,7 @@ fun SisemNavGraph(
             startDestination = getAppStartDestination(navigationModel)
         ) {
             authGraph(navController, getAuthStartDestination(navigationModel), isTablet, modifier)
+            commonGraph(navController, isTablet, modifier)
             mainGraph(navController, isTablet, modifier)
             mediaGraph(navController, isTablet, modifier)
         }
