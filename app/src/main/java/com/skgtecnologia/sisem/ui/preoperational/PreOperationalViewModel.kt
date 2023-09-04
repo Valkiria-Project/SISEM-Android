@@ -30,7 +30,8 @@ class PreOperationalViewModel @Inject constructor(
         private set
 
     var findings = mutableStateMapOf<String, Boolean>()
-    var extraData = mutableStateMapOf<String, String>()
+    var inventoryValues = mutableStateMapOf<String, Int>()
+    var fieldsValues = mutableStateMapOf<String, String>()
 
     init {
         uiState = uiState.copy(isLoading = true)
@@ -74,19 +75,22 @@ class PreOperationalViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            sendPreOperational.invoke(findings.toMap(), extraData.toMap())
-                .onSuccess {
-                    uiState = uiState.copy(
-                        isLoading = false
-                    )
-                }.onFailure { throwable ->
-                    Timber.wtf(throwable, "This is a failure")
+            sendPreOperational.invoke(
+                findings.toMap(),
+                inventoryValues.toMap(),
+                fieldsValues.toMap()
+            ).onSuccess {
+                uiState = uiState.copy(
+                    isLoading = false
+                )
+            }.onFailure { throwable ->
+                Timber.wtf(throwable, "This is a failure")
 
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        errorModel = throwable.mapToUi()
-                    )
-                }
+                uiState = uiState.copy(
+                    isLoading = false,
+                    errorModel = throwable.mapToUi()
+                )
+            }
         }
     }
 

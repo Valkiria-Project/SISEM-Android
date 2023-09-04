@@ -97,10 +97,8 @@ private fun handleBodyAction(
     viewModel: PreOperationalViewModel
 ) {
     when (uiAction) {
-        is GenericUiAction.ChipOptionAction -> if (uiAction.status) {
-            // FIXME: This must be dynamic
-            viewModel.extraData["DRIVER_TOOLS_COMPLETE"] = true.toString()
-        }
+        is GenericUiAction.ChipOptionAction ->
+            viewModel.findings[uiAction.identifier] = uiAction.status
 
         is GenericUiAction.FindingAction -> {
             viewModel.findings[uiAction.identifier] = uiAction.status
@@ -111,13 +109,10 @@ private fun handleBodyAction(
         }
 
         is GenericUiAction.InputAction -> {
-            viewModel.extraData[uiAction.identifier] = uiAction.updatedValue
+            viewModel.fieldsValues[uiAction.identifier] = uiAction.updatedValue
             // FIXME: This must be dynamic
 //            viewModel.isValidPassword = uiAction.fieldValidated
         }
-
-        is GenericUiAction.SegmentedSwitchAction ->
-            viewModel.extraData[uiAction.identifier] = uiAction.status.toString()
 
         else -> Timber.d("no-op")
     }

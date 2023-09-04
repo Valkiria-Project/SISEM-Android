@@ -57,15 +57,16 @@ class PreOperationalRemoteDataSource @Inject constructor(
         role: OperationRole,
         idTurn: String,
         findings: Map<String, Boolean>,
-        extraData: Map<String, String>
+        inventoryValues: Map<String, Int>,
+        fieldsValues: Map<String, String>
     ): Result<Unit> = apiCall(errorModelFactory) {
         preOperationalApi.sendPreOperational(
             savePreOperationalBody = SavePreOperationalBody(
                 type = role.name,
                 idTurn = idTurn.toInt(),
                 findingValues = findings,
-                inventoryValues = mapOf(),
-                extraData = extraData,
+                inventoryValues = inventoryValues,
+                fieldsValues = fieldsValues,
                 novelties = listOf()
             )
         )

@@ -23,7 +23,8 @@ class PreOperationalRepositoryImpl @Inject constructor(
 
     override suspend fun sendPreOperational(
         findings: Map<String, Boolean>,
-        extraData: Map<String, String>
+        inventoryValues: Map<String, Int>,
+        fieldsValues: Map<String, String>
     ) {
         preOperationalRemoteDataSource.sendPreOperational(
             role = checkNotNull(
@@ -33,7 +34,8 @@ class PreOperationalRepositoryImpl @Inject constructor(
             ),
             idTurn = authCacheDataSource.retrieveAccessToken()?.turn?.id?.toString().orEmpty(),
             findings = findings,
-            extraData = extraData
+            inventoryValues = inventoryValues,
+            fieldsValues = fieldsValues
         ).getOrThrow()
     }
 }
