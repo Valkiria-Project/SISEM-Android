@@ -55,7 +55,7 @@ fun CrewMemberItem(item: CrewMemberMenuItemModel, onClick: () -> Unit) {
                 modifier = Modifier.height(20.dp)
             )
             Text(
-                text = item.specialty,
+                text = item.specialtyAndDocument,
                 textAlign = TextAlign.Start,
                 style = TextStyle.BUTTON_1.toTextStyle(),
                 modifier = Modifier.height(20.dp)
