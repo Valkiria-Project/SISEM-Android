@@ -10,7 +10,10 @@ class SendPreOperational @Inject constructor(
 ) {
 
     @CheckResult
-    suspend operator fun invoke(extraData: Map<String, String>): Result<Unit> = resultOf {
-        preOperationalRepository.sendPreOperational(extraData)
+    suspend operator fun invoke(
+        findings: Map<String, Boolean>,
+        extraData: Map<String, String>
+    ): Result<Unit> = resultOf {
+        preOperationalRepository.sendPreOperational(findings, extraData)
     }
 }

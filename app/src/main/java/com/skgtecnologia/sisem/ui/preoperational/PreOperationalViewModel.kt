@@ -29,6 +29,7 @@ class PreOperationalViewModel @Inject constructor(
     var uiState by mutableStateOf(PreOperationalUiState())
         private set
 
+    var findings = mutableStateMapOf<String, Boolean>()
     var extraData = mutableStateMapOf<String, String>()
 
     init {
@@ -68,24 +69,12 @@ class PreOperationalViewModel @Inject constructor(
         )
     }
 
-    fun onFindingFormImages() {
-        uiState = uiState.copy(
-            preOpNavigationModel = PreOpNavigationModel(isNewFinding = true)
-        )
-    }
-
-    fun onFindingFormImagesHandled() {
-        uiState = uiState.copy(
-            preOpNavigationModel = null
-        )
-    }
-
     fun sendPreOperational() {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            sendPreOperational.invoke(extraData.toMap())
+            sendPreOperational.invoke(findings.toMap(), extraData.toMap())
                 .onSuccess {
                     uiState = uiState.copy(
                         isLoading = false

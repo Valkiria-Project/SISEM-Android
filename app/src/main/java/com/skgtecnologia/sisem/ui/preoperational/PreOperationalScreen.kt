@@ -36,7 +36,7 @@ fun PreOperationalScreen(
         launch {
             when {
                 uiState.preOpNavigationModel != null -> {
-                    viewModel.onFindingFormImagesHandled()
+                    viewModel.handleShownFindingForm()
                     onNavigation(uiState.preOpNavigationModel)
                 }
             }
@@ -103,6 +103,8 @@ private fun handleBodyAction(
         }
 
         is GenericUiAction.FindingAction -> {
+            viewModel.findings[uiAction.identifier] = uiAction.status
+
             if (uiAction.status.not()) {
                 viewModel.showFindingForm()
             }

@@ -56,13 +56,14 @@ class PreOperationalRemoteDataSource @Inject constructor(
     suspend fun sendPreOperational(
         role: OperationRole,
         idTurn: String,
+        findings: Map<String, Boolean>,
         extraData: Map<String, String>
     ): Result<Unit> = apiCall(errorModelFactory) {
         preOperationalApi.sendPreOperational(
             savePreOperationalBody = SavePreOperationalBody(
                 type = role.name,
                 idTurn = idTurn.toInt(),
-                findingValues = mapOf(),
+                findingValues = findings,
                 inventoryValues = mapOf(),
                 extraData = extraData,
                 novelties = listOf()
