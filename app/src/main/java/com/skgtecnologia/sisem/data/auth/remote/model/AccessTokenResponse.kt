@@ -19,7 +19,9 @@ data class AccessTokenResponse(
     @Json(name = "is_admin") val isAdmin: Boolean,
     @Json(name = "user_id") val userId: Int,
     @Json(name = "name_user") val nameUser: String,
-    @Json(name = "warning") val warning: ErrorResponse?
+    @Json(name = "warning") val warning: ErrorResponse?,
+    @Json(name = "doc_type") val docType: String,
+    @Json(name = "document") val document: String
 )
 
 fun AccessTokenResponse.mapToDomain(): AccessTokenModel = AccessTokenModel(
@@ -34,5 +36,7 @@ fun AccessTokenResponse.mapToDomain(): AccessTokenModel = AccessTokenModel(
     isAdmin = isAdmin,
     userId = userId,
     nameUser = nameUser,
-    warning = warning?.mapToDomain()
+    warning = warning?.mapToDomain(),
+    docType = docType,
+    document = document
 )

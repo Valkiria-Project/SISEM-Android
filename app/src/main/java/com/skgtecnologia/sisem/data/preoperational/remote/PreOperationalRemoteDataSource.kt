@@ -48,6 +48,9 @@ class PreOperationalRemoteDataSource @Inject constructor(
                         )
                     ) // FIXME: Hardcoded data
                 )
+
+                OperationRole.LEAD_APH ->
+                    throw IllegalArgumentException("Lead APH role not supported")
             }
         }.mapResult {
             it.mapToDomain()
