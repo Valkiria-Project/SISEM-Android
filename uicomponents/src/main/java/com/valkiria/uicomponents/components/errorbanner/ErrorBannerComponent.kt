@@ -1,5 +1,6 @@
 package com.valkiria.uicomponents.components.errorbanner
 
+import android.graphics.Color.parseColor
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -76,7 +77,7 @@ fun ErrorBannerComponent(
                             modifier = Modifier
                                 .padding(top = 20.dp, end = 16.dp)
                                 .size(42.dp),
-                            tint = MaterialTheme.colorScheme.error
+                            tint = Color(parseColor(uiModel.iconColor))
                         )
                     }
                     Text(

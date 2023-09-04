@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.domain.model.error
 
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.resources.StringProvider
+import com.valkiria.uicomponents.components.errorbanner.DEFAULT_ICON_COLOR
 import com.valkiria.uicomponents.components.errorbanner.ErrorUiModel
 import retrofit2.HttpException
 import timber.log.Timber
@@ -14,6 +15,7 @@ private const val FORBIDDEN_HTTP_STATUS_CODE = 403
 
 data class ErrorModel(
     val icon: String,
+    val iconColor: String = DEFAULT_ICON_COLOR,
     val title: String,
     val description: String
 ) : RuntimeException()
@@ -26,6 +28,7 @@ fun Throwable.mapToUi(): ErrorUiModel = (this as? ErrorModel)?.mapToUi() ?: Erro
 
 private fun ErrorModel.mapToUi() = ErrorUiModel(
     icon = icon,
+    iconColor = iconColor,
     title = title,
     description = description
 )

@@ -17,6 +17,7 @@ fun changePasswordNoMatch(): ErrorModel = ErrorModel(
 // FIXME: Delete this with refactor de banner commponent
 fun changePasswordSuccess(): ErrorModel = ErrorModel(
     icon = "ic_alert",
+    iconColor = "#42A4FA",
     title = "Nueva contraseña",
     description = "La contraseña se ha cambiado con éxito."
 )
