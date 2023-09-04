@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.media
+package com.skgtecnologia.sisem.ui.report
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -37,7 +37,7 @@ const val PHOTO_GRID_ROWS = 3
 @Suppress("LongMethod")
 @Composable
 fun ImageSelectionScreen(
-    viewModel: MediaViewModel,
+    viewModel: ReportViewModel,
     isTablet: Boolean,
     modifier: Modifier = Modifier,
     onNavigation: (imageSelectionNavigationModel: NavigationModel?) -> Unit

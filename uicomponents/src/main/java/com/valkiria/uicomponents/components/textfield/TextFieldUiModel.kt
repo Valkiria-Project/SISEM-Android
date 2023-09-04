@@ -15,6 +15,8 @@ data class TextFieldUiModel(
     val textStyle: TextStyle,
     val style: TextFieldStyle = TextFieldStyle.OUTLINED,
     val validations: List<ValidationUiModel>,
+    val singleLine: Boolean = true,
+    val minLines: Int = 1,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
 )

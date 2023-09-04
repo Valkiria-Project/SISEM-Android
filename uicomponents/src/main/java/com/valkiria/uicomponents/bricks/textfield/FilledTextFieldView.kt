@@ -63,7 +63,8 @@ fun FilledTextFieldView(
         },
         isError = text.toFailedValidation(uiModel.validations, validateFields) != null,
         keyboardOptions = uiModel.keyboardOptions,
-        singleLine = true
+        singleLine = uiModel.singleLine,
+        minLines = uiModel.minLines
     )
 }
 

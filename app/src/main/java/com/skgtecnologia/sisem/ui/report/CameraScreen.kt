@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.media
+package com.skgtecnologia.sisem.ui.report
 
 import android.Manifest
 import android.content.Context
@@ -49,7 +49,7 @@ import kotlin.coroutines.suspendCoroutine
 
 @Composable
 fun CameraScreen(
-    viewModel: MediaViewModel,
+    viewModel: ReportViewModel,
     onNavigation: (cameraNavigationModel: NavigationModel?) -> Unit
 ) {
     val uiState = viewModel.uiState
@@ -80,7 +80,7 @@ fun CameraScreen(
 
 @Composable
 private fun CameraPreview(
-    viewModel: MediaViewModel
+    viewModel: ReportViewModel
 ) {
     val context = LocalContext.current
     val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current

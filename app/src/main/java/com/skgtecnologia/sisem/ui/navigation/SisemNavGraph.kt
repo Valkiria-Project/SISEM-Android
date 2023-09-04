@@ -16,11 +16,12 @@ import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.sharedViewModel
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
-import com.skgtecnologia.sisem.ui.media.CameraScreen
-import com.skgtecnologia.sisem.ui.media.ImageSelectionScreen
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
+import com.skgtecnologia.sisem.ui.report.CameraScreen
+import com.skgtecnologia.sisem.ui.report.FindingsScreen
+import com.skgtecnologia.sisem.ui.report.ImageSelectionScreen
 
 @Composable
 fun SisemNavGraph(
@@ -39,7 +40,7 @@ fun SisemNavGraph(
         ) {
             authGraph(navController, getAuthStartDestination(navigationModel), isTablet, modifier)
             mainGraph(navController, isTablet, modifier)
-            mediaGraph(navController, isTablet, modifier)
+            reportGraph(navController, isTablet, modifier)
         }
     }
 }
@@ -213,17 +214,29 @@ private fun NavGraphBuilder.mainGraph(
 }
 
 @Suppress("UnusedPrivateMember")
-private fun NavGraphBuilder.mediaGraph(
+private fun NavGraphBuilder.reportGraph(
     navController: NavHostController,
     isTablet: Boolean,
     modifier: Modifier
 ) {
     navigation(
-        startDestination = MediaNavigationRoute.ImageSelection.route,
+        startDestination = ReportNavigationRoute.Findings.route,
         route = NavigationGraph.Media.route
     ) {
         composable(
-            route = MediaNavigationRoute.ImageSelection.route
+            route = ReportNavigationRoute.Findings.route
+        ) {
+            FindingsScreen(
+                viewModel = it.sharedViewModel(navController = navController),
+                isTablet = isTablet,
+                modifier = modifier
+            ) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = ReportNavigationRoute.ImageSelection.route
         ) {
             ImageSelectionScreen(
                 viewModel = it.sharedViewModel(navController = navController),
@@ -235,7 +248,7 @@ private fun NavGraphBuilder.mediaGraph(
         }
 
         composable(
-            route = MediaNavigationRoute.Camera.route
+            route = ReportNavigationRoute.Camera.route
         ) {
             CameraScreen(
                 viewModel = it.sharedViewModel(navController = navController)

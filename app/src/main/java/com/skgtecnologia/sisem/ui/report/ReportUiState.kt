@@ -1,10 +1,11 @@
-package com.skgtecnologia.sisem.ui.media
+package com.skgtecnologia.sisem.ui.report
 
 import android.net.Uri
 
-data class MediaUiState(
+data class ReportUiState(
     val selectedImageUris: List<Uri> = listOf(),
     val onGoBack: Boolean = false,
+    val onShowImages: Boolean = false,
     val onShowCamera: Boolean = false,
     val onPhotoTaken: Boolean = false,
     val onMediaConfirmed: Boolean = false,

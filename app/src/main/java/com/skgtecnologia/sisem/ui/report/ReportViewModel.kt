@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.media
+package com.skgtecnologia.sisem.ui.report
 
 import android.net.Uri
 import androidx.compose.runtime.getValue
@@ -9,9 +9,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class MediaViewModel @Inject constructor() : ViewModel() {
+class ReportViewModel @Inject constructor() : ViewModel() {
 
-    var uiState by mutableStateOf(MediaUiState())
+    var uiState by mutableStateOf(ReportUiState())
         private set
 
     fun goBack() {

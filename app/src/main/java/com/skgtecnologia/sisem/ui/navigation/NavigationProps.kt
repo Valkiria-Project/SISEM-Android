@@ -31,9 +31,10 @@ sealed class MainNavigationRoute(val route: String) {
     data object SignatureAndFingerprint : MainNavigationRoute("signature_and_fingerprint")
 }
 
-sealed class MediaNavigationRoute(val route: String) {
-    data object Camera : MediaNavigationRoute("camera")
-    data object ImageSelection : MediaNavigationRoute("image_selection")
+sealed class ReportNavigationRoute(val route: String) {
+    data object Camera : ReportNavigationRoute("camera")
+    data object Findings : ReportNavigationRoute("findings")
+    data object ImageSelection : ReportNavigationRoute("image_selection")
 }
 
 object NavigationArgument {

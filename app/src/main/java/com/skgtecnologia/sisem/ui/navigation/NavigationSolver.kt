@@ -52,7 +52,7 @@ private fun imageSelectionToNextStep(
     model: ImageSelectionNavigationModel
 ) {
     when {
-        model.showCamera -> navController.navigate(MediaNavigationRoute.Camera.route)
+        model.showCamera -> navController.navigate(ReportNavigationRoute.Camera.route)
 
         model.goBack -> navController.popBackStack()
 
@@ -104,8 +104,7 @@ private fun preOpToNextStep(
         }
     }
 
-    // FIXME: This should go first to the Screen with the TextArea, like register novelty
-    model.isNewFinding -> navController.navigate(MediaNavigationRoute.ImageSelection.route)
+    model.isNewFinding -> navController.navigate(ReportNavigationRoute.Findings.route)
 
     else -> navController.navigate(AuthNavigationRoute.AuthCards.route)
 }

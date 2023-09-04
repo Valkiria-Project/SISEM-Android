@@ -116,6 +116,15 @@
     <string name="finding_input_hint">Escribe tu comentario…</string>
     <string name="finding_input_save_cta">Guardar</string>
 
+    <!-- Findings screen -->
+    <string name="findings_title">Registrar hallazgo</string>
+    <string name="findings_subtitle">Registre los hallazgos encontrados durante el preoperacional.</string>
+    <string name="findings_left_icon">ic_back</string>
+    <string name="findings_input_label">Descripción</string>
+    <string name="findings_add_files_label">Adjuntar archivos</string>
+    <string name="findings_take_picture_label">Cámara</string>
+    <string name="findings_select_pictures">Imagen</string>
+
     <!-- Image selection screen -->
     <string name="image_selection_title">Imágenes</string>
     <string name="image_selection_subtitle">Tome la foto o selecciónela para adjuntarla al hallazgo.</string>
