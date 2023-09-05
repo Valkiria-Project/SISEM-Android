@@ -19,9 +19,9 @@ import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
-import com.skgtecnologia.sisem.ui.report.CameraScreen
+import com.skgtecnologia.sisem.ui.media.CameraScreen
 import com.skgtecnologia.sisem.ui.report.FindingsScreen
-import com.skgtecnologia.sisem.ui.report.ImageSelectionScreen
+import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
 
 @Composable
 fun SisemNavGraph(
@@ -221,7 +221,7 @@ private fun NavGraphBuilder.reportGraph(
 ) {
     navigation(
         startDestination = ReportNavigationRoute.Findings.route,
-        route = NavigationGraph.Media.route
+        route = NavigationGraph.Report.route
     ) {
         composable(
             route = ReportNavigationRoute.Findings.route
@@ -236,22 +236,22 @@ private fun NavGraphBuilder.reportGraph(
         }
 
         composable(
-            route = ReportNavigationRoute.ImageSelection.route
+            route = ReportNavigationRoute.Camera.route
         ) {
-            ImageSelectionScreen(
-                viewModel = it.sharedViewModel(navController = navController),
-                isTablet = isTablet,
-                modifier = modifier
+            CameraScreen(
+                viewModel = it.sharedViewModel(navController = navController)
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
         }
 
         composable(
-            route = ReportNavigationRoute.Camera.route
+            route = ReportNavigationRoute.ImagesConfirmation.route
         ) {
-            CameraScreen(
-                viewModel = it.sharedViewModel(navController = navController)
+            ImagesConfirmationScreen(
+                viewModel = it.sharedViewModel(navController = navController),
+                isTablet = isTablet,
+                modifier = modifier
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }

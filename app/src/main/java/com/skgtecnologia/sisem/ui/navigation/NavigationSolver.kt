@@ -1,12 +1,12 @@
 package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.navigation.NavHostController
-import com.skgtecnologia.sisem.ui.navigation.model.CameraNavigationModel
-import com.skgtecnologia.sisem.ui.navigation.model.ImageSelectionNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.PreOpNavigationModel
+import com.skgtecnologia.sisem.ui.navigation.model.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
+import timber.log.Timber
 
 fun getAppStartDestination(model: StartupNavigationModel?): String {
     return if (model == null) {
@@ -28,30 +28,25 @@ fun getAuthStartDestination(model: StartupNavigationModel?): String {
 
 fun navigateToNextStep(navController: NavHostController, navigationModel: NavigationModel?) =
     when (navigationModel) {
-        is CameraNavigationModel -> cameraToNextStep(navController, navigationModel)
-        is ImageSelectionNavigationModel -> imageSelectionToNextStep(navController, navigationModel)
+        is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
         is LoginNavigationModel -> loginToNextStep(navController, navigationModel)
         is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
         else -> {}
     }
 
-private fun cameraToNextStep(
+private fun reportToNextStep(
     navController: NavHostController,
-    model: CameraNavigationModel
+    model: ReportNavigationModel
 ) {
     when {
-        model.photoTaken -> navController.popBackStack()
-    }
-}
-
-private fun imageSelectionToNextStep(
-    navController: NavHostController,
-    model: ImageSelectionNavigationModel
-) {
-    when {
-        model.goBack -> navController.popBackStack()
+        model.goBack || model.photoTaken -> navController.popBackStack()
 
         model.showCamera -> navController.navigate(ReportNavigationRoute.Camera.route)
+
+        model.confirmMedia -> Timber.d("Finish this")
+
+        // FIXME: Add logic to validate first if there are any images
+        model.saveFinding -> navController.navigate(ReportNavigationRoute.ImagesConfirmation.route)
     }
 }
 

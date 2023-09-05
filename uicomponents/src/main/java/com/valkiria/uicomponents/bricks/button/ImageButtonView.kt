@@ -4,16 +4,17 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
-import com.valkiria.uicomponents.components.label.LabelComponent
-import com.valkiria.uicomponents.model.ui.label.LabelUiModel
+import androidx.compose.ui.text.style.TextAlign
 import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.model.props.toTextStyle
 import com.valkiria.uicomponents.model.ui.button.ImageButtonUiModel
+import com.valkiria.uicomponents.model.ui.label.LabelUiModel
 
 @Composable
 fun ImageButtonView(
@@ -21,8 +22,8 @@ fun ImageButtonView(
     onClick: () -> Unit
 ) {
     Column(
-        modifier = Modifier.clickable { onClick() },
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = uiModel.modifier.clickable { onClick() },
+        horizontalAlignment = uiModel.alignment
     ) {
         Image(
             painter = painterResource(id = uiModel.iconResId),
@@ -32,8 +33,10 @@ fun ImageButtonView(
         )
 
         uiModel.label?.let {
-            LabelComponent(
-                uiModel = getImageButtonLabelModel(uiModel.label),
+            Text(
+                text = uiModel.label,
+                textAlign = TextAlign.Center,
+                style = uiModel.textStyle.toTextStyle()
             )
         }
     }

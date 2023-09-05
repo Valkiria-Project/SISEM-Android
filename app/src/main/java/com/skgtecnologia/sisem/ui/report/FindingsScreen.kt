@@ -1,37 +1,47 @@
 package com.skgtecnologia.sisem.ui.report
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.domain.model.body.ButtonModel
+import com.skgtecnologia.sisem.domain.model.footer.FooterModel
 import com.skgtecnologia.sisem.domain.model.header.HeaderModel
 import com.skgtecnologia.sisem.domain.model.header.TextModel
-import com.skgtecnologia.sisem.ui.navigation.model.ImageSelectionNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
+import com.skgtecnologia.sisem.ui.navigation.model.ReportNavigationModel
+import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
+import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.HeaderUiAction
+import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.button.ImageButtonView
 import com.valkiria.uicomponents.components.label.LabelComponent
-import com.valkiria.uicomponents.model.ui.label.LabelUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
-import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
-import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
+import com.valkiria.uicomponents.model.props.ButtonSize
+import com.valkiria.uicomponents.model.props.ButtonStyle
 import com.valkiria.uicomponents.model.props.TabletWidth
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.ui.button.ImageButtonUiModel
+import com.valkiria.uicomponents.model.ui.button.OnClick
+import com.valkiria.uicomponents.model.ui.label.LabelUiModel
+import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
 import timber.log.Timber
 import kotlin.random.Random
 
@@ -51,12 +61,17 @@ fun FindingsScreen(
         when {
             uiState.onGoBack -> {
                 viewModel.handleGoBack()
-                onNavigation(ImageSelectionNavigationModel(goBack = true))
+                onNavigation(ReportNavigationModel(goBack = true))
             }
 
             uiState.onShowCamera -> {
                 viewModel.handleShowCamera()
-                onNavigation(ImageSelectionNavigationModel(showCamera = true))
+                onNavigation(ReportNavigationModel(showCamera = true))
+            }
+
+            uiState.onSaveFinding -> {
+                viewModel.handleSaveFinding()
+                onNavigation(ReportNavigationModel(saveFinding = true))
             }
         }
     }
@@ -86,7 +101,18 @@ fun FindingsScreen(
             uiModel = getFindingsAddFilesModel()
         )
 
-        ActionsGrid(viewModel)
+        MediaActions(viewModel)
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        FooterSection(
+            footerModel = getFindingsFooterModel(),
+            modifier = Modifier.padding(bottom = 20.dp)
+        ) { uiAction ->
+            handleFooterAction(uiAction, viewModel) {
+
+            }
+        }
     }
 }
 
@@ -144,32 +170,85 @@ private fun getFindingsAddFilesModel() = LabelUiModel(
 )
 
 @Composable
-fun ActionsGrid(viewModel: ReportViewModel) {
-    val actionItems = listOf(
-        com.valkiria.uicomponents.R.drawable.ic_camera to R.string.findings_take_picture_label,
-        com.valkiria.uicomponents.R.drawable.ic_image to R.string.findings_select_pictures
+fun MediaActions(viewModel: ReportViewModel) {
+    val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickMultipleVisualMedia(),
+        onResult = { uris -> viewModel.updateSelectedImages(uris) }
     )
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(100.dp),
+
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 8.dp)
+            .padding(
+                start = 20.dp,
+                end = 20.dp,
+            ),
+        horizontalArrangement = Arrangement.Start
     ) {
-        items(actionItems) { image ->
-            ImageButtonView(
-                uiModel = ImageButtonUiModel(
-                    iconResId = image.first,
-                    label = stringResource(id = image.second),
-                    textStyle = TextStyle.HEADLINE_6,
-                    arrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .padding(2.dp)
-                        .fillMaxWidth()
-                        .height(100.dp)
+        ImageButtonView(
+            uiModel = ImageButtonUiModel(
+                iconResId = com.valkiria.uicomponents.R.drawable.ic_camera,
+                label = stringResource(id = R.string.findings_take_picture_label),
+                textStyle = TextStyle.HEADLINE_6,
+                alignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .padding(8.dp)
+            )
+        ) {
+            viewModel.showCamera()
+        }
+
+        ImageButtonView(
+            uiModel = ImageButtonUiModel(
+                iconResId = com.valkiria.uicomponents.R.drawable.ic_image,
+                label = stringResource(id = R.string.findings_select_pictures),
+                textStyle = TextStyle.HEADLINE_6,
+                alignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .padding(8.dp)
+            )
+        ) {
+            multiplePhotoPickerLauncher.launch(
+                PickVisualMediaRequest(
+                    ActivityResultContracts.PickVisualMedia.ImageOnly
                 )
-            ) {
-                viewModel.showCamera()
-            }
+            )
+        }
+    }
+}
+
+private fun getFindingsFooterModel() = FooterModel(
+    leftButton = ButtonModel(
+        identifier = "FINDING_CANCEL_BUTTON",
+        label = "CANCELAR",
+        style = ButtonStyle.LOUD,
+        textStyle = TextStyle.HEADLINE_4,
+        onClick = OnClick.DISMISS,
+        size = ButtonSize.DEFAULT,
+        arrangement = Arrangement.Center,
+        modifier = Modifier
+    ),
+    rightButton = ButtonModel(
+        identifier = "FINDING_SAVE_BUTTON",
+        label = "GUARDAR",
+        style = ButtonStyle.LOUD,
+        textStyle = TextStyle.HEADLINE_4,
+        onClick = OnClick.DISMISS,
+        size = ButtonSize.DEFAULT,
+        arrangement = Arrangement.Center,
+        modifier = Modifier
+    )
+)
+
+private fun handleFooterAction(
+    uiAction: UiAction,
+    viewModel: ReportViewModel,
+    onCancel: () -> Unit
+) {
+    (uiAction as? FooterUiAction)?.let {
+        when (uiAction.identifier) {
+            "FINDING_CANCEL_BUTTON" -> onCancel()
+            "FINDING_SAVE_BUTTON" -> viewModel.saveFinding()
         }
     }
 }

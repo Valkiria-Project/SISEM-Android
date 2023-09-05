@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.report
+package com.skgtecnologia.sisem.ui.media
 
 import android.Manifest
 import android.content.Context
@@ -39,8 +39,9 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.ui.commons.utils.CameraUtils
 import com.skgtecnologia.sisem.ui.commons.utils.MediaStoreUtils
-import com.skgtecnologia.sisem.ui.navigation.model.CameraNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
+import com.skgtecnologia.sisem.ui.navigation.model.ReportNavigationModel
+import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.Executors
@@ -50,7 +51,7 @@ import kotlin.coroutines.suspendCoroutine
 @Composable
 fun CameraScreen(
     viewModel: ReportViewModel,
-    onNavigation: (cameraNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (reportNavigationModel: NavigationModel?) -> Unit
 ) {
     val uiState = viewModel.uiState
 
@@ -66,7 +67,7 @@ fun CameraScreen(
 
         if (uiState.onPhotoTaken) {
             viewModel.handleOnPhotoTaken()
-            onNavigation(CameraNavigationModel(photoTaken = true))
+            onNavigation(ReportNavigationModel(photoTaken = true))
         }
     }
 
@@ -142,7 +143,7 @@ private fun CameraPreview(
             content = {
                 Icon(
                     imageVector = Icons.Sharp.Lens,
-                    contentDescription = stringResource(id = R.string.image_selection_take_picture),
+                    contentDescription = stringResource(id = R.string.camera_take_picture),
                     tint = Color.White,
                     modifier = Modifier
                         .size(92.dp)

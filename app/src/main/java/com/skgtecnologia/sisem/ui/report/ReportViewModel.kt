@@ -82,4 +82,16 @@ class ReportViewModel @Inject constructor() : ViewModel() {
             onMediaConfirmed = false
         )
     }
+
+    fun saveFinding() {
+        uiState = uiState.copy(
+            onSaveFinding = true
+        )
+    }
+
+    fun handleSaveFinding() {
+        uiState = uiState.copy(
+            onSaveFinding = false
+        )
+    }
 }
