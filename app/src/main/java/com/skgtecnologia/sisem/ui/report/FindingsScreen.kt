@@ -25,10 +25,10 @@ import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.bricks.button.ImageButtonView
 import com.valkiria.uicomponents.components.label.LabelComponent
-import com.valkiria.uicomponents.components.label.LabelUiModel
+import com.valkiria.uicomponents.model.ui.label.LabelUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
-import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
-import com.valkiria.uicomponents.components.textfield.ValidationUiModel
+import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
 import com.valkiria.uicomponents.model.props.TabletWidth
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.ui.button.ImageButtonUiModel

@@ -2,8 +2,8 @@
 
 package com.valkiria.uicomponents.model.mocks
 
-import com.valkiria.uicomponents.components.chipoptions.ChipOptionUiModel
-import com.valkiria.uicomponents.components.chipoptions.ChipOptionsUiModel
+import com.valkiria.uicomponents.model.ui.chip.ChipOptionUiModel
+import com.valkiria.uicomponents.model.ui.chip.ChipOptionsUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
 import kotlin.random.Random
 

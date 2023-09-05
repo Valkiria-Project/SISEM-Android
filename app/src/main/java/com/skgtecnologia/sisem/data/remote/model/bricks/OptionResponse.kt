@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.data.remote.model.bricks
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.valkiria.uicomponents.components.segmentedswitch.OptionUiModel
+import com.valkiria.uicomponents.model.ui.segmentedswitch.OptionUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
 
 @JsonClass(generateAdapter = true)

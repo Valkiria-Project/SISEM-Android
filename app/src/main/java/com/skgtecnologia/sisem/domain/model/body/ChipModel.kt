@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.domain.model.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.components.chip.ChipUiModel
+import com.valkiria.uicomponents.model.ui.chip.ChipUiModel
 import com.valkiria.uicomponents.model.props.ChipStyle
 import com.valkiria.uicomponents.model.props.TextStyle
 

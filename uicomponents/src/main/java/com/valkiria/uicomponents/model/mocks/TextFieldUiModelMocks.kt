@@ -8,8 +8,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
-import com.valkiria.uicomponents.components.textfield.ValidationUiModel
+import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
 import kotlin.random.Random
 

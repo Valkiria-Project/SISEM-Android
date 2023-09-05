@@ -20,7 +20,7 @@ import com.skgtecnologia.sisem.domain.model.header.HeaderModel
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.label.LabelComponent
-import com.valkiria.uicomponents.components.label.LabelUiModel
+import com.valkiria.uicomponents.model.ui.label.LabelUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 

@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.model.mocks.getPreOperationalDetailedInfoListUiModel
 import com.valkiria.uicomponents.model.props.TabletWidth
 import com.valkiria.uicomponents.model.props.toTextStyle
+import com.valkiria.uicomponents.model.ui.detailedinfolist.DetailedInfoListUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 

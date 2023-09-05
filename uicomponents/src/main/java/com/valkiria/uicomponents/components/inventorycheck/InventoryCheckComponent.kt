@@ -22,6 +22,7 @@ import com.valkiria.uicomponents.model.props.FORTY_PERCENT_WEIGHT
 import com.valkiria.uicomponents.model.props.THIRTY_PERCENT_WEIGHT
 import com.valkiria.uicomponents.model.props.TabletWidth
 import com.valkiria.uicomponents.model.props.toTextStyle
+import com.valkiria.uicomponents.model.ui.inventorycheck.InventoryCheckUiModel
 import timber.log.Timber
 
 @Suppress("UnusedPrivateMember")

@@ -16,6 +16,7 @@ import com.valkiria.uicomponents.model.mocks.getDeviceAuthLicensePlateLabelUiMod
 import com.valkiria.uicomponents.model.mocks.getDeviceAuthSerialLabelUiModel
 import com.valkiria.uicomponents.model.props.TabletWidth
 import com.valkiria.uicomponents.model.props.toTextStyle
+import com.valkiria.uicomponents.model.ui.label.LabelUiModel
 
 @Composable
 fun LabelComponent(

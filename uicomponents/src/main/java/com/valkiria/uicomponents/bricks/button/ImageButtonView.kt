@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import com.valkiria.uicomponents.components.label.LabelComponent
-import com.valkiria.uicomponents.components.label.LabelUiModel
+import com.valkiria.uicomponents.model.ui.label.LabelUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.ui.button.ImageButtonUiModel
 

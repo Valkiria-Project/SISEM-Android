@@ -3,8 +3,8 @@ package com.skgtecnologia.sisem.domain.model.body
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
-import com.valkiria.uicomponents.components.textfield.ValidationUiModel
+import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
 import com.valkiria.uicomponents.model.props.TextFieldStyle
 import com.valkiria.uicomponents.model.props.TextStyle
 

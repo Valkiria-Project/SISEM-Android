@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.valkiria.uicomponents.model.mocks.getDeviceAuthSegmentedSwitchUiModel
 import com.valkiria.uicomponents.model.props.toTextStyle
+import com.valkiria.uicomponents.model.ui.segmentedswitch.SegmentedSwitchUiModel
 
 @Suppress("LongMethod", "MagicNumber", "UnusedPrivateMember")
 @Composable
