@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.domain.model.error
 
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.resources.StringProvider
-import com.valkiria.uicomponents.components.errorbanner.ErrorUiModel
+import com.valkiria.uicomponents.model.ui.errorbanner.ErrorUiModel
 import retrofit2.HttpException
 import timber.log.Timber
 import java.net.ConnectException

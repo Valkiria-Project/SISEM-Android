@@ -35,7 +35,7 @@ suspend fun <T> apiCall(errorModelFactory: ErrorModelFactory, api: suspend () ->
 
             response.errorBody().toError()?.mapToDomain()?.let {
                 throw it
-            } ?: error("The retrieved response is not successful and/or body is empty")
+            } ?: error("Response is not successful and/or body is empty")
         }
     }.recoverResult {
         if (it is ErrorModel) {

@@ -2,9 +2,9 @@ package com.skgtecnologia.sisem.domain.model.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListUiModel
-import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoUiModel
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.model.ui.detailedinfolist.DetailedInfoListUiModel
+import com.valkiria.uicomponents.model.ui.detailedinfolist.DetailedInfoUiModel
+import com.valkiria.uicomponents.model.props.TextStyle
 
 data class DetailedInfoListModel(
     val identifier: String,
