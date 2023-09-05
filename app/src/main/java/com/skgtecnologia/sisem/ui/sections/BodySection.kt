@@ -48,18 +48,18 @@ import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
+import com.valkiria.uicomponents.components.card.CrewMemberCardComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
 import com.valkiria.uicomponents.components.chip.ChipOptionsComponent
-import com.valkiria.uicomponents.components.card.CrewMemberCardComponent
-import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListComponent
 import com.valkiria.uicomponents.components.chip.FiltersComponent
+import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListComponent
 import com.valkiria.uicomponents.components.finding.FindingComponent
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckComponent
 import com.valkiria.uicomponents.components.label.LabelComponent
-import com.valkiria.uicomponents.components.textfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
+import com.valkiria.uicomponents.components.textfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import timber.log.Timber
 
@@ -157,9 +157,15 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is InventoryCheckModel -> item(key = model.identifier) {
-                InventoryCheckComponent(uiModel = model.mapToUiModel(), isTablet) {
-                    // FIXME: Finish this stuff
-                    Timber.d("Action performed")
+                InventoryCheckComponent(
+                    uiModel = model.mapToUiModel(), isTablet
+                ) { id, updatedValue ->
+                    onAction(
+                        GenericUiAction.InventoryAction(
+                            identifier = id,
+                            updatedValue = updatedValue
+                        )
+                    )
                 }
             }
 

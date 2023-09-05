@@ -30,7 +30,7 @@ import timber.log.Timber
 fun InventoryCheckComponent(
     uiModel: InventoryCheckUiModel,
     isTablet: Boolean = false,
-    onAction: () -> Unit
+    onAction: (id: String, updatedValue: String) -> Unit
 ) {
     Column(
         modifier = if (isTablet) {
@@ -71,8 +71,11 @@ fun InventoryCheckComponent(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     DigitsTextFieldView(
+                        identifier = checkItemUiModel.name.identifier,
                         style = checkItemUiModel.registeredValueTextStyle.toTextStyle()
-                    )
+                    ) { id, updatedValue ->
+                        onAction(id, updatedValue)
+                    }
                 }
             }
         }
@@ -120,7 +123,7 @@ fun InventoryCheckComponentPreview() {
             .fillMaxSize()
             .background(Color.DarkGray)
     ) {
-        InventoryCheckComponent(uiModel = getPreOperationalInventoryCheckUiModel()) {
+        InventoryCheckComponent(uiModel = getPreOperationalInventoryCheckUiModel()) { _, _ ->
             Timber.d("Inventory action")
         }
     }

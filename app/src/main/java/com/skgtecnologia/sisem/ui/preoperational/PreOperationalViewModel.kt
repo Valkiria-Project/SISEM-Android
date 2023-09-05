@@ -1,12 +1,15 @@
 package com.skgtecnologia.sisem.ui.preoperational
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.domain.changepassword.usecases.GetLoginNavigationModel
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
+import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
 import com.skgtecnologia.sisem.ui.navigation.model.PreOpNavigationModel
@@ -20,6 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PreOperationalViewModel @Inject constructor(
+    private val getLoginNavigationModel: GetLoginNavigationModel,
     private val getPreOperationalScreen: GetPreOperationalScreen,
     private val sendPreOperational: SendPreOperational
 ) : ViewModel() {
@@ -32,6 +36,7 @@ class PreOperationalViewModel @Inject constructor(
     var findings = mutableStateMapOf<String, Boolean>()
     var inventoryValues = mutableStateMapOf<String, Int>()
     var fieldsValues = mutableStateMapOf<String, String>()
+    var novelties = mutableStateListOf<Novelty>()
 
     init {
         uiState = uiState.copy(isLoading = true)
@@ -78,11 +83,10 @@ class PreOperationalViewModel @Inject constructor(
             sendPreOperational.invoke(
                 findings.toMap(),
                 inventoryValues.toMap(),
-                fieldsValues.toMap()
+                fieldsValues.toMap(),
+                novelties.toList()
             ).onSuccess {
-                uiState = uiState.copy(
-                    isLoading = false
-                )
+                getLoginNavigationModel()
             }.onFailure { throwable ->
                 Timber.wtf(throwable, "This is a failure")
 
@@ -92,6 +96,33 @@ class PreOperationalViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    private suspend fun getLoginNavigationModel() {
+        getLoginNavigationModel.invoke()
+            .onSuccess { loginNavigationModel ->
+                uiState = uiState.copy(
+                    preOpNavigationModel = PreOpNavigationModel(
+                        isTurnComplete = loginNavigationModel.isTurnComplete
+                    ),
+                    isLoading = false
+                )
+            }
+            .onFailure { throwable ->
+                Timber.wtf(throwable, "This is a failure")
+
+                uiState = uiState.copy(
+                    isLoading = false,
+                    errorModel = throwable.mapToUi()
+                )
+            }
+    }
+
+    fun onPreOpHandled() {
+        uiState = uiState.copy(
+            preOpNavigationModel = null,
+            isLoading = false
+        )
     }
 
     fun handleShownError() {

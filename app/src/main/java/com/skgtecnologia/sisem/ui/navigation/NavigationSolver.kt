@@ -7,7 +7,6 @@ import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.PreOpNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
-import timber.log.Timber
 
 fun getAppStartDestination(model: StartupNavigationModel?): String {
     return if (model == null) {
@@ -42,8 +41,6 @@ private fun cameraToNextStep(
 ) {
     when {
         model.photoTaken -> navController.popBackStack()
-
-        else -> Timber.d("no-op")
     }
 }
 
@@ -52,11 +49,9 @@ private fun imageSelectionToNextStep(
     model: ImageSelectionNavigationModel
 ) {
     when {
-        model.showCamera -> navController.navigate(ReportNavigationRoute.Camera.route)
-
         model.goBack -> navController.popBackStack()
 
-        else -> Timber.d("no-op")
+        model.showCamera -> navController.navigate(ReportNavigationRoute.Camera.route)
     }
 }
 

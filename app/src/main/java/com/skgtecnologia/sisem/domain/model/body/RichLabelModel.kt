@@ -17,6 +17,7 @@ data class RichLabelModel(
 }
 
 fun RichLabelModel.mapToUiModel() = RichLabelUiModel(
+    identifier = identifier,
     text = text,
     textStyle = textStyle,
     arrangement = arrangement,
