@@ -3,7 +3,6 @@ package com.valkiria.uicomponents.bricks.textfield
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.android.ide.common.rendering.api.SessionParams
-import com.valkiria.uicomponents.bricks.textfield.FilledTextFieldViewPreview
 import org.junit.Rule
 import org.junit.Test
 

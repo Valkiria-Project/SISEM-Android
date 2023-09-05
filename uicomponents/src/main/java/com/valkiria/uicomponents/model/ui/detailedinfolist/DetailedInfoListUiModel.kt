@@ -3,7 +3,6 @@ package com.valkiria.uicomponents.model.ui.detailedinfolist
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.detailedinfolist.DetailedInfoUiModel
 
 data class DetailedInfoListUiModel(
     val details: List<DetailedInfoUiModel>,
