@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.domain.model.bricks
 
 import com.skgtecnologia.sisem.domain.model.header.HeaderModel
-import com.valkiria.uicomponents.bricks.FindingsDetailUiModel
+import com.valkiria.uicomponents.model.ui.finding.FindingsDetailUiModel
 
 data class FindingsDetailModel(
     val header: HeaderModel,

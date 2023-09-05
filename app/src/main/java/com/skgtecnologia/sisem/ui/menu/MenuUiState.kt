@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.ui.menu
 
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.authcards.model.VehicleConfigModel
-import com.valkiria.uicomponents.components.errorbanner.ErrorUiModel
+import com.valkiria.uicomponents.model.ui.errorbanner.ErrorUiModel
 
 data class MenuUiState(
     val accessTokenModelList: List<AccessTokenModel>? = null,

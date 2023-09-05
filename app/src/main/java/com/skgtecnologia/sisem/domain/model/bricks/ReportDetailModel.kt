@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.domain.model.bricks
 
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.domain.model.header.TextModel
-import com.valkiria.uicomponents.bricks.ReportDetailUiModel
+import com.valkiria.uicomponents.model.ui.report.ReportDetailUiModel
 
 data class ReportDetailModel(
     val images: List<String>,

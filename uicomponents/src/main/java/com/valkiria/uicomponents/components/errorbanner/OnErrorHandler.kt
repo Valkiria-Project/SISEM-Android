@@ -1,6 +1,7 @@
 package com.valkiria.uicomponents.components.errorbanner
 
 import androidx.compose.runtime.Composable
+import com.valkiria.uicomponents.model.ui.errorbanner.ErrorUiModel
 
 @Composable
 fun OnErrorHandler(

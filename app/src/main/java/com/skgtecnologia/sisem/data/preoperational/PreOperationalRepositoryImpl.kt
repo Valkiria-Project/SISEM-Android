@@ -5,6 +5,7 @@ import com.skgtecnologia.sisem.data.preoperational.remote.PreOperationalRemoteDa
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.preoperational.PreOperationalRepository
+import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import javax.inject.Inject
 
 class PreOperationalRepositoryImpl @Inject constructor(
@@ -21,7 +22,12 @@ class PreOperationalRepositoryImpl @Inject constructor(
         return preOperationalRemoteDataSource.getPreOperationalScreen(role).getOrThrow()
     }
 
-    override suspend fun sendPreOperational(extraData: Map<String, String>) {
+    override suspend fun sendPreOperational(
+        findings: Map<String, Boolean>,
+        inventoryValues: Map<String, Int>,
+        fieldsValues: Map<String, String>,
+        novelties: List<Novelty>
+    ) {
         preOperationalRemoteDataSource.sendPreOperational(
             role = checkNotNull(
                 OperationRole.getRoleByName(
@@ -29,7 +35,10 @@ class PreOperationalRepositoryImpl @Inject constructor(
                 )
             ),
             idTurn = authCacheDataSource.retrieveAccessToken()?.turn?.id?.toString().orEmpty(),
-            extraData = extraData
+            findings = findings,
+            inventoryValues = inventoryValues,
+            fieldsValues = fieldsValues,
+            novelties = novelties
         ).getOrThrow()
     }
 }

@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.data.preoperational.remote
 
 import com.skgtecnologia.sisem.commons.extensions.mapResult
 import com.skgtecnologia.sisem.data.preoperational.remote.model.SavePreOperationalBody
+import com.skgtecnologia.sisem.data.preoperational.remote.model.mapToBody
 import com.skgtecnologia.sisem.data.remote.extensions.apiCall
 import com.skgtecnologia.sisem.data.remote.model.screen.Params
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
@@ -9,6 +10,7 @@ import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.model.error.ErrorModelFactory
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import javax.inject.Inject
 
 class PreOperationalRemoteDataSource @Inject constructor(
@@ -56,19 +58,23 @@ class PreOperationalRemoteDataSource @Inject constructor(
             it.mapToDomain()
         }
 
+    @Suppress("LongParameterList")
     suspend fun sendPreOperational(
         role: OperationRole,
         idTurn: String,
-        extraData: Map<String, String>
+        findings: Map<String, Boolean>,
+        inventoryValues: Map<String, Int>,
+        fieldsValues: Map<String, String>,
+        novelties: List<Novelty>
     ): Result<Unit> = apiCall(errorModelFactory) {
         preOperationalApi.sendPreOperational(
             savePreOperationalBody = SavePreOperationalBody(
                 type = role.name,
                 idTurn = idTurn.toInt(),
-                findingValues = mapOf(),
-                inventoryValues = mapOf(),
-                extraData = extraData,
-                novelties = listOf()
+                findingValues = findings,
+                inventoryValues = inventoryValues,
+                fieldsValues = fieldsValues,
+                novelties = novelties.map { it.mapToBody() }
             )
         )
     }

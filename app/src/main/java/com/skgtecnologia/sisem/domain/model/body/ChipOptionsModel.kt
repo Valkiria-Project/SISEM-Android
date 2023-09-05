@@ -3,8 +3,8 @@ package com.skgtecnologia.sisem.domain.model.body
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.domain.model.header.TextModel
-import com.valkiria.uicomponents.components.chipoptions.ChipOptionUiModel
-import com.valkiria.uicomponents.components.chipoptions.ChipOptionsUiModel
+import com.valkiria.uicomponents.model.ui.chip.ChipOptionUiModel
+import com.valkiria.uicomponents.model.ui.chip.ChipOptionsUiModel
 
 data class ChipOptionsModel(
     val identifier: String,

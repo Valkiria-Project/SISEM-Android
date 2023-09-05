@@ -14,7 +14,7 @@ import com.skgtecnologia.sisem.domain.model.header.HeaderModel
 import com.skgtecnologia.sisem.domain.model.header.TextModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.bricks.chip.SuggestionChipView
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.model.props.TextStyle
 
 @Composable
 fun FindingsContent(chipSection: ChipSectionModel) {

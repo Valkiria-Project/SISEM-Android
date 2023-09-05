@@ -16,8 +16,8 @@ import com.valkiria.uicomponents.bricks.button.ButtonView
 @Composable
 fun FooterSection(
     footerModel: FooterModel,
+    modifier: Modifier = Modifier,
     isTablet: Boolean = false,
-    modifier: Modifier,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     Row(

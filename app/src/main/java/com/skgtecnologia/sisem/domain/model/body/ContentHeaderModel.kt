@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.domain.model.header.HeaderModel
 import com.skgtecnologia.sisem.domain.model.header.TextModel
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.model.props.TextStyle
 
 data class ContentHeaderModel(
     val identifier: String,

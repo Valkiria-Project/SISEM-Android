@@ -58,7 +58,7 @@ fun AuthCardsScreen(
                 height = Dimension.fillToConstraints
             }
         ) { uiAction ->
-            handleUiAction(uiAction, viewModel, onNavigation)
+            handleAction(uiAction, viewModel, onNavigation)
         }
     }
 
@@ -95,7 +95,7 @@ fun AuthCardsScreen(
     OnLoadingHandler(uiState.isLoading, modifier)
 }
 
-fun handleUiAction(
+fun handleAction(
     uiAction: UiAction,
     viewModel: AuthCardsViewModel,
     onNavigation: (route: AuthNavigationRoute) -> Unit

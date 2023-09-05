@@ -72,7 +72,7 @@ fun ChangePasswordScreen(
                 .padding(top = 20.dp),
             validateFields = uiState.validateFields
         ) { uiAction ->
-            handleUiAction(uiAction, viewModel)
+            handleAction(uiAction, viewModel)
         }
 
         uiState.screenModel?.footer?.let {
@@ -82,7 +82,7 @@ fun ChangePasswordScreen(
                     bottom.linkTo(parent.bottom)
                 }
             ) { uiAction ->
-                handleFooterUiAction(uiAction, viewModel)
+                handleFooterAction(uiAction, viewModel)
             }
         }
     }
@@ -103,7 +103,7 @@ fun ChangePasswordScreen(
     OnLoadingHandler(uiState.isLoading, modifier)
 }
 
-private fun handleUiAction(
+private fun handleAction(
     uiAction: UiAction,
     viewModel: ChangePasswordViewModel
 ) {
@@ -126,7 +126,7 @@ private fun handleUiAction(
     }
 }
 
-private fun handleFooterUiAction(
+private fun handleFooterAction(
     uiAction: UiAction,
     viewModel: ChangePasswordViewModel
 ) {

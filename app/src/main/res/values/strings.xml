@@ -116,12 +116,22 @@
     <string name="finding_input_hint">Escribe tu comentario…</string>
     <string name="finding_input_save_cta">Guardar</string>
 
-    <!-- Image selection screen -->
-    <string name="image_selection_title">Imágenes</string>
-    <string name="image_selection_subtitle">Tome la foto o selecciónela para adjuntarla al hallazgo.</string>
-    <string name="image_selection_left_icon">ic_back</string>
-    <string name="image_selection_take_picture">Tomar foto</string>
-    <string name="image_selection_select_pictures">Seleccionar fotos</string>
+    <!-- Findings screen -->
+    <string name="findings_title">Registrar hallazgo</string>
+    <string name="findings_subtitle">Registre los hallazgos encontrados durante el preoperacional.</string>
+    <string name="findings_left_icon">ic_back</string>
+    <string name="findings_input_label">Descripción</string>
+    <string name="findings_add_files_label">Adjuntar archivos</string>
+    <string name="findings_take_picture_label">Cámara</string>
+    <string name="findings_select_pictures">Imagen</string>
+
+    <!-- Camera screen -->
+    <string name="camera_take_picture">Tomar foto</string>
+
+    <!-- Images confirmation screen -->
+    <string name="images_confirmation_title">Fotos seleccionadas</string>
+    <string name="images_confirmation_subtitle">Visualice las imágenes seleccionadas previamente, en caso de querer eliminarlas.</string>
+    <string name="images_confirmation_left_icon">ic_back</string>
 
     <!-- Drawer Menu -->
     <string name="drawer_header_zone">Subred: %s</string>

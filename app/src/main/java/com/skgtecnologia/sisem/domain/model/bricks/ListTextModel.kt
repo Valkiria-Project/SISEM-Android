@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.domain.model.bricks
 
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.model.props.TextStyle
 
 data class ListTextModel(
     val texts: List<String>,

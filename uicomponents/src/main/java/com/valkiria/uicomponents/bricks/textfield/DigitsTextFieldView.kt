@@ -15,7 +15,11 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DigitsTextFieldView(style: TextStyle) {
+fun DigitsTextFieldView(
+    identifier: String,
+    style: TextStyle,
+    onAction: (id: String, updatedValue: String) -> Unit
+) {
     var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(""))
     }
@@ -23,9 +27,8 @@ fun DigitsTextFieldView(style: TextStyle) {
     OutlinedTextField(
         value = text,
         onValueChange = { updatedValue ->
-            // it is crucial that the update is fed back into BasicTextField in order to
-            // see updates on the text
             text = updatedValue
+            onAction(identifier, updatedValue.text)
         },
         modifier = Modifier.size(56.dp),
         textStyle = style,

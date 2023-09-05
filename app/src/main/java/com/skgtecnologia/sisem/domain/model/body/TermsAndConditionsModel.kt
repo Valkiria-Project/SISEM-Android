@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.domain.model.body
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
-import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsUiModel
+import com.valkiria.uicomponents.model.ui.termsandconditions.TermsAndConditionsUiModel
 
 data class TermsAndConditionsModel(
     val identifier: String?,

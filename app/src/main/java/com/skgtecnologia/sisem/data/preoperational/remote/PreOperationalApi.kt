@@ -24,7 +24,7 @@ interface PreOperationalApi {
         @Body screenBody: ScreenBody
     ): Response<ScreenResponse>
 
-    @POST("/preoperational")
+    @POST("preoperational")
     suspend fun sendPreOperational(
         @Body savePreOperationalBody: SavePreOperationalBody
     ): Response<Unit>
