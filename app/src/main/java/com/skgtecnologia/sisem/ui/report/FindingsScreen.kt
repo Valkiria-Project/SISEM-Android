@@ -24,7 +24,6 @@ import com.skgtecnologia.sisem.domain.model.footer.FooterModel
 import com.skgtecnologia.sisem.domain.model.header.HeaderModel
 import com.skgtecnologia.sisem.domain.model.header.TextModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
-import com.skgtecnologia.sisem.ui.navigation.model.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
@@ -59,19 +58,9 @@ fun FindingsScreen(
 
     LaunchedEffect(uiState) {
         when {
-            uiState.onGoBack -> {
-                viewModel.handleGoBack()
-                onNavigation(ReportNavigationModel(goBack = true))
-            }
-
-            uiState.onShowCamera -> {
-                viewModel.handleShowCamera()
-                onNavigation(ReportNavigationModel(showCamera = true))
-            }
-
-            uiState.onSaveFinding -> {
-                viewModel.handleSaveFinding()
-                onNavigation(ReportNavigationModel(saveFinding = true))
+            uiState.navigationModel != null -> {
+                viewModel.handleNavigation()
+                onNavigation(uiState.navigationModel)
             }
         }
     }

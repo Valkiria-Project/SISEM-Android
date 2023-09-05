@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.skgtecnologia.sisem.ui.navigation.model.ReportNavigationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -17,13 +18,9 @@ class ReportViewModel @Inject constructor() : ViewModel() {
 
     fun goBack() {
         uiState = uiState.copy(
-            onGoBack = true
-        )
-    }
-
-    fun handleGoBack() {
-        uiState = uiState.copy(
-            onGoBack = false
+            navigationModel = ReportNavigationModel(
+                goBack = true
+            )
         )
     }
 
@@ -43,15 +40,12 @@ class ReportViewModel @Inject constructor() : ViewModel() {
 
     fun showCamera() {
         uiState = uiState.copy(
-            onShowCamera = true
+            navigationModel = ReportNavigationModel(
+                showCamera = true
+            )
         )
     }
 
-    fun handleShowCamera() {
-        uiState = uiState.copy(
-            onShowCamera = false
-        )
-    }
 
     fun onPhotoTaken(savedUri: Uri) {
         uiState = uiState.copy(
@@ -62,37 +56,32 @@ class ReportViewModel @Inject constructor() : ViewModel() {
 
                 add(savedUri)
             },
-            onPhotoTaken = true
-        )
-    }
-
-    fun handleOnPhotoTaken() {
-        uiState = uiState.copy(
-            onPhotoTaken = false
+            navigationModel = ReportNavigationModel(
+                photoTaken = true
+            )
         )
     }
 
     fun confirmMedia() {
         uiState = uiState.copy(
-            onMediaConfirmed = true
-        )
-    }
-
-    fun handleConfirmImages() {
-        uiState = uiState.copy(
-            onMediaConfirmed = false
+            navigationModel = ReportNavigationModel(
+                confirmMedia = true
+            )
         )
     }
 
     fun saveFinding() {
         uiState = uiState.copy(
-            onSaveFinding = true
+            navigationModel = ReportNavigationModel(
+                saveFinding = true,
+                imagesSize = uiState.selectedImageUris.size
+            )
         )
     }
 
-    fun handleSaveFinding() {
+    fun handleNavigation() {
         uiState = uiState.copy(
-            onSaveFinding = false
+            navigationModel = null
         )
     }
 }

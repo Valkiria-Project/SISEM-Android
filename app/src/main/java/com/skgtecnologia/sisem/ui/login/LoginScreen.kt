@@ -47,7 +47,7 @@ fun LoginScreen(
             when {
                 uiState.onLogin -> {
                     viewModel.onLoginHandled()
-                    onNavigation(uiState.loginNavigationModel)
+                    onNavigation(uiState.navigationModel)
                 }
             }
         }
@@ -94,7 +94,7 @@ fun LoginScreen(
         ErrorBannerComponent(uiModel = errorUiModel) {
             viewModel.onLoginHandled()
             viewModel.handleShownWarning()
-            onNavigation(uiState.loginNavigationModel)
+            onNavigation(uiState.navigationModel)
         }
     }
 

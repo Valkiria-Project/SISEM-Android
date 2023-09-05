@@ -11,7 +11,7 @@ data class LoginUiState(
     val onForgotPassword: Boolean = false,
     val onLoginLink: LoginLink? = null,
     val validateFields: Boolean = false,
-    val loginNavigationModel: LoginNavigationModel? = null,
+    val navigationModel: LoginNavigationModel? = null,
     val isLoading: Boolean = false,
     val warning: ErrorUiModel? = null,
     val errorModel: ErrorUiModel? = null
