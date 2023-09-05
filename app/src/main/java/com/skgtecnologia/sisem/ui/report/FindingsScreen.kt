@@ -110,7 +110,7 @@ fun FindingsScreen(
             modifier = Modifier.padding(bottom = 20.dp)
         ) { uiAction ->
             handleFooterAction(uiAction, viewModel) {
-
+                viewModel.goBack()
             }
         }
     }
