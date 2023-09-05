@@ -25,6 +25,7 @@ import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
 import com.skgtecnologia.sisem.ui.media.CameraScreen
 import com.skgtecnologia.sisem.ui.report.FindingsScreen
 import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
+import com.skgtecnologia.sisem.ui.recordnews.RecordNewsScreen
 
 @Composable
 fun SisemNavGraph(
@@ -258,6 +259,33 @@ private fun NavGraphBuilder.reportGraph(
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
+        }
+
+        composable(
+            route = CommonNavigationRoute.NewsScreen.route
+        ) {
+            NewsScreen(
+                isTablet = isTablet,
+                modifier = modifier,
+                onNavigation = { role ->
+                    navController.navigate("${CommonNavigationRoute.RecordNewsScreen.route}/$role")
+                },
+                onCancel = { navController.navigateUp() }
+            )
+        }
+
+        composable(
+            route = "${CommonNavigationRoute.RecordNewsScreen.route}/{${NavigationArgument.ROLE}}",
+            arguments = listOf(navArgument(NavigationArgument.ROLE) { type = NavType.StringType })
+        ) { backStackEntry ->
+            RecordNewsScreen(
+                isTablet = isTablet,
+                role = backStackEntry.arguments?.getString(NavigationArgument.ROLE).orEmpty(),
+                onNavigation = {
+                    // FIXME: Finish this work
+                },
+                onCancel = { navController.navigateUp() }
+            )
         }
     }
 }
