@@ -1,7 +1,7 @@
 package com.valkiria.uicomponents.components.inventorycheck
 
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.model.props.TextStyle
 
 data class InventoryCheckUiModel(
     val identifier: String,

@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.components.button
+package com.valkiria.uicomponents.model.ui.button
 
 enum class OnClick {
     CHANGE_PASSWORD,

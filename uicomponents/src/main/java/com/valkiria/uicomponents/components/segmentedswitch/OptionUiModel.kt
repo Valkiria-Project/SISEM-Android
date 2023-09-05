@@ -1,6 +1,6 @@
 package com.valkiria.uicomponents.components.segmentedswitch
 
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.model.props.TextStyle
 
 data class OptionUiModel(
     val text: String,

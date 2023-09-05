@@ -1,14 +1,14 @@
-package com.valkiria.uicomponents.mocks
+package com.valkiria.uicomponents.model.mocks
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.components.button.ButtonUiModel
-import com.valkiria.uicomponents.components.button.OnClick
-import com.valkiria.uicomponents.props.ButtonSize
-import com.valkiria.uicomponents.props.ButtonStyle
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.model.ui.button.ButtonUiModel
+import com.valkiria.uicomponents.model.ui.button.OnClick
+import com.valkiria.uicomponents.model.props.ButtonSize
+import com.valkiria.uicomponents.model.props.ButtonStyle
+import com.valkiria.uicomponents.model.props.TextStyle
 
 fun getLoginForgotButtonUiModel(): ButtonUiModel {
     return ButtonUiModel(

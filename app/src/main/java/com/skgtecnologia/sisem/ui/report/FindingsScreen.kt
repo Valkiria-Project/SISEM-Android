@@ -2,21 +2,17 @@ package com.skgtecnologia.sisem.ui.report
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Camera
-import androidx.compose.material.icons.filled.Image
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -27,13 +23,15 @@ import com.skgtecnologia.sisem.ui.navigation.model.ImageSelectionNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.HeaderUiAction
+import com.valkiria.uicomponents.bricks.button.ImageButtonView
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
-import com.valkiria.uicomponents.props.TabletWidth
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.model.props.TabletWidth
+import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.model.ui.button.ImageButtonUiModel
 import timber.log.Timber
 import kotlin.random.Random
 
@@ -85,36 +83,10 @@ fun FindingsScreen(
         }
 
         LabelComponent(
-            uiModel = getFindingsContentHeaderModel()
+            uiModel = getFindingsAddFilesModel()
         )
 
-        Row(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            IconButton(
-                onClick = { },
-                modifier = Modifier.weight(1f)
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Camera,
-                    contentDescription = null,
-                    modifier = Modifier.size(92.dp),
-                    tint = Color.White
-                )
-            }
-
-            IconButton(
-                onClick = { },
-                modifier = Modifier.weight(1f)
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Image,
-                    contentDescription = null,
-                    modifier = Modifier.size(92.dp),
-                    tint = Color.White
-                )
-            }
-        }
+        ActionsGrid(viewModel)
     }
 }
 
@@ -159,7 +131,7 @@ private fun getFindingsDescriptionModel() = TextFieldUiModel(
 )
 
 @Composable
-private fun getFindingsContentHeaderModel() = LabelUiModel(
+private fun getFindingsAddFilesModel() = LabelUiModel(
     text = stringResource(id = R.string.findings_add_files_label),
     textStyle = TextStyle.HEADLINE_3,
     arrangement = Arrangement.Start,
@@ -170,3 +142,34 @@ private fun getFindingsContentHeaderModel() = LabelUiModel(
         bottom = 0.dp
     )
 )
+
+@Composable
+fun ActionsGrid(viewModel: ReportViewModel) {
+    val actionItems = listOf(
+        com.valkiria.uicomponents.R.drawable.ic_camera to R.string.findings_take_picture_label,
+        com.valkiria.uicomponents.R.drawable.ic_image to R.string.findings_select_pictures
+    )
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(100.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp)
+    ) {
+        items(actionItems) { image ->
+            ImageButtonView(
+                uiModel = ImageButtonUiModel(
+                    iconResId = image.first,
+                    label = stringResource(id = image.second),
+                    textStyle = TextStyle.HEADLINE_6,
+                    arrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .padding(2.dp)
+                        .fillMaxWidth()
+                        .height(100.dp)
+                )
+            ) {
+                viewModel.showCamera()
+            }
+        }
+    }
+}

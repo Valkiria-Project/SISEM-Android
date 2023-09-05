@@ -1,11 +1,11 @@
-package com.valkiria.uicomponents.mocks
+package com.valkiria.uicomponents.model.mocks
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.model.props.TextStyle
 
 fun getLoginWelcomeRichLabelUiModel(): RichLabelUiModel {
     return RichLabelUiModel(

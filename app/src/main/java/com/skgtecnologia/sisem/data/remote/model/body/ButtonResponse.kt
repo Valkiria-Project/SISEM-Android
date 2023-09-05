@@ -6,10 +6,10 @@ import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.ButtonModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.valkiria.uicomponents.components.button.OnClick
-import com.valkiria.uicomponents.props.ButtonSize
-import com.valkiria.uicomponents.props.ButtonStyle
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.model.ui.button.OnClick
+import com.valkiria.uicomponents.model.props.ButtonSize
+import com.valkiria.uicomponents.model.props.ButtonStyle
+import com.valkiria.uicomponents.model.props.TextStyle
 
 @JsonClass(generateAdapter = true)
 data class ButtonResponse(

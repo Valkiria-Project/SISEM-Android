@@ -14,8 +14,8 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import com.ireward.htmlcompose.HtmlText
-import com.valkiria.uicomponents.mocks.getLoginTermsAndConditionsUiModel
-import com.valkiria.uicomponents.props.TabletWidth
+import com.valkiria.uicomponents.model.mocks.getLoginTermsAndConditionsUiModel
+import com.valkiria.uicomponents.model.props.TabletWidth
 import timber.log.Timber
 
 @Composable

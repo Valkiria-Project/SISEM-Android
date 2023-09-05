@@ -1,7 +1,7 @@
 package com.valkiria.uicomponents.bricks
 
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.model.props.TextStyle
 
 data class FindingDetailUiModel(
     val images: List<String>,

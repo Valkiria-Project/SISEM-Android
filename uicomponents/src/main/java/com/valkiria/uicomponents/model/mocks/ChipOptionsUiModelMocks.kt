@@ -1,10 +1,10 @@
 @file:Suppress("MagicNumber")
 
-package com.valkiria.uicomponents.mocks
+package com.valkiria.uicomponents.model.mocks
 
 import com.valkiria.uicomponents.components.chipoptions.ChipOptionUiModel
 import com.valkiria.uicomponents.components.chipoptions.ChipOptionsUiModel
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.model.props.TextStyle
 import kotlin.random.Random
 
 fun getPreOperationalChipOptionsUiModel(): ChipOptionsUiModel {

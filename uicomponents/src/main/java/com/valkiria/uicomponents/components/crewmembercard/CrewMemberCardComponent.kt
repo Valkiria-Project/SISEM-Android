@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.bricks.ReportsDetailUiModel
 import com.valkiria.uicomponents.bricks.chip.SuggestionChipView
-import com.valkiria.uicomponents.props.toTextStyle
+import com.valkiria.uicomponents.model.props.toTextStyle
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 

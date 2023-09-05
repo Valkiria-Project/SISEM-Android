@@ -1,7 +1,7 @@
-package com.valkiria.uicomponents.mocks
+package com.valkiria.uicomponents.model.mocks
 
 import com.valkiria.uicomponents.components.filters.FiltersUiModel
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.model.props.TextStyle
 
 fun getPreOperationalFiltersUiModel(): FiltersUiModel {
     return FiltersUiModel(

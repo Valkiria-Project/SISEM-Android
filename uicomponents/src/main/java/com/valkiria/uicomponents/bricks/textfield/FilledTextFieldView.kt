@@ -18,8 +18,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.extensions.toFailedValidation
-import com.valkiria.uicomponents.mocks.getLoginUserTextFieldUiModel
-import com.valkiria.uicomponents.props.toTextStyle
+import com.valkiria.uicomponents.model.mocks.getLoginUserTextFieldUiModel
+import com.valkiria.uicomponents.model.props.toTextStyle
 
 @Composable
 fun FilledTextFieldView(

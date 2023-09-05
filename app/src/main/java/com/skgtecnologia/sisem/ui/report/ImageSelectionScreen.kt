@@ -29,10 +29,10 @@ import com.skgtecnologia.sisem.ui.navigation.model.ImageSelectionNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.HeaderUiAction
-import com.valkiria.uicomponents.props.TabletWidth
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.model.props.TabletWidth
+import com.valkiria.uicomponents.model.props.TextStyle
 
-const val PHOTO_GRID_ROWS = 3
+const val PHOTO_GRID_COLUMNS = 3
 
 @Suppress("LongMethod")
 @Composable
@@ -126,7 +126,7 @@ private fun getImageSelectionHeaderModel() = HeaderModel(
 @Composable
 fun PhotoGrid(selectedImageUris: List<Uri>) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(PHOTO_GRID_ROWS),
+        columns = GridCells.Fixed(PHOTO_GRID_COLUMNS),
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 20.dp, top = 20.dp, end = 20.dp)

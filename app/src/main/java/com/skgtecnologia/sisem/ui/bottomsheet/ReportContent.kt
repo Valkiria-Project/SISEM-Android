@@ -28,7 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.domain.model.bricks.ReportDetailModel
 import com.valkiria.uicomponents.R
-import com.valkiria.uicomponents.props.toTextStyle
+import com.valkiria.uicomponents.model.props.toTextStyle
 
 @Composable
 fun ReportContent(

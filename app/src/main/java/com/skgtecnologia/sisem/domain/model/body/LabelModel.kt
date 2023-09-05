@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.domain.model.body
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.label.LabelUiModel
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.model.props.TextStyle
 
 data class LabelModel(
     val identifier: String,

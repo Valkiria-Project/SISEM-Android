@@ -12,10 +12,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ireward.htmlcompose.HtmlText
-import com.valkiria.uicomponents.mocks.getLoginWelcomeRichLabelUiModel
-import com.valkiria.uicomponents.props.TabletWidth
-import com.valkiria.uicomponents.props.TextStyle
-import com.valkiria.uicomponents.props.toTextStyle
+import com.valkiria.uicomponents.model.mocks.getLoginWelcomeRichLabelUiModel
+import com.valkiria.uicomponents.model.props.TabletWidth
+import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.model.props.toTextStyle
 import timber.log.Timber
 
 @Composable

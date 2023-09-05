@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.mocks
+package com.valkiria.uicomponents.model.mocks
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding

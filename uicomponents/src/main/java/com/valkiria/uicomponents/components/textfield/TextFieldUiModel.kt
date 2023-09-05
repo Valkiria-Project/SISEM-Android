@@ -3,8 +3,8 @@ package com.valkiria.uicomponents.components.textfield
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.props.TextFieldStyle
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.model.props.TextFieldStyle
+import com.valkiria.uicomponents.model.props.TextStyle
 
 data class TextFieldUiModel(
     val identifier: String,

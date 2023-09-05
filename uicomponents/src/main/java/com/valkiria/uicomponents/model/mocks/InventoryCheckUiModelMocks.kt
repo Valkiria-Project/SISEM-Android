@@ -1,11 +1,11 @@
 @file:Suppress("MagicNumber")
 
-package com.valkiria.uicomponents.mocks
+package com.valkiria.uicomponents.model.mocks
 
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckItemUiModel
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.model.props.TextStyle
 import kotlin.random.Random
 
 fun getPreOperationalInventoryCheckUiModel(): InventoryCheckUiModel {

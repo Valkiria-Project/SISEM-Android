@@ -1,6 +1,4 @@
-@file:Suppress("MagicNumber")
-
-package com.valkiria.uicomponents.mocks
+package com.valkiria.uicomponents.model.mocks
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
@@ -8,55 +6,53 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.components.passwordtextfield.PasswordTextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
-import com.valkiria.uicomponents.props.TextStyle
-import kotlin.random.Random
+import com.valkiria.uicomponents.model.props.TextStyle
 
-fun getLoginUserTextFieldUiModel(): TextFieldUiModel {
-    return TextFieldUiModel(
-        identifier = Random(100).toString(),
-        icon = "ic_user",
-        placeholder = "Usuario",
-        label = "Ingresar usuario",
+fun getLoginPasswordTextFieldUiModel(): PasswordTextFieldUiModel {
+    return PasswordTextFieldUiModel(
+        icon = "ic_lock",
+        placeholder = "Contraseña",
+        label = "Ingresar contraseña",
         keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.Text
+            keyboardType = KeyboardType.Password
         ),
         textStyle = TextStyle.HEADLINE_5,
         validations = listOf(
             ValidationUiModel(
-                regex = "^(?!\\s*$).+",
-                message = "El campo no debe estar vacío"
+                regex = "^\\d{3}$",
+                message = "La contraseña debe al menos tener 3 caracteres"
             )
         ),
         arrangement = Arrangement.Center,
         modifier = Modifier.padding(
             start = 20.dp,
-            top = 20.dp,
+            top = 16.dp,
             end = 20.dp,
             bottom = 0.dp
         )
     )
 }
 
-fun getPreOpDriverVehicleKMTextFieldUiModel(): TextFieldUiModel {
-    return TextFieldUiModel(
-        identifier = Random(100).toString(),
-        label = "Kilometraje del vehículo*",
+fun getNoIconPasswordTextFieldUiModel(): PasswordTextFieldUiModel {
+    return PasswordTextFieldUiModel(
+        placeholder = "Contraseña",
+        label = "Ingresar contraseña",
         keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.Number
+            keyboardType = KeyboardType.Password
         ),
         textStyle = TextStyle.HEADLINE_5,
         validations = listOf(
             ValidationUiModel(
-                regex = "^(?!\\s*$).+",
-                message = "El campo no debe estar vacío"
+                regex = "^\\d{3}$",
+                message = "La contraseña debe al menos tener 3 caracteres"
             )
         ),
         arrangement = Arrangement.Center,
         modifier = Modifier.padding(
             start = 20.dp,
-            top = 20.dp,
+            top = 16.dp,
             end = 20.dp,
             bottom = 0.dp
         )

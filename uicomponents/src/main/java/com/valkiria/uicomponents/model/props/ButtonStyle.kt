@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.props
+package com.valkiria.uicomponents.model.props
 
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults

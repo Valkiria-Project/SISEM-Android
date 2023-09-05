@@ -2,8 +2,8 @@ package com.valkiria.uicomponents.components.chip
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.props.ChipStyle
-import com.valkiria.uicomponents.props.TextStyle
+import com.valkiria.uicomponents.model.props.ChipStyle
+import com.valkiria.uicomponents.model.props.TextStyle
 
 data class ChipUiModel(
     val icon: String?,

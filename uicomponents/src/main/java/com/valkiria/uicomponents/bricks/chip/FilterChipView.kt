@@ -12,8 +12,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.props.TextStyle
-import com.valkiria.uicomponents.props.toTextStyle
+import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.model.props.toTextStyle
 
 @Composable
 fun FilterChipView(

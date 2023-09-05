@@ -18,9 +18,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.mocks.getPreOperationalDetailedInfoListUiModel
-import com.valkiria.uicomponents.props.TabletWidth
-import com.valkiria.uicomponents.props.toTextStyle
+import com.valkiria.uicomponents.model.mocks.getPreOperationalDetailedInfoListUiModel
+import com.valkiria.uicomponents.model.props.TabletWidth
+import com.valkiria.uicomponents.model.props.toTextStyle
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 

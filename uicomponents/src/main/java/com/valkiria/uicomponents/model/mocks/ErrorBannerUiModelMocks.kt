@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.mocks
+package com.valkiria.uicomponents.model.mocks
 
 import com.valkiria.uicomponents.components.errorbanner.ErrorUiModel
 
