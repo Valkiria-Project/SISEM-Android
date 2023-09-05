@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.bricks
+package com.valkiria.uicomponents.model.ui.report
 
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.model.props.TextStyle

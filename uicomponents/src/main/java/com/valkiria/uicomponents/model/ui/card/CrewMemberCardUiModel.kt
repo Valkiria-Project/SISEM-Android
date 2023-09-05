@@ -2,7 +2,7 @@ package com.valkiria.uicomponents.model.ui.card
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.bricks.ReportsDetailUiModel
+import com.valkiria.uicomponents.model.ui.report.ReportsDetailUiModel
 import com.valkiria.uicomponents.model.ui.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
 

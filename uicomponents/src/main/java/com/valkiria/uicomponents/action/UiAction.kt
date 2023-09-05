@@ -1,6 +1,6 @@
 package com.valkiria.uicomponents.action
 
-import com.valkiria.uicomponents.bricks.ReportsDetailUiModel
+import com.valkiria.uicomponents.model.ui.report.ReportsDetailUiModel
 import com.valkiria.uicomponents.model.ui.chip.ChipSectionUiModel
 
 sealed interface UiAction

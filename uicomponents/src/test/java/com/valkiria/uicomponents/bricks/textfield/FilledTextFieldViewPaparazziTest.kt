@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.bricks
+package com.valkiria.uicomponents.bricks.textfield
 
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
