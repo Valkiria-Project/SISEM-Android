@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.ui.navigation
 sealed class NavigationGraph(val route: String) {
     data object Auth : NavigationGraph("auth")
     data object Main : NavigationGraph("main")
-    data object Media : NavigationGraph("common")
+    data object Report : NavigationGraph("report")
 }
 
 sealed class AuthNavigationRoute(val route: String) {
@@ -36,9 +36,10 @@ sealed class MainNavigationRoute(val route: String) {
     data object SignatureAndFingerprint : MainNavigationRoute("signature_and_fingerprint")
 }
 
-sealed class MediaNavigationRoute(val route: String) {
-    data object Camera : MediaNavigationRoute("camera")
-    data object ImageSelection : MediaNavigationRoute("image_selection")
+sealed class ReportNavigationRoute(val route: String) {
+    data object Camera : ReportNavigationRoute("camera")
+    data object Findings : ReportNavigationRoute("findings")
+    data object ImagesConfirmation : ReportNavigationRoute("images_confirmation")
 }
 
 object NavigationArgument {

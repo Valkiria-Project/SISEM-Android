@@ -25,7 +25,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
-import com.valkiria.uicomponents.mocks.getLoginBlockedErrorUiModel
+import com.valkiria.uicomponents.model.mocks.getLoginBlockedErrorUiModel
+import com.valkiria.uicomponents.model.ui.errorbanner.ErrorUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import timber.log.Timber

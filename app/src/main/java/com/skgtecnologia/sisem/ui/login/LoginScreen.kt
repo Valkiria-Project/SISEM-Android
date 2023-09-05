@@ -74,7 +74,7 @@ fun LoginScreen(
                 .padding(top = 20.dp),
             validateFields = uiState.validateFields
         ) { uiAction ->
-            handleUiAction(uiAction, viewModel)
+            handleAction(uiAction, viewModel)
         }
     }
 
@@ -105,7 +105,7 @@ fun LoginScreen(
     OnLoadingHandler(uiState.isLoading, modifier)
 }
 
-private fun handleUiAction(
+private fun handleAction(
     uiAction: UiAction,
     viewModel: LoginViewModel
 ) {

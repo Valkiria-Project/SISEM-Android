@@ -8,7 +8,7 @@ import com.skgtecnologia.sisem.domain.model.bricks.PillModel
 import com.skgtecnologia.sisem.domain.model.bricks.ReportsDetailModel
 import com.skgtecnologia.sisem.domain.model.bricks.mapToUiModel
 import com.skgtecnologia.sisem.domain.model.header.TextModel
-import com.valkiria.uicomponents.components.crewmembercard.CrewMemberCardUiModel
+import com.valkiria.uicomponents.model.ui.card.CrewMemberCardUiModel
 
 data class CrewMemberCardModel(
     val identifier: String,

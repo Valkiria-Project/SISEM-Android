@@ -18,13 +18,13 @@ import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.sharedViewModel
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
-import com.skgtecnologia.sisem.ui.media.CameraScreen
-import com.skgtecnologia.sisem.ui.media.ImageSelectionScreen
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.news.NewsScreen
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
-import com.skgtecnologia.sisem.ui.recordnews.RecordNewsScreen
+import com.skgtecnologia.sisem.ui.media.CameraScreen
+import com.skgtecnologia.sisem.ui.report.FindingsScreen
+import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
 
 @Composable
 fun SisemNavGraph(
@@ -42,9 +42,8 @@ fun SisemNavGraph(
             startDestination = getAppStartDestination(navigationModel)
         ) {
             authGraph(navController, getAuthStartDestination(navigationModel), isTablet, modifier)
-            commonGraph(navController, isTablet, modifier)
             mainGraph(navController, isTablet, modifier)
-            mediaGraph(navController, isTablet, modifier)
+            reportGraph(navController, isTablet, modifier)
         }
     }
 }
@@ -119,40 +118,6 @@ private fun NavGraphBuilder.authGraph(
                 onCancel = { navController.navigateUp() }
             )
         }
-    }
-}
-
-@Suppress("UnusedPrivateMember")
-private fun NavGraphBuilder.commonGraph(
-    navController: NavHostController,
-    isTablet: Boolean,
-    modifier: Modifier
-) {
-    composable(
-        route = CommonNavigationRoute.NewsScreen.route
-    ) {
-        NewsScreen(
-            isTablet = isTablet,
-            modifier = modifier,
-            onNavigation = { role ->
-                navController.navigate("${CommonNavigationRoute.RecordNewsScreen.route}/$role")
-            },
-            onCancel = { navController.navigateUp() }
-        )
-    }
-
-    composable(
-        route = "${CommonNavigationRoute.RecordNewsScreen.route}/{${NavigationArgument.ROLE}}",
-        arguments = listOf(navArgument(NavigationArgument.ROLE) { type = NavType.StringType })
-    ) { backStackEntry ->
-        RecordNewsScreen(
-            isTablet = isTablet,
-            role = backStackEntry.arguments?.getString(NavigationArgument.ROLE).orEmpty(),
-            onNavigation = {
-                // FIXME: Finish this work
-            },
-            onCancel = { navController.navigateUp() }
-        )
     }
 }
 
@@ -252,19 +217,19 @@ private fun NavGraphBuilder.mainGraph(
 }
 
 @Suppress("UnusedPrivateMember")
-private fun NavGraphBuilder.mediaGraph(
+private fun NavGraphBuilder.reportGraph(
     navController: NavHostController,
     isTablet: Boolean,
     modifier: Modifier
 ) {
     navigation(
-        startDestination = MediaNavigationRoute.ImageSelection.route,
-        route = NavigationGraph.Media.route
+        startDestination = ReportNavigationRoute.Findings.route,
+        route = NavigationGraph.Report.route
     ) {
         composable(
-            route = MediaNavigationRoute.ImageSelection.route
+            route = ReportNavigationRoute.Findings.route
         ) {
-            ImageSelectionScreen(
+            FindingsScreen(
                 viewModel = it.sharedViewModel(navController = navController),
                 isTablet = isTablet,
                 modifier = modifier
@@ -274,10 +239,22 @@ private fun NavGraphBuilder.mediaGraph(
         }
 
         composable(
-            route = MediaNavigationRoute.Camera.route
+            route = ReportNavigationRoute.Camera.route
         ) {
             CameraScreen(
                 viewModel = it.sharedViewModel(navController = navController)
+            ) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = ReportNavigationRoute.ImagesConfirmation.route
+        ) {
+            ImagesConfirmationScreen(
+                viewModel = it.sharedViewModel(navController = navController),
+                isTablet = isTablet,
+                modifier = modifier
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
