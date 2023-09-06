@@ -5,5 +5,6 @@ data class ReportNavigationModel(
     val showCamera: Boolean = false,
     val photoTaken: Boolean = false,
     val confirmMedia: Boolean = false,
-    val saveFinding: Boolean = false
+    val saveFinding: Boolean = false,
+    val imagesSize: Int = 0
 ) : NavigationModel
