@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.domain.recordnews.usecases
+package com.skgtecnologia.sisem.domain.report.usecases
 
 import androidx.annotation.CheckResult
 import com.skgtecnologia.sisem.commons.extensions.resultOf

@@ -15,7 +15,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.R
-import com.skgtecnologia.sisem.domain.recordnews.model.RecordNewsIdentifier
+import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
@@ -122,8 +122,8 @@ private fun handleFooterUiAction(
 ) {
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
-            RecordNewsIdentifier.ADD_REPORT_ENTRY_CANCEL_BUTTON.name -> onCancel()
-            RecordNewsIdentifier.SEND_REPORT_ENTRY_SEND_BUTTON.name -> viewModel.saveRecordNews()
+            AddReportIdentifier.ADD_REPORT_ENTRY_CANCEL_BUTTON.name -> onCancel()
+            AddReportIdentifier.SEND_REPORT_ENTRY_SEND_BUTTON.name -> viewModel.saveRecordNews()
         }
     }
 }

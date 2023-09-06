@@ -1,6 +1,6 @@
-package com.skgtecnologia.sisem.domain.recordnews.model
+package com.skgtecnologia.sisem.domain.report.model
 
-enum class RecordNewsIdentifier {
+enum class AddReportIdentifier {
     ADD_REPORT_ENTRY_CANCEL_BUTTON,
     ADD_REPORT_ENTRY_DESCRIPTION,
     ADD_REPORT_ENTRY_TOPIC,

@@ -36,7 +36,7 @@ import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.mapToHeaderModel
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
 import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
-import com.skgtecnologia.sisem.domain.recordnews.model.RecordNewsIdentifier
+import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.ConfirmPasswordInput
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.NewPasswordInput
@@ -382,7 +382,7 @@ private fun HandleTextFieldRows(
             )
         }
 
-        RecordNewsIdentifier.ADD_REPORT_ENTRY_TOPIC.name -> TextFieldComponent(
+        AddReportIdentifier.ADD_REPORT_ENTRY_TOPIC.name -> TextFieldComponent(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet,
             validateFields = validateFields
@@ -395,7 +395,7 @@ private fun HandleTextFieldRows(
             )
         }
 
-        RecordNewsIdentifier.ADD_REPORT_ENTRY_DESCRIPTION.name -> TextFieldComponent(
+        AddReportIdentifier.ADD_REPORT_ENTRY_DESCRIPTION.name -> TextFieldComponent(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet,
             validateFields = validateFields
