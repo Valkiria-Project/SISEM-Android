@@ -102,7 +102,7 @@ fun handleAction(
 ) {
     (uiAction as? AuthCardsUiAction)?.let {
         when (uiAction) {
-            AuthCardsUiAction.AuthCard -> onNavigation(AuthNavigationRoute.Login)
+            AuthCardsUiAction.AuthCard -> onNavigation(AuthNavigationRoute.LoginScreen)
 
             is AuthCardsUiAction.AuthCardNews ->
                 viewModel.showReportBottomSheet(uiAction.reportDetail.mapToDomain())

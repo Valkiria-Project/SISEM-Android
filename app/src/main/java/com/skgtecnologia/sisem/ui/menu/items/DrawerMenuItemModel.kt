@@ -5,12 +5,12 @@ import androidx.annotation.DrawableRes
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.CertificationsScreen
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.DeviceAuth
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.DeviceAuthScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.DrivingGuideScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.HCEUDCScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.IncidentScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.InventoryScreen
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.NewsScreen
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.AddReportRoleScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.NotificationsScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.PreoperationalMainScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.ShiftScreen
@@ -58,7 +58,7 @@ private fun getDrawerItems(context: Context) = listOf(
         drawable.ic_certifications
     ),
     DrawerMenuItemModel(
-        NewsScreen,
+        AddReportRoleScreen,
         context.getString(R.string.drawer_novelties),
         drawable.ic_news
     ),
@@ -81,7 +81,7 @@ private fun getDrawerItems(context: Context) = listOf(
 
 private fun getLeaderDrawerItems(context: Context) = listOf(
     DrawerMenuItemModel(
-        DeviceAuth,
+        DeviceAuthScreen,
         context.getString(R.string.drawer_device_auth),
         drawable.ic_ambulance
     ),
