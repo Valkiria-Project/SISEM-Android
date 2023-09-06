@@ -88,9 +88,10 @@ fun AuthCardsScreen(
         }
     }
 
-    OnErrorHandler(uiState.errorModel) {
-        viewModel.handleShownError()
-    }
+    OnErrorHandler(
+        errorModel = uiState.errorModel,
+        onAction = { viewModel.handleShownError() }
+    )
 
     OnLoadingHandler(uiState.isLoading, modifier)
 }

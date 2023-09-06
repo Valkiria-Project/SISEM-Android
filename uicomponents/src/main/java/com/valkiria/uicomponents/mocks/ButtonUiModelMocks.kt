@@ -12,6 +12,7 @@ import com.valkiria.uicomponents.props.TextStyle
 
 fun getLoginForgotButtonUiModel(): ButtonUiModel {
     return ButtonUiModel(
+        identifier = "forgot_password",
         label = "¿Olvidaste la contraseña?",
         style = ButtonStyle.TRANSPARENT,
         textStyle = TextStyle.BUTTON_1,
@@ -29,6 +30,7 @@ fun getLoginForgotButtonUiModel(): ButtonUiModel {
 
 fun getLoginButtonUiModel(): ButtonUiModel {
     return ButtonUiModel(
+        identifier = "login",
         label = "INGRESAR",
         style = ButtonStyle.LOUD,
         textStyle = TextStyle.HEADLINE_5,

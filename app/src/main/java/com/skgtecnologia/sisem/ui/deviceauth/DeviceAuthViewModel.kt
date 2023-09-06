@@ -91,7 +91,10 @@ class DeviceAuthViewModel @Inject constructor(
     private suspend fun handleOnSuccess(associateDeviceModel: AssociateDeviceModel) {
         if (disassociateDeviceState) {
             onDeviceAuthHandled() // FIXME: maintains the previous state, we must clean
-            getScreen() // FIXME: show message?
+            uiState.copy(
+                disassociateInfoModel = null, // Fixme: update with new response
+                isLoading = false
+            )
         } else {
             deleteAccessToken.invoke().onSuccess {
                 uiState = uiState.copy(

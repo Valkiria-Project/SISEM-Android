@@ -2,6 +2,8 @@ package com.skgtecnologia.sisem.domain.model.error
 
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.resources.StringProvider
+import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
+import com.skgtecnologia.sisem.domain.model.footer.FooterModel
 import com.valkiria.uicomponents.components.errorbanner.DEFAULT_ICON_COLOR
 import com.valkiria.uicomponents.components.errorbanner.ErrorUiModel
 import retrofit2.HttpException
@@ -17,7 +19,8 @@ data class ErrorModel(
     val icon: String,
     val iconColor: String = DEFAULT_ICON_COLOR,
     val title: String,
-    val description: String
+    val description: String,
+    val footerModel: FooterModel? = null
 ) : RuntimeException()
 
 fun Throwable.mapToUi(): ErrorUiModel = (this as? ErrorModel)?.mapToUi() ?: ErrorUiModel(
@@ -30,7 +33,9 @@ private fun ErrorModel.mapToUi() = ErrorUiModel(
     icon = icon,
     iconColor = iconColor,
     title = title,
-    description = description
+    description = description,
+    leftButton = footerModel?.leftButton?.mapToUiModel(),
+    rightButton = footerModel?.rightButton?.mapToUiModel()
 )
 
 class ErrorModelFactory @Inject constructor(

@@ -9,6 +9,7 @@ import com.valkiria.uicomponents.props.TextStyle
 
 @Suppress("LongParameterList")
 class ButtonUiModel private constructor(
+    val identifier: String,
     @DrawableRes val iconResId: Int?,
     val label: String?,
     val textStyle: TextStyle?,
@@ -19,6 +20,7 @@ class ButtonUiModel private constructor(
     val modifier: Modifier
 ) {
     constructor(
+        identifier: String,
         label: String,
         textStyle: TextStyle,
         style: ButtonStyle,
@@ -26,14 +28,15 @@ class ButtonUiModel private constructor(
         size: ButtonSize,
         arrangement: Arrangement.Horizontal,
         modifier: Modifier
-    ) : this(null, label, textStyle, style, onClick, size, arrangement, modifier)
+    ) : this(identifier, null, label, textStyle, style, onClick, size, arrangement, modifier)
 
     constructor(
+        identifier: String,
         @DrawableRes icon: Int,
         style: ButtonStyle,
         onClick: OnClick,
         size: ButtonSize,
         arrangement: Arrangement.Horizontal,
         modifier: Modifier
-    ) : this(icon, null, null, style, onClick, size, arrangement, modifier)
+    ) : this(identifier, icon, null, null, style, onClick, size, arrangement, modifier)
 }

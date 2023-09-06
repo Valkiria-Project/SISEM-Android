@@ -26,6 +26,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
+import com.valkiria.uicomponents.action.FooterUiAction
+import com.valkiria.uicomponents.bricks.button.ButtonView
 import com.valkiria.uicomponents.mocks.getLoginBlockedErrorUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
@@ -35,7 +37,8 @@ import timber.log.Timber
 @Composable
 fun ErrorBannerComponent(
     uiModel: ErrorUiModel,
-    onAction: () -> Unit
+    onAction: () -> Unit,
+    onFooterAction: (uiAction: FooterUiAction) -> Unit = {}
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon.orEmpty(), DefType.DRAWABLE
@@ -88,17 +91,19 @@ fun ErrorBannerComponent(
                         color = Color.White,
                         style = MaterialTheme.typography.displayLarge
                     )
-                    IconButton(
-                        onClick = { onAction() },
-                        modifier = Modifier
-                            .padding(start = 16.dp, top = 12.dp)
-                            .size(42.dp),
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_close),
-                            contentDescription = null,
-                            tint = Color.White
-                        )
+                    if (uiModel.leftButton == null) {
+                        IconButton(
+                            onClick = { onAction() },
+                            modifier = Modifier
+                                .padding(start = 16.dp, top = 12.dp)
+                                .size(42.dp),
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_close),
+                                contentDescription = null,
+                                tint = Color.White
+                            )
+                        }
                     }
                 }
                 Text(
@@ -107,6 +112,28 @@ fun ErrorBannerComponent(
                     color = Color.White,
                     style = MaterialTheme.typography.bodyLarge
                 )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterHorizontally)
+                ) {
+                    uiModel.leftButton?.let { buttonUiModel ->
+                        ButtonView(
+                            uiModel = buttonUiModel,
+                            isTablet = false
+                        ) {
+                            onFooterAction(FooterUiAction.FooterButton(buttonUiModel.identifier))
+                        }
+                    }
+
+                    uiModel.rightButton?.let { buttonUiModel ->
+                        ButtonView(
+                            uiModel = buttonUiModel,
+                            isTablet = false
+                        ) {
+                            onFooterAction(FooterUiAction.FooterButton(buttonUiModel.identifier))
+                        }
+                    }
+                }
             }
         }
     }
@@ -116,8 +143,7 @@ fun ErrorBannerComponent(
 @Composable
 fun ErrorBannerComponentPreview() {
     ErrorBannerComponent(
-        uiModel = getLoginBlockedErrorUiModel()
-    ) {
-        Timber.d("Closed")
-    }
+        uiModel = getLoginBlockedErrorUiModel(),
+        onAction = { Timber.d("Closed") }
+    )
 }

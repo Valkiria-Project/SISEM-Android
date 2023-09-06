@@ -24,6 +24,7 @@ data class ButtonModel(
 
 fun ButtonModel.mapToUiModel(): ButtonUiModel {
     return ButtonUiModel(
+        identifier = identifier,
         label = label,
         style = style,
         textStyle = textStyle,

@@ -89,16 +89,20 @@ fun ChangePasswordScreen(
 
     uiState.successInfoModel?.let { infoUiModel ->
         ErrorBannerComponent( // FIXME: with infoBannerComponent
-            uiModel = infoUiModel
-        ) {
-            viewModel.onChangePasswordHandled()
-            onNavigation(uiState.loginNavigationModel)
-        }
+            uiModel = infoUiModel,
+            onAction = {
+                viewModel.onChangePasswordHandled()
+                onNavigation(uiState.loginNavigationModel)
+            }
+        )
     }
 
-    OnErrorHandler(uiState.errorModel) {
-        viewModel.handleShownError()
-    }
+    OnErrorHandler(
+        errorModel = uiState.errorModel,
+        onAction = {
+            viewModel.handleShownError()
+        }
+    )
 
     OnLoadingHandler(uiState.isLoading, modifier)
 }

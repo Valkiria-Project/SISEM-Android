@@ -79,9 +79,10 @@ fun MenuDrawer(
         }
     }
 
-    OnErrorHandler(uiState.errorModel) {
-        viewModel.handleShownError()
-    }
+    OnErrorHandler(
+        errorModel = uiState.errorModel,
+        onAction = { viewModel.handleShownError() }
+    )
 
     if (uiState.isLoading) {
         LoaderComponent()

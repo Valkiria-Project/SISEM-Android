@@ -5,13 +5,16 @@ import androidx.compose.runtime.Composable
 @Composable
 fun OnErrorHandler(
     errorModel: ErrorUiModel?,
-    onAction: () -> Unit
+    onAction: () -> Unit,
+    onFooterAction: (identifier: String) -> Unit = {}
 ) {
     errorModel?.let { errorUiModel ->
         ErrorBannerComponent(
-            uiModel = errorUiModel
-        ) {
-            onAction()
-        }
+            uiModel = errorUiModel,
+            onAction = onAction,
+            onFooterAction = { identifier ->
+                onFooterAction(identifier)
+            }
+        )
     }
 }
