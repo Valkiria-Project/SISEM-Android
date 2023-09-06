@@ -1,7 +1,7 @@
 package com.valkiria.uicomponents.action
 
-import com.valkiria.uicomponents.model.ui.report.ReportsDetailUiModel
 import com.valkiria.uicomponents.model.ui.chip.ChipSectionUiModel
+import com.valkiria.uicomponents.model.ui.report.ReportsDetailUiModel
 
 sealed interface UiAction
 
@@ -92,7 +92,7 @@ sealed class NewsUiAction : UiAction {
     data class NewsStepOneOnChipClick(val text: String) : NewsUiAction()
 }
 
-sealed class RecordNewsUiAction: UiAction {
+sealed class RecordNewsUiAction : UiAction {
     data class TopicInput(
         val updatedValue: String,
         val fieldValidated: Boolean
