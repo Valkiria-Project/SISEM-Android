@@ -5,5 +5,6 @@ enum class OnClick {
     DEVICE_AUTH,
     DISMISS,
     FORGOT_PASSWORD,
-    LOGIN
+    LOGIN,
+    SEND
 }
