@@ -217,7 +217,7 @@ private fun NavGraphBuilder.mainGraph(
     }
 }
 
-@Suppress("UnusedPrivateMember")
+@Suppress("UnusedPrivateMember", "LongMethod")
 private fun NavGraphBuilder.reportGraph(
     navController: NavHostController,
     isTablet: Boolean,
@@ -250,7 +250,8 @@ private fun NavGraphBuilder.reportGraph(
         }
 
         composable(
-            route = "${ReportNavigationRoute.ImagesConfirmation.route}/{${NavigationArgument.FROM}}",
+            route = """${ReportNavigationRoute.ImagesConfirmation.route}
+                |/{${NavigationArgument.FROM}}""".trimMargin(),
             arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
         ) {
             ImagesConfirmationScreen(

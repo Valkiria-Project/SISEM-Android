@@ -37,6 +37,7 @@ import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
 import kotlin.random.Random
 
+@Suppress("LongParameterList")
 @Composable
 fun RecordNewsScreen(
     reportViewModel: ReportViewModel,

@@ -3,9 +3,7 @@ package com.skgtecnologia.sisem.ui.news
 import HideKeyboard
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -18,10 +16,8 @@ import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.NewsUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
 import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
 import com.valkiria.uicomponents.components.loader.LoaderComponent
-import kotlinx.coroutines.launch
 
 @Composable
 fun NewsScreen(
@@ -32,9 +28,6 @@ fun NewsScreen(
 ) {
     val viewModel = hiltViewModel<NewsViewModel>()
     val uiState = viewModel.uiState
-
-    val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
 
     ConstraintLayout(
         modifier = modifier.fillMaxSize()

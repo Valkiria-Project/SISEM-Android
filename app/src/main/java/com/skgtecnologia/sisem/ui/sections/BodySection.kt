@@ -341,6 +341,7 @@ private fun HandlePasswordTextFieldRows(
     }
 }
 
+@Suppress("LongMethod")
 @Composable
 private fun HandleTextFieldRows(
     model: TextFieldModel,

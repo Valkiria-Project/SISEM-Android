@@ -1,6 +1,5 @@
 package com.valkiria.uicomponents.bricks.textfield
 
-import android.graphics.Color.parseColor
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,12 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
-import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.model.mocks.getLoginUserTextFieldUiModel
 import com.valkiria.uicomponents.model.props.toTextStyle
-
-private const val CONTAINER_COLOR = "#3D3F42"
+import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
 
 @Composable
 fun FilledTextFieldView(

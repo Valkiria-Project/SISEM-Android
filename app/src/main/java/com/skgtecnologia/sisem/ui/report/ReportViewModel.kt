@@ -86,8 +86,8 @@ class ReportViewModel @Inject constructor(
                         errorModel = ErrorUiModel(
                             icon = "ic_alert",
                             title = "Cantidad de fotos",
-                            description = "Se ha excedido el número de imágenes permitido " +
-                                    "por el sistema $imageLimit"
+                            description = """Se ha excedido el número de imágenes permitido por
+                                | el sistema $imageLimit""".trimMargin()
                         )
                     )
                     return@forEachIndexed
@@ -128,8 +128,8 @@ class ReportViewModel @Inject constructor(
                     errorModel = ErrorUiModel(
                         icon = "ic_alert",
                         title = "Cantidad de fotos",
-                        description = "Se ha excedido el número de imágenes permitido " +
-                                "por el sistema $imageLimit"
+                        description = """Se ha excedido el número de imágenes permitido por
+                                | el sistema $imageLimit""".trimMargin()
                     )
                 )
             } else {
@@ -181,29 +181,32 @@ class ReportViewModel @Inject constructor(
         uiState = uiState.copy(isLoading = true)
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            sendReport.invoke(topic = topic,
-                description = description, images = images.mapIndexed { index, image ->
+            sendReport.invoke(
+                topic = topic,
+                description = description,
+                images = images.mapIndexed { index, image ->
                     ImageModel(
                         fileName = "Img_$topic" + "_$index.jpg",
                         file = image
                     )
-                })
-                .onSuccess {
-                    uiState = uiState.copy(
-                        successInfoModel = ErrorUiModel(
-                            icon = "ic_alert",
-                            title = "Novedad guardada",
-                            description = "La novedad ha sido almacenada con éxito."
-                        ), isLoading = false,
-                        navigationModel = ReportNavigationModel(
-                            closeReport = true
-                        )
-                    )
-                }.onFailure { throwable ->
-                    uiState = uiState.copy(
-                        isLoading = false, errorModel = throwable.mapToUi()
-                    )
                 }
+            ).onSuccess {
+                uiState = uiState.copy(
+                    successInfoModel = ErrorUiModel(
+                        icon = "ic_alert",
+                        title = "Novedad guardada",
+                        description = "La novedad ha sido almacenada con éxito."
+                    ),
+                    isLoading = false,
+                    navigationModel = ReportNavigationModel(
+                        closeReport = true
+                    )
+                )
+            }.onFailure { throwable ->
+                uiState = uiState.copy(
+                    isLoading = false, errorModel = throwable.mapToUi()
+                )
+            }
         }
     }
 
