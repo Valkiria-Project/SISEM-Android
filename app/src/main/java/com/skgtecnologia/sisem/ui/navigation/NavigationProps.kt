@@ -16,11 +16,6 @@ sealed class AuthNavigationRoute(val route: String) {
     data object ChangePassword : AuthNavigationRoute("change_password")
 }
 
-sealed class CommonNavigationRoute(val route: String) {
-    data object NewsScreen : CommonNavigationRoute("news_screen")
-    data object RecordNewsScreen : CommonNavigationRoute("record_news_screen")
-}
-
 sealed class MainNavigationRoute(val route: String) {
     data object CertificationsScreen : MainNavigationRoute("certifications_screen")
     data object DeviceAuth : MainNavigationRoute("device_auth")
@@ -40,6 +35,8 @@ sealed class ReportNavigationRoute(val route: String) {
     data object Camera : ReportNavigationRoute("camera")
     data object Findings : ReportNavigationRoute("findings")
     data object ImagesConfirmation : ReportNavigationRoute("images_confirmation")
+    data object NewsScreen : ReportNavigationRoute("news_screen")
+    data object RecordNewsScreen : ReportNavigationRoute("record_news_screen")
 }
 
 object NavigationArgument {

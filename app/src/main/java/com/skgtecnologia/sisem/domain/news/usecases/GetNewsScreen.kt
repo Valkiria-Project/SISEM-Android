@@ -12,6 +12,6 @@ class GetNewsScreen @Inject constructor(
 
     @CheckResult
     suspend operator fun invoke(serial: String): Result<ScreenModel> = resultOf {
-        newsRepository.getNewsScreen(serial)
+        newsRepository.getAddReportScreen(serial)
     }
 }

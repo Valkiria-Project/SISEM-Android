@@ -44,7 +44,7 @@ fun RecordNewsScreen(
     isTablet: Boolean,
     modifier: Modifier = Modifier,
     role: String,
-    onNavigation: (findingsNavigationModel: NavigationModel?) -> Unit,
+    onNavigation: (addReportNavigationModel: NavigationModel?) -> Unit,
     onCancel: () -> Unit
 ) {
     val viewModel = hiltViewModel<RecordNewsViewModel>()

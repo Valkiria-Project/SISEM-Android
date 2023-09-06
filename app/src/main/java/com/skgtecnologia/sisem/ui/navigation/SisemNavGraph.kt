@@ -18,14 +18,14 @@ import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.sharedViewModel
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
+import com.skgtecnologia.sisem.ui.media.CameraScreen
+import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.news.NewsScreen
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
-import com.skgtecnologia.sisem.ui.media.CameraScreen
-import com.skgtecnologia.sisem.ui.report.FindingsScreen
-import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
 import com.skgtecnologia.sisem.ui.recordnews.RecordNewsScreen
+import com.skgtecnologia.sisem.ui.report.FindingsScreen
 
 @Composable
 fun SisemNavGraph(
@@ -182,7 +182,7 @@ private fun NavGraphBuilder.mainGraph(
         composable(
             route = MainNavigationRoute.NewsScreen.route
         ) {
-            navController.navigate(CommonNavigationRoute.NewsScreen.route)
+            navController.navigate(ReportNavigationRoute.NewsScreen.route)
         }
 
         composable(
@@ -250,13 +250,12 @@ private fun NavGraphBuilder.reportGraph(
         }
 
         composable(
-            route = """${ReportNavigationRoute.ImagesConfirmation.route}
-                |/{${NavigationArgument.FROM}}""".trimMargin(),
+            route = "${ReportNavigationRoute.ImagesConfirmation.route}/{${NavigationArgument.FROM}}",
             arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
-        ) {
+        ) { backStackEntry ->
             ImagesConfirmationScreen(
-                viewModel = it.sharedViewModel(navController = navController),
-                from = it.arguments?.getString(NavigationArgument.FROM).orEmpty(),
+                viewModel = backStackEntry.sharedViewModel(navController = navController),
+                from = backStackEntry.arguments?.getString(NavigationArgument.FROM).orEmpty(),
                 isTablet = isTablet,
                 modifier = modifier
             ) { navigationModel ->
@@ -265,20 +264,20 @@ private fun NavGraphBuilder.reportGraph(
         }
 
         composable(
-            route = CommonNavigationRoute.NewsScreen.route
+            route = ReportNavigationRoute.NewsScreen.route
         ) {
             NewsScreen(
                 isTablet = isTablet,
                 modifier = modifier,
                 onNavigation = { role ->
-                    navController.navigate("${CommonNavigationRoute.RecordNewsScreen.route}/$role")
+                    navController.navigate("${ReportNavigationRoute.RecordNewsScreen.route}/$role")
                 },
                 onCancel = { navController.navigateUp() }
             )
         }
 
         composable(
-            route = "${CommonNavigationRoute.RecordNewsScreen.route}/{${NavigationArgument.ROLE}}",
+            route = "${ReportNavigationRoute.RecordNewsScreen.route}/{${NavigationArgument.ROLE}}",
             arguments = listOf(navArgument(NavigationArgument.ROLE) { type = NavType.StringType })
         ) { backStackEntry ->
             RecordNewsScreen(
