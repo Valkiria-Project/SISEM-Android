@@ -7,9 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.skgtecnologia.sisem.ui.authcards.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
@@ -17,10 +19,13 @@ import com.skgtecnologia.sisem.ui.commons.extensions.sharedViewModel
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.media.CameraScreen
-import com.skgtecnologia.sisem.ui.media.ImageSelectionScreen
+import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
+import com.skgtecnologia.sisem.ui.report.AddReportRoleScreen
+import com.skgtecnologia.sisem.ui.report.AddReportScreen
+import com.skgtecnologia.sisem.ui.report.FindingsScreen
 
 @Composable
 fun SisemNavGraph(
@@ -39,7 +44,7 @@ fun SisemNavGraph(
         ) {
             authGraph(navController, getAuthStartDestination(navigationModel), isTablet, modifier)
             mainGraph(navController, isTablet, modifier)
-            mediaGraph(navController, isTablet, modifier)
+            reportGraph(navController, isTablet, modifier)
         }
     }
 }
@@ -56,18 +61,18 @@ private fun NavGraphBuilder.authGraph(
         route = NavigationGraph.Auth.route
     ) {
         composable(
-            route = AuthNavigationRoute.AuthCards.route
+            route = AuthNavigationRoute.AuthCardsScreen.route
         ) {
             AuthCardsScreen(
                 isTablet = isTablet,
                 modifier = modifier
             ) {
-                navController.navigate(AuthNavigationRoute.Login.route)
+                navController.navigate(AuthNavigationRoute.LoginScreen.route)
             }
         }
 
         composable(
-            route = AuthNavigationRoute.Login.route
+            route = AuthNavigationRoute.LoginScreen.route
         ) {
             LoginScreen(
                 isTablet = isTablet,
@@ -78,20 +83,20 @@ private fun NavGraphBuilder.authGraph(
         }
 
         composable(
-            route = AuthNavigationRoute.DeviceAuth.route
+            route = AuthNavigationRoute.DeviceAuthScreen.route
         ) {
             DeviceAuthScreen(
                 isTablet = isTablet,
                 modifier = modifier,
                 onDeviceAuthenticated = {
-                    navController.navigate(AuthNavigationRoute.AuthCards.route)
+                    navController.navigate(AuthNavigationRoute.AuthCardsScreen.route)
                 },
                 onCancel = { navController.navigateUp() }
             )
         }
 
         composable(
-            route = AuthNavigationRoute.PreOperational.route
+            route = AuthNavigationRoute.PreOperationalScreen.route
         ) {
             PreOperationalScreen(
                 isTablet = isTablet,
@@ -103,7 +108,7 @@ private fun NavGraphBuilder.authGraph(
 
         // FIXME: This is not part of AuthGraph
         composable(
-            route = AuthNavigationRoute.ChangePassword.route
+            route = AuthNavigationRoute.ChangePasswordScreen.route
         ) {
             ChangePasswordScreen(
                 isTablet = isTablet,
@@ -135,7 +140,7 @@ private fun NavGraphBuilder.mainGraph(
                     navController.navigate(menuNavigationRoute.route)
                 },
                 onLogout = {
-                    navController.navigate(AuthNavigationRoute.AuthCards.route) {
+                    navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
                         popUpTo(NavigationGraph.Main.route) {
                             inclusive = true
                         }
@@ -175,9 +180,9 @@ private fun NavGraphBuilder.mainGraph(
         }
 
         composable(
-            route = MainNavigationRoute.NewsScreen.route
+            route = MainNavigationRoute.AddReportRoleScreen.route
         ) {
-            // FIXME: Finish this work
+            navController.navigate(ReportNavigationRoute.AddReportRoleScreen.route)
         }
 
         composable(
@@ -199,9 +204,9 @@ private fun NavGraphBuilder.mainGraph(
         }
 
         composable(
-            route = MainNavigationRoute.DeviceAuth.route
+            route = MainNavigationRoute.DeviceAuthScreen.route
         ) {
-            navController.navigate(AuthNavigationRoute.DeviceAuth.route)
+            navController.navigate(AuthNavigationRoute.DeviceAuthScreen.route)
         }
 
         composable(
@@ -212,20 +217,20 @@ private fun NavGraphBuilder.mainGraph(
     }
 }
 
-@Suppress("UnusedPrivateMember")
-private fun NavGraphBuilder.mediaGraph(
+@Suppress("UnusedPrivateMember", "LongMethod")
+private fun NavGraphBuilder.reportGraph(
     navController: NavHostController,
     isTablet: Boolean,
     modifier: Modifier
 ) {
     navigation(
-        startDestination = MediaNavigationRoute.ImageSelection.route,
-        route = NavigationGraph.Media.route
+        startDestination = ReportNavigationRoute.FindingsScreen.route,
+        route = NavigationGraph.Report.route
     ) {
         composable(
-            route = MediaNavigationRoute.ImageSelection.route
+            route = ReportNavigationRoute.FindingsScreen.route
         ) {
-            ImageSelectionScreen(
+            FindingsScreen(
                 viewModel = it.sharedViewModel(navController = navController),
                 isTablet = isTablet,
                 modifier = modifier
@@ -235,13 +240,56 @@ private fun NavGraphBuilder.mediaGraph(
         }
 
         composable(
-            route = MediaNavigationRoute.Camera.route
+            route = ReportNavigationRoute.CameraScreen.route
         ) {
             CameraScreen(
                 viewModel = it.sharedViewModel(navController = navController)
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
+        }
+
+        composable(
+            route = ReportNavigationRoute.ImagesConfirmationScreen.route +
+                "/{${NavigationArgument.FROM}}",
+            arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
+        ) { backStackEntry ->
+            ImagesConfirmationScreen(
+                viewModel = backStackEntry.sharedViewModel(navController = navController),
+                from = backStackEntry.arguments?.getString(NavigationArgument.FROM).orEmpty(),
+                isTablet = isTablet,
+                modifier = modifier
+            ) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = ReportNavigationRoute.AddReportRoleScreen.route
+        ) {
+            AddReportRoleScreen(
+                isTablet = isTablet,
+                modifier = modifier,
+                onNavigation = { role ->
+                    navController.navigate("${ReportNavigationRoute.AddReportScreen.route}/$role")
+                },
+                onCancel = { navController.navigateUp() }
+            )
+        }
+
+        composable(
+            route = "${ReportNavigationRoute.AddReportScreen.route}/{${NavigationArgument.ROLE}}",
+            arguments = listOf(navArgument(NavigationArgument.ROLE) { type = NavType.StringType })
+        ) { backStackEntry ->
+            AddReportScreen(
+                reportViewModel = backStackEntry.sharedViewModel(navController = navController),
+                isTablet = isTablet,
+                role = backStackEntry.arguments?.getString(NavigationArgument.ROLE).orEmpty(),
+                onNavigation = { navigationModel ->
+                    navigateToNextStep(navController, navigationModel)
+                },
+                onCancel = { navController.navigateUp() }
+            )
         }
     }
 }

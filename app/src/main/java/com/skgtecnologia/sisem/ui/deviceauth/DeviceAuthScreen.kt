@@ -73,7 +73,7 @@ fun DeviceAuthScreen(
                 }
                 .padding(top = 20.dp)
         ) { uiAction ->
-            handleUiAction(uiAction, viewModel)
+            handleAction(uiAction, viewModel)
         }
 
         uiState.screenModel?.footer?.let {
@@ -83,7 +83,7 @@ fun DeviceAuthScreen(
                     bottom.linkTo(parent.bottom)
                 }
             ) { uiAction ->
-                handleFooterUiAction(uiAction, viewModel, onCancel)
+                handleFooterAction(uiAction, viewModel, onCancel)
             }
         }
     }
@@ -110,7 +110,7 @@ fun DeviceAuthScreen(
     OnLoadingHandler(uiState.isLoading, modifier)
 }
 
-private fun handleUiAction(
+private fun handleAction(
     uiAction: UiAction,
     viewModel: DeviceAuthViewModel
 ) {
@@ -126,7 +126,7 @@ private fun handleUiAction(
     }
 }
 
-private fun handleFooterUiAction(
+private fun handleFooterAction(
     uiAction: UiAction,
     viewModel: DeviceAuthViewModel,
     onCancel: () -> Unit

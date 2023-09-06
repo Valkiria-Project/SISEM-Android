@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
-import com.valkiria.uicomponents.props.TextStyle
-import com.valkiria.uicomponents.props.toTextStyle
+import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.model.props.toTextStyle
 
 @Composable
 fun MenuItem(

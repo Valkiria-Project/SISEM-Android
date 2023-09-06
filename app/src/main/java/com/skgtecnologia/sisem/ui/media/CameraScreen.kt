@@ -39,8 +39,8 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.ui.commons.utils.CameraUtils
 import com.skgtecnologia.sisem.ui.commons.utils.MediaStoreUtils
-import com.skgtecnologia.sisem.ui.navigation.model.CameraNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
+import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.Executors
@@ -49,8 +49,8 @@ import kotlin.coroutines.suspendCoroutine
 
 @Composable
 fun CameraScreen(
-    viewModel: MediaViewModel,
-    onNavigation: (cameraNavigationModel: NavigationModel?) -> Unit
+    viewModel: ReportViewModel,
+    onNavigation: (reportNavigationModel: NavigationModel?) -> Unit
 ) {
     val uiState = viewModel.uiState
 
@@ -64,9 +64,9 @@ fun CameraScreen(
             cameraPermissionState.launchPermissionRequest()
         }
 
-        if (uiState.onPhotoTaken) {
-            viewModel.handleOnPhotoTaken()
-            onNavigation(CameraNavigationModel(photoTaken = true))
+        if (uiState.navigationModel != null) {
+            viewModel.handleNavigation()
+            onNavigation(uiState.navigationModel)
         }
     }
 
@@ -80,7 +80,7 @@ fun CameraScreen(
 
 @Composable
 private fun CameraPreview(
-    viewModel: MediaViewModel
+    viewModel: ReportViewModel
 ) {
     val context = LocalContext.current
     val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
@@ -142,7 +142,7 @@ private fun CameraPreview(
             content = {
                 Icon(
                     imageVector = Icons.Sharp.Lens,
-                    contentDescription = stringResource(id = R.string.image_selection_take_picture),
+                    contentDescription = stringResource(id = R.string.camera_take_picture),
                     tint = Color.White,
                     modifier = Modifier
                         .size(92.dp)

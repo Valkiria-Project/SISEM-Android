@@ -6,11 +6,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
-import com.valkiria.uicomponents.components.button.ButtonUiModel
-import com.valkiria.uicomponents.props.ButtonSize
-import com.valkiria.uicomponents.props.mapToColors
-import com.valkiria.uicomponents.props.mapToTextColor
-import com.valkiria.uicomponents.props.toTextStyle
+import com.valkiria.uicomponents.model.props.ButtonSize
+import com.valkiria.uicomponents.model.props.mapToColors
+import com.valkiria.uicomponents.model.props.mapToTextColor
+import com.valkiria.uicomponents.model.props.toTextStyle
+import com.valkiria.uicomponents.model.ui.button.ButtonUiModel
 
 @Suppress("UnusedPrivateMember")
 @Composable
@@ -39,7 +39,7 @@ fun ButtonView(
         uiModel.label?.let { text ->
             Text(
                 text = text,
-                color = uiModel.style.mapToTextColor(),
+                color = uiModel.style.mapToTextColor(uiModel.overrideColor),
                 style = uiModel.textStyle.toTextStyle()
             )
         }

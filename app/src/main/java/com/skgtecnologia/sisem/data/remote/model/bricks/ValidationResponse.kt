@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.data.remote.model.bricks
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.valkiria.uicomponents.components.textfield.ValidationUiModel
+import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
 
 @JsonClass(generateAdapter = true)
 data class ValidationResponse(

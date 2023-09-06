@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.ui.sections
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,12 +17,12 @@ import com.valkiria.uicomponents.bricks.button.ButtonView
 @Composable
 fun FooterSection(
     footerModel: FooterModel,
+    modifier: Modifier = Modifier,
     isTablet: Boolean = false,
-    modifier: Modifier,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().padding(bottom = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterHorizontally)
     ) {
         ButtonView(

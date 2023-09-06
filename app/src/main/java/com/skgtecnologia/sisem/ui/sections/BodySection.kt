@@ -35,6 +35,8 @@ import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.mapToHeaderModel
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
+import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
+import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.ConfirmPasswordInput
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.NewPasswordInput
@@ -46,20 +48,22 @@ import com.valkiria.uicomponents.action.LoginUiAction.Login
 import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
 import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
+import com.valkiria.uicomponents.action.NewsUiAction
+import com.valkiria.uicomponents.action.RecordNewsUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
+import com.valkiria.uicomponents.components.card.CrewMemberCardComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
-import com.valkiria.uicomponents.components.chipoptions.ChipOptionsComponent
-import com.valkiria.uicomponents.components.crewmembercard.CrewMemberCardComponent
+import com.valkiria.uicomponents.components.chip.ChipOptionsComponent
+import com.valkiria.uicomponents.components.chip.FiltersComponent
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListComponent
-import com.valkiria.uicomponents.components.filters.FiltersComponent
 import com.valkiria.uicomponents.components.finding.FindingComponent
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckComponent
 import com.valkiria.uicomponents.components.label.LabelComponent
-import com.valkiria.uicomponents.components.passwordtextfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
+import com.valkiria.uicomponents.components.textfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import timber.log.Timber
 
@@ -157,9 +161,15 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is InventoryCheckModel -> item(key = model.identifier) {
-                InventoryCheckComponent(uiModel = model.mapToUiModel(), isTablet) {
-                    // FIXME: Finish this stuff
-                    Timber.d("Action performed")
+                InventoryCheckComponent(
+                    uiModel = model.mapToUiModel(), isTablet
+                ) { id, updatedValue ->
+                    onAction(
+                        GenericUiAction.InventoryAction(
+                            identifier = id,
+                            updatedValue = updatedValue
+                        )
+                    )
                 }
             }
 
@@ -246,12 +256,13 @@ private fun HandleChipRows(
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
-        LoginIdentifier.LOGIN_CODE_CHIP.name -> {
-            ChipComponent(
-                uiModel = model.mapToUiModel(),
-                isTablet = isTablet
-            )
-        }
+        AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_ASSISTANT.name,
+        AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DOCTOR.name,
+        AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DRIVER.name -> ChipComponent(
+            uiModel = model.mapToUiModel(),
+            isTablet = isTablet,
+            onClick = { onAction(NewsUiAction.NewsStepOneOnChipClick(it)) }
+        )
 
         else -> ChipComponent(
             uiModel = model.mapToUiModel(),
@@ -330,6 +341,7 @@ private fun HandlePasswordTextFieldRows(
     }
 }
 
+@Suppress("LongMethod")
 @Composable
 private fun HandleTextFieldRows(
     model: TextFieldModel,
@@ -366,6 +378,32 @@ private fun HandleTextFieldRows(
             onAction(
                 OldPasswordInput(
                     updatedValue = updatedValue
+                )
+            )
+        }
+
+        AddReportIdentifier.ADD_REPORT_ENTRY_TOPIC.name -> TextFieldComponent(
+            uiModel = model.mapToUiModel(),
+            isTablet = isTablet,
+            validateFields = validateFields
+        ) { _, updatedValue, _ ->
+            onAction(
+                RecordNewsUiAction.TopicInput(
+                    updatedValue = updatedValue,
+                    fieldValidated = validateFields
+                )
+            )
+        }
+
+        AddReportIdentifier.ADD_REPORT_ENTRY_DESCRIPTION.name -> TextFieldComponent(
+            uiModel = model.mapToUiModel(),
+            isTablet = isTablet,
+            validateFields = validateFields
+        ) { _, updatedValue, _ ->
+            onAction(
+                RecordNewsUiAction.DescriptionInput(
+                    updatedValue = updatedValue,
+                    fieldValidated = validateFields
                 )
             )
         }

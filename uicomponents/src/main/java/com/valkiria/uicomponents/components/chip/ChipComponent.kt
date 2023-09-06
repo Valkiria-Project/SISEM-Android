@@ -18,19 +18,21 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.mocks.getLoginChipUiModel
-import com.valkiria.uicomponents.props.ChipStyle
-import com.valkiria.uicomponents.props.TabletWidth
-import com.valkiria.uicomponents.props.toChipBorder
-import com.valkiria.uicomponents.props.toChipColors
-import com.valkiria.uicomponents.props.toTextStyle
+import com.valkiria.uicomponents.model.mocks.getLoginChipUiModel
+import com.valkiria.uicomponents.model.props.ChipStyle
+import com.valkiria.uicomponents.model.props.TabletWidth
+import com.valkiria.uicomponents.model.props.toChipBorder
+import com.valkiria.uicomponents.model.props.toChipColors
+import com.valkiria.uicomponents.model.props.toTextStyle
+import com.valkiria.uicomponents.model.ui.chip.ChipUiModel
 import com.valkiria.uicomponents.utlis.DefType.DRAWABLE
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 
 @Composable
 fun ChipComponent(
     uiModel: ChipUiModel,
-    isTablet: Boolean = false
+    isTablet: Boolean = false,
+    onClick: (value: String) -> Unit = { }
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon.orEmpty(), DRAWABLE
@@ -45,7 +47,7 @@ fun ChipComponent(
         horizontalArrangement = uiModel.arrangement
     ) {
         AssistChip(
-            onClick = { },
+            onClick = { onClick(uiModel.text) },
             label = {
                 Text(
                     text = uiModel.text,

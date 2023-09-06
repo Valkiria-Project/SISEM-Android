@@ -27,9 +27,9 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.authcards.model.VehicleConfigModel
-import com.valkiria.uicomponents.props.TextStyle.BUTTON_1
-import com.valkiria.uicomponents.props.TextStyle.HEADLINE_5
-import com.valkiria.uicomponents.props.toTextStyle
+import com.valkiria.uicomponents.model.props.TextStyle.BUTTON_1
+import com.valkiria.uicomponents.model.props.TextStyle.HEADLINE_5
+import com.valkiria.uicomponents.model.props.toTextStyle
 
 @Suppress("LongMethod")
 @Composable

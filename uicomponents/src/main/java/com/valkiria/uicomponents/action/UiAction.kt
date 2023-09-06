@@ -1,7 +1,7 @@
 package com.valkiria.uicomponents.action
 
-import com.valkiria.uicomponents.bricks.ReportsDetailUiModel
-import com.valkiria.uicomponents.components.crewmembercard.ChipSectionUiModel
+import com.valkiria.uicomponents.model.ui.chip.ChipSectionUiModel
+import com.valkiria.uicomponents.model.ui.report.ReportsDetailUiModel
 
 sealed interface UiAction
 
@@ -23,6 +23,11 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
         override val identifier: String,
         val updatedValue: String,
         val fieldValidated: Boolean
+    ) : GenericUiAction(identifier)
+
+    data class InventoryAction(
+        override val identifier: String,
+        val updatedValue: String
     ) : GenericUiAction(identifier)
 
     data class SegmentedSwitchAction(
@@ -81,4 +86,20 @@ sealed class ChangePasswordUiAction : UiAction {
     data class OldPasswordInput(
         val updatedValue: String
     ) : ChangePasswordUiAction()
+}
+
+sealed class NewsUiAction : UiAction {
+    data class NewsStepOneOnChipClick(val text: String) : NewsUiAction()
+}
+
+sealed class RecordNewsUiAction : UiAction {
+    data class TopicInput(
+        val updatedValue: String,
+        val fieldValidated: Boolean
+    ) : RecordNewsUiAction()
+
+    data class DescriptionInput(
+        val updatedValue: String,
+        val fieldValidated: Boolean
+    ) : RecordNewsUiAction()
 }

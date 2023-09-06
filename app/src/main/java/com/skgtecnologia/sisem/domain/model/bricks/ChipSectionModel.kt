@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.domain.model.bricks
 
 import com.skgtecnologia.sisem.domain.model.header.TextModel
-import com.valkiria.uicomponents.components.crewmembercard.ChipSectionUiModel
+import com.valkiria.uicomponents.model.ui.chip.ChipSectionUiModel
 
 data class ChipSectionModel(
     val title: TextModel,

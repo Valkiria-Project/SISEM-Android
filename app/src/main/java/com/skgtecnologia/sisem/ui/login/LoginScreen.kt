@@ -45,9 +45,9 @@ fun LoginScreen(
     LaunchedEffect(uiState) {
         launch {
             when {
-                uiState.onLogin -> {
-                    viewModel.onLoginHandled()
-                    onNavigation(uiState.loginNavigationModel)
+                uiState.navigationModel != null -> {
+                    viewModel.onNavigationHandled()
+                    onNavigation(uiState.navigationModel)
                 }
             }
         }
@@ -74,7 +74,7 @@ fun LoginScreen(
                 .padding(top = 20.dp),
             validateFields = uiState.validateFields
         ) { uiAction ->
-            handleUiAction(uiAction, viewModel)
+            handleAction(uiAction, viewModel)
         }
     }
 
@@ -91,27 +91,21 @@ fun LoginScreen(
     }
 
     uiState.warning?.let { errorUiModel ->
-        ErrorBannerComponent(
-            uiModel = errorUiModel,
-            onAction = {
-                viewModel.onLoginHandled()
-                viewModel.handleShownWarning()
-                onNavigation(uiState.loginNavigationModel)
-            }
-        )
+        ErrorBannerComponent(uiModel = errorUiModel) {
+            viewModel.onNavigationHandled()
+            viewModel.handleShownWarning()
+            onNavigation(uiState.navigationModel)
+        }
     }
 
-    OnErrorHandler(
-        errorModel = uiState.errorModel,
-        onAction = {
-            viewModel.handleShownError()
-        }
-    )
+    OnErrorHandler(uiState.errorModel) {
+        viewModel.handleShownError()
+    }
 
     OnLoadingHandler(uiState.isLoading, modifier)
 }
 
-private fun handleUiAction(
+private fun handleAction(
     uiAction: UiAction,
     viewModel: LoginViewModel
 ) {

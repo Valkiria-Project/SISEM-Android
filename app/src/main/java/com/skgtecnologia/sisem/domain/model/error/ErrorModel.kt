@@ -2,10 +2,7 @@ package com.skgtecnologia.sisem.domain.model.error
 
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.resources.StringProvider
-import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
-import com.skgtecnologia.sisem.domain.model.footer.FooterModel
-import com.valkiria.uicomponents.components.errorbanner.DEFAULT_ICON_COLOR
-import com.valkiria.uicomponents.components.errorbanner.ErrorUiModel
+import com.valkiria.uicomponents.model.ui.errorbanner.ErrorUiModel
 import retrofit2.HttpException
 import timber.log.Timber
 import java.net.ConnectException
