@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.skgtecnologia.sisem.domain.news.model.NewsIdentifier
+import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
@@ -98,7 +98,7 @@ fun handleFooterUiAction(
 ) {
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
-            NewsIdentifier.ADD_REPORT_CANCEL_BUTTON.name -> onCancel()
+            AddReportRoleIdentifier.ADD_REPORT_CANCEL_BUTTON.name -> onCancel()
         }
     }
 }
