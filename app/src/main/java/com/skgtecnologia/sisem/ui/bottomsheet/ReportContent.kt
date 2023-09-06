@@ -1,7 +1,5 @@
 package com.skgtecnologia.sisem.ui.bottomsheet
 
-import android.graphics.BitmapFactory
-import android.util.Base64
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +25,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.domain.model.bricks.ReportDetailModel
+import com.skgtecnologia.sisem.ui.commons.extensions.decodeAsBase64Bitmap
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.model.props.toTextStyle
 
@@ -35,12 +34,7 @@ fun ReportContent(
     model: ReportDetailModel
 ) {
     val imagesBitmap = model.images.map { image ->
-        val base64Image = image
-            .split(",".toRegex())
-            .dropLastWhile { it.isEmpty() }
-            .toTypedArray()[1]
-        val decodedString = Base64.decode(base64Image, Base64.DEFAULT)
-        BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+        image.decodeAsBase64Bitmap()
     }
 
     val pageCount = imagesBitmap.size
