@@ -23,7 +23,7 @@ fun ButtonStyle.mapToColors(): ButtonColors = when (this) {
 }
 
 @Composable
-fun ButtonStyle.mapToTextColor(): Color = when (this) {
+fun ButtonStyle.mapToTextColor(overrideColor: Color? = null): Color = when (this) {
     ButtonStyle.LOUD -> MaterialTheme.colorScheme.onPrimary
-    ButtonStyle.TRANSPARENT -> MaterialTheme.colorScheme.onBackground
+    ButtonStyle.TRANSPARENT -> overrideColor ?: MaterialTheme.colorScheme.onBackground
 }

@@ -93,7 +93,6 @@ class LoginViewModel @Inject constructor(
                     Timber.d("Successful login with ${accessTokenModel.username}")
                     if (accessTokenModel.warning == null) {
                         uiState = uiState.copy(
-                            onLogin = true,
                             navigationModel = with(accessTokenModel) {
                                 LoginNavigationModel(
                                     isAdmin = isAdmin,
@@ -132,9 +131,8 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun onLoginHandled() {
+    fun onNavigationHandled() {
         uiState = uiState.copy(
-            onLogin = false,
             validateFields = false,
             navigationModel = null,
             isLoading = false

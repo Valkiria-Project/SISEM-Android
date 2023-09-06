@@ -7,7 +7,6 @@ import com.valkiria.uicomponents.model.ui.errorbanner.ErrorUiModel
 
 data class LoginUiState(
     val screenModel: ScreenModel? = null,
-    val onLogin: Boolean = false,
     val onForgotPassword: Boolean = false,
     val onLoginLink: LoginLink? = null,
     val validateFields: Boolean = false,
