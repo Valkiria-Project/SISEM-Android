@@ -19,6 +19,7 @@ import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.NewsUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
+import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 import kotlinx.coroutines.launch
 
@@ -77,16 +78,8 @@ fun NewsScreen(
         }
     }
 
-    uiState.errorModel?.let { errorUiModel ->
-        scope.launch {
-            sheetState.show()
-        }
-
-        ErrorBannerComponent(
-            uiModel = errorUiModel
-        ) {
-            viewModel.handleShownError()
-        }
+    OnErrorHandler(uiState.errorModel) {
+        viewModel.handleShownError()
     }
 
     if (uiState.isLoading) {
