@@ -8,9 +8,11 @@ import android.net.Uri
 import android.util.Base64
 import java.io.ByteArrayOutputStream
 
+const val COMPRESSION_QUALITY_80 = 80
+
 fun Bitmap.encodeAsBase64(): String {
     val output = ByteArrayOutputStream()
-    this.compress(Bitmap.CompressFormat.JPEG, 80, output)
+    this.compress(Bitmap.CompressFormat.JPEG, COMPRESSION_QUALITY_80, output)
     val bytes = output.toByteArray()
     return Base64.encodeToString(bytes, Base64.DEFAULT)
 }

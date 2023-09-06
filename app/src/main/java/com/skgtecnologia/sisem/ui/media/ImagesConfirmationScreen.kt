@@ -31,7 +31,6 @@ import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.model.props.TabletWidth
 import com.valkiria.uicomponents.model.props.TextStyle
 
-
 @Composable
 fun ImagesConfirmationScreen(
     viewModel: ReportViewModel,

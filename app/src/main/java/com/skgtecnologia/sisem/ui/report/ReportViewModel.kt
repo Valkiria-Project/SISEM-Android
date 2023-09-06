@@ -46,7 +46,6 @@ class ReportViewModel @Inject constructor() : ViewModel() {
         )
     }
 
-
     fun onPhotoTaken(savedUri: Uri) {
         uiState = uiState.copy(
             selectedImageUris = buildList {
