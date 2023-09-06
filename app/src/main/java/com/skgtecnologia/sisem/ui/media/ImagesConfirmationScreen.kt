@@ -40,6 +40,7 @@ import com.valkiria.uicomponents.model.ui.button.ButtonUiModel
 import com.valkiria.uicomponents.model.ui.button.OnClick
 import timber.log.Timber
 
+@Suppress("LongMethod")
 @Composable
 fun ImagesConfirmationScreen(
     viewModel: ReportViewModel,
