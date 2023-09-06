@@ -18,10 +18,8 @@ import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.RecordNewsUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
 import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
 import com.valkiria.uicomponents.components.loader.LoaderComponent
-import kotlinx.coroutines.launch
 
 @Composable
 fun RecordNewsScreen(
@@ -50,7 +48,9 @@ fun RecordNewsScreen(
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
-            )
+            ) {
+                onCancel()
+            }
         }
 
         BodySection(
