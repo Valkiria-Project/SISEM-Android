@@ -57,7 +57,7 @@ fun ImagesConfirmationScreen(
 
     LaunchedEffect(uiState) {
         when {
-            uiState.navigationModel != null && uiState.successInfoModel == null-> {
+            uiState.navigationModel != null && uiState.successInfoModel == null -> {
                 viewModel.handleNavigation()
                 onNavigation(uiState.navigationModel)
             }
