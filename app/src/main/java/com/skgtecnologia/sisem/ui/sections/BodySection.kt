@@ -35,7 +35,7 @@ import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.mapToHeaderModel
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
-import com.skgtecnologia.sisem.domain.news.model.NewsIdentifier
+import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
 import com.skgtecnologia.sisem.domain.recordnews.model.RecordNewsIdentifier
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.ConfirmPasswordInput
@@ -256,9 +256,9 @@ private fun HandleChipRows(
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
-        NewsIdentifier.ADD_REPORT_ROLE_CHIP_ASSISTANT.name,
-        NewsIdentifier.ADD_REPORT_ROLE_CHIP_DOCTOR.name,
-        NewsIdentifier.ADD_REPORT_ROLE_CHIP_DRIVER.name -> ChipComponent(
+        AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_ASSISTANT.name,
+        AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DOCTOR.name,
+        AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DRIVER.name -> ChipComponent(
             uiModel = model.mapToUiModel(),
             isTablet = isTablet,
             onClick = { onAction(NewsUiAction.NewsStepOneOnChipClick(it)) }

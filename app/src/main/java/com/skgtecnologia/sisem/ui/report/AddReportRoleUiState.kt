@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.news
+package com.skgtecnologia.sisem.ui.report
 
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.valkiria.uicomponents.model.ui.errorbanner.ErrorUiModel

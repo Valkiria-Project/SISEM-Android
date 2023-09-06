@@ -22,9 +22,9 @@ import com.skgtecnologia.sisem.ui.media.CameraScreen
 import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
-import com.skgtecnologia.sisem.ui.news.AddReportRoleScreen
+import com.skgtecnologia.sisem.ui.report.AddReportRoleScreen
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
-import com.skgtecnologia.sisem.ui.recordnews.AddReportScreen
+import com.skgtecnologia.sisem.ui.report.AddReportScreen
 import com.skgtecnologia.sisem.ui.report.FindingsScreen
 
 @Composable
@@ -180,7 +180,7 @@ private fun NavGraphBuilder.mainGraph(
         }
 
         composable(
-            route = MainNavigationRoute.NewsScreen.route
+            route = MainNavigationRoute.AddReportRole.route
         ) {
             navController.navigate(ReportNavigationRoute.AddReportRole.route)
         }

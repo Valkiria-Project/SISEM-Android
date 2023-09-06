@@ -12,8 +12,11 @@ class ReportRepositoryImpl @Inject constructor(
     private val reportRemoteDataSource: ReportRemoteDataSource
 ) : ReportRepository {
 
-    override suspend fun getAddReportScreen(serial: String): ScreenModel =
-        reportRemoteDataSource.getAddReportScreen(serial).getOrThrow()
+    override suspend fun getAddReportRoleScreen(serial: String): ScreenModel =
+        reportRemoteDataSource.getAddReportRoleScreen(serial).getOrThrow()
+
+    override suspend fun getAddReportScreen(): ScreenModel =
+        reportRemoteDataSource.getAddReportScreen().getOrThrow()
 
     override suspend fun sendReport(
         topic: String,

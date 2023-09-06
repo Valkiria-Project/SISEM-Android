@@ -10,7 +10,10 @@ import retrofit2.http.POST
 interface ReportApi {
 
     @POST("screen/addReport")
-    suspend fun getAddReportScreen(@Body screenBody: ScreenBody): Response<ScreenResponse>
+    suspend fun getAddReportRoleScreen(@Body screenBody: ScreenBody): Response<ScreenResponse>
+
+    @POST("screen/addReportEntry")
+    suspend fun getAddReportEntryScreen(@Body screenBody: ScreenBody): Response<ScreenResponse>
 
     @POST("novelty")
     suspend fun sendReport(@Body reportBody: ReportBody): Response<Unit>

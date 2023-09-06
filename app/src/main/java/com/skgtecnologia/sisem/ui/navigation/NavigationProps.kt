@@ -24,7 +24,7 @@ sealed class MainNavigationRoute(val route: String) {
     data object IncidentScreen : MainNavigationRoute("incident_screen")
     data object InventoryScreen : MainNavigationRoute("inventory_screen")
     data object MainScreen : MainNavigationRoute("menu_screen")
-    data object NewsScreen : MainNavigationRoute("news_screen")
+    data object AddReportRole : MainNavigationRoute("add_report_role_screen")
     data object NotificationsScreen : MainNavigationRoute("notifications_screen")
     data object PreoperationalMainScreen : MainNavigationRoute("preoperational_menu_screen")
     data object ShiftScreen : MainNavigationRoute("shift_screen")

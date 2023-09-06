@@ -1,6 +1,6 @@
-package com.skgtecnologia.sisem.domain.news.model
+package com.skgtecnologia.sisem.domain.report.model
 
-enum class NewsIdentifier {
+enum class AddReportRoleIdentifier {
     ADD_REPORT_ROLE_CHIP_ASSISTANT,
     ADD_REPORT_ROLE_CHIP_DOCTOR,
     ADD_REPORT_ROLE_CHIP_DRIVER,

@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.news
+package com.skgtecnologia.sisem.ui.report
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
-import com.skgtecnologia.sisem.domain.report.usecases.GetAddReportScreen
+import com.skgtecnologia.sisem.domain.report.usecases.GetAddReportRoleScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +18,7 @@ import timber.log.Timber
 
 @HiltViewModel
 class AddReportRoleViewModel @Inject constructor(
-    private val getAddReportScreen: GetAddReportScreen,
+    private val getAddReportRoleScreen: GetAddReportRoleScreen,
     androidIdProvider: AndroidIdProvider
 ) : ViewModel() {
 
@@ -32,7 +32,7 @@ class AddReportRoleViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            getAddReportScreen.invoke(androidIdProvider.getAndroidId())
+            getAddReportRoleScreen.invoke(androidIdProvider.getAndroidId())
                 .onSuccess { newsScreenModel ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(

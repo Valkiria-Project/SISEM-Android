@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.recordnews
+package com.skgtecnologia.sisem.ui.report
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,9 +17,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.recordnews.model.RecordNewsIdentifier
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
-import com.skgtecnologia.sisem.ui.report.DESCRIPTION_INPUT_MIN_LINES
-import com.skgtecnologia.sisem.ui.report.MediaActions
-import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
@@ -47,7 +44,7 @@ fun AddReportScreen(
     onNavigation: (addReportNavigationModel: NavigationModel?) -> Unit,
     onCancel: () -> Unit
 ) {
-    val viewModel = hiltViewModel<RecordNewsViewModel>()
+    val viewModel = hiltViewModel<AddReportViewModel>()
     val uiState = viewModel.uiState
     val uiReportState = reportViewModel.uiState
 

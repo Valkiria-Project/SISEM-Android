@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.recordnews
+package com.skgtecnologia.sisem.ui.report
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
-import com.skgtecnologia.sisem.domain.recordnews.usecases.GetRecordNewsScreen
+import com.skgtecnologia.sisem.domain.recordnews.usecases.GetAddReportScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -16,13 +16,13 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @HiltViewModel
-class RecordNewsViewModel @Inject constructor(
-    private val getRecordNewsScreen: GetRecordNewsScreen
+class AddReportViewModel @Inject constructor(
+    private val getAddReportScreen: GetAddReportScreen
 ) : ViewModel() {
 
     private var job: Job? = null
 
-    var uiState by mutableStateOf(RecordNewsUiState())
+    var uiState by mutableStateOf(AddReportUiState())
         private set
 
     init {
@@ -30,7 +30,7 @@ class RecordNewsViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            getRecordNewsScreen.invoke()
+            getAddReportScreen.invoke()
                 .onSuccess { recordNewsScreenModel ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(

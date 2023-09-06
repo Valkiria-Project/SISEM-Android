@@ -10,7 +10,7 @@ import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.DrivingGuideScr
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.HCEUDCScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.IncidentScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.InventoryScreen
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.NewsScreen
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.AddReportRole
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.NotificationsScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.PreoperationalMainScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.ShiftScreen
@@ -58,7 +58,7 @@ private fun getDrawerItems(context: Context) = listOf(
         drawable.ic_certifications
     ),
     DrawerMenuItemModel(
-        NewsScreen,
+        AddReportRole,
         context.getString(R.string.drawer_novelties),
         drawable.ic_news
     ),

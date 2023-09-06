@@ -103,7 +103,7 @@ private fun reportToNextStep(
             navController.navigate("${ReportNavigationRoute.ImagesConfirmation.route}/recordNews")
 
         model.closeReport -> navController.navigate(NavigationGraph.Main.route) {
-            popUpTo(MainNavigationRoute.NewsScreen.route) {
+            popUpTo(MainNavigationRoute.AddReportRole.route) {
                 inclusive = true
             }
         }

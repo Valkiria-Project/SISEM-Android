@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.news
+package com.skgtecnologia.sisem.ui.report
 
 import HideKeyboard
 import androidx.compose.foundation.layout.fillMaxSize
