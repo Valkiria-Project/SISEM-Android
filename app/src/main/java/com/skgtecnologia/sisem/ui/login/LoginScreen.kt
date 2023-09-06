@@ -45,9 +45,9 @@ fun LoginScreen(
     LaunchedEffect(uiState) {
         launch {
             when {
-                uiState.onLogin -> {
-                    viewModel.onLoginHandled()
-                    onNavigation(uiState.loginNavigationModel)
+                uiState.navigationModel != null -> {
+                    viewModel.onNavigationHandled()
+                    onNavigation(uiState.navigationModel)
                 }
             }
         }
@@ -92,9 +92,9 @@ fun LoginScreen(
 
     uiState.warning?.let { errorUiModel ->
         ErrorBannerComponent(uiModel = errorUiModel) {
-            viewModel.onLoginHandled()
+            viewModel.onNavigationHandled()
             viewModel.handleShownWarning()
-            onNavigation(uiState.loginNavigationModel)
+            onNavigation(uiState.navigationModel)
         }
     }
 

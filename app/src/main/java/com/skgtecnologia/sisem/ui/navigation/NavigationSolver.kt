@@ -28,27 +28,11 @@ fun getAuthStartDestination(model: StartupNavigationModel?): String {
 
 fun navigateToNextStep(navController: NavHostController, navigationModel: NavigationModel?) =
     when (navigationModel) {
-        is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
         is LoginNavigationModel -> loginToNextStep(navController, navigationModel)
         is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
+        is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
         else -> {}
     }
-
-private fun reportToNextStep(
-    navController: NavHostController,
-    model: ReportNavigationModel
-) {
-    when {
-        model.goBack || model.photoTaken -> navController.popBackStack()
-
-        model.showCamera -> navController.navigate(ReportNavigationRoute.Camera.route)
-
-        model.confirmMedia -> Timber.d("Finish this")
-
-        // FIXME: Add logic to validate first if there are any images
-        model.saveFinding -> navController.navigate(ReportNavigationRoute.ImagesConfirmation.route)
-    }
-}
 
 private fun loginToNextStep(
     navController: NavHostController,
@@ -97,4 +81,22 @@ private fun preOpToNextStep(
     model.isNewFinding -> navController.navigate(ReportNavigationRoute.Findings.route)
 
     else -> navController.navigate(AuthNavigationRoute.AuthCards.route)
+}
+
+private fun reportToNextStep(
+    navController: NavHostController,
+    model: ReportNavigationModel
+) {
+    when {
+        model.goBack || model.photoTaken -> navController.popBackStack()
+
+        model.showCamera -> navController.navigate(ReportNavigationRoute.Camera.route)
+
+        model.confirmMedia -> Timber.d("Finish this")
+
+        model.saveFinding && model.imagesSize > 0 ->
+            navController.navigate(ReportNavigationRoute.ImagesConfirmation.route)
+
+        model.saveFinding -> navController.popBackStack()
+    }
 }

@@ -132,6 +132,8 @@
     <string name="images_confirmation_title">Fotos seleccionadas</string>
     <string name="images_confirmation_subtitle">Visualice las imágenes seleccionadas previamente, en caso de querer eliminarlas.</string>
     <string name="images_confirmation_left_icon">ic_back</string>
+    <string name="images_confirmation_delete_image_cta">Eliminar</string>
+    <string name="images_confirmation_confirm_images_cta">Adjuntar</string>
 
     <!-- Drawer Menu -->
     <string name="drawer_header_zone">Subred: %s</string>

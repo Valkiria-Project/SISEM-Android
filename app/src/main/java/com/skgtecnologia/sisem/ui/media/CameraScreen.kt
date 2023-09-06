@@ -40,7 +40,6 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.ui.commons.utils.CameraUtils
 import com.skgtecnologia.sisem.ui.commons.utils.MediaStoreUtils
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
-import com.skgtecnologia.sisem.ui.navigation.model.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -65,9 +64,9 @@ fun CameraScreen(
             cameraPermissionState.launchPermissionRequest()
         }
 
-        if (uiState.onPhotoTaken) {
-            viewModel.handleOnPhotoTaken()
-            onNavigation(ReportNavigationModel(photoTaken = true))
+        if (uiState.navigationModel != null) {
+            viewModel.handleNavigation()
+            onNavigation(uiState.navigationModel)
         }
     }
 

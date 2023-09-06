@@ -20,8 +20,7 @@ class CameraUtils(private val context: Context) {
         context.contentResolver,
         MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
         getContentValues()
-    )
-        .build()
+    ).build()
 
     private fun getContentValues() = ContentValues().apply {
         put(MediaStore.MediaColumns.DISPLAY_NAME, name)
