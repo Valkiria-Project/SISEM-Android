@@ -22,9 +22,9 @@ import com.skgtecnologia.sisem.ui.media.CameraScreen
 import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
-import com.skgtecnologia.sisem.ui.news.NewsScreen
+import com.skgtecnologia.sisem.ui.news.AddReportRoleScreen
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
-import com.skgtecnologia.sisem.ui.recordnews.RecordNewsScreen
+import com.skgtecnologia.sisem.ui.recordnews.AddReportScreen
 import com.skgtecnologia.sisem.ui.report.FindingsScreen
 
 @Composable
@@ -182,7 +182,7 @@ private fun NavGraphBuilder.mainGraph(
         composable(
             route = MainNavigationRoute.NewsScreen.route
         ) {
-            navController.navigate(ReportNavigationRoute.NewsScreen.route)
+            navController.navigate(ReportNavigationRoute.AddReportRole.route)
         }
 
         composable(
@@ -264,23 +264,23 @@ private fun NavGraphBuilder.reportGraph(
         }
 
         composable(
-            route = ReportNavigationRoute.NewsScreen.route
+            route = ReportNavigationRoute.AddReportScreen.route
         ) {
-            NewsScreen(
+            AddReportRoleScreen(
                 isTablet = isTablet,
                 modifier = modifier,
                 onNavigation = { role ->
-                    navController.navigate("${ReportNavigationRoute.RecordNewsScreen.route}/$role")
+                    navController.navigate("${ReportNavigationRoute.AddReportScreen.route}/$role")
                 },
                 onCancel = { navController.navigateUp() }
             )
         }
 
         composable(
-            route = "${ReportNavigationRoute.RecordNewsScreen.route}/{${NavigationArgument.ROLE}}",
+            route = "${ReportNavigationRoute.AddReportScreen.route}/{${NavigationArgument.ROLE}}",
             arguments = listOf(navArgument(NavigationArgument.ROLE) { type = NavType.StringType })
         ) { backStackEntry ->
-            RecordNewsScreen(
+            AddReportScreen(
                 reportViewModel = backStackEntry.sharedViewModel(navController = navController),
                 isTablet = isTablet,
                 role = backStackEntry.arguments?.getString(NavigationArgument.ROLE).orEmpty(),

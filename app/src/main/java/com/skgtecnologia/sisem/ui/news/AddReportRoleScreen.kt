@@ -20,13 +20,13 @@ import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 
 @Composable
-fun NewsScreen(
+fun AddReportRoleScreen(
     isTablet: Boolean,
     modifier: Modifier = Modifier,
     onNavigation: (role: String) -> Unit,
     onCancel: () -> Unit
 ) {
-    val viewModel = hiltViewModel<NewsViewModel>()
+    val viewModel = hiltViewModel<AddReportRoleViewModel>()
     val uiState = viewModel.uiState
 
     ConstraintLayout(

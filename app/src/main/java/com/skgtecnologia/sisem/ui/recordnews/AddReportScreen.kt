@@ -39,7 +39,7 @@ import kotlin.random.Random
 
 @Suppress("LongParameterList")
 @Composable
-fun RecordNewsScreen(
+fun AddReportScreen(
     reportViewModel: ReportViewModel,
     isTablet: Boolean,
     modifier: Modifier = Modifier,

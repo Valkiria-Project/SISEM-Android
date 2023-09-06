@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
-import com.skgtecnologia.sisem.domain.news.usecases.GetNewsScreen
+import com.skgtecnologia.sisem.domain.report.usecases.GetAddReportScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -17,14 +17,14 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @HiltViewModel
-class NewsViewModel @Inject constructor(
-    private val getNewsScreen: GetNewsScreen,
+class AddReportRoleViewModel @Inject constructor(
+    private val getAddReportScreen: GetAddReportScreen,
     androidIdProvider: AndroidIdProvider
 ) : ViewModel() {
 
     private var job: Job? = null
 
-    var uiState by mutableStateOf(NewsUiState())
+    var uiState by mutableStateOf(AddReportRoleUiState())
         private set
 
     init {
@@ -32,7 +32,7 @@ class NewsViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            getNewsScreen.invoke(androidIdProvider.getAndroidId())
+            getAddReportScreen.invoke(androidIdProvider.getAndroidId())
                 .onSuccess { newsScreenModel ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(

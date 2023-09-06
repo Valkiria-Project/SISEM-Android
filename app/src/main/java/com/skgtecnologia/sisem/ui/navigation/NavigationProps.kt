@@ -1,19 +1,19 @@
 package com.skgtecnologia.sisem.ui.navigation
 
 sealed class NavigationGraph(val route: String) {
-    data object Auth : NavigationGraph("auth")
-    data object Main : NavigationGraph("main")
-    data object Report : NavigationGraph("report")
+    data object Auth : NavigationGraph("auth_graph")
+    data object Main : NavigationGraph("main_graph")
+    data object Report : NavigationGraph("report_graph")
 }
 
 sealed class AuthNavigationRoute(val route: String) {
-    data object AuthCards : AuthNavigationRoute("auth_cards")
-    data object DeviceAuth : AuthNavigationRoute("device_auth")
-    data object Login : AuthNavigationRoute("login")
-    data object PreOperational : AuthNavigationRoute("pre_operational")
+    data object AuthCards : AuthNavigationRoute("auth_cards_screen")
+    data object DeviceAuth : AuthNavigationRoute("device_auth_screen")
+    data object Login : AuthNavigationRoute("login_screen")
+    data object PreOperational : AuthNavigationRoute("pre_operational_screen")
 
     // FIXME: This is not part of AuthGraph
-    data object ChangePassword : AuthNavigationRoute("change_password")
+    data object ChangePassword : AuthNavigationRoute("change_password_screen")
 }
 
 sealed class MainNavigationRoute(val route: String) {
@@ -32,11 +32,11 @@ sealed class MainNavigationRoute(val route: String) {
 }
 
 sealed class ReportNavigationRoute(val route: String) {
-    data object Camera : ReportNavigationRoute("camera")
-    data object Findings : ReportNavigationRoute("findings")
-    data object ImagesConfirmation : ReportNavigationRoute("images_confirmation")
-    data object NewsScreen : ReportNavigationRoute("news_screen")
-    data object RecordNewsScreen : ReportNavigationRoute("record_news_screen")
+    data object Camera : ReportNavigationRoute("camera_screen")
+    data object Findings : ReportNavigationRoute("findings_screen")
+    data object ImagesConfirmation : ReportNavigationRoute("images_confirmation_screen")
+    data object AddReportRole : ReportNavigationRoute("add_report_role_screen")
+    data object AddReportScreen : ReportNavigationRoute("add_report_screen")
 }
 
 object NavigationArgument {
