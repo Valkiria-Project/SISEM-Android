@@ -19,7 +19,9 @@ class ReportRemoteDataSource @Inject constructor(
 
     suspend fun getAddReportRoleScreen(serial: String): Result<ScreenModel> =
         apiCall(errorModelFactory) {
-            reportApi.getAddReportRoleScreen(screenBody = ScreenBody(params = Params(serial = serial)))
+            reportApi.getAddReportRoleScreen(
+                screenBody = ScreenBody(params = Params(serial = serial))
+            )
         }.mapResult {
             it.mapToDomain()
         }
