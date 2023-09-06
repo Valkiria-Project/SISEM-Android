@@ -22,8 +22,8 @@ import com.skgtecnologia.sisem.ui.media.CameraScreen
 import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
-import com.skgtecnologia.sisem.ui.report.AddReportRoleScreen
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
+import com.skgtecnologia.sisem.ui.report.AddReportRoleScreen
 import com.skgtecnologia.sisem.ui.report.AddReportScreen
 import com.skgtecnologia.sisem.ui.report.FindingsScreen
 
@@ -61,18 +61,18 @@ private fun NavGraphBuilder.authGraph(
         route = NavigationGraph.Auth.route
     ) {
         composable(
-            route = AuthNavigationRoute.AuthCards.route
+            route = AuthNavigationRoute.AuthCardsScreen.route
         ) {
             AuthCardsScreen(
                 isTablet = isTablet,
                 modifier = modifier
             ) {
-                navController.navigate(AuthNavigationRoute.Login.route)
+                navController.navigate(AuthNavigationRoute.LoginScreen.route)
             }
         }
 
         composable(
-            route = AuthNavigationRoute.Login.route
+            route = AuthNavigationRoute.LoginScreen.route
         ) {
             LoginScreen(
                 isTablet = isTablet,
@@ -83,20 +83,20 @@ private fun NavGraphBuilder.authGraph(
         }
 
         composable(
-            route = AuthNavigationRoute.DeviceAuth.route
+            route = AuthNavigationRoute.DeviceAuthScreen.route
         ) {
             DeviceAuthScreen(
                 isTablet = isTablet,
                 modifier = modifier,
                 onDeviceAuthenticated = {
-                    navController.navigate(AuthNavigationRoute.AuthCards.route)
+                    navController.navigate(AuthNavigationRoute.AuthCardsScreen.route)
                 },
                 onCancel = { navController.navigateUp() }
             )
         }
 
         composable(
-            route = AuthNavigationRoute.PreOperational.route
+            route = AuthNavigationRoute.PreOperationalScreen.route
         ) {
             PreOperationalScreen(
                 isTablet = isTablet,
@@ -108,7 +108,7 @@ private fun NavGraphBuilder.authGraph(
 
         // FIXME: This is not part of AuthGraph
         composable(
-            route = AuthNavigationRoute.ChangePassword.route
+            route = AuthNavigationRoute.ChangePasswordScreen.route
         ) {
             ChangePasswordScreen(
                 isTablet = isTablet,
@@ -140,7 +140,7 @@ private fun NavGraphBuilder.mainGraph(
                     navController.navigate(menuNavigationRoute.route)
                 },
                 onLogout = {
-                    navController.navigate(AuthNavigationRoute.AuthCards.route) {
+                    navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
                         popUpTo(NavigationGraph.Main.route) {
                             inclusive = true
                         }
@@ -180,9 +180,9 @@ private fun NavGraphBuilder.mainGraph(
         }
 
         composable(
-            route = MainNavigationRoute.AddReportRole.route
+            route = MainNavigationRoute.AddReportRoleScreen.route
         ) {
-            navController.navigate(ReportNavigationRoute.AddReportRole.route)
+            navController.navigate(ReportNavigationRoute.AddReportRoleScreen.route)
         }
 
         composable(
@@ -204,9 +204,9 @@ private fun NavGraphBuilder.mainGraph(
         }
 
         composable(
-            route = MainNavigationRoute.DeviceAuth.route
+            route = MainNavigationRoute.DeviceAuthScreen.route
         ) {
-            navController.navigate(AuthNavigationRoute.DeviceAuth.route)
+            navController.navigate(AuthNavigationRoute.DeviceAuthScreen.route)
         }
 
         composable(
@@ -224,11 +224,11 @@ private fun NavGraphBuilder.reportGraph(
     modifier: Modifier
 ) {
     navigation(
-        startDestination = ReportNavigationRoute.Findings.route,
+        startDestination = ReportNavigationRoute.FindingsScreen.route,
         route = NavigationGraph.Report.route
     ) {
         composable(
-            route = ReportNavigationRoute.Findings.route
+            route = ReportNavigationRoute.FindingsScreen.route
         ) {
             FindingsScreen(
                 viewModel = it.sharedViewModel(navController = navController),
@@ -240,7 +240,7 @@ private fun NavGraphBuilder.reportGraph(
         }
 
         composable(
-            route = ReportNavigationRoute.Camera.route
+            route = ReportNavigationRoute.CameraScreen.route
         ) {
             CameraScreen(
                 viewModel = it.sharedViewModel(navController = navController)
@@ -250,8 +250,7 @@ private fun NavGraphBuilder.reportGraph(
         }
 
         composable(
-            route = """${ReportNavigationRoute.ImagesConfirmation.route}/
-                |{${NavigationArgument.FROM}}""".trimMargin(),
+            route = "${ReportNavigationRoute.ImagesConfirmationScreen.route}/{${NavigationArgument.FROM}}",
             arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
         ) { backStackEntry ->
             ImagesConfirmationScreen(
@@ -265,7 +264,7 @@ private fun NavGraphBuilder.reportGraph(
         }
 
         composable(
-            route = ReportNavigationRoute.AddReportScreen.route
+            route = ReportNavigationRoute.AddReportRoleScreen.route
         ) {
             AddReportRoleScreen(
                 isTablet = isTablet,

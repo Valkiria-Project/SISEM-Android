@@ -20,9 +20,9 @@ fun getAppStartDestination(model: StartupNavigationModel?): String {
 
 fun getAuthStartDestination(model: StartupNavigationModel?): String {
     return if (model?.requiresPreOperational == true) {
-        AuthNavigationRoute.PreOperational.route
+        AuthNavigationRoute.PreOperationalScreen.route
     } else {
-        AuthNavigationRoute.AuthCards.route
+        AuthNavigationRoute.AuthCardsScreen.route
     }
 }
 
@@ -38,34 +38,34 @@ private fun loginToNextStep(
     navController: NavHostController,
     model: LoginNavigationModel
 ) = when {
-    model.isWarning -> navController.navigate(AuthNavigationRoute.ChangePassword.route)
+    model.isWarning -> navController.navigate(AuthNavigationRoute.ChangePasswordScreen.route)
 
     model.isAdmin && model.requiresDeviceAuth ->
-        navController.navigate(AuthNavigationRoute.DeviceAuth.route)
+        navController.navigate(AuthNavigationRoute.DeviceAuthScreen.route)
 
     model.isAdmin && !model.requiresDeviceAuth ->
         navController.navigate(NavigationGraph.Main.route) {
-            popUpTo(AuthNavigationRoute.AuthCards.route) {
+            popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
                 inclusive = true
             }
         }
 
     model.isTurnComplete && model.requiresPreOperational.not() ->
         navController.navigate(NavigationGraph.Main.route) {
-            popUpTo(AuthNavigationRoute.AuthCards.route) {
+            popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
                 inclusive = true
             }
         }
 
     model.requiresPreOperational -> {
-        navController.navigate(AuthNavigationRoute.PreOperational.route) {
-            popUpTo(AuthNavigationRoute.AuthCards.route) {
+        navController.navigate(AuthNavigationRoute.PreOperationalScreen.route) {
+            popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
                 inclusive = true
             }
         }
     }
 
-    else -> navController.navigate(AuthNavigationRoute.AuthCards.route)
+    else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route)
 }
 
 private fun preOpToNextStep(
@@ -73,14 +73,14 @@ private fun preOpToNextStep(
     model: PreOpNavigationModel
 ) = when {
     model.isTurnComplete -> navController.navigate(NavigationGraph.Main.route) {
-        popUpTo(AuthNavigationRoute.AuthCards.route) {
+        popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
             inclusive = true
         }
     }
 
-    model.isNewFinding -> navController.navigate(ReportNavigationRoute.Findings.route)
+    model.isNewFinding -> navController.navigate(ReportNavigationRoute.FindingsScreen.route)
 
-    else -> navController.navigate(AuthNavigationRoute.AuthCards.route)
+    else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route)
 }
 
 private fun reportToNextStep(
@@ -90,20 +90,20 @@ private fun reportToNextStep(
     when {
         model.goBack || model.photoTaken -> navController.popBackStack()
 
-        model.showCamera -> navController.navigate(ReportNavigationRoute.Camera.route)
+        model.showCamera -> navController.navigate(ReportNavigationRoute.CameraScreen.route)
 
         model.confirmMedia -> Timber.d("Finish this")
 
         model.saveFinding && model.imagesSize > 0 ->
-            navController.navigate("${ReportNavigationRoute.ImagesConfirmation.route}/finding")
+            navController.navigate("${ReportNavigationRoute.ImagesConfirmationScreen.route}/finding")
 
         model.saveFinding -> navController.popBackStack()
 
         model.saveRecordNews && model.imagesSize > 0 ->
-            navController.navigate("${ReportNavigationRoute.ImagesConfirmation.route}/recordNews")
+            navController.navigate("${ReportNavigationRoute.ImagesConfirmationScreen.route}/recordNews")
 
         model.closeReport -> navController.navigate(NavigationGraph.Main.route) {
-            popUpTo(MainNavigationRoute.AddReportRole.route) {
+            popUpTo(MainNavigationRoute.AddReportRoleScreen.route) {
                 inclusive = true
             }
         }
