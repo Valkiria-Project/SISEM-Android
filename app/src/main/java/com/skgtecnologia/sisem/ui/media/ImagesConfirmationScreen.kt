@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.ui.media
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,12 +23,14 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.header.HeaderModel
 import com.skgtecnologia.sisem.domain.model.header.TextModel
 import com.skgtecnologia.sisem.ui.bottomsheet.PagerIndicator
+import com.skgtecnologia.sisem.ui.commons.extensions.decodeAsBitmap
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.model.props.TabletWidth
 import com.valkiria.uicomponents.model.props.TextStyle
+
 
 @Composable
 fun ImagesConfirmationScreen(
@@ -64,11 +65,8 @@ fun ImagesConfirmationScreen(
             }
         }
 
-        val bitmaps = viewModel.uiState.selectedImageUris.map {
-            val inputStream = LocalContext.current.contentResolver.openInputStream(it)
-            val bitmap = BitmapFactory.decodeStream(inputStream)
-            inputStream?.close()
-            bitmap
+        val bitmaps = viewModel.uiState.selectedImageUris.map { uri ->
+            uri.decodeAsBitmap(LocalContext.current.contentResolver)
         }
 
         ImagesPager(bitmaps)

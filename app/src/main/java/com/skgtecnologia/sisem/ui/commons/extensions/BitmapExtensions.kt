@@ -1,7 +1,10 @@
 package com.skgtecnologia.sisem.ui.commons.extensions
 
+import android.content.ContentResolver
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
+import android.net.Uri
 import android.util.Base64
 import java.io.ByteArrayOutputStream
 
@@ -12,9 +15,14 @@ fun Bitmap.encodeAsBase64(): String {
     return Base64.encodeToString(bytes, Base64.DEFAULT)
 }
 
-fun String.decodeBase64Bitmap(): Bitmap {
+fun String.decodeAsBase64Bitmap(): Bitmap {
     val bytes = Base64.decode(this, Base64.DEFAULT)
     return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+}
+
+fun Uri.decodeAsBitmap(contentResolver: ContentResolver): Bitmap {
+    val source = ImageDecoder.createSource(contentResolver, this)
+    return ImageDecoder.decodeBitmap(source)
 }
 
 fun Bitmap.scale(width: Int, height: Int): Bitmap {
