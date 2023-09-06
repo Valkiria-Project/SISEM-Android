@@ -27,11 +27,14 @@ import com.skgtecnologia.sisem.domain.model.header.HeaderModel
 import com.skgtecnologia.sisem.domain.model.header.TextModel
 import com.skgtecnologia.sisem.ui.bottomsheet.PagerIndicator
 import com.skgtecnologia.sisem.ui.commons.extensions.decodeAsBitmap
+import com.skgtecnologia.sisem.ui.commons.extensions.encodeAsBase64
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.bricks.button.ButtonView
+import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
+import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import com.valkiria.uicomponents.model.props.ButtonSize
 import com.valkiria.uicomponents.model.props.ButtonStyle
 import com.valkiria.uicomponents.model.props.TabletWidth
@@ -44,15 +47,17 @@ import timber.log.Timber
 @Composable
 fun ImagesConfirmationScreen(
     viewModel: ReportViewModel,
+    from: String,
     isTablet: Boolean,
     modifier: Modifier = Modifier,
     onNavigation: (imageSelectionNavigationModel: NavigationModel?) -> Unit
 ) {
     val uiState = viewModel.uiState
+    val contentResolver = LocalContext.current.contentResolver
 
     LaunchedEffect(uiState) {
         when {
-            uiState.navigationModel != null -> {
+            uiState.navigationModel != null && uiState.successInfoModel == null-> {
                 viewModel.handleNavigation()
                 onNavigation(uiState.navigationModel)
             }
@@ -107,7 +112,14 @@ fun ImagesConfirmationScreen(
                     modifier = Modifier
                 )
             ) {
-                Timber.d("Adjuntar clicked")
+                if (from == "recordNews") {
+                    val images = viewModel.uiState.selectedImageUris.map { uri ->
+                        uri.decodeAsBitmap(contentResolver).encodeAsBase64()
+                    }
+                    viewModel.sendRecordNews(images)
+                } else {
+                    // TODO
+                }
             }
         }
 
@@ -117,6 +129,18 @@ fun ImagesConfirmationScreen(
 
         ImagesPager(bitmaps)
     }
+
+    uiState.successInfoModel?.let { infoUiModel ->
+        OnErrorHandler(infoUiModel) {
+            onNavigation(uiState.navigationModel)
+        }
+    }
+
+    OnErrorHandler(uiState.errorModel) {
+        viewModel.handleShownError()
+    }
+
+    OnLoadingHandler(uiState.isLoading, modifier)
 }
 
 @Composable

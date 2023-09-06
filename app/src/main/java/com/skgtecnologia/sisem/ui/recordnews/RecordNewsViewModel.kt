@@ -25,11 +25,6 @@ class RecordNewsViewModel @Inject constructor(
     var uiState by mutableStateOf(RecordNewsUiState())
         private set
 
-    var topic by mutableStateOf("")
-    var description by mutableStateOf("")
-    var isValidTopic by mutableStateOf(false)
-    var isValidDescription by mutableStateOf(false)
-
     init {
         uiState = uiState.copy(isLoading = true)
 

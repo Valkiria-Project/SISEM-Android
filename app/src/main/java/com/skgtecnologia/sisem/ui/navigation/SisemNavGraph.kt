@@ -250,10 +250,12 @@ private fun NavGraphBuilder.reportGraph(
         }
 
         composable(
-            route = ReportNavigationRoute.ImagesConfirmation.route
+            route = "${ReportNavigationRoute.ImagesConfirmation.route}/{${NavigationArgument.FROM}}",
+            arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
         ) {
             ImagesConfirmationScreen(
                 viewModel = it.sharedViewModel(navController = navController),
+                from = it.arguments?.getString(NavigationArgument.FROM).orEmpty(),
                 isTablet = isTablet,
                 modifier = modifier
             ) { navigationModel ->
@@ -279,10 +281,11 @@ private fun NavGraphBuilder.reportGraph(
             arguments = listOf(navArgument(NavigationArgument.ROLE) { type = NavType.StringType })
         ) { backStackEntry ->
             RecordNewsScreen(
+                reportViewModel = backStackEntry.sharedViewModel(navController = navController),
                 isTablet = isTablet,
                 role = backStackEntry.arguments?.getString(NavigationArgument.ROLE).orEmpty(),
-                onNavigation = {
-                    // FIXME: Finish this work
+                onNavigation = { navigationModel ->
+                    navigateToNextStep(navController, navigationModel)
                 },
                 onCancel = { navController.navigateUp() }
             )

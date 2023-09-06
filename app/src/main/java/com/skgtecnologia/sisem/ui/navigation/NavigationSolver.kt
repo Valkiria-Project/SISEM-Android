@@ -95,8 +95,17 @@ private fun reportToNextStep(
         model.confirmMedia -> Timber.d("Finish this")
 
         model.saveFinding && model.imagesSize > 0 ->
-            navController.navigate(ReportNavigationRoute.ImagesConfirmation.route)
+            navController.navigate("${ReportNavigationRoute.ImagesConfirmation.route}/finding")
 
         model.saveFinding -> navController.popBackStack()
+
+        model.saveRecordNews && model.imagesSize > 0 ->
+            navController.navigate("${ReportNavigationRoute.ImagesConfirmation.route}/recordNews")
+
+        model.closeReport -> navController.navigate(NavigationGraph.Main.route) {
+            popUpTo(MainNavigationRoute.NewsScreen.route) {
+                inclusive = true
+            }
+        }
     }
 }

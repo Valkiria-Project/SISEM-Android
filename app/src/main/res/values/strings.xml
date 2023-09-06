@@ -155,4 +155,8 @@
     <string name="drawer_hceud">HCEUD</string>
     <string name="drawer_device_auth">Asociar dispositivo al vehículo</string>
     <string name="drawer_signature_and_fingerprint">Registrar firma y huella</string>
+
+    <!-- RecordNews Screen -->
+    <string name="record_news_topic_label">Asunto</string>
+    <string name="record_news_description_label">Descripción</string>
 </resources>

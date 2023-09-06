@@ -30,7 +30,9 @@ import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.button.ImageButtonView
+import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
 import com.valkiria.uicomponents.components.label.LabelComponent
+import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.model.props.ButtonSize
 import com.valkiria.uicomponents.model.props.ButtonStyle
@@ -103,6 +105,12 @@ fun FindingsScreen(
             }
         }
     }
+
+    OnErrorHandler(uiState.errorModel) {
+        viewModel.handleShownError()
+    }
+
+    OnLoadingHandler(uiState.isLoading, modifier)
 }
 
 @Composable
@@ -159,10 +167,10 @@ private fun getFindingsAddFilesModel() = LabelUiModel(
 )
 
 @Composable
-fun MediaActions(viewModel: ReportViewModel) {
+fun MediaActions(viewModel: ReportViewModel, role: String? = null) {
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
-        onResult = { uris -> viewModel.updateSelectedImages(uris) }
+        onResult = { uris -> viewModel.updateSelectedImages(uris, role) }
     )
 
     Row(

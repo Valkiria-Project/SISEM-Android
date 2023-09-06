@@ -44,4 +44,5 @@ sealed class ReportNavigationRoute(val route: String) {
 
 object NavigationArgument {
     const val ROLE = "operation_role"
+    const val FROM = "from"
 }
