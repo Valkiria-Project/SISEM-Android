@@ -87,12 +87,10 @@ private fun NavGraphBuilder.authGraph(
         ) {
             DeviceAuthScreen(
                 isTablet = isTablet,
-                modifier = modifier,
-                onDeviceAuthenticated = {
-                    navController.navigate(AuthNavigationRoute.AuthCardsScreen.route)
-                },
-                onCancel = { navController.navigateUp() }
-            )
+                modifier = modifier
+            ) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
         }
 
         composable(

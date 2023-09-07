@@ -7,10 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.usecases.DeleteAccessToken
-import com.skgtecnologia.sisem.domain.deviceauth.model.AssociateDeviceModel
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.AssociateDevice
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.GetDeviceAuthScreen
+import com.skgtecnologia.sisem.domain.model.banner.deviceAuthDisassociate
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
+import com.skgtecnologia.sisem.ui.navigation.model.DeviceAuthNavigationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -74,8 +75,8 @@ class DeviceAuthViewModel @Inject constructor(
                 androidIdProvider.getAndroidId(),
                 vehicleCode,
                 disassociateDeviceState
-            ).onSuccess { associateDeviceModel ->
-                handleOnSuccess(associateDeviceModel)
+            ).onSuccess {
+                handleOnSuccess()
             }.onFailure { throwable ->
                 Timber.wtf(throwable, "This is a failure")
 
@@ -88,26 +89,38 @@ class DeviceAuthViewModel @Inject constructor(
     }
 
     @Suppress("UnusedPrivateMember")
-    private suspend fun handleOnSuccess(associateDeviceModel: AssociateDeviceModel) {
+    private suspend fun handleOnSuccess() {
         if (disassociateDeviceState) {
             onDeviceAuthHandled() // FIXME: maintains the previous state, we must clean
             uiState.copy(
-                disassociateInfoModel = null, // Fixme: update with new response
+                disassociateInfoModel = deviceAuthDisassociate().mapToUi(), // Fixme: update with bk
                 isLoading = false
             )
         } else {
             deleteAccessToken.invoke().onSuccess {
                 uiState = uiState.copy(
                     isLoading = false,
-                    onDeviceAuthenticated = true
+                    navigationModel = DeviceAuthNavigationModel(isAssociated = true)
                 )
             }
         }
     }
 
+    fun cancel() {
+        uiState = uiState.copy(
+            navigationModel = DeviceAuthNavigationModel(isCancel = true)
+        )
+    }
+
+    fun cancelBanner() {
+        uiState = uiState.copy(
+            navigationModel = DeviceAuthNavigationModel(isCancelBanner = true)
+        )
+    }
+
     fun onDeviceAuthHandled() {
         uiState = uiState.copy(
-            onDeviceAuthenticated = false,
+            navigationModel = null,
             validateFields = false,
             isLoading = false
         )

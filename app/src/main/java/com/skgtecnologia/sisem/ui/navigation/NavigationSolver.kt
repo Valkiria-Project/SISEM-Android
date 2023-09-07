@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.navigation.NavHostController
+import com.skgtecnologia.sisem.ui.navigation.model.DeviceAuthNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.PreOpNavigationModel
@@ -31,6 +32,7 @@ fun navigateToNextStep(navController: NavHostController, navigationModel: Naviga
         is LoginNavigationModel -> loginToNextStep(navController, navigationModel)
         is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
         is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
+        is DeviceAuthNavigationModel -> deviceAuthToNextStep(navController, navigationModel)
         else -> {}
     }
 
@@ -109,5 +111,16 @@ private fun reportToNextStep(
                 inclusive = true
             }
         }
+    }
+}
+
+fun deviceAuthToNextStep(
+    navController: NavHostController,
+    model: DeviceAuthNavigationModel
+) {
+    when {
+        model.isAssociated -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route)
+        model.isCancel -> navController.popBackStack()
+        model.isCancelBanner -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route)
     }
 }
