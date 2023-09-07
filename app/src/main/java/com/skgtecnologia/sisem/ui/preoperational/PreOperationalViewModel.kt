@@ -11,8 +11,6 @@ import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.changepassword.usecases.GetLoginNavigationModel
 import com.skgtecnologia.sisem.domain.model.body.ChipOptionsModel
 import com.skgtecnologia.sisem.domain.model.body.FindingModel
-import com.skgtecnologia.sisem.domain.model.body.InventoryCheckModel
-import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
@@ -75,10 +73,19 @@ class PreOperationalViewModel @Inject constructor(
     private fun ScreenModel.getFormInitialValues() {
         this.body.forEach { bodyRowModel ->
             when (bodyRowModel) {
-                is FindingModel -> Timber.d("it's a finding with id $bodyRowModel.")
-                is ChipOptionsModel -> TODO()
-                is InventoryCheckModel -> TODO()
-                is TextFieldModel -> TODO()
+                is FindingModel -> {
+                    Timber.d("it's a FindingModel with id ${bodyRowModel.identifier}")
+                    val model = bodyRowModel.segmentedSwitchModel
+                    findings[model.identifier] = model.selected
+                }
+
+                is ChipOptionsModel -> {
+                    Timber.d("it's a ChipOptionsModel with id ${bodyRowModel.identifier}")
+                    bodyRowModel.items.forEach { optionUiModel ->
+                        findings[optionUiModel.id] = optionUiModel.selected
+                    }
+                }
+
                 else -> Timber.d("no-op")
             }
         }
