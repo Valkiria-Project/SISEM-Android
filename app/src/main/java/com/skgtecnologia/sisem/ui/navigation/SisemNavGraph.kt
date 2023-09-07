@@ -273,7 +273,13 @@ private fun NavGraphBuilder.reportGraph(
                 onNavigation = { role ->
                     navController.navigate("${ReportNavigationRoute.AddReportScreen.route}/$role")
                 },
-                onCancel = { navController.navigateUp() }
+                onCancel = {
+                    navController.navigate(NavigationGraph.Main.route) {
+                        popUpTo(MainNavigationRoute.AddReportRoleScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                }
             )
         }
 
@@ -287,8 +293,7 @@ private fun NavGraphBuilder.reportGraph(
                 role = backStackEntry.arguments?.getString(NavigationArgument.ROLE).orEmpty(),
                 onNavigation = { navigationModel ->
                     navigateToNextStep(navController, navigationModel)
-                },
-                onCancel = { navController.navigateUp() }
+                }
             )
         }
     }
