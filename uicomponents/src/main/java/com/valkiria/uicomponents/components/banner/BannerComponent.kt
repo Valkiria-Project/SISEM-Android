@@ -115,7 +115,7 @@ internal fun BannerComponent(
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.padding(bottom = 20.dp).fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(
                         20.dp,
                         Alignment.CenterHorizontally

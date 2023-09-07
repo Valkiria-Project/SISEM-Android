@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -41,8 +42,7 @@ fun AddReportScreen(
     isTablet: Boolean,
     modifier: Modifier = Modifier,
     role: String,
-    onNavigation: (addReportNavigationModel: NavigationModel?) -> Unit,
-    onCancel: () -> Unit
+    onNavigation: (addReportNavigationModel: NavigationModel?) -> Unit
 ) {
     val viewModel = hiltViewModel<AddReportViewModel>()
     val uiState = viewModel.uiState
@@ -50,7 +50,7 @@ fun AddReportScreen(
 
     LaunchedEffect(uiReportState) {
         when {
-            uiReportState.navigationModel != null -> {
+            uiReportState.navigationModel != null && uiReportState.cancelInfoModel == null -> {
                 reportViewModel.handleNavigation()
                 onNavigation(uiReportState.navigationModel)
             }
@@ -75,7 +75,8 @@ fun AddReportScreen(
         LabelComponent(uiModel = getRecordNewsTopicModel())
 
         TextFieldComponent(
-            uiModel = getFindingsTopicModel()
+            uiModel = getFindingsTopicModel(),
+            validateFields = uiReportState.validateFields
         ) { _, updatedValue, fieldValidated ->
             reportViewModel.topic = updatedValue
             reportViewModel.isValidTopic = fieldValidated
@@ -84,7 +85,8 @@ fun AddReportScreen(
         LabelComponent(uiModel = getRecordNewsDescriptionModel())
 
         TextFieldComponent(
-            uiModel = getFindingsDescriptionModel()
+            uiModel = getFindingsDescriptionModel(),
+            validateFields = uiReportState.validateFields
         ) { _, updatedValue, fieldValidated ->
             reportViewModel.description = updatedValue
             reportViewModel.isValidDescription = fieldValidated
@@ -98,35 +100,39 @@ fun AddReportScreen(
 
         uiState.screenModel?.footer?.let {
             FooterSection(footerModel = it) { uiAction ->
-                handleFooterUiAction(uiAction, reportViewModel, onCancel)
+                handleFooterUiAction(uiAction, reportViewModel)
             }
         }
-
-        OnErrorHandler(uiState.errorModel) {
-            viewModel.handleShownError()
-        }
-
-        OnErrorHandler(
-            uiReportState.errorModel,
-            onAction = {
-                reportViewModel.handleShownError()
-            }
-        )
-
-        OnLoadingHandler(uiState.isLoading, modifier)
-        OnLoadingHandler(uiReportState.isLoading, modifier)
     }
+
+    OnErrorHandler(uiReportState.cancelInfoModel) {
+        handleFooterUiAction(it, reportViewModel)
+    }
+
+    OnErrorHandler(uiState.errorModel) {
+        viewModel.handleShownError()
+    }
+
+    OnErrorHandler(uiReportState.errorModel) {
+        reportViewModel.handleShownError()
+    }
+
+    LocalFocusManager.current.clearFocus()
+
+    OnLoadingHandler(uiState.isLoading, modifier)
+    OnLoadingHandler(uiReportState.isLoading, modifier)
 }
 
 private fun handleFooterUiAction(
     uiAction: UiAction,
-    viewModel: ReportViewModel,
-    onCancel: () -> Unit
+    viewModel: ReportViewModel
 ) {
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
-            AddReportIdentifier.ADD_REPORT_ENTRY_CANCEL_BUTTON.name -> onCancel()
+            AddReportIdentifier.ADD_REPORT_ENTRY_CANCEL_BUTTON.name -> viewModel.cancelReport()
             AddReportIdentifier.SEND_REPORT_ENTRY_SEND_BUTTON.name -> viewModel.saveRecordNews()
+            AddReportIdentifier.ADD_REPORT_CANCEL_BANNER.name -> viewModel.goBack()
+            AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name -> viewModel.handleNavigation()
         }
     }
 }
