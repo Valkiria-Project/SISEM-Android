@@ -163,15 +163,17 @@ fun handleAction(
                 viewModel.handleNavigation()
 
             ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name -> {
-                if (from == "recordNews") {
-                    val images = viewModel.uiState.selectedImageUris.map { uri ->
-                        uri.decodeAsBitmap(contentResolver).encodeAsBase64()
-                    }
-                    viewModel.sendRecordNews(images)
-                    viewModel.handleShownConfirm()
-                } else {
-                    // TODO
+                val images = viewModel.uiState.selectedImageUris.map { uri ->
+                    uri.decodeAsBitmap(contentResolver).encodeAsBase64()
                 }
+
+                if (from == "recordNews") {
+                    viewModel.sendReport(images)
+                } else {
+                    viewModel.saveFinding(images)
+                }
+
+                viewModel.handleShownConfirm()
             }
         }
     }

@@ -216,7 +216,24 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    fun sendRecordNews(images: List<String>) {
+    fun saveFinding(images: List<String>) {
+        // FIXME: Save to the database with a key and retrieve this afterwards
+        uiState = uiState.copy(
+            confirmInfoModel = null,
+            successInfoModel = BannerUiModel(
+                icon = "ic_alert",
+                iconColor = "#42A4FA",
+                title = "Hallazgo guardada",
+                description = "El hallazgo ha sido almacenado con éxito."
+            ),
+            isLoading = false,
+            navigationModel = ReportNavigationModel(
+                closeFinding = true
+            )
+        )
+    }
+
+    fun sendReport(images: List<String>) {
         uiState = uiState.copy(isLoading = true)
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {

@@ -100,6 +100,11 @@ private fun reportToNextStep(
             "${ReportNavigationRoute.ImagesConfirmationScreen.route}/recordNews"
         )
 
+        model.closeFinding -> navController.popBackStack(
+            route = AuthNavigationRoute.PreOperationalScreen.route,
+            inclusive = false
+        )
+
         model.closeReport -> navController.navigate(NavigationGraph.Main.route) {
             popUpTo(MainNavigationRoute.AddReportRoleScreen.route) {
                 inclusive = true
