@@ -6,7 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.domain.model.banner.cancelFindingBanner
 import com.skgtecnologia.sisem.domain.model.banner.cancelReportBanner
+import com.skgtecnologia.sisem.domain.model.banner.confirmSendFindingBanner
 import com.skgtecnologia.sisem.domain.model.banner.confirmSendReportBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.operation.usecases.RetrieveOperationConfig
@@ -70,6 +72,15 @@ class ReportViewModel @Inject constructor(
         )
     }
 
+    fun cancelFinding() {
+        uiState = uiState.copy(
+            navigationModel = ReportNavigationModel(
+                cancelFinding = true
+            ),
+            cancelInfoModel = cancelFindingBanner().mapToUi()
+        )
+    }
+
     fun cancelReport() {
         uiState = uiState.copy(
             navigationModel = ReportNavigationModel(
@@ -122,12 +133,13 @@ class ReportViewModel @Inject constructor(
         )
     }
 
+    @Suppress("MagicNumber")
     fun onPhotoTaken(savedUri: Uri, role: String? = null) {
         val imageLimit = when (role) {
             "Conductor" -> uiState.operationModel?.numImgPreoperationalDriver ?: 0
             "Médico" -> uiState.operationModel?.numImgPreoperationalDoctor ?: 0
             "Auxiliar" -> uiState.operationModel?.numImgPreoperationalAux ?: 0
-            else -> 0
+            else -> 3
         }
 
         val updatedSelectedImages = buildList {
@@ -157,24 +169,22 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    fun confirmMedia() {
-        uiState = uiState.copy(
-            navigationModel = ReportNavigationModel(
-                confirmMedia = true
-            )
-        )
-    }
-
     fun saveFinding() {
         uiState = uiState.copy(
-            navigationModel = ReportNavigationModel(
-                saveFinding = true,
-                imagesSize = uiState.selectedImageUris.size
-            )
+            validateFields = true
         )
+
+        if (isValidDescription) {
+            uiState = uiState.copy(
+                navigationModel = ReportNavigationModel(
+                    saveFinding = true,
+                    imagesSize = uiState.selectedImageUris.size
+                )
+            )
+        }
     }
 
-    fun saveRecordNews() {
+    fun saveReport() {
         uiState = uiState.copy(
             validateFields = true
         )
@@ -182,11 +192,20 @@ class ReportViewModel @Inject constructor(
         if (isValidTopic && isValidDescription) {
             uiState = uiState.copy(
                 navigationModel = ReportNavigationModel(
-                    saveRecordNews = true,
+                    saveReport = true,
                     imagesSize = uiState.selectedImageUris.size
                 )
             )
         }
+    }
+
+    fun confirmSendFinding() {
+        uiState = uiState.copy(
+            navigationModel = ReportNavigationModel(
+                confirmFinding = true
+            ),
+            confirmInfoModel = confirmSendFindingBanner().mapToUi()
+        )
     }
 
     fun confirmSendReport() {
@@ -198,7 +217,25 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    fun sendRecordNews(images: List<String>) {
+    @Suppress("UnusedPrivateMember")
+    fun saveFinding(images: List<String>) {
+        // FIXME: Save to the database with a key and retrieve this afterwards
+        uiState = uiState.copy(
+            confirmInfoModel = null,
+            successInfoModel = BannerUiModel(
+                icon = "ic_alert",
+                iconColor = "#42A4FA",
+                title = "Hallazgo guardado",
+                description = "El hallazgo ha sido almacenado con éxito."
+            ),
+            isLoading = false,
+            navigationModel = ReportNavigationModel(
+                closeFinding = true
+            )
+        )
+    }
+
+    fun sendReport(images: List<String>) {
         uiState = uiState.copy(isLoading = true)
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
