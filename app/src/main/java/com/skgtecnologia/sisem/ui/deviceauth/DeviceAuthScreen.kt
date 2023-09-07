@@ -18,7 +18,6 @@ import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
 import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
@@ -88,24 +87,17 @@ fun DeviceAuthScreen(
         }
     }
 
-    uiState.disassociateInfoModel?.let {
-        ErrorBannerComponent(
-            uiModel = it,
-            onAction = { },
-            onFooterAction = { uiAction ->
-                handleFooterAction(
-                    uiAction = uiAction,
-                    viewModel = viewModel,
-                    onCancel = {}
-                )
-            }
+    OnErrorHandler(errorModel = uiState.disassociateInfoModel) {
+        handleFooterAction(
+            uiAction = it,
+            viewModel = viewModel,
+            onCancel = onCancel
         )
     }
 
-    OnErrorHandler(
-        errorModel = uiState.errorModel,
-        onAction = { viewModel.handleShownError() }
-    )
+    OnErrorHandler(errorModel = uiState.errorModel) {
+        viewModel.handleShownError()
+    }
 
     OnLoadingHandler(uiState.isLoading, modifier)
 }

@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.domain.auth.model
 
-import com.skgtecnologia.sisem.domain.model.error.ErrorModel
+import com.skgtecnologia.sisem.domain.model.error.BannerModel
 import java.time.LocalDateTime
 
 data class AccessTokenModel(
@@ -15,7 +15,7 @@ data class AccessTokenModel(
     val nameUser: String,
     val preoperational: PreOperationalModel?,
     val turn: TurnModel?,
-    val warning: ErrorModel? = null,
+    val warning: BannerModel? = null,
     val docType: String,
     val document: String
 )

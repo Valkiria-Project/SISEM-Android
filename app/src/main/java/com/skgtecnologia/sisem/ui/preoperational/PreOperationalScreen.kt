@@ -90,10 +90,9 @@ fun PreOperationalScreen(
         }
     }
 
-    OnErrorHandler(
-        errorModel = uiState.errorModel,
-        onAction = { viewModel.handleShownError() }
-    )
+    OnErrorHandler(errorModel = uiState.errorModel) {
+        viewModel.handleShownError()
+    }
 
     OnLoadingHandler(uiState.isLoading, modifier)
 }

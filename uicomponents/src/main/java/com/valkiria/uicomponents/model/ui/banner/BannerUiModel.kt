@@ -1,10 +1,10 @@
-package com.valkiria.uicomponents.model.ui.errorbanner
+package com.valkiria.uicomponents.model.ui.banner
 
 import com.valkiria.uicomponents.model.ui.button.ButtonUiModel
 
-const val DEFAULT_ICON_COLOR = "#F55757"
+const val DEFAULT_ICON_COLOR = "#F55757" // FIXME: update with backend
 
-data class ErrorUiModel(
+data class BannerUiModel(
     val icon: String? = null,
     val iconColor: String = DEFAULT_ICON_COLOR,
     val title: String,

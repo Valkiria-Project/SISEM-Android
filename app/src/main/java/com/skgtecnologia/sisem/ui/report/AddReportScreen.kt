@@ -34,7 +34,7 @@ import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
 import kotlin.random.Random
 
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "LongMethod")
 @Composable
 fun AddReportScreen(
     reportViewModel: ReportViewModel,
@@ -102,12 +102,9 @@ fun AddReportScreen(
             }
         }
 
-        OnErrorHandler(
-            uiState.errorModel,
-            onAction = {
-                viewModel.handleShownError()
-            }
-        )
+        OnErrorHandler(uiState.errorModel) {
+            viewModel.handleShownError()
+        }
 
         OnErrorHandler(
             uiReportState.errorModel,

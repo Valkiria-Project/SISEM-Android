@@ -44,7 +44,7 @@ import com.valkiria.uicomponents.model.ui.button.OnClick
 import timber.log.Timber
 import kotlin.random.Random
 
-@Suppress("LongMethod")
+@Suppress("LongMethod", "MagicNumber")
 @Composable
 fun ImagesConfirmationScreen(
     viewModel: ReportViewModel,
@@ -133,21 +133,13 @@ fun ImagesConfirmationScreen(
         ImagesPager(bitmaps)
     }
 
-    uiState.successInfoModel?.let { infoUiModel ->
-        OnErrorHandler(
-            infoUiModel,
-            onAction = {
-                onNavigation(uiState.navigationModel)
-            }
-        )
+    OnErrorHandler(uiState.successInfoModel) {
+        onNavigation(uiState.navigationModel)
     }
 
-    OnErrorHandler(
-        uiState.errorModel,
-        onAction = {
-            viewModel.handleShownError()
-        }
-    )
+    OnErrorHandler(uiState.errorModel) {
+        viewModel.handleShownError()
+    }
 
     OnLoadingHandler(uiState.isLoading, modifier)
 }

@@ -24,12 +24,12 @@ import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
-import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
 import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+@Suppress("LongMethod")
 @Composable
 fun LoginScreen(
     isTablet: Boolean,
@@ -90,23 +90,15 @@ fun LoginScreen(
         }
     }
 
-    uiState.warning?.let { errorUiModel ->
-        ErrorBannerComponent(
-            uiModel = errorUiModel,
-            onAction = {
-            viewModel.onNavigationHandled()
-            viewModel.handleShownWarning()
-            onNavigation(uiState.navigationModel)
-            }
-        )
+    OnErrorHandler(uiState.warning) {
+        viewModel.onNavigationHandled()
+        viewModel.handleShownWarning()
+        onNavigation(uiState.navigationModel)
     }
 
-    OnErrorHandler(
-        uiState.errorModel,
-        onAction = {
-            viewModel.handleShownError()
-        }
-    )
+    OnErrorHandler(uiState.errorModel) {
+        viewModel.handleShownError()
+    }
 
     OnLoadingHandler(uiState.isLoading, modifier)
 }

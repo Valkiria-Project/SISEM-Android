@@ -17,7 +17,6 @@ import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.ChangePasswordUiAction
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.errorbanner.ErrorBannerComponent
 import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
@@ -87,22 +86,14 @@ fun ChangePasswordScreen(
         }
     }
 
-    uiState.successInfoModel?.let { infoUiModel ->
-        ErrorBannerComponent( // FIXME: with infoBannerComponent
-            uiModel = infoUiModel,
-            onAction = {
-                viewModel.onChangePasswordHandled()
-                onNavigation(uiState.loginNavigationModel)
-            }
-        )
+    OnErrorHandler(errorModel = uiState.successInfoModel) {
+        viewModel.onChangePasswordHandled()
+        onNavigation(uiState.loginNavigationModel)
     }
 
-    OnErrorHandler(
-        errorModel = uiState.errorModel,
-        onAction = {
-            viewModel.handleShownError()
-        }
-    )
+    OnErrorHandler(errorModel = uiState.errorModel) {
+        viewModel.handleShownError()
+    }
 
     OnLoadingHandler(uiState.isLoading, modifier)
 }

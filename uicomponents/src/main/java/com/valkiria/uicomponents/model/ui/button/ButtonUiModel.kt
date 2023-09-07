@@ -31,7 +31,18 @@ class ButtonUiModel private constructor(
         size: ButtonSize,
         arrangement: Arrangement.Horizontal,
         modifier: Modifier
-    ) : this(identifier, null, label, textStyle, style, overrideColor, onClick, size, arrangement, modifier)
+    ) : this(
+        identifier,
+        null,
+        label,
+        textStyle,
+        style,
+        overrideColor,
+        onClick,
+        size,
+        arrangement,
+        modifier
+    )
 
     constructor(
         identifier: String,
@@ -42,5 +53,16 @@ class ButtonUiModel private constructor(
         size: ButtonSize,
         arrangement: Arrangement.Horizontal,
         modifier: Modifier
-    ) : this(identifier, icon, null, null, style, overrideColor, onClick, size, arrangement, modifier)
+    ) : this(
+        identifier,
+        icon,
+        null,
+        null,
+        style,
+        overrideColor,
+        onClick,
+        size,
+        arrangement,
+        modifier
+    )
 }

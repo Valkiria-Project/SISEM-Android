@@ -4,7 +4,7 @@ import com.skgtecnologia.sisem.commons.extensions.recoverResult
 import com.skgtecnologia.sisem.commons.extensions.resultOf
 import com.skgtecnologia.sisem.data.remote.model.error.ErrorResponse
 import com.skgtecnologia.sisem.data.remote.model.error.mapToDomain
-import com.skgtecnologia.sisem.domain.model.error.ErrorModel
+import com.skgtecnologia.sisem.domain.model.error.BannerModel
 import com.skgtecnologia.sisem.domain.model.error.ErrorModelFactory
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -38,7 +38,7 @@ suspend fun <T> apiCall(errorModelFactory: ErrorModelFactory, api: suspend () ->
             } ?: error("Response is not successful and/or body is empty")
         }
     }.recoverResult {
-        if (it is ErrorModel) {
+        if (it is BannerModel) {
             throw it
         } else {
             throw errorModelFactory.getErrorModel(it)

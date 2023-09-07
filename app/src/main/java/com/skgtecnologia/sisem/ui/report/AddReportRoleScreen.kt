@@ -71,12 +71,9 @@ fun AddReportRoleScreen(
         }
     }
 
-    OnErrorHandler(
-        uiState.errorModel,
-        onAction = {
-            viewModel.handleShownError()
-        }
-    )
+    OnErrorHandler(uiState.errorModel) {
+        viewModel.handleShownError()
+    }
 
     if (uiState.isLoading) {
         HideKeyboard()

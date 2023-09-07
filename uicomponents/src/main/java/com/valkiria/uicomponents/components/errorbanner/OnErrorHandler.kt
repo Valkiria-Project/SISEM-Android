@@ -2,21 +2,17 @@ package com.valkiria.uicomponents.components.errorbanner
 
 import androidx.compose.runtime.Composable
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.model.ui.errorbanner.ErrorUiModel
+import com.valkiria.uicomponents.model.ui.banner.BannerUiModel
 
 @Composable
 fun OnErrorHandler(
-    errorModel: ErrorUiModel?,
-    onAction: () -> Unit,
-    onFooterAction: (actionInput: UiAction) -> Unit = {}
+    errorModel: BannerUiModel?,
+    onAction: (actionInput: UiAction) -> Unit
 ) {
     errorModel?.let { errorUiModel ->
-        ErrorBannerComponent(
+        BannerComponent(
             uiModel = errorUiModel,
-            onAction = onAction,
-            onFooterAction = { uiAction ->
-                onFooterAction(uiAction)
-            }
+            onAction = onAction
         )
     }
 }

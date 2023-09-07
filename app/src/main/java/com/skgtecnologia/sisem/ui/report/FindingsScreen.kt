@@ -106,12 +106,9 @@ fun FindingsScreen(
         }
     }
 
-    OnErrorHandler(
-        uiState.errorModel,
-        onAction = {
-            viewModel.handleShownError()
-        }
-    )
+    OnErrorHandler(uiState.errorModel) {
+        viewModel.handleShownError()
+    }
 
     OnLoadingHandler(uiState.isLoading, modifier)
 }

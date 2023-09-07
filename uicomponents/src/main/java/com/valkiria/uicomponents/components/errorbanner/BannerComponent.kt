@@ -27,8 +27,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.model.mocks.getLoginBlockedErrorUiModel
-import com.valkiria.uicomponents.model.ui.errorbanner.ErrorUiModel
+import com.valkiria.uicomponents.model.ui.banner.BannerUiModel
 import com.valkiria.uicomponents.action.FooterUiAction
+import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.button.ButtonView
 import com.valkiria.uicomponents.utlis.DefType
@@ -37,10 +38,9 @@ import timber.log.Timber
 
 @Suppress("LongMethod")
 @Composable
-fun ErrorBannerComponent(
-    uiModel: ErrorUiModel,
-    onAction: () -> Unit,
-    onFooterAction: (actionInput: UiAction) -> Unit = {}
+internal fun BannerComponent(
+    uiModel: BannerUiModel,
+    onAction: (actionInput: UiAction) -> Unit
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon.orEmpty(), DefType.DRAWABLE
@@ -95,7 +95,7 @@ fun ErrorBannerComponent(
                     )
                     if (uiModel.leftButton == null) {
                         IconButton(
-                            onClick = { onAction() },
+                            onClick = { onAction(GenericUiAction.DismissAction) },
                             modifier = Modifier
                                 .padding(start = 16.dp, top = 12.dp)
                                 .size(42.dp),
@@ -116,14 +116,17 @@ fun ErrorBannerComponent(
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterHorizontally)
+                    horizontalArrangement = Arrangement.spacedBy(
+                        20.dp,
+                        Alignment.CenterHorizontally
+                    )
                 ) {
                     uiModel.leftButton?.let { buttonUiModel ->
                         ButtonView(
                             uiModel = buttonUiModel,
                             isTablet = false
                         ) {
-                            onFooterAction(FooterUiAction.FooterButton(buttonUiModel.identifier))
+                            onAction(FooterUiAction.FooterButton(buttonUiModel.identifier))
                         }
                     }
 
@@ -132,7 +135,7 @@ fun ErrorBannerComponent(
                             uiModel = buttonUiModel,
                             isTablet = false
                         ) {
-                            onFooterAction(FooterUiAction.FooterButton(buttonUiModel.identifier))
+                            onAction(FooterUiAction.FooterButton(buttonUiModel.identifier))
                         }
                     }
                 }
@@ -144,7 +147,7 @@ fun ErrorBannerComponent(
 @Preview(showBackground = true)
 @Composable
 fun ErrorBannerComponentPreview() {
-    ErrorBannerComponent(
+    BannerComponent(
         uiModel = getLoginBlockedErrorUiModel(),
         onAction = { Timber.d("Closed") }
     )
