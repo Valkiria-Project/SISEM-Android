@@ -6,6 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.domain.model.banner.cancelReportBanner
+import com.skgtecnologia.sisem.domain.model.banner.confirmSendReportBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.operation.usecases.RetrieveOperationConfig
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
@@ -63,7 +65,17 @@ class ReportViewModel @Inject constructor(
         uiState = uiState.copy(
             navigationModel = ReportNavigationModel(
                 goBack = true
-            )
+            ),
+            cancelInfoModel = null
+        )
+    }
+
+    fun cancelReport() {
+        uiState = uiState.copy(
+            navigationModel = ReportNavigationModel(
+                cancelReport = true
+            ),
+            cancelInfoModel = cancelReportBanner().mapToUi()
         )
     }
 
@@ -177,6 +189,15 @@ class ReportViewModel @Inject constructor(
         }
     }
 
+    fun confirmSendReport() {
+        uiState = uiState.copy(
+            navigationModel = ReportNavigationModel(
+                confirmSendReport = true
+            ),
+            confirmInfoModel = confirmSendReportBanner().mapToUi()
+        )
+    }
+
     fun sendRecordNews(images: List<String>) {
         uiState = uiState.copy(isLoading = true)
         job?.cancel()
@@ -192,8 +213,10 @@ class ReportViewModel @Inject constructor(
                 }
             ).onSuccess {
                 uiState = uiState.copy(
+                    confirmInfoModel = null,
                     successInfoModel = BannerUiModel(
                         icon = "ic_alert",
+                        iconColor = "#42A4FA",
                         title = "Novedad guardada",
                         description = "La novedad ha sido almacenada con éxito."
                     ),
@@ -204,7 +227,9 @@ class ReportViewModel @Inject constructor(
                 )
             }.onFailure { throwable ->
                 uiState = uiState.copy(
-                    isLoading = false, errorModel = throwable.mapToUi()
+                    isLoading = false,
+                    confirmInfoModel = null,
+                    errorModel = throwable.mapToUi()
                 )
             }
         }
@@ -212,6 +237,9 @@ class ReportViewModel @Inject constructor(
 
     fun handleNavigation() {
         uiState = uiState.copy(
+            validateFields = false,
+            cancelInfoModel = null,
+            confirmInfoModel = null,
             navigationModel = null
         )
     }
@@ -219,6 +247,12 @@ class ReportViewModel @Inject constructor(
     fun handleShownError() {
         uiState = uiState.copy(
             errorModel = null
+        )
+    }
+
+    fun handleShownConfirm() {
+        uiState = uiState.copy(
+            confirmInfoModel = null
         )
     }
 }
