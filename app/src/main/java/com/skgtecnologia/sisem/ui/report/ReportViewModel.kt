@@ -133,6 +133,7 @@ class ReportViewModel @Inject constructor(
         )
     }
 
+    @Suppress("MagicNumber")
     fun onPhotoTaken(savedUri: Uri, role: String? = null) {
         val imageLimit = when (role) {
             "Conductor" -> uiState.operationModel?.numImgPreoperationalDriver ?: 0
@@ -216,6 +217,7 @@ class ReportViewModel @Inject constructor(
         )
     }
 
+    @Suppress("UnusedPrivateMember")
     fun saveFinding(images: List<String>) {
         // FIXME: Save to the database with a key and retrieve this afterwards
         uiState = uiState.copy(

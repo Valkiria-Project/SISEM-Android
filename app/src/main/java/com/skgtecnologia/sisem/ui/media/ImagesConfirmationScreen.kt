@@ -61,12 +61,12 @@ fun ImagesConfirmationScreen(
     val contentResolver = LocalContext.current.contentResolver
 
     LaunchedEffect(uiState) {
-        when {
-            uiState.navigationModel != null &&
-                    uiState.successInfoModel == null &&
-                    uiState.confirmInfoModel == null -> {
-                viewModel.handleNavigation()
-                onNavigation(uiState.navigationModel)
+        with(uiState) {
+            when {
+                navigationModel != null && successInfoModel == null && confirmInfoModel == null -> {
+                    viewModel.handleNavigation()
+                    onNavigation(uiState.navigationModel)
+                }
             }
         }
     }
