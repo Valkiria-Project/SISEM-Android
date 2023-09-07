@@ -91,16 +91,22 @@ fun LoginScreen(
     }
 
     uiState.warning?.let { errorUiModel ->
-        ErrorBannerComponent(uiModel = errorUiModel) {
+        ErrorBannerComponent(
+            uiModel = errorUiModel,
+            onAction = {
             viewModel.onNavigationHandled()
             viewModel.handleShownWarning()
             onNavigation(uiState.navigationModel)
-        }
+            }
+        )
     }
 
-    OnErrorHandler(uiState.errorModel) {
-        viewModel.handleShownError()
-    }
+    OnErrorHandler(
+        uiState.errorModel,
+        onAction = {
+            viewModel.handleShownError()
+        }
+    )
 
     OnLoadingHandler(uiState.isLoading, modifier)
 }

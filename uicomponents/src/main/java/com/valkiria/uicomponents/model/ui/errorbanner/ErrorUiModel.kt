@@ -1,6 +1,6 @@
 package com.valkiria.uicomponents.model.ui.errorbanner
 
-import com.valkiria.uicomponents.components.button.ButtonUiModel
+import com.valkiria.uicomponents.model.ui.button.ButtonUiModel
 
 const val DEFAULT_ICON_COLOR = "#F55757"
 

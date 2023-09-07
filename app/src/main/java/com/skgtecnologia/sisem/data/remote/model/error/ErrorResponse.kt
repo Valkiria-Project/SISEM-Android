@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.data.remote.model.error
 import com.skgtecnologia.sisem.domain.model.error.ErrorModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.valkiria.uicomponents.components.errorbanner.DEFAULT_ICON_COLOR
+import com.valkiria.uicomponents.model.ui.errorbanner.DEFAULT_ICON_COLOR
 
 @JsonClass(generateAdapter = true)
 data class ErrorResponse(

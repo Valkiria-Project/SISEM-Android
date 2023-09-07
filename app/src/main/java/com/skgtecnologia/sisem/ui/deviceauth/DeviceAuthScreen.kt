@@ -93,7 +93,7 @@ fun DeviceAuthScreen(
             uiModel = it,
             onAction = { },
             onFooterAction = { uiAction ->
-                handleFooterUiAction(
+                handleFooterAction(
                     uiAction = uiAction,
                     viewModel = viewModel,
                     onCancel = {}

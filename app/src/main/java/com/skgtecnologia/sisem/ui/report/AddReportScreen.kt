@@ -102,13 +102,19 @@ fun AddReportScreen(
             }
         }
 
-        OnErrorHandler(uiState.errorModel) {
-            viewModel.handleShownError()
-        }
+        OnErrorHandler(
+            uiState.errorModel,
+            onAction = {
+                viewModel.handleShownError()
+            }
+        )
 
-        OnErrorHandler(uiReportState.errorModel) {
-            reportViewModel.handleShownError()
-        }
+        OnErrorHandler(
+            uiReportState.errorModel,
+            onAction = {
+                reportViewModel.handleShownError()
+            }
+        )
 
         OnLoadingHandler(uiState.isLoading, modifier)
         OnLoadingHandler(uiReportState.isLoading, modifier)

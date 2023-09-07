@@ -29,8 +29,8 @@ import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.model.mocks.getLoginBlockedErrorUiModel
 import com.valkiria.uicomponents.model.ui.errorbanner.ErrorUiModel
 import com.valkiria.uicomponents.action.FooterUiAction
+import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.button.ButtonView
-import com.valkiria.uicomponents.mocks.getLoginBlockedErrorUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import timber.log.Timber
@@ -40,7 +40,7 @@ import timber.log.Timber
 fun ErrorBannerComponent(
     uiModel: ErrorUiModel,
     onAction: () -> Unit,
-    onFooterAction: (uiAction: FooterUiAction) -> Unit = {}
+    onFooterAction: (actionInput: UiAction) -> Unit = {}
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon.orEmpty(), DefType.DRAWABLE

@@ -42,6 +42,7 @@ import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.ui.button.ButtonUiModel
 import com.valkiria.uicomponents.model.ui.button.OnClick
 import timber.log.Timber
+import kotlin.random.Random
 
 @Suppress("LongMethod")
 @Composable
@@ -87,6 +88,7 @@ fun ImagesConfirmationScreen(
         ) {
             ButtonView(
                 uiModel = ButtonUiModel(
+                    identifier = Random(100).toString(),
                     label = stringResource(R.string.images_confirmation_delete_image_cta),
                     textStyle = TextStyle.BUTTON_2,
                     style = ButtonStyle.TRANSPARENT,
@@ -102,6 +104,7 @@ fun ImagesConfirmationScreen(
 
             ButtonView(
                 uiModel = ButtonUiModel(
+                    identifier = Random(100).toString(),
                     label = stringResource(R.string.images_confirmation_confirm_images_cta),
                     textStyle = TextStyle.BUTTON_2,
                     style = ButtonStyle.TRANSPARENT,
@@ -131,14 +134,20 @@ fun ImagesConfirmationScreen(
     }
 
     uiState.successInfoModel?.let { infoUiModel ->
-        OnErrorHandler(infoUiModel) {
-            onNavigation(uiState.navigationModel)
-        }
+        OnErrorHandler(
+            infoUiModel,
+            onAction = {
+                onNavigation(uiState.navigationModel)
+            }
+        )
     }
 
-    OnErrorHandler(uiState.errorModel) {
-        viewModel.handleShownError()
-    }
+    OnErrorHandler(
+        uiState.errorModel,
+        onAction = {
+            viewModel.handleShownError()
+        }
+    )
 
     OnLoadingHandler(uiState.isLoading, modifier)
 }
