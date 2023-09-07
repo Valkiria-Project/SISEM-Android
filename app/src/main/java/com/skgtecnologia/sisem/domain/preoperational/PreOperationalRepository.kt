@@ -5,7 +5,7 @@ import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 
 interface PreOperationalRepository {
 
-    suspend fun getPreOperationalScreen(): ScreenModel
+    suspend fun getPreOperationalScreen(androidId: String): ScreenModel
 
     suspend fun sendPreOperational(
         findings: Map<String, Boolean>,

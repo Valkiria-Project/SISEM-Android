@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.changepassword.usecases.GetLoginNavigationModel
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
@@ -23,6 +24,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PreOperationalViewModel @Inject constructor(
+    private val androidIdProvider: AndroidIdProvider,
     private val getLoginNavigationModel: GetLoginNavigationModel,
     private val getPreOperationalScreen: GetPreOperationalScreen,
     private val sendPreOperational: SendPreOperational
@@ -43,7 +45,7 @@ class PreOperationalViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            getPreOperationalScreen.invoke()
+            getPreOperationalScreen.invoke(androidIdProvider.getAndroidId())
                 .onSuccess { loginScreenModel ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
