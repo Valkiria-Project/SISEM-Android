@@ -17,6 +17,9 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
     buildTypes {
+        create("staging") {
+            initWith(getByName("debug"))
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
