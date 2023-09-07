@@ -9,10 +9,8 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
-import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.GenericUiAction
@@ -118,21 +116,5 @@ private fun handleBodyAction(
         }
 
         else -> Timber.d("no-op")
-    }
-}
-
-private fun handleFooterAction(
-    uiAction: UiAction,
-    viewModel: PreOperationalViewModel
-) {
-    (uiAction as? FooterUiAction)?.let {
-        when (uiAction.identifier) {
-            PreOperationalIdentifier.ASSISTANT_PREOP_CANCEL_BUTTON.name,
-            PreOperationalIdentifier.ASSISTANT_PREOP_SAVE_BUTTON.name,
-            PreOperationalIdentifier.DRIVER_PREOP_CANCEL_BUTTON.name,
-            PreOperationalIdentifier.DRIVER_PREOP_SAVE_BUTTON.name,
-            PreOperationalIdentifier.DOCTOR_PREOP_CANCEL_BUTTON.name,
-            PreOperationalIdentifier.DOCTOR_PREOP_SAVE_BUTTON.name -> viewModel.savePreOperational()
-        }
     }
 }

@@ -82,7 +82,6 @@ class PreOperationalViewModel @Inject constructor(
 
                                         else -> Timber.d("no-op")
                                     }
-
                                 }
                             ),
                             isLoading = false
@@ -165,7 +164,7 @@ class PreOperationalViewModel @Inject constructor(
                     icon = "ic_alert",
                     title = "Incompleto",
                     description = "Para guardar el preoperacional es necesario que complete" +
-                            " todos los campos."
+                        " todos los campos."
                 )
             )
         }

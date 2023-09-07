@@ -105,7 +105,7 @@ fun BodySection(
     }
 }
 
-@Suppress("LongMethod", "ComplexMethod")
+@Suppress("ComplexMethod", "LongMethod", "LongParameterList")
 private fun LazyListScope.handleBodyRows(
     body: List<BodyRowModel>,
     listState: LazyListState,
