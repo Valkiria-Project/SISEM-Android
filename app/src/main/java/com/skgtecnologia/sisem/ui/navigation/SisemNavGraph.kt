@@ -253,7 +253,7 @@ private fun NavGraphBuilder.reportGraph(
 
         composable(
             route = ReportNavigationRoute.ImagesConfirmationScreen.route +
-                    "/{${NavigationArgument.FROM}}",
+                "/{${NavigationArgument.FROM}}",
             arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
         ) { backStackEntry ->
             ImagesConfirmationScreen(
