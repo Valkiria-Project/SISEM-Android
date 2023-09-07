@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.di
 
+import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.data.remote.interceptors.AccessTokenInterceptor
 import com.skgtecnologia.sisem.di.qualifiers.Audit
 import com.skgtecnologia.sisem.di.qualifiers.BearerAuthentication
@@ -15,8 +16,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-
-private const val BASE_URL = "http://34.139.125.3:80/sisem-api/v1/"
 
 @Module(includes = [CoreNetworkModule::class])
 @InstallIn(SingletonComponent::class)
@@ -46,7 +45,7 @@ object BearerNetworkModule {
         @BearerAuthentication okHttpClient: OkHttpClient
     ): Retrofit =
         Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
