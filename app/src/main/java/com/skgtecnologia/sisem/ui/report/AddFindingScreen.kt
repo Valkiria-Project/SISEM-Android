@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -23,6 +24,7 @@ import com.skgtecnologia.sisem.domain.model.body.ButtonModel
 import com.skgtecnologia.sisem.domain.model.footer.FooterModel
 import com.skgtecnologia.sisem.domain.model.header.HeaderModel
 import com.skgtecnologia.sisem.domain.model.header.TextModel
+import com.skgtecnologia.sisem.domain.report.model.AddFindingIdentifier
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
@@ -43,15 +45,15 @@ import com.valkiria.uicomponents.model.ui.button.OnClick
 import com.valkiria.uicomponents.model.ui.label.LabelUiModel
 import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
-import timber.log.Timber
 import kotlin.random.Random
 
 const val DESCRIPTION_INPUT_MIN_LINES = 3
 
 @Suppress("LongMethod")
 @Composable
-fun FindingsScreen(
+fun AddFindingScreen(
     viewModel: ReportViewModel,
+    role: String,
     isTablet: Boolean,
     modifier: Modifier = Modifier,
     onNavigation: (findingsNavigationModel: NavigationModel?) -> Unit
@@ -60,7 +62,7 @@ fun FindingsScreen(
 
     LaunchedEffect(uiState) {
         when {
-            uiState.navigationModel != null -> {
+            uiState.navigationModel != null && uiState.cancelInfoModel == null -> {
                 viewModel.handleNavigation()
                 onNavigation(uiState.navigationModel)
             }
@@ -83,16 +85,18 @@ fun FindingsScreen(
         }
 
         TextFieldComponent(
-            uiModel = getFindingsDescriptionModel()
-        ) { id, updatedValue, fieldValidated ->
-            Timber.d("Finish this")
+            uiModel = getFindingsDescriptionModel(),
+            validateFields = uiState.validateFields
+        ) { _, updatedValue, fieldValidated ->
+            viewModel.description = updatedValue
+            viewModel.isValidDescription = fieldValidated
         }
 
         LabelComponent(
             uiModel = getFindingsAddFilesModel()
         )
 
-        MediaActions(viewModel)
+        MediaActions(viewModel, role)
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -100,15 +104,19 @@ fun FindingsScreen(
             footerModel = getFindingsFooterModel(),
             modifier = Modifier.padding(bottom = 20.dp)
         ) { uiAction ->
-            handleFooterAction(uiAction, viewModel) {
-                viewModel.goBack()
-            }
+            handleFooterAction(uiAction, viewModel)
         }
+    }
+
+    OnErrorHandler(uiState.cancelInfoModel) {
+        handleFooterAction(it, viewModel)
     }
 
     OnErrorHandler(uiState.errorModel) {
         viewModel.handleShownError()
     }
+
+    LocalFocusManager.current.clearFocus()
 
     OnLoadingHandler(uiState.isLoading, modifier)
 }
@@ -216,7 +224,7 @@ fun MediaActions(viewModel: ReportViewModel, role: String? = null) {
 
 private fun getFindingsFooterModel() = FooterModel(
     leftButton = ButtonModel(
-        identifier = "FINDING_CANCEL_BUTTON",
+        identifier = AddFindingIdentifier.ADD_FINDING_CANCEL_BUTTON.name,
         label = "CANCELAR",
         style = ButtonStyle.LOUD,
         textStyle = TextStyle.HEADLINE_4,
@@ -226,7 +234,7 @@ private fun getFindingsFooterModel() = FooterModel(
         modifier = Modifier
     ),
     rightButton = ButtonModel(
-        identifier = "FINDING_SAVE_BUTTON",
+        identifier = AddFindingIdentifier.ADD_FINDING_SAVE_BUTTON.name,
         label = "GUARDAR",
         style = ButtonStyle.LOUD,
         textStyle = TextStyle.HEADLINE_4,
@@ -239,13 +247,14 @@ private fun getFindingsFooterModel() = FooterModel(
 
 private fun handleFooterAction(
     uiAction: UiAction,
-    viewModel: ReportViewModel,
-    onCancel: () -> Unit
+    viewModel: ReportViewModel
 ) {
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
-            "FINDING_CANCEL_BUTTON" -> onCancel()
-            "FINDING_SAVE_BUTTON" -> viewModel.saveFinding()
+            AddFindingIdentifier.ADD_FINDING_CANCEL_BUTTON.name -> viewModel.cancelFinding()
+            AddFindingIdentifier.ADD_FINDING_SAVE_BUTTON.name -> viewModel.saveFinding()
+            AddFindingIdentifier.ADD_FINDING_CANCEL_BANNER.name -> viewModel.goBack()
+            AddFindingIdentifier.ADD_FINDING_CONTINUE_BANNER.name -> viewModel.handleNavigation()
         }
     }
 }

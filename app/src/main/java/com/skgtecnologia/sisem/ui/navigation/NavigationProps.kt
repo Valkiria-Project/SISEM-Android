@@ -33,7 +33,7 @@ sealed class MainNavigationRoute(val route: String) {
 
 sealed class ReportNavigationRoute(val route: String) {
     data object CameraScreen : ReportNavigationRoute("camera_screen")
-    data object FindingsScreen : ReportNavigationRoute("findings_screen")
+    data object AddFindingScreen : ReportNavigationRoute("add_finding_screen")
     data object ImagesConfirmationScreen : ReportNavigationRoute("images_confirmation_screen")
     data object AddReportRoleScreen : ReportNavigationRoute("add_report_role_screen")
     data object AddReportScreen : ReportNavigationRoute("add_report_screen")

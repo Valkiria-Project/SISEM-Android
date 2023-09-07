@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -26,6 +29,7 @@ import com.skgtecnologia.sisem.domain.model.body.DetailedInfoListModel
 import com.skgtecnologia.sisem.domain.model.body.FiltersModel
 import com.skgtecnologia.sisem.domain.model.body.FindingModel
 import com.skgtecnologia.sisem.domain.model.body.FingerprintModel
+import com.skgtecnologia.sisem.domain.model.body.FooterBodyModel
 import com.skgtecnologia.sisem.domain.model.body.InventoryCheckModel
 import com.skgtecnologia.sisem.domain.model.body.LabelModel
 import com.skgtecnologia.sisem.domain.model.body.PasswordTextFieldModel
@@ -34,6 +38,7 @@ import com.skgtecnologia.sisem.domain.model.body.SegmentedSwitchModel
 import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.mapToHeaderModel
+import com.skgtecnologia.sisem.domain.model.body.mapToSection
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
@@ -65,7 +70,8 @@ import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchCompo
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
 import com.valkiria.uicomponents.components.textfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
-import timber.log.Timber
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Suppress("ComplexMethod", "LongMethod")
 @Composable
@@ -76,21 +82,34 @@ fun BodySection(
     validateFields: Boolean = false,
     onAction: (actionInput: UiAction) -> Unit
 ) {
+    val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+
     if (body?.isNotEmpty() == true) {
         LazyColumn(
             modifier = modifier,
+            state = listState,
             contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Top),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            handleBodyRows(body, isTablet, validateFields, onAction)
+            handleBodyRows(
+                body = body,
+                listState = listState,
+                coroutineScope = coroutineScope,
+                isTablet = isTablet,
+                validateFields = validateFields,
+                onAction = onAction
+            )
         }
     }
 }
 
-@Suppress("LongMethod", "ComplexMethod")
+@Suppress("ComplexMethod", "LongMethod", "LongParameterList")
 private fun LazyListScope.handleBodyRows(
     body: List<BodyRowModel>,
+    listState: LazyListState,
+    coroutineScope: CoroutineScope,
     isTablet: Boolean,
     validateFields: Boolean,
     onAction: (actionInput: UiAction) -> Unit
@@ -138,8 +157,15 @@ private fun LazyListScope.handleBodyRows(
                 FiltersComponent(
                     uiModel = model.mapToUiModel()
                 ) { selected, isSelection ->
-                    // FIXME: Finish this stuff
-                    Timber.d("Selected $selected and is $isSelection")
+                    coroutineScope.launch {
+                        val contentHeader = body.indexOfFirst {
+                            it is ContentHeaderModel && it.text == selected
+                        }
+
+                        if (contentHeader >= 0) {
+                            listState.animateScrollToItem(index = contentHeader)
+                        }
+                    }
                 }
             }
 
@@ -158,6 +184,14 @@ private fun LazyListScope.handleBodyRows(
                     painter = painterResource(id = R.drawable.ic_login_fingerprint),
                     contentDescription = null
                 )
+            }
+
+            is FooterBodyModel -> item(key = model.identifier) {
+                FooterSection(
+                    footerModel = model.mapToSection()
+                ) { uiAction ->
+                    onAction(uiAction)
+                }
             }
 
             is InventoryCheckModel -> item(key = model.identifier) {

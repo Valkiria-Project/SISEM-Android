@@ -24,9 +24,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
-import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
 import com.skgtecnologia.sisem.domain.model.header.HeaderModel
 import com.skgtecnologia.sisem.domain.model.header.TextModel
+import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
 import com.skgtecnologia.sisem.ui.bottomsheet.PagerIndicator
 import com.skgtecnologia.sisem.ui.commons.extensions.decodeAsBitmap
 import com.skgtecnologia.sisem.ui.commons.extensions.encodeAsBase64
@@ -61,12 +61,12 @@ fun ImagesConfirmationScreen(
     val contentResolver = LocalContext.current.contentResolver
 
     LaunchedEffect(uiState) {
-        when {
-            uiState.navigationModel != null &&
-                uiState.successInfoModel == null &&
-                uiState.confirmInfoModel == null -> {
-                viewModel.handleNavigation()
-                onNavigation(uiState.navigationModel)
+        with(uiState) {
+            when {
+                navigationModel != null && successInfoModel == null && confirmInfoModel == null -> {
+                    viewModel.handleNavigation()
+                    onNavigation(uiState.navigationModel)
+                }
             }
         }
     }
@@ -121,7 +121,11 @@ fun ImagesConfirmationScreen(
                     modifier = Modifier
                 )
             ) {
-                viewModel.confirmSendReport()
+                if (from == "recordNews") {
+                    viewModel.confirmSendReport()
+                } else {
+                    viewModel.confirmSendFinding()
+                }
             }
         }
 
@@ -157,16 +161,19 @@ fun handleAction(
         when (uiAction.identifier) {
             ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_CANCEL_BANNER.name ->
                 viewModel.handleNavigation()
+
             ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name -> {
-                if (from == "recordNews") {
-                    val images = viewModel.uiState.selectedImageUris.map { uri ->
-                        uri.decodeAsBitmap(contentResolver).encodeAsBase64()
-                    }
-                    viewModel.sendRecordNews(images)
-                    viewModel.handleShownConfirm()
-                } else {
-                    // TODO
+                val images = viewModel.uiState.selectedImageUris.map { uri ->
+                    uri.decodeAsBitmap(contentResolver).encodeAsBase64()
                 }
+
+                if (from == "recordNews") {
+                    viewModel.sendReport(images)
+                } else {
+                    viewModel.saveFinding(images)
+                }
+
+                viewModel.handleShownConfirm()
             }
         }
     }

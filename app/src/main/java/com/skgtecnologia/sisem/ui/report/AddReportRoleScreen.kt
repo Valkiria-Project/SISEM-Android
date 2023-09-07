@@ -66,7 +66,7 @@ fun AddReportRoleScreen(
                     bottom.linkTo(parent.bottom)
                 }
             ) { uiAction ->
-                handleFooterUiAction(uiAction, onCancel)
+                handleFooterAction(uiAction, onCancel)
             }
         }
     }
@@ -92,7 +92,7 @@ private fun handleUiAction(
     }
 }
 
-fun handleFooterUiAction(
+fun handleFooterAction(
     uiAction: UiAction,
     onCancel: () -> Unit
 ) {

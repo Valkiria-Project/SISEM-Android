@@ -10,6 +10,7 @@ enum class BodyRowType {
     FILTERS,
     FINDING,
     FINGERPRINT,
+    FOOTER,
     INVENTORY_CHECK,
     LABEL,
     PASSWORD_TEXT_FIELD,
