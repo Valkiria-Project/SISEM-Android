@@ -18,37 +18,32 @@ class PreOperationalRemoteDataSource @Inject constructor(
     private val preOperationalApi: PreOperationalApi
 ) {
 
-    suspend fun getPreOperationalScreen(operationRole: OperationRole): Result<ScreenModel> =
+    suspend fun getPreOperationalScreen(
+        role: OperationRole,
+        androidId: String,
+        vehicleCode: String?,
+        idTurn: String
+    ): Result<ScreenModel> =
         apiCall(errorModelFactory) {
-            when (operationRole) {
+            val screenBody = ScreenBody(
+                params = Params(
+                    serial = androidId,
+                    code = vehicleCode,
+                    turnId = idTurn
+                )
+            )
+
+            when (role) {
                 OperationRole.AUXILIARY_AND_OR_TAPH -> preOperationalApi.getAuxPreOperationalScreen(
-                    screenBody = ScreenBody(
-                        params = Params(
-                            serial = "12312JHJKG22",
-                            code = "0404",
-                            turnId = "1"
-                        )
-                    ) // FIXME: Hardcoded data
+                    screenBody = screenBody
                 )
 
                 OperationRole.DRIVER -> preOperationalApi.getDriverPreOperationalScreen(
-                    screenBody = ScreenBody(
-                        params = Params(
-                            serial = "12312JHJKG22",
-                            code = "0404",
-                            turnId = "1"
-                        )
-                    ) // FIXME: Hardcoded data
+                    screenBody = screenBody
                 )
 
                 OperationRole.MEDIC_APH -> preOperationalApi.getDoctorPreOperationalScreen(
-                    screenBody = ScreenBody(
-                        params = Params(
-                            serial = "12312JHJKG22",
-                            code = "0404",
-                            turnId = "1"
-                        )
-                    ) // FIXME: Hardcoded data
+                    screenBody = screenBody
                 )
 
                 OperationRole.LEAD_APH ->
