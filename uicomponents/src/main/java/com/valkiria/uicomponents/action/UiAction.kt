@@ -10,7 +10,7 @@ sealed interface UiAction
 sealed class GenericUiAction(open val identifier: String) : UiAction {
     data class ButtonAction(override val identifier: String) : GenericUiAction(identifier)
 
-    data object DismissAction: GenericUiAction(identifier = DISMISS_IDENTIFIER)
+    data object DismissAction : GenericUiAction(identifier = DISMISS_IDENTIFIER)
 
     data class ChipOptionAction(
         override val identifier: String,
