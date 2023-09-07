@@ -12,7 +12,6 @@ import com.skgtecnologia.sisem.domain.changepassword.usecases.GetLoginNavigation
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.body.ChipOptionsModel
 import com.skgtecnologia.sisem.domain.model.body.FindingModel
-import com.skgtecnologia.sisem.domain.model.error.mapToUi
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
