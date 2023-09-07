@@ -1,17 +1,17 @@
 package com.valkiria.uicomponents.model.mocks
 
-import com.valkiria.uicomponents.model.ui.errorbanner.ErrorUiModel
+import com.valkiria.uicomponents.model.ui.banner.BannerUiModel
 
-fun getLoginBlockedErrorUiModel(): ErrorUiModel {
-    return ErrorUiModel(
+fun getLoginBlockedErrorUiModel(): BannerUiModel {
+    return BannerUiModel(
         icon = "ic_blocked",
         title = "Bloqueo",
         description = "El límite de intentos alcanzados ha sido superado, la cuenta será bloqueada."
     )
 }
 
-fun getLoginIncorrectErrorUiModel(): ErrorUiModel {
-    return ErrorUiModel(
+fun getLoginIncorrectErrorUiModel(): BannerUiModel {
+    return BannerUiModel(
         icon = "ic_alert",
         title = "Incorrecto",
         description = """Los datos de  usuario y/o contraseña son incorrectos. 
@@ -19,16 +19,16 @@ fun getLoginIncorrectErrorUiModel(): ErrorUiModel {
     )
 }
 
-fun getLoginPasswordErrorUiModel(): ErrorUiModel {
-    return ErrorUiModel(
+fun getLoginPasswordErrorUiModel(): BannerUiModel {
+    return BannerUiModel(
         icon = "ic_alert",
         title = "Contraseña",
         description = "Su contraseña esta próxima a expirar, efectuar cambio la antes posible."
     )
 }
 
-fun getLoginDuplicatedErrorUiModel(): ErrorUiModel {
-    return ErrorUiModel(
+fun getLoginDuplicatedErrorUiModel(): BannerUiModel {
+    return BannerUiModel(
         icon = "ic_duplicated",
         title = "Duplicidad",
         description = """El usuario ya se encuentra autenticado en 5421244, no es permitida
@@ -36,8 +36,8 @@ fun getLoginDuplicatedErrorUiModel(): ErrorUiModel {
     )
 }
 
-fun getLoginUnassignedErrorUiModel(): ErrorUiModel {
-    return ErrorUiModel(
+fun getLoginUnassignedErrorUiModel(): BannerUiModel {
+    return BannerUiModel(
         icon = "ic_ambulance",
         title = "No asignado",
         description = """"El dispositivo no se encuentra asociado al vehículo, debe comunicarse

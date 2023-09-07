@@ -22,7 +22,7 @@ import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
+import com.valkiria.uicomponents.components.banner.OnErrorHandler
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
@@ -34,7 +34,7 @@ import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
 import kotlin.random.Random
 
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "LongMethod")
 @Composable
 fun AddReportScreen(
     reportViewModel: ReportViewModel,
@@ -106,9 +106,12 @@ fun AddReportScreen(
             viewModel.handleShownError()
         }
 
-        OnErrorHandler(uiReportState.errorModel) {
-            reportViewModel.handleShownError()
-        }
+        OnErrorHandler(
+            uiReportState.errorModel,
+            onAction = {
+                reportViewModel.handleShownError()
+            }
+        )
 
         OnLoadingHandler(uiState.isLoading, modifier)
         OnLoadingHandler(uiReportState.isLoading, modifier)

@@ -17,7 +17,7 @@ import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
+import com.valkiria.uicomponents.components.banner.OnErrorHandler
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -90,7 +90,7 @@ fun PreOperationalScreen(
         }
     }
 
-    OnErrorHandler(uiState.errorModel) {
+    OnErrorHandler(uiModel = uiState.errorModel) {
         viewModel.handleShownError()
     }
 

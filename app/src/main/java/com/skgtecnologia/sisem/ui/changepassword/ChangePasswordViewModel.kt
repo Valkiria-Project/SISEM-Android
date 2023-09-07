@@ -9,10 +9,10 @@ import com.skgtecnologia.sisem.domain.changepassword.usecases.ChangePassword
 import com.skgtecnologia.sisem.domain.changepassword.usecases.GetChangePasswordScreen
 import com.skgtecnologia.sisem.domain.changepassword.usecases.GetLoginNavigationModel
 import com.skgtecnologia.sisem.domain.changepassword.usecases.OnCancel
-import com.skgtecnologia.sisem.domain.model.error.changePasswordEmptyFields
-import com.skgtecnologia.sisem.domain.model.error.changePasswordNoMatch
-import com.skgtecnologia.sisem.domain.model.error.changePasswordSuccess
-import com.skgtecnologia.sisem.domain.model.error.mapToUi
+import com.skgtecnologia.sisem.domain.model.banner.changePasswordEmptyFields
+import com.skgtecnologia.sisem.domain.model.banner.changePasswordNoMatch
+import com.skgtecnologia.sisem.domain.model.banner.changePasswordSuccess
+import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

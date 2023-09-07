@@ -7,7 +7,7 @@ import com.skgtecnologia.sisem.data.remote.model.screen.Params
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
 import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
 import com.skgtecnologia.sisem.data.report.remote.model.ReportBody
-import com.skgtecnologia.sisem.domain.model.error.ErrorModelFactory
+import com.skgtecnologia.sisem.domain.model.banner.ErrorModelFactory
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import javax.inject.Inject

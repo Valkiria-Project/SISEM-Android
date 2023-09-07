@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.components.errorbanner
+package com.valkiria.uicomponents.components.banner
 
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
@@ -6,7 +6,7 @@ import com.android.ide.common.rendering.api.SessionParams.RenderingMode.V_SCROLL
 import org.junit.Rule
 import org.junit.Test
 
-class ErrorBannerComponentPaparazziTest {
+class BannerComponentPaparazziTest {
 
     @get:Rule
     val paparazziRule: Paparazzi = Paparazzi(
@@ -16,9 +16,9 @@ class ErrorBannerComponentPaparazziTest {
     )
 
     @Test
-    fun snapErrorBannerComponent() {
+    fun snapBannerComponent() {
         paparazziRule.snapshot {
-            ErrorBannerComponentPreview()
+            BannerComponentPreview()
         }
     }
 }

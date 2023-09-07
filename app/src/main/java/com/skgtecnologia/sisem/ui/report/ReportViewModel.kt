@@ -6,12 +6,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.skgtecnologia.sisem.domain.model.error.mapToUi
+import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.operation.usecases.RetrieveOperationConfig
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.domain.report.usecases.SendReport
 import com.skgtecnologia.sisem.ui.navigation.model.ReportNavigationModel
-import com.valkiria.uicomponents.model.ui.errorbanner.ErrorUiModel
+import com.valkiria.uicomponents.model.ui.banner.BannerUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -83,7 +83,7 @@ class ReportViewModel @Inject constructor(
             selectedImages.forEachIndexed { index, image ->
                 if (imageLimit < uiState.selectedImageUris.size + index + 1) {
                     uiState = uiState.copy(
-                        errorModel = ErrorUiModel(
+                        errorModel = BannerUiModel(
                             icon = "ic_alert",
                             title = "Cantidad de fotos",
                             description = """Se ha excedido el número de imágenes permitido por
@@ -125,7 +125,7 @@ class ReportViewModel @Inject constructor(
 
             if (imageLimit < uiState.selectedImageUris.size + 1) {
                 uiState = uiState.copy(
-                    errorModel = ErrorUiModel(
+                    errorModel = BannerUiModel(
                         icon = "ic_alert",
                         title = "Cantidad de fotos",
                         description = """Se ha excedido el número de imágenes permitido por
@@ -192,7 +192,7 @@ class ReportViewModel @Inject constructor(
                 }
             ).onSuccess {
                 uiState = uiState.copy(
-                    successInfoModel = ErrorUiModel(
+                    successInfoModel = BannerUiModel(
                         icon = "ic_alert",
                         title = "Novedad guardada",
                         description = "La novedad ha sido almacenada con éxito."

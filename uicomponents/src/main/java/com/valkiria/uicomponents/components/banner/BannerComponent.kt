@@ -1,5 +1,6 @@
-package com.valkiria.uicomponents.components.errorbanner
+package com.valkiria.uicomponents.components.banner
 
+import android.graphics.Color.parseColor
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,16 +27,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.model.mocks.getLoginBlockedErrorUiModel
-import com.valkiria.uicomponents.model.ui.errorbanner.ErrorUiModel
+import com.valkiria.uicomponents.model.ui.banner.BannerUiModel
+import com.valkiria.uicomponents.action.FooterUiAction
+import com.valkiria.uicomponents.action.GenericUiAction
+import com.valkiria.uicomponents.action.UiAction
+import com.valkiria.uicomponents.bricks.button.ButtonView
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import timber.log.Timber
 
 @Suppress("LongMethod")
 @Composable
-fun ErrorBannerComponent(
-    uiModel: ErrorUiModel,
-    onAction: () -> Unit
+internal fun BannerComponent(
+    uiModel: BannerUiModel,
+    onAction: (actionInput: UiAction) -> Unit
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon.orEmpty(), DefType.DRAWABLE
@@ -77,7 +82,7 @@ fun ErrorBannerComponent(
                             modifier = Modifier
                                 .padding(top = 20.dp, end = 16.dp)
                                 .size(42.dp),
-                            tint = MaterialTheme.colorScheme.error
+                            tint = Color(parseColor(uiModel.iconColor))
                         )
                     }
                     Text(
@@ -88,17 +93,19 @@ fun ErrorBannerComponent(
                         color = Color.White,
                         style = MaterialTheme.typography.displayLarge
                     )
-                    IconButton(
-                        onClick = { onAction() },
-                        modifier = Modifier
-                            .padding(start = 16.dp, top = 12.dp)
-                            .size(42.dp),
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_close),
-                            contentDescription = null,
-                            tint = Color.White
-                        )
+                    if (uiModel.leftButton == null) {
+                        IconButton(
+                            onClick = { onAction(GenericUiAction.DismissAction) },
+                            modifier = Modifier
+                                .padding(start = 16.dp, top = 12.dp)
+                                .size(42.dp),
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_close),
+                                contentDescription = null,
+                                tint = Color.White
+                            )
+                        }
                     }
                 }
                 Text(
@@ -107,6 +114,31 @@ fun ErrorBannerComponent(
                     color = Color.White,
                     style = MaterialTheme.typography.bodyLarge
                 )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(
+                        20.dp,
+                        Alignment.CenterHorizontally
+                    )
+                ) {
+                    uiModel.leftButton?.let { buttonUiModel ->
+                        ButtonView(
+                            uiModel = buttonUiModel,
+                            isTablet = false
+                        ) {
+                            onAction(FooterUiAction.FooterButton(buttonUiModel.identifier))
+                        }
+                    }
+
+                    uiModel.rightButton?.let { buttonUiModel ->
+                        ButtonView(
+                            uiModel = buttonUiModel,
+                            isTablet = false
+                        ) {
+                            onAction(FooterUiAction.FooterButton(buttonUiModel.identifier))
+                        }
+                    }
+                }
             }
         }
     }
@@ -114,10 +146,9 @@ fun ErrorBannerComponent(
 
 @Preview(showBackground = true)
 @Composable
-fun ErrorBannerComponentPreview() {
-    ErrorBannerComponent(
-        uiModel = getLoginBlockedErrorUiModel()
-    ) {
-        Timber.d("Closed")
-    }
+fun BannerComponentPreview() {
+    BannerComponent(
+        uiModel = getLoginBlockedErrorUiModel(),
+        onAction = { Timber.d("Closed") }
+    )
 }
