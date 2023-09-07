@@ -35,8 +35,8 @@ import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.mapToHeaderModel
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
-import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
+import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.ConfirmPasswordInput
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.NewPasswordInput
@@ -162,12 +162,14 @@ private fun LazyListScope.handleBodyRows(
 
             is InventoryCheckModel -> item(key = model.identifier) {
                 InventoryCheckComponent(
-                    uiModel = model.mapToUiModel(), isTablet
-                ) { id, updatedValue ->
+                    uiModel = model.mapToUiModel(), isTablet,
+                    validateFields
+                ) { id, updatedValue, fieldValidated ->
                     onAction(
                         GenericUiAction.InventoryAction(
                             identifier = id,
-                            updatedValue = updatedValue
+                            updatedValue = updatedValue,
+                            fieldValidated = fieldValidated
                         )
                     )
                 }

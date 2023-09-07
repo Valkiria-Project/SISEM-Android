@@ -62,15 +62,17 @@ fun TextFieldComponent(
         if (uiModel.style == TextFieldStyle.OUTLINED) {
             OutlinedTextFieldView(
                 uiModel = uiModel,
-                validateFields = validateFields,
-                onAction = onAction
-            )
+                validateFields = validateFields
+            ) { id, updatedValue, fieldValidated ->
+                onAction(id, updatedValue, fieldValidated)
+            }
         } else {
             FilledTextFieldView(
                 uiModel = uiModel,
-                validateFields = validateFields,
-                onAction = onAction
-            )
+                validateFields = validateFields
+            ) { id, updatedValue, fieldValidated ->
+                onAction(id, updatedValue, fieldValidated)
+            }
         }
     }
 }

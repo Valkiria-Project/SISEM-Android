@@ -6,7 +6,8 @@ import com.valkiria.uicomponents.model.ui.banner.BannerUiModel
 
 data class PreOperationalUiState(
     val screenModel: ScreenModel? = null,
-    val preOpNavigationModel: PreOpNavigationModel? = null,
+    val validateFields: Boolean = false,
+    val navigationModel: PreOpNavigationModel? = null,
     val isLoading: Boolean = false,
     val errorModel: BannerUiModel? = null
 )
