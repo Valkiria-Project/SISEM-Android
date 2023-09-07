@@ -31,7 +31,8 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
 
     data class InventoryAction(
         override val identifier: String,
-        val updatedValue: String
+        val updatedValue: String,
+        val fieldValidated: Boolean
     ) : GenericUiAction(identifier)
 
     data class SegmentedSwitchAction(
