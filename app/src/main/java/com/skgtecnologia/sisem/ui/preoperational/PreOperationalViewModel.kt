@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.changepassword.usecases.GetLoginNavigationModel
+import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.body.ChipOptionsModel
 import com.skgtecnologia.sisem.domain.model.body.FindingModel
 import com.skgtecnologia.sisem.domain.model.error.mapToUi

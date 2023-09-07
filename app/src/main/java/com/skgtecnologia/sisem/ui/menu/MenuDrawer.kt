@@ -18,7 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.menu.header.toCrewMemberItemModel
 import com.skgtecnologia.sisem.ui.menu.items.getDrawerMenuItemList
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
-import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
+import com.valkiria.uicomponents.components.banner.OnErrorHandler
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -79,7 +79,7 @@ fun MenuDrawer(
         }
     }
 
-    OnErrorHandler(uiState.errorModel) {
+    OnErrorHandler(uiModel = uiState.errorModel) {
         viewModel.handleShownError()
     }
 

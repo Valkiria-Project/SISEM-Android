@@ -33,7 +33,7 @@ import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.bricks.button.ButtonView
-import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
+import com.valkiria.uicomponents.components.banner.OnErrorHandler
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import com.valkiria.uicomponents.model.props.ButtonSize
 import com.valkiria.uicomponents.model.props.ButtonStyle
@@ -42,8 +42,9 @@ import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.ui.button.ButtonUiModel
 import com.valkiria.uicomponents.model.ui.button.OnClick
 import timber.log.Timber
+import kotlin.random.Random
 
-@Suppress("LongMethod")
+@Suppress("LongMethod", "MagicNumber")
 @Composable
 fun ImagesConfirmationScreen(
     viewModel: ReportViewModel,
@@ -87,6 +88,7 @@ fun ImagesConfirmationScreen(
         ) {
             ButtonView(
                 uiModel = ButtonUiModel(
+                    identifier = Random(100).toString(),
                     label = stringResource(R.string.images_confirmation_delete_image_cta),
                     textStyle = TextStyle.BUTTON_2,
                     style = ButtonStyle.TRANSPARENT,
@@ -102,6 +104,7 @@ fun ImagesConfirmationScreen(
 
             ButtonView(
                 uiModel = ButtonUiModel(
+                    identifier = Random(100).toString(),
                     label = stringResource(R.string.images_confirmation_confirm_images_cta),
                     textStyle = TextStyle.BUTTON_2,
                     style = ButtonStyle.TRANSPARENT,
@@ -130,10 +133,8 @@ fun ImagesConfirmationScreen(
         ImagesPager(bitmaps)
     }
 
-    uiState.successInfoModel?.let { infoUiModel ->
-        OnErrorHandler(infoUiModel) {
-            onNavigation(uiState.navigationModel)
-        }
+    OnErrorHandler(uiState.successInfoModel) {
+        onNavigation(uiState.navigationModel)
     }
 
     OnErrorHandler(uiState.errorModel) {
