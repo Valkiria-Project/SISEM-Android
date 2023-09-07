@@ -9,7 +9,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.changepassword.usecases.GetLoginNavigationModel
+import com.skgtecnologia.sisem.domain.model.body.ChipOptionsModel
+import com.skgtecnologia.sisem.domain.model.body.FindingModel
+import com.skgtecnologia.sisem.domain.model.body.InventoryCheckModel
+import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.error.mapToUi
+import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
@@ -46,10 +51,12 @@ class PreOperationalViewModel @Inject constructor(
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
             getPreOperationalScreen.invoke(androidIdProvider.getAndroidId())
-                .onSuccess { loginScreenModel ->
+                .onSuccess { preOperationalScreenModel ->
+                    preOperationalScreenModel.getFormInitialValues()
+
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
-                            screenModel = loginScreenModel,
+                            screenModel = preOperationalScreenModel,
                             isLoading = false
                         )
                     }
@@ -62,6 +69,18 @@ class PreOperationalViewModel @Inject constructor(
                         errorModel = throwable.mapToUi()
                     )
                 }
+        }
+    }
+
+    private fun ScreenModel.getFormInitialValues() {
+        this.body.forEach { bodyRowModel ->
+            when (bodyRowModel) {
+                is FindingModel -> Timber.d("it's a finding with id $bodyRowModel.")
+                is ChipOptionsModel -> TODO()
+                is InventoryCheckModel -> TODO()
+                is TextFieldModel -> TODO()
+                else -> Timber.d("no-op")
+            }
         }
     }
 
