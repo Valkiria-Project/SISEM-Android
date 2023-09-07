@@ -41,6 +41,8 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            buildConfigField("String", "AUTH_BASE_URL", "\"http://34.74.218.181/sisem-api/\"")
+            buildConfigField("String", "BASE_URL", "\"http://34.74.218.181/sisem-api/v1/\"")
         }
     }
     buildFeatures {
