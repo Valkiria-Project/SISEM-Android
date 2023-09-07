@@ -12,7 +12,7 @@ import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.ChipModel
-import com.skgtecnologia.sisem.domain.model.error.mapToUi
+import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

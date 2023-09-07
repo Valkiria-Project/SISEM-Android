@@ -10,7 +10,7 @@ import com.skgtecnologia.sisem.domain.auth.usecases.DeleteAccessToken
 import com.skgtecnologia.sisem.domain.deviceauth.model.AssociateDeviceModel
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.AssociateDevice
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.GetDeviceAuthScreen
-import com.skgtecnologia.sisem.domain.model.error.mapToUi
+import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -91,7 +91,10 @@ class DeviceAuthViewModel @Inject constructor(
     private suspend fun handleOnSuccess(associateDeviceModel: AssociateDeviceModel) {
         if (disassociateDeviceState) {
             onDeviceAuthHandled() // FIXME: maintains the previous state, we must clean
-            getScreen() // FIXME: show message?
+            uiState.copy(
+                disassociateInfoModel = null, // Fixme: update with new response
+                isLoading = false
+            )
         } else {
             deleteAccessToken.invoke().onSuccess {
                 uiState = uiState.copy(
