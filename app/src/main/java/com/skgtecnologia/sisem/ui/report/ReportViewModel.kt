@@ -138,7 +138,7 @@ class ReportViewModel @Inject constructor(
             "Conductor" -> uiState.operationModel?.numImgPreoperationalDriver ?: 0
             "Médico" -> uiState.operationModel?.numImgPreoperationalDoctor ?: 0
             "Auxiliar" -> uiState.operationModel?.numImgPreoperationalAux ?: 0
-            else -> 0
+            else -> 3
         }
 
         val updatedSelectedImages = buildList {
@@ -223,7 +223,7 @@ class ReportViewModel @Inject constructor(
             successInfoModel = BannerUiModel(
                 icon = "ic_alert",
                 iconColor = "#42A4FA",
-                title = "Hallazgo guardada",
+                title = "Hallazgo guardado",
                 description = "El hallazgo ha sido almacenado con éxito."
             ),
             isLoading = false,
