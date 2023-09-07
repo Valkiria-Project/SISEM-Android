@@ -70,24 +70,13 @@ fun PreOperationalScreen(
             modifier = modifier
                 .constrainAs(body) {
                     top.linkTo(header.bottom)
-                    bottom.linkTo(footer.top)
+                    bottom.linkTo(parent.bottom)
                     height = Dimension.fillToConstraints
                 }
                 .padding(top = 20.dp),
             validateFields = uiState.validateFields
         ) { uiAction ->
             handleBodyAction(uiAction, viewModel)
-        }
-
-        uiState.screenModel?.footer?.let {
-            FooterSection(
-                footerModel = it,
-                modifier = modifier.constrainAs(footer) {
-                    bottom.linkTo(parent.bottom)
-                }
-            ) { uiAction ->
-                handleFooterAction(uiAction, viewModel)
-            }
         }
     }
 
@@ -103,6 +92,8 @@ private fun handleBodyAction(
     viewModel: PreOperationalViewModel
 ) {
     when (uiAction) {
+        is FooterUiAction.FooterButton -> viewModel.savePreOperational()
+
         is GenericUiAction.ChipOptionAction ->
             viewModel.findings[uiAction.identifier] = uiAction.status
 
