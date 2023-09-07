@@ -158,10 +158,13 @@ private fun LazyListScope.handleBodyRows(
                     uiModel = model.mapToUiModel()
                 ) { selected, isSelection ->
                     coroutineScope.launch {
-                        val contentHeader = body.indexOfFirst { it ->
+                        val contentHeader = body.indexOfFirst {
                             it is ContentHeaderModel && it.text == selected
                         }
-                        listState.animateScrollToItem(index = contentHeader)
+
+                        if (contentHeader >= 0) {
+                            listState.animateScrollToItem(index = contentHeader)
+                        }
                     }
                 }
             }
