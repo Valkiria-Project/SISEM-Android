@@ -16,6 +16,7 @@ data class SegmentedSwitchResponse(
     @Json(name = "text") val text: String?,
     @Json(name = "text_style") val textStyle: TextStyle?,
     @Json(name = "options") val options: List<OptionResponse>?,
+    @Json(name = "selected") val selected: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {

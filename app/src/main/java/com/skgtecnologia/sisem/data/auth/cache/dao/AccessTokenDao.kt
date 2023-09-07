@@ -18,6 +18,15 @@ interface AccessTokenDao {
     @Query("SELECT * FROM access_token")
     suspend fun getAllAccessTokens(): List<AccessTokenEntity>
 
+    @Query(
+        """
+            UPDATE access_token
+            SET pre_operational_status = false
+            WHERE role = :role
+             """
+    )
+    suspend fun updatePreOperationalStatus(role: String)
+
     @Query("DELETE FROM access_token")
     suspend fun deleteAccessToken() // FIXME: review this method
 
