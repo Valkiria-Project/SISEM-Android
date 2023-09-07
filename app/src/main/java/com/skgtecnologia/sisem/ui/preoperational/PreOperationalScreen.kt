@@ -35,14 +35,14 @@ fun PreOperationalScreen(
     LaunchedEffect(uiState) {
         launch {
             when {
-                uiState.preOpNavigationModel?.isNewFinding == true -> {
+                uiState.navigationModel?.isNewFinding == true -> {
                     viewModel.handleShownFindingForm()
-                    onNavigation(uiState.preOpNavigationModel)
+                    onNavigation(uiState.navigationModel)
                 }
 
-                uiState.preOpNavigationModel?.isTurnComplete != null -> {
+                uiState.navigationModel?.isTurnComplete != null -> {
                     viewModel.onPreOpHandled()
-                    onNavigation(uiState.preOpNavigationModel)
+                    onNavigation(uiState.navigationModel)
                 }
             }
         }
@@ -73,7 +73,8 @@ fun PreOperationalScreen(
                     bottom.linkTo(footer.top)
                     height = Dimension.fillToConstraints
                 }
-                .padding(top = 20.dp)
+                .padding(top = 20.dp),
+            validateFields = uiState.validateFields
         ) { uiAction ->
             handleBodyAction(uiAction, viewModel)
         }
@@ -115,14 +116,14 @@ private fun handleBodyAction(
 
         is GenericUiAction.InputAction -> {
             viewModel.fieldsValues[uiAction.identifier] = uiAction.updatedValue
-            // FIXME: This must be dynamic
-//            viewModel.isValidPassword = uiAction.fieldValidated
+            viewModel.fieldsValidated[uiAction.identifier] = uiAction.fieldValidated
         }
 
         is GenericUiAction.InventoryAction -> {
-            viewModel.inventoryValues[uiAction.identifier] = uiAction.updatedValue.toInt()
-            // FIXME: This must be dynamic
-//            viewModel.isValidPassword = uiAction.fieldValidated
+            uiAction.updatedValue.toIntOrNull()?.let { checkItemValue ->
+                viewModel.inventoryValues[uiAction.identifier] = checkItemValue
+                viewModel.inventoryValidated[uiAction.identifier] = uiAction.fieldValidated
+            }
         }
 
         else -> Timber.d("no-op")
@@ -140,7 +141,7 @@ private fun handleFooterAction(
             PreOperationalIdentifier.DRIVER_PREOP_CANCEL_BUTTON.name,
             PreOperationalIdentifier.DRIVER_PREOP_SAVE_BUTTON.name,
             PreOperationalIdentifier.DOCTOR_PREOP_CANCEL_BUTTON.name,
-            PreOperationalIdentifier.DOCTOR_PREOP_SAVE_BUTTON.name -> viewModel.sendPreOperational()
+            PreOperationalIdentifier.DOCTOR_PREOP_SAVE_BUTTON.name -> viewModel.savePreOperational()
         }
     }
 }
