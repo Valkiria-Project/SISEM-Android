@@ -125,6 +125,10 @@
     <string name="findings_take_picture_label">Cámara</string>
     <string name="findings_select_pictures">Imagen</string>
 
+    <!-- Add Report Screen -->
+    <string name="record_news_topic_label">Asunto</string>
+    <string name="record_news_description_label">Descripción</string>
+
     <!-- Camera screen -->
     <string name="camera_take_picture">Tomar foto</string>
 
