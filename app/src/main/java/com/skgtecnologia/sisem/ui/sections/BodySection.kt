@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -34,8 +37,8 @@ import com.skgtecnologia.sisem.domain.model.body.RichLabelModel
 import com.skgtecnologia.sisem.domain.model.body.SegmentedSwitchModel
 import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
-import com.skgtecnologia.sisem.domain.model.body.mapToSection
 import com.skgtecnologia.sisem.domain.model.body.mapToHeaderModel
+import com.skgtecnologia.sisem.domain.model.body.mapToSection
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
@@ -67,7 +70,8 @@ import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchCompo
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
 import com.valkiria.uicomponents.components.textfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
-import timber.log.Timber
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Suppress("ComplexMethod", "LongMethod")
 @Composable
@@ -78,14 +82,25 @@ fun BodySection(
     validateFields: Boolean = false,
     onAction: (actionInput: UiAction) -> Unit
 ) {
+    val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+
     if (body?.isNotEmpty() == true) {
         LazyColumn(
             modifier = modifier,
+            state = listState,
             contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Top),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            handleBodyRows(body, isTablet, validateFields, onAction)
+            handleBodyRows(
+                body = body,
+                listState = listState,
+                coroutineScope = coroutineScope,
+                isTablet = isTablet,
+                validateFields = validateFields,
+                onAction = onAction
+            )
         }
     }
 }
@@ -93,6 +108,8 @@ fun BodySection(
 @Suppress("LongMethod", "ComplexMethod")
 private fun LazyListScope.handleBodyRows(
     body: List<BodyRowModel>,
+    listState: LazyListState,
+    coroutineScope: CoroutineScope,
     isTablet: Boolean,
     validateFields: Boolean,
     onAction: (actionInput: UiAction) -> Unit
@@ -140,8 +157,12 @@ private fun LazyListScope.handleBodyRows(
                 FiltersComponent(
                     uiModel = model.mapToUiModel()
                 ) { selected, isSelection ->
-                    // FIXME: Finish this stuff
-                    Timber.d("Selected $selected and is $isSelection")
+                    coroutineScope.launch {
+                        val contentHeader = body.indexOfFirst { it ->
+                            it is ContentHeaderModel && it.text == selected
+                        }
+                        listState.animateScrollToItem(index = contentHeader)
+                    }
                 }
             }
 
