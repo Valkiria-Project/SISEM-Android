@@ -26,6 +26,18 @@ android {
         }
     }
     buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+            isDebuggable = true
+            buildConfigField("String", "AUTH_BASE_URL", "\"http://34.139.125.3/sisem-api/\"")
+            buildConfigField("String", "BASE_URL", "\"http://34.139.125.3/sisem-api/v1/\"")
+        }
+        create("staging") {
+            initWith(getByName("debug"))
+            applicationIdSuffix = ".debugStaging"
+            buildConfigField("String", "AUTH_BASE_URL", "\"http://34.74.218.181/sisem-api/\"")
+            buildConfigField("String", "BASE_URL", "\"http://34.74.218.181/sisem-api/v1/\"")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")

@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.di.auth
 
+import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.data.auth.remote.AuthApi
 import com.skgtecnologia.sisem.di.CLIENT_TIMEOUT_DEFAULTS
 import com.skgtecnologia.sisem.di.CoreNetworkModule
@@ -18,8 +19,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-private const val BASE_URL = "http://34.139.125.3/sisem-api/"
-//private const val BASE_URL = ""http://34.74.218.181/sisem-api/"
 
 @Module(includes = [CoreNetworkModule::class])
 @InstallIn(SingletonComponent::class)
@@ -47,7 +46,7 @@ object AuthNetworkModule {
         @BasicAuthentication okHttpClient: OkHttpClient
     ): Retrofit =
         Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.AUTH_BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
