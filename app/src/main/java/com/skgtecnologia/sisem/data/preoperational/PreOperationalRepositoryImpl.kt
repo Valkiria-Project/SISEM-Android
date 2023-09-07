@@ -41,6 +41,8 @@ class PreOperationalRepositoryImpl @Inject constructor(
             inventoryValues = inventoryValues,
             fieldsValues = fieldsValues,
             novelties = novelties
-        ).getOrThrow()
+        ).onSuccess {
+            authCacheDataSource.updatePreOperationalStatus(accessToken.role)
+        }.getOrThrow()
     }
 }
