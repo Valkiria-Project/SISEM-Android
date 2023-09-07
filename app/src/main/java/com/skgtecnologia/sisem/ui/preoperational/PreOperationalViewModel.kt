@@ -110,7 +110,10 @@ class PreOperationalViewModel @Inject constructor(
 
     fun showFindingForm() {
         uiState = uiState.copy(
-            navigationModel = PreOpNavigationModel(isNewFinding = true)
+            navigationModel = PreOpNavigationModel(
+                isNewFinding = true,
+                role = "Conductor" // FIXME: Think better about this
+            )
         )
     }
 
@@ -137,7 +140,7 @@ class PreOperationalViewModel @Inject constructor(
                     icon = "ic_alert",
                     title = "Incompleto",
                     description = "Para guardar el preoperacional es necesario que complete" +
-                        " todos los campos."
+                            " todos los campos."
                 )
             )
         }

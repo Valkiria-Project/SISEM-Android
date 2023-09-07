@@ -6,7 +6,6 @@ import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.PreOpNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
-import timber.log.Timber
 
 fun getAppStartDestination(model: StartupNavigationModel?): String {
     return if (model == null) {
@@ -78,7 +77,8 @@ private fun preOpToNextStep(
         }
     }
 
-    model.isNewFinding -> navController.navigate(ReportNavigationRoute.FindingsScreen.route)
+    model.isNewFinding ->
+        navController.navigate("${ReportNavigationRoute.AddFindingScreen.route}/${model.role}")
 
     else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route)
 }
@@ -92,15 +92,11 @@ private fun reportToNextStep(
 
         model.showCamera -> navController.navigate(ReportNavigationRoute.CameraScreen.route)
 
-        model.confirmMedia -> Timber.d("Finish this")
-
         model.saveFinding && model.imagesSize > 0 -> navController.navigate(
             "${ReportNavigationRoute.ImagesConfirmationScreen.route}/finding"
         )
 
-        model.saveFinding -> navController.popBackStack()
-
-        model.saveRecordNews && model.imagesSize > 0 -> navController.navigate(
+        model.saveReport && model.imagesSize > 0 -> navController.navigate(
             "${ReportNavigationRoute.ImagesConfirmationScreen.route}/recordNews"
         )
 

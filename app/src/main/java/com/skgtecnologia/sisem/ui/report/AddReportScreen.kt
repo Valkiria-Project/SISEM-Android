@@ -38,21 +38,21 @@ import kotlin.random.Random
 @Suppress("LongParameterList", "LongMethod")
 @Composable
 fun AddReportScreen(
-    reportViewModel: ReportViewModel,
+    viewModel: ReportViewModel,
+    role: String,
     isTablet: Boolean,
     modifier: Modifier = Modifier,
-    role: String,
     onNavigation: (addReportNavigationModel: NavigationModel?) -> Unit
 ) {
-    val viewModel = hiltViewModel<AddReportViewModel>()
+    val addReportViewModel = hiltViewModel<AddReportViewModel>()
     val uiState = viewModel.uiState
-    val uiReportState = reportViewModel.uiState
+    val addReportUiState = addReportViewModel.uiState
 
-    LaunchedEffect(uiReportState) {
+    LaunchedEffect(uiState) {
         when {
-            uiReportState.navigationModel != null && uiReportState.cancelInfoModel == null -> {
-                reportViewModel.handleNavigation()
-                onNavigation(uiReportState.navigationModel)
+            uiState.navigationModel != null && uiState.cancelInfoModel == null -> {
+                viewModel.handleNavigation()
+                onNavigation(uiState.navigationModel)
             }
         }
     }
@@ -64,10 +64,10 @@ fun AddReportScreen(
             modifier.fillMaxWidth()
         },
     ) {
-        uiState.screenModel?.header?.let {
+        addReportUiState.screenModel?.header?.let {
             HeaderSection(headerModel = it) { uiAction ->
                 if (uiAction is HeaderUiAction.GoBack) {
-                    reportViewModel.goBack()
+                    viewModel.goBack()
                 }
             }
         }
@@ -76,61 +76,61 @@ fun AddReportScreen(
 
         TextFieldComponent(
             uiModel = getFindingsTopicModel(),
-            validateFields = uiReportState.validateFields
+            validateFields = uiState.validateFields
         ) { _, updatedValue, fieldValidated ->
-            reportViewModel.topic = updatedValue
-            reportViewModel.isValidTopic = fieldValidated
+            viewModel.topic = updatedValue
+            viewModel.isValidTopic = fieldValidated
         }
 
         LabelComponent(uiModel = getRecordNewsDescriptionModel())
 
         TextFieldComponent(
             uiModel = getFindingsDescriptionModel(),
-            validateFields = uiReportState.validateFields
+            validateFields = uiState.validateFields
         ) { _, updatedValue, fieldValidated ->
-            reportViewModel.description = updatedValue
-            reportViewModel.isValidDescription = fieldValidated
+            viewModel.description = updatedValue
+            viewModel.isValidDescription = fieldValidated
         }
 
         LabelComponent(uiModel = getFindingsAddFilesModel())
 
-        MediaActions(reportViewModel, role)
+        MediaActions(viewModel, role)
 
         Spacer(modifier = Modifier.weight(1f))
 
-        uiState.screenModel?.footer?.let {
+        addReportUiState.screenModel?.footer?.let {
             FooterSection(footerModel = it) { uiAction ->
-                handleFooterUiAction(uiAction, reportViewModel)
+                handleFooterAction(uiAction, viewModel)
             }
         }
     }
 
-    OnErrorHandler(uiReportState.cancelInfoModel) {
-        handleFooterUiAction(it, reportViewModel)
+    OnErrorHandler(uiState.cancelInfoModel) {
+        handleFooterAction(it, viewModel)
+    }
+
+    OnErrorHandler(addReportUiState.errorModel) {
+        addReportViewModel.handleShownError()
     }
 
     OnErrorHandler(uiState.errorModel) {
         viewModel.handleShownError()
     }
 
-    OnErrorHandler(uiReportState.errorModel) {
-        reportViewModel.handleShownError()
-    }
-
     LocalFocusManager.current.clearFocus()
 
+    OnLoadingHandler(addReportUiState.isLoading, modifier)
     OnLoadingHandler(uiState.isLoading, modifier)
-    OnLoadingHandler(uiReportState.isLoading, modifier)
 }
 
-private fun handleFooterUiAction(
+private fun handleFooterAction(
     uiAction: UiAction,
     viewModel: ReportViewModel
 ) {
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
             AddReportIdentifier.ADD_REPORT_ENTRY_CANCEL_BUTTON.name -> viewModel.cancelReport()
-            AddReportIdentifier.SEND_REPORT_ENTRY_SEND_BUTTON.name -> viewModel.saveRecordNews()
+            AddReportIdentifier.SEND_REPORT_ENTRY_SEND_BUTTON.name -> viewModel.saveReport()
             AddReportIdentifier.ADD_REPORT_CANCEL_BANNER.name -> viewModel.goBack()
             AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name -> viewModel.handleNavigation()
         }

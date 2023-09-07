@@ -6,7 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.domain.model.banner.cancelFindingBanner
 import com.skgtecnologia.sisem.domain.model.banner.cancelReportBanner
+import com.skgtecnologia.sisem.domain.model.banner.confirmSendFindingBanner
 import com.skgtecnologia.sisem.domain.model.banner.confirmSendReportBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.operation.usecases.RetrieveOperationConfig
@@ -67,6 +69,15 @@ class ReportViewModel @Inject constructor(
                 goBack = true
             ),
             cancelInfoModel = null
+        )
+    }
+
+    fun cancelFinding() {
+        uiState = uiState.copy(
+            navigationModel = ReportNavigationModel(
+                cancelFinding = true
+            ),
+            cancelInfoModel = cancelFindingBanner().mapToUi()
         )
     }
 
@@ -157,24 +168,22 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    fun confirmMedia() {
-        uiState = uiState.copy(
-            navigationModel = ReportNavigationModel(
-                confirmMedia = true
-            )
-        )
-    }
-
     fun saveFinding() {
         uiState = uiState.copy(
-            navigationModel = ReportNavigationModel(
-                saveFinding = true,
-                imagesSize = uiState.selectedImageUris.size
-            )
+            validateFields = true
         )
+
+        if (isValidDescription) {
+            uiState = uiState.copy(
+                navigationModel = ReportNavigationModel(
+                    saveFinding = true,
+                    imagesSize = uiState.selectedImageUris.size
+                )
+            )
+        }
     }
 
-    fun saveRecordNews() {
+    fun saveReport() {
         uiState = uiState.copy(
             validateFields = true
         )
@@ -182,11 +191,20 @@ class ReportViewModel @Inject constructor(
         if (isValidTopic && isValidDescription) {
             uiState = uiState.copy(
                 navigationModel = ReportNavigationModel(
-                    saveRecordNews = true,
+                    saveReport = true,
                     imagesSize = uiState.selectedImageUris.size
                 )
             )
         }
+    }
+
+    fun confirmSendFinding() {
+        uiState = uiState.copy(
+            navigationModel = ReportNavigationModel(
+                confirmFinding = true
+            ),
+            confirmInfoModel = confirmSendFindingBanner().mapToUi()
+        )
     }
 
     fun confirmSendReport() {
