@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.domain.model.error
+package com.skgtecnologia.sisem.domain.model.banner
 
 // FIXME: Handle this in the use Cases
 fun changePasswordEmptyFields(): BannerModel = BannerModel(

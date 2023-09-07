@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.domain.auth.model
 
-import com.skgtecnologia.sisem.domain.model.error.BannerModel
+import com.skgtecnologia.sisem.domain.model.banner.BannerModel
 import java.time.LocalDateTime
 
 data class AccessTokenModel(

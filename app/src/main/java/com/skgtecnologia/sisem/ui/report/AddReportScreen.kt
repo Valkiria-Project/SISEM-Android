@@ -22,7 +22,7 @@ import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
+import com.valkiria.uicomponents.components.banner.OnErrorHandler
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent

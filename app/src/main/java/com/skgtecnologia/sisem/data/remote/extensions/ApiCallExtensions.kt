@@ -2,10 +2,10 @@ package com.skgtecnologia.sisem.data.remote.extensions
 
 import com.skgtecnologia.sisem.commons.extensions.recoverResult
 import com.skgtecnologia.sisem.commons.extensions.resultOf
-import com.skgtecnologia.sisem.data.remote.model.error.ErrorResponse
-import com.skgtecnologia.sisem.data.remote.model.error.mapToDomain
-import com.skgtecnologia.sisem.domain.model.error.BannerModel
-import com.skgtecnologia.sisem.domain.model.error.ErrorModelFactory
+import com.skgtecnologia.sisem.data.remote.model.banner.BannerResponse
+import com.skgtecnologia.sisem.data.remote.model.banner.mapToDomain
+import com.skgtecnologia.sisem.domain.model.banner.BannerModel
+import com.skgtecnologia.sisem.domain.model.banner.ErrorModelFactory
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -47,10 +47,10 @@ suspend fun <T> apiCall(errorModelFactory: ErrorModelFactory, api: suspend () ->
 
 private val errorAdapter = Moshi.Builder()
     .build()
-    .adapter(ErrorResponse::class.java)
+    .adapter(BannerResponse::class.java)
 
 @Suppress("SwallowedException", "TooGenericExceptionCaught")
-private fun ResponseBody?.toError(): ErrorResponse? = if (this != null) {
+private fun ResponseBody?.toError(): BannerResponse? = if (this != null) {
     try {
         errorAdapter.fromJson(string())
     } catch (exception: Exception) {

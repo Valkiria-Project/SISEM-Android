@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.components.errorbanner
+package com.valkiria.uicomponents.components.banner
 
 import androidx.compose.runtime.Composable
 import com.valkiria.uicomponents.action.UiAction
@@ -6,12 +6,12 @@ import com.valkiria.uicomponents.model.ui.banner.BannerUiModel
 
 @Composable
 fun OnErrorHandler(
-    errorModel: BannerUiModel?,
+    uiModel: BannerUiModel?,
     onAction: (actionInput: UiAction) -> Unit
 ) {
-    errorModel?.let { errorUiModel ->
+    uiModel?.let { bannerUiModel ->
         BannerComponent(
-            uiModel = errorUiModel,
+            uiModel = bannerUiModel,
             onAction = onAction
         )
     }

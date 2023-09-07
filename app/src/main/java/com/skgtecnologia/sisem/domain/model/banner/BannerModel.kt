@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.domain.model.error
+package com.skgtecnologia.sisem.domain.model.banner
 
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.resources.StringProvider

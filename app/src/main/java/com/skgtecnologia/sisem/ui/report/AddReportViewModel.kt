@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.skgtecnologia.sisem.domain.model.error.mapToUi
+import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.report.usecases.GetAddReportScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

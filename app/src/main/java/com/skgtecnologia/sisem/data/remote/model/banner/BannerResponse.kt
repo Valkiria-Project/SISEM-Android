@@ -1,6 +1,6 @@
-package com.skgtecnologia.sisem.data.remote.model.error
+package com.skgtecnologia.sisem.data.remote.model.banner
 
-import com.skgtecnologia.sisem.domain.model.error.BannerModel
+import com.skgtecnologia.sisem.domain.model.banner.BannerModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.ui.banner.DEFAULT_ICON_COLOR

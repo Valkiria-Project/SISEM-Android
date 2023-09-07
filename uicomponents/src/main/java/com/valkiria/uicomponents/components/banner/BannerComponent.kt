@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.components.errorbanner
+package com.valkiria.uicomponents.components.banner
 
 import android.graphics.Color.parseColor
 import androidx.compose.foundation.background
@@ -146,7 +146,7 @@ internal fun BannerComponent(
 
 @Preview(showBackground = true)
 @Composable
-fun ErrorBannerComponentPreview() {
+fun BannerComponentPreview() {
     BannerComponent(
         uiModel = getLoginBlockedErrorUiModel(),
         onAction = { Timber.d("Closed") }

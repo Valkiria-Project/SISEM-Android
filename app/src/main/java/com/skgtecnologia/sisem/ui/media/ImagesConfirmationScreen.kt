@@ -33,7 +33,7 @@ import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.bricks.button.ButtonView
-import com.valkiria.uicomponents.components.errorbanner.OnErrorHandler
+import com.valkiria.uicomponents.components.banner.OnErrorHandler
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import com.valkiria.uicomponents.model.props.ButtonSize
 import com.valkiria.uicomponents.model.props.ButtonStyle
