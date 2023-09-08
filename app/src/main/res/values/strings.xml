@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">SISEM</string>
-
     <!-- Error dialog -->
     <string name="error_connectivity_title">Revise su conexión a Internet</string>
     <string name="error_forbidden_title">Autorización denegada</string>

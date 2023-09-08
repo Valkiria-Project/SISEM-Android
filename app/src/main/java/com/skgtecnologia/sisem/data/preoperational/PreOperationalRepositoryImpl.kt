@@ -26,6 +26,10 @@ class PreOperationalRepositoryImpl @Inject constructor(
         ).getOrThrow()
     }
 
+    override suspend fun getRole(): OperationRole = checkNotNull(
+        OperationRole.getRoleByName(authCacheDataSource.retrieveAccessToken()?.role.orEmpty())
+    )
+
     override suspend fun sendPreOperational(
         findings: Map<String, Boolean>,
         inventoryValues: Map<String, Int>,

@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.ui.media
 
+import android.content.ContentResolver
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -25,13 +26,16 @@ import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.header.HeaderModel
 import com.skgtecnologia.sisem.domain.model.header.TextModel
+import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
 import com.skgtecnologia.sisem.ui.bottomsheet.PagerIndicator
 import com.skgtecnologia.sisem.ui.commons.extensions.decodeAsBitmap
 import com.skgtecnologia.sisem.ui.commons.extensions.encodeAsBase64
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
+import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.HeaderUiAction
+import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.button.ButtonView
 import com.valkiria.uicomponents.components.banner.OnErrorHandler
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
@@ -57,10 +61,12 @@ fun ImagesConfirmationScreen(
     val contentResolver = LocalContext.current.contentResolver
 
     LaunchedEffect(uiState) {
-        when {
-            uiState.navigationModel != null && uiState.successInfoModel == null -> {
-                viewModel.handleNavigation()
-                onNavigation(uiState.navigationModel)
+        with(uiState) {
+            when {
+                navigationModel != null && successInfoModel == null && confirmInfoModel == null -> {
+                    viewModel.handleNavigation()
+                    onNavigation(uiState.navigationModel)
+                }
             }
         }
     }
@@ -116,12 +122,9 @@ fun ImagesConfirmationScreen(
                 )
             ) {
                 if (from == "recordNews") {
-                    val images = viewModel.uiState.selectedImageUris.map { uri ->
-                        uri.decodeAsBitmap(contentResolver).encodeAsBase64()
-                    }
-                    viewModel.sendRecordNews(images)
+                    viewModel.confirmSendReport()
                 } else {
-                    // TODO
+                    viewModel.confirmSendFinding()
                 }
             }
         }
@@ -133,6 +136,10 @@ fun ImagesConfirmationScreen(
         ImagesPager(bitmaps)
     }
 
+    OnErrorHandler(uiState.confirmInfoModel) {
+        handleAction(it, from, contentResolver, viewModel)
+    }
+
     OnErrorHandler(uiState.successInfoModel) {
         onNavigation(uiState.navigationModel)
     }
@@ -142,6 +149,34 @@ fun ImagesConfirmationScreen(
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)
+}
+
+fun handleAction(
+    uiAction: UiAction,
+    from: String,
+    contentResolver: ContentResolver,
+    viewModel: ReportViewModel
+) {
+    (uiAction as? FooterUiAction)?.let {
+        when (uiAction.identifier) {
+            ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_CANCEL_BANNER.name ->
+                viewModel.handleNavigation()
+
+            ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name -> {
+                val images = viewModel.uiState.selectedImageUris.map { uri ->
+                    uri.decodeAsBitmap(contentResolver).encodeAsBase64()
+                }
+
+                if (from == "recordNews") {
+                    viewModel.sendReport(images)
+                } else {
+                    viewModel.saveFinding(images)
+                }
+
+                viewModel.handleShownConfirm()
+            }
+        }
+    }
 }
 
 @Composable

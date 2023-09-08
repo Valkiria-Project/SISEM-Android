@@ -23,9 +23,9 @@ import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
+import com.skgtecnologia.sisem.ui.report.AddFindingScreen
 import com.skgtecnologia.sisem.ui.report.AddReportRoleScreen
 import com.skgtecnologia.sisem.ui.report.AddReportScreen
-import com.skgtecnologia.sisem.ui.report.FindingsScreen
 
 @Composable
 fun SisemNavGraph(
@@ -222,14 +222,16 @@ private fun NavGraphBuilder.reportGraph(
     modifier: Modifier
 ) {
     navigation(
-        startDestination = ReportNavigationRoute.FindingsScreen.route,
+        startDestination = ReportNavigationRoute.AddFindingScreen.route,
         route = NavigationGraph.Report.route
     ) {
         composable(
-            route = ReportNavigationRoute.FindingsScreen.route
-        ) {
-            FindingsScreen(
-                viewModel = it.sharedViewModel(navController = navController),
+            route = "${ReportNavigationRoute.AddFindingScreen.route}/{${NavigationArgument.ROLE}}",
+            arguments = listOf(navArgument(NavigationArgument.ROLE) { type = NavType.StringType })
+        ) { backStackEntry ->
+            AddFindingScreen(
+                viewModel = backStackEntry.sharedViewModel(navController = navController),
+                role = backStackEntry.arguments?.getString(NavigationArgument.ROLE).orEmpty(),
                 isTablet = isTablet,
                 modifier = modifier
             ) { navigationModel ->
@@ -271,7 +273,13 @@ private fun NavGraphBuilder.reportGraph(
                 onNavigation = { role ->
                     navController.navigate("${ReportNavigationRoute.AddReportScreen.route}/$role")
                 },
-                onCancel = { navController.navigateUp() }
+                onCancel = {
+                    navController.navigate(NavigationGraph.Main.route) {
+                        popUpTo(MainNavigationRoute.AddReportRoleScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                }
             )
         }
 
@@ -280,13 +288,12 @@ private fun NavGraphBuilder.reportGraph(
             arguments = listOf(navArgument(NavigationArgument.ROLE) { type = NavType.StringType })
         ) { backStackEntry ->
             AddReportScreen(
-                reportViewModel = backStackEntry.sharedViewModel(navController = navController),
-                isTablet = isTablet,
+                viewModel = backStackEntry.sharedViewModel(navController = navController),
                 role = backStackEntry.arguments?.getString(NavigationArgument.ROLE).orEmpty(),
+                isTablet = isTablet,
                 onNavigation = { navigationModel ->
                     navigateToNextStep(navController, navigationModel)
-                },
-                onCancel = { navController.navigateUp() }
+                }
             )
         }
     }

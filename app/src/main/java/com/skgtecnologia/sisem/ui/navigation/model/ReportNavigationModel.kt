@@ -4,9 +4,13 @@ data class ReportNavigationModel(
     val goBack: Boolean = false,
     val showCamera: Boolean = false,
     val photoTaken: Boolean = false,
+    val cancelFinding: Boolean = false,
     val saveFinding: Boolean = false,
-    val confirmMedia: Boolean = false,
-    val saveRecordNews: Boolean = false,
+    val confirmFinding: Boolean = false,
+    val closeFinding: Boolean = false,
+    val cancelReport: Boolean = false,
+    val saveReport: Boolean = false,
+    val confirmSendReport: Boolean = false,
     val closeReport: Boolean = false,
     val imagesSize: Int = 0
 ) : NavigationModel

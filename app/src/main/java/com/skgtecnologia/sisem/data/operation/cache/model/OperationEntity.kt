@@ -19,7 +19,7 @@ data class OperationEntity(
     @ColumnInfo(name = "auth_method") val authMethod: String,
     @ColumnInfo(name = "attentions_type") val attentionsType: String,
     @ColumnInfo(name = "status") val status: Boolean,
-    @ColumnInfo(name = "vehicle_code") val vehicleCode: String,
+    @ColumnInfo(name = "vehicle_code") val vehicleCode: String?,
     @Embedded(prefix = "vehicle_config_") val vehicleConfig: VehicleConfigEntity?
 )
 

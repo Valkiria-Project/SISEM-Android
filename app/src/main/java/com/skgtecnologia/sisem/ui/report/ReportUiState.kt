@@ -9,6 +9,8 @@ data class ReportUiState(
     val selectedImageUris: List<Uri> = listOf(),
     val operationModel: OperationModel? = null,
     val successInfoModel: BannerUiModel? = null,
+    val cancelInfoModel: BannerUiModel? = null,
+    val confirmInfoModel: BannerUiModel? = null,
     val validateFields: Boolean = false,
     val navigationModel: ReportNavigationModel? = null,
     val isLoading: Boolean = false,
