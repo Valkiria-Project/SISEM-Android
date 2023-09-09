@@ -12,18 +12,18 @@ fun getAppStartDestination(model: StartupNavigationModel?): String {
     return if (model == null) {
         NavigationGraph.Auth.route
     } else when {
+        model.isAdmin && !model.vehicleCode.isNullOrEmpty() -> NavigationGraph.Main.route
+
         model.isTurnStarted -> NavigationGraph.Main.route
 
         else -> NavigationGraph.Auth.route
     }
 }
 
-fun getAuthStartDestination(model: StartupNavigationModel?): String {
-    return if (model?.requiresPreOperational == true) {
-        AuthNavigationRoute.PreOperationalScreen.route
-    } else {
-        AuthNavigationRoute.AuthCardsScreen.route
-    }
+fun getAuthStartDestination(model: StartupNavigationModel?): String = when {
+        model?.isAdmin == true -> "${AuthNavigationRoute.DeviceAuthScreen.route}/APP_START"
+        model?.requiresPreOperational == true -> AuthNavigationRoute.PreOperationalScreen.route
+        else -> AuthNavigationRoute.AuthCardsScreen.route
 }
 
 fun navigateToNextStep(navController: NavHostController, navigationModel: NavigationModel?) =
@@ -42,7 +42,7 @@ private fun loginToNextStep(
     model.isWarning -> navController.navigate(AuthNavigationRoute.ChangePasswordScreen.route)
 
     model.isAdmin && model.requiresDeviceAuth ->
-        navController.navigate(AuthNavigationRoute.DeviceAuthScreen.route)
+        navController.navigate("${AuthNavigationRoute.DeviceAuthScreen.route}/$LOGIN")
 
     model.isAdmin && !model.requiresDeviceAuth ->
         navController.navigate(NavigationGraph.Main.route) {
@@ -115,13 +115,28 @@ private fun reportToNextStep(
     }
 }
 
+const val LOGIN = "Login"
+const val MAIN = "Main"
+
 fun deviceAuthToNextStep(
     navController: NavHostController,
     model: DeviceAuthNavigationModel
 ) {
     when {
-        model.isAssociated -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route)
+        model.isCrewList && (model.from == LOGIN || model.from == "") ->
+            navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
+                popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
+                    inclusive = true
+                }
+            }
+
+        model.isCrewList && model.from == MAIN ->
+            navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
+                popUpTo(NavigationGraph.Main.route) {
+                    inclusive = true
+                }
+            }
+
         model.isCancel -> navController.popBackStack()
-        model.isCancelBanner -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route)
     }
 }

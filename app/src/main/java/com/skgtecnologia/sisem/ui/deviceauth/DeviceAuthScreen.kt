@@ -28,10 +28,12 @@ import timber.log.Timber
 @Composable
 fun DeviceAuthScreen(
     isTablet: Boolean,
+    from: String,
     modifier: Modifier = Modifier,
     onNavigation: (deviceAuthNavigationModel: NavigationModel?) -> Unit
 ) {
     val viewModel = hiltViewModel<DeviceAuthViewModel>()
+    viewModel.from = from
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState) {
@@ -70,7 +72,8 @@ fun DeviceAuthScreen(
                     bottom.linkTo(footer.top)
                     height = Dimension.fillToConstraints
                 }
-                .padding(top = 20.dp)
+                .padding(top = 20.dp),
+            validateFields = uiState.validateFields
         ) { uiAction ->
             handleAction(uiAction, viewModel)
         }
@@ -108,7 +111,10 @@ private fun handleAction(
     when (uiAction) {
         DeviceAuth -> viewModel.associateDevice()
 
-        is DeviceAuthCodeInput -> viewModel.vehicleCode = uiAction.updatedValue
+        is DeviceAuthCodeInput -> {
+            viewModel.vehicleCode = uiAction.updatedValue
+            viewModel.isValidVehicleCode = uiAction.fieldValidated
+        }
 
         is GenericUiAction.SegmentedSwitchAction ->
             viewModel.disassociateDeviceState = uiAction.status

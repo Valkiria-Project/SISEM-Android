@@ -11,6 +11,7 @@ import com.skgtecnologia.sisem.domain.deviceauth.usecases.AssociateDevice
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.GetDeviceAuthScreen
 import com.skgtecnologia.sisem.domain.model.banner.deviceAuthDisassociate
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
+import com.skgtecnologia.sisem.ui.navigation.LOGIN
 import com.skgtecnologia.sisem.ui.navigation.model.DeviceAuthNavigationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -33,15 +34,13 @@ class DeviceAuthViewModel @Inject constructor(
     var uiState by mutableStateOf(DeviceAuthUiState())
         private set
 
+    var from: String by mutableStateOf("")
+
     var vehicleCode by mutableStateOf("") // FIXME
-    var disassociateDeviceState by mutableStateOf(false)
     var isValidVehicleCode by mutableStateOf(false)
+    var disassociateDeviceState by mutableStateOf(false)
 
     init {
-        getScreen()
-    }
-
-    private fun getScreen() {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
@@ -67,6 +66,14 @@ class DeviceAuthViewModel @Inject constructor(
     }
 
     fun associateDevice() {
+        uiState = uiState.copy(validateFields = true)
+
+        if (isValidVehicleCode) {
+            associate()
+        }
+    }
+
+    private fun associate() {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
@@ -88,40 +95,67 @@ class DeviceAuthViewModel @Inject constructor(
         }
     }
 
-    @Suppress("UnusedPrivateMember")
     private suspend fun handleOnSuccess() {
         if (disassociateDeviceState) {
-            onDeviceAuthHandled() // FIXME: maintains the previous state, we must clean
-            uiState.copy(
-                disassociateInfoModel = deviceAuthDisassociate().mapToUi(), // Fixme: update with bk
-                isLoading = false
-            )
-        } else {
-            deleteAccessToken.invoke().onSuccess {
+            withContext(Dispatchers.Main) {
+                onDeviceAuthHandled() // FIXME: maintains the previous state, we must clean
                 uiState = uiState.copy(
                     isLoading = false,
-                    navigationModel = DeviceAuthNavigationModel(isAssociated = true)
+                    disassociateInfoModel = deviceAuthDisassociate().mapToUi()
+                )
+            }
+        } else {
+            resetAppState()
+        }
+    }
+
+    private suspend fun resetAppState() {
+        deleteAccessToken.invoke().onSuccess {
+            withContext(Dispatchers.Main) {
+                uiState = uiState.copy(
+                    isLoading = false,
+                    navigationModel = DeviceAuthNavigationModel(isCrewList = true, from = from)
                 )
             }
         }
     }
 
     fun cancel() {
-        uiState = uiState.copy(
-            navigationModel = DeviceAuthNavigationModel(isCancel = true)
-        )
+        if (from == LOGIN) {
+            uiState = uiState.copy(isLoading = true)
+
+            job?.cancel()
+            job = viewModelScope.launch(Dispatchers.IO) {
+                deleteAccessToken.invoke().onSuccess {
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            navigationModel = DeviceAuthNavigationModel(
+                                isCancel = true,
+                                from = from
+                            )
+                        )
+                    }
+                }
+            }
+        } else {
+            uiState = uiState.copy(
+                navigationModel = DeviceAuthNavigationModel(isCancel = true, from = from)
+            )
+        }
     }
 
     fun cancelBanner() {
-        uiState = uiState.copy(
-            navigationModel = DeviceAuthNavigationModel(isCancelBanner = true)
-        )
+        job?.cancel()
+        job = viewModelScope.launch(Dispatchers.IO) {
+            resetAppState()
+        }
     }
 
     fun onDeviceAuthHandled() {
         uiState = uiState.copy(
-            navigationModel = null,
             validateFields = false,
+            navigationModel = null,
             isLoading = false
         )
 

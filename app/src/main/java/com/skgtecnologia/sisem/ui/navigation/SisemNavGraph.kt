@@ -83,10 +83,13 @@ private fun NavGraphBuilder.authGraph(
         }
 
         composable(
-            route = AuthNavigationRoute.DeviceAuthScreen.route
+            route = AuthNavigationRoute.DeviceAuthScreen.route +
+                "/{${NavigationArgument.FROM}}",
+            arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
         ) {
             DeviceAuthScreen(
                 isTablet = isTablet,
+                from = it.arguments?.getString(NavigationArgument.FROM).orEmpty(),
                 modifier = modifier
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
@@ -204,7 +207,7 @@ private fun NavGraphBuilder.mainGraph(
         composable(
             route = MainNavigationRoute.DeviceAuthScreen.route
         ) {
-            navController.navigate(AuthNavigationRoute.DeviceAuthScreen.route)
+            navController.navigate("${AuthNavigationRoute.DeviceAuthScreen.route}/$MAIN")
         }
 
         composable(

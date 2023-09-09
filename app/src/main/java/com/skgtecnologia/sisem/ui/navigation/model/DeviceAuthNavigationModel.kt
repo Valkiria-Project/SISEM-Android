@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.ui.navigation.model
 
 data class DeviceAuthNavigationModel(
-    val isAssociated: Boolean = false,
+    val isCrewList: Boolean = false,
     val isCancel: Boolean = false,
-    val isCancelBanner: Boolean = false
+    val from: String = ""
 ) : NavigationModel
