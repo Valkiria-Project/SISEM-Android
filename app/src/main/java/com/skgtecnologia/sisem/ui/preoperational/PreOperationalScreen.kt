@@ -12,7 +12,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
-import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.banner.OnErrorHandler
@@ -90,7 +89,7 @@ private fun handleBodyAction(
     viewModel: PreOperationalViewModel
 ) {
     when (uiAction) {
-        is FooterUiAction.FooterButton -> viewModel.savePreOperational()
+        is GenericUiAction.ButtonAction -> viewModel.savePreOperational()
 
         is GenericUiAction.ChipOptionAction ->
             viewModel.findings[uiAction.identifier] = uiAction.status

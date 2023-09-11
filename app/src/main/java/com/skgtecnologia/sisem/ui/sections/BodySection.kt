@@ -281,6 +281,13 @@ private fun HandleButtonRows(
         ) {
             onAction(Login)
         }
+
+        else -> ButtonComponent(
+            uiModel = model.mapToUiModel(),
+            isTablet = isTablet
+        ) { id ->
+            onAction(GenericUiAction.ButtonAction(id))
+        }
     }
 }
 

@@ -8,16 +8,12 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
-import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.changepassword.usecases.GetLoginNavigationModel
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.body.ChipOptionsModel
 import com.skgtecnologia.sisem.domain.model.body.FindingModel
 import com.skgtecnologia.sisem.domain.model.body.InventoryCheckModel
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
-import com.skgtecnologia.sisem.domain.model.footer.preOperationalAuxiliaryFooterModel
-import com.skgtecnologia.sisem.domain.model.footer.preOperationalDriverFooterModel
-import com.skgtecnologia.sisem.domain.model.footer.preOperationalMedicFooterModel
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
@@ -62,28 +58,10 @@ class PreOperationalViewModel @Inject constructor(
             getPreOperationalScreen.invoke(androidIdProvider.getAndroidId())
                 .onSuccess { preOperationalScreenModel ->
                     preOperationalScreenModel.getFormInitialValues()
-                    val role = getRole.invoke().getOrThrow()
 
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
-                            screenModel = preOperationalScreenModel.copy(
-                                body = buildList {
-                                    addAll(preOperationalScreenModel.body)
-
-                                    when (role) {
-                                        OperationRole.AUXILIARY_AND_OR_TAPH ->
-                                            add(preOperationalAuxiliaryFooterModel())
-
-                                        OperationRole.DRIVER ->
-                                            add(preOperationalDriverFooterModel())
-
-                                        OperationRole.MEDIC_APH ->
-                                            add(preOperationalMedicFooterModel())
-
-                                        else -> Timber.d("no-op")
-                                    }
-                                }
-                            ),
+                            screenModel = preOperationalScreenModel,
                             isLoading = false
                         )
                     }
