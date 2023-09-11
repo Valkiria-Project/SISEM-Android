@@ -17,7 +17,6 @@ import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
-import com.skgtecnologia.sisem.domain.preoperational.usecases.GetRole
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
 import com.skgtecnologia.sisem.ui.navigation.model.PreOpNavigationModel
 import com.valkiria.uicomponents.model.ui.banner.BannerUiModel
@@ -34,7 +33,6 @@ class PreOperationalViewModel @Inject constructor(
     private val androidIdProvider: AndroidIdProvider,
     private val getLoginNavigationModel: GetLoginNavigationModel,
     private val getPreOperationalScreen: GetPreOperationalScreen,
-    private val getRole: GetRole,
     private val sendPreOperational: SendPreOperational
 ) : ViewModel() {
 
