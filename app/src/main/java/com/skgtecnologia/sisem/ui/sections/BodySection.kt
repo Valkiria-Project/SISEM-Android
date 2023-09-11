@@ -388,9 +388,15 @@ private fun HandleTextFieldRows(
     when (model.identifier) {
         DeviceAuthIdentifier.DEVICE_AUTH_CODE.name -> TextFieldComponent(
             uiModel = model.mapToUiModel(),
-            isTablet = isTablet
-        ) { _, updatedValue, _ ->
-            onAction(DeviceAuthCodeInput(updatedValue = updatedValue))
+            isTablet = isTablet,
+            validateFields = validateFields
+        ) { _, updatedValue, fieldValidated ->
+            onAction(
+                DeviceAuthCodeInput(
+                    updatedValue = updatedValue,
+                    fieldValidated = fieldValidated
+                )
+            )
         }
 
         LoginIdentifier.LOGIN_EMAIL.name -> TextFieldComponent(
