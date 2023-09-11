@@ -40,7 +40,6 @@ fun MenuDrawer(
         }
     } ?: emptyList()
 
-    // FIXME: It is possible that the leader can authenticate when there are another users logged in?
     val isAdmin = uiState.accessTokenModelList?.first()?.isAdmin
 
     LaunchedEffect(uiState) {
