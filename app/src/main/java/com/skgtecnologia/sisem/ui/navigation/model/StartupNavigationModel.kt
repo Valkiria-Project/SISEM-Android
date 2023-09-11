@@ -6,7 +6,9 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class StartupNavigationModel(
+    val isAdmin: Boolean = false,
     val isTurnStarted: Boolean = false,
     val requiresPreOperational: Boolean = false,
-    val preOperationRole: OperationRole? = null
+    val preOperationRole: OperationRole? = null,
+    val vehicleCode: String? = null
 ) : NavigationModel, Parcelable

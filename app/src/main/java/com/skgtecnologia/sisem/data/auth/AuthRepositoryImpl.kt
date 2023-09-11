@@ -33,7 +33,10 @@ class AuthRepositoryImpl @Inject constructor(
         authCacheDataSource.retrieveAllAccessTokens()
 
     override suspend fun logout(username: String): String =
-        authRemoteDataSource.logout(username).getOrThrow()
+        authRemoteDataSource.logout(username)
+            .onSuccess {
+                authCacheDataSource.deleteAccessTokenByUsername(username = username)
+            }.getOrThrow()
 
     override suspend fun deleteAccessToken() = authCacheDataSource.deleteAccessToken()
 

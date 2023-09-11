@@ -5,10 +5,13 @@ import com.skgtecnologia.sisem.domain.auth.AuthRepository
 import javax.inject.Inject
 
 class DeleteAccessToken @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val logout: Logout
 ) {
 
     suspend operator fun invoke(): Result<Unit> = resultOf {
-        authRepository.deleteAccessToken()
+        authRepository.getAllAccessTokens().forEach { accessToken ->
+            logout.invoke(accessToken.username).getOrThrow()
+        }
     }
 }
