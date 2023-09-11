@@ -20,6 +20,12 @@ class AuthRepositoryImpl @Inject constructor(
             code = operationCacheDataSource.retrieveOperationConfig()?.vehicleCode.orEmpty(),
             turnId = authCacheDataSource.retrieveAccessToken()?.turn?.id?.toString().orEmpty()
         ).onSuccess { accessTokenModel ->
+            if (accessTokenModel.isAdmin) {
+                getAllAccessTokens().forEach { accessToken ->
+                    logout(accessToken.username)
+                }
+            }
+
             authCacheDataSource.storeAccessToken(accessTokenModel)
         }.getOrThrow()
 
