@@ -21,17 +21,22 @@ fun getAppStartDestination(model: StartupNavigationModel?): String {
 }
 
 fun getAuthStartDestination(model: StartupNavigationModel?): String = when {
-        model?.isAdmin == true -> "${AuthNavigationRoute.DeviceAuthScreen.route}/APP_START"
-        model?.requiresPreOperational == true -> AuthNavigationRoute.PreOperationalScreen.route
-        else -> AuthNavigationRoute.AuthCardsScreen.route
+    model?.isAdmin == true -> "${AuthNavigationRoute.DeviceAuthScreen.route}/$APP_STARTED"
+    model?.requiresPreOperational == true -> AuthNavigationRoute.PreOperationalScreen.route
+    else -> AuthNavigationRoute.AuthCardsScreen.route
 }
 
-fun navigateToNextStep(navController: NavHostController, navigationModel: NavigationModel?) =
+fun navigateToNextStep(
+    navController: NavHostController,
+    navigationModel: NavigationModel?,
+    onNavigationFallback: () -> Unit = {}
+) =
     when (navigationModel) {
         is LoginNavigationModel -> loginToNextStep(navController, navigationModel)
         is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
         is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
-        is DeviceAuthNavigationModel -> deviceAuthToNextStep(navController, navigationModel)
+        is DeviceAuthNavigationModel ->
+            deviceAuthToNextStep(navController, navigationModel, onNavigationFallback)
         else -> {}
     }
 
@@ -115,17 +120,27 @@ private fun reportToNextStep(
     }
 }
 
-const val LOGIN = "Login"
-const val MAIN = "Main"
+const val LOGIN = "LOGIN"
+const val MAIN = "MAIN"
+const val APP_STARTED = "APP_STARTED"
 
 fun deviceAuthToNextStep(
     navController: NavHostController,
-    model: DeviceAuthNavigationModel
+    model: DeviceAuthNavigationModel,
+    onNavigationFallback: () -> Unit = {}
 ) {
     when {
-        model.isCrewList && (model.from == LOGIN || model.from == "") ->
+        model.isCrewList && model.from == LOGIN ->
             navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
                 popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
+                    inclusive = true
+                }
+            }
+
+        // FIXME: revisit this logic, back is navigated to DeviceAuthScreen
+        model.isCrewList && model.from == "" ->
+            navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
+                popUpTo(AuthNavigationRoute.DeviceAuthScreen.route) {
                     inclusive = true
                 }
             }
@@ -137,6 +152,11 @@ fun deviceAuthToNextStep(
                 }
             }
 
-        model.isCancel -> navController.popBackStack()
+        model.isCancel -> {
+            val goBack = navController.popBackStack()
+            if (!goBack) {
+                onNavigationFallback()
+            }
+        }
     }
 }

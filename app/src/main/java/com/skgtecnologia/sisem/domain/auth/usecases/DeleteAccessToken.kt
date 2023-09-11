@@ -10,12 +10,8 @@ class DeleteAccessToken @Inject constructor(
 ) {
 
     suspend operator fun invoke(): Result<Unit> = resultOf {
-        // FIXME: Validate this
         authRepository.getAllAccessTokens().forEach { accessToken ->
-            logout.invoke(accessToken.username)
-                .onSuccess {
-                    authRepository.deleteAccessTokenByUsername(accessToken.username)
-                }.getOrThrow()
+            logout.invoke(accessToken.username).getOrThrow()
         }
     }
 }

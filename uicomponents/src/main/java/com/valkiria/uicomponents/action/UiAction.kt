@@ -73,7 +73,6 @@ sealed class LoginUiAction : UiAction {
 }
 
 sealed class DeviceAuthUiAction : UiAction {
-    data object DeviceAuth : DeviceAuthUiAction()
     data class DeviceAuthCodeInput(
         val updatedValue: String,
         val fieldValidated: Boolean

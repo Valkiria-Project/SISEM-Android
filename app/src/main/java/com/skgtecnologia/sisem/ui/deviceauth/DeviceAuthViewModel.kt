@@ -11,6 +11,8 @@ import com.skgtecnologia.sisem.domain.deviceauth.usecases.AssociateDevice
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.GetDeviceAuthScreen
 import com.skgtecnologia.sisem.domain.model.banner.deviceAuthDisassociate
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
+import com.skgtecnologia.sisem.domain.model.body.SegmentedSwitchModel
+import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.ui.navigation.LOGIN
 import com.skgtecnologia.sisem.ui.navigation.model.DeviceAuthNavigationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,6 +37,7 @@ class DeviceAuthViewModel @Inject constructor(
         private set
 
     var from: String by mutableStateOf("")
+    var isAssociateDevice: Boolean by mutableStateOf(false)
 
     var vehicleCode by mutableStateOf("") // FIXME
     var isValidVehicleCode by mutableStateOf(false)
@@ -48,6 +51,7 @@ class DeviceAuthViewModel @Inject constructor(
             getDeviceAuthScreen.invoke(androidIdProvider.getAndroidId())
                 .onSuccess { deviceAuthScreenModel ->
                     withContext(Dispatchers.Main) {
+                        isAssociateDevice = deviceAuthScreenModel.isAssociateDevice()
                         uiState = uiState.copy(
                             screenModel = deviceAuthScreenModel,
                             isLoading = false
@@ -65,10 +69,16 @@ class DeviceAuthViewModel @Inject constructor(
         }
     }
 
-    fun associateDevice() {
-        uiState = uiState.copy(validateFields = true)
+    private fun ScreenModel.isAssociateDevice() = body.find { it is SegmentedSwitchModel } == null
 
-        if (isValidVehicleCode) {
+    fun associateDevice() {
+        if (isAssociateDevice) {
+            uiState = uiState.copy(validateFields = true)
+
+            if (isValidVehicleCode) {
+                associate()
+            }
+        } else {
             associate()
         }
     }

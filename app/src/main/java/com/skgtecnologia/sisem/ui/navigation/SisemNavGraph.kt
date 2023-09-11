@@ -1,10 +1,13 @@
 package com.skgtecnologia.sisem.ui.navigation
 
+import android.app.Activity
+import android.content.Context
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -37,12 +40,19 @@ fun SisemNavGraph(
     ) { paddingValues ->
         val modifier = Modifier.padding(paddingValues)
         val navController = rememberNavController()
+        val context = LocalContext.current
 
         NavHost(
             navController = navController,
             startDestination = getAppStartDestination(navigationModel)
         ) {
-            authGraph(navController, getAuthStartDestination(navigationModel), isTablet, modifier)
+            authGraph(
+                navController,
+                getAuthStartDestination(navigationModel),
+                isTablet,
+                modifier,
+                context
+            )
             mainGraph(navController, isTablet, modifier)
             reportGraph(navController, isTablet, modifier)
         }
@@ -54,7 +64,8 @@ private fun NavGraphBuilder.authGraph(
     navController: NavHostController,
     startDestination: String,
     isTablet: Boolean,
-    modifier: Modifier
+    modifier: Modifier,
+    context: Context
 ) {
     navigation(
         startDestination = startDestination,
@@ -92,7 +103,9 @@ private fun NavGraphBuilder.authGraph(
                 from = it.arguments?.getString(NavigationArgument.FROM).orEmpty(),
                 modifier = modifier
             ) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
+                navigateToNextStep(navController, navigationModel) {
+                    (context as Activity).finish()
+                }
             }
         }
 

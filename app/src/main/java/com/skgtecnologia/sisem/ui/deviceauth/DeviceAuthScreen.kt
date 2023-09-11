@@ -14,7 +14,6 @@ import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
-import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuth
 import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.GenericUiAction
@@ -109,15 +108,13 @@ private fun handleAction(
     viewModel: DeviceAuthViewModel
 ) {
     when (uiAction) {
-        DeviceAuth -> viewModel.associateDevice()
-
         is DeviceAuthCodeInput -> {
             viewModel.vehicleCode = uiAction.updatedValue
             viewModel.isValidVehicleCode = uiAction.fieldValidated
         }
 
         is GenericUiAction.SegmentedSwitchAction ->
-            viewModel.disassociateDeviceState = uiAction.status
+            viewModel.disassociateDeviceState = uiAction.status == false
 
         else -> Timber.d("no-op")
     }
