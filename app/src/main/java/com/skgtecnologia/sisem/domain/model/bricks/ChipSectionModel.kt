@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.domain.model.bricks
 
-import com.skgtecnologia.sisem.domain.model.header.TextModel
+import com.skgtecnologia.sisem.domain.model.body.TextModel
 import com.valkiria.uicomponents.model.ui.chip.ChipSectionUiModel
 
 data class ChipSectionModel(

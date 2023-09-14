@@ -9,12 +9,12 @@ import com.skgtecnologia.sisem.data.remote.model.bricks.mapToDomain
 import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToDomain
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
-import com.skgtecnologia.sisem.domain.model.body.CrewMemberCardModel
+import com.skgtecnologia.sisem.domain.model.body.InfoCardModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class CrewMemberCardResponse(
+data class InfoCardResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "icon") val icon: String?,
     @Json(name = "title") val title: TextResponse?,
@@ -26,14 +26,14 @@ data class CrewMemberCardResponse(
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
-    override val type: BodyRowType = BodyRowType.CREW_MEMBER_CARD
+    override val type: BodyRowType = BodyRowType.INFO_CARD
 
-    override fun mapToDomain(): CrewMemberCardModel = CrewMemberCardModel(
-        identifier = identifier ?: error("CrewMemberCard identifier cannot be null"),
-        icon = icon ?: error("CrewMemberCard icon cannot be null"),
-        title = title?.mapToDomain() ?: error("CrewMemberCard title cannot be null"),
-        pill = pill?.mapToDomain() ?: error("CrewMemberCard pill cannot be null"),
-        date = date?.mapToDomain() ?: error("CrewMemberCard date cannot be null"),
+    override fun mapToDomain(): InfoCardModel = InfoCardModel(
+        identifier = identifier ?: error("InfoCard identifier cannot be null"),
+        icon = icon ?: error("InfoCard icon cannot be null"),
+        title = title?.mapToDomain() ?: error("InfoCard title cannot be null"),
+        pill = pill?.mapToDomain() ?: error("InfoCard pill cannot be null"),
+        date = date?.mapToDomain(),
         chipSection = chipSection?.mapToDomain(),
         reportsDetail = reportsDetail?.mapToDomain(),
         arrangement = arrangement ?: Arrangement.Center,

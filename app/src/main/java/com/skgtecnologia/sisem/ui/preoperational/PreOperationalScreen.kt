@@ -6,12 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
-import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.banner.OnErrorHandler
@@ -45,36 +42,15 @@ fun PreOperationalScreen(
         }
     }
 
-    ConstraintLayout(
-        modifier = modifier.fillMaxSize()
-    ) {
-        val (header, body, footer) = createRefs()
-
-        uiState.screenModel?.header?.let {
-            HeaderSection(
-                headerModel = it,
-                modifier = modifier.constrainAs(header) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
-            )
-        }
-
-        BodySection(
-            body = uiState.screenModel?.body,
-            isTablet = isTablet,
-            modifier = modifier
-                .constrainAs(body) {
-                    top.linkTo(header.bottom)
-                    bottom.linkTo(parent.bottom)
-                    height = Dimension.fillToConstraints
-                }
-                .padding(top = 20.dp),
-            validateFields = uiState.validateFields
-        ) { uiAction ->
-            handleBodyAction(uiAction, viewModel)
-        }
+    BodySection(
+        body = uiState.screenModel?.body,
+        isTablet = isTablet,
+        modifier = modifier
+            .fillMaxSize()
+            .padding(top = 20.dp),
+        validateFields = uiState.validateFields
+    ) { uiAction ->
+        handleBodyAction(uiAction, viewModel)
     }
 
     OnErrorHandler(uiModel = uiState.errorModel) {

@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.domain.model.bricks
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.header.TextModel
+import com.skgtecnologia.sisem.domain.model.body.TextModel
 import com.valkiria.uicomponents.model.ui.finding.FindingDetailUiModel
 
 data class FindingDetailModel(

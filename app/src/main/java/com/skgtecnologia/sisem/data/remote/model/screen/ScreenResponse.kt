@@ -3,8 +3,7 @@ package com.skgtecnologia.sisem.data.remote.model.screen
 import com.skgtecnologia.sisem.data.remote.model.body.BodyRowResponse
 import com.skgtecnologia.sisem.data.remote.model.footer.FooterResponse
 import com.skgtecnologia.sisem.data.remote.model.footer.mapToDomain
-import com.skgtecnologia.sisem.data.remote.model.header.HeaderResponse
-import com.skgtecnologia.sisem.data.remote.model.header.mapToDomain
+import com.skgtecnologia.sisem.data.remote.model.body.HeaderResponse
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

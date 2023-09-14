@@ -9,7 +9,7 @@ import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.usecases.DeleteAccessToken
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.AssociateDevice
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.GetDeviceAuthScreen
-import com.skgtecnologia.sisem.domain.model.banner.deviceAuthDisassociate
+import com.skgtecnologia.sisem.domain.model.banner.disassociateDevice
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.body.SegmentedSwitchModel
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
@@ -111,7 +111,7 @@ class DeviceAuthViewModel @Inject constructor(
                 onDeviceAuthHandled() // FIXME: maintains the previous state, we must clean
                 uiState = uiState.copy(
                     isLoading = false,
-                    disassociateInfoModel = deviceAuthDisassociate().mapToUi()
+                    disassociateInfoModel = disassociateDevice().mapToUi()
                 )
             }
         } else {

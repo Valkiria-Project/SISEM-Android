@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.props
 
-import com.skgtecnologia.sisem.domain.model.header.TextModel
+import com.skgtecnologia.sisem.domain.model.body.TextModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.props.TextStyle
