@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.domain.model.banner.cancelFindingBanner
+import com.skgtecnologia.sisem.domain.model.banner.cancelReportBanner
 import com.skgtecnologia.sisem.domain.model.banner.confirmFindingBanner
 import com.skgtecnologia.sisem.domain.model.banner.confirmReportBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
@@ -85,7 +86,7 @@ class ReportViewModel @Inject constructor(
             navigationModel = ReportNavigationModel(
                 cancelReport = true
             ),
-            cancelInfoModel = com.skgtecnologia.sisem.domain.model.banner.cancelReportBanner()
+            cancelInfoModel = cancelReportBanner()
                 .mapToUi()
         )
     }
