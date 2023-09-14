@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToDomain
@@ -27,6 +28,7 @@ data class HeaderResponse(
         subtitle = subtitle?.mapToDomain(),
         leftIcon = leftIcon,
         rightIcon = rightIcon,
+        arrangement = Arrangement.Center,
         modifier = modifier ?: Modifier
     )
 }

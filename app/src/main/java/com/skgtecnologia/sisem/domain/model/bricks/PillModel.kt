@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.domain.model.bricks
 
-import com.skgtecnologia.sisem.domain.model.body.TextModel
+import com.skgtecnologia.sisem.domain.model.props.TextModel
 
 data class PillModel(
     val title: TextModel,

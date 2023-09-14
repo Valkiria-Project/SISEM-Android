@@ -23,7 +23,9 @@ import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.ButtonModel
 import com.skgtecnologia.sisem.domain.model.body.ChipModel
 import com.skgtecnologia.sisem.domain.model.body.ChipOptionsModel
+import com.skgtecnologia.sisem.domain.model.body.ChipSelectionModel
 import com.skgtecnologia.sisem.domain.model.body.DetailedInfoListModel
+import com.skgtecnologia.sisem.domain.model.body.DropDownModel
 import com.skgtecnologia.sisem.domain.model.body.FiltersModel
 import com.skgtecnologia.sisem.domain.model.body.FindingModel
 import com.skgtecnologia.sisem.domain.model.body.FingerprintModel
@@ -35,6 +37,7 @@ import com.skgtecnologia.sisem.domain.model.body.LabelModel
 import com.skgtecnologia.sisem.domain.model.body.PasswordTextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.RichLabelModel
 import com.skgtecnologia.sisem.domain.model.body.SegmentedSwitchModel
+import com.skgtecnologia.sisem.domain.model.body.SliderModel
 import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.mapToSection
@@ -135,6 +138,14 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
+            is ChipSelectionModel -> item(key = model.identifier) {
+                TODO("Create ChipSelectionComponent")
+            }
+
+            is DropDownModel -> item(key = model.identifier) {
+                TODO("Create DropDownComponent")
+            }
+
             is InfoCardModel -> item(key = model.identifier) {
                 HandleCrewMemberCardRows(model, isTablet, onAction)
             }
@@ -227,6 +238,10 @@ private fun LazyListScope.handleBodyRows(
                         )
                     )
                 }
+            }
+
+            is SliderModel -> item(key = model.identifier) {
+                TODO("Create SliderComponent")
             }
 
             is PasswordTextFieldModel -> item(key = model.identifier) {

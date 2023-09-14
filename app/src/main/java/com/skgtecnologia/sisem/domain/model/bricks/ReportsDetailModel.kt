@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.domain.model.bricks
 
 import com.skgtecnologia.sisem.commons.extensions.biLet
 import com.skgtecnologia.sisem.domain.model.body.HeaderModel
-import com.skgtecnologia.sisem.domain.model.body.TextModel
+import com.skgtecnologia.sisem.domain.model.props.TextModel
 import com.valkiria.uicomponents.model.ui.report.ReportsDetailUiModel
 
 data class ReportsDetailModel(

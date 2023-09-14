@@ -4,8 +4,10 @@ enum class BodyRowType {
     BUTTON,
     CHIP,
     CHIP_OPTIONS,
+    CHIP_SELECTION,
     INFO_CARD,
     DETAILED_INFO_LIST,
+    DROP_DOWN,
     FILTERS,
     FINDING,
     FINGERPRINT,
@@ -16,6 +18,7 @@ enum class BodyRowType {
     PASSWORD_TEXT_FIELD,
     RICH_LABEL,
     SEGMENTED_SWITCH,
+    SLIDER,
     TERMS_AND_CONDITIONS,
     TEXT_FIELD
 }

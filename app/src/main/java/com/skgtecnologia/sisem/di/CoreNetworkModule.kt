@@ -8,7 +8,9 @@ import com.skgtecnologia.sisem.data.remote.model.body.BodyRowResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ButtonResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ChipOptionsResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ChipResponse
+import com.skgtecnologia.sisem.data.remote.model.body.ChipSelectionResponse
 import com.skgtecnologia.sisem.data.remote.model.body.DetailedInfoListResponse
+import com.skgtecnologia.sisem.data.remote.model.body.DropDownResponse
 import com.skgtecnologia.sisem.data.remote.model.body.FiltersResponse
 import com.skgtecnologia.sisem.data.remote.model.body.FindingResponse
 import com.skgtecnologia.sisem.data.remote.model.body.FingerprintResponse
@@ -19,6 +21,7 @@ import com.skgtecnologia.sisem.data.remote.model.body.LabelResponse
 import com.skgtecnologia.sisem.data.remote.model.body.PasswordTextFieldResponse
 import com.skgtecnologia.sisem.data.remote.model.body.RichLabelResponse
 import com.skgtecnologia.sisem.data.remote.model.body.SegmentedSwitchResponse
+import com.skgtecnologia.sisem.data.remote.model.body.SliderResponse
 import com.skgtecnologia.sisem.data.remote.model.body.TermsAndConditionsResponse
 import com.skgtecnologia.sisem.data.remote.model.body.TextFieldResponse
 import com.skgtecnologia.sisem.di.qualifiers.Audit
@@ -81,6 +84,7 @@ object CoreNetworkModule {
         EnumJsonAdapter.create(TextStyle::class.java).withUnknownFallback(TextStyle.BODY_1)
     )
 
+    @Suppress("LongMethod")
     private fun Moshi.Builder.provideBodyPolymorphicAdapter() = this.add(
         BodyRowType::class.java,
         EnumJsonAdapter.create(BodyRowType::class.java).withUnknownFallback(null)
@@ -98,8 +102,14 @@ object CoreNetworkModule {
             ChipOptionsResponse::class.java,
             BodyRowType.CHIP_OPTIONS.name
         ).withSubtype(
+            ChipSelectionResponse::class.java,
+            BodyRowType.CHIP_SELECTION.name
+        ).withSubtype(
             DetailedInfoListResponse::class.java,
             BodyRowType.DETAILED_INFO_LIST.name
+        ).withSubtype(
+            DropDownResponse::class.java,
+            BodyRowType.DROP_DOWN.name
         ).withSubtype(
             FiltersResponse::class.java,
             BodyRowType.FILTERS.name
@@ -124,6 +134,9 @@ object CoreNetworkModule {
         ).withSubtype(
             SegmentedSwitchResponse::class.java,
             BodyRowType.SEGMENTED_SWITCH.name
+        ).withSubtype(
+            SliderResponse::class.java,
+            BodyRowType.SLIDER.name
         ).withSubtype(
             PasswordTextFieldResponse::class.java,
             BodyRowType.PASSWORD_TEXT_FIELD.name

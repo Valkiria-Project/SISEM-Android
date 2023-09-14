@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.domain.model.body
+package com.skgtecnologia.sisem.domain.model.props
 
 import com.valkiria.uicomponents.model.props.TextStyle
 
