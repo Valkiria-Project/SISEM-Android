@@ -147,7 +147,7 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is InfoCardModel -> item(key = model.identifier) {
-                HandleCrewMemberCardRows(model, isTablet, onAction)
+                HandleInfoCardRows(model, isTablet, onAction)
             }
 
             is DetailedInfoListModel -> item(key = model.identifier) {
@@ -329,7 +329,7 @@ private fun HandleChipRows(
 }
 
 @Composable
-private fun HandleCrewMemberCardRows(
+private fun HandleInfoCardRows(
     model: InfoCardModel,
     isTablet: Boolean,
     onAction: (actionInput: UiAction) -> Unit
