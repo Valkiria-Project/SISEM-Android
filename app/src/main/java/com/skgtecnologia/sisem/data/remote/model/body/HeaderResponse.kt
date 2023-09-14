@@ -28,6 +28,7 @@ data class HeaderResponse(
         subtitle = subtitle?.mapToDomain(),
         leftIcon = leftIcon,
         rightIcon = rightIcon,
+        badgeCount = badgeCount,
         arrangement = Arrangement.Center,
         modifier = modifier ?: Modifier
     )
