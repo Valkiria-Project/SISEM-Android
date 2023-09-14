@@ -11,6 +11,6 @@ data class ChipSectionItemResponse(
 )
 
 fun ChipSectionItemResponse.mapToUi(): ChipSectionItemUiModel = ChipSectionItemUiModel(
-    id = id ?: error("ChipSectionItemResponse id cannot be null"),
-    name = name ?: error("ChipSectionItemResponse name cannot be null")
+    id = id ?: error("ChipSectionItem id cannot be null"),
+    name = name ?: error("ChipSectionItem name cannot be null")
 )
