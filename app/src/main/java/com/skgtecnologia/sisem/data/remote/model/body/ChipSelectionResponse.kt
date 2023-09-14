@@ -24,9 +24,9 @@ data class ChipSelectionResponse(
     override val type: BodyRowType = BodyRowType.CHIP_SELECTION
 
     override fun mapToDomain(): ChipSelectionModel = ChipSelectionModel(
-        identifier = identifier ?: error("DropDown identifier cannot be null"),
-        title = title?.mapToDomain() ?: error("DropDown title cannot be null"),
-        items = items?.map { it.mapToUi() } ?: error("DropDown items cannot be null"),
+        identifier = identifier ?: error("ChipSelection identifier cannot be null"),
+        title = title?.mapToDomain() ?: error("ChipSelection title cannot be null"),
+        items = items?.map { it.mapToUi() } ?: error("ChipSelection items cannot be null"),
         selected = selected,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
