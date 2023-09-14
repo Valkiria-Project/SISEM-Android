@@ -15,7 +15,7 @@ import com.valkiria.uicomponents.model.props.ButtonStyle
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.ui.button.OnClick
 
-fun cancelFinding(): BannerModel = BannerModel(
+fun cancelFindingBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "¿Descartar hallazgo?",
     description = "Las modificaciones elaboradas no serán guardadas.",
@@ -53,7 +53,7 @@ fun cancelFinding(): BannerModel = BannerModel(
     )
 )
 
-fun cancelReport(): BannerModel = BannerModel(
+fun cancelReportBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "Cancelar novedad",
     description = "¿Está seguro que desea cancelar el registro de la novedad?",
@@ -91,26 +91,26 @@ fun cancelReport(): BannerModel = BannerModel(
     )
 )
 
-fun changePasswordEmptyFields(): BannerModel = BannerModel(
+fun changePasswordEmptyFieldsBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "Incompleto",
     description = "Para guardar el cambio de contraseña es necesario que complete todos los campos."
 )
 
-fun changePasswordNoMatch(): BannerModel = BannerModel(
+fun changePasswordNoMatchBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "Nueva contraseña",
     description = "Nueva contraseña y confirmar nueva contraseña no coinciden."
 )
 
-fun changePasswordSuccess(): BannerModel = BannerModel(
+fun changePasswordSuccessBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     iconColor = "#42A4FA",
     title = "Nueva contraseña",
     description = "La contraseña se ha cambiado con éxito."
 )
 
-fun confirmFinding(): BannerModel = BannerModel(
+fun confirmFindingBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "Guardar cambios",
     description = "Firmado electrónicamente - Unidad Funcional de APH <unidad funcional>, " +
@@ -153,7 +153,7 @@ fun confirmFinding(): BannerModel = BannerModel(
     )
 )
 
-fun confirmReport(): BannerModel = BannerModel(
+fun confirmReportBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "Guardar novedad",
     description = "¿Desea guardar la novedad registrada?",
@@ -191,7 +191,7 @@ fun confirmReport(): BannerModel = BannerModel(
     )
 )
 
-fun disassociateDevice(): BannerModel = BannerModel(
+fun disassociateDeviceBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "Continuar",
     description = "¿Desea continuar con las actividades en la aplicación?",
