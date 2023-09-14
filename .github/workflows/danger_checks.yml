@@ -1,0 +1,34 @@
+name: Danger Checks
+
+on: pull_request
+
+jobs:
+  danger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '17'
+
+      - name: Set Up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+          
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Danger Checks
+        run: |
+          ./gradlew dependencyUpdates
+          gem install bundler
+          bundle install
+          bundle exec danger
+
+        env:
+          DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
