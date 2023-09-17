@@ -78,16 +78,16 @@ fun HumanBodyComponent(
             ) {
                 showBottomSheet = null
             }
-        } else {
-            selectedAreas.forEach {
-                Image(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .fillMaxSize(),
-                    painter = painterResource(id = it.image),
-                    contentDescription = null
-                )
-            }
+        }
+
+        selectedAreas.forEach {
+            Image(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .fillMaxSize(),
+                painter = painterResource(id = it.image),
+                contentDescription = null
+            )
         }
     }
 }
