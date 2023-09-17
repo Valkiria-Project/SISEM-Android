@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.skgtecnologia.sisem.ui.InventoryScreen
 import com.skgtecnologia.sisem.ui.authcards.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.sharedViewModel
@@ -44,9 +45,15 @@ fun SisemNavGraph(
 
         NavHost(
             navController = navController,
-            startDestination = getAppStartDestination(navigationModel)
+            startDestination = MainNavigationRoute.InventoryScreen.route // getAppStartDestination(navigationModel)
         ) {
-            authGraph(
+            composable(
+                route = MainNavigationRoute.InventoryScreen.route
+            ) {
+                // FIXME: Finish this work
+                InventoryScreen()
+            }
+            /*authGraph(
                 navController,
                 getAuthStartDestination(navigationModel),
                 isTablet,
@@ -54,7 +61,7 @@ fun SisemNavGraph(
                 context
             )
             mainGraph(navController, isTablet, modifier)
-            reportGraph(navController, isTablet, modifier)
+            reportGraph(navController, isTablet, modifier)*/
         }
     }
 }
@@ -173,6 +180,7 @@ private fun NavGraphBuilder.mainGraph(
             route = MainNavigationRoute.InventoryScreen.route
         ) {
             // FIXME: Finish this work
+            InventoryScreen()
         }
 
         composable(

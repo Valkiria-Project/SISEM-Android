@@ -174,7 +174,9 @@ fun CrewMemberCardComponent(
                                 SuggestionChipView(
                                     text = "...",
                                     textStyle = it.listTextStyle,
-                                    onClick = { onFindingsAction(it) }
+                                    onClick = { _ ->
+                                        onFindingsAction(it)
+                                    }
                                 )
                                 return@forEachIndexed
                             }
