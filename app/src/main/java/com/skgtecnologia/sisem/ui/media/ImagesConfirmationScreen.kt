@@ -24,8 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
-import com.skgtecnologia.sisem.domain.model.header.HeaderModel
-import com.skgtecnologia.sisem.domain.model.header.TextModel
+import com.skgtecnologia.sisem.domain.model.header.imagesConfirmationHeader
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
 import com.skgtecnologia.sisem.ui.bottomsheet.PagerIndicator
 import com.skgtecnologia.sisem.ui.commons.extensions.decodeAsBitmap
@@ -79,7 +78,11 @@ fun ImagesConfirmationScreen(
         },
     ) {
         HeaderSection(
-            headerModel = getImagesConfirmationHeaderModel()
+            headerModel = imagesConfirmationHeader(
+                titleText = stringResource(id = R.string.images_confirmation_title),
+                subtitleText = stringResource(R.string.images_confirmation_subtitle),
+                leftIcon = stringResource(R.string.images_confirmation_left_icon)
+            )
         ) { uiAction ->
             if (uiAction is HeaderUiAction.GoBack) {
                 viewModel.goBack()
@@ -178,20 +181,6 @@ fun handleAction(
         }
     }
 }
-
-@Composable
-private fun getImagesConfirmationHeaderModel() = HeaderModel(
-    title = TextModel(
-        stringResource(id = R.string.images_confirmation_title),
-        TextStyle.HEADLINE_1
-    ),
-    subtitle = TextModel(
-        stringResource(R.string.images_confirmation_subtitle),
-        TextStyle.HEADLINE_5
-    ),
-    leftIcon = stringResource(R.string.images_confirmation_left_icon),
-    modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 20.dp)
-)
 
 @Composable
 private fun ImagesPager(images: List<Bitmap>) {

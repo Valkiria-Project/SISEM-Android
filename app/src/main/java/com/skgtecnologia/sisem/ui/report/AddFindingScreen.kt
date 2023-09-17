@@ -22,8 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.body.ButtonModel
 import com.skgtecnologia.sisem.domain.model.footer.FooterModel
-import com.skgtecnologia.sisem.domain.model.header.HeaderModel
-import com.skgtecnologia.sisem.domain.model.header.TextModel
+import com.skgtecnologia.sisem.domain.model.header.addFindingHeader
 import com.skgtecnologia.sisem.domain.report.model.AddFindingIdentifier
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.FooterSection
@@ -77,7 +76,11 @@ fun AddFindingScreen(
         },
     ) {
         HeaderSection(
-            headerModel = getFindingsHeaderModel()
+            headerModel = addFindingHeader(
+                titleText = stringResource(id = R.string.findings_title),
+                subtitleText = stringResource(id = R.string.findings_subtitle),
+                leftIcon = stringResource(id = R.string.findings_left_icon)
+            )
         ) { uiAction ->
             if (uiAction is HeaderUiAction.GoBack) {
                 viewModel.goBack()
@@ -120,20 +123,6 @@ fun AddFindingScreen(
 
     OnLoadingHandler(uiState.isLoading, modifier)
 }
-
-@Composable
-private fun getFindingsHeaderModel() = HeaderModel(
-    title = TextModel(
-        stringResource(id = R.string.findings_title),
-        TextStyle.HEADLINE_1
-    ),
-    subtitle = TextModel(
-        stringResource(R.string.findings_subtitle),
-        TextStyle.HEADLINE_5
-    ),
-    leftIcon = stringResource(R.string.findings_left_icon),
-    modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 20.dp)
-)
 
 @Suppress("MagicNumber")
 @Composable

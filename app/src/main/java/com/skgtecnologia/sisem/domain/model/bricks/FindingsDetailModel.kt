@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.domain.model.bricks
 
-import com.skgtecnologia.sisem.domain.model.header.HeaderModel
+import com.skgtecnologia.sisem.domain.model.body.HeaderModel
 import com.valkiria.uicomponents.model.ui.finding.FindingsDetailUiModel
 
 data class FindingsDetailModel(

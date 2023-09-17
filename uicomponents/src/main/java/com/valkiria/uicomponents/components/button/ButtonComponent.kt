@@ -26,7 +26,7 @@ import timber.log.Timber
 fun ButtonComponent(
     uiModel: ButtonUiModel,
     isTablet: Boolean = false,
-    onAction: () -> Unit
+    onAction: (id: String) -> Unit
 ) {
     Row(
         modifier = if (isTablet) {
@@ -38,7 +38,7 @@ fun ButtonComponent(
     ) {
         Button(
             onClick = {
-                onAction()
+                onAction(uiModel.identifier)
             },
             colors = uiModel.style.mapToColors(),
             modifier = if (uiModel.size == ButtonSize.FULL_WIDTH) {

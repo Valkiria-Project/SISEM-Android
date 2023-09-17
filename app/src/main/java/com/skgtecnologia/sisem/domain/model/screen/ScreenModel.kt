@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.domain.model.screen
 
 import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.footer.FooterModel
-import com.skgtecnologia.sisem.domain.model.header.HeaderModel
+import com.skgtecnologia.sisem.domain.model.body.HeaderModel
 
 data class ScreenModel(
     val header: HeaderModel? = null,

@@ -30,11 +30,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
-import com.valkiria.uicomponents.model.ui.report.ReportsDetailUiModel
 import com.valkiria.uicomponents.bricks.chip.SuggestionChipView
 import com.valkiria.uicomponents.model.props.toTextStyle
+import com.valkiria.uicomponents.model.ui.card.InfoCardUiModel
 import com.valkiria.uicomponents.model.ui.chip.ChipSectionUiModel
-import com.valkiria.uicomponents.model.ui.card.CrewMemberCardUiModel
+import com.valkiria.uicomponents.model.ui.report.ReportsDetailUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 
@@ -42,8 +42,8 @@ private const val MAX_FINDINGS = 3
 
 @Suppress("LongMethod", "UnusedPrivateMember")
 @Composable
-fun CrewMemberCardComponent(
-    uiModel: CrewMemberCardUiModel,
+fun InfoCardComponent(
+    uiModel: InfoCardUiModel,
     isTablet: Boolean = false,
     onAction: () -> Unit,
     onNewsAction: (reportDetail: ReportsDetailUiModel) -> Unit,
@@ -134,7 +134,7 @@ fun CrewMemberCardComponent(
                     )
 
                     Text(
-                        text = uiModel.dateText.split(" - ").first(),
+                        text = uiModel.dateText?.split(" - ")?.firstOrNull().orEmpty(),
                         style = uiModel.dateTextStyle.toTextStyle(),
                         modifier = Modifier.padding(end = 12.dp),
                     )
@@ -149,7 +149,7 @@ fun CrewMemberCardComponent(
                     )
 
                     Text(
-                        text = uiModel.dateText.split(" - ").last(),
+                        text = uiModel.dateText?.split(" - ")?.lastOrNull().orEmpty(),
                         style = uiModel.dateTextStyle.toTextStyle(),
                     )
                 }

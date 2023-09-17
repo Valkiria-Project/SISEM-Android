@@ -8,17 +8,20 @@ import com.skgtecnologia.sisem.data.remote.model.body.BodyRowResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ButtonResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ChipOptionsResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ChipResponse
-import com.skgtecnologia.sisem.data.remote.model.body.ContentHeaderResponse
-import com.skgtecnologia.sisem.data.remote.model.body.CrewMemberCardResponse
+import com.skgtecnologia.sisem.data.remote.model.body.ChipSelectionResponse
 import com.skgtecnologia.sisem.data.remote.model.body.DetailedInfoListResponse
+import com.skgtecnologia.sisem.data.remote.model.body.DropDownResponse
 import com.skgtecnologia.sisem.data.remote.model.body.FiltersResponse
 import com.skgtecnologia.sisem.data.remote.model.body.FindingResponse
 import com.skgtecnologia.sisem.data.remote.model.body.FingerprintResponse
+import com.skgtecnologia.sisem.data.remote.model.body.HeaderResponse
+import com.skgtecnologia.sisem.data.remote.model.body.InfoCardResponse
 import com.skgtecnologia.sisem.data.remote.model.body.InventoryCheckResponse
 import com.skgtecnologia.sisem.data.remote.model.body.LabelResponse
 import com.skgtecnologia.sisem.data.remote.model.body.PasswordTextFieldResponse
 import com.skgtecnologia.sisem.data.remote.model.body.RichLabelResponse
 import com.skgtecnologia.sisem.data.remote.model.body.SegmentedSwitchResponse
+import com.skgtecnologia.sisem.data.remote.model.body.SliderResponse
 import com.skgtecnologia.sisem.data.remote.model.body.TermsAndConditionsResponse
 import com.skgtecnologia.sisem.data.remote.model.body.TextFieldResponse
 import com.skgtecnologia.sisem.di.qualifiers.Audit
@@ -27,19 +30,19 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.EnumJsonAdapter
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.valkiria.uicomponents.model.ui.button.OnClick
 import com.valkiria.uicomponents.model.props.ButtonSize
 import com.valkiria.uicomponents.model.props.ButtonStyle
 import com.valkiria.uicomponents.model.props.ChipStyle
 import com.valkiria.uicomponents.model.props.TextFieldStyle
 import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.model.ui.button.OnClick
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 import okhttp3.Interceptor
 import okhttp3.logging.HttpLoggingInterceptor
+import javax.inject.Singleton
 
 const val HTTP_CLIENT_VERSION_HEADER = "User-Agent"
 const val CLIENT_VERSION = "sisem/Android/" + BuildConfig.VERSION_NAME
@@ -81,6 +84,7 @@ object CoreNetworkModule {
         EnumJsonAdapter.create(TextStyle::class.java).withUnknownFallback(TextStyle.BODY_1)
     )
 
+    @Suppress("LongMethod")
     private fun Moshi.Builder.provideBodyPolymorphicAdapter() = this.add(
         BodyRowType::class.java,
         EnumJsonAdapter.create(BodyRowType::class.java).withUnknownFallback(null)
@@ -98,14 +102,14 @@ object CoreNetworkModule {
             ChipOptionsResponse::class.java,
             BodyRowType.CHIP_OPTIONS.name
         ).withSubtype(
-            ContentHeaderResponse::class.java,
-            BodyRowType.CONTENT_HEADER.name
-        ).withSubtype(
-            CrewMemberCardResponse::class.java,
-            BodyRowType.CREW_MEMBER_CARD.name
+            ChipSelectionResponse::class.java,
+            BodyRowType.CHIP_SELECTION.name
         ).withSubtype(
             DetailedInfoListResponse::class.java,
             BodyRowType.DETAILED_INFO_LIST.name
+        ).withSubtype(
+            DropDownResponse::class.java,
+            BodyRowType.DROP_DOWN.name
         ).withSubtype(
             FiltersResponse::class.java,
             BodyRowType.FILTERS.name
@@ -116,6 +120,12 @@ object CoreNetworkModule {
             FingerprintResponse::class.java,
             BodyRowType.FINGERPRINT.name
         ).withSubtype(
+            HeaderResponse::class.java,
+            BodyRowType.HEADER.name
+        ).withSubtype(
+            InfoCardResponse::class.java,
+            BodyRowType.INFO_CARD.name
+        ).withSubtype(
             InventoryCheckResponse::class.java,
             BodyRowType.INVENTORY_CHECK.name
         ).withSubtype(
@@ -124,6 +134,9 @@ object CoreNetworkModule {
         ).withSubtype(
             SegmentedSwitchResponse::class.java,
             BodyRowType.SEGMENTED_SWITCH.name
+        ).withSubtype(
+            SliderResponse::class.java,
+            BodyRowType.SLIDER.name
         ).withSubtype(
             PasswordTextFieldResponse::class.java,
             BodyRowType.PASSWORD_TEXT_FIELD.name
