@@ -1,8 +1,8 @@
 package com.skgtecnologia.sisem.domain.model.bricks
 
 import com.skgtecnologia.sisem.commons.extensions.biLet
-import com.skgtecnologia.sisem.domain.model.header.HeaderModel
-import com.skgtecnologia.sisem.domain.model.header.TextModel
+import com.skgtecnologia.sisem.domain.model.body.HeaderModel
+import com.skgtecnologia.sisem.domain.model.props.TextModel
 import com.valkiria.uicomponents.model.ui.report.ReportsDetailUiModel
 
 data class ReportsDetailModel(
@@ -11,6 +11,7 @@ data class ReportsDetailModel(
 )
 
 fun ReportsDetailModel.mapToUiModel() = ReportsDetailUiModel(
+    identifier = header.identifier,
     icon = header.leftIcon,
     title = header.title.text,
     titleTextStyle = header.title.textStyle,
@@ -22,6 +23,7 @@ fun ReportsDetailModel.mapToUiModel() = ReportsDetailUiModel(
 
 fun ReportsDetailUiModel.mapToDomain() = ReportsDetailModel(
     header = HeaderModel(
+        identifier = identifier,
         leftIcon = icon,
         title = TextModel(text = title, textStyle = titleTextStyle),
         subtitle = biLet(subtitle, subtitleTextStyle) { subtitle, subtitleTextStyle ->
