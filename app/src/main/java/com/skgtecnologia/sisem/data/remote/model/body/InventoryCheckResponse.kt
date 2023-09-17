@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.data.remote.model.body
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.bricks.InventoryCheckItemResponse
+import com.skgtecnologia.sisem.data.remote.model.bricks.ValidationResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
 import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToDomain
@@ -17,6 +18,7 @@ data class InventoryCheckResponse(
     @Json(name = "registered") val registered: TextResponse?,
     @Json(name = "received") val received: TextResponse?,
     @Json(name = "items") val items: List<InventoryCheckItemResponse>?,
+    @Json(name = "validations") val validations: List<ValidationResponse>?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
