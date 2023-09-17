@@ -4,53 +4,53 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
+import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
+import kotlinx.coroutines.launch
 
 private const val DEFAULT_DISPLAY_WIDTH = 1440
 private const val DEFAULT_DISPLAY_HEIGHT = 2900
 
 @Composable
 fun HumanBodyComponent(
-    onClick: (Area) -> Unit = {}
+    onClick: (String, Map<String, List<String>>) -> Unit
 ) {
-    var x by remember { mutableFloatStateOf(0f) }
-    var y by remember { mutableFloatStateOf(0f) }
     val selectedAreas by remember { mutableStateOf(mutableListOf<Area>()) }
+    var selectedArea by remember { mutableStateOf(Area.NONE) }
+    var showBottomSheet: Boolean? by remember { mutableStateOf(null) }
 
     val width = LocalContext.current.display?.width ?: DEFAULT_DISPLAY_WIDTH
     val height = LocalContext.current.display?.height ?: DEFAULT_DISPLAY_HEIGHT
+
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val scope = rememberCoroutineScope()
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .pointerInput(Unit) {
                 detectTapGestures {
-                    x = it.x
-                    y = it.y
-
-                    val selectedArea = Area.fromPosition(x, y, width, height)
+                    selectedArea = Area.fromPosition(it.x, it.y, width, height)
                     if (selectedArea == Area.NONE) return@detectTapGestures
-
-                    onClick(selectedArea)
 
                     if (selectedAreas.contains(selectedArea)) {
                         selectedAreas.remove(selectedArea)
+                        showBottomSheet = null
                     } else {
-                        selectedAreas.add(selectedArea)
+                        showBottomSheet = true
+                        scope.launch { sheetState.show() }
                     }
                 }
             }
@@ -63,20 +63,31 @@ fun HumanBodyComponent(
             contentDescription = null
         )
 
-        selectedAreas.forEach {
-            Image(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .fillMaxSize(),
-                painter = painterResource(id = it.image),
-                contentDescription = null
-            )
+        if (showBottomSheet == true) {
+            BottomSheetComponent(
+                content = {
+                    WoundsContent { wounds ->
+                        selectedAreas.add(selectedArea)
+                        selectedArea = Area.NONE
+                        showBottomSheet = false
+                        onClick("identifier", mapOf(selectedArea.name to wounds))
+                    }
+                },
+                sheetState = sheetState,
+                scope = scope,
+            ) {
+                showBottomSheet = null
+            }
+        } else {
+            selectedAreas.forEach {
+                Image(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .fillMaxSize(),
+                    painter = painterResource(id = it.image),
+                    contentDescription = null
+                )
+            }
         }
     }
-
-
-
-    Text(text = "x: $x, y: $y")
-    Text(modifier = Modifier.padding(30.dp),
-        text = "width: ${LocalContext.current.display?.width}, height: ${LocalContext.current.display?.height}")
 }

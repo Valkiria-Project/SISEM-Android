@@ -137,35 +137,6 @@
     <string name="images_confirmation_delete_image_cta">Eliminar</string>
     <string name="images_confirmation_confirm_images_cta">Adjuntar</string>
 
-    <!-- Wounds dialog -->
-    <string name="wounds_title">Lista de heridas</string>
-    <string name="wounds_subtitle">Seleccione que tipo de heridas tiene el paciente en la zona indicada previamente.</string>
-    <string name="wounds_left_icon">ic_message</string>
-    <string-array name="wounds_list">
-        <item>Herida permanente</item>
-        <item>Herida cortante</item>
-        <item>Fractura expuesta</item>
-        <item>Fractura cerrada</item>
-        <item>Cuerpo extraño</item>
-        <item>Hemorragia</item>
-        <item>Mordedora</item>
-        <item>Picadura</item>
-        <item>Excoriación</item>
-        <item>Deformidad o masa</item>
-        <item>Hematoma</item>
-        <item>Luxación o esguince</item>
-        <item>Eritema o inflamación</item>
-        <item>Quemadura</item>
-    </string-array>
-    <string name="wounds_burn_description">¿Que tipo de quemadura presenta el paciente?</string>
-    <string-array name="wounds_burn_list">
-        <item>Q1</item>
-        <item>Q2</item>
-        <item>Q3</item>
-    </string-array>
-    <string name="wounds_save_cta">Guardar</string>
-
-
     <!-- Drawer Menu -->
     <string name="drawer_header_zone">Subred: %s</string>
     <string name="drawer_header_provider">Base: %s</string>

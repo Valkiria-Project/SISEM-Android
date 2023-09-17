@@ -44,6 +44,7 @@ enum class Area(val image: Int) {
 
             return headArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
         }
+
         private fun getNeckArea(width: Int, height: Int): List<Point> {
             val neckArea = listOf(
                 Point(656f, 411f),
@@ -59,6 +60,7 @@ enum class Area(val image: Int) {
 
             return neckArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
         }
+
         private fun getChestArea(width: Int, height: Int): List<Point> {
             val chestArea = listOf(
                 Point(566f, 607f),
@@ -74,6 +76,7 @@ enum class Area(val image: Int) {
 
             return chestArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
         }
+
         private fun getRightArmArea(width: Int, height: Int): List<Point> {
             val rightArmArea = listOf(
                 Point(325f, 1010f),
@@ -84,8 +87,14 @@ enum class Area(val image: Int) {
                 Point(325f, 1010f)
             )
 
-            return rightArmArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
+            return rightArmArea.map {
+                Point(
+                    it.x * width / BASE_WIDTH,
+                    it.y * height / BASE_HEIGHT
+                )
+            }
         }
+
         private fun getLeftArmArea(width: Int, height: Int): List<Point> {
             val leftArmArea = listOf(
                 Point(1115f, 1010f),
@@ -98,6 +107,7 @@ enum class Area(val image: Int) {
 
             return leftArmArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
         }
+
         private fun getRightForearmArea(width: Int, height: Int): List<Point> {
             val rightForearmArea = listOf(
                 Point(309f, 1051f),
@@ -108,8 +118,14 @@ enum class Area(val image: Int) {
                 Point(309f, 1051f)
             )
 
-            return rightForearmArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
+            return rightForearmArea.map {
+                Point(
+                    it.x * width / BASE_WIDTH,
+                    it.y * height / BASE_HEIGHT
+                )
+            }
         }
+
         private fun getLeftForearmArea(width: Int, height: Int): List<Point> {
             val leftForearmArea = listOf(
                 Point(1131f, 1051f),
@@ -120,8 +136,14 @@ enum class Area(val image: Int) {
                 Point(1131f, 1051f)
             )
 
-            return leftForearmArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
+            return leftForearmArea.map {
+                Point(
+                    it.x * width / BASE_WIDTH,
+                    it.y * height / BASE_HEIGHT
+                )
+            }
         }
+
         private fun getAbdomenArea(width: Int, height: Int): List<Point> {
             val abdomenArea = listOf(
                 Point(566f, 923f),
@@ -137,6 +159,7 @@ enum class Area(val image: Int) {
 
             return abdomenArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
         }
+
         private fun getHipsArea(width: Int, height: Int): List<Point> {
             val hipsArea = listOf(
                 Point(562f, 1228f),
@@ -152,6 +175,7 @@ enum class Area(val image: Int) {
 
             return hipsArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
         }
+
         private fun getRightHandArea(width: Int, height: Int): List<Point> {
             val rightHandArea = listOf(
                 Point(227f, 1407f),
@@ -165,8 +189,14 @@ enum class Area(val image: Int) {
                 Point(227f, 1407f)
             )
 
-            return rightHandArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
+            return rightHandArea.map {
+                Point(
+                    it.x * width / BASE_WIDTH,
+                    it.y * height / BASE_HEIGHT
+                )
+            }
         }
+
         private fun getLeftHandArea(width: Int, height: Int): List<Point> {
             val leftHandArea = listOf(
                 Point(1229f, 1402f),
@@ -181,8 +211,14 @@ enum class Area(val image: Int) {
                 Point(1229f, 1402f)
             )
 
-            return leftHandArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
+            return leftHandArea.map {
+                Point(
+                    it.x * width / BASE_WIDTH,
+                    it.y * height / BASE_HEIGHT
+                )
+            }
         }
+
         private fun getRightThighArea(width: Int, height: Int): List<Point> {
             val rightThighArea = listOf(
                 Point(472f, 1537f),
@@ -194,8 +230,14 @@ enum class Area(val image: Int) {
                 Point(472f, 1537f)
             )
 
-            return rightThighArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
+            return rightThighArea.map {
+                Point(
+                    it.x * width / BASE_WIDTH,
+                    it.y * height / BASE_HEIGHT
+                )
+            }
         }
+
         private fun getLeftThighArea(width: Int, height: Int): List<Point> {
             val leftThighArea = listOf(
                 Point(758f, 1537f),
@@ -207,8 +249,14 @@ enum class Area(val image: Int) {
                 Point(758f, 1537f)
             )
 
-            return leftThighArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
+            return leftThighArea.map {
+                Point(
+                    it.x * width / BASE_WIDTH,
+                    it.y * height / BASE_HEIGHT
+                )
+            }
         }
+
         private fun getRightKneeArea(width: Int, height: Int): List<Point> {
             val rightKneeArea = listOf(
                 Point(524f, 1997f),
@@ -218,8 +266,14 @@ enum class Area(val image: Int) {
                 Point(524f, 1997f)
             )
 
-            return rightKneeArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
+            return rightKneeArea.map {
+                Point(
+                    it.x * width / BASE_WIDTH,
+                    it.y * height / BASE_HEIGHT
+                )
+            }
         }
+
         private fun getLeftKneeArea(width: Int, height: Int): List<Point> {
             val leftKneeArea = listOf(
                 Point(788f, 1997f),
@@ -229,8 +283,14 @@ enum class Area(val image: Int) {
                 Point(788f, 1997f),
             )
 
-            return leftKneeArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
+            return leftKneeArea.map {
+                Point(
+                    it.x * width / BASE_WIDTH,
+                    it.y * height / BASE_HEIGHT
+                )
+            }
         }
+
         private fun getRightLegArea(width: Int, height: Int): List<Point> {
             val rightLegArea = listOf(
                 Point(536f, 2144f),
@@ -243,8 +303,14 @@ enum class Area(val image: Int) {
                 Point(536f, 2144f)
             )
 
-            return rightLegArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
+            return rightLegArea.map {
+                Point(
+                    it.x * width / BASE_WIDTH,
+                    it.y * height / BASE_HEIGHT
+                )
+            }
         }
+
         private fun getLeftLegArea(width: Int, height: Int): List<Point> {
             val leftLegArea = listOf(
                 Point(781f, 2144f),
@@ -259,6 +325,7 @@ enum class Area(val image: Int) {
 
             return leftLegArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
         }
+
         private fun getRightFootArea(width: Int, height: Int): List<Point> {
             val rightFootArea = listOf(
                 Point(573f, 2694f),
@@ -268,8 +335,14 @@ enum class Area(val image: Int) {
                 Point(573f, 2694f)
             )
 
-            return rightFootArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
+            return rightFootArea.map {
+                Point(
+                    it.x * width / BASE_WIDTH,
+                    it.y * height / BASE_HEIGHT
+                )
+            }
         }
+
         private fun getLeftFootArea(width: Int, height: Int): List<Point> {
             val leftFootArea = listOf(
                 Point(784f, 2698f),
@@ -279,7 +352,12 @@ enum class Area(val image: Int) {
                 Point(784f, 2698f)
             )
 
-            return leftFootArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
+            return leftFootArea.map {
+                Point(
+                    it.x * width / BASE_WIDTH,
+                    it.y * height / BASE_HEIGHT
+                )
+            }
         }
 
         fun fromPosition(x: Float, y: Float, width: Int, height: Int): Area = when {
@@ -309,12 +387,12 @@ enum class Area(val image: Int) {
 
 data class Point(val x: Float, val y: Float)
 
-fun List<Point>.isInArea(x: Float, y: Float): Boolean {
+private fun List<Point>.isInArea(x: Float, y: Float): Boolean {
     var inside = false
     var p1x = this[this.size - 1].x
     var p1y = this[this.size - 1].y
-    var p2x = 0f
-    var p2y = 0f
+    var p2x: Float
+    var p2y: Float
     for (element in this) {
         p2x = element.x
         p2y = element.y
