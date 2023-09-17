@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.domain.model.banner.cancelFindingBanner
 import com.skgtecnologia.sisem.domain.model.banner.cancelReportBanner
-import com.skgtecnologia.sisem.domain.model.banner.confirmSendFindingBanner
-import com.skgtecnologia.sisem.domain.model.banner.confirmSendReportBanner
+import com.skgtecnologia.sisem.domain.model.banner.confirmFindingBanner
+import com.skgtecnologia.sisem.domain.model.banner.confirmReportBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.operation.usecases.RetrieveOperationConfig
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
@@ -86,7 +86,8 @@ class ReportViewModel @Inject constructor(
             navigationModel = ReportNavigationModel(
                 cancelReport = true
             ),
-            cancelInfoModel = cancelReportBanner().mapToUi()
+            cancelInfoModel = cancelReportBanner()
+                .mapToUi()
         )
     }
 
@@ -204,7 +205,7 @@ class ReportViewModel @Inject constructor(
             navigationModel = ReportNavigationModel(
                 confirmFinding = true
             ),
-            confirmInfoModel = confirmSendFindingBanner().mapToUi()
+            confirmInfoModel = confirmFindingBanner().mapToUi()
         )
     }
 
@@ -213,7 +214,7 @@ class ReportViewModel @Inject constructor(
             navigationModel = ReportNavigationModel(
                 confirmSendReport = true
             ),
-            confirmInfoModel = confirmSendReportBanner().mapToUi()
+            confirmInfoModel = confirmReportBanner().mapToUi()
         )
     }
 

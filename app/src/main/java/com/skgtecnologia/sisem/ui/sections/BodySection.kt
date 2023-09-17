@@ -23,21 +23,23 @@ import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.ButtonModel
 import com.skgtecnologia.sisem.domain.model.body.ChipModel
 import com.skgtecnologia.sisem.domain.model.body.ChipOptionsModel
-import com.skgtecnologia.sisem.domain.model.body.ContentHeaderModel
-import com.skgtecnologia.sisem.domain.model.body.CrewMemberCardModel
+import com.skgtecnologia.sisem.domain.model.body.ChipSelectionModel
 import com.skgtecnologia.sisem.domain.model.body.DetailedInfoListModel
+import com.skgtecnologia.sisem.domain.model.body.DropDownModel
 import com.skgtecnologia.sisem.domain.model.body.FiltersModel
 import com.skgtecnologia.sisem.domain.model.body.FindingModel
 import com.skgtecnologia.sisem.domain.model.body.FingerprintModel
 import com.skgtecnologia.sisem.domain.model.body.FooterBodyModel
+import com.skgtecnologia.sisem.domain.model.body.HeaderModel
+import com.skgtecnologia.sisem.domain.model.body.InfoCardModel
 import com.skgtecnologia.sisem.domain.model.body.InventoryCheckModel
 import com.skgtecnologia.sisem.domain.model.body.LabelModel
 import com.skgtecnologia.sisem.domain.model.body.PasswordTextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.RichLabelModel
 import com.skgtecnologia.sisem.domain.model.body.SegmentedSwitchModel
+import com.skgtecnologia.sisem.domain.model.body.SliderModel
 import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
-import com.skgtecnologia.sisem.domain.model.body.mapToHeaderModel
 import com.skgtecnologia.sisem.domain.model.body.mapToSection
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
@@ -57,7 +59,7 @@ import com.valkiria.uicomponents.action.NewsUiAction
 import com.valkiria.uicomponents.action.RecordNewsUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.button.ButtonComponent
-import com.valkiria.uicomponents.components.card.CrewMemberCardComponent
+import com.valkiria.uicomponents.components.card.InfoCardComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
 import com.valkiria.uicomponents.components.chip.ChipOptionsComponent
 import com.valkiria.uicomponents.components.chip.FiltersComponent
@@ -136,14 +138,16 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
-            is ContentHeaderModel -> item(key = model.identifier) {
-                HeaderSection(
-                    headerModel = model.mapToHeaderModel()
-                )
+            is ChipSelectionModel -> item(key = model.identifier) {
+                TODO("Create ChipSelectionComponent")
             }
 
-            is CrewMemberCardModel -> item(key = model.identifier) {
-                HandleCrewMemberCardRows(model, isTablet, onAction)
+            is DropDownModel -> item(key = model.identifier) {
+                TODO("Create DropDownComponent")
+            }
+
+            is InfoCardModel -> item(key = model.identifier) {
+                HandleInfoCardRows(model, isTablet, onAction)
             }
 
             is DetailedInfoListModel -> item(key = model.identifier) {
@@ -159,7 +163,7 @@ private fun LazyListScope.handleBodyRows(
                 ) { selected, isSelection ->
                     coroutineScope.launch {
                         val contentHeader = body.indexOfFirst {
-                            it is ContentHeaderModel && it.text == selected
+                            it is HeaderModel && it.title.text == selected
                         }
 
                         if (contentHeader >= 0) {
@@ -192,6 +196,12 @@ private fun LazyListScope.handleBodyRows(
                 ) { uiAction ->
                     onAction(uiAction)
                 }
+            }
+
+            is HeaderModel -> item(key = model.identifier) {
+                HeaderSection(
+                    headerModel = model
+                )
             }
 
             is InventoryCheckModel -> item(key = model.identifier) {
@@ -228,6 +238,10 @@ private fun LazyListScope.handleBodyRows(
                         )
                     )
                 }
+            }
+
+            is SliderModel -> item(key = model.identifier) {
+                TODO("Create SliderComponent")
             }
 
             is PasswordTextFieldModel -> item(key = model.identifier) {
@@ -315,8 +329,8 @@ private fun HandleChipRows(
 }
 
 @Composable
-private fun HandleCrewMemberCardRows(
-    model: CrewMemberCardModel,
+private fun HandleInfoCardRows(
+    model: InfoCardModel,
     isTablet: Boolean,
     onAction: (actionInput: UiAction) -> Unit
 ) {
@@ -324,7 +338,7 @@ private fun HandleCrewMemberCardRows(
         AuthCardsIdentifier.CREW_MEMBER_CARD_ASSISTANT.name,
         AuthCardsIdentifier.CREW_MEMBER_CARD_DRIVER.name,
         AuthCardsIdentifier.CREW_MEMBER_CARD_DOCTOR.name -> {
-            CrewMemberCardComponent(
+            InfoCardComponent(
                 uiModel = model.mapToUiModel(),
                 isTablet = isTablet,
                 onAction = { onAction(AuthCardsUiAction.AuthCard) },

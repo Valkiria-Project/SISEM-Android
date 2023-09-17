@@ -6,7 +6,7 @@ import com.valkiria.uicomponents.model.ui.report.ReportsDetailUiModel
 import com.valkiria.uicomponents.model.ui.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
 
-data class CrewMemberCardUiModel(
+data class InfoCardUiModel(
     val identifier: String,
     val icon: String,
     val titleText: String,
@@ -14,8 +14,8 @@ data class CrewMemberCardUiModel(
     val pillText: String,
     val pillTextStyle: TextStyle,
     val pillColor: String,
-    val dateText: String,
-    val dateTextStyle: TextStyle,
+    val dateText: String?,
+    val dateTextStyle: TextStyle?,
     val chipSection: ChipSectionUiModel? = null,
     val reportsDetail: ReportsDetailUiModel?,
     val arrangement: Arrangement.Horizontal,
