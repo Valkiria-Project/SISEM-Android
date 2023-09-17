@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 
+@Suppress("UnusedPrivateMember")
 @Composable
 fun ForgotPasswordScreen(
     isTablet: Boolean,
