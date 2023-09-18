@@ -20,6 +20,7 @@ import com.skgtecnologia.sisem.ui.authcards.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.sharedViewModel
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
+import com.skgtecnologia.sisem.ui.forgotpassword.ForgotPasswordScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.media.CameraScreen
 import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
@@ -94,6 +95,18 @@ private fun NavGraphBuilder.authGraph(
         }
 
         composable(
+            route = AuthNavigationRoute.ForgotPasswordScreen.route
+        ) {
+            ForgotPasswordScreen(
+                isTablet = isTablet,
+                modifier = modifier,
+                onNavigation = { navigationModel ->
+                    navigateToNextStep(navController, navigationModel)
+                }
+            )
+        }
+
+        composable(
             route = AuthNavigationRoute.DeviceAuthScreen.route +
                 "/{${NavigationArgument.FROM}}",
             arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
@@ -120,7 +133,6 @@ private fun NavGraphBuilder.authGraph(
             }
         }
 
-        // FIXME: This is not part of AuthGraph
         composable(
             route = AuthNavigationRoute.ChangePasswordScreen.route
         ) {

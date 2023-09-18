@@ -8,5 +8,6 @@ data class LoginNavigationModel(
     val isTurnComplete: Boolean = false,
     val requiresPreOperational: Boolean = false,
     val preOperationRole: OperationRole? = null,
-    val requiresDeviceAuth: Boolean = false
+    val requiresDeviceAuth: Boolean = false,
+    val forgotPassword: Boolean = false
 ) : NavigationModel

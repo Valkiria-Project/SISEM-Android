@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,6 +28,8 @@ fun FiltersComponent(
     uiModel: FiltersUiModel,
     onAction: (text: String, isSelection: Boolean) -> Unit
 ) {
+    val selected = rememberSaveable { mutableStateOf("") }
+
     Row(
         modifier = Modifier
             .horizontalScroll(rememberScrollState())
@@ -38,9 +42,11 @@ fun FiltersComponent(
             FilterChipView(
                 id = "",
                 text = chipText,
+                isSelected = (chipText == selected.value),
                 textStyle = TextStyle.BUTTON_1,
                 modifier = Modifier.padding(horizontal = 8.dp),
                 onAction = { _, text, isSelection ->
+                    selected.value = text
                     onAction(text, isSelection)
                 }
             )
