@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -26,7 +27,8 @@ private const val BURN_WOUND = "Quemadura"
 fun WoundsContent(
     onClick: (List<String>) -> Unit
 ) {
-    val selectedWounds by remember { mutableStateOf(mutableListOf<String>()) }
+    val selectedWounds = mutableListOf<String>()
+    var isBurnWoundSelected by remember { mutableStateOf(false) }
 
     /*HeaderSection(
         headerModel = HeaderModel(
@@ -54,16 +56,17 @@ fun WoundsContent(
             val woundsList = stringArrayResource(id = R.array.wounds_list)
             woundsList.forEach { text ->
                 SuggestionChipView(text = text, textStyle = TextStyle.HEADLINE_5) { selected ->
-                    if (selected) {
+                    if (text != BURN_WOUND && selected) {
                         selectedWounds.add(text)
                     } else {
                         selectedWounds.remove(text)
+                        isBurnWoundSelected = !isBurnWoundSelected
                     }
                 }
             }
         }
 
-        if (selectedWounds.contains(BURN_WOUND)) {
+        if (isBurnWoundSelected) {
             Text(
                 modifier = Modifier.padding(top = 20.dp),
                 text = stringResource(R.string.wounds_burn_description),
@@ -79,11 +82,10 @@ fun WoundsContent(
                 val burnTypes = stringArrayResource(id = R.array.wounds_burn_list)
                 burnTypes.forEach { text ->
                     SuggestionChipView(text = text, textStyle = TextStyle.HEADLINE_5) { selected ->
-                        val burnText = "$BURN_WOUND $text"
                         if (selected) {
-                            selectedWounds.add(burnText)
+                            selectedWounds.add(text)
                         } else {
-                            selectedWounds.remove(burnText)
+                            selectedWounds.remove(text)
                         }
                     }
                 }
