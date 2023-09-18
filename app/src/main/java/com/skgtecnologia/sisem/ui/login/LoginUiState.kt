@@ -7,7 +7,6 @@ import com.valkiria.uicomponents.model.ui.banner.BannerUiModel
 
 data class LoginUiState(
     val screenModel: ScreenModel? = null,
-    val onForgotPassword: Boolean = false,
     val onLoginLink: LoginLink? = null,
     val validateFields: Boolean = false,
     val navigationModel: LoginNavigationModel? = null,

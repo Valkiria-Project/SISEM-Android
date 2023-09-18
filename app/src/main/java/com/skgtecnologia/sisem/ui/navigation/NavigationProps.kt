@@ -8,11 +8,10 @@ sealed class NavigationGraph(val route: String) {
 
 sealed class AuthNavigationRoute(val route: String) {
     data object AuthCardsScreen : AuthNavigationRoute("auth_cards_screen")
-    data object DeviceAuthScreen : AuthNavigationRoute("device_auth_screen")
     data object LoginScreen : AuthNavigationRoute("login_screen")
+    data object ForgotPasswordScreen : AuthNavigationRoute("forgot_password_screen")
     data object PreOperationalScreen : AuthNavigationRoute("pre_operational_screen")
-
-    // FIXME: This is not part of AuthGraph
+    data object DeviceAuthScreen : AuthNavigationRoute("device_auth_screen")
     data object ChangePasswordScreen : AuthNavigationRoute("change_password_screen")
 }
 

@@ -71,6 +71,8 @@ private fun loginToNextStep(
         }
     }
 
+    model.forgotPassword -> navController.navigate(AuthNavigationRoute.ForgotPasswordScreen.route)
+
     else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route)
 }
 

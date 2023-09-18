@@ -23,11 +23,10 @@ import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
 import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import com.valkiria.uicomponents.components.banner.OnErrorHandler
+import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @Suppress("LongMethod")
 @Composable
@@ -109,10 +108,7 @@ private fun handleAction(
 ) {
     (uiAction as? LoginUiAction)?.let {
         when (uiAction) {
-            ForgotPassword -> {
-                // FIXME: Navigate to ForgotPasswordScreen
-                Timber.d("ForgotPasswordButton clicked")
-            }
+            ForgotPassword -> viewModel.forgotPassword()
 
             Login -> viewModel.login()
 

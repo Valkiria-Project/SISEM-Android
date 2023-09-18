@@ -70,6 +70,12 @@ class LoginViewModel @Inject constructor(
         code = (this.find { it is ChipModel && it.text.isNotBlank() } as? ChipModel)?.text.orEmpty()
     }
 
+    fun forgotPassword() {
+        uiState = uiState.copy(
+            navigationModel = LoginNavigationModel(forgotPassword = true)
+        )
+    }
+
     fun login() {
         uiState = uiState.copy(
             validateFields = true
