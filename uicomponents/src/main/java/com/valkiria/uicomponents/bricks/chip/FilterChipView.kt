@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.props.toTextStyle
 
+@Suppress("LongParameterList")
 @Composable
 fun FilterChipView(
     id: String,
