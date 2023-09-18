@@ -15,7 +15,7 @@ enum class FrontArea(val image: Int) {
     RIGHT_HAND(R.drawable.ic_right_hand_human_doy),
     LEFT_HAND(R.drawable.ic_left_hand_human_body),
     RIGHT_THIGH(R.drawable.ic_right_thigh_human_body),
-    LEFT_THIGH(R.drawable.ic_right_thigh_human_body), // TODO: change image
+    LEFT_THIGH(R.drawable.ic_left_thigh_human_body),
     RIGHT_KNEE(R.drawable.ic_right_knee_human_body),
     LEFT_KNEE(R.drawable.ic_left_knee_human_body),
     RIGHT_LEG(R.drawable.ic_right_leg_human_body),

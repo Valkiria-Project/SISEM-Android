@@ -3,27 +3,27 @@ package com.valkiria.uicomponents.components.humanbody
 import com.valkiria.uicomponents.R
 
 enum class BackArea(val image: Int) {
-    HEAD(R.drawable.ic_back_head_human_body), // SI
-    NECK(R.drawable.ic_neck_human_body_front), // SI
-    BACK(R.drawable.ic_chest_human_body), // SI
-    LOWER_BACK(R.drawable.ic_lower_back_human_body), // SI
-    RIGHT_ARM(R.drawable.ic_right_arm_human_body), // SI
-    LEFT_ARM(R.drawable.ic_left_arm_human_body), // SI
-    RIGHT_FOREARM(R.drawable.ic_right_forearm_human_body), // SI
-    LEFT_FOREARM(R.drawable.ic_left_forearm_human_body), // SI
-    RIGHT_HAND(R.drawable.ic_right_hand_human_doy), // SI
-    LEFT_HAND(R.drawable.ic_left_hand_human_body), // SI
-    LEFT_BUTTOCK(R.drawable.ic_left_buttock_human_body), // SI
-    RIGHT_BUTTOCK(R.drawable.ic_right_buttock_human_body), // SI
-    RIGHT_THIGH(R.drawable.ic_right_thigh_human_body), // TODO: change image
-    LEFT_THIGH(R.drawable.ic_right_thigh_human_body), // TODO: change image
-    RIGHT_KNEE(R.drawable.ic_right_knee_human_body), // SI
-    LEFT_KNEE(R.drawable.ic_left_knee_human_body), // SI
-    RIGHT_LEG(R.drawable.ic_right_leg_human_body), // SI
-    LEFT_LEG(R.drawable.ic_left_leg_human_body), // SI
-    RIGHT_FOOT(R.drawable.ic_right_foot_human_body), // SI
-    LEFT_FOOT(R.drawable.ic_left_foot_human_body), // SI
-    NONE(R.drawable.ic_front_human_body_background); // SI
+    HEAD(R.drawable.ic_back_head_human_body),
+    NECK(R.drawable.ic_neck_human_body_front),
+    BACK(R.drawable.ic_chest_human_body),
+    LOWER_BACK(R.drawable.ic_lower_back_human_body),
+    RIGHT_ARM(R.drawable.ic_right_arm_human_body),
+    LEFT_ARM(R.drawable.ic_left_arm_human_body),
+    RIGHT_FOREARM(R.drawable.ic_right_forearm_human_body),
+    LEFT_FOREARM(R.drawable.ic_left_forearm_human_body),
+    RIGHT_HAND(R.drawable.ic_right_hand_human_doy),
+    LEFT_HAND(R.drawable.ic_left_hand_human_body),
+    LEFT_BUTTOCK(R.drawable.ic_left_buttock_human_body),
+    RIGHT_BUTTOCK(R.drawable.ic_right_buttock_human_body),
+    RIGHT_THIGH(R.drawable.ic_right_back_thigh_human_body),
+    LEFT_THIGH(R.drawable.ic_left_back_thigh_human_body),
+    RIGHT_KNEE(R.drawable.ic_right_knee_human_body),
+    LEFT_KNEE(R.drawable.ic_left_knee_human_body),
+    RIGHT_LEG(R.drawable.ic_right_leg_human_body),
+    LEFT_LEG(R.drawable.ic_left_leg_human_body),
+    RIGHT_FOOT(R.drawable.ic_right_foot_human_body),
+    LEFT_FOOT(R.drawable.ic_left_foot_human_body),
+    NONE(R.drawable.ic_front_human_body_background);
 
     companion object {
 
