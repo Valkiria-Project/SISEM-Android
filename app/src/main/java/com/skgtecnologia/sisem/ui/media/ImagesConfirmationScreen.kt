@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
@@ -40,7 +39,6 @@ import com.valkiria.uicomponents.components.banner.OnErrorHandler
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import com.valkiria.uicomponents.model.props.ButtonSize
 import com.valkiria.uicomponents.model.props.ButtonStyle
-import com.valkiria.uicomponents.model.props.TabletWidth
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.ui.button.ButtonUiModel
 import com.valkiria.uicomponents.model.ui.button.OnClick
@@ -52,7 +50,6 @@ import kotlin.random.Random
 fun ImagesConfirmationScreen(
     viewModel: ReportViewModel,
     from: String,
-    isTablet: Boolean,
     modifier: Modifier = Modifier,
     onNavigation: (imageSelectionNavigationModel: NavigationModel?) -> Unit
 ) {
@@ -71,11 +68,7 @@ fun ImagesConfirmationScreen(
     }
 
     Column(
-        modifier = if (isTablet) {
-            modifier.width(TabletWidth)
-        } else {
-            modifier.fillMaxWidth()
-        },
+        modifier = modifier.fillMaxWidth()
     ) {
         HeaderSection(
             headerModel = imagesConfirmationHeader(

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,7 +26,6 @@ import com.valkiria.uicomponents.components.banner.OnErrorHandler
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
-import com.valkiria.uicomponents.model.props.TabletWidth
 import com.valkiria.uicomponents.model.props.TextFieldStyle
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.ui.label.LabelUiModel
@@ -40,7 +38,6 @@ import kotlin.random.Random
 fun AddReportScreen(
     viewModel: ReportViewModel,
     role: String,
-    isTablet: Boolean,
     modifier: Modifier = Modifier,
     onNavigation: (addReportNavigationModel: NavigationModel?) -> Unit
 ) {
@@ -58,11 +55,7 @@ fun AddReportScreen(
     }
 
     Column(
-        modifier = if (isTablet) {
-            modifier.width(TabletWidth)
-        } else {
-            modifier.fillMaxWidth()
-        },
+        modifier = modifier.fillMaxWidth()
     ) {
         addReportUiState.screenModel?.header?.let {
             HeaderSection(headerModel = it) { uiAction ->

@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,7 +14,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import com.ireward.htmlcompose.HtmlText
 import com.valkiria.uicomponents.model.mocks.getLoginTermsAndConditionsUiModel
-import com.valkiria.uicomponents.model.props.TabletWidth
 import com.valkiria.uicomponents.model.ui.termsandconditions.TermsAndConditionsUiModel
 import timber.log.Timber
 
@@ -26,11 +24,7 @@ fun TermsAndConditionsComponent(
     onAction: (link: String) -> Unit
 ) {
     Row(
-        modifier = if (isTablet) {
-            uiModel.modifier.width(TabletWidth)
-        } else {
-            uiModel.modifier.fillMaxWidth()
-        },
+        modifier = uiModel.modifier.fillMaxWidth(),
         horizontalArrangement = uiModel.arrangement,
         verticalAlignment = Alignment.CenterVertically
     ) {

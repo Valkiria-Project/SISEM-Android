@@ -19,7 +19,6 @@ import timber.log.Timber
 @Suppress("LongMethod")
 @Composable
 fun PreOperationalScreen(
-    isTablet: Boolean,
     modifier: Modifier = Modifier,
     onNavigation: (preOpNavigationModel: NavigationModel?) -> Unit
 ) {
@@ -44,7 +43,6 @@ fun PreOperationalScreen(
 
     BodySection(
         body = uiState.screenModel?.body,
-        isTablet = isTablet,
         modifier = modifier
             .fillMaxSize()
             .padding(top = 20.dp),

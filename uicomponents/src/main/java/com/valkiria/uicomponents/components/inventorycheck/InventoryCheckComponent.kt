@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,7 +19,6 @@ import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.model.mocks.getPreOperationalInventoryCheckUiModel
 import com.valkiria.uicomponents.model.props.FORTY_PERCENT_WEIGHT
 import com.valkiria.uicomponents.model.props.THIRTY_PERCENT_WEIGHT
-import com.valkiria.uicomponents.model.props.TabletWidth
 import com.valkiria.uicomponents.model.props.toTextStyle
 import com.valkiria.uicomponents.model.ui.inventorycheck.InventoryCheckUiModel
 import timber.log.Timber
@@ -34,11 +32,7 @@ fun InventoryCheckComponent(
     onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
 ) {
     Column(
-        modifier = if (isTablet) {
-            uiModel.modifier.width(TabletWidth)
-        } else {
-            uiModel.modifier.fillMaxWidth()
-        }
+        modifier = uiModel.modifier.fillMaxWidth()
     ) {
         InventoryHeaderRow(uiModel)
 

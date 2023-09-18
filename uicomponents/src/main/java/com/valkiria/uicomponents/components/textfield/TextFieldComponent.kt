@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -21,7 +20,6 @@ import com.valkiria.uicomponents.bricks.textfield.FilledTextFieldView
 import com.valkiria.uicomponents.bricks.textfield.OutlinedTextFieldView
 import com.valkiria.uicomponents.model.mocks.getLoginUserTextFieldUiModel
 import com.valkiria.uicomponents.model.mocks.getPreOpDriverVehicleKMTextFieldUiModel
-import com.valkiria.uicomponents.model.props.TabletWidth
 import com.valkiria.uicomponents.model.props.TextFieldStyle
 import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.utlis.DefType
@@ -40,11 +38,7 @@ fun TextFieldComponent(
     )
 
     Row(
-        modifier = if (isTablet) {
-            uiModel.modifier.width(TabletWidth)
-        } else {
-            uiModel.modifier.fillMaxWidth()
-        },
+        modifier = uiModel.modifier.fillMaxWidth(),
         horizontalArrangement = uiModel.arrangement,
         verticalAlignment = Alignment.CenterVertically
     ) {
