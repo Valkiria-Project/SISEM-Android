@@ -68,7 +68,7 @@ fun MenuDrawer(
             )
         },
         drawerState = drawerState,
-        gesturesEnabled = false
+        gesturesEnabled = drawerState.isOpen
     ) {
         Box(
             modifier = modifier.fillMaxSize(),
