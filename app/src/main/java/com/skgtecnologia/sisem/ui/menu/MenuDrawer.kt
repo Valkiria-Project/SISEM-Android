@@ -1,7 +1,9 @@
 package com.skgtecnologia.sisem.ui.menu
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
@@ -12,6 +14,7 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -20,13 +23,16 @@ import com.skgtecnologia.sisem.ui.menu.items.getDrawerMenuItemList
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
 import com.valkiria.uicomponents.components.banner.OnErrorHandler
 import com.valkiria.uicomponents.components.loader.LoaderComponent
+import com.valkiria.uicomponents.components.map.MapComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
 fun MenuDrawer(
+    modifier: Modifier = Modifier,
     onClick: (MainNavigationRoute) -> Unit,
-    onLogout: () -> Unit
+    onLogout: () -> Unit,
+    content: @Composable () -> Unit
 ) {
     val viewModel = hiltViewModel<MenuViewModel>()
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
@@ -51,7 +57,6 @@ fun MenuDrawer(
     }
 
     ModalNavigationDrawer(
-        drawerState = drawerState,
         drawerContent = {
             DrawerContent(
                 drawerState = drawerState,
@@ -61,20 +66,31 @@ fun MenuDrawer(
                 onMenuItemClick = { onClick(it) },
                 onLogout = { viewModel.logout(it.username) }
             )
-        }
+        },
+        drawerState = drawerState,
+        gesturesEnabled = false
     ) {
-        IconButton(
-            onClick = {
-                coroutineScope.launch {
-                    drawerState.open()
-                }
-            }
+        Box(
+            modifier = modifier.fillMaxSize(),
         ) {
-            Icon(
-                imageVector = Icons.Filled.Menu,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
+            MapComponent(
+                modifier = Modifier.fillMaxSize(),
+                coordinates = -75.5657751 to 6.2082622
             )
+
+            IconButton(
+                onClick = {
+                    coroutineScope.launch {
+                        drawerState.open()
+                    }
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Menu,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
         }
     }
 
@@ -93,5 +109,7 @@ fun MenuDrawerPreview() {
     MenuDrawer(
         onClick = {},
         onLogout = {}
-    )
+    ) {
+
+    }
 }
