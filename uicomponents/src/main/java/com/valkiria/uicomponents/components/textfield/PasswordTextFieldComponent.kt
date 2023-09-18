@@ -43,7 +43,6 @@ import timber.log.Timber
 @Composable
 fun PasswordTextFieldComponent(
     uiModel: PasswordTextFieldUiModel,
-    isTablet: Boolean = false,
     validateFields: Boolean = false,
     onAction: (updatedValue: String, fieldValidated: Boolean) -> Unit
 ) {

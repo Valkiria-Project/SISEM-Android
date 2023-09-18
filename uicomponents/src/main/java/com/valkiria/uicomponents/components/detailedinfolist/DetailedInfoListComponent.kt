@@ -25,8 +25,7 @@ import com.valkiria.uicomponents.utlis.getResourceIdByName
 
 @Composable
 fun DetailedInfoListComponent(
-    uiModel: DetailedInfoListUiModel,
-    isTablet: Boolean = false
+    uiModel: DetailedInfoListUiModel
 ) {
     uiModel.details.forEach { detailedInfoUiModel ->
         Row(

@@ -27,7 +27,6 @@ import timber.log.Timber
 @Composable
 fun InventoryCheckComponent(
     uiModel: InventoryCheckUiModel,
-    isTablet: Boolean = false,
     validateFields: Boolean = false,
     onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
 ) {

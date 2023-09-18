@@ -19,8 +19,7 @@ import timber.log.Timber
 
 @Composable
 fun RichLabelComponent(
-    uiModel: RichLabelUiModel,
-    isTablet: Boolean = false
+    uiModel: RichLabelUiModel
 ) {
     Row(
         modifier = uiModel.modifier.fillMaxWidth(),

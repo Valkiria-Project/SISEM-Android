@@ -44,7 +44,6 @@ private const val MAX_FINDINGS = 3
 @Composable
 fun InfoCardComponent(
     uiModel: InfoCardUiModel,
-    isTablet: Boolean = false,
     onAction: () -> Unit,
     onNewsAction: (reportDetail: ReportsDetailUiModel) -> Unit,
     onFindingsAction: (chipSection: ChipSectionUiModel) -> Unit

@@ -29,7 +29,6 @@ import timber.log.Timber
 @Composable
 fun TextFieldComponent(
     uiModel: TextFieldUiModel,
-    isTablet: Boolean = false,
     validateFields: Boolean = false,
     onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
 ) {

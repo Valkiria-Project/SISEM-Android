@@ -20,7 +20,6 @@ import timber.log.Timber
 @Composable
 fun TermsAndConditionsComponent(
     uiModel: TermsAndConditionsUiModel,
-    isTablet: Boolean = false,
     onAction: (link: String) -> Unit
 ) {
     Row(

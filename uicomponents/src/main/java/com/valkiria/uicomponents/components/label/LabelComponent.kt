@@ -19,8 +19,7 @@ import com.valkiria.uicomponents.model.ui.label.LabelUiModel
 @Composable
 fun LabelComponent(
     uiModel: LabelUiModel,
-    modifier: Modifier = Modifier,
-    isTablet: Boolean = false
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = uiModel.modifier
