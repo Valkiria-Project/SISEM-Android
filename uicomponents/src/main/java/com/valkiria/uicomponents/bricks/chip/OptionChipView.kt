@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -18,24 +19,26 @@ import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.props.toTextStyle
 
 @Composable
-fun FilterChipView(
+fun OptionChipView(
     id: String,
     text: String,
-    isSelected: Boolean,
     textStyle: TextStyle,
     modifier: Modifier = Modifier,
     onAction: (id: String, text: String, isSelection: Boolean) -> Unit
 ) {
+    var selected by rememberSaveable { mutableStateOf(false) }
+
     FilterChip(
-        selected = isSelected,
+        selected = selected,
         onClick = {
-            onAction(id, text, !isSelected)
+            selected = !selected
+            onAction(id, text, selected)
         },
         label = {
             Text(
                 text = text,
                 style = textStyle.toTextStyle(),
-                color = if (isSelected) {
+                color = if (selected) {
                     Color.Black
                 } else {
                     Color.White
