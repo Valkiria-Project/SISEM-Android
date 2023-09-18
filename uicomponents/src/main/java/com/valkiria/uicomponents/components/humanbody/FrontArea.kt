@@ -2,8 +2,8 @@ package com.valkiria.uicomponents.components.humanbody
 
 import com.valkiria.uicomponents.R
 
-enum class Area(val image: Int) {
-    HEAD(R.drawable.ic_head_human_body_front),
+enum class FrontArea(val image: Int) {
+    HEAD(R.drawable.ic_front_head_human_body),
     NECK(R.drawable.ic_neck_human_body_front),
     CHEST(R.drawable.ic_chest_human_body),
     RIGHT_ARM(R.drawable.ic_right_arm_human_body),
@@ -22,12 +22,9 @@ enum class Area(val image: Int) {
     LEFT_LEG(R.drawable.ic_left_leg_human_body),
     RIGHT_FOOT(R.drawable.ic_right_foot_human_body),
     LEFT_FOOT(R.drawable.ic_left_foot_human_body),
-    NONE(R.drawable.ic_human_body_background);
+    NONE(R.drawable.ic_front_human_body_background);
 
     companion object {
-
-        private const val BASE_WIDTH = 1440
-        private const val BASE_HEIGHT = 2900
 
         private fun getHeadArea(width: Int, height: Int): List<Point> {
             val headArea = listOf(
@@ -42,7 +39,7 @@ enum class Area(val image: Int) {
                 Point(600f, 275f)
             )
 
-            return headArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
+            return headArea.map { it.toProportionalPoint(width, height) }
         }
 
         private fun getNeckArea(width: Int, height: Int): List<Point> {
@@ -58,7 +55,7 @@ enum class Area(val image: Int) {
                 Point(656f, 411f)
             )
 
-            return neckArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
+            return neckArea.map { it.toProportionalPoint(width, height) }
         }
 
         private fun getChestArea(width: Int, height: Int): List<Point> {
@@ -74,7 +71,7 @@ enum class Area(val image: Int) {
                 Point(566f, 607f)
             )
 
-            return chestArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
+            return chestArea.map { it.toProportionalPoint(width, height) }
         }
 
         private fun getRightArmArea(width: Int, height: Int): List<Point> {
@@ -87,12 +84,7 @@ enum class Area(val image: Int) {
                 Point(325f, 1010f)
             )
 
-            return rightArmArea.map {
-                Point(
-                    it.x * width / BASE_WIDTH,
-                    it.y * height / BASE_HEIGHT
-                )
-            }
+            return rightArmArea.map { it.toProportionalPoint(width, height) }
         }
 
         private fun getLeftArmArea(width: Int, height: Int): List<Point> {
@@ -105,7 +97,7 @@ enum class Area(val image: Int) {
                 Point(1115f, 1010f)
             )
 
-            return leftArmArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
+            return leftArmArea.map { it.toProportionalPoint(width, height) }
         }
 
         private fun getRightForearmArea(width: Int, height: Int): List<Point> {
@@ -118,12 +110,7 @@ enum class Area(val image: Int) {
                 Point(309f, 1051f)
             )
 
-            return rightForearmArea.map {
-                Point(
-                    it.x * width / BASE_WIDTH,
-                    it.y * height / BASE_HEIGHT
-                )
-            }
+            return rightForearmArea.map { it.toProportionalPoint(width, height) }
         }
 
         private fun getLeftForearmArea(width: Int, height: Int): List<Point> {
@@ -136,12 +123,7 @@ enum class Area(val image: Int) {
                 Point(1131f, 1051f)
             )
 
-            return leftForearmArea.map {
-                Point(
-                    it.x * width / BASE_WIDTH,
-                    it.y * height / BASE_HEIGHT
-                )
-            }
+            return leftForearmArea.map { it.toProportionalPoint(width, height) }
         }
 
         private fun getAbdomenArea(width: Int, height: Int): List<Point> {
@@ -157,7 +139,7 @@ enum class Area(val image: Int) {
                 Point(566f, 923f)
             )
 
-            return abdomenArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
+            return abdomenArea.map { it.toProportionalPoint(width, height) }
         }
 
         private fun getHipsArea(width: Int, height: Int): List<Point> {
@@ -173,7 +155,7 @@ enum class Area(val image: Int) {
                 Point(562f, 1228f)
             )
 
-            return hipsArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
+            return hipsArea.map { it.toProportionalPoint(width, height) }
         }
 
         private fun getRightHandArea(width: Int, height: Int): List<Point> {
@@ -189,12 +171,7 @@ enum class Area(val image: Int) {
                 Point(227f, 1407f)
             )
 
-            return rightHandArea.map {
-                Point(
-                    it.x * width / BASE_WIDTH,
-                    it.y * height / BASE_HEIGHT
-                )
-            }
+            return rightHandArea.map { it.toProportionalPoint(width, height) }
         }
 
         private fun getLeftHandArea(width: Int, height: Int): List<Point> {
@@ -211,12 +188,7 @@ enum class Area(val image: Int) {
                 Point(1229f, 1402f)
             )
 
-            return leftHandArea.map {
-                Point(
-                    it.x * width / BASE_WIDTH,
-                    it.y * height / BASE_HEIGHT
-                )
-            }
+            return leftHandArea.map { it.toProportionalPoint(width, height) }
         }
 
         private fun getRightThighArea(width: Int, height: Int): List<Point> {
@@ -230,12 +202,7 @@ enum class Area(val image: Int) {
                 Point(472f, 1537f)
             )
 
-            return rightThighArea.map {
-                Point(
-                    it.x * width / BASE_WIDTH,
-                    it.y * height / BASE_HEIGHT
-                )
-            }
+            return rightThighArea.map { it.toProportionalPoint(width, height) }
         }
 
         private fun getLeftThighArea(width: Int, height: Int): List<Point> {
@@ -249,12 +216,7 @@ enum class Area(val image: Int) {
                 Point(758f, 1537f)
             )
 
-            return leftThighArea.map {
-                Point(
-                    it.x * width / BASE_WIDTH,
-                    it.y * height / BASE_HEIGHT
-                )
-            }
+            return leftThighArea.map { it.toProportionalPoint(width, height) }
         }
 
         private fun getRightKneeArea(width: Int, height: Int): List<Point> {
@@ -266,12 +228,7 @@ enum class Area(val image: Int) {
                 Point(524f, 1997f)
             )
 
-            return rightKneeArea.map {
-                Point(
-                    it.x * width / BASE_WIDTH,
-                    it.y * height / BASE_HEIGHT
-                )
-            }
+            return rightKneeArea.map { it.toProportionalPoint(width, height) }
         }
 
         private fun getLeftKneeArea(width: Int, height: Int): List<Point> {
@@ -283,12 +240,7 @@ enum class Area(val image: Int) {
                 Point(788f, 1997f),
             )
 
-            return leftKneeArea.map {
-                Point(
-                    it.x * width / BASE_WIDTH,
-                    it.y * height / BASE_HEIGHT
-                )
-            }
+            return leftKneeArea.map { it.toProportionalPoint(width, height) }
         }
 
         private fun getRightLegArea(width: Int, height: Int): List<Point> {
@@ -303,12 +255,7 @@ enum class Area(val image: Int) {
                 Point(536f, 2144f)
             )
 
-            return rightLegArea.map {
-                Point(
-                    it.x * width / BASE_WIDTH,
-                    it.y * height / BASE_HEIGHT
-                )
-            }
+            return rightLegArea.map { it.toProportionalPoint(width, height) }
         }
 
         private fun getLeftLegArea(width: Int, height: Int): List<Point> {
@@ -323,7 +270,7 @@ enum class Area(val image: Int) {
                 Point(781f, 2144f)
             )
 
-            return leftLegArea.map { Point(it.x * width / BASE_WIDTH, it.y * height / BASE_HEIGHT) }
+            return leftLegArea.map { it.toProportionalPoint(width, height) }
         }
 
         private fun getRightFootArea(width: Int, height: Int): List<Point> {
@@ -335,12 +282,7 @@ enum class Area(val image: Int) {
                 Point(573f, 2694f)
             )
 
-            return rightFootArea.map {
-                Point(
-                    it.x * width / BASE_WIDTH,
-                    it.y * height / BASE_HEIGHT
-                )
-            }
+            return rightFootArea.map { it.toProportionalPoint(width, height) }
         }
 
         private fun getLeftFootArea(width: Int, height: Int): List<Point> {
@@ -352,15 +294,10 @@ enum class Area(val image: Int) {
                 Point(784f, 2698f)
             )
 
-            return leftFootArea.map {
-                Point(
-                    it.x * width / BASE_WIDTH,
-                    it.y * height / BASE_HEIGHT
-                )
-            }
+            return leftFootArea.map { it.toProportionalPoint(width, height) }
         }
 
-        fun fromPosition(x: Float, y: Float, width: Int, height: Int): Area = when {
+        fun fromPosition(x: Float, y: Float, width: Int, height: Int): FrontArea = when {
             getHeadArea(width, height).isInArea(x, y) -> HEAD
             getNeckArea(width, height).isInArea(x, y) -> NECK
             getChestArea(width, height).isInArea(x, y) -> CHEST
@@ -383,31 +320,4 @@ enum class Area(val image: Int) {
             else -> NONE
         }
     }
-}
-
-data class Point(val x: Float, val y: Float)
-
-private fun List<Point>.isInArea(x: Float, y: Float): Boolean {
-    var inside = false
-    var p1x = this[this.size - 1].x
-    var p1y = this[this.size - 1].y
-    var p2x: Float
-    var p2y: Float
-    for (element in this) {
-        p2x = element.x
-        p2y = element.y
-        if (y >= p1y.coerceAtMost(p2y)) {
-            if (y <= p1y.coerceAtLeast(p2y)) {
-                if (x <= p1x.coerceAtLeast(p2x)) {
-                    if (p1y != p2y) {
-                        val xinters = (y - p1y) * (p2x - p1x) / (p2y - p1y) + p1x
-                        if (p1x == p2x || x <= xinters) inside = !inside
-                    }
-                }
-            }
-        }
-        p1x = p2x
-        p1y = p2y
-    }
-    return inside
 }
