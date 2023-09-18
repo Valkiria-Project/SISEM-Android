@@ -21,6 +21,7 @@ data class TextFieldResponse(
     @Json(name = "keyboard_type") val keyboardOptions: KeyboardOptions?,
     @Json(name = "text_style") val textStyle: TextStyle?,
     @Json(name = "style") val style: TextFieldStyle?,
+    @Json(name = "char_limit") val charLimit: Int?,
     @Json(name = "validations") val validations: List<ValidationResponse>?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val margins: Modifier?

@@ -9,9 +9,9 @@ import com.skgtecnologia.sisem.domain.changepassword.usecases.ChangePassword
 import com.skgtecnologia.sisem.domain.changepassword.usecases.GetChangePasswordScreen
 import com.skgtecnologia.sisem.domain.changepassword.usecases.GetLoginNavigationModel
 import com.skgtecnologia.sisem.domain.changepassword.usecases.OnCancel
-import com.skgtecnologia.sisem.domain.model.banner.changePasswordEmptyFields
-import com.skgtecnologia.sisem.domain.model.banner.changePasswordNoMatch
-import com.skgtecnologia.sisem.domain.model.banner.changePasswordSuccess
+import com.skgtecnologia.sisem.domain.model.banner.changePasswordEmptyFieldsBanner
+import com.skgtecnologia.sisem.domain.model.banner.changePasswordNoMatchBanner
+import com.skgtecnologia.sisem.domain.model.banner.changePasswordSuccessBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -70,7 +70,7 @@ class ChangePasswordViewModel @Inject constructor(
 
         if (oldPassword.isEmpty() || newPassword.isEmpty() || confirmedNewPassword.isEmpty()) {
             uiState = uiState.copy(
-                errorModel = changePasswordEmptyFields().mapToUi()
+                errorModel = changePasswordEmptyFieldsBanner().mapToUi()
             )
 
             return
@@ -78,7 +78,7 @@ class ChangePasswordViewModel @Inject constructor(
 
         if (newPassword != confirmedNewPassword) {
             uiState = uiState.copy(
-                errorModel = changePasswordNoMatch().mapToUi()
+                errorModel = changePasswordNoMatchBanner().mapToUi()
             )
 
             return
@@ -115,7 +115,7 @@ class ChangePasswordViewModel @Inject constructor(
         getLoginNavigationModel.invoke()
             .onSuccess { loginNavigationModel ->
                 uiState = uiState.copy(
-                    successInfoModel = changePasswordSuccess().mapToUi(),
+                    successInfoModel = changePasswordSuccessBanner().mapToUi(),
                     loginNavigationModel = loginNavigationModel,
                     isLoading = false
                 )

@@ -4,6 +4,7 @@ import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.model.props.TextStyle
 
 data class ReportsDetailUiModel(
+    val identifier: String,
     val icon: String? = null,
     val title: String,
     val titleTextStyle: TextStyle,
