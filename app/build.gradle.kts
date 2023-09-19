@@ -139,6 +139,9 @@ dependencies {
     implementation(libs.accompanist.placeholder.material)
     implementation(libs.coil.compose)
 
+    // Location
+    implementation(libs.play.services.location)
+
     // Unit Testing
     testImplementation(libs.junit)
 
