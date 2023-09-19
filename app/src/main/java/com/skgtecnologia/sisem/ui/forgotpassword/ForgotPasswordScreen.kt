@@ -10,7 +10,6 @@ import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 @Suppress("UnusedPrivateMember")
 @Composable
 fun ForgotPasswordScreen(
-    isTablet: Boolean,
     modifier: Modifier = Modifier,
     onNavigation: (forgotPasswordNavigationModel: NavigationModel?) -> Unit
 ) {

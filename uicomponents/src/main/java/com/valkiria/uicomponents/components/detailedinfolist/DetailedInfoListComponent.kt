@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,7 +18,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.model.mocks.getPreOperationalDetailedInfoListUiModel
-import com.valkiria.uicomponents.model.props.TabletWidth
 import com.valkiria.uicomponents.model.props.toTextStyle
 import com.valkiria.uicomponents.model.ui.detailedinfolist.DetailedInfoListUiModel
 import com.valkiria.uicomponents.utlis.DefType
@@ -27,16 +25,11 @@ import com.valkiria.uicomponents.utlis.getResourceIdByName
 
 @Composable
 fun DetailedInfoListComponent(
-    uiModel: DetailedInfoListUiModel,
-    isTablet: Boolean = false
+    uiModel: DetailedInfoListUiModel
 ) {
     uiModel.details.forEach { detailedInfoUiModel ->
         Row(
-            modifier = if (isTablet) {
-                uiModel.modifier.width(TabletWidth)
-            } else {
-                uiModel.modifier.fillMaxWidth()
-            },
+            modifier = uiModel.modifier.fillMaxWidth(),
             horizontalArrangement = uiModel.arrangement
         ) {
             Column {

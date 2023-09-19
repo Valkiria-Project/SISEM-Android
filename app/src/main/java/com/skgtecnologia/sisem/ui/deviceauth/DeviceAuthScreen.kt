@@ -26,7 +26,6 @@ import timber.log.Timber
 @Suppress("LongMethod")
 @Composable
 fun DeviceAuthScreen(
-    isTablet: Boolean,
     from: String,
     modifier: Modifier = Modifier,
     onNavigation: (deviceAuthNavigationModel: NavigationModel?) -> Unit
@@ -64,7 +63,6 @@ fun DeviceAuthScreen(
 
         BodySection(
             body = uiState.screenModel?.body,
-            isTablet = isTablet,
             modifier = modifier
                 .constrainAs(body) {
                     top.linkTo(header.bottom)

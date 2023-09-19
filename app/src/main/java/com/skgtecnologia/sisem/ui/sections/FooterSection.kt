@@ -18,25 +18,20 @@ import com.valkiria.uicomponents.bricks.button.ButtonView
 fun FooterSection(
     footerModel: FooterModel,
     modifier: Modifier = Modifier,
-    isTablet: Boolean = false,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     Row(
-        modifier = modifier.fillMaxWidth().padding(bottom = 20.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(bottom = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterHorizontally)
     ) {
-        ButtonView(
-            uiModel = footerModel.leftButton.mapToUiModel(),
-            isTablet = isTablet
-        ) {
+        ButtonView(uiModel = footerModel.leftButton.mapToUiModel()) {
             onAction(FooterButton(footerModel.leftButton.identifier))
         }
 
         footerModel.rightButton?.let {
-            ButtonView(
-                uiModel = it.mapToUiModel(),
-                isTablet = isTablet
-            ) {
+            ButtonView(uiModel = it.mapToUiModel()) {
                 onAction(FooterButton(footerModel.rightButton.identifier))
             }
         }

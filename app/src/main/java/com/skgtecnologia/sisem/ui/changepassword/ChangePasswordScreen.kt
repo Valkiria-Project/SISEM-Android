@@ -24,7 +24,6 @@ import kotlinx.coroutines.launch
 @Suppress("LongMethod")
 @Composable
 fun ChangePasswordScreen(
-    isTablet: Boolean,
     modifier: Modifier = Modifier,
     onNavigation: (loginNavigationModel: NavigationModel?) -> Unit,
     onCancel: () -> Unit
@@ -61,7 +60,6 @@ fun ChangePasswordScreen(
 
         BodySection(
             body = uiState.screenModel?.body,
-            isTablet = isTablet,
             modifier = modifier
                 .constrainAs(body) {
                     top.linkTo(header.bottom)

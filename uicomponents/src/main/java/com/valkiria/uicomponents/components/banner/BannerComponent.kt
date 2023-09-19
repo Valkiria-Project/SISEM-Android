@@ -26,12 +26,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
-import com.valkiria.uicomponents.model.mocks.getLoginBlockedErrorUiModel
-import com.valkiria.uicomponents.model.ui.banner.BannerUiModel
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.button.ButtonView
+import com.valkiria.uicomponents.model.mocks.getLoginBlockedErrorUiModel
+import com.valkiria.uicomponents.model.ui.banner.BannerUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import timber.log.Timber
@@ -115,26 +115,22 @@ internal fun BannerComponent(
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Row(
-                    modifier = Modifier.padding(bottom = 20.dp).fillMaxWidth(),
+                    modifier = Modifier
+                        .padding(bottom = 20.dp)
+                        .fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(
                         20.dp,
                         Alignment.CenterHorizontally
                     )
                 ) {
                     uiModel.leftButton?.let { buttonUiModel ->
-                        ButtonView(
-                            uiModel = buttonUiModel,
-                            isTablet = false
-                        ) {
+                        ButtonView(uiModel = buttonUiModel) {
                             onAction(FooterUiAction.FooterButton(buttonUiModel.identifier))
                         }
                     }
 
                     uiModel.rightButton?.let { buttonUiModel ->
-                        ButtonView(
-                            uiModel = buttonUiModel,
-                            isTablet = false
-                        ) {
+                        ButtonView(uiModel = buttonUiModel) {
                             onAction(FooterUiAction.FooterButton(buttonUiModel.identifier))
                         }
                     }

@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.data.remote.model.bricks.ChipSectionItemResponse
+import com.skgtecnologia.sisem.data.remote.model.bricks.ChipSelectionItemResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
 import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToDomain
@@ -15,7 +15,7 @@ import com.squareup.moshi.JsonClass
 data class ChipSelectionResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "title") val title: TextResponse?,
-    @Json(name = "items") val items: List<ChipSectionItemResponse>?,
+    @Json(name = "items") val items: List<ChipSelectionItemResponse>?,
     @Json(name = "selected") val selected: String?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
