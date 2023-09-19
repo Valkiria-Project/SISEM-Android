@@ -16,14 +16,13 @@ import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import com.valkiria.uicomponents.components.banner.OnErrorHandler
+import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 
 @Composable
 fun AuthCardsScreen(
-    isTablet: Boolean,
     modifier: Modifier = Modifier,
     onNavigation: (route: AuthNavigationRoute) -> Unit
 ) {
@@ -51,7 +50,6 @@ fun AuthCardsScreen(
 
         BodySection(
             body = uiState.screenModel?.body,
-            isTablet = isTablet,
             modifier = modifier.constrainAs(body) {
                 top.linkTo(header.bottom)
                 bottom.linkTo(parent.bottom)

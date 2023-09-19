@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -34,7 +33,6 @@ import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.model.mocks.getLoginPasswordTextFieldUiModel
 import com.valkiria.uicomponents.model.mocks.getNoIconPasswordTextFieldUiModel
-import com.valkiria.uicomponents.model.props.TabletWidth
 import com.valkiria.uicomponents.model.props.toTextStyle
 import com.valkiria.uicomponents.model.ui.textfield.PasswordTextFieldUiModel
 import com.valkiria.uicomponents.utlis.DefType
@@ -45,7 +43,6 @@ import timber.log.Timber
 @Composable
 fun PasswordTextFieldComponent(
     uiModel: PasswordTextFieldUiModel,
-    isTablet: Boolean = false,
     validateFields: Boolean = false,
     onAction: (updatedValue: String, fieldValidated: Boolean) -> Unit
 ) {
@@ -54,11 +51,7 @@ fun PasswordTextFieldComponent(
     )
 
     Row(
-        modifier = if (isTablet) {
-            uiModel.modifier.width(TabletWidth)
-        } else {
-            uiModel.modifier.fillMaxWidth()
-        },
+        modifier = uiModel.modifier.fillMaxWidth(),
         horizontalArrangement = uiModel.arrangement,
         verticalAlignment = Alignment.CenterVertically
     ) {

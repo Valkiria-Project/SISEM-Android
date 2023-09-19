@@ -1,4 +1,9 @@
 <resources>
+    <!-- CTA's -->
+    <string name="cancel_cta">CANCELAR</string>
+    <string name="save_cta">GUARDAR</string>
+    <string name="continue_cta">CONTINUAR</string>
+
     <!-- Error dialog -->
     <string name="error_connectivity_title">Revise su conexión a Internet</string>
     <string name="error_forbidden_title">Autorización denegada</string>

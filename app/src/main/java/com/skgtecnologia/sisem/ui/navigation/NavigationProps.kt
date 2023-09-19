@@ -22,7 +22,7 @@ sealed class MainNavigationRoute(val route: String) {
     data object HCEUDCScreen : MainNavigationRoute("menu_hce_udc_screen")
     data object IncidentScreen : MainNavigationRoute("menu_incident_screen")
     data object InventoryScreen : MainNavigationRoute("menu_inventory_screen")
-    data object MainScreen : MainNavigationRoute("menu_screen")
+    data object MainScreen : MainNavigationRoute("main_screen")
     data object AddReportRoleScreen : MainNavigationRoute("menu_add_report_role_screen")
     data object NotificationsScreen : MainNavigationRoute("menu_notifications_screen")
     data object PreoperationalMainScreen : MainNavigationRoute("menu_preoperational_menu_screen")

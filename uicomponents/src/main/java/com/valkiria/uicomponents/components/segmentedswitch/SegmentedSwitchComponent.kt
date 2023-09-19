@@ -31,7 +31,6 @@ import com.valkiria.uicomponents.model.ui.segmentedswitch.SegmentedSwitchUiModel
 @Composable
 fun SegmentedSwitchComponent(
     uiModel: SegmentedSwitchUiModel,
-    isTablet: Boolean = false,
     onAction: (id: String, status: Boolean) -> Unit
 ) {
     val items = uiModel.options.map { it.text }

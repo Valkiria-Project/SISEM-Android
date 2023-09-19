@@ -24,7 +24,6 @@ import timber.log.Timber
 @Composable
 fun ChipOptionsComponent(
     uiModel: ChipOptionsUiModel,
-    isTablet: Boolean = false,
     onAction: (id: String, text: String, isSelection: Boolean) -> Unit
 ) {
     Column(
