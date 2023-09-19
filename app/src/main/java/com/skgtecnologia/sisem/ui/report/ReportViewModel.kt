@@ -100,9 +100,7 @@ class ReportViewModel @Inject constructor(
         }
 
         val updateSelectedImages = buildList {
-            uiState.selectedImageUris.forEach {
-                add(it)
-            }
+            addAll(uiState.selectedImageUris)
 
             selectedImages.forEachIndexed { index, image ->
                 if (imageLimit < uiState.selectedImageUris.size + index + 1) {
