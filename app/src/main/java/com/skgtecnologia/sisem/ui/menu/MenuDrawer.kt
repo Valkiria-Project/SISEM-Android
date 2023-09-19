@@ -27,6 +27,7 @@ import com.valkiria.uicomponents.components.map.MapComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+@Suppress("LongMethod")
 @Composable
 fun MenuDrawer(
     modifier: Modifier = Modifier,
