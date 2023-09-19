@@ -24,7 +24,7 @@ data class ChipOptionsResponse(
 
     override fun mapToDomain(): ChipOptionsModel = ChipOptionsModel(
         identifier = identifier ?: error("ChipOptions identifier cannot be null"),
-        title = title?.mapToDomain() ?: error("ChipOptions title cannot be null"),
+        title = title?.mapToDomain(),
         items = items?.map { it.mapToUi() } ?: error("ChipOptions items cannot be null"),
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier

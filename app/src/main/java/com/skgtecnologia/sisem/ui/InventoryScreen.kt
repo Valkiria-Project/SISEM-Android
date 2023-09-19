@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.ui
 
 import androidx.compose.runtime.Composable
-import com.valkiria.uicomponents.components.humanbody.HumanBodyComponent
+import com.skgtecnologia.sisem.ui.humanbody.HumanBodyComponent
 
 @Composable
 fun InventoryScreen() {

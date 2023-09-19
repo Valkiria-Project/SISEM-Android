@@ -2,9 +2,11 @@ package com.skgtecnologia.sisem.domain.model.header
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.domain.model.body.HeaderModel
 import com.skgtecnologia.sisem.domain.model.props.TextModel
+import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.model.props.TextStyle
 
 fun addFindingHeader(
@@ -59,4 +61,22 @@ fun imagesConfirmationHeader(
     ),
     leftIcon = leftIcon,
     modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 20.dp)
+)
+
+fun woundsHeader(
+    titleText: String,
+    subtitleText: String,
+    leftIcon: String
+): HeaderModel = HeaderModel(
+    identifier = "WOUNDS_HEADER",
+    title = TextModel(
+        text = titleText,
+        textStyle = TextStyle.HEADLINE_1
+    ),
+    subtitle = TextModel(
+        text = subtitleText,
+        textStyle = TextStyle.HEADLINE_5
+    ),
+    leftIcon = leftIcon,
+    modifier = Modifier.padding(start = 20.dp, end = 20.dp)
 )

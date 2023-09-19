@@ -1,8 +1,6 @@
-package com.valkiria.uicomponents.components.humanbody
+package com.skgtecnologia.sisem.ui.humanbody
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -16,10 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.R
-import com.valkiria.uicomponents.bricks.chip.SuggestionChipView
+import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.domain.model.header.woundsHeader
+import com.skgtecnologia.sisem.ui.sections.HeaderSection
+import com.valkiria.uicomponents.components.chip.ChipOptionsComponent
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.props.toTextStyle
+import com.valkiria.uicomponents.model.ui.chip.ChipOptionUiModel
+import com.valkiria.uicomponents.model.ui.chip.ChipOptionsUiModel
 
 private const val BURN_WOUND = "Quemadura"
 
@@ -30,24 +32,30 @@ fun WoundsContent(
     val selectedWounds = mutableListOf<String>()
     var isBurnWoundSelected by remember { mutableStateOf(false) }
 
-    /*HeaderSection(
-        headerModel = HeaderModel(
-            title = TextModel(
-                text = stringResource(R.string.wounds_title),
-                textStyle = TextStyle.HEADLINE_1
-            ),
-            subtitle = TextModel(
-                text = stringResource(R.string.wounds_subtitle),
-                textStyle = TextStyle.HEADLINE_5
-            ),
-            leftIcon = stringResource(R.string.wounds_left_icon),
-            modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 20.dp)
+    HeaderSection(
+        headerModel = woundsHeader(
+            titleText = stringResource(R.string.wounds_title),
+            subtitleText = stringResource(R.string.wounds_subtitle),
+            leftIcon = stringResource(R.string.wounds_left_icon)
         )
-    )*/
+    )
+
     Column(
         modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
     ) {
-        FlowRow(
+        ChipOptionsComponent(
+            uiModel = ChipOptionsUiModel(
+                identifier = "wounds",
+                items = stringArrayResource(id = R.array.wounds_list).mapIndexed { index, text ->
+                    ChipOptionUiModel(id = index.toString(), name = text, selected = false)
+                },
+                modifier = Modifier
+            )
+        ) { _, _, _->
+
+        }
+
+        /*FlowRow(
             modifier = Modifier
                 .padding(top = 8.dp)
                 .fillMaxWidth(),
@@ -90,11 +98,13 @@ fun WoundsContent(
                     }
                 }
             }
-        }
+        }*/
 
         Button(
             onClick = { onClick(selectedWounds) },
-            modifier = Modifier.padding(top = 32.dp).fillMaxWidth()
+            modifier = Modifier
+                .padding(top = 32.dp)
+                .fillMaxWidth()
         ) {
             Text(
                 text = stringResource(R.string.wounds_save_cta),

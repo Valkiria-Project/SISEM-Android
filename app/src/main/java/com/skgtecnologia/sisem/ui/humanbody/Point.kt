@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.components.humanbody
+package com.skgtecnologia.sisem.ui.humanbody
 
 const val BASE_WIDTH = 1440
 const val BASE_HEIGHT = 2900

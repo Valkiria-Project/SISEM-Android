@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.components.humanbody
+package com.skgtecnologia.sisem.ui.humanbody
 
 import com.valkiria.uicomponents.R
 

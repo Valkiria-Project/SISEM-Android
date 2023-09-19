@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.components.humanbody
+package com.skgtecnologia.sisem.ui.humanbody
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -11,6 +11,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,6 +24,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import kotlinx.coroutines.launch
@@ -31,18 +33,19 @@ import kotlinx.coroutines.launch
 fun HumanBodyComponent(
     onClick: (String, Map<String, List<String>>) -> Unit
 ) {
+    val viewModel = hiltViewModel<HumanBodyViewModel>()
     val width = LocalContext.current.display?.width ?: BASE_WIDTH
     val height = LocalContext.current.display?.height ?: BASE_HEIGHT
 
     Box(modifier = Modifier.fillMaxSize()) {
-        var isFront by remember { mutableStateOf(true) }
+        var isFront by rememberSaveable { mutableStateOf(true) }
 
         if (isFront) {
-            HumanBodyFrontComponent(width, height) { identifier, wounds ->
+            HumanBodyFrontComponent(viewModel, width, height) { identifier, wounds ->
                 onClick(identifier, wounds)
             }
         } else {
-            HumanBodyBackComponent(width, height) { identifier, wounds ->
+            HumanBodyBackComponent(viewModel, width, height) { identifier, wounds ->
                 onClick(identifier, wounds)
             }
         }
@@ -62,16 +65,27 @@ fun HumanBodyComponent(
 
 @Composable
 private fun HumanBodyFrontComponent(
+    viewModel: HumanBodyViewModel,
     width: Int,
     height: Int,
     onClick: (String, Map<String, List<String>>) -> Unit
 ) {
-    val selectedFrontAreas by rememberSaveable { mutableStateOf(mutableListOf<FrontArea>()) }
+    val uiState = viewModel.uiState
+    val selectedFrontAreas = uiState.selectedFrontAreas
     var selectedFrontArea by remember { mutableStateOf(FrontArea.NONE) }
-    var showBottomSheet: Boolean? by remember { mutableStateOf(null) }
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(uiState) {
+        launch {
+            when {
+                uiState.onSelectWound -> {
+                    scope.launch { sheetState.show() }
+                }
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -81,13 +95,7 @@ private fun HumanBodyFrontComponent(
                     selectedFrontArea = FrontArea.fromPosition(it.x, it.y, width, height)
                     if (selectedFrontArea == FrontArea.NONE) return@detectTapGestures
 
-                    if (selectedFrontAreas.contains(selectedFrontArea)) {
-                        selectedFrontAreas.remove(selectedFrontArea)
-                        showBottomSheet = null
-                    } else {
-                        showBottomSheet = true
-                        scope.launch { sheetState.show() }
-                    }
+                    viewModel.updateFrontList(selectedFrontArea)
                 }
             }
     ) {
@@ -99,20 +107,20 @@ private fun HumanBodyFrontComponent(
             contentDescription = null
         )
 
-        if (showBottomSheet == true) {
+        if (viewModel.uiState.onSelectWound) {
             BottomSheetComponent(
                 content = {
                     WoundsContent { wounds ->
-                        selectedFrontAreas.add(selectedFrontArea)
+                        viewModel.saveFrontList(selectedFrontArea)
                         onClick("identifier", mapOf(selectedFrontArea.name to wounds))
                         selectedFrontArea = FrontArea.NONE
-                        showBottomSheet = false
+                        viewModel.handledOnWoundSelected()
                     }
                 },
                 sheetState = sheetState,
                 scope = scope,
             ) {
-                showBottomSheet = null
+                viewModel.handledOnWoundSelected()
             }
         }
 
@@ -130,16 +138,27 @@ private fun HumanBodyFrontComponent(
 
 @Composable
 private fun HumanBodyBackComponent(
+    viewModel: HumanBodyViewModel,
     width: Int,
     height: Int,
     onClick: (String, Map<String, List<String>>) -> Unit
 ) {
-    val selectedBackAreas by remember { mutableStateOf(mutableListOf<BackArea>()) }
+    val uiState = viewModel.uiState
+    val selectedBackAreas = uiState.selectedBackAreas
     var selectedBackArea by remember { mutableStateOf(BackArea.NONE) }
-    var showBottomSheet: Boolean? by remember { mutableStateOf(null) }
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(uiState) {
+        launch {
+            when {
+                uiState.onSelectWound -> {
+                    scope.launch { sheetState.show() }
+                }
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -149,13 +168,7 @@ private fun HumanBodyBackComponent(
                     selectedBackArea = BackArea.fromPosition(it.x, it.y, width, height)
                     if (selectedBackArea == BackArea.NONE) return@detectTapGestures
 
-                    if (selectedBackAreas.contains(selectedBackArea)) {
-                        selectedBackAreas.remove(selectedBackArea)
-                        showBottomSheet = null
-                    } else {
-                        showBottomSheet = true
-                        scope.launch { sheetState.show() }
-                    }
+                    viewModel.updateBackList(selectedBackArea)
                 }
             }
     ) {
@@ -167,20 +180,20 @@ private fun HumanBodyBackComponent(
             contentDescription = null
         )
 
-        if (showBottomSheet == true) {
+        if (uiState.onSelectWound) {
             BottomSheetComponent(
                 content = {
                     WoundsContent { wounds ->
-                        selectedBackAreas.add(selectedBackArea)
+                        viewModel.saveBackList(selectedBackArea)
                         onClick("identifier", mapOf(selectedBackArea.name to wounds))
                         selectedBackArea = BackArea.NONE
-                        showBottomSheet = false
+                        viewModel.handledOnWoundSelected()
                     }
                 },
                 sheetState = sheetState,
                 scope = scope,
             ) {
-                showBottomSheet = null
+                viewModel.handledOnWoundSelected()
             }
         }
 

@@ -18,6 +18,12 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
         val status: Boolean
     ) : GenericUiAction(identifier)
 
+    data class ChipSelectionAction(
+        override val identifier: String,
+        val text: String,
+        val status: Boolean
+    ) : GenericUiAction(identifier)
+
     data class FindingAction(
         override val identifier: String,
         val status: Boolean

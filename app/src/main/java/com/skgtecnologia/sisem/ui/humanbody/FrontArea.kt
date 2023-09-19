@@ -1,8 +1,11 @@
-package com.valkiria.uicomponents.components.humanbody
+package com.skgtecnologia.sisem.ui.humanbody
 
+import android.os.Parcelable
 import com.valkiria.uicomponents.R
+import kotlinx.parcelize.Parcelize
 
-enum class FrontArea(val image: Int) {
+@Parcelize
+enum class FrontArea(val image: Int) : Parcelable {
     HEAD(R.drawable.ic_front_head_human_body),
     NECK(R.drawable.ic_neck_human_body_front),
     CHEST(R.drawable.ic_chest_human_body),

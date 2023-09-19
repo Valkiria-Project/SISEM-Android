@@ -31,12 +31,14 @@ fun ChipOptionsComponent(
         modifier = uiModel.modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Top
     ) {
-        LabelComponent(
-            uiModel = LabelUiModel(
-                text = uiModel.title,
-                textStyle = uiModel.textStyle
+        uiModel.textStyle?.let {
+            LabelComponent(
+                uiModel = LabelUiModel(
+                    text = uiModel.title.orEmpty(),
+                    textStyle = uiModel.textStyle
+                )
             )
-        )
+        }
 
         FlowRow(
             modifier = Modifier
