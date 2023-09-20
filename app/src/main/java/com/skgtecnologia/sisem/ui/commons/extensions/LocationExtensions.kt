@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
 private const val UPDATE_INTERVAL_MINUTES = 5L
 private const val FASTEST_UPDATE_INTERVAL_MINUTES = 2L
 
-@SuppressLint("MissingPermission")
+@SuppressLint("MissingPermission", "TooGenericExceptionCaught")
 fun FusedLocationProviderClient.locationFlow() = callbackFlow<Location> {
     val locationRequest = LocationRequest.Builder(
         Priority.PRIORITY_HIGH_ACCURACY,
