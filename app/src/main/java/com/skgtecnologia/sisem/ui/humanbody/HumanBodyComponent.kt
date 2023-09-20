@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.skgtecnologia.sisem.ui.humanbody.bottomsheet.WoundsContent
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import kotlinx.coroutines.launch
