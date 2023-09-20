@@ -21,7 +21,6 @@ import com.valkiria.uicomponents.components.loader.LoaderComponent
 
 @Composable
 fun AddReportRoleScreen(
-    isTablet: Boolean,
     modifier: Modifier = Modifier,
     onNavigation: (role: String) -> Unit,
     onCancel: () -> Unit
@@ -47,7 +46,6 @@ fun AddReportRoleScreen(
 
         BodySection(
             body = uiState.screenModel?.body,
-            isTablet = isTablet,
             modifier = modifier
                 .constrainAs(body) {
                     top.linkTo(header.bottom)

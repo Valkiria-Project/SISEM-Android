@@ -22,9 +22,9 @@ import com.skgtecnologia.sisem.ui.commons.extensions.sharedViewModel
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
 import com.skgtecnologia.sisem.ui.forgotpassword.ForgotPasswordScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
+import com.skgtecnologia.sisem.ui.map.MapScreen
 import com.skgtecnologia.sisem.ui.media.CameraScreen
 import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
-import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
 import com.skgtecnologia.sisem.ui.report.AddFindingScreen
@@ -33,8 +33,7 @@ import com.skgtecnologia.sisem.ui.report.AddReportScreen
 
 @Composable
 fun SisemNavGraph(
-    navigationModel: StartupNavigationModel?,
-    isTablet: Boolean
+    navigationModel: StartupNavigationModel?
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -50,12 +49,11 @@ fun SisemNavGraph(
             authGraph(
                 navController,
                 getAuthStartDestination(navigationModel),
-                isTablet,
                 modifier,
                 context
             )
-            mainGraph(navController, isTablet, modifier)
-            reportGraph(navController, isTablet, modifier)
+            mainGraph(navController, modifier)
+            reportGraph(navController, modifier)
         }
     }
 }
@@ -64,7 +62,6 @@ fun SisemNavGraph(
 private fun NavGraphBuilder.authGraph(
     navController: NavHostController,
     startDestination: String,
-    isTablet: Boolean,
     modifier: Modifier,
     context: Context
 ) {
@@ -76,7 +73,6 @@ private fun NavGraphBuilder.authGraph(
             route = AuthNavigationRoute.AuthCardsScreen.route
         ) {
             AuthCardsScreen(
-                isTablet = isTablet,
                 modifier = modifier
             ) {
                 navController.navigate(AuthNavigationRoute.LoginScreen.route)
@@ -87,7 +83,6 @@ private fun NavGraphBuilder.authGraph(
             route = AuthNavigationRoute.LoginScreen.route
         ) {
             LoginScreen(
-                isTablet = isTablet,
                 modifier = modifier
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
@@ -98,7 +93,6 @@ private fun NavGraphBuilder.authGraph(
             route = AuthNavigationRoute.ForgotPasswordScreen.route
         ) {
             ForgotPasswordScreen(
-                isTablet = isTablet,
                 modifier = modifier,
                 onNavigation = { navigationModel ->
                     navigateToNextStep(navController, navigationModel)
@@ -112,7 +106,6 @@ private fun NavGraphBuilder.authGraph(
             arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
         ) {
             DeviceAuthScreen(
-                isTablet = isTablet,
                 from = it.arguments?.getString(NavigationArgument.FROM).orEmpty(),
                 modifier = modifier
             ) { navigationModel ->
@@ -126,7 +119,6 @@ private fun NavGraphBuilder.authGraph(
             route = AuthNavigationRoute.PreOperationalScreen.route
         ) {
             PreOperationalScreen(
-                isTablet = isTablet,
                 modifier = modifier
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
@@ -137,7 +129,6 @@ private fun NavGraphBuilder.authGraph(
             route = AuthNavigationRoute.ChangePasswordScreen.route
         ) {
             ChangePasswordScreen(
-                isTablet = isTablet,
                 modifier = modifier,
                 onNavigation = { navigationModel ->
                     navigateToNextStep(navController, navigationModel)
@@ -151,7 +142,6 @@ private fun NavGraphBuilder.authGraph(
 @Suppress("UnusedPrivateMember", "LongMethod")
 private fun NavGraphBuilder.mainGraph(
     navController: NavHostController,
-    isTablet: Boolean,
     modifier: Modifier
 ) {
     navigation(
@@ -161,7 +151,7 @@ private fun NavGraphBuilder.mainGraph(
         composable(
             route = MainNavigationRoute.MainScreen.route
         ) {
-            MenuDrawer(
+            MapScreen(
                 onClick = { menuNavigationRoute ->
                     navController.navigate(menuNavigationRoute.route)
                 },
@@ -206,12 +196,6 @@ private fun NavGraphBuilder.mainGraph(
         }
 
         composable(
-            route = MainNavigationRoute.AddReportRoleScreen.route
-        ) {
-            navController.navigate(ReportNavigationRoute.AddReportRoleScreen.route)
-        }
-
-        composable(
             route = MainNavigationRoute.HCEUDCScreen.route
         ) {
             // FIXME: Finish this work
@@ -246,7 +230,6 @@ private fun NavGraphBuilder.mainGraph(
 @Suppress("UnusedPrivateMember", "LongMethod")
 private fun NavGraphBuilder.reportGraph(
     navController: NavHostController,
-    isTablet: Boolean,
     modifier: Modifier
 ) {
     navigation(
@@ -260,7 +243,6 @@ private fun NavGraphBuilder.reportGraph(
             AddFindingScreen(
                 viewModel = backStackEntry.sharedViewModel(navController = navController),
                 role = backStackEntry.arguments?.getString(NavigationArgument.ROLE).orEmpty(),
-                isTablet = isTablet,
                 modifier = modifier
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
@@ -285,7 +267,6 @@ private fun NavGraphBuilder.reportGraph(
             ImagesConfirmationScreen(
                 viewModel = backStackEntry.sharedViewModel(navController = navController),
                 from = backStackEntry.arguments?.getString(NavigationArgument.FROM).orEmpty(),
-                isTablet = isTablet,
                 modifier = modifier
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
@@ -296,14 +277,13 @@ private fun NavGraphBuilder.reportGraph(
             route = ReportNavigationRoute.AddReportRoleScreen.route
         ) {
             AddReportRoleScreen(
-                isTablet = isTablet,
                 modifier = modifier,
                 onNavigation = { role ->
                     navController.navigate("${ReportNavigationRoute.AddReportScreen.route}/$role")
                 },
                 onCancel = {
                     navController.navigate(NavigationGraph.Main.route) {
-                        popUpTo(MainNavigationRoute.AddReportRoleScreen.route) {
+                        popUpTo(ReportNavigationRoute.AddReportRoleScreen.route) {
                             inclusive = true
                         }
                     }
@@ -318,7 +298,6 @@ private fun NavGraphBuilder.reportGraph(
             AddReportScreen(
                 viewModel = backStackEntry.sharedViewModel(navController = navController),
                 role = backStackEntry.arguments?.getString(NavigationArgument.ROLE).orEmpty(),
-                isTablet = isTablet,
                 onNavigation = { navigationModel ->
                     navigateToNextStep(navController, navigationModel)
                 }

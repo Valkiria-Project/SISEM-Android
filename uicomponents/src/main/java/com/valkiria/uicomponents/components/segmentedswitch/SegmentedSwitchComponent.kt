@@ -31,7 +31,6 @@ import com.valkiria.uicomponents.model.ui.segmentedswitch.SegmentedSwitchUiModel
 @Composable
 fun SegmentedSwitchComponent(
     uiModel: SegmentedSwitchUiModel,
-    isTablet: Boolean = false,
     onAction: (id: String, status: Boolean) -> Unit
 ) {
     val items = uiModel.options.map { it.text }
@@ -48,11 +47,7 @@ fun SegmentedSwitchComponent(
             modifier = Modifier
                 .fillMaxWidth(0.35f)
                 .padding(end = 8.dp),
-            color = if (selectedIndex == 0) {
-                Color.White
-            } else {
-                MaterialTheme.colorScheme.error
-            }
+            color = Color.White
         )
 
         Row(

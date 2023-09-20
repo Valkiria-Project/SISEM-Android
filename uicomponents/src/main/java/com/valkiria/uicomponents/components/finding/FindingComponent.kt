@@ -15,10 +15,9 @@ import timber.log.Timber
 @Composable
 fun FindingComponent(
     uiModel: FindingUiModel,
-    isTablet: Boolean = false,
     onAction: (id: String, status: Boolean) -> Unit
 ) {
-    SegmentedSwitchComponent(uiModel = uiModel.option, isTablet = isTablet) { id, status ->
+    SegmentedSwitchComponent(uiModel = uiModel.option) { id, status ->
         onAction(id, status)
     }
 }

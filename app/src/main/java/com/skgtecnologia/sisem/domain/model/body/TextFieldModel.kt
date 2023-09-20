@@ -16,6 +16,7 @@ data class TextFieldModel(
     val keyboardOptions: KeyboardOptions,
     val textStyle: TextStyle,
     val style: TextFieldStyle,
+    val charLimit: Int?,
     val validations: List<ValidationUiModel>,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
@@ -33,6 +34,7 @@ fun TextFieldModel.mapToUiModel(): TextFieldUiModel {
         keyboardOptions = keyboardOptions,
         textStyle = textStyle,
         style = style,
+        charLimit = charLimit,
         validations = validations,
         arrangement = arrangement,
         modifier = modifier

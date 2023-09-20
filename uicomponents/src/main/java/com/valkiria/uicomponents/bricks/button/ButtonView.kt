@@ -16,7 +16,6 @@ import com.valkiria.uicomponents.model.ui.button.ButtonUiModel
 @Composable
 fun ButtonView(
     uiModel: ButtonUiModel,
-    isTablet: Boolean = false,
     onClick: () -> Unit
 ) {
     Button(

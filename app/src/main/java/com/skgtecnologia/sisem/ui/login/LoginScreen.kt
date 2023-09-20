@@ -31,7 +31,6 @@ import kotlinx.coroutines.launch
 @Suppress("LongMethod")
 @Composable
 fun LoginScreen(
-    isTablet: Boolean,
     modifier: Modifier = Modifier,
     onNavigation: (loginNavigationModel: NavigationModel?) -> Unit
 ) {
@@ -63,7 +62,6 @@ fun LoginScreen(
 
         BodySection(
             body = uiState.screenModel?.body,
-            isTablet = isTablet,
             modifier = modifier
                 .constrainAs(body) {
                     top.linkTo(header.bottom)

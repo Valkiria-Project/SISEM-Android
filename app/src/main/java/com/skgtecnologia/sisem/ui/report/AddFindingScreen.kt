@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,8 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
-import com.skgtecnologia.sisem.domain.model.body.ButtonModel
-import com.skgtecnologia.sisem.domain.model.footer.FooterModel
+import com.skgtecnologia.sisem.domain.model.footer.findingsFooter
 import com.skgtecnologia.sisem.domain.model.header.addFindingHeader
 import com.skgtecnologia.sisem.domain.report.model.AddFindingIdentifier
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
@@ -35,12 +33,8 @@ import com.valkiria.uicomponents.components.banner.OnErrorHandler
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
-import com.valkiria.uicomponents.model.props.ButtonSize
-import com.valkiria.uicomponents.model.props.ButtonStyle
-import com.valkiria.uicomponents.model.props.TabletWidth
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.ui.button.ImageButtonUiModel
-import com.valkiria.uicomponents.model.ui.button.OnClick
 import com.valkiria.uicomponents.model.ui.label.LabelUiModel
 import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
@@ -53,7 +47,6 @@ const val DESCRIPTION_INPUT_MIN_LINES = 3
 fun AddFindingScreen(
     viewModel: ReportViewModel,
     role: String,
-    isTablet: Boolean,
     modifier: Modifier = Modifier,
     onNavigation: (findingsNavigationModel: NavigationModel?) -> Unit
 ) {
@@ -69,11 +62,7 @@ fun AddFindingScreen(
     }
 
     Column(
-        modifier = if (isTablet) {
-            modifier.width(TabletWidth)
-        } else {
-            modifier.fillMaxWidth()
-        },
+        modifier = modifier.fillMaxWidth()
     ) {
         HeaderSection(
             headerModel = addFindingHeader(
@@ -104,7 +93,10 @@ fun AddFindingScreen(
         Spacer(modifier = Modifier.weight(1f))
 
         FooterSection(
-            footerModel = getFindingsFooterModel(),
+            footerModel = findingsFooter(
+                leftButtonText = stringResource(id = R.string.cancel_cta),
+                rightButtonText = stringResource(id = R.string.save_cta),
+            ),
             modifier = Modifier.padding(bottom = 20.dp)
         ) { uiAction ->
             handleFooterAction(uiAction, viewModel)
@@ -133,10 +125,11 @@ private fun getFindingsDescriptionModel() = TextFieldUiModel(
         keyboardType = KeyboardType.Text
     ),
     textStyle = TextStyle.HEADLINE_5,
+    charLimit = 600,
     validations = listOf(
         ValidationUiModel(
-            regex = "^(?!\\s*$).+",
-            message = "El campo no debe estar vacío"
+            regex = "^(?!.*[^A-Za-z0-9 ].*).+",
+            message = "El campo no debe tener caracteres especiales"
         )
     ),
     singleLine = false,
@@ -210,29 +203,6 @@ fun MediaActions(viewModel: ReportViewModel, role: String? = null) {
         }
     }
 }
-
-private fun getFindingsFooterModel() = FooterModel(
-    leftButton = ButtonModel(
-        identifier = AddFindingIdentifier.ADD_FINDING_CANCEL_BUTTON.name,
-        label = "CANCELAR",
-        style = ButtonStyle.LOUD,
-        textStyle = TextStyle.HEADLINE_4,
-        onClick = OnClick.DISMISS,
-        size = ButtonSize.DEFAULT,
-        arrangement = Arrangement.Center,
-        modifier = Modifier
-    ),
-    rightButton = ButtonModel(
-        identifier = AddFindingIdentifier.ADD_FINDING_SAVE_BUTTON.name,
-        label = "GUARDAR",
-        style = ButtonStyle.LOUD,
-        textStyle = TextStyle.HEADLINE_4,
-        onClick = OnClick.DISMISS,
-        size = ButtonSize.DEFAULT,
-        arrangement = Arrangement.Center,
-        modifier = Modifier
-    )
-)
 
 private fun handleFooterAction(
     uiAction: UiAction,

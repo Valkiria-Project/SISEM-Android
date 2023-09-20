@@ -80,7 +80,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun BodySection(
     body: List<BodyRowModel>?,
-    isTablet: Boolean,
     modifier: Modifier = Modifier,
     validateFields: Boolean = false,
     onAction: (actionInput: UiAction) -> Unit
@@ -100,7 +99,6 @@ fun BodySection(
                 body = body,
                 listState = listState,
                 coroutineScope = coroutineScope,
-                isTablet = isTablet,
                 validateFields = validateFields,
                 onAction = onAction
             )
@@ -113,18 +111,17 @@ private fun LazyListScope.handleBodyRows(
     body: List<BodyRowModel>,
     listState: LazyListState,
     coroutineScope: CoroutineScope,
-    isTablet: Boolean,
     validateFields: Boolean,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     body.forEach { model ->
         when (model) {
             is ButtonModel -> item(key = model.identifier) {
-                HandleButtonRows(model, isTablet, onAction)
+                HandleButtonRows(model, onAction)
             }
 
             is ChipModel -> item(key = model.identifier) {
-                HandleChipRows(model, isTablet, onAction)
+                HandleChipRows(model, onAction)
             }
 
             is ChipOptionsModel -> item(key = model.identifier) {
@@ -156,14 +153,11 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is InfoCardModel -> item(key = model.identifier) {
-                HandleInfoCardRows(model, isTablet, onAction)
+                HandleInfoCardRows(model, onAction)
             }
 
             is DetailedInfoListModel -> item(key = model.identifier) {
-                DetailedInfoListComponent(
-                    uiModel = model.mapToUiModel(),
-                    isTablet = isTablet
-                )
+                DetailedInfoListComponent(uiModel = model.mapToUiModel())
             }
 
             is FiltersModel -> stickyHeader(key = model.identifier) {
@@ -185,7 +179,6 @@ private fun LazyListScope.handleBodyRows(
             is FindingModel -> item(key = model.identifier) {
                 FindingComponent(
                     uiModel = model.mapToUiModel(),
-                    isTablet = isTablet
                 ) { id, status ->
                     onAction(GenericUiAction.FindingAction(identifier = id, status = status))
                 }
@@ -215,7 +208,7 @@ private fun LazyListScope.handleBodyRows(
 
             is InventoryCheckModel -> item(key = model.identifier) {
                 InventoryCheckComponent(
-                    uiModel = model.mapToUiModel(), isTablet,
+                    uiModel = model.mapToUiModel(),
                     validateFields
                 ) { id, updatedValue, fieldValidated ->
                     onAction(
@@ -229,17 +222,11 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is LabelModel -> item(key = model.identifier) {
-                LabelComponent(
-                    uiModel = model.mapToUiModel(),
-                    isTablet = isTablet
-                )
+                LabelComponent(uiModel = model.mapToUiModel())
             }
 
             is SegmentedSwitchModel -> item(key = model.identifier) {
-                SegmentedSwitchComponent(
-                    uiModel = model.mapToUiModel(),
-                    isTablet = isTablet
-                ) { id, status ->
+                SegmentedSwitchComponent(uiModel = model.mapToUiModel()) { id, status ->
                     onAction(
                         GenericUiAction.SegmentedSwitchAction(
                             identifier = id,
@@ -254,7 +241,7 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is PasswordTextFieldModel -> item(key = model.identifier) {
-                HandlePasswordTextFieldRows(model, isTablet, validateFields, onAction)
+                HandlePasswordTextFieldRows(model, validateFields, onAction)
             }
 
             is RichLabelModel -> item(key = model.identifier) {
@@ -262,16 +249,13 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is TermsAndConditionsModel -> item(key = model.identifier) {
-                TermsAndConditionsComponent(
-                    uiModel = model.mapToUiModel(),
-                    isTablet = isTablet
-                ) { link ->
+                TermsAndConditionsComponent(uiModel = model.mapToUiModel()) { link ->
                     onAction(TermsAndConditions(link = link))
                 }
             }
 
             is TextFieldModel -> item(key = model.identifier) {
-                HandleTextFieldRows(model, isTablet, validateFields, onAction)
+                HandleTextFieldRows(model, validateFields, onAction)
             }
         }
     }
@@ -280,34 +264,29 @@ private fun LazyListScope.handleBodyRows(
 @Composable
 private fun HandleButtonRows(
     model: ButtonModel,
-    isTablet: Boolean,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
         AuthCardsIdentifier.CREW_MEMBER_CARD_ADMIN_BUTTON.name -> ButtonComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet
+            uiModel = model.mapToUiModel()
         ) {
             onAction(AuthCardsUiAction.AuthCard)
         }
 
         LoginIdentifier.LOGIN_FORGOT_PASSWORD_BUTTON.name -> ButtonComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet
+            uiModel = model.mapToUiModel()
         ) {
             onAction(ForgotPassword)
         }
 
         LoginIdentifier.LOGIN_BUTTON.name -> ButtonComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet
+            uiModel = model.mapToUiModel()
         ) {
             onAction(Login)
         }
 
         else -> ButtonComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet
+            uiModel = model.mapToUiModel()
         ) { id ->
             onAction(GenericUiAction.ButtonAction(id))
         }
@@ -318,7 +297,6 @@ private fun HandleButtonRows(
 @Composable
 private fun HandleChipRows(
     model: ChipModel,
-    isTablet: Boolean,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
@@ -326,13 +304,11 @@ private fun HandleChipRows(
         AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DOCTOR.name,
         AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DRIVER.name -> ChipComponent(
             uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
             onClick = { onAction(NewsUiAction.NewsStepOneOnChipClick(it)) }
         )
 
         else -> ChipComponent(
             uiModel = model.mapToUiModel(),
-            isTablet = isTablet
         )
     }
 }
@@ -340,7 +316,6 @@ private fun HandleChipRows(
 @Composable
 private fun HandleInfoCardRows(
     model: InfoCardModel,
-    isTablet: Boolean,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
@@ -349,7 +324,6 @@ private fun HandleInfoCardRows(
         AuthCardsIdentifier.CREW_MEMBER_CARD_DOCTOR.name -> {
             InfoCardComponent(
                 uiModel = model.mapToUiModel(),
-                isTablet = isTablet,
                 onAction = { onAction(AuthCardsUiAction.AuthCard) },
                 onNewsAction = { onAction(AuthCardsUiAction.AuthCardNews(it)) },
                 onFindingsAction = { onAction(AuthCardsUiAction.AuthCardFindings(it)) }
@@ -361,14 +335,12 @@ private fun HandleInfoCardRows(
 @Composable
 private fun HandlePasswordTextFieldRows(
     model: PasswordTextFieldModel,
-    isTablet: Boolean,
     validateFields: Boolean,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
         ChangePasswordIdentifier.CHANGE_PASSWORD_CONFIRM.name -> PasswordTextFieldComponent(
             uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
             validateFields = validateFields
         ) { updatedValue, fieldValidated ->
             onAction(
@@ -381,7 +353,6 @@ private fun HandlePasswordTextFieldRows(
 
         ChangePasswordIdentifier.CHANGE_PASSWORD_NEW.name -> PasswordTextFieldComponent(
             uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
             validateFields = validateFields
         ) { updatedValue, fieldValidated ->
             onAction(
@@ -394,7 +365,6 @@ private fun HandlePasswordTextFieldRows(
 
         LoginIdentifier.LOGIN_PASSWORD.name -> PasswordTextFieldComponent(
             uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
             validateFields = validateFields
         ) { updatedValue, fieldValidated ->
             onAction(
@@ -411,14 +381,12 @@ private fun HandlePasswordTextFieldRows(
 @Composable
 private fun HandleTextFieldRows(
     model: TextFieldModel,
-    isTablet: Boolean,
     validateFields: Boolean,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
         DeviceAuthIdentifier.DEVICE_AUTH_CODE.name -> TextFieldComponent(
             uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
             validateFields = validateFields
         ) { _, updatedValue, fieldValidated ->
             onAction(
@@ -431,7 +399,6 @@ private fun HandleTextFieldRows(
 
         LoginIdentifier.LOGIN_EMAIL.name -> TextFieldComponent(
             uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
             validateFields = validateFields
         ) { _, updatedValue, fieldValidated ->
             onAction(
@@ -444,7 +411,6 @@ private fun HandleTextFieldRows(
 
         ChangePasswordIdentifier.CHANGE_PASSWORD_CURRENT.name -> TextFieldComponent(
             uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
             validateFields = validateFields
         ) { _, updatedValue, _ ->
             onAction(
@@ -456,7 +422,6 @@ private fun HandleTextFieldRows(
 
         AddReportIdentifier.ADD_REPORT_ENTRY_TOPIC.name -> TextFieldComponent(
             uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
             validateFields = validateFields
         ) { _, updatedValue, _ ->
             onAction(
@@ -469,7 +434,6 @@ private fun HandleTextFieldRows(
 
         AddReportIdentifier.ADD_REPORT_ENTRY_DESCRIPTION.name -> TextFieldComponent(
             uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
             validateFields = validateFields
         ) { _, updatedValue, _ ->
             onAction(
@@ -482,7 +446,6 @@ private fun HandleTextFieldRows(
 
         else -> TextFieldComponent(
             uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
             validateFields = validateFields
         ) { id, updatedValue, fieldValidated ->
             onAction(
