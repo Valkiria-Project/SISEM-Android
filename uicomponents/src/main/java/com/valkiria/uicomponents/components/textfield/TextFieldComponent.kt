@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.valkiria.uicomponents.bricks.textfield.DateTextFieldView
 import com.valkiria.uicomponents.bricks.textfield.FilledTextFieldView
 import com.valkiria.uicomponents.bricks.textfield.OutlinedTextFieldView
 import com.valkiria.uicomponents.model.mocks.getLoginUserTextFieldUiModel
@@ -52,20 +53,28 @@ fun TextFieldComponent(
             )
         }
 
-        if (uiModel.style == TextFieldStyle.OUTLINED) {
-            OutlinedTextFieldView(
+        when (uiModel.style) {
+            TextFieldStyle.DATE -> DateTextFieldView(
                 uiModel = uiModel,
                 validateFields = validateFields
             ) { id, updatedValue, fieldValidated ->
                 onAction(id, updatedValue, fieldValidated)
             }
-        } else {
-            FilledTextFieldView(
+
+            TextFieldStyle.FILLED -> FilledTextFieldView(
                 uiModel = uiModel,
                 validateFields = validateFields
             ) { id, updatedValue, fieldValidated ->
                 onAction(id, updatedValue, fieldValidated)
             }
+
+            TextFieldStyle.OUTLINED ->
+                OutlinedTextFieldView(
+                    uiModel = uiModel,
+                    validateFields = validateFields
+                ) { id, updatedValue, fieldValidated ->
+                    onAction(id, updatedValue, fieldValidated)
+                }
         }
     }
 }
