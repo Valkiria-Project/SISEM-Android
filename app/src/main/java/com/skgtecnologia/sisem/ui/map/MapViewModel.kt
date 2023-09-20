@@ -5,24 +5,33 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.skgtecnologia.sisem.ui.commons.extensions.locationFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class MapViewModel @Inject constructor() : ViewModel() {
 
-    private var job: Job? = null
-
     var uiState by mutableStateOf(MapUiState())
         private set
 
-    init {
-        job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
-
-        }
+    // FIXME: This should be observed
+    fun getLocationCoordinates(fusedLocationClient: FusedLocationProviderClient) {
+        fusedLocationClient.locationFlow()
+            .conflate()
+            .catch { e ->
+                Timber.d("Unable to get location $e")
+            }
+            .onEach { location ->
+                Timber.d("Location: $location")
+                uiState = uiState.copy(location = location.longitude to location.latitude)
+            }
+            .launchIn(viewModelScope)
     }
 }

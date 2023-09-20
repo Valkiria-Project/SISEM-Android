@@ -12,8 +12,9 @@ import kotlinx.coroutines.flow.callbackFlow
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-private const val UPDATE_INTERVAL_MINUTES = 5L
-private const val FASTEST_UPDATE_INTERVAL_MINUTES = 2L
+private const val UPDATE_INTERVAL_MINUTES = 2L
+private const val FASTEST_UPDATE_INTERVAL_MINUTES = 1L
+private const val MIN_UPDATE_DISTANCE_METERS = 30F
 
 @Suppress("MissingPermission")
 fun FusedLocationProviderClient.locationFlow() = callbackFlow<Location> {
@@ -22,6 +23,7 @@ fun FusedLocationProviderClient.locationFlow() = callbackFlow<Location> {
         TimeUnit.MINUTES.toMillis(UPDATE_INTERVAL_MINUTES)
     )
         .setMinUpdateIntervalMillis(TimeUnit.MINUTES.toMillis(FASTEST_UPDATE_INTERVAL_MINUTES))
+        .setMinUpdateDistanceMeters(MIN_UPDATE_DISTANCE_METERS)
         .build()
 
     @Suppress("TooGenericExceptionCaught")
