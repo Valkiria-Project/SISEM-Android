@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.ui.commons.extensions
 
-import android.annotation.SuppressLint
 import android.location.Location
 import android.os.Looper
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -16,7 +15,7 @@ import java.util.concurrent.TimeUnit
 private const val UPDATE_INTERVAL_MINUTES = 5L
 private const val FASTEST_UPDATE_INTERVAL_MINUTES = 2L
 
-@SuppressLint("MissingPermission", "TooGenericExceptionCaught")
+@Suppress("MissingPermission")
 fun FusedLocationProviderClient.locationFlow() = callbackFlow<Location> {
     val locationRequest = LocationRequest.Builder(
         Priority.PRIORITY_HIGH_ACCURACY,
@@ -25,6 +24,7 @@ fun FusedLocationProviderClient.locationFlow() = callbackFlow<Location> {
         .setMinUpdateIntervalMillis(TimeUnit.MINUTES.toMillis(FASTEST_UPDATE_INTERVAL_MINUTES))
         .build()
 
+    @Suppress("TooGenericExceptionCaught")
     val callback = object : LocationCallback() {
         override fun onLocationResult(result: LocationResult) {
             for (location in result.locations) {
