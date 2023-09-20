@@ -33,7 +33,7 @@ class WoundsViewModel @Inject constructor() : ViewModel() {
                 remove(selectedWound)
             } else {
                 selectWound = when {
-                    selectedWound == BURN_WOUND  && isSelected -> {
+                    selectedWound == BURN_WOUND && isSelected -> {
                         isBurnSelected = true
                         true
                     }

@@ -68,5 +68,4 @@ class HumanBodyViewModel @Inject constructor() : ViewModel() {
 
         uiState = uiState.copy(selectedBackAreas = list)
     }
-
 }
