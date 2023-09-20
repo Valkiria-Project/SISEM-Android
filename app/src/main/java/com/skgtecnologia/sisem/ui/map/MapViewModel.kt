@@ -16,13 +16,15 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class MapViewModel @Inject constructor() : ViewModel() {
+class MapViewModel @Inject constructor(
+    private val fusedLocationClient: FusedLocationProviderClient
+) : ViewModel() {
 
     var uiState by mutableStateOf(MapUiState())
         private set
 
     // FIXME: This should be observed
-    fun getLocationCoordinates(fusedLocationClient: FusedLocationProviderClient) {
+    fun getLocationCoordinates() {
         fusedLocationClient.locationFlow()
             .conflate()
             .catch { e ->

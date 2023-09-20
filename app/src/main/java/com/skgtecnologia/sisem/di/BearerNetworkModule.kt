@@ -2,14 +2,13 @@ package com.skgtecnologia.sisem.di
 
 import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.data.remote.interceptors.AccessTokenInterceptor
-import com.skgtecnologia.sisem.di.qualifiers.Audit
+import com.skgtecnologia.sisem.data.remote.interceptors.AuditInterceptor
 import com.skgtecnologia.sisem.di.qualifiers.BearerAuthentication
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -26,7 +25,7 @@ object BearerNetworkModule {
     @Provides
     internal fun providesOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor?,
-        @Audit auditInterceptor: Interceptor,
+        auditInterceptor: AuditInterceptor,
         accessTokenInterceptor: AccessTokenInterceptor
     ): OkHttpClient = OkHttpClient.Builder().apply {
         connectTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)

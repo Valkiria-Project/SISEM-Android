@@ -28,8 +28,6 @@ import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
 import com.valkiria.uicomponents.components.map.MapComponent
@@ -49,8 +47,6 @@ fun MapScreen(
 
     val context = LocalContext.current
 
-    val fusedLocationClient: FusedLocationProviderClient =
-        LocationServices.getFusedLocationProviderClient(context)
     val fineLocationPermissionState: PermissionState =
         rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
     val fineLocationPermission = fineLocationPermissionState.status
@@ -70,7 +66,7 @@ fun MapScreen(
     }
 
     if (fineLocationPermission.isGranted) {
-        viewModel.getLocationCoordinates(fusedLocationClient)
+        viewModel.getLocationCoordinates()
 
         MenuDrawer(
             drawerState = drawerState,
