@@ -8,6 +8,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.valkiria.uicomponents.model.props.TextFieldStyle
 import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
@@ -23,6 +24,31 @@ fun getLoginUserTextFieldUiModel(): TextFieldUiModel {
             keyboardType = KeyboardType.Text
         ),
         textStyle = TextStyle.HEADLINE_5,
+        validations = listOf(
+            ValidationUiModel(
+                regex = "^(?!\\s*$).+",
+                message = "El campo no debe estar vacío"
+            )
+        ),
+        arrangement = Arrangement.Center,
+        modifier = Modifier.padding(
+            start = 20.dp,
+            top = 20.dp,
+            end = 20.dp,
+            bottom = 0.dp
+        )
+    )
+}
+
+fun getPreOpDriverAuxGuardianTextFieldUiModel(): TextFieldUiModel {
+    return TextFieldUiModel(
+        identifier = "OPENING_DATE_N1",
+        label = "Fecha de apertura - Guardián N1",
+        keyboardOptions = KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Number
+        ),
+        textStyle = TextStyle.HEADLINE_5,
+        style = TextFieldStyle.DATE,
         validations = listOf(
             ValidationUiModel(
                 regex = "^(?!\\s*$).+",
