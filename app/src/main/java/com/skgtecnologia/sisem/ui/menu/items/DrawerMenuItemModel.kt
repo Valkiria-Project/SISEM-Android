@@ -3,22 +3,22 @@ package com.skgtecnologia.sisem.ui.menu.items
 import android.content.Context
 import androidx.annotation.DrawableRes
 import com.skgtecnologia.sisem.R
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.CertificationsScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.DeviceAuthScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.DrivingGuideScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.HCEUDCScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.IncidentScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.InventoryScreen
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.AddReportRoleScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.NotificationsScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.PreoperationalMainScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.ShiftScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.SignatureAndFingerprint
+import com.skgtecnologia.sisem.ui.navigation.NavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.ReportNavigationRoute
 import com.valkiria.uicomponents.R.drawable
 
 data class DrawerMenuItemModel(
-    val drawerOption: MainNavigationRoute,
+    val drawerOption: NavigationRoute,
     val title: String,
     @DrawableRes val drawableId: Int
 )
@@ -58,7 +58,7 @@ private fun getDrawerItems(context: Context) = listOf(
         drawable.ic_certifications
     ),
     DrawerMenuItemModel(
-        AddReportRoleScreen,
+        ReportNavigationRoute.AddReportRoleScreen,
         context.getString(R.string.drawer_novelties),
         drawable.ic_news
     ),

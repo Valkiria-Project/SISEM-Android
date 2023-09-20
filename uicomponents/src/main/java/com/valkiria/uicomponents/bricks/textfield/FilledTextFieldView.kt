@@ -34,12 +34,21 @@ fun FilledTextFieldView(
     TextField(
         value = text,
         onValueChange = { updatedValue ->
-            text = updatedValue
-            onAction(
-                uiModel.identifier,
-                updatedValue.text,
-                text.toFailedValidation(uiModel.validations, validateFields) == null
-            )
+            if (uiModel.charLimit != null && updatedValue.text.length <= uiModel.charLimit) {
+                text = updatedValue
+                onAction(
+                    uiModel.identifier,
+                    updatedValue.text,
+                    text.toFailedValidation(uiModel.validations, validateFields) == null
+                )
+            } else if (uiModel.charLimit == null) {
+                text = updatedValue
+                onAction(
+                    uiModel.identifier,
+                    updatedValue.text,
+                    text.toFailedValidation(uiModel.validations, validateFields) == null
+                )
+            }
         },
         modifier = Modifier
             .fillMaxWidth()

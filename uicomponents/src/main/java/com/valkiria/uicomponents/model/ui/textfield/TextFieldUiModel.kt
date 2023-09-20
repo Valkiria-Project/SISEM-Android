@@ -14,6 +14,7 @@ data class TextFieldUiModel(
     val keyboardOptions: KeyboardOptions,
     val textStyle: TextStyle,
     val style: TextFieldStyle = TextFieldStyle.OUTLINED,
+    val charLimit: Int? = null,
     val validations: List<ValidationUiModel>,
     val singleLine: Boolean = true,
     val minLines: Int = 1,

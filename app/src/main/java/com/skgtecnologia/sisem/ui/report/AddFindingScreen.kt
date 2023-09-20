@@ -125,10 +125,11 @@ private fun getFindingsDescriptionModel() = TextFieldUiModel(
         keyboardType = KeyboardType.Text
     ),
     textStyle = TextStyle.HEADLINE_5,
+    charLimit = 600,
     validations = listOf(
         ValidationUiModel(
-            regex = "^(?!\\s*$).+",
-            message = "El campo no debe estar vacío"
+            regex = "^(?!.*[^A-Za-z0-9 ].*).+",
+            message = "El campo no debe tener caracteres especiales"
         )
     ),
     singleLine = false,

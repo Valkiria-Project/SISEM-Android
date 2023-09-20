@@ -24,7 +24,6 @@ import com.skgtecnologia.sisem.data.remote.model.body.SegmentedSwitchResponse
 import com.skgtecnologia.sisem.data.remote.model.body.SliderResponse
 import com.skgtecnologia.sisem.data.remote.model.body.TermsAndConditionsResponse
 import com.skgtecnologia.sisem.data.remote.model.body.TextFieldResponse
-import com.skgtecnologia.sisem.di.qualifiers.Audit
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.EnumJsonAdapter
@@ -40,13 +39,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Interceptor
 import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Singleton
 
-const val HTTP_CLIENT_VERSION_HEADER = "User-Agent"
-const val CLIENT_VERSION = "sisem/Android/" + BuildConfig.VERSION_NAME
-const val HTTP_LOCATION_HEADER = "geolocation"
 const val CLIENT_TIMEOUT_DEFAULTS = 15_000L
 
 @Module
@@ -173,17 +168,4 @@ object CoreNetworkModule {
 
         else -> null
     }
-
-    @Audit
-    @Singleton
-    @Provides
-    fun providesAuditInterceptor(): Interceptor =
-        Interceptor { chain ->
-            val request = chain.request()
-                .newBuilder()
-                .addHeader(HTTP_CLIENT_VERSION_HEADER, CLIENT_VERSION)
-                .addHeader(HTTP_LOCATION_HEADER, "6.155216, -75.327840") // FIXME: Hardcoded data
-                .build()
-            chain.proceed(request)
-        }
 }
