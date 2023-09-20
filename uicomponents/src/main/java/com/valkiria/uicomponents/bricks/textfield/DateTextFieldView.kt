@@ -20,6 +20,7 @@ import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDateFromInstant
 import java.time.Instant
 
+@Suppress("UnusedPrivateMember")
 @Composable
 fun DateTextFieldView(
     uiModel: TextFieldUiModel,
@@ -37,7 +38,7 @@ fun DateTextFieldView(
         // you might want to update the formatting, depending on your locale
         val dayOfMonth = selectedStartDate.dayOfMonth.toString().padStart(2, '0')
         val month = selectedStartDate.monthValue.toString().padStart(2, '0')
-        val year = (selectedStartDate.year % 100).toString().padStart(2, '0')
+        val year = selectedStartDate.year.toString()
         append("$dayOfMonth/$month/$year")
     }
 
