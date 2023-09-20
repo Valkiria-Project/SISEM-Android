@@ -18,6 +18,7 @@ const val HTTP_CLIENT_VERSION_HEADER = "User-Agent"
 const val CLIENT_VERSION = "sisem/Android/" + BuildConfig.VERSION_NAME
 const val HTTP_LOCATION_HEADER = "geolocation"
 const val UNAVAILABLE_LOCATION = "UNAVAILABLE_LOCATION"
+const val LOCATION_TIMEOUT = 1000L
 
 @Singleton
 class AuditInterceptor @Inject constructor(
@@ -36,7 +37,7 @@ class AuditInterceptor @Inject constructor(
 
     private fun Request.Builder.withCurrentLocation(): Request.Builder = runBlocking {
         val location = runCatching {
-            withTimeout(1000L) {
+            withTimeout(LOCATION_TIMEOUT) {
                 fusedLocationClient.locationFlow()
                     .catch { throwable ->
                         Timber.d("Unable to get location $throwable")
