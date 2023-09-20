@@ -196,12 +196,6 @@ private fun NavGraphBuilder.mainGraph(
         }
 
         composable(
-            route = MainNavigationRoute.AddReportRoleScreen.route
-        ) {
-            navController.navigate(ReportNavigationRoute.AddReportRoleScreen.route)
-        }
-
-        composable(
             route = MainNavigationRoute.HCEUDCScreen.route
         ) {
             // FIXME: Finish this work
@@ -289,7 +283,7 @@ private fun NavGraphBuilder.reportGraph(
                 },
                 onCancel = {
                     navController.navigate(NavigationGraph.Main.route) {
-                        popUpTo(MainNavigationRoute.AddReportRoleScreen.route) {
+                        popUpTo(ReportNavigationRoute.AddReportRoleScreen.route) {
                             inclusive = true
                         }
                     }

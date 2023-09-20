@@ -1,5 +1,8 @@
 package com.skgtecnologia.sisem.ui.map
 
+import android.Manifest
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,59 +17,91 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.permissions.PermissionState
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.NavigationRoute
 import com.valkiria.uicomponents.components.map.MapComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Suppress("MagicNumber")
 @Composable
 fun MapScreen(
     modifier: Modifier = Modifier,
-    onClick: (MainNavigationRoute) -> Unit,
+    onClick: (NavigationRoute) -> Unit,
     onLogout: () -> Unit
 ) {
+    val viewModel = hiltViewModel<MapViewModel>()
+    val uiState = viewModel.uiState
+
+    val context = LocalContext.current
+
+    val fineLocationPermissionState: PermissionState =
+        rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
+    val fineLocationPermission = fineLocationPermissionState.status
+
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
     val drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
-    MenuDrawer(
-        drawerState = drawerState,
-        onClick = { menuNavigationRoute ->
-            onClick(menuNavigationRoute)
-        },
-        onLogout = {
-            onLogout()
+    BackHandler {
+        Timber.d("Close the App")
+        (context as ComponentActivity).finish()
+    }
+
+    LaunchedEffect(uiState) {
+        if (!fineLocationPermission.isGranted && !fineLocationPermission.shouldShowRationale) {
+            fineLocationPermissionState.launchPermissionRequest()
         }
-    ) {
-        Box(
-            modifier = modifier.fillMaxSize(),
+    }
+
+    if (fineLocationPermission.isGranted) {
+        viewModel.getLocationCoordinates()
+
+        MenuDrawer(
+            drawerState = drawerState,
+            onClick = { menuNavigationRoute ->
+                onClick(menuNavigationRoute)
+            },
+            onLogout = {
+                onLogout()
+            }
         ) {
-            MapComponent(
-                modifier = Modifier.fillMaxSize(),
-                coordinates = -75.5657751 to 6.2082622
-            )
-            IconButton(
-                onClick = {
-                    coroutineScope.launch {
-                        drawerState.open()
-                    }
-                },
-                modifier = Modifier.padding(12.dp)
+            Box(
+                modifier = modifier.fillMaxSize(),
             ) {
-                Icon(
-                    imageVector = Icons.Outlined.Menu,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .background(color = MaterialTheme.colorScheme.primary)
-                        .size(72.dp)
-                        .padding(5.dp),
-                    tint = Color.Black
+                MapComponent(
+                    modifier = Modifier.fillMaxSize(),
+                    coordinates = viewModel.uiState.location
                 )
+                IconButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            drawerState.open()
+                        }
+                    },
+                    modifier = Modifier.padding(12.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Menu,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .background(color = MaterialTheme.colorScheme.primary)
+                            .size(72.dp)
+                            .padding(5.dp),
+                        tint = Color.Black
+                    )
+                }
             }
         }
     }
