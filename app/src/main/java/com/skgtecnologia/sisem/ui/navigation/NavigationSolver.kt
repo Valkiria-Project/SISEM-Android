@@ -115,7 +115,7 @@ private fun reportToNextStep(
         )
 
         model.closeReport -> navController.navigate(NavigationGraph.Main.route) {
-            popUpTo(MainNavigationRoute.AddReportRoleScreen.route) {
+            popUpTo(ReportNavigationRoute.AddReportRoleScreen.route) {
                 inclusive = true
             }
         }

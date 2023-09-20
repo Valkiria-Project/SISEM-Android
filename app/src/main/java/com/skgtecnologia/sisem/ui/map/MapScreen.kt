@@ -29,7 +29,7 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.NavigationRoute
 import com.valkiria.uicomponents.components.map.MapComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -39,7 +39,7 @@ import timber.log.Timber
 @Composable
 fun MapScreen(
     modifier: Modifier = Modifier,
-    onClick: (MainNavigationRoute) -> Unit,
+    onClick: (NavigationRoute) -> Unit,
     onLogout: () -> Unit
 ) {
     val viewModel = hiltViewModel<MapViewModel>()

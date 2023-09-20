@@ -102,7 +102,7 @@ private fun NavGraphBuilder.authGraph(
 
         composable(
             route = AuthNavigationRoute.DeviceAuthScreen.route +
-                "/{${NavigationArgument.FROM}}",
+                    "/{${NavigationArgument.FROM}}",
             arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
         ) {
             DeviceAuthScreen(
@@ -196,12 +196,6 @@ private fun NavGraphBuilder.mainGraph(
         }
 
         composable(
-            route = MainNavigationRoute.AddReportRoleScreen.route
-        ) {
-            navController.navigate(ReportNavigationRoute.AddReportRoleScreen.route)
-        }
-
-        composable(
             route = MainNavigationRoute.HCEUDCScreen.route
         ) {
             // FIXME: Finish this work
@@ -267,7 +261,7 @@ private fun NavGraphBuilder.reportGraph(
 
         composable(
             route = ReportNavigationRoute.ImagesConfirmationScreen.route +
-                "/{${NavigationArgument.FROM}}",
+                    "/{${NavigationArgument.FROM}}",
             arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
         ) { backStackEntry ->
             ImagesConfirmationScreen(
@@ -289,7 +283,7 @@ private fun NavGraphBuilder.reportGraph(
                 },
                 onCancel = {
                     navController.navigate(NavigationGraph.Main.route) {
-                        popUpTo(MainNavigationRoute.AddReportRoleScreen.route) {
+                        popUpTo(ReportNavigationRoute.AddReportRoleScreen.route) {
                             inclusive = true
                         }
                     }
