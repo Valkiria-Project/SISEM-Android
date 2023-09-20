@@ -16,6 +16,7 @@ import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.ui.chip.ChipSelectionUiModel
 import com.valkiria.uicomponents.model.ui.label.LabelUiModel
 
+@Suppress("UnusedPrivateMember")
 @Composable
 fun ChipSelectionComponent(
     uiModel: ChipSelectionUiModel,

@@ -60,7 +60,9 @@ fun WoundsContent(
                     identifier = "burn_type",
                     titleText = stringResource(R.string.wounds_burn_description),
                     titleTextStyle = TextStyle.HEADLINE_5,
-                    items = stringArrayResource(id = R.array.wounds_burn_list).mapIndexed { index, text ->
+                    items = stringArrayResource(
+                        id = R.array.wounds_burn_list
+                    ).mapIndexed { index, text ->
                         ChipSelectionItemUiModel(id = index.toString(), name = text)
                     },
                     arrangement = Arrangement.Center,

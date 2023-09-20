@@ -10,6 +10,7 @@ fun Point.toProportionalPoint(width: Int, height: Int): Point = Point(
     y = this.y * height / BASE_HEIGHT
 )
 
+@Suppress("NestedBlockDepth")
 fun List<Point>.isInArea(x: Float, y: Float): Boolean {
     var inside = false
     var p1x = this[this.size - 1].x

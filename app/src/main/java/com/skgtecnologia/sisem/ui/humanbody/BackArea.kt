@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.ui.humanbody
 
 import com.valkiria.uicomponents.R
 
+@Suppress("ComplexMethod", "TooManyFunctions", "MagicNumber")
 enum class BackArea(val image: Int) {
     HEAD(R.drawable.ic_back_head_human_body),
     NECK(R.drawable.ic_neck_human_body_front),

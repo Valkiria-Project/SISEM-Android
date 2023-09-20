@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.valkiria.uicomponents.R
 import kotlinx.parcelize.Parcelize
 
+@Suppress("ComplexMethod", "TooManyFunctions", "MagicNumber")
 @Parcelize
 enum class FrontArea(val image: Int) : Parcelable {
     HEAD(R.drawable.ic_front_head_human_body),

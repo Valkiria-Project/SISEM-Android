@@ -64,6 +64,7 @@ fun HumanBodyComponent(
     }
 }
 
+@Suppress("LongMethod")
 @Composable
 private fun HumanBodyFrontComponent(
     viewModel: HumanBodyViewModel,
@@ -137,6 +138,7 @@ private fun HumanBodyFrontComponent(
     }
 }
 
+@Suppress("LongMethod")
 @Composable
 private fun HumanBodyBackComponent(
     viewModel: HumanBodyViewModel,
