@@ -37,7 +37,7 @@ class DeviceAuthViewModel @Inject constructor(
         private set
 
     var from: String by mutableStateOf("")
-    var isAssociateDevice: Boolean by mutableStateOf(false)
+    private var isAssociateDevice: Boolean by mutableStateOf(false)
 
     var vehicleCode by mutableStateOf("") // FIXME
     var isValidVehicleCode by mutableStateOf(false)
