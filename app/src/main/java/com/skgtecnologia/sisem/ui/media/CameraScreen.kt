@@ -56,7 +56,6 @@ fun CameraScreen(
 
     val cameraPermissionState: PermissionState =
         rememberPermissionState(Manifest.permission.CAMERA)
-
     val cameraPermission = cameraPermissionState.status
 
     LaunchedEffect(uiState) {

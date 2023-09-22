@@ -13,9 +13,7 @@ fun getAppStartDestination(model: StartupNavigationModel?): String {
         NavigationGraph.Auth.route
     } else when {
         model.isAdmin && !model.vehicleCode.isNullOrEmpty() -> NavigationGraph.Main.route
-
         model.isTurnStarted -> NavigationGraph.Main.route
-
         else -> NavigationGraph.Auth.route
     }
 }
@@ -37,6 +35,7 @@ fun navigateToNextStep(
         is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
         is DeviceAuthNavigationModel ->
             deviceAuthToNextStep(navController, navigationModel, onNavigationFallback)
+
         else -> {}
     }
 
@@ -45,7 +44,6 @@ private fun loginToNextStep(
     model: LoginNavigationModel
 ) = when {
     model.isWarning -> navController.navigate(AuthNavigationRoute.ChangePasswordScreen.route)
-
     model.isAdmin && model.requiresDeviceAuth ->
         navController.navigate("${AuthNavigationRoute.DeviceAuthScreen.route}/$LOGIN")
 
@@ -98,9 +96,7 @@ private fun reportToNextStep(
 ) {
     when {
         model.goBack || model.photoTaken -> navController.popBackStack()
-
         model.showCamera -> navController.navigate(ReportNavigationRoute.CameraScreen.route)
-
         model.saveFinding && model.imagesSize > 0 -> navController.navigate(
             "${ReportNavigationRoute.ImagesConfirmationScreen.route}/finding"
         )
