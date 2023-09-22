@@ -28,6 +28,7 @@ import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 
+@Suppress("LongMethod")
 @Composable
 fun AuthCardsScreen(
     modifier: Modifier = Modifier,
@@ -133,7 +134,8 @@ private fun arePermissionsGranted(
     return if (notificationsPermissionState == null) {
         true
     } else {
-        notificationsPermissionState.status.isGranted && fineLocationPermissionState.status.isGranted
+        notificationsPermissionState.status.isGranted &&
+            fineLocationPermissionState.status.isGranted
     }
 }
 
