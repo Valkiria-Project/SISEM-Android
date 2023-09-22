@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.daggerHilt)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.googleServices)
     alias(libs.plugins.kotlinKsp)
     alias(libs.plugins.kotlinParcelize)
     alias(libs.plugins.ktlint)
@@ -29,8 +30,8 @@ android {
         debug {
             applicationIdSuffix = ".debug"
             isDebuggable = true
-            buildConfigField("String", "AUTH_BASE_URL", "\"http://34.139.125.3/sisem-api/\"")
-            buildConfigField("String", "BASE_URL", "\"http://34.139.125.3/sisem-api/v1/\"")
+            buildConfigField("String", "AUTH_BASE_URL", "\"https://test.emergencias-sisem.co/dev/sisem-api/\"")
+            buildConfigField("String", "BASE_URL", "\"https://test.emergencias-sisem.co/dev/sisem-api/v1/\"")
         }
         create("staging") {
             initWith(getByName("debug"))
@@ -97,7 +98,12 @@ dependencies {
     implementation(libs.material3.window.size)
     implementation(libs.material.icons.extended)
 
+    // Desugaring
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaging)
 
     // Logging
     implementation(libs.timber)
