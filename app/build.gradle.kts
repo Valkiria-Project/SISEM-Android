@@ -3,10 +3,10 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.daggerHilt)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.googleServices)
     alias(libs.plugins.kotlinKsp)
     alias(libs.plugins.kotlinParcelize)
     alias(libs.plugins.ktlint)
-    id("com.google.gms.google-services")
 }
 
 android {
@@ -101,8 +101,8 @@ dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
-    implementation("com.google.firebase:firebase-messaging-ktx")
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaging)
 
     // Logging
     implementation(libs.timber)
