@@ -98,6 +98,7 @@ dependencies {
     implementation(libs.material3.window.size)
     implementation(libs.material.icons.extended)
 
+    // Desugaring
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
     // Firebase
