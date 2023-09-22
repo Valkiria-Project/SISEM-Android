@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlinKsp)
     alias(libs.plugins.kotlinParcelize)
     alias(libs.plugins.ktlint)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -29,8 +30,8 @@ android {
         debug {
             applicationIdSuffix = ".debug"
             isDebuggable = true
-            buildConfigField("String", "AUTH_BASE_URL", "\"http://34.139.125.3/sisem-api/\"")
-            buildConfigField("String", "BASE_URL", "\"http://34.139.125.3/sisem-api/v1/\"")
+            buildConfigField("String", "AUTH_BASE_URL", "\"https://test.emergencias-sisem.co/dev/sisem-api/\"")
+            buildConfigField("String", "BASE_URL", "\"https://test.emergencias-sisem.co/dev/sisem-api/v1/\"")
         }
         create("staging") {
             initWith(getByName("debug"))
@@ -98,6 +99,10 @@ dependencies {
     implementation(libs.material.icons.extended)
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation("com.google.firebase:firebase-messaging-ktx")
 
     // Logging
     implementation(libs.timber)

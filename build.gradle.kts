@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.kotlinParcelize) apply false
     alias(libs.plugins.ktlint) apply true
     alias(libs.plugins.benManesversions) apply true
+    id("com.google.gms.google-services") version "4.3.15" apply false
 }
 
 apply(from = "buildscripts/githooks.gradle")
