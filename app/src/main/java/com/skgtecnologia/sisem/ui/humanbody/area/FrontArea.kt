@@ -1,31 +1,31 @@
 package com.skgtecnologia.sisem.ui.humanbody.area
 
 import android.os.Parcelable
-import com.valkiria.uicomponents.R
+import com.skgtecnologia.sisem.R
 import kotlinx.parcelize.Parcelize
 
 @Suppress("ComplexMethod", "MagicNumber", "TooManyFunctions")
 @Parcelize
 enum class FrontArea(val image: Int) : Parcelable {
-    HEAD(R.drawable.ic_front_head_human_body),
-    NECK(R.drawable.ic_neck_human_body_front),
-    CHEST(R.drawable.ic_chest_human_body),
-    RIGHT_ARM(R.drawable.ic_right_arm_human_body),
-    LEFT_ARM(R.drawable.ic_left_arm_human_body),
-    RIGHT_FOREARM(R.drawable.ic_right_forearm_human_body),
-    LEFT_FOREARM(R.drawable.ic_left_forearm_human_body),
-    ABDOMEN(R.drawable.ic_abdomen_human_body),
-    HIPS(R.drawable.ic_hips_human_body),
-    RIGHT_HAND(R.drawable.ic_right_hand_human_doy),
-    LEFT_HAND(R.drawable.ic_left_hand_human_body),
-    RIGHT_THIGH(R.drawable.ic_right_thigh_human_body),
-    LEFT_THIGH(R.drawable.ic_left_thigh_human_body),
-    RIGHT_KNEE(R.drawable.ic_right_knee_human_body),
-    LEFT_KNEE(R.drawable.ic_left_knee_human_body),
-    RIGHT_LEG(R.drawable.ic_right_leg_human_body),
-    LEFT_LEG(R.drawable.ic_left_leg_human_body),
-    RIGHT_FOOT(R.drawable.ic_right_foot_human_body),
-    LEFT_FOOT(R.drawable.ic_left_foot_human_body),
+    HEAD(R.drawable.img_front_head_human_body),
+    NECK(R.drawable.img_neck_human_body_front),
+    CHEST(R.drawable.img_chest_human_body),
+    RIGHT_ARM(R.drawable.img_right_arm_human_body),
+    LEFT_ARM(R.drawable.img_left_arm_human_body),
+    RIGHT_FOREARM(R.drawable.img_right_forearm_human_body),
+    LEFT_FOREARM(R.drawable.img_left_forearm_human_body),
+    ABDOMEN(R.drawable.img_abdomen_human_body),
+    HIPS(R.drawable.img_hips_human_body),
+    RIGHT_HAND(R.drawable.img_right_hand_human_doy),
+    LEFT_HAND(R.drawable.img_left_hand_human_body),
+    RIGHT_THIGH(R.drawable.img_right_thigh_human_body),
+    LEFT_THIGH(R.drawable.img_left_thigh_human_body),
+    RIGHT_KNEE(R.drawable.img_right_knee_human_body),
+    LEFT_KNEE(R.drawable.img_left_knee_human_body),
+    RIGHT_LEG(R.drawable.img_right_leg_human_body),
+    LEFT_LEG(R.drawable.img_left_leg_human_body),
+    RIGHT_FOOT(R.drawable.img_right_foot_human_body),
+    LEFT_FOOT(R.drawable.img_left_foot_human_body),
     NONE(R.drawable.img_front_human_body);
 
     companion object {

@@ -16,9 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
+import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.ui.humanbody.area.FrontArea
 import com.skgtecnologia.sisem.ui.humanbody.wounds.WoundsContent
-import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import kotlinx.coroutines.launch
 
