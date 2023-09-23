@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.model.props.TextStyle
 
 class ImageButtonUiModel(
+    val identifier: String,
     @DrawableRes val iconResId: Int,
     val label: String?,
     val textStyle: TextStyle?,

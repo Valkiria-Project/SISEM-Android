@@ -33,7 +33,7 @@ import timber.log.Timber
 @Composable
 fun MapScreen(
     modifier: Modifier = Modifier,
-    onClick: (NavigationRoute) -> Unit,
+    onAction: (NavigationRoute) -> Unit,
     onLogout: () -> Unit
 ) {
     val viewModel = hiltViewModel<MapViewModel>()
@@ -54,7 +54,7 @@ fun MapScreen(
     MenuDrawer(
         drawerState = drawerState,
         onClick = { menuNavigationRoute ->
-            onClick(menuNavigationRoute)
+            onAction(menuNavigationRoute)
         },
         onLogout = {
             onLogout()

@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.humanbody.bottomsheet
+package com.skgtecnologia.sisem.ui.humanbody.wounds
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,10 +26,12 @@ import com.valkiria.uicomponents.model.ui.chip.ChipSelectionUiModel
 
 @Composable
 fun WoundsContent(
-    onClick: (List<String>) -> Unit
+    onAction: (wounds: List<String>) -> Unit
 ) {
     val viewModel = hiltViewModel<WoundsViewModel>()
-    viewModel.setBurnList(stringArrayResource(id = R.array.wounds_burn_list).toList())
+    val uiState = viewModel.uiState
+
+    viewModel.setBurnList(stringArrayResource(id = R.array.wounds_burn_grade_list).toList())
 
     HeaderSection(
         headerModel = woundsHeader(
@@ -54,14 +56,14 @@ fun WoundsContent(
             viewModel.updateWoundsList(text, isSelected)
         }
 
-        if (viewModel.uiState.onBurnSelected) {
+        if (uiState.onBurnSelected) {
             ChipSelectionComponent(
                 uiModel = ChipSelectionUiModel(
                     identifier = "burn_type",
                     titleText = stringResource(R.string.wounds_burn_description),
                     titleTextStyle = TextStyle.HEADLINE_5,
                     items = stringArrayResource(
-                        id = R.array.wounds_burn_list
+                        id = R.array.wounds_burn_grade_list
                     ).mapIndexed { index, text ->
                         ChipSelectionItemUiModel(id = index.toString(), name = text)
                     },
@@ -74,8 +76,8 @@ fun WoundsContent(
         }
 
         Button(
-            enabled = viewModel.uiState.selectedWounds.isNotEmpty(),
-            onClick = { onClick(viewModel.uiState.selectedWounds) },
+            enabled = uiState.selectedWounds.isNotEmpty(),
+            onClick = { onAction(uiState.selectedWounds) },
             modifier = Modifier
                 .padding(top = 32.dp, bottom = 20.dp)
                 .fillMaxWidth()

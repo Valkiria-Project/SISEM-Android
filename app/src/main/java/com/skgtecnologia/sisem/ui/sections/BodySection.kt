@@ -137,10 +137,10 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is ChipSelectionModel -> item(key = model.identifier) {
-                ChipSelectionComponent(uiModel = model.mapToUiModel()) { text, isSelection ->
+                ChipSelectionComponent(uiModel = model.mapToUiModel()) { id, text, isSelection ->
                     onAction(
                         GenericUiAction.ChipSelectionAction(
-                            identifier = model.identifier,
+                            identifier = id,
                             text = text,
                             status = isSelection
                         )
@@ -304,7 +304,7 @@ private fun HandleChipRows(
         AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DOCTOR.name,
         AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DRIVER.name -> ChipComponent(
             uiModel = model.mapToUiModel(),
-            onClick = { onAction(NewsUiAction.NewsStepOneOnChipClick(it)) }
+            onAction = { onAction(NewsUiAction.NewsStepOneOnChipClick(it)) }
         )
 
         else -> ChipComponent(

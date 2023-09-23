@@ -21,14 +21,14 @@ import com.valkiria.uicomponents.model.props.toTextStyle
 fun SuggestionChipView(
     text: String,
     textStyle: TextStyle,
-    onClick: (Boolean) -> Unit = {}
+    onAction: (Boolean) -> Unit = {}
 ) {
     var selected by remember { mutableStateOf(false) }
 
     SuggestionChip(
         onClick = {
             selected = !selected
-            onClick(selected)
+            onAction(selected)
         },
         modifier = Modifier.wrapContentSize(),
         label = {

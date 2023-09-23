@@ -1,10 +1,10 @@
-package com.skgtecnologia.sisem.ui.humanbody
+package com.skgtecnologia.sisem.ui.humanbody.area
 
 import android.os.Parcelable
 import com.valkiria.uicomponents.R
 import kotlinx.parcelize.Parcelize
 
-@Suppress("ComplexMethod", "TooManyFunctions", "MagicNumber")
+@Suppress("ComplexMethod", "MagicNumber", "TooManyFunctions")
 @Parcelize
 enum class FrontArea(val image: Int) : Parcelable {
     HEAD(R.drawable.ic_front_head_human_body),
@@ -26,7 +26,7 @@ enum class FrontArea(val image: Int) : Parcelable {
     LEFT_LEG(R.drawable.ic_left_leg_human_body),
     RIGHT_FOOT(R.drawable.ic_right_foot_human_body),
     LEFT_FOOT(R.drawable.ic_left_foot_human_body),
-    NONE(R.drawable.ic_front_human_body_background);
+    NONE(R.drawable.img_front_human_body);
 
     companion object {
 

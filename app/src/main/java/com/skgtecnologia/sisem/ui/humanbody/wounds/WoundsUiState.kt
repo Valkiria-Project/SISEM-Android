@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.humanbody.bottomsheet
+package com.skgtecnologia.sisem.ui.humanbody.wounds
 
 data class WoundsUiState(
     val selectedWounds: List<String> = emptyList(),

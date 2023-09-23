@@ -1,8 +1,8 @@
-package com.skgtecnologia.sisem.ui.humanbody
+package com.skgtecnologia.sisem.ui.humanbody.area
 
 import com.valkiria.uicomponents.R
 
-@Suppress("ComplexMethod", "TooManyFunctions", "MagicNumber")
+@Suppress("ComplexMethod", "MagicNumber", "TooManyFunctions")
 enum class BackArea(val image: Int) {
     HEAD(R.drawable.ic_back_head_human_body),
     NECK(R.drawable.ic_neck_human_body_front),
@@ -24,7 +24,7 @@ enum class BackArea(val image: Int) {
     LEFT_LEG(R.drawable.ic_left_leg_human_body),
     RIGHT_FOOT(R.drawable.ic_right_foot_human_body),
     LEFT_FOOT(R.drawable.ic_left_foot_human_body),
-    NONE(R.drawable.ic_front_human_body_background);
+    NONE(R.drawable.img_front_human_body);
 
     companion object {
 

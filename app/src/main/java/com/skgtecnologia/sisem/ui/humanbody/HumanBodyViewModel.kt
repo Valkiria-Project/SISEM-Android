@@ -4,6 +4,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.skgtecnologia.sisem.ui.humanbody.area.BackArea
+import com.skgtecnologia.sisem.ui.humanbody.area.FrontArea
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -15,7 +17,7 @@ class HumanBodyViewModel @Inject constructor() : ViewModel() {
 
     fun updateFrontList(selectedArea: FrontArea) {
         var selectWound = false
-        val list = buildList {
+        val frontAreas = buildList {
             addAll(uiState.selectedFrontAreas)
 
             if (contains(selectedArea)) {
@@ -25,18 +27,18 @@ class HumanBodyViewModel @Inject constructor() : ViewModel() {
             }
         }
         uiState = uiState.copy(
-            selectedFrontAreas = list,
+            selectedFrontAreas = frontAreas,
             onSelectWound = selectWound
         )
     }
 
     fun saveFrontList(selectedArea: FrontArea) {
-        val list = buildList {
+        val frontAreas = buildList {
             addAll(uiState.selectedFrontAreas)
             add(selectedArea)
         }
 
-        uiState = uiState.copy(selectedFrontAreas = list)
+        uiState = uiState.copy(selectedFrontAreas = frontAreas)
     }
 
     fun handledOnWoundSelected() {
@@ -45,7 +47,7 @@ class HumanBodyViewModel @Inject constructor() : ViewModel() {
 
     fun updateBackList(selectedArea: BackArea) {
         var selectWound = false
-        val list = buildList {
+        val backAreas = buildList {
             addAll(uiState.selectedBackAreas)
 
             if (contains(selectedArea)) {
@@ -55,17 +57,17 @@ class HumanBodyViewModel @Inject constructor() : ViewModel() {
             }
         }
         uiState = uiState.copy(
-            selectedBackAreas = list,
+            selectedBackAreas = backAreas,
             onSelectWound = selectWound
         )
     }
 
     fun saveBackList(selectedArea: BackArea) {
-        val list = buildList {
+        val backAreas = buildList {
             addAll(uiState.selectedBackAreas)
             add(selectedArea)
         }
 
-        uiState = uiState.copy(selectedBackAreas = list)
+        uiState = uiState.copy(selectedBackAreas = backAreas)
     }
 }
