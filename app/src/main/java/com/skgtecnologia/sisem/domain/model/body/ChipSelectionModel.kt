@@ -8,9 +8,9 @@ import com.valkiria.uicomponents.model.ui.chip.ChipSelectionUiModel
 
 data class ChipSelectionModel(
     val identifier: String,
-    val title: TextModel? = null,
+    val title: TextModel?,
     val items: List<ChipSelectionItemUiModel>,
-    val selected: String? = null,
+    val selected: String?,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier
 ) : BodyRowModel {
