@@ -128,7 +128,7 @@ private fun getFindingsDescriptionModel() = TextFieldUiModel(
     charLimit = 600,
     validations = listOf(
         ValidationUiModel(
-            regex = "^(?!.*[^A-Za-z0-9 ].*).+",
+            regex = "^(?!.*[^A-Za-z0-9 A-zÀ-ú].*).+",
             message = "El campo no debe tener caracteres especiales"
         )
     ),

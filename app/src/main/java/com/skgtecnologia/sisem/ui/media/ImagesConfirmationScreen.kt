@@ -147,7 +147,7 @@ fun ImagesConfirmationScreen(
     OnLoadingHandler(uiState.isLoading, modifier)
 }
 
-fun handleAction(
+private fun handleAction(
     uiAction: UiAction,
     from: String,
     contentResolver: ContentResolver,
