@@ -70,7 +70,7 @@ fun WoundsContent(
                     arrangement = Arrangement.Center,
                     modifier = Modifier.padding(top = 16.dp)
                 )
-            ) { text, _ ->
+            ) { _, text, _ ->
                 viewModel.updateBurnList(text)
             }
         }
