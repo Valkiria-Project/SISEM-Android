@@ -31,6 +31,8 @@ import com.skgtecnologia.sisem.domain.model.body.FindingModel
 import com.skgtecnologia.sisem.domain.model.body.FingerprintModel
 import com.skgtecnologia.sisem.domain.model.body.FooterBodyModel
 import com.skgtecnologia.sisem.domain.model.body.HeaderModel
+import com.skgtecnologia.sisem.domain.model.body.ImageButtonModel
+import com.skgtecnologia.sisem.domain.model.body.ImageButtonSectionModel
 import com.skgtecnologia.sisem.domain.model.body.InfoCardModel
 import com.skgtecnologia.sisem.domain.model.body.InventoryCheckModel
 import com.skgtecnologia.sisem.domain.model.body.LabelModel
@@ -149,7 +151,15 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is DropDownModel -> item(key = model.identifier) {
-                TODO("Create DropDownComponent")
+                // TODO: "Create DropDownComponent"
+            }
+
+            is ImageButtonModel -> item(key = model.identifier) {
+                // TODO: Create ImageButtonComponent
+            }
+
+            is ImageButtonSectionModel -> item(key = model.identifier) {
+                // TODO: Create ImageButtonSectionComponent
             }
 
             is InfoCardModel -> item(key = model.identifier) {
@@ -237,7 +247,7 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is SliderModel -> item(key = model.identifier) {
-                TODO("Create SliderComponent")
+                // TODO: "Create SliderComponent"
             }
 
             is PasswordTextFieldModel -> item(key = model.identifier) {

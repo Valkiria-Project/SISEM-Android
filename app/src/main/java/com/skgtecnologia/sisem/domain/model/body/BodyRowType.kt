@@ -5,6 +5,8 @@ enum class BodyRowType {
     CHIP,
     CHIP_OPTIONS,
     CHIP_SELECTION,
+    IMAGE_BUTTON,
+    IMAGE_BUTTON_SECTION,
     INFO_CARD,
     DETAILED_INFO_LIST,
     DROP_DOWN,

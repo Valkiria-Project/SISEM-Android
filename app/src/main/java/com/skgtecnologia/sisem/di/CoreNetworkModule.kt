@@ -15,6 +15,8 @@ import com.skgtecnologia.sisem.data.remote.model.body.FiltersResponse
 import com.skgtecnologia.sisem.data.remote.model.body.FindingResponse
 import com.skgtecnologia.sisem.data.remote.model.body.FingerprintResponse
 import com.skgtecnologia.sisem.data.remote.model.body.HeaderResponse
+import com.skgtecnologia.sisem.data.remote.model.body.ImageButtonResponse
+import com.skgtecnologia.sisem.data.remote.model.body.ImageButtonSectionResponse
 import com.skgtecnologia.sisem.data.remote.model.body.InfoCardResponse
 import com.skgtecnologia.sisem.data.remote.model.body.InventoryCheckResponse
 import com.skgtecnologia.sisem.data.remote.model.body.LabelResponse
@@ -117,6 +119,12 @@ object CoreNetworkModule {
         ).withSubtype(
             HeaderResponse::class.java,
             BodyRowType.HEADER.name
+        ).withSubtype(
+            ImageButtonResponse::class.java,
+            BodyRowType.IMAGE_BUTTON.name
+        ).withSubtype(
+            ImageButtonSectionResponse::class.java,
+            BodyRowType.IMAGE_BUTTON_SECTION.name
         ).withSubtype(
             InfoCardResponse::class.java,
             BodyRowType.INFO_CARD.name
