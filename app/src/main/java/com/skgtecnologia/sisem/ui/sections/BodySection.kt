@@ -62,6 +62,7 @@ import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.card.InfoCardComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
 import com.valkiria.uicomponents.components.chip.ChipOptionsComponent
+import com.valkiria.uicomponents.components.chip.ChipSelectionComponent
 import com.valkiria.uicomponents.components.chip.FiltersComponent
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListComponent
 import com.valkiria.uicomponents.components.finding.FindingComponent
@@ -136,7 +137,15 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is ChipSelectionModel -> item(key = model.identifier) {
-                TODO("Create ChipSelectionComponent")
+                ChipSelectionComponent(uiModel = model.mapToUiModel()) { id, text, isSelection ->
+                    onAction(
+                        GenericUiAction.ChipSelectionAction(
+                            identifier = id,
+                            text = text,
+                            status = isSelection
+                        )
+                    )
+                }
             }
 
             is DropDownModel -> item(key = model.identifier) {
@@ -295,7 +304,7 @@ private fun HandleChipRows(
         AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DOCTOR.name,
         AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DRIVER.name -> ChipComponent(
             uiModel = model.mapToUiModel(),
-            onClick = { onAction(NewsUiAction.NewsStepOneOnChipClick(it)) }
+            onAction = { onAction(NewsUiAction.NewsStepOneOnChipClick(it)) }
         )
 
         else -> ChipComponent(

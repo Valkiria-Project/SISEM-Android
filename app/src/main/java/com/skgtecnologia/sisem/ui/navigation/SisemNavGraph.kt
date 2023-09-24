@@ -152,7 +152,7 @@ private fun NavGraphBuilder.mainGraph(
             route = MainNavigationRoute.MainScreen.route
         ) {
             MapScreen(
-                onClick = { menuNavigationRoute ->
+                onAction = { menuNavigationRoute ->
                     navController.navigate(menuNavigationRoute.route)
                 },
                 onLogout = {

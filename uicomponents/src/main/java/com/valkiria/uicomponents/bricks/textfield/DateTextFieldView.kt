@@ -83,7 +83,7 @@ fun DateTextFieldView(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(
-                        id = R.drawable.ic_update
+                        id = R.drawable.ic_update_time
                     ),
                     contentDescription = null
                 )

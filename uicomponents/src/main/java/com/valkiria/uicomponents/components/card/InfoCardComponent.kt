@@ -153,7 +153,7 @@ fun InfoCardComponent(
                     )
                 }
 
-                uiModel.chipSection?.let {
+                uiModel.chipSection?.let { it ->
                     Text(
                         text = it.title,
                         style = it.titleTextStyle.toTextStyle(),
@@ -173,8 +173,10 @@ fun InfoCardComponent(
                                 SuggestionChipView(
                                     text = "...",
                                     textStyle = it.listTextStyle,
-                                    onClick = { onFindingsAction(it) }
-                                )
+                                ) { _ ->
+                                    onFindingsAction(it)
+                                }
+
                                 return@forEachIndexed
                             }
                         }

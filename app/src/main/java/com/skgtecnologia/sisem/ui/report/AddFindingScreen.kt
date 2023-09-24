@@ -174,6 +174,7 @@ fun MediaActions(viewModel: ReportViewModel, role: String? = null) {
     ) {
         ImageButtonView(
             uiModel = ImageButtonUiModel(
+                identifier = "CAMERA",
                 iconResId = com.valkiria.uicomponents.R.drawable.ic_camera,
                 label = stringResource(id = R.string.findings_take_picture_label),
                 textStyle = TextStyle.HEADLINE_6,
@@ -187,6 +188,7 @@ fun MediaActions(viewModel: ReportViewModel, role: String? = null) {
 
         ImageButtonView(
             uiModel = ImageButtonUiModel(
+                identifier = "GALLERY",
                 iconResId = com.valkiria.uicomponents.R.drawable.ic_image,
                 label = stringResource(id = R.string.findings_select_pictures),
                 textStyle = TextStyle.HEADLINE_6,

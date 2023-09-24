@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.bottomsheet
+package com.skgtecnologia.sisem.ui.authcards.report
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
