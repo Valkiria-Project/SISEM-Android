@@ -25,7 +25,7 @@ data class ChipSelectionResponse(
 
     override fun mapToDomain(): ChipSelectionModel = ChipSelectionModel(
         identifier = identifier ?: error("ChipSelection identifier cannot be null"),
-        title = title?.mapToDomain() ?: error("ChipSelection title cannot be null"),
+        title = title?.mapToDomain(),
         items = items?.map { it.mapToUi() } ?: error("ChipSelection items cannot be null"),
         selected = selected,
         arrangement = arrangement ?: Arrangement.Center,

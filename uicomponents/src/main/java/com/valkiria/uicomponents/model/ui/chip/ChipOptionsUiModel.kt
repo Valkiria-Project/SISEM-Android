@@ -5,8 +5,8 @@ import com.valkiria.uicomponents.model.props.TextStyle
 
 data class ChipOptionsUiModel(
     val identifier: String,
-    val title: String,
-    val textStyle: TextStyle,
+    val title: String? = null,
+    val textStyle: TextStyle? = null,
     val items: List<ChipOptionUiModel>,
     val modifier: Modifier = Modifier
 )

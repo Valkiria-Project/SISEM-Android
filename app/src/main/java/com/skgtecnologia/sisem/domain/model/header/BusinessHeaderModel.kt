@@ -60,3 +60,21 @@ fun imagesConfirmationHeader(
     leftIcon = leftIcon,
     modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 20.dp)
 )
+
+fun woundsHeader(
+    titleText: String,
+    subtitleText: String,
+    leftIcon: String
+): HeaderModel = HeaderModel(
+    identifier = "WOUNDS_HEADER",
+    title = TextModel(
+        text = titleText,
+        textStyle = TextStyle.HEADLINE_1
+    ),
+    subtitle = TextModel(
+        text = subtitleText,
+        textStyle = TextStyle.HEADLINE_5
+    ),
+    leftIcon = leftIcon,
+    modifier = Modifier.padding(start = 20.dp, end = 20.dp)
+)

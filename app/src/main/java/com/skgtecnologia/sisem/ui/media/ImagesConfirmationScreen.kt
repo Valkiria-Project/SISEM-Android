@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.header.imagesConfirmationHeader
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
-import com.skgtecnologia.sisem.ui.bottomsheet.PagerIndicator
+import com.skgtecnologia.sisem.ui.authcards.report.PagerIndicator
 import com.skgtecnologia.sisem.ui.commons.extensions.decodeAsBitmap
 import com.skgtecnologia.sisem.ui.commons.extensions.encodeAsBase64
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel

@@ -29,7 +29,7 @@ import com.valkiria.uicomponents.utlis.getResourceIdByName
 @Composable
 fun ChipComponent(
     uiModel: ChipUiModel,
-    onClick: (value: String) -> Unit = { }
+    onAction: (value: String) -> Unit = { }
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon.orEmpty(), DRAWABLE
@@ -40,7 +40,7 @@ fun ChipComponent(
         horizontalArrangement = uiModel.arrangement
     ) {
         AssistChip(
-            onClick = { onClick(uiModel.text) },
+            onClick = { onAction(uiModel.text) },
             label = {
                 Text(
                     text = uiModel.text,
