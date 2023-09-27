@@ -31,6 +31,7 @@ import com.skgtecnologia.sisem.domain.model.body.FindingModel
 import com.skgtecnologia.sisem.domain.model.body.FingerprintModel
 import com.skgtecnologia.sisem.domain.model.body.FooterBodyModel
 import com.skgtecnologia.sisem.domain.model.body.HeaderModel
+import com.skgtecnologia.sisem.domain.model.body.HumanBodyModel
 import com.skgtecnologia.sisem.domain.model.body.ImageButtonModel
 import com.skgtecnologia.sisem.domain.model.body.ImageButtonSectionModel
 import com.skgtecnologia.sisem.domain.model.body.InfoCardModel
@@ -40,12 +41,14 @@ import com.skgtecnologia.sisem.domain.model.body.PasswordTextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.RichLabelModel
 import com.skgtecnologia.sisem.domain.model.body.SegmentedSwitchModel
 import com.skgtecnologia.sisem.domain.model.body.SliderModel
+import com.skgtecnologia.sisem.domain.model.body.StepperModel
 import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.mapToSection
 import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
+import com.skgtecnologia.sisem.ui.humanbody.HumanBodyComponent
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.ConfirmPasswordInput
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.NewPasswordInput
@@ -68,6 +71,8 @@ import com.valkiria.uicomponents.components.chip.ChipSelectionComponent
 import com.valkiria.uicomponents.components.chip.FiltersComponent
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListComponent
 import com.valkiria.uicomponents.components.finding.FindingComponent
+import com.valkiria.uicomponents.components.imagebutton.ImageButtonComponent
+import com.valkiria.uicomponents.components.imagebutton.ImageButtonSectionComponent
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckComponent
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
@@ -154,14 +159,6 @@ private fun LazyListScope.handleBodyRows(
                 // TODO: "Create DropDownComponent"
             }
 
-            is ImageButtonModel -> item(key = model.identifier) {
-                // TODO: Create ImageButtonComponent
-            }
-
-            is ImageButtonSectionModel -> item(key = model.identifier) {
-                // TODO: Create ImageButtonSectionComponent
-            }
-
             is InfoCardModel -> item(key = model.identifier) {
                 HandleInfoCardRows(model, onAction)
             }
@@ -216,6 +213,26 @@ private fun LazyListScope.handleBodyRows(
                 )
             }
 
+            is HumanBodyModel -> item(key = model.identifier) {
+                HumanBodyComponent { _,_ ->
+                    // TODO:, implement action
+                }
+            }
+
+            is ImageButtonModel -> item(key = model.identifier) {
+                ImageButtonComponent(uiModel = model.mapToUiModel()) {
+                    // TODO: implement action
+                }
+            }
+
+            is ImageButtonSectionModel -> item(key = model.identifier) {
+                ImageButtonSectionComponent(
+                    uiModel = model.mapToUiModel()
+                ) { _ ->
+                    // TODO: implement action
+                }
+            }
+
             is InventoryCheckModel -> item(key = model.identifier) {
                 InventoryCheckComponent(
                     uiModel = model.mapToUiModel(),
@@ -248,6 +265,10 @@ private fun LazyListScope.handleBodyRows(
 
             is SliderModel -> item(key = model.identifier) {
                 // TODO: "Create SliderComponent"
+            }
+
+            is StepperModel -> item(key = model.identifier) {
+                // TODO: "Create StepperComponent"
             }
 
             is PasswordTextFieldModel -> item(key = model.identifier) {

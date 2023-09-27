@@ -15,6 +15,7 @@ import com.skgtecnologia.sisem.data.remote.model.body.FiltersResponse
 import com.skgtecnologia.sisem.data.remote.model.body.FindingResponse
 import com.skgtecnologia.sisem.data.remote.model.body.FingerprintResponse
 import com.skgtecnologia.sisem.data.remote.model.body.HeaderResponse
+import com.skgtecnologia.sisem.data.remote.model.body.HumanBodyResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ImageButtonResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ImageButtonSectionResponse
 import com.skgtecnologia.sisem.data.remote.model.body.InfoCardResponse
@@ -24,6 +25,7 @@ import com.skgtecnologia.sisem.data.remote.model.body.PasswordTextFieldResponse
 import com.skgtecnologia.sisem.data.remote.model.body.RichLabelResponse
 import com.skgtecnologia.sisem.data.remote.model.body.SegmentedSwitchResponse
 import com.skgtecnologia.sisem.data.remote.model.body.SliderResponse
+import com.skgtecnologia.sisem.data.remote.model.body.StepperResponse
 import com.skgtecnologia.sisem.data.remote.model.body.TermsAndConditionsResponse
 import com.skgtecnologia.sisem.data.remote.model.body.TextFieldResponse
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
@@ -120,6 +122,9 @@ object CoreNetworkModule {
             HeaderResponse::class.java,
             BodyRowType.HEADER.name
         ).withSubtype(
+            HumanBodyResponse::class.java,
+            BodyRowType.HUMAN_BODY.name
+        ).withSubtype(
             ImageButtonResponse::class.java,
             BodyRowType.IMAGE_BUTTON.name
         ).withSubtype(
@@ -140,6 +145,9 @@ object CoreNetworkModule {
         ).withSubtype(
             SliderResponse::class.java,
             BodyRowType.SLIDER.name
+        ).withSubtype(
+            StepperResponse::class.java,
+            BodyRowType.STEPPER.name
         ).withSubtype(
             PasswordTextFieldResponse::class.java,
             BodyRowType.PASSWORD_TEXT_FIELD.name

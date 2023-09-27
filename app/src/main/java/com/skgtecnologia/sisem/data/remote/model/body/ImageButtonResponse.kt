@@ -2,6 +2,8 @@ package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
+import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
+import com.skgtecnologia.sisem.data.remote.model.props.mapToDomain
 import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.ImageButtonModel
 import com.squareup.moshi.Json
@@ -10,6 +12,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class ImageButtonResponse(
     @Json(name = "identifier") val identifier: String?,
+    @Json(name = "title") val title: TextResponse?,
     @Json(name = "image") val image: String?,
     @Json(name = "selected") val selected: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
@@ -20,8 +23,9 @@ data class ImageButtonResponse(
 
     override fun mapToDomain(): ImageButtonModel = ImageButtonModel(
         identifier = identifier ?: error("ImageButton identifier cannot be null"),
+        title = title?.mapToDomain(),
         image = image ?: error("ImageButton image cannot be null"),
-        selected = selected ?: error("ImageButton selected cannot be null"),
+        selected = selected == true, // ?: error("ImageButton selected cannot be null"),
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )
