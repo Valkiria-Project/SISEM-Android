@@ -11,7 +11,7 @@ import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.banner.OnErrorHandler
+import com.valkiria.uicomponents.components.banner.OnBannerHandler
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -51,7 +51,7 @@ fun PreOperationalScreen(
         handleBodyAction(uiAction, viewModel)
     }
 
-    OnErrorHandler(uiModel = uiState.errorModel) {
+    OnBannerHandler(uiModel = uiState.errorModel) {
         viewModel.handleShownError()
     }
 

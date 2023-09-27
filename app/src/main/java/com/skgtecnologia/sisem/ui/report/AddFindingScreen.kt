@@ -29,7 +29,7 @@ import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.button.ImageButtonView
-import com.valkiria.uicomponents.components.banner.OnErrorHandler
+import com.valkiria.uicomponents.components.banner.OnBannerHandler
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
@@ -103,11 +103,11 @@ fun AddFindingScreen(
         }
     }
 
-    OnErrorHandler(uiState.cancelInfoModel) {
+    OnBannerHandler(uiState.cancelInfoModel) {
         handleFooterAction(it, viewModel)
     }
 
-    OnErrorHandler(uiState.errorModel) {
+    OnBannerHandler(uiState.errorModel) {
         viewModel.handleShownError()
     }
 
