@@ -24,18 +24,12 @@ fun DigitsTextFieldView(
     identifier: String,
     style: TextStyle,
     validateFields: Boolean = false,
+    validations: List<ValidationUiModel>,
     onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
 ) {
     var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(""))
     }
-
-    val validations = listOf(
-        ValidationUiModel(
-            regex = "^(?!\\s*$).+",
-            message = "El campo no debe estar vacío"
-        )
-    )
 
     OutlinedTextField(
         value = text,
