@@ -44,8 +44,6 @@ fun PreOperationalScreen(
         }
     }
 
-
-
     BodySection(
         body = if (revertFinding == true) {
             handleFindingRevert(viewModel)
@@ -84,7 +82,6 @@ private fun handleFindingRevert(
         }
     }
 }
-
 
 private fun handleBodyAction(
     uiAction: UiAction,
