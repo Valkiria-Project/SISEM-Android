@@ -7,6 +7,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
+import com.skgtecnologia.sisem.domain.model.body.FindingModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.GenericUiAction
@@ -20,6 +22,7 @@ import timber.log.Timber
 @Composable
 fun PreOperationalScreen(
     modifier: Modifier = Modifier,
+    revertFinding: Boolean?,
     onNavigation: (preOpNavigationModel: NavigationModel?) -> Unit
 ) {
     val viewModel = hiltViewModel<PreOperationalViewModel>()
@@ -41,8 +44,14 @@ fun PreOperationalScreen(
         }
     }
 
+
+
     BodySection(
-        body = uiState.screenModel?.body,
+        body = if (revertFinding == true) {
+            handleFindingRevert(viewModel)
+        } else {
+            uiState.screenModel?.body
+        },
         modifier = modifier
             .fillMaxSize()
             .padding(top = 20.dp),
@@ -58,6 +67,25 @@ fun PreOperationalScreen(
     OnLoadingHandler(uiState.isLoading, modifier)
 }
 
+private fun handleFindingRevert(
+    viewModel: PreOperationalViewModel
+): List<BodyRowModel>? {
+    return viewModel.uiState.screenModel?.body?.map { model ->
+        if (model is FindingModel &&
+            model.segmentedSwitchModel.identifier == viewModel.temporalFinding
+        ) {
+            val revertedFindingModel = model.copy(
+                segmentedSwitchModel = model.segmentedSwitchModel.copy(selected = true)
+            )
+            viewModel.revertTemporalFinding()
+            revertedFindingModel
+        } else {
+            model
+        }
+    }
+}
+
+
 private fun handleBodyAction(
     uiAction: UiAction,
     viewModel: PreOperationalViewModel
@@ -72,6 +100,7 @@ private fun handleBodyAction(
             viewModel.findings[uiAction.identifier] = uiAction.status
 
             if (uiAction.status.not()) {
+                viewModel.temporalFinding = uiAction.identifier
                 viewModel.showFindingForm()
             }
         }

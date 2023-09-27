@@ -24,6 +24,7 @@ fun SegmentedSwitchModel.mapToUiModel() = SegmentedSwitchUiModel(
     text = text,
     textStyle = textStyle,
     options = options,
+    selected = selected,
     arrangement = arrangement,
     modifier = modifier
 )

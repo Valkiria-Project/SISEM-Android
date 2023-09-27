@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.navigation.NavHostController
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.model.DeviceAuthNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
@@ -95,7 +96,14 @@ private fun reportToNextStep(
     model: ReportNavigationModel
 ) {
     when {
-        model.goBack || model.photoTaken -> navController.popBackStack()
+        model.goBack -> {
+            navController.popBackStack()
+            navController.currentBackStackEntry
+                ?.savedStateHandle
+                ?.set(REVERT_FINDING, true)
+        }
+
+        model.photoTaken -> navController.popBackStack()
         model.showCamera -> navController.navigate(ReportNavigationRoute.CameraScreen.route)
         model.saveFinding && model.imagesSize > 0 -> navController.navigate(
             "${ReportNavigationRoute.ImagesConfirmationScreen.route}/finding"

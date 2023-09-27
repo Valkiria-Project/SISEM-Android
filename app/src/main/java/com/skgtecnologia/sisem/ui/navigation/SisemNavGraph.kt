@@ -25,6 +25,7 @@ import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.map.MapScreen
 import com.skgtecnologia.sisem.ui.media.CameraScreen
 import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
 import com.skgtecnologia.sisem.ui.report.AddFindingScreen
@@ -117,9 +118,12 @@ private fun NavGraphBuilder.authGraph(
 
         composable(
             route = AuthNavigationRoute.PreOperationalScreen.route
-        ) {
+        ) { navBackStackEntry ->
+            val revertFinding = navBackStackEntry.savedStateHandle.get<Boolean>(REVERT_FINDING)
+
             PreOperationalScreen(
-                modifier = modifier
+                modifier = modifier,
+                revertFinding = revertFinding
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }

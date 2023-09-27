@@ -41,6 +41,7 @@ class PreOperationalViewModel @Inject constructor(
     var uiState by mutableStateOf(PreOperationalUiState())
         private set
 
+    var temporalFinding by mutableStateOf("")
     var findings = mutableStateMapOf<String, Boolean>()
     var inventoryValues = mutableStateMapOf<String, Int>()
     var inventoryValidated = mutableStateMapOf<String, Boolean>()
@@ -115,6 +116,11 @@ class PreOperationalViewModel @Inject constructor(
                 role = "Conductor" // FIXME: Think better about this
             )
         )
+    }
+
+    fun revertTemporalFinding() {
+        findings[temporalFinding] = true
+        temporalFinding = ""
     }
 
     fun handleShownFindingForm() {
