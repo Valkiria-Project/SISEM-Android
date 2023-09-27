@@ -29,9 +29,9 @@ fun cancelFindingBanner(): BannerModel = BannerModel(
             size = ButtonSize.DEFAULT,
             arrangement = Arrangement.Center,
             modifier = Modifier.padding(
-                start = 20.dp,
+                start = 0.dp,
                 top = 20.dp,
-                end = 20.dp,
+                end = 0.dp,
                 bottom = 0.dp
             )
         ),
@@ -44,9 +44,9 @@ fun cancelFindingBanner(): BannerModel = BannerModel(
             size = ButtonSize.DEFAULT,
             arrangement = Arrangement.Center,
             modifier = Modifier.padding(
-                start = 20.dp,
+                start = 0.dp,
                 top = 20.dp,
-                end = 20.dp,
+                end = 0.dp,
                 bottom = 0.dp
             )
         )
@@ -67,9 +67,9 @@ fun cancelReportBanner(): BannerModel = BannerModel(
             size = ButtonSize.DEFAULT,
             arrangement = Arrangement.Center,
             modifier = Modifier.padding(
-                start = 20.dp,
+                start = 0.dp,
                 top = 20.dp,
-                end = 20.dp,
+                end = 0.dp,
                 bottom = 0.dp
             )
         ),
@@ -82,9 +82,9 @@ fun cancelReportBanner(): BannerModel = BannerModel(
             size = ButtonSize.DEFAULT,
             arrangement = Arrangement.Center,
             modifier = Modifier.padding(
-                start = 20.dp,
+                start = 0.dp,
                 top = 20.dp,
-                end = 20.dp,
+                end = 0.dp,
                 bottom = 0.dp
             )
         )
@@ -129,9 +129,9 @@ fun confirmFindingBanner(): BannerModel = BannerModel(
             size = ButtonSize.DEFAULT,
             arrangement = Arrangement.Center,
             modifier = Modifier.padding(
-                start = 20.dp,
+                start = 0.dp,
                 top = 20.dp,
-                end = 20.dp,
+                end = 0.dp,
                 bottom = 0.dp
             )
         ),
@@ -144,9 +144,9 @@ fun confirmFindingBanner(): BannerModel = BannerModel(
             size = ButtonSize.DEFAULT,
             arrangement = Arrangement.Center,
             modifier = Modifier.padding(
-                start = 20.dp,
+                start = 0.dp,
                 top = 20.dp,
-                end = 20.dp,
+                end = 0.dp,
                 bottom = 0.dp
             )
         )
@@ -167,9 +167,9 @@ fun confirmReportBanner(): BannerModel = BannerModel(
             size = ButtonSize.DEFAULT,
             arrangement = Arrangement.Center,
             modifier = Modifier.padding(
-                start = 20.dp,
+                start = 0.dp,
                 top = 20.dp,
-                end = 20.dp,
+                end = 0.dp,
                 bottom = 0.dp
             )
         ),
@@ -182,9 +182,9 @@ fun confirmReportBanner(): BannerModel = BannerModel(
             size = ButtonSize.DEFAULT,
             arrangement = Arrangement.Center,
             modifier = Modifier.padding(
-                start = 20.dp,
+                start = 0.dp,
                 top = 20.dp,
-                end = 20.dp,
+                end = 0.dp,
                 bottom = 0.dp
             )
         )
@@ -205,9 +205,9 @@ fun disassociateDeviceBanner(): BannerModel = BannerModel(
             size = ButtonSize.DEFAULT,
             arrangement = Arrangement.Center,
             modifier = Modifier.padding(
-                start = 20.dp,
+                start = 0.dp,
                 top = 20.dp,
-                end = 20.dp,
+                end = 0.dp,
                 bottom = 0.dp
             )
         ),
@@ -220,9 +220,9 @@ fun disassociateDeviceBanner(): BannerModel = BannerModel(
             size = ButtonSize.DEFAULT,
             arrangement = Arrangement.Center,
             modifier = Modifier.padding(
-                start = 20.dp,
+                start = 0.dp,
                 top = 20.dp,
-                end = 20.dp,
+                end = 0.dp,
                 bottom = 0.dp
             )
         )

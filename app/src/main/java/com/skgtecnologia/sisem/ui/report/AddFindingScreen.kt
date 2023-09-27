@@ -218,8 +218,9 @@ private fun handleFooterAction(
         when (uiAction.identifier) {
             AddFindingIdentifier.ADD_FINDING_CANCEL_BUTTON.name -> viewModel.cancelFinding()
             AddFindingIdentifier.ADD_FINDING_SAVE_BUTTON.name -> viewModel.saveFinding()
-            AddFindingIdentifier.ADD_FINDING_CANCEL_BANNER.name -> viewModel.goBack()
-            AddFindingIdentifier.ADD_FINDING_CONTINUE_BANNER.name -> viewModel.handleNavigation()
+
+            AddFindingIdentifier.ADD_FINDING_CANCEL_BANNER.name -> viewModel.handleNavigation()
+            AddFindingIdentifier.ADD_FINDING_CONTINUE_BANNER.name -> viewModel.goBack()
         }
     }
 }
