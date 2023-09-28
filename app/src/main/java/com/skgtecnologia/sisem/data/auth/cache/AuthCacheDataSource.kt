@@ -23,7 +23,7 @@ class AuthCacheDataSource @Inject constructor(
     @CheckResult
     fun observeAccessToken(): Flow<AccessTokenModel?> = accessTokenDao.observeAccessToken()
         .map {
-            it?.mapToDomain() ?: error("AccessToken does not exist")
+            it?.mapToDomain()
         }
         .catch { throwable ->
             error("error observing the AccessToken ${throwable.localizedMessage}")
