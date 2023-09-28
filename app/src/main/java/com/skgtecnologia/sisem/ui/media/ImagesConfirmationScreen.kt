@@ -166,7 +166,7 @@ private fun handleAction(
                 if (from == "recordNews") {
                     viewModel.sendReport(images)
                 } else {
-                    viewModel.saveFinding(images)
+                    viewModel.saveFindingImages(images)
                 }
 
                 viewModel.handleShownConfirm()

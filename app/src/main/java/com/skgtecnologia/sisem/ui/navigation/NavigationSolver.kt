@@ -8,6 +8,7 @@ import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.PreOpNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
+import timber.log.Timber
 
 fun getAppStartDestination(model: StartupNavigationModel?): String {
     return if (model == null) {
@@ -96,9 +97,11 @@ private fun reportToNextStep(
     model: ReportNavigationModel
 ) {
     when {
-        model.goBack -> {
-            navController.popBackStack()
-            navController.currentBackStackEntry
+        model.goBack -> with(navController) {
+            Timber.d("NavSolver: goBack")
+            popBackStack()
+
+            currentBackStackEntry
                 ?.savedStateHandle
                 ?.set(REVERT_FINDING, true)
         }
@@ -109,16 +112,16 @@ private fun reportToNextStep(
             "${ReportNavigationRoute.ImagesConfirmationScreen.route}/finding"
         )
 
-        model.saveReport && model.imagesSize > 0 -> navController.navigate(
-            "${ReportNavigationRoute.ImagesConfirmationScreen.route}/recordNews"
-        )
-
-        model.closeFinding -> navController.popBackStack(
+        model.closeFinding || model.saveFinding -> navController.popBackStack(
             route = AuthNavigationRoute.PreOperationalScreen.route,
             inclusive = false
         )
 
-        model.closeReport -> navController.navigate(NavigationGraph.Main.route) {
+        model.saveReport && model.imagesSize > 0 -> navController.navigate(
+            "${ReportNavigationRoute.ImagesConfirmationScreen.route}/recordNews"
+        )
+
+        model.closeReport || model.saveReport -> navController.navigate(NavigationGraph.Main.route) {
             popUpTo(ReportNavigationRoute.AddReportRoleScreen.route) {
                 inclusive = true
             }

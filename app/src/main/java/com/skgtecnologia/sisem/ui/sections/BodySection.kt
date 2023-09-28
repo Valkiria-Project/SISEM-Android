@@ -75,6 +75,7 @@ import com.valkiria.uicomponents.components.textfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Suppress("ComplexMethod", "LongMethod")
 @Composable
@@ -84,6 +85,7 @@ fun BodySection(
     validateFields: Boolean = false,
     onAction: (actionInput: UiAction) -> Unit
 ) {
+    Timber.d("Body: BodySection pass")
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -177,6 +179,7 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is FindingModel -> item(key = model.identifier) {
+                Timber.d("Finding: FindingComponent pass")
                 FindingComponent(
                     uiModel = model.mapToUiModel(),
                 ) { id, status ->

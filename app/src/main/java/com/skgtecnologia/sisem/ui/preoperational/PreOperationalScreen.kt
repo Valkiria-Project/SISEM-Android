@@ -7,8 +7,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
-import com.skgtecnologia.sisem.domain.model.body.FindingModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.GenericUiAction
@@ -45,10 +43,11 @@ fun PreOperationalScreen(
     }
 
     BodySection(
-        body = if (revertFinding == true) {
-            handleFindingRevert(viewModel)
-        } else {
-            uiState.screenModel?.body
+        body = buildList {
+            if (revertFinding == true) {
+                viewModel.revertFinding()
+            }
+            addAll(uiState.screenModel?.body.orEmpty())
         },
         modifier = modifier
             .fillMaxSize()
@@ -63,24 +62,6 @@ fun PreOperationalScreen(
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)
-}
-
-private fun handleFindingRevert(
-    viewModel: PreOperationalViewModel
-): List<BodyRowModel>? {
-    return viewModel.uiState.screenModel?.body?.map { model ->
-        if (model is FindingModel &&
-            model.segmentedSwitchModel.identifier == viewModel.temporalFinding
-        ) {
-            val revertedFindingModel = model.copy(
-                segmentedSwitchModel = model.segmentedSwitchModel.copy(selected = true)
-            )
-            viewModel.revertTemporalFinding()
-            revertedFindingModel
-        } else {
-            model
-        }
-    }
 }
 
 private fun handleBodyAction(

@@ -168,19 +168,20 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    fun saveFinding() {
-        uiState = uiState.copy(
-            validateFields = true
-        )
-
-        if (isValidDescription) {
-            uiState = uiState.copy(
-                navigationModel = ReportNavigationModel(
-                    saveFinding = true,
-                    imagesSize = uiState.selectedImageUris.size
-                )
+    fun saveFindingImages() {
+        val navigationModel = if (isValidDescription) {
+            ReportNavigationModel(
+                saveFinding = true,
+                imagesSize = uiState.selectedImageUris.size
             )
+        } else {
+            null
         }
+
+        uiState = uiState.copy(
+            validateFields = true,
+            navigationModel = navigationModel
+        )
     }
 
     fun saveReport() {
@@ -217,7 +218,7 @@ class ReportViewModel @Inject constructor(
     }
 
     @Suppress("UnusedPrivateMember")
-    fun saveFinding(images: List<String>) {
+    fun saveFindingImages(images: List<String>? = null) {
         // FIXME: Save to the database with a key and retrieve this afterwards
         uiState = uiState.copy(
             confirmInfoModel = null,

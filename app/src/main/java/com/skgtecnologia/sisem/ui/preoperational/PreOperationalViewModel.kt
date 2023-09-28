@@ -110,7 +110,22 @@ class PreOperationalViewModel @Inject constructor(
     }
 
     fun showFindingForm() {
+        val updatedBody = uiState.screenModel?.body?.map {
+            if (it is FindingModel && it.segmentedSwitchModel.identifier == temporalFinding) {
+                val temporalFindingModel = it.copy(
+                    segmentedSwitchModel = it.segmentedSwitchModel.copy(selected = false)
+                )
+
+                temporalFindingModel
+            } else {
+                it
+            }
+        }.orEmpty()
+
         uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            ),
             navigationModel = PreOpNavigationModel(
                 isNewFinding = true,
                 role = "Conductor" // FIXME: Think better about this
@@ -118,9 +133,30 @@ class PreOperationalViewModel @Inject constructor(
         )
     }
 
-    fun revertTemporalFinding() {
-        findings[temporalFinding] = true
-        temporalFinding = ""
+    fun revertFinding() {
+        if (temporalFinding == "14") {
+            Timber.d("revertFinding: id $temporalFinding")
+        }
+        val updatedBody = uiState.screenModel?.body?.map {
+            if (it is FindingModel && it.segmentedSwitchModel.identifier == temporalFinding) {
+                findings[temporalFinding] = true
+                temporalFinding = ""
+                val temporalFindingModel = it.copy(
+                    segmentedSwitchModel = it.segmentedSwitchModel.copy(selected = true)
+                )
+
+                Timber.d("revertFinding: id ${temporalFindingModel.segmentedSwitchModel.selected}")
+                temporalFindingModel
+            } else {
+                it
+            }
+        }.orEmpty()
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
     }
 
     fun handleShownFindingForm() {
