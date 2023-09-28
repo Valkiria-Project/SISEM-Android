@@ -22,7 +22,7 @@ class OperationCacheDataSource @Inject constructor(
     @CheckResult
     fun observeOperationConfig(): Flow<OperationModel?> = operationDao.observeOperation()
         .map {
-            it?.mapToDomain() ?: error("Operation config does not exist")
+            it?.mapToDomain()
         }
         .catch { throwable ->
             error("error observing the Operation config ${throwable.localizedMessage}")
