@@ -11,10 +11,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
@@ -46,6 +48,7 @@ import timber.log.Timber
 import kotlin.random.Random
 
 @Suppress("LongMethod", "MagicNumber")
+@androidx.compose.foundation.ExperimentalFoundationApi
 @Composable
 fun ImagesConfirmationScreen(
     viewModel: ReportViewModel,
@@ -56,7 +59,19 @@ fun ImagesConfirmationScreen(
     val uiState = viewModel.uiState
     val contentResolver = LocalContext.current.contentResolver
 
-    LaunchedEffect(uiState) {
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        viewModel.uiState.selectedImageUris.size
+    }
+
+    LaunchedEffect(uiState, pagerState) {
+        snapshotFlow { pagerState.currentPage }.collect { page ->
+            Timber.d("Page change", "Page changed to $page")
+            viewModel.currentImage = page
+        }
+
         with(uiState) {
             when {
                 navigationModel != null && successInfoModel == null && confirmInfoModel == null -> {
@@ -101,7 +116,7 @@ fun ImagesConfirmationScreen(
                     modifier = Modifier
                 )
             ) {
-                Timber.d("Eliminar clicked")
+                viewModel.removeCurrentImage()
             }
 
             ButtonView(
@@ -129,7 +144,7 @@ fun ImagesConfirmationScreen(
             uri.decodeAsBitmap(LocalContext.current.contentResolver)
         }
 
-        ImagesPager(bitmaps)
+        ImagesPager(pagerState = pagerState, images = bitmaps)
     }
 
     OnBannerHandler(uiState.confirmInfoModel) {
@@ -175,18 +190,10 @@ private fun handleAction(
     }
 }
 
-@androidx.compose.foundation.ExperimentalFoundationApi
 @Composable
-private fun ImagesPager(images: List<Bitmap>) {
+private fun ImagesPager(pagerState: PagerState, images: List<Bitmap>) {
     val pageCount = images.size
     Box {
-        val pagerState = rememberPagerState(
-            initialPage = 0,
-            initialPageOffsetFraction = 0f
-        ) {
-            pageCount
-        }
-
         HorizontalPager(state = pagerState) { index ->
             Image(
                 bitmap = images[index].asImageBitmap(),

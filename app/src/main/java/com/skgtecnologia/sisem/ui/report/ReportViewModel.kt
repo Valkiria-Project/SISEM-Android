@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.ui.report
 
 import android.net.Uri
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -42,16 +43,18 @@ class ReportViewModel @Inject constructor(
     var description by mutableStateOf("")
     var isValidTopic by mutableStateOf(false)
     var isValidDescription by mutableStateOf(false)
+    var currentImage by mutableIntStateOf(0)
 
-    private val imageLimit = when (uiState.operationModel?.operationRole) {
-        OperationRole.AUXILIARY_AND_OR_TAPH ->
-            uiState.operationModel?.numImgPreoperationalAux ?: 0
+    private val imageLimit
+        get() = when (uiState.operationModel?.operationRole) {
+            OperationRole.AUXILIARY_AND_OR_TAPH ->
+                uiState.operationModel?.numImgPreoperationalAux ?: 0
 
-        OperationRole.DRIVER -> uiState.operationModel?.numImgPreoperationalDriver ?: 0
-        OperationRole.LEAD_APH -> 0
-        OperationRole.MEDIC_APH -> uiState.operationModel?.numImgPreoperationalDoctor ?: 0
-        null -> 0
-    }
+            OperationRole.DRIVER -> uiState.operationModel?.numImgPreoperationalDriver ?: 0
+            OperationRole.LEAD_APH -> 0
+            OperationRole.MEDIC_APH -> uiState.operationModel?.numImgPreoperationalDoctor ?: 0
+            null -> 0
+        }
 
     init {
         uiState = uiState.copy(isLoading = true)
@@ -136,7 +139,6 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    @Suppress("MagicNumber")
     fun onPhotoTaken(savedUri: Uri) {
         val updatedSelectedImages = buildList {
             uiState.selectedImageUris.forEach {
@@ -157,6 +159,20 @@ class ReportViewModel @Inject constructor(
             navigationModel = ReportNavigationModel(
                 photoTaken = true
             )
+        )
+    }
+
+    fun removeCurrentImage() {
+        val updateSelectedImages = buildList {
+            uiState.selectedImageUris.mapIndexed { index, uri ->
+                if (index != currentImage) {
+                    add(uri)
+                }
+            }
+        }
+
+        uiState = uiState.copy(
+            selectedImageUris = updateSelectedImages
         )
     }
 
