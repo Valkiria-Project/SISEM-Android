@@ -23,7 +23,7 @@ import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.banner.OnErrorHandler
+import com.valkiria.uicomponents.components.banner.OnBannerHandler
 import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
@@ -120,7 +120,7 @@ fun AuthCardsScreen(
         }
     }
 
-    OnErrorHandler(uiModel = uiState.errorModel) {
+    OnBannerHandler(uiModel = uiState.errorModel) {
         viewModel.handleShownError()
     }
 

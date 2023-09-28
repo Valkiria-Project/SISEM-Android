@@ -3,9 +3,10 @@
 package com.valkiria.uicomponents.model.mocks
 
 import androidx.compose.ui.Modifier
+import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.ui.inventorycheck.InventoryCheckItemUiModel
 import com.valkiria.uicomponents.model.ui.inventorycheck.InventoryCheckUiModel
-import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
 import kotlin.random.Random
 
 fun getPreOperationalInventoryCheckUiModel(): InventoryCheckUiModel {
@@ -33,6 +34,12 @@ fun getPreOperationalInventoryCheckUiModel(): InventoryCheckUiModel {
         receivedText = "Recibido",
         receivedTextStyle = TextStyle.BODY_1,
         items = items,
+        validations = listOf(
+            ValidationUiModel(
+                regex = "^(?!\\s*$).+",
+                message = "El campo no debe estar vacío"
+            )
+        ),
         modifier = Modifier
     )
 }

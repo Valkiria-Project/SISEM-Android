@@ -15,6 +15,7 @@ data class TextFieldUiModel(
     val textStyle: TextStyle,
     val style: TextFieldStyle = TextFieldStyle.OUTLINED,
     val charLimit: Int? = null,
+    val enabled: Boolean = true, // FIXME: Picker else set current date time
     val validations: List<ValidationUiModel>,
     val singleLine: Boolean = true,
     val minLines: Int = 1,
