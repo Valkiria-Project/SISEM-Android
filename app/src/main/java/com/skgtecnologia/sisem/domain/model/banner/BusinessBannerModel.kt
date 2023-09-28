@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package com.skgtecnologia.sisem.domain.model.banner
 
 import androidx.compose.foundation.layout.Arrangement
