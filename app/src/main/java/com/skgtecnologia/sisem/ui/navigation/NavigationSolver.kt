@@ -89,7 +89,11 @@ private fun preOpToNextStep(
     model.isNewFinding ->
         navController.navigate("${ReportNavigationRoute.AddFindingScreen.route}/${model.role}")
 
-    else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route)
+    else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
+        popUpTo(AuthNavigationRoute.PreOperationalScreen.route) {
+            inclusive = true
+        }
+    }
 }
 
 private fun reportToNextStep(

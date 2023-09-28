@@ -26,7 +26,8 @@ fun PreOperationalScreen(
     val viewModel = hiltViewModel<PreOperationalViewModel>()
     val uiState = viewModel.uiState
 
-    LaunchedEffect(uiState) {
+    LaunchedEffect(uiState, revertFinding) {
+        Timber.d("PreOperationalScreen: LaunchedEffect pass")
         launch {
             when {
                 uiState.navigationModel?.isNewFinding == true -> {
@@ -38,17 +39,14 @@ fun PreOperationalScreen(
                     viewModel.onPreOpHandled()
                     onNavigation(uiState.navigationModel)
                 }
+
+                revertFinding == true -> viewModel.revertFinding()
             }
         }
     }
 
     BodySection(
-        body = buildList {
-            if (revertFinding == true) {
-                viewModel.revertFinding()
-            }
-            addAll(uiState.screenModel?.body.orEmpty())
-        },
+        body = uiState.screenModel?.body,
         modifier = modifier
             .fillMaxSize()
             .padding(top = 20.dp),

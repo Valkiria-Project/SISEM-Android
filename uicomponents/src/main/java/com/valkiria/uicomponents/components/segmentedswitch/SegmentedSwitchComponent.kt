@@ -41,7 +41,9 @@ fun SegmentedSwitchComponent(
         Timber.d("Segmented: id ${uiModel.identifier} and selected ${uiModel.selected}")
     }
     val items = uiModel.options.map { it.text }
-    var selectedIndex by remember { mutableIntStateOf(if (uiModel.selected) 0 else 1) }
+    var selectedIndex by remember(uiModel.selected) {
+        mutableIntStateOf(if (uiModel.selected) 0 else 1)
+    }
     if (uiModel.identifier == "14") {
         Timber.d("Segmented: id ${uiModel.identifier} and selectedIndex $selectedIndex")
     }
