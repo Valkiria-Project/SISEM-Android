@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.changepassword.usecases.GetLoginNavigationModel
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
+import com.skgtecnologia.sisem.domain.model.banner.preOperationalConfirmationBanner
 import com.skgtecnologia.sisem.domain.model.banner.preOperationalIncompleteFormBanner
 import com.skgtecnologia.sisem.domain.model.body.ChipOptionsModel
 import com.skgtecnologia.sisem.domain.model.body.FindingModel
@@ -70,7 +71,7 @@ class PreOperationalViewModel @Inject constructor(
 
                     uiState = uiState.copy(
                         isLoading = false,
-                        errorModel = throwable.mapToUi()
+                        infoModel = throwable.mapToUi()
                     )
                 }
         }
@@ -165,7 +166,7 @@ class PreOperationalViewModel @Inject constructor(
         )
     }
 
-    fun savePreOperational() {
+    fun validatePreOperational() {
         uiState = uiState.copy(
             validateFields = true
         )
@@ -173,16 +174,18 @@ class PreOperationalViewModel @Inject constructor(
         val isValidInventory = !inventoryValidated.toMap().containsValue(false)
         val areValidFields = !fieldsValidated.toMap().containsValue(false)
 
-        if (isValidInventory && areValidFields) {
-            sendPreOperational()
+        uiState = if (isValidInventory && areValidFields) {
+            uiState.copy(
+                infoModel = preOperationalConfirmationBanner().mapToUi()
+            )
         } else {
-            uiState = uiState.copy(
-                errorModel = preOperationalIncompleteFormBanner().mapToUi()
+            uiState.copy(
+                infoModel = preOperationalIncompleteFormBanner().mapToUi()
             )
         }
     }
 
-    private fun sendPreOperational() {
+    fun sendPreOperational() {
         uiState = uiState.copy(
             isLoading = true
         )
@@ -201,7 +204,7 @@ class PreOperationalViewModel @Inject constructor(
 
                 uiState = uiState.copy(
                     isLoading = false,
-                    errorModel = throwable.mapToUi()
+                    infoModel = throwable.mapToUi()
                 )
             }
         }
@@ -222,7 +225,7 @@ class PreOperationalViewModel @Inject constructor(
 
                 uiState = uiState.copy(
                     isLoading = false,
-                    errorModel = throwable.mapToUi()
+                    infoModel = throwable.mapToUi()
                 )
             }
     }
@@ -236,7 +239,7 @@ class PreOperationalViewModel @Inject constructor(
 
     fun handleShownError() {
         uiState = uiState.copy(
-            errorModel = null
+            infoModel = null
         )
     }
 }

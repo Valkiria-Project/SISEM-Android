@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
 import com.skgtecnologia.sisem.domain.model.body.ButtonModel
 import com.skgtecnologia.sisem.domain.model.footer.FooterModel
+import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddFindingIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
@@ -167,7 +168,7 @@ fun imagesLimitErrorBanner(imageLimit: Int): BannerModel = BannerModel(
 fun preOperationalConfirmationBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "Guardar cambios",
-    description = "Firmado electrónicamente - Unidad Funcional de APH <unidad funcional>, " +
+    description = "\"Firmado electrónicamente - Unidad Funcional de APH unidad funcional, " +
         "en razón, de la obligación contractual \"7.22 elaborar y verificar el " +
         "diligenciamiento de la bitácora de estado de los elementos equipos biomédicos y de " +
         "radiocomunicaciones y demás que hacen parte de los vehículos de emergencia está\n" +
@@ -175,7 +176,7 @@ fun preOperationalConfirmationBanner(): BannerModel = BannerModel(
         "turno en tiempo establecido",
     footerModel = FooterModel(
         leftButton = ButtonModel(
-            identifier = ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_CANCEL_BANNER.name,
+            identifier = PreOperationalIdentifier.PREOP_CANCEL_BUTTON.name,
             label = "CANCELAR",
             style = ButtonStyle.LOUD,
             textStyle = TextStyle.HEADLINE_5,
@@ -190,7 +191,7 @@ fun preOperationalConfirmationBanner(): BannerModel = BannerModel(
             )
         ),
         rightButton = ButtonModel(
-            identifier = ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name,
+            identifier = PreOperationalIdentifier.PREOP_SAVE_BUTTON.name,
             label = "GUARDAR",
             style = ButtonStyle.LOUD,
             textStyle = TextStyle.HEADLINE_5,

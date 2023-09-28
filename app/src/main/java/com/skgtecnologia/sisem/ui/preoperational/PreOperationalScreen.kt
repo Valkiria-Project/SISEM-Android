@@ -7,8 +7,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
+import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.banner.OnBannerHandler
@@ -55,8 +57,9 @@ fun PreOperationalScreen(
         handleBodyAction(uiAction, viewModel)
     }
 
-    OnBannerHandler(uiModel = uiState.errorModel) {
+    OnBannerHandler(uiModel = uiState.infoModel) { uiAction ->
         viewModel.handleShownError()
+        handleFooterAction(uiAction, viewModel)
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)
@@ -67,7 +70,7 @@ private fun handleBodyAction(
     viewModel: PreOperationalViewModel
 ) {
     when (uiAction) {
-        is GenericUiAction.ButtonAction -> viewModel.savePreOperational()
+        is GenericUiAction.ButtonAction -> viewModel.validatePreOperational()
 
         is GenericUiAction.ChipOptionAction ->
             viewModel.findings[uiAction.identifier] = uiAction.status
@@ -94,5 +97,16 @@ private fun handleBodyAction(
         }
 
         else -> Timber.d("no-op")
+    }
+}
+
+private fun handleFooterAction(
+    uiAction: UiAction,
+    viewModel: PreOperationalViewModel
+) {
+    (uiAction as? FooterUiAction)?.let {
+        if (it.identifier == PreOperationalIdentifier.PREOP_SAVE_BUTTON.name) {
+            viewModel.sendPreOperational()
+        }
     }
 }
