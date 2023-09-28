@@ -31,6 +31,8 @@ data class InventoryCheckResponse(
             ?: error("InventoryCheck registered cannot be null"),
         received = received?.mapToDomain() ?: error("InventoryCheck received cannot be null"),
         items = items?.map { it.mapToUi() } ?: error("InventoryCheck items cannot be null"),
+        validations = validations?.map { it.mapToUi() }
+            ?: error("InventoryCheck validations cannot be null"),
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

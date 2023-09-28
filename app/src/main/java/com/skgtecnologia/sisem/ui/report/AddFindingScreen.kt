@@ -29,7 +29,7 @@ import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.button.ImageButtonView
-import com.valkiria.uicomponents.components.banner.OnErrorHandler
+import com.valkiria.uicomponents.components.banner.OnBannerHandler
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
@@ -46,7 +46,6 @@ const val DESCRIPTION_INPUT_MIN_LINES = 3
 @Composable
 fun AddFindingScreen(
     viewModel: ReportViewModel,
-    role: String,
     modifier: Modifier = Modifier,
     onNavigation: (findingsNavigationModel: NavigationModel?) -> Unit
 ) {
@@ -72,7 +71,7 @@ fun AddFindingScreen(
             )
         ) { uiAction ->
             if (uiAction is HeaderUiAction.GoBack) {
-                viewModel.goBack()
+                viewModel.navigateBack()
             }
         }
 
@@ -88,7 +87,7 @@ fun AddFindingScreen(
             uiModel = getFindingsAddFilesModel()
         )
 
-        MediaActions(viewModel, role)
+        MediaActions(viewModel)
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -103,11 +102,11 @@ fun AddFindingScreen(
         }
     }
 
-    OnErrorHandler(uiState.cancelInfoModel) {
+    OnBannerHandler(uiState.cancelInfoModel) {
         handleFooterAction(it, viewModel)
     }
 
-    OnErrorHandler(uiState.errorModel) {
+    OnBannerHandler(uiState.errorModel) {
         viewModel.handleShownError()
     }
 
@@ -128,7 +127,11 @@ private fun getFindingsDescriptionModel() = TextFieldUiModel(
     charLimit = 600,
     validations = listOf(
         ValidationUiModel(
-            regex = "^(?!.*[^A-Za-z0-9 A-zÀ-ú].*).+",
+            regex = "^(?!\\s*$).+",
+            message = "El campo no debe contener espacios"
+        ),
+        ValidationUiModel(
+            regex = "^(?!.*[^,.A-Za-z0-9 A-zÀ-ú\\r\\n].*).+",
             message = "El campo no debe tener caracteres especiales"
         )
     ),
@@ -156,11 +159,12 @@ private fun getFindingsAddFilesModel() = LabelUiModel(
     )
 )
 
+// FIXME: This is being used across flows
 @Composable
-fun MediaActions(viewModel: ReportViewModel, role: String? = null) {
+fun MediaActions(viewModel: ReportViewModel) {
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
-        onResult = { uris -> viewModel.updateSelectedImages(uris, role) }
+        onResult = { uris -> viewModel.updateSelectedImages(uris) }
     )
 
     Row(
@@ -214,8 +218,9 @@ private fun handleFooterAction(
         when (uiAction.identifier) {
             AddFindingIdentifier.ADD_FINDING_CANCEL_BUTTON.name -> viewModel.cancelFinding()
             AddFindingIdentifier.ADD_FINDING_SAVE_BUTTON.name -> viewModel.saveFinding()
-            AddFindingIdentifier.ADD_FINDING_CANCEL_BANNER.name -> viewModel.goBack()
-            AddFindingIdentifier.ADD_FINDING_CONTINUE_BANNER.name -> viewModel.handleNavigation()
+
+            AddFindingIdentifier.ADD_FINDING_CANCEL_BANNER.name -> viewModel.handleNavigation()
+            AddFindingIdentifier.ADD_FINDING_CONTINUE_BANNER.name -> viewModel.navigateBack()
         }
     }
 }

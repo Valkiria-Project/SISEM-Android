@@ -9,6 +9,7 @@ data class SegmentedSwitchUiModel(
     val text: String,
     val textStyle: TextStyle,
     val options: List<OptionUiModel>,
+    val selected: Boolean = true,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
 )

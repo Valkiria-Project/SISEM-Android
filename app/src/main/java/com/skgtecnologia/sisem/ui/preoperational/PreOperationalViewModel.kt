@@ -10,6 +10,8 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.changepassword.usecases.GetLoginNavigationModel
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
+import com.skgtecnologia.sisem.domain.model.banner.preOperationalConfirmationBanner
+import com.skgtecnologia.sisem.domain.model.banner.preOperationalIncompleteFormBanner
 import com.skgtecnologia.sisem.domain.model.body.ChipOptionsModel
 import com.skgtecnologia.sisem.domain.model.body.FindingModel
 import com.skgtecnologia.sisem.domain.model.body.InventoryCheckModel
@@ -19,7 +21,6 @@ import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
 import com.skgtecnologia.sisem.ui.navigation.model.PreOpNavigationModel
-import com.valkiria.uicomponents.model.ui.banner.BannerUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -41,6 +42,7 @@ class PreOperationalViewModel @Inject constructor(
     var uiState by mutableStateOf(PreOperationalUiState())
         private set
 
+    var temporalFinding by mutableStateOf("")
     var findings = mutableStateMapOf<String, Boolean>()
     var inventoryValues = mutableStateMapOf<String, Int>()
     var inventoryValidated = mutableStateMapOf<String, Boolean>()
@@ -69,7 +71,7 @@ class PreOperationalViewModel @Inject constructor(
 
                     uiState = uiState.copy(
                         isLoading = false,
-                        errorModel = throwable.mapToUi()
+                        infoModel = throwable.mapToUi()
                     )
                 }
         }
@@ -109,10 +111,51 @@ class PreOperationalViewModel @Inject constructor(
     }
 
     fun showFindingForm() {
+        val updatedBody = uiState.screenModel?.body?.map {
+            if (it is FindingModel && it.segmentedSwitchModel.identifier == temporalFinding) {
+                val temporalFindingModel = it.copy(
+                    segmentedSwitchModel = it.segmentedSwitchModel.copy(selected = false)
+                )
+
+                temporalFindingModel
+            } else {
+                it
+            }
+        }.orEmpty()
+
         uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            ),
             navigationModel = PreOpNavigationModel(
                 isNewFinding = true,
                 role = "Conductor" // FIXME: Think better about this
+            )
+        )
+    }
+
+    fun revertFinding() {
+        if (temporalFinding == "14") {
+            Timber.d("revertFinding: id $temporalFinding")
+        }
+        val updatedBody = uiState.screenModel?.body?.map {
+            if (it is FindingModel && it.segmentedSwitchModel.identifier == temporalFinding) {
+                findings[temporalFinding] = true
+                temporalFinding = ""
+                val temporalFindingModel = it.copy(
+                    segmentedSwitchModel = it.segmentedSwitchModel.copy(selected = true)
+                )
+
+                Timber.d("revertFinding: id ${temporalFindingModel.segmentedSwitchModel.selected}")
+                temporalFindingModel
+            } else {
+                it
+            }
+        }.orEmpty()
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
             )
         )
     }
@@ -123,7 +166,7 @@ class PreOperationalViewModel @Inject constructor(
         )
     }
 
-    fun savePreOperational() {
+    fun validatePreOperational() {
         uiState = uiState.copy(
             validateFields = true
         )
@@ -131,22 +174,18 @@ class PreOperationalViewModel @Inject constructor(
         val isValidInventory = !inventoryValidated.toMap().containsValue(false)
         val areValidFields = !fieldsValidated.toMap().containsValue(false)
 
-        if (isValidInventory && areValidFields) {
-            sendPreOperational()
+        uiState = if (isValidInventory && areValidFields) {
+            uiState.copy(
+                infoModel = preOperationalConfirmationBanner().mapToUi()
+            )
         } else {
-            // FIXME: Show Banner with message about fields
-            uiState = uiState.copy(
-                errorModel = BannerUiModel(
-                    icon = "ic_alert",
-                    title = "Incompleto",
-                    description = "Para guardar el preoperacional es necesario que complete" +
-                        " todos los campos."
-                )
+            uiState.copy(
+                infoModel = preOperationalIncompleteFormBanner().mapToUi()
             )
         }
     }
 
-    private fun sendPreOperational() {
+    fun sendPreOperational() {
         uiState = uiState.copy(
             isLoading = true
         )
@@ -165,7 +204,7 @@ class PreOperationalViewModel @Inject constructor(
 
                 uiState = uiState.copy(
                     isLoading = false,
-                    errorModel = throwable.mapToUi()
+                    infoModel = throwable.mapToUi()
                 )
             }
         }
@@ -186,7 +225,7 @@ class PreOperationalViewModel @Inject constructor(
 
                 uiState = uiState.copy(
                     isLoading = false,
-                    errorModel = throwable.mapToUi()
+                    infoModel = throwable.mapToUi()
                 )
             }
     }
@@ -200,7 +239,7 @@ class PreOperationalViewModel @Inject constructor(
 
     fun handleShownError() {
         uiState = uiState.copy(
-            errorModel = null
+            infoModel = null
         )
     }
 }

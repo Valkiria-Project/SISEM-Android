@@ -9,5 +9,5 @@ data class PreOperationalUiState(
     val validateFields: Boolean = false,
     val navigationModel: PreOpNavigationModel? = null,
     val isLoading: Boolean = false,
-    val errorModel: BannerUiModel? = null
+    val infoModel: BannerUiModel? = null
 )

@@ -1,5 +1,7 @@
 package com.skgtecnologia.sisem.domain.authcards.model
 
+import com.skgtecnologia.sisem.di.operation.OperationRole
+
 data class OperationModel(
     val preoperationalTime: Long,
     val clinicHistObservationsTime: Long,
@@ -12,5 +14,6 @@ data class OperationModel(
     val attentionsType: String,
     val status: Boolean,
     val vehicleCode: String?,
-    val vehicleConfig: VehicleConfigModel?
+    val vehicleConfig: VehicleConfigModel?,
+    val operationRole: OperationRole? = null
 )

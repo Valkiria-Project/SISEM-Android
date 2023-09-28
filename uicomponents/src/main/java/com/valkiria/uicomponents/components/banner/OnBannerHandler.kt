@@ -5,7 +5,7 @@ import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.model.ui.banner.BannerUiModel
 
 @Composable
-fun OnErrorHandler(
+fun OnBannerHandler(
     uiModel: BannerUiModel?,
     onAction: (actionInput: UiAction) -> Unit
 ) {

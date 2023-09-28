@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.skgtecnologia.sisem.data.auth.cache.model.AccessTokenEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AccessTokenDao {
@@ -13,7 +14,7 @@ interface AccessTokenDao {
     suspend fun insertAccessToken(accessTokenEntity: AccessTokenEntity)
 
     @Query("SELECT * FROM access_token order by date_time desc LIMIT 1")
-    suspend fun getAccessToken(): AccessTokenEntity?
+    fun observeAccessToken(): Flow<AccessTokenEntity?>
 
     @Query("SELECT * FROM access_token")
     suspend fun getAllAccessTokens(): List<AccessTokenEntity>

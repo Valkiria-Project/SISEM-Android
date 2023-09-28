@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.domain.auth
 
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
+import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
 
@@ -8,7 +9,7 @@ interface AuthRepository {
 
     suspend fun getLastToken(): String?
 
-    suspend fun getLastAccessToken(): AccessTokenModel?
+    suspend fun observeCurrentAccessToken(): Flow<AccessTokenModel?>
 
     suspend fun getAllAccessTokens(): List<AccessTokenModel>
 

@@ -36,8 +36,8 @@ android {
         create("staging") {
             initWith(getByName("debug"))
             applicationIdSuffix = ".debugStaging"
-            buildConfigField("String", "AUTH_BASE_URL", "\"http://34.74.218.181/sisem-api/\"")
-            buildConfigField("String", "BASE_URL", "\"http://34.74.218.181/sisem-api/v1/\"")
+            buildConfigField("String", "AUTH_BASE_URL", "\"https://test.emergencias-sisem.co/qa/sisem-api/\"")
+            buildConfigField("String", "BASE_URL", "\"https://test.emergencias-sisem.co/qa/sisem-api/v1/\"")
         }
         release {
             isMinifyEnabled = false

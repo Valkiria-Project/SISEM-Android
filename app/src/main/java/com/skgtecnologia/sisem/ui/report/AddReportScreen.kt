@@ -22,7 +22,7 @@ import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.banner.OnErrorHandler
+import com.valkiria.uicomponents.components.banner.OnBannerHandler
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
@@ -37,7 +37,6 @@ import kotlin.random.Random
 @Composable
 fun AddReportScreen(
     viewModel: ReportViewModel,
-    role: String,
     modifier: Modifier = Modifier,
     onNavigation: (addReportNavigationModel: NavigationModel?) -> Unit
 ) {
@@ -60,7 +59,7 @@ fun AddReportScreen(
         addReportUiState.screenModel?.header?.let {
             HeaderSection(headerModel = it) { uiAction ->
                 if (uiAction is HeaderUiAction.GoBack) {
-                    viewModel.goBack()
+                    viewModel.navigateBack()
                 }
             }
         }
@@ -87,7 +86,7 @@ fun AddReportScreen(
 
         LabelComponent(uiModel = getFindingsAddFilesModel())
 
-        MediaActions(viewModel, role)
+        MediaActions(viewModel)
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -98,15 +97,15 @@ fun AddReportScreen(
         }
     }
 
-    OnErrorHandler(uiState.cancelInfoModel) {
+    OnBannerHandler(uiState.cancelInfoModel) {
         handleFooterAction(it, viewModel)
     }
 
-    OnErrorHandler(addReportUiState.errorModel) {
+    OnBannerHandler(addReportUiState.errorModel) {
         addReportViewModel.handleShownError()
     }
 
-    OnErrorHandler(uiState.errorModel) {
+    OnBannerHandler(uiState.errorModel) {
         viewModel.handleShownError()
     }
 
@@ -124,8 +123,9 @@ private fun handleFooterAction(
         when (uiAction.identifier) {
             AddReportIdentifier.ADD_REPORT_ENTRY_CANCEL_BUTTON.name -> viewModel.cancelReport()
             AddReportIdentifier.SEND_REPORT_ENTRY_SEND_BUTTON.name -> viewModel.saveReport()
-            AddReportIdentifier.ADD_REPORT_CANCEL_BANNER.name -> viewModel.goBack()
-            AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name -> viewModel.handleNavigation()
+
+            AddReportIdentifier.ADD_REPORT_CANCEL_BANNER.name -> viewModel.handleNavigation()
+            AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name -> viewModel.navigateBack()
         }
     }
 }

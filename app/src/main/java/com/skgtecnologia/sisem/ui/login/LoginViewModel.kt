@@ -10,9 +10,9 @@ import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.usecases.Login
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
+import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
 import com.skgtecnologia.sisem.domain.model.body.ChipModel
-import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -57,11 +57,12 @@ class LoginViewModel @Inject constructor(
                 }
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
-
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        errorModel = throwable.mapToUi()
-                    )
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            errorModel = throwable.mapToUi()
+                        )
+                    }
                 }
         }
     }
@@ -110,29 +111,32 @@ class LoginViewModel @Inject constructor(
                             }
                         )
                     } else {
-                        uiState = uiState.copy(
-                            warning = accessTokenModel.warning.mapToUi(),
-                            navigationModel = with(accessTokenModel) {
-                                LoginNavigationModel(
-                                    isWarning = true,
-                                    isAdmin = isAdmin,
-                                    isTurnComplete = turn?.isComplete == true,
-                                    requiresPreOperational = preoperational?.status == true,
-                                    preOperationRole = OperationRole.getRoleByName(role),
-                                    requiresDeviceAuth = code.isEmpty()
-                                )
-                            },
-                            isLoading = false
-                        )
+                        withContext(Dispatchers.Main) {
+                            uiState = uiState.copy(
+                                warning = accessTokenModel.warning.mapToUi(),
+                                navigationModel = with(accessTokenModel) {
+                                    LoginNavigationModel(
+                                        isWarning = true,
+                                        isAdmin = isAdmin,
+                                        isTurnComplete = turn?.isComplete == true,
+                                        requiresPreOperational = preoperational?.status == true,
+                                        preOperationRole = OperationRole.getRoleByName(role),
+                                        requiresDeviceAuth = code.isEmpty()
+                                    )
+                                },
+                                isLoading = false
+                            )
+                        }
                     }
                 }
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
-
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        errorModel = throwable.mapToUi()
-                    )
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            errorModel = throwable.mapToUi()
+                        )
+                    }
                 }
         }
     }

@@ -47,6 +47,7 @@ import java.util.concurrent.Executors
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
+@com.google.accompanist.permissions.ExperimentalPermissionsApi
 @Composable
 fun CameraScreen(
     viewModel: ReportViewModel,

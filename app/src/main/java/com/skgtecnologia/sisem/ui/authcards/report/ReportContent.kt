@@ -29,6 +29,7 @@ import com.skgtecnologia.sisem.ui.commons.extensions.decodeAsBase64Bitmap
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.model.props.toTextStyle
 
+@androidx.compose.foundation.ExperimentalFoundationApi
 @Composable
 fun ReportContent(
     model: ReportDetailModel

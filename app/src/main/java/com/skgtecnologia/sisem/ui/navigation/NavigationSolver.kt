@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.navigation.NavHostController
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.model.DeviceAuthNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
@@ -85,9 +86,13 @@ private fun preOpToNextStep(
     }
 
     model.isNewFinding ->
-        navController.navigate("${ReportNavigationRoute.AddFindingScreen.route}/${model.role}")
+        navController.navigate(ReportNavigationRoute.AddFindingScreen.route)
 
-    else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route)
+    else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
+        popUpTo(AuthNavigationRoute.PreOperationalScreen.route) {
+            inclusive = true
+        }
+    }
 }
 
 private fun reportToNextStep(
@@ -95,14 +100,18 @@ private fun reportToNextStep(
     model: ReportNavigationModel
 ) {
     when {
-        model.goBack || model.photoTaken -> navController.popBackStack()
-        model.showCamera -> navController.navigate(ReportNavigationRoute.CameraScreen.route)
-        model.saveFinding && model.imagesSize > 0 -> navController.navigate(
-            "${ReportNavigationRoute.ImagesConfirmationScreen.route}/finding"
-        )
+        model.goBack -> with(navController) {
+            popBackStack()
 
-        model.saveReport && model.imagesSize > 0 -> navController.navigate(
-            "${ReportNavigationRoute.ImagesConfirmationScreen.route}/recordNews"
+            currentBackStackEntry
+                ?.savedStateHandle
+                ?.set(REVERT_FINDING, true)
+        }
+
+        model.photoTaken -> navController.popBackStack()
+        model.showCamera -> navController.navigate(ReportNavigationRoute.CameraScreen.route)
+        model.closeFinding && model.imagesSize > 0 -> navController.navigate(
+            "${ReportNavigationRoute.ImagesConfirmationScreen.route}/finding"
         )
 
         model.closeFinding -> navController.popBackStack(
@@ -110,11 +119,16 @@ private fun reportToNextStep(
             inclusive = false
         )
 
-        model.closeReport -> navController.navigate(NavigationGraph.Main.route) {
-            popUpTo(ReportNavigationRoute.AddReportRoleScreen.route) {
-                inclusive = true
+        model.closeReport && model.imagesSize > 0 -> navController.navigate(
+            "${ReportNavigationRoute.ImagesConfirmationScreen.route}/recordNews"
+        )
+
+        model.closeReport ->
+            navController.navigate(NavigationGraph.Main.route) {
+                popUpTo(ReportNavigationRoute.AddReportRoleScreen.route) {
+                    inclusive = true
+                }
             }
-        }
     }
 }
 
