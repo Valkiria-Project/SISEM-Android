@@ -6,11 +6,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.skgtecnologia.sisem.domain.model.banner.cancelFindingBanner
-import com.skgtecnologia.sisem.domain.model.banner.cancelReportBanner
-import com.skgtecnologia.sisem.domain.model.banner.confirmFindingBanner
-import com.skgtecnologia.sisem.domain.model.banner.confirmReportBanner
+import com.skgtecnologia.sisem.domain.model.banner.findingCancellationBanner
+import com.skgtecnologia.sisem.domain.model.banner.reportCancellationBanner
+import com.skgtecnologia.sisem.domain.model.banner.reportConfirmationBanner
+import com.skgtecnologia.sisem.domain.model.banner.findingSavedBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
+import com.skgtecnologia.sisem.domain.model.banner.reportSentBanner
 import com.skgtecnologia.sisem.domain.operation.usecases.RetrieveOperationConfig
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.domain.report.usecases.SendReport
@@ -77,7 +78,7 @@ class ReportViewModel @Inject constructor(
             navigationModel = ReportNavigationModel(
                 cancelFinding = true
             ),
-            cancelInfoModel = cancelFindingBanner().mapToUi()
+            cancelInfoModel = findingCancellationBanner().mapToUi()
         )
     }
 
@@ -86,7 +87,7 @@ class ReportViewModel @Inject constructor(
             navigationModel = ReportNavigationModel(
                 cancelReport = true
             ),
-            cancelInfoModel = cancelReportBanner()
+            cancelInfoModel = reportCancellationBanner()
                 .mapToUi()
         )
     }
@@ -168,10 +169,10 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    fun saveFindingImages() {
+    fun saveFinding() {
         val navigationModel = if (isValidDescription) {
             ReportNavigationModel(
-                saveFinding = true,
+                closeFinding = true,
                 imagesSize = uiState.selectedImageUris.size
             )
         } else {
@@ -185,18 +186,18 @@ class ReportViewModel @Inject constructor(
     }
 
     fun saveReport() {
-        uiState = uiState.copy(
-            validateFields = true
-        )
-
-        if (isValidTopic && isValidDescription) {
-            uiState = uiState.copy(
-                navigationModel = ReportNavigationModel(
-                    saveReport = true,
-                    imagesSize = uiState.selectedImageUris.size
-                )
+        val navigationModel = if (isValidTopic && isValidDescription) {
+            ReportNavigationModel(
+                closeReport = true,
+                imagesSize = uiState.selectedImageUris.size
             )
+        } else {
+            null
         }
+        uiState = uiState.copy(
+            validateFields = true,
+            navigationModel = navigationModel
+        )
     }
 
     fun confirmSendFinding() {
@@ -204,7 +205,7 @@ class ReportViewModel @Inject constructor(
             navigationModel = ReportNavigationModel(
                 confirmFinding = true
             ),
-            confirmInfoModel = confirmFindingBanner().mapToUi()
+            confirmInfoModel = findingSavedBanner().mapToUi()
         )
     }
 
@@ -213,21 +214,16 @@ class ReportViewModel @Inject constructor(
             navigationModel = ReportNavigationModel(
                 confirmSendReport = true
             ),
-            confirmInfoModel = confirmReportBanner().mapToUi()
+            confirmInfoModel = reportConfirmationBanner().mapToUi()
         )
     }
 
     @Suppress("UnusedPrivateMember")
-    fun saveFindingImages(images: List<String>? = null) {
+    fun saveFindingWithImages(images: List<String>? = null) {
         // FIXME: Save to the database with a key and retrieve this afterwards
         uiState = uiState.copy(
             confirmInfoModel = null,
-            successInfoModel = BannerUiModel(
-                icon = "ic_alert",
-                iconColor = "#42A4FA",
-                title = "Hallazgo guardado",
-                description = "El hallazgo ha sido almacenado con éxito."
-            ),
+            successInfoModel = findingSavedBanner().mapToUi(),
             isLoading = false,
             navigationModel = ReportNavigationModel(
                 closeFinding = true
@@ -249,25 +245,24 @@ class ReportViewModel @Inject constructor(
                     )
                 }
             ).onSuccess {
-                uiState = uiState.copy(
-                    confirmInfoModel = null,
-                    successInfoModel = BannerUiModel(
-                        icon = "ic_alert",
-                        iconColor = "#42A4FA",
-                        title = "Novedad guardada",
-                        description = "La novedad ha sido almacenada con éxito."
-                    ),
-                    isLoading = false,
-                    navigationModel = ReportNavigationModel(
-                        closeReport = true
+                withContext(Dispatchers.Main) {
+                    uiState = uiState.copy(
+                        confirmInfoModel = null,
+                        successInfoModel = reportSentBanner().mapToUi(),
+                        isLoading = false,
+                        navigationModel = ReportNavigationModel(
+                            closeReport = true
+                        )
                     )
-                )
+                }
             }.onFailure { throwable ->
-                uiState = uiState.copy(
-                    isLoading = false,
-                    confirmInfoModel = null,
-                    errorModel = throwable.mapToUi()
-                )
+                withContext(Dispatchers.Main) {
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        confirmInfoModel = null,
+                        errorModel = throwable.mapToUi()
+                    )
+                }
             }
         }
     }

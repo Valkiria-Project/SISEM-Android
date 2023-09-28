@@ -15,7 +15,64 @@ import com.valkiria.uicomponents.model.props.ButtonStyle
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.ui.button.OnClick
 
-fun cancelFindingBanner(): BannerModel = BannerModel(
+fun changePasswordEmptyFieldsBanner(): BannerModel = BannerModel(
+    icon = "ic_alert",
+    title = "Incompleto",
+    description = "Para guardar el cambio de contraseña es necesario que complete todos los campos."
+)
+
+fun changePasswordNoMatchBanner(): BannerModel = BannerModel(
+    icon = "ic_alert",
+    title = "Nueva contraseña",
+    description = "Nueva contraseña y confirmar nueva contraseña no coinciden."
+)
+
+fun changePasswordSuccessBanner(): BannerModel = BannerModel(
+    icon = "ic_alert",
+    iconColor = "#42A4FA",
+    title = "Nueva contraseña",
+    description = "La contraseña se ha cambiado con éxito."
+)
+
+fun disassociateDeviceBanner(): BannerModel = BannerModel(
+    icon = "ic_alert",
+    title = "Continuar",
+    description = "¿Desea continuar con las actividades en la aplicación?",
+    footerModel = FooterModel(
+        leftButton = ButtonModel(
+            identifier = DeviceAuthIdentifier.DEVICE_AUTH_CANCEL_BANNER.name,
+            label = "CANCELAR",
+            style = ButtonStyle.LOUD,
+            textStyle = TextStyle.HEADLINE_5,
+            onClick = OnClick.DISMISS,
+            size = ButtonSize.DEFAULT,
+            arrangement = Arrangement.Center,
+            modifier = Modifier.padding(
+                start = 0.dp,
+                top = 20.dp,
+                end = 0.dp,
+                bottom = 0.dp
+            )
+        ),
+        rightButton = ButtonModel(
+            identifier = DeviceAuthIdentifier.DEVICE_AUTH_CONTINUE_BANNER.name,
+            label = "CONTINUAR",
+            style = ButtonStyle.LOUD,
+            textStyle = TextStyle.HEADLINE_5,
+            onClick = OnClick.DISMISS,
+            size = ButtonSize.DEFAULT,
+            arrangement = Arrangement.Center,
+            modifier = Modifier.padding(
+                start = 0.dp,
+                top = 20.dp,
+                end = 0.dp,
+                bottom = 0.dp
+            )
+        )
+    )
+)
+
+fun findingCancellationBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "¿Descartar hallazgo?",
     description = "Las modificaciones elaboradas no serán guardadas.",
@@ -53,64 +110,14 @@ fun cancelFindingBanner(): BannerModel = BannerModel(
     )
 )
 
-fun cancelReportBanner(): BannerModel = BannerModel(
-    icon = "ic_alert",
-    title = "Cancelar novedad",
-    description = "¿Está seguro que desea cancelar el registro de la novedad?",
-    footerModel = FooterModel(
-        leftButton = ButtonModel(
-            identifier = AddReportIdentifier.ADD_REPORT_CANCEL_BANNER.name,
-            label = "CANCELAR",
-            style = ButtonStyle.LOUD,
-            textStyle = TextStyle.HEADLINE_5,
-            onClick = OnClick.DISMISS,
-            size = ButtonSize.DEFAULT,
-            arrangement = Arrangement.Center,
-            modifier = Modifier.padding(
-                start = 0.dp,
-                top = 20.dp,
-                end = 0.dp,
-                bottom = 0.dp
-            )
-        ),
-        rightButton = ButtonModel(
-            identifier = AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name,
-            label = "CONTINUAR",
-            style = ButtonStyle.LOUD,
-            textStyle = TextStyle.HEADLINE_5,
-            onClick = OnClick.DISMISS,
-            size = ButtonSize.DEFAULT,
-            arrangement = Arrangement.Center,
-            modifier = Modifier.padding(
-                start = 0.dp,
-                top = 20.dp,
-                end = 0.dp,
-                bottom = 0.dp
-            )
-        )
-    )
-)
-
-fun changePasswordEmptyFieldsBanner(): BannerModel = BannerModel(
-    icon = "ic_alert",
-    title = "Incompleto",
-    description = "Para guardar el cambio de contraseña es necesario que complete todos los campos."
-)
-
-fun changePasswordNoMatchBanner(): BannerModel = BannerModel(
-    icon = "ic_alert",
-    title = "Nueva contraseña",
-    description = "Nueva contraseña y confirmar nueva contraseña no coinciden."
-)
-
-fun changePasswordSuccessBanner(): BannerModel = BannerModel(
+fun findingSavedBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     iconColor = "#42A4FA",
-    title = "Nueva contraseña",
-    description = "La contraseña se ha cambiado con éxito."
+    title = "Hallazgo guardado",
+    description = "El hallazgo ha sido almacenado con éxito."
 )
 
-fun confirmFindingBanner(): BannerModel = BannerModel(
+fun preOperationalConfirmationBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "Guardar cambios",
     description = "Firmado electrónicamente - Unidad Funcional de APH <unidad funcional>, " +
@@ -153,7 +160,51 @@ fun confirmFindingBanner(): BannerModel = BannerModel(
     )
 )
 
-fun confirmReportBanner(): BannerModel = BannerModel(
+fun preOperationalIncompleteFormBanner(): BannerModel = BannerModel(
+    icon = "ic_alert",
+    title = "Incompleto",
+    description = "Para guardar el preoperacional es necesario que complete todos los campos."
+)
+
+fun reportCancellationBanner(): BannerModel = BannerModel(
+    icon = "ic_alert",
+    title = "Cancelar novedad",
+    description = "¿Está seguro que desea cancelar el registro de la novedad?",
+    footerModel = FooterModel(
+        leftButton = ButtonModel(
+            identifier = AddReportIdentifier.ADD_REPORT_CANCEL_BANNER.name,
+            label = "CANCELAR",
+            style = ButtonStyle.LOUD,
+            textStyle = TextStyle.HEADLINE_5,
+            onClick = OnClick.DISMISS,
+            size = ButtonSize.DEFAULT,
+            arrangement = Arrangement.Center,
+            modifier = Modifier.padding(
+                start = 0.dp,
+                top = 20.dp,
+                end = 0.dp,
+                bottom = 0.dp
+            )
+        ),
+        rightButton = ButtonModel(
+            identifier = AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name,
+            label = "CONTINUAR",
+            style = ButtonStyle.LOUD,
+            textStyle = TextStyle.HEADLINE_5,
+            onClick = OnClick.DISMISS,
+            size = ButtonSize.DEFAULT,
+            arrangement = Arrangement.Center,
+            modifier = Modifier.padding(
+                start = 0.dp,
+                top = 20.dp,
+                end = 0.dp,
+                bottom = 0.dp
+            )
+        )
+    )
+)
+
+fun reportConfirmationBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "Guardar novedad",
     description = "¿Desea guardar la novedad registrada?",
@@ -191,46 +242,9 @@ fun confirmReportBanner(): BannerModel = BannerModel(
     )
 )
 
-fun disassociateDeviceBanner(): BannerModel = BannerModel(
+fun reportSentBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
-    title = "Continuar",
-    description = "¿Desea continuar con las actividades en la aplicación?",
-    footerModel = FooterModel(
-        leftButton = ButtonModel(
-            identifier = DeviceAuthIdentifier.DEVICE_AUTH_CANCEL_BANNER.name,
-            label = "CANCELAR",
-            style = ButtonStyle.LOUD,
-            textStyle = TextStyle.HEADLINE_5,
-            onClick = OnClick.DISMISS,
-            size = ButtonSize.DEFAULT,
-            arrangement = Arrangement.Center,
-            modifier = Modifier.padding(
-                start = 0.dp,
-                top = 20.dp,
-                end = 0.dp,
-                bottom = 0.dp
-            )
-        ),
-        rightButton = ButtonModel(
-            identifier = DeviceAuthIdentifier.DEVICE_AUTH_CONTINUE_BANNER.name,
-            label = "CONTINUAR",
-            style = ButtonStyle.LOUD,
-            textStyle = TextStyle.HEADLINE_5,
-            onClick = OnClick.DISMISS,
-            size = ButtonSize.DEFAULT,
-            arrangement = Arrangement.Center,
-            modifier = Modifier.padding(
-                start = 0.dp,
-                top = 20.dp,
-                end = 0.dp,
-                bottom = 0.dp
-            )
-        )
-    )
-)
-
-fun preOperationalIncompleteFormBanner(): BannerModel = BannerModel(
-    icon = "ic_alert",
-    title = "Incompleto",
-    description = "Para guardar el preoperacional es necesario que complete todos los campos."
+    iconColor = "#42A4FA",
+    title = "Novedad guardada",
+    description = "La novedad ha sido almacenada con éxito."
 )

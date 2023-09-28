@@ -31,7 +31,6 @@ import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
 import com.skgtecnologia.sisem.ui.report.AddFindingScreen
 import com.skgtecnologia.sisem.ui.report.AddReportRoleScreen
 import com.skgtecnologia.sisem.ui.report.AddReportScreen
-import timber.log.Timber
 
 @Composable
 fun SisemNavGraph(
@@ -120,7 +119,6 @@ private fun NavGraphBuilder.authGraph(
         composable(
             route = AuthNavigationRoute.PreOperationalScreen.route
         ) { navBackStackEntry ->
-            Timber.d("Navigation: PreOperationalScreen pass")
             val revertFinding = navBackStackEntry.savedStateHandle.get<Boolean>(REVERT_FINDING)
             navBackStackEntry.savedStateHandle.remove<Boolean>(REVERT_FINDING)
 

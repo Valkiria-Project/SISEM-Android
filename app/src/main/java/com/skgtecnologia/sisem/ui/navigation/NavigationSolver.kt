@@ -110,20 +110,20 @@ private fun reportToNextStep(
 
         model.photoTaken -> navController.popBackStack()
         model.showCamera -> navController.navigate(ReportNavigationRoute.CameraScreen.route)
-        model.saveFinding && model.imagesSize > 0 -> navController.navigate(
+        model.closeFinding && model.imagesSize > 0 -> navController.navigate(
             "${ReportNavigationRoute.ImagesConfirmationScreen.route}/finding"
         )
 
-        model.closeFinding || model.saveFinding -> navController.popBackStack(
+        model.closeFinding -> navController.popBackStack(
             route = AuthNavigationRoute.PreOperationalScreen.route,
             inclusive = false
         )
 
-        model.saveReport && model.imagesSize > 0 -> navController.navigate(
+        model.closeReport && model.imagesSize > 0 -> navController.navigate(
             "${ReportNavigationRoute.ImagesConfirmationScreen.route}/recordNews"
         )
 
-        model.closeReport || model.saveReport ->
+        model.closeReport ->
             navController.navigate(NavigationGraph.Main.route) {
                 popUpTo(ReportNavigationRoute.AddReportRoleScreen.route) {
                     inclusive = true

@@ -166,7 +166,7 @@ private fun handleAction(
                 if (from == "recordNews") {
                     viewModel.sendReport(images)
                 } else {
-                    viewModel.saveFindingImages(images)
+                    viewModel.saveFindingWithImages(images)
                 }
 
                 viewModel.handleShownConfirm()
@@ -175,6 +175,7 @@ private fun handleAction(
     }
 }
 
+@androidx.compose.foundation.ExperimentalFoundationApi
 @Composable
 private fun ImagesPager(images: List<Bitmap>) {
     val pageCount = images.size
