@@ -46,7 +46,6 @@ const val DESCRIPTION_INPUT_MIN_LINES = 3
 @Composable
 fun AddFindingScreen(
     viewModel: ReportViewModel,
-    role: String,
     modifier: Modifier = Modifier,
     onNavigation: (findingsNavigationModel: NavigationModel?) -> Unit
 ) {
@@ -72,7 +71,7 @@ fun AddFindingScreen(
             )
         ) { uiAction ->
             if (uiAction is HeaderUiAction.GoBack) {
-                viewModel.goBack()
+                viewModel.navigateBack()
             }
         }
 
@@ -88,7 +87,7 @@ fun AddFindingScreen(
             uiModel = getFindingsAddFilesModel()
         )
 
-        MediaActions(viewModel, role)
+        MediaActions(viewModel)
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -160,11 +159,12 @@ private fun getFindingsAddFilesModel() = LabelUiModel(
     )
 )
 
+// FIXME: This is being used across flows
 @Composable
-fun MediaActions(viewModel: ReportViewModel, role: String? = null) {
+fun MediaActions(viewModel: ReportViewModel) {
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
-        onResult = { uris -> viewModel.updateSelectedImages(uris, role) }
+        onResult = { uris -> viewModel.updateSelectedImages(uris) }
     )
 
     Row(
@@ -220,7 +220,7 @@ private fun handleFooterAction(
             AddFindingIdentifier.ADD_FINDING_SAVE_BUTTON.name -> viewModel.saveFinding()
 
             AddFindingIdentifier.ADD_FINDING_CANCEL_BANNER.name -> viewModel.handleNavigation()
-            AddFindingIdentifier.ADD_FINDING_CONTINUE_BANNER.name -> viewModel.goBack()
+            AddFindingIdentifier.ADD_FINDING_CONTINUE_BANNER.name -> viewModel.navigateBack()
         }
     }
 }

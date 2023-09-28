@@ -242,12 +242,10 @@ private fun NavGraphBuilder.reportGraph(
         route = NavigationGraph.Report.route
     ) {
         composable(
-            route = "${ReportNavigationRoute.AddFindingScreen.route}/{${NavigationArgument.ROLE}}",
-            arguments = listOf(navArgument(NavigationArgument.ROLE) { type = NavType.StringType })
+            route = ReportNavigationRoute.AddFindingScreen.route,
         ) { backStackEntry ->
             AddFindingScreen(
                 viewModel = backStackEntry.sharedViewModel(navController = navController),
-                role = backStackEntry.arguments?.getString(NavigationArgument.ROLE).orEmpty(),
                 modifier = modifier
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
@@ -297,12 +295,10 @@ private fun NavGraphBuilder.reportGraph(
         }
 
         composable(
-            route = "${ReportNavigationRoute.AddReportScreen.route}/{${NavigationArgument.ROLE}}",
-            arguments = listOf(navArgument(NavigationArgument.ROLE) { type = NavType.StringType })
+            route = ReportNavigationRoute.AddReportScreen.route,
         ) { backStackEntry ->
             AddReportScreen(
                 viewModel = backStackEntry.sharedViewModel(navController = navController),
-                role = backStackEntry.arguments?.getString(NavigationArgument.ROLE).orEmpty(),
                 onNavigation = { navigationModel ->
                     navigateToNextStep(navController, navigationModel)
                 }

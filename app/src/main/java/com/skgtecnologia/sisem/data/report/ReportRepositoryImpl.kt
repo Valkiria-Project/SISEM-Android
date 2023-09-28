@@ -5,6 +5,7 @@ import com.skgtecnologia.sisem.data.report.remote.ReportRemoteDataSource
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.report.ReportRepository
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class ReportRepositoryImpl @Inject constructor(
@@ -26,6 +27,6 @@ class ReportRepositoryImpl @Inject constructor(
         topic = topic,
         description = description,
         images = images,
-        turnId = authCacheDataSource.retrieveAccessToken()?.turn?.id?.toString().orEmpty()
+        turnId = authCacheDataSource.observeAccessToken().first()?.turn?.id?.toString().orEmpty()
     ).getOrThrow()
 }

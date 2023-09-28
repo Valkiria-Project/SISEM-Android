@@ -6,17 +6,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.model.banner.findingCancellationBanner
+import com.skgtecnologia.sisem.domain.model.banner.findingConfirmationBanner
+import com.skgtecnologia.sisem.domain.model.banner.findingSavedBanner
+import com.skgtecnologia.sisem.domain.model.banner.imagesLimitErrorBanner
+import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.banner.reportCancellationBanner
 import com.skgtecnologia.sisem.domain.model.banner.reportConfirmationBanner
-import com.skgtecnologia.sisem.domain.model.banner.findingSavedBanner
-import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.banner.reportSentBanner
-import com.skgtecnologia.sisem.domain.operation.usecases.RetrieveOperationConfig
+import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.domain.report.usecases.SendReport
 import com.skgtecnologia.sisem.ui.navigation.model.ReportNavigationModel
-import com.valkiria.uicomponents.model.ui.banner.BannerUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -27,7 +29,7 @@ import javax.inject.Inject
 @Suppress("TooManyFunctions")
 @HiltViewModel
 class ReportViewModel @Inject constructor(
-    private val retrieveOperationConfig: RetrieveOperationConfig,
+    private val observeOperationConfig: ObserveOperationConfig,
     private val sendReport: SendReport
 ) : ViewModel() {
 
@@ -41,12 +43,22 @@ class ReportViewModel @Inject constructor(
     var isValidTopic by mutableStateOf(false)
     var isValidDescription by mutableStateOf(false)
 
+    private val imageLimit = when (uiState.operationModel?.operationRole) {
+        OperationRole.AUXILIARY_AND_OR_TAPH ->
+            uiState.operationModel?.numImgPreoperationalAux ?: 0
+
+        OperationRole.DRIVER -> uiState.operationModel?.numImgPreoperationalDriver ?: 0
+        OperationRole.LEAD_APH -> 0
+        OperationRole.MEDIC_APH -> uiState.operationModel?.numImgPreoperationalDoctor ?: 0
+        null -> 0
+    }
+
     init {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            retrieveOperationConfig.invoke()
+            observeOperationConfig.invoke()
                 .onSuccess { operationModel ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
@@ -64,7 +76,7 @@ class ReportViewModel @Inject constructor(
         }
     }
 
-    fun goBack() {
+    fun navigateBack() {
         uiState = uiState.copy(
             navigationModel = ReportNavigationModel(
                 goBack = true
@@ -73,6 +85,7 @@ class ReportViewModel @Inject constructor(
         )
     }
 
+    // region Finding
     fun cancelFinding() {
         uiState = uiState.copy(
             navigationModel = ReportNavigationModel(
@@ -81,37 +94,27 @@ class ReportViewModel @Inject constructor(
             cancelInfoModel = findingCancellationBanner().mapToUi()
         )
     }
+    // endregion
 
+    // region Report
     fun cancelReport() {
         uiState = uiState.copy(
             navigationModel = ReportNavigationModel(
                 cancelReport = true
             ),
-            cancelInfoModel = reportCancellationBanner()
-                .mapToUi()
+            cancelInfoModel = reportCancellationBanner().mapToUi()
         )
     }
+    // endregion
 
-    fun updateSelectedImages(selectedImages: List<Uri>, role: String? = null) {
-        val imageLimit = when (role) {
-            "Conductor" -> uiState.operationModel?.numImgPreoperationalDriver ?: 0
-            "Médico" -> uiState.operationModel?.numImgPreoperationalDoctor ?: 0
-            "Auxiliar" -> uiState.operationModel?.numImgPreoperationalAux ?: 0
-            else -> 0
-        }
-
+    fun updateSelectedImages(selectedImages: List<Uri>) {
         val updateSelectedImages = buildList {
             addAll(uiState.selectedImageUris)
 
             selectedImages.forEachIndexed { index, image ->
                 if (imageLimit < uiState.selectedImageUris.size + index + 1) {
                     uiState = uiState.copy(
-                        errorModel = BannerUiModel(
-                            icon = "ic_alert",
-                            title = "Cantidad de fotos",
-                            description = """Se ha excedido el número de imágenes permitido por
-                                | el sistema $imageLimit""".trimMargin()
-                        )
+                        errorModel = imagesLimitErrorBanner(imageLimit).mapToUi()
                     )
                     return@forEachIndexed
                 } else {
@@ -134,14 +137,7 @@ class ReportViewModel @Inject constructor(
     }
 
     @Suppress("MagicNumber")
-    fun onPhotoTaken(savedUri: Uri, role: String? = null) {
-        val imageLimit = when (role) {
-            "Conductor" -> uiState.operationModel?.numImgPreoperationalDriver ?: 0
-            "Médico" -> uiState.operationModel?.numImgPreoperationalDoctor ?: 0
-            "Auxiliar" -> uiState.operationModel?.numImgPreoperationalAux ?: 0
-            else -> 3
-        }
-
+    fun onPhotoTaken(savedUri: Uri) {
         val updatedSelectedImages = buildList {
             uiState.selectedImageUris.forEach {
                 add(it)
@@ -149,12 +145,7 @@ class ReportViewModel @Inject constructor(
 
             if (imageLimit < uiState.selectedImageUris.size + 1) {
                 uiState = uiState.copy(
-                    errorModel = BannerUiModel(
-                        icon = "ic_alert",
-                        title = "Cantidad de fotos",
-                        description = """Se ha excedido el número de imágenes permitido por
-                                | el sistema $imageLimit""".trimMargin()
-                    )
+                    errorModel = imagesLimitErrorBanner(imageLimit).mapToUi()
                 )
             } else {
                 add(savedUri)
@@ -205,7 +196,7 @@ class ReportViewModel @Inject constructor(
             navigationModel = ReportNavigationModel(
                 confirmFinding = true
             ),
-            confirmInfoModel = findingSavedBanner().mapToUi()
+            confirmInfoModel = findingConfirmationBanner().mapToUi()
         )
     }
 

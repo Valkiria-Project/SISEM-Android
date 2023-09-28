@@ -78,7 +78,7 @@ fun ImagesConfirmationScreen(
             )
         ) { uiAction ->
             if (uiAction is HeaderUiAction.GoBack) {
-                viewModel.goBack()
+                viewModel.navigateBack()
             }
         }
 

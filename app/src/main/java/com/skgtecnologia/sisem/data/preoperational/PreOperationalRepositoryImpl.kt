@@ -7,6 +7,7 @@ import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.preoperational.PreOperationalRepository
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class PreOperationalRepositoryImpl @Inject constructor(
@@ -16,18 +17,21 @@ class PreOperationalRepositoryImpl @Inject constructor(
 ) : PreOperationalRepository {
 
     override suspend fun getPreOperationalScreen(androidId: String): ScreenModel {
-        val accessToken = checkNotNull(authCacheDataSource.retrieveAccessToken())
+        val accessToken = checkNotNull(authCacheDataSource.observeAccessToken())
 
         return preOperationalRemoteDataSource.getPreOperationalScreen(
-            role = checkNotNull(OperationRole.getRoleByName(accessToken.role)),
+            role = checkNotNull(OperationRole.getRoleByName(accessToken.first()?.role.orEmpty())),
             androidId = androidId,
-            vehicleCode = operationCacheDataSource.retrieveOperationConfig()?.vehicleCode.orEmpty(),
-            idTurn = accessToken.turn?.id?.toString().orEmpty()
+            vehicleCode = operationCacheDataSource.observeOperationConfig()
+                .first()?.vehicleCode.orEmpty(),
+            idTurn = accessToken.first()?.turn?.id?.toString().orEmpty()
         ).getOrThrow()
     }
 
     override suspend fun getRole(): OperationRole = checkNotNull(
-        OperationRole.getRoleByName(authCacheDataSource.retrieveAccessToken()?.role.orEmpty())
+        OperationRole.getRoleByName(
+            authCacheDataSource.observeAccessToken().first()?.role.orEmpty()
+        )
     )
 
     override suspend fun sendPreOperational(
@@ -36,7 +40,7 @@ class PreOperationalRepositoryImpl @Inject constructor(
         fieldsValues: Map<String, String>,
         novelties: List<Novelty>
     ) {
-        val accessToken = checkNotNull(authCacheDataSource.retrieveAccessToken())
+        val accessToken = checkNotNull(authCacheDataSource.observeAccessToken().first())
 
         preOperationalRemoteDataSource.sendPreOperational(
             role = checkNotNull(OperationRole.getRoleByName(accessToken.role)),

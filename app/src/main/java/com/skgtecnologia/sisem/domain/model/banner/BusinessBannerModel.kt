@@ -112,11 +112,56 @@ fun findingCancellationBanner(): BannerModel = BannerModel(
     )
 )
 
+fun findingConfirmationBanner(): BannerModel = BannerModel(
+    icon = "ic_alert",
+    title = "Guardar hallazgo",
+    description = "¿Desea guardar el hallazgo registrado?",
+    footerModel = FooterModel(
+        leftButton = ButtonModel(
+            identifier = ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_CANCEL_BANNER.name,
+            label = "CANCELAR",
+            style = ButtonStyle.LOUD,
+            textStyle = TextStyle.HEADLINE_5,
+            onClick = OnClick.DISMISS,
+            size = ButtonSize.DEFAULT,
+            arrangement = Arrangement.Center,
+            modifier = Modifier.padding(
+                start = 0.dp,
+                top = 20.dp,
+                end = 0.dp,
+                bottom = 0.dp
+            )
+        ),
+        rightButton = ButtonModel(
+            identifier = ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name,
+            label = "GUARDAR",
+            style = ButtonStyle.LOUD,
+            textStyle = TextStyle.HEADLINE_5,
+            onClick = OnClick.DISMISS,
+            size = ButtonSize.DEFAULT,
+            arrangement = Arrangement.Center,
+            modifier = Modifier.padding(
+                start = 0.dp,
+                top = 20.dp,
+                end = 0.dp,
+                bottom = 0.dp
+            )
+        )
+    )
+)
+
 fun findingSavedBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     iconColor = "#42A4FA",
     title = "Hallazgo guardado",
     description = "El hallazgo ha sido almacenado con éxito."
+)
+
+fun imagesLimitErrorBanner(imageLimit: Int): BannerModel = BannerModel(
+    icon = "ic_alert",
+    title = "Cantidad de fotos",
+    description = """Se ha excedido el número de imágenes permitido por
+        || el sistema $imageLimit""".trimMargin()
 )
 
 fun preOperationalConfirmationBanner(): BannerModel = BannerModel(

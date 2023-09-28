@@ -37,7 +37,6 @@ import kotlin.random.Random
 @Composable
 fun AddReportScreen(
     viewModel: ReportViewModel,
-    role: String,
     modifier: Modifier = Modifier,
     onNavigation: (addReportNavigationModel: NavigationModel?) -> Unit
 ) {
@@ -60,7 +59,7 @@ fun AddReportScreen(
         addReportUiState.screenModel?.header?.let {
             HeaderSection(headerModel = it) { uiAction ->
                 if (uiAction is HeaderUiAction.GoBack) {
-                    viewModel.goBack()
+                    viewModel.navigateBack()
                 }
             }
         }
@@ -87,7 +86,7 @@ fun AddReportScreen(
 
         LabelComponent(uiModel = getFindingsAddFilesModel())
 
-        MediaActions(viewModel, role)
+        MediaActions(viewModel)
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -126,7 +125,7 @@ private fun handleFooterAction(
             AddReportIdentifier.SEND_REPORT_ENTRY_SEND_BUTTON.name -> viewModel.saveReport()
 
             AddReportIdentifier.ADD_REPORT_CANCEL_BANNER.name -> viewModel.handleNavigation()
-            AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name -> viewModel.goBack()
+            AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name -> viewModel.navigateBack()
         }
     }
 }
