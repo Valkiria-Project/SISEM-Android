@@ -228,3 +228,9 @@ fun disassociateDeviceBanner(): BannerModel = BannerModel(
         )
     )
 )
+
+fun preOperationalIncompleteFormBanner(): BannerModel = BannerModel(
+    icon = "ic_alert",
+    title = "Incompleto",
+    description = "Para guardar el preoperacional es necesario que complete todos los campos."
+)

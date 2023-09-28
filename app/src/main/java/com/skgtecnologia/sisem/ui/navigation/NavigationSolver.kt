@@ -8,7 +8,6 @@ import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.PreOpNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
-import timber.log.Timber
 
 fun getAppStartDestination(model: StartupNavigationModel?): String {
     return if (model == null) {
@@ -102,7 +101,6 @@ private fun reportToNextStep(
 ) {
     when {
         model.goBack -> with(navController) {
-            Timber.d("NavSolver: goBack")
             popBackStack()
 
             currentBackStackEntry

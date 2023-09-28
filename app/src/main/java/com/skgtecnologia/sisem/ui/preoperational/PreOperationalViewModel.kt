@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.changepassword.usecases.GetLoginNavigationModel
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
+import com.skgtecnologia.sisem.domain.model.banner.preOperationalIncompleteFormBanner
 import com.skgtecnologia.sisem.domain.model.body.ChipOptionsModel
 import com.skgtecnologia.sisem.domain.model.body.FindingModel
 import com.skgtecnologia.sisem.domain.model.body.InventoryCheckModel
@@ -19,7 +20,6 @@ import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
 import com.skgtecnologia.sisem.ui.navigation.model.PreOpNavigationModel
-import com.valkiria.uicomponents.model.ui.banner.BannerUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -176,14 +176,8 @@ class PreOperationalViewModel @Inject constructor(
         if (isValidInventory && areValidFields) {
             sendPreOperational()
         } else {
-            // FIXME: Show Banner with message about fields
             uiState = uiState.copy(
-                errorModel = BannerUiModel(
-                    icon = "ic_alert",
-                    title = "Incompleto",
-                    description = "Para guardar el preoperacional es necesario que complete" +
-                        " todos los campos."
-                )
+                errorModel = preOperationalIncompleteFormBanner().mapToUi()
             )
         }
     }
