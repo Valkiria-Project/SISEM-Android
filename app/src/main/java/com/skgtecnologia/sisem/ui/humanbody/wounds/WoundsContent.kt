@@ -77,7 +77,10 @@ fun WoundsContent(
 
         Button(
             enabled = uiState.selectedWounds.isNotEmpty(),
-            onClick = { onAction(uiState.selectedWounds) },
+            onClick = {
+                viewModel.onSelectedWoundsHandled()
+                onAction(uiState.selectedWounds)
+            },
             modifier = Modifier
                 .padding(top = 32.dp, bottom = 20.dp)
                 .fillMaxWidth()
