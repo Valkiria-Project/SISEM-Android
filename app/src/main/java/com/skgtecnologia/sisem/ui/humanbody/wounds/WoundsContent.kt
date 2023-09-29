@@ -24,6 +24,7 @@ import com.valkiria.uicomponents.model.ui.chip.ChipOptionsUiModel
 import com.valkiria.uicomponents.model.ui.chip.ChipSelectionItemUiModel
 import com.valkiria.uicomponents.model.ui.chip.ChipSelectionUiModel
 
+@Suppress("LongMethod")
 @Composable
 fun WoundsContent(
     onAction: (wounds: List<String>) -> Unit
