@@ -5,6 +5,7 @@ import com.skgtecnologia.sisem.data.clinichistory.remote.ClinicHistoryRemoteData
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.domain.clinichistory.ClinicHistoryRepository
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class ClinicHistoryRepositoryImpl @Inject constructor(
@@ -19,7 +20,7 @@ class ClinicHistoryRepositoryImpl @Inject constructor(
         patientId: String
     ): ScreenModel = clinicHistoryRemoteDataSource.getClinicHistoryScreen(
         serial = serial,
-        code = operationCacheDataSource.retrieveOperationConfig()?.vehicleCode.orEmpty(),
+        code = operationCacheDataSource.observeOperationConfig().first()?.vehicleCode.orEmpty(),
         turnId = "1", //authCacheDataSource.retrieveAccessToken()?.turn?.id?.toString().orEmpty(),
         incidentCode = incidentCode,
         patientId = patientId
