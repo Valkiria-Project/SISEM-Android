@@ -1,10 +1,10 @@
-package com.skgtecnologia.sisem.domain.clinichistory
+package com.skgtecnologia.sisem.domain.medicalhistory
 
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 
-interface ClinicHistoryRepository {
+interface MedicalHistoryRepository {
 
-    suspend fun getClinicHistoryScreen(
+    suspend fun getMedicalHistoryScreen(
         serial: String,
         incidentCode: String,
         patientId: String

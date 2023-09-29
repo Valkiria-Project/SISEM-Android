@@ -1,6 +1,6 @@
-package com.skgtecnologia.sisem.di.clinichistory
+package com.skgtecnologia.sisem.di.medicalhistory
 
-import com.skgtecnologia.sisem.data.clinichistory.remote.ClinicHistoryApi
+import com.skgtecnologia.sisem.data.medicalhistory.remote.MedicalHistoryApi
 import com.skgtecnologia.sisem.di.BearerNetworkModule
 import com.skgtecnologia.sisem.di.qualifiers.BearerAuthentication
 import dagger.Module
@@ -11,10 +11,10 @@ import retrofit2.Retrofit
 
 @Module(includes = [BearerNetworkModule::class])
 @InstallIn(SingletonComponent::class)
-object ClinicHistoryNetworkModule {
+object MedicalHistoryNetworkModule {
 
     @Provides
-    internal fun providesClinicHistoryApi(
+    internal fun providesMedicalHistoryApi(
         @BearerAuthentication retrofit: Retrofit
-    ): ClinicHistoryApi = retrofit.create(ClinicHistoryApi::class.java)
+    ): MedicalHistoryApi = retrofit.create(MedicalHistoryApi::class.java)
 }
