@@ -5,6 +5,7 @@ import com.skgtecnologia.sisem.data.authcards.remote.AuthCardsRemoteDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.domain.authcards.AuthCardsRepository
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class AuthCardsRepositoryImpl @Inject constructor(
@@ -15,8 +16,9 @@ class AuthCardsRepositoryImpl @Inject constructor(
 
     override suspend fun getAuthCardsScreen(serial: String): ScreenModel =
         authCardsRemoteDataSource.getAuthCardsScreen(
-            code = operationCacheDataSource.retrieveOperationConfig()?.vehicleCode.orEmpty(),
-            turnId = authCacheDataSource.retrieveAccessToken()?.turn?.id?.toString().orEmpty(),
+            code = operationCacheDataSource.observeOperationConfig().first()?.vehicleCode.orEmpty(),
+            turnId = authCacheDataSource.observeAccessToken().first()?.turn?.id?.toString()
+                .orEmpty(),
             serial = serial
         ).getOrThrow()
 }

@@ -4,6 +4,7 @@ import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.data.operation.remote.OperationRemoteDataSource
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.skgtecnologia.sisem.domain.operation.OperationRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class OperationRepositoryImpl @Inject constructor(
@@ -17,6 +18,6 @@ class OperationRepositoryImpl @Inject constructor(
                 operationCacheDataSource.storeOperationConfig(it)
             }.getOrThrow()
 
-    override suspend fun retrieveOperationConfig(): OperationModel? =
-        operationCacheDataSource.retrieveOperationConfig()
+    override suspend fun observeOperationConfig(): Flow<OperationModel?> =
+        operationCacheDataSource.observeOperationConfig()
 }
