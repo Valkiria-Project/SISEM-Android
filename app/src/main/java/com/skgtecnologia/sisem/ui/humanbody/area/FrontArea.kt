@@ -32,15 +32,15 @@ enum class FrontArea(val image: Int) : Parcelable {
 
         private fun getHeadArea(width: Int, height: Int): List<Point> {
             val headArea = listOf(
-                Point(600f, 275f),
-                Point(615f, 162f),
-                Point(724f, 83f),
-                Point(841f, 162f),
-                Point(864f, 275f),
-                Point(815f, 366f),
-                Point(728f, 433f),
-                Point(645f, 366f),
-                Point(600f, 275f)
+                Point(530f, 272f),
+                Point(544f, 162f),
+                Point(654f, 83f),
+                Point(767f, 159f),
+                Point(794f, 285f),
+                Point(743f, 371f),
+                Point(661f, 426f),
+                Point(578f, 375f),
+                Point(530f, 272f)
             )
 
             return headArea.map { it.toProportionalPoint(width, height) }
@@ -48,15 +48,15 @@ enum class FrontArea(val image: Int) : Parcelable {
 
         private fun getNeckArea(width: Int, height: Int): List<Point> {
             val neckArea = listOf(
-                Point(656f, 411f),
-                Point(728f, 460f),
-                Point(803f, 422f),
-                Point(826f, 501f),
-                Point(928f, 561f),
-                Point(735f, 580f),
-                Point(521f, 561f),
-                Point(630f, 505f),
-                Point(656f, 411f)
+                Point(602f, 431f),
+                Point(657f, 462f),
+                Point(715f, 438f),
+                Point(733f, 486f),
+                Point(825f, 554f),
+                Point(661f, 582f),
+                Point(475f, 561f),
+                Point(589f, 486f),
+                Point(602f, 431f)
             )
 
             return neckArea.map { it.toProportionalPoint(width, height) }
@@ -64,15 +64,15 @@ enum class FrontArea(val image: Int) : Parcelable {
 
         private fun getChestArea(width: Int, height: Int): List<Point> {
             val chestArea = listOf(
-                Point(566f, 607f),
-                Point(728f, 622f),
-                Point(890f, 603f),
-                Point(939f, 739f),
-                Point(909f, 886f),
-                Point(732f, 863f),
-                Point(558f, 886f),
-                Point(528f, 742f),
-                Point(566f, 607f)
+                Point(496f, 596f),
+                Point(654f, 616f),
+                Point(818f, 599f),
+                Point(870f, 736f),
+                Point(839f, 884f),
+                Point(657f, 860f),
+                Point(489f, 880f),
+                Point(458f, 723f),
+                Point(496f, 596f)
             )
 
             return chestArea.map { it.toProportionalPoint(width, height) }
@@ -80,12 +80,11 @@ enum class FrontArea(val image: Int) : Parcelable {
 
         private fun getRightArmArea(width: Int, height: Int): List<Point> {
             val rightArmArea = listOf(
-                Point(325f, 1010f),
-                Point(423f, 626f),
-                Point(483f, 573f),
-                Point(543f, 607f),
-                Point(408f, 1055f),
-                Point(325f, 1010f)
+                Point(472f, 598f),
+                Point(338f, 1047f),
+                Point(249f, 1012f),
+                Point(359f, 618f),
+                Point(472f, 598f)
             )
 
             return rightArmArea.map { it.toProportionalPoint(width, height) }
@@ -93,12 +92,11 @@ enum class FrontArea(val image: Int) : Parcelable {
 
         private fun getLeftArmArea(width: Int, height: Int): List<Point> {
             val leftArmArea = listOf(
-                Point(1115f, 1010f),
-                Point(1017f, 626f),
-                Point(957f, 573f),
-                Point(897f, 607f),
-                Point(1032f, 1055f),
-                Point(1115f, 1010f)
+                Point(856f, 601f),
+                Point(979f, 1054f),
+                Point(1072f, 1023f),
+                Point(945f, 601f),
+                Point(856f, 601f)
             )
 
             return leftArmArea.map { it.toProportionalPoint(width, height) }
@@ -106,12 +104,11 @@ enum class FrontArea(val image: Int) : Parcelable {
 
         private fun getRightForearmArea(width: Int, height: Int): List<Point> {
             val rightForearmArea = listOf(
-                Point(309f, 1051f),
-                Point(400f, 1085f),
-                Point(291f, 1398f),
-                Point(234f, 1383f),
-                Point(260f, 1195f),
-                Point(309f, 1051f)
+                Point(239f, 1047f),
+                Point(325f, 1084f),
+                Point(222f, 1396f),
+                Point(163f, 1376f),
+                Point(239f, 1047f)
             )
 
             return rightForearmArea.map { it.toProportionalPoint(width, height) }
@@ -119,12 +116,11 @@ enum class FrontArea(val image: Int) : Parcelable {
 
         private fun getLeftForearmArea(width: Int, height: Int): List<Point> {
             val leftForearmArea = listOf(
-                Point(1131f, 1051f),
-                Point(1040f, 1085f),
-                Point(1149f, 1398f),
-                Point(1206f, 1383f),
-                Point(1180f, 1195f),
-                Point(1131f, 1051f)
+                Point(997f, 1081f),
+                Point(1099f, 1393f),
+                Point(1151f, 1383f),
+                Point(1079f, 1050f),
+                Point(997f, 1081f)
             )
 
             return leftForearmArea.map { it.toProportionalPoint(width, height) }
@@ -132,15 +128,15 @@ enum class FrontArea(val image: Int) : Parcelable {
 
         private fun getAbdomenArea(width: Int, height: Int): List<Point> {
             val abdomenArea = listOf(
-                Point(566f, 923f),
-                Point(717f, 889f),
-                Point(898f, 916f),
-                Point(875f, 1048f),
-                Point(901f, 1168f),
-                Point(747f, 1232f),
-                Point(566f, 1179f),
-                Point(588f, 1097f),
-                Point(566f, 923f)
+                Point(493f, 916f),
+                Point(647f, 889f),
+                Point(835f, 916f),
+                Point(805f, 1040f),
+                Point(835f, 1163f),
+                Point(671f, 1225f),
+                Point(499f, 1177f),
+                Point(517f, 1060f),
+                Point(493f, 916f)
             )
 
             return abdomenArea.map { it.toProportionalPoint(width, height) }
@@ -148,15 +144,15 @@ enum class FrontArea(val image: Int) : Parcelable {
 
         private fun getHipsArea(width: Int, height: Int): List<Point> {
             val hipsArea = listOf(
-                Point(562f, 1228f),
-                Point(732f, 1259f),
-                Point(898f, 1236f),
-                Point(969f, 1357f),
-                Point(875f, 1372f),
-                Point(735f, 1413f),
-                Point(588f, 1379f),
-                Point(502f, 1368f),
-                Point(562f, 1228f)
+                Point(493f, 1228f),
+                Point(664f, 1252f),
+                Point(829f, 1232f),
+                Point(894f, 1359f),
+                Point(801f, 1369f),
+                Point(661f, 1407f),
+                Point(523f, 1376f),
+                Point(431f, 1366f),
+                Point(493f, 1228f)
             )
 
             return hipsArea.map { it.toProportionalPoint(width, height) }
@@ -164,15 +160,12 @@ enum class FrontArea(val image: Int) : Parcelable {
 
         private fun getRightHandArea(width: Int, height: Int): List<Point> {
             val rightHandArea = listOf(
-                Point(227f, 1407f),
-                Point(283f, 1413f),
-                Point(313f, 1571f),
-                Point(260f, 1511f),
-                Point(230f, 1553f),
-                Point(238f, 1684f),
-                Point(189f, 1609f),
-                Point(196f, 1519f),
-                Point(227f, 1407f)
+                Point(160f, 1400f),
+                Point(126f, 1588f),
+                Point(163f, 1674f),
+                Point(249f, 1564f),
+                Point(218f, 1410f),
+                Point(160f, 1400f)
             )
 
             return rightHandArea.map { it.toProportionalPoint(width, height) }
@@ -180,16 +173,12 @@ enum class FrontArea(val image: Int) : Parcelable {
 
         private fun getLeftHandArea(width: Int, height: Int): List<Point> {
             val leftHandArea = listOf(
-                Point(1229f, 1402f),
-                Point(1271f, 1537f),
-                Point(1267f, 1617f),
-                Point(1233f, 1688f),
-                Point(1222f, 1639f),
-                Point(1226f, 1560f),
-                Point(1192f, 1519f),
-                Point(1154f, 1579f),
-                Point(1173f, 1413f),
-                Point(1229f, 1402f)
+                Point(1158f, 1400f),
+                Point(1195f, 1606f),
+                Point(1151f, 1678f),
+                Point(1069f, 1561f),
+                Point(1099f, 1407f),
+                Point(1158f, 1400f)
             )
 
             return leftHandArea.map { it.toProportionalPoint(width, height) }
@@ -197,13 +186,12 @@ enum class FrontArea(val image: Int) : Parcelable {
 
         private fun getRightThighArea(width: Int, height: Int): List<Point> {
             val rightThighArea = listOf(
-                Point(472f, 1537f),
-                Point(513f, 1424f),
-                Point(671f, 1436f),
-                Point(698f, 1545f),
-                Point(653f, 1959f),
-                Point(536f, 1963f),
-                Point(472f, 1537f)
+                Point(431f, 1427f),
+                Point(606f, 1431f),
+                Point(582f, 1945f),
+                Point(469f, 1955f),
+                Point(407f, 1520f),
+                Point(431f, 1427f)
             )
 
             return rightThighArea.map { it.toProportionalPoint(width, height) }
@@ -211,13 +199,13 @@ enum class FrontArea(val image: Int) : Parcelable {
 
         private fun getLeftThighArea(width: Int, height: Int): List<Point> {
             val leftThighArea = listOf(
-                Point(758f, 1537f),
-                Point(781f, 1439f),
-                Point(939f, 1417f),
-                Point(988f, 1545f),
-                Point(920f, 1967f),
-                Point(807f, 1959f),
-                Point(758f, 1537f)
+                Point(705f, 1434f),
+                Point(866f, 1410f),
+                Point(914f, 1530f),
+                Point(849f, 1955f),
+                Point(739f, 1955f),
+                Point(688f, 1537f),
+                Point(705f, 1434f)
             )
 
             return leftThighArea.map { it.toProportionalPoint(width, height) }
@@ -225,11 +213,11 @@ enum class FrontArea(val image: Int) : Parcelable {
 
         private fun getRightKneeArea(width: Int, height: Int): List<Point> {
             val rightKneeArea = listOf(
-                Point(524f, 1997f),
-                Point(675f, 1993f),
-                Point(683f, 2118f),
-                Point(523f, 2118f),
-                Point(524f, 1997f)
+                Point(479f, 1990f),
+                Point(589f, 1990f),
+                Point(589f, 2110f),
+                Point(479f, 2110f),
+                Point(479f, 1990f)
             )
 
             return rightKneeArea.map { it.toProportionalPoint(width, height) }
@@ -237,11 +225,11 @@ enum class FrontArea(val image: Int) : Parcelable {
 
         private fun getLeftKneeArea(width: Int, height: Int): List<Point> {
             val leftKneeArea = listOf(
-                Point(788f, 1997f),
-                Point(935f, 1993f),
-                Point(928f, 2118f),
-                Point(781f, 2118f),
-                Point(788f, 1997f),
+                Point(715f, 1986f),
+                Point(849f, 1986f),
+                Point(849f, 2106f),
+                Point(715f, 2106f),
+                Point(715f, 1986f)
             )
 
             return leftKneeArea.map { it.toProportionalPoint(width, height) }
@@ -249,14 +237,11 @@ enum class FrontArea(val image: Int) : Parcelable {
 
         private fun getRightLegArea(width: Int, height: Int): List<Point> {
             val rightLegArea = listOf(
-                Point(536f, 2144f),
-                Point(679f, 2144f),
-                Point(664f, 2446f),
-                Point(679f, 2675f),
-                Point(577f, 2675f),
-                Point(573f, 2461f),
-                Point(521f, 2246f),
-                Point(536f, 2144f)
+                Point(462f, 2135f),
+                Point(613f, 2135f),
+                Point(595f, 2671f),
+                Point(503f, 2671f),
+                Point(462f, 2135f)
             )
 
             return rightLegArea.map { it.toProportionalPoint(width, height) }
@@ -264,14 +249,11 @@ enum class FrontArea(val image: Int) : Parcelable {
 
         private fun getLeftLegArea(width: Int, height: Int): List<Point> {
             val leftLegArea = listOf(
-                Point(781f, 2144f),
-                Point(931f, 2144f),
-                Point(939f, 2227f),
-                Point(898f, 2442f),
-                Point(882f, 2679f),
-                Point(784f, 2672f),
-                Point(796f, 2430f),
-                Point(781f, 2144f)
+                Point(712f, 2132f),
+                Point(856f, 2132f),
+                Point(811f, 2674f),
+                Point(719f, 2674f),
+                Point(712f, 2132f)
             )
 
             return leftLegArea.map { it.toProportionalPoint(width, height) }
@@ -279,11 +261,11 @@ enum class FrontArea(val image: Int) : Parcelable {
 
         private fun getRightFootArea(width: Int, height: Int): List<Point> {
             val rightFootArea = listOf(
-                Point(573f, 2694f),
-                Point(671f, 2675f),
-                Point(683f, 2800f),
-                Point(551f, 2800f),
-                Point(573f, 2694f)
+                Point(503f, 2687f),
+                Point(599f, 2689f),
+                Point(613f, 2795f),
+                Point(475f, 2795f),
+                Point(503f, 2687f)
             )
 
             return rightFootArea.map { it.toProportionalPoint(width, height) }
@@ -291,11 +273,11 @@ enum class FrontArea(val image: Int) : Parcelable {
 
         private fun getLeftFootArea(width: Int, height: Int): List<Point> {
             val leftFootArea = listOf(
-                Point(784f, 2698f),
-                Point(879f, 2698f),
-                Point(909f, 2800f),
-                Point(773f, 2800f),
-                Point(784f, 2698f)
+                Point(715f, 2688f),
+                Point(815f, 2688f),
+                Point(846f, 2795f),
+                Point(702f, 2795f),
+                Point(715f, 2688f)
             )
 
             return leftFootArea.map { it.toProportionalPoint(width, height) }

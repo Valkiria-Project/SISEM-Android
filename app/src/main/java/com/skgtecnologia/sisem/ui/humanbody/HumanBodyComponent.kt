@@ -18,19 +18,21 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.skgtecnologia.sisem.domain.model.body.HumanBodyModel
 import com.skgtecnologia.sisem.ui.humanbody.area.BASE_HEIGHT
 import com.skgtecnologia.sisem.ui.humanbody.area.BASE_WIDTH
 import com.valkiria.uicomponents.R
 
 @Composable
 fun HumanBodyComponent(
+    model: HumanBodyModel,
     onAction: (id: String, wounds: Map<String, List<String>>) -> Unit
 ) {
     val viewModel = hiltViewModel<HumanBodyViewModel>()
     val width = LocalContext.current.display?.width ?: BASE_WIDTH
     val height = LocalContext.current.display?.height ?: BASE_HEIGHT
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = model.modifier.fillMaxSize()) {
         var isFront by rememberSaveable { mutableStateOf(true) }
 
         if (isFront) {

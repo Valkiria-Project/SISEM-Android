@@ -30,15 +30,14 @@ enum class BackArea(val image: Int) {
 
         private fun getHeadArea(width: Int, height: Int): List<Point> {
             val headArea = listOf(
-                Point(600f, 275f),
-                Point(615f, 162f),
-                Point(724f, 83f),
-                Point(841f, 162f),
-                Point(864f, 275f),
-                Point(815f, 366f),
-                Point(728f, 433f),
-                Point(645f, 366f),
-                Point(600f, 275f)
+                Point(523f, 271f),
+                Point(541f, 178f),
+                Point(650f, 92f),
+                Point(767f, 161f),
+                Point(801f, 281f),
+                Point(733f, 384f),
+                Point(582f, 384f),
+                Point(523f, 271f)
             )
 
             return headArea.map { it.toProportionalPoint(width, height) }
@@ -46,15 +45,14 @@ enum class BackArea(val image: Int) {
 
         private fun getNeckArea(width: Int, height: Int): List<Point> {
             val neckArea = listOf(
-                Point(656f, 411f),
-                Point(728f, 460f),
-                Point(803f, 422f),
-                Point(826f, 501f),
-                Point(928f, 561f),
-                Point(735f, 580f),
-                Point(521f, 561f),
-                Point(630f, 505f),
-                Point(656f, 411f)
+                Point(602f, 428f),
+                Point(719f, 428f),
+                Point(736f, 494f),
+                Point(825f, 569f),
+                Point(664f, 593f),
+                Point(493f, 576f),
+                Point(592f, 490f),
+                Point(602f, 428f)
             )
 
             return neckArea.map { it.toProportionalPoint(width, height) }
@@ -62,15 +60,15 @@ enum class BackArea(val image: Int) {
 
         private fun getBackArea(width: Int, height: Int): List<Point> {
             val chestArea = listOf(
-                Point(566f, 607f),
-                Point(728f, 622f),
-                Point(890f, 603f),
-                Point(939f, 739f),
-                Point(909f, 886f),
-                Point(732f, 863f),
-                Point(558f, 886f),
-                Point(528f, 742f),
-                Point(566f, 607f)
+                Point(503f, 610f),
+                Point(661f, 620f),
+                Point(825f, 610f),
+                Point(873f, 740f),
+                Point(842f, 891f),
+                Point(664f, 867f),
+                Point(493f, 888f),
+                Point(462f, 734f),
+                Point(503f, 610f)
             )
 
             return chestArea.map { it.toProportionalPoint(width, height) }
@@ -78,15 +76,15 @@ enum class BackArea(val image: Int) {
 
         private fun getLowerBackArea(width: Int, height: Int): List<Point> {
             val lowerBackArea = listOf(
-                Point(566f, 935f),
-                Point(720f, 893f),
-                Point(913f, 923f),
-                Point(901f, 1074f),
-                Point(920f, 1228f),
-                Point(739f, 1296f),
-                Point(558f, 1244f),
-                Point(588f, 1115f),
-                Point(566f, 935f)
+                Point(493f, 939f),
+                Point(657f, 891f),
+                Point(842f, 915f),
+                Point(832f, 1148f),
+                Point(853f, 1227f),
+                Point(664f, 1292f),
+                Point(486f, 1238f),
+                Point(517f, 1138f),
+                Point(493f, 939f)
             )
 
             return lowerBackArea.map { it.toProportionalPoint(width, height) }
@@ -94,12 +92,11 @@ enum class BackArea(val image: Int) {
 
         private fun getRightArmArea(width: Int, height: Int): List<Point> {
             val rightArmArea = listOf(
-                Point(325f, 1010f),
-                Point(423f, 626f),
-                Point(483f, 573f),
-                Point(543f, 607f),
-                Point(408f, 1055f),
-                Point(325f, 1010f)
+                Point(362f, 593f),
+                Point(479f, 620f),
+                Point(338f, 1059f),
+                Point(253f, 1022f),
+                Point(362f, 593f)
             )
 
             return rightArmArea.map { it.toProportionalPoint(width, height) }
@@ -107,12 +104,11 @@ enum class BackArea(val image: Int) {
 
         private fun getLeftArmArea(width: Int, height: Int): List<Point> {
             val leftArmArea = listOf(
-                Point(1115f, 1010f),
-                Point(1017f, 626f),
-                Point(957f, 573f),
-                Point(897f, 607f),
-                Point(1032f, 1055f),
-                Point(1115f, 1010f)
+                Point(945f, 596f),
+                Point(863f, 600f),
+                Point(990f, 1059f),
+                Point(1069f, 1022f),
+                Point(945f, 596f)
             )
 
             return leftArmArea.map { it.toProportionalPoint(width, height) }
@@ -120,12 +116,11 @@ enum class BackArea(val image: Int) {
 
         private fun getRightForearmArea(width: Int, height: Int): List<Point> {
             val rightForearmArea = listOf(
-                Point(309f, 1051f),
-                Point(400f, 1085f),
-                Point(291f, 1398f),
-                Point(234f, 1383f),
-                Point(260f, 1195f),
-                Point(309f, 1051f)
+                Point(239f, 1049f),
+                Point(328f, 1087f),
+                Point(222f, 1399f),
+                Point(163f, 1385f),
+                Point(239f, 1049f)
             )
 
             return rightForearmArea.map { it.toProportionalPoint(width, height) }
@@ -133,11 +128,10 @@ enum class BackArea(val image: Int) {
 
         private fun getLeftForearmArea(width: Int, height: Int): List<Point> {
             val leftForearmArea = listOf(
-                Point(1131f, 1051f),
-                Point(1040f, 1085f),
-                Point(1149f, 1398f),
-                Point(1206f, 1383f),
-                Point(1180f, 1195f),
+                Point(993f, 1090f),
+                Point(1079f, 1052f),
+                Point(1154f, 1388f),
+                Point(1103f, 1399f),
                 Point(1131f, 1051f)
             )
 
@@ -146,15 +140,12 @@ enum class BackArea(val image: Int) {
 
         private fun getRightHandArea(width: Int, height: Int): List<Point> {
             val rightHandArea = listOf(
-                Point(227f, 1407f),
-                Point(283f, 1413f),
-                Point(313f, 1571f),
-                Point(260f, 1511f),
-                Point(230f, 1553f),
-                Point(238f, 1684f),
-                Point(189f, 1609f),
-                Point(196f, 1519f),
-                Point(227f, 1407f)
+                Point(163f, 1406f),
+                Point(122f, 1608f),
+                Point(163f, 1680f),
+                Point(253f, 1567f),
+                Point(218f, 1409f),
+                Point(163f, 1406f)
             )
 
             return rightHandArea.map { it.toProportionalPoint(width, height) }
@@ -162,16 +153,12 @@ enum class BackArea(val image: Int) {
 
         private fun getLeftHandArea(width: Int, height: Int): List<Point> {
             val leftHandArea = listOf(
-                Point(1229f, 1402f),
-                Point(1271f, 1537f),
-                Point(1267f, 1617f),
-                Point(1233f, 1688f),
-                Point(1222f, 1639f),
-                Point(1226f, 1560f),
-                Point(1192f, 1519f),
-                Point(1154f, 1579f),
-                Point(1173f, 1413f),
-                Point(1229f, 1402f)
+                Point(1158f, 1406f),
+                Point(1199f, 1608f),
+                Point(1154f, 1687f),
+                Point(1072f, 1563f),
+                Point(1099f, 1416f),
+                Point(1158f, 1406f)
             )
 
             return leftHandArea.map { it.toProportionalPoint(width, height) }
@@ -179,15 +166,13 @@ enum class BackArea(val image: Int) {
 
         private fun getRightButtockArea(width: Int, height: Int): List<Point> {
             val leftButtockArea = listOf(
-                Point(547f, 1277f),
-                Point(694f, 1315f),
-                Point(724f, 1424f),
-                Point(702f, 1530f),
-                Point(882f, 1492f),
-                Point(585f, 1579f),
-                Point(502f, 1541f),
-                Point(487f, 1439f),
-                Point(547f, 1277f)
+                Point(486f, 1268f),
+                Point(640f, 1316f),
+                Point(650f, 1433f),
+                Point(637f, 1512f),
+                Point(506f, 1567f),
+                Point(414f, 1502f),
+                Point(486f, 1268f)
             )
 
             return leftButtockArea.map { it.toProportionalPoint(width, height) }
@@ -195,13 +180,13 @@ enum class BackArea(val image: Int) {
 
         private fun getLeftButtockArea(width: Int, height: Int): List<Point> {
             val rightButtockArea = listOf(
-                Point(758f, 1311f),
-                Point(913f, 1277f),
-                Point(980f, 1515f),
-                Point(886f, 1571f),
-                Point(777f, 1541f),
-                Point(739f, 1458f),
-                Point(758f, 1311f)
+                Point(691f, 1310f),
+                Point(846f, 1268f),
+                Point(914f, 1502f),
+                Point(808f, 1567f),
+                Point(705f, 1532f),
+                Point(674f, 1443f),
+                Point(691f, 1310f)
             )
 
             return rightButtockArea.map { it.toProportionalPoint(width, height) }
@@ -209,12 +194,12 @@ enum class BackArea(val image: Int) {
 
         private fun getRightThighArea(width: Int, height: Int): List<Point> {
             val rightThighArea = listOf(
-                Point(487f, 1568f),
-                Point(581f, 1598f),
-                Point(698f, 1571f),
-                Point(656f, 1959f),
-                Point(555f, 1959f),
-                Point(487f, 1568f)
+                Point(417f, 1563f),
+                Point(506f, 1587f),
+                Point(630f, 1563f),
+                Point(585f, 1954f),
+                Point(486f, 1954f),
+                Point(417f, 1563f)
             )
 
             return rightThighArea.map { it.toProportionalPoint(width, height) }
@@ -222,12 +207,12 @@ enum class BackArea(val image: Int) {
 
         private fun getLeftThighArea(width: Int, height: Int): List<Point> {
             val leftThighArea = listOf(
-                Point(758f, 1564f),
-                Point(882f, 1601f),
-                Point(984f, 1564f),
-                Point(920f, 1959f),
-                Point(811f, 1959f),
-                Point(758f, 1564f)
+                Point(685f, 1556f),
+                Point(808f, 1587f),
+                Point(911f, 1556f),
+                Point(842f, 1954f),
+                Point(743f, 1954f),
+                Point(685f, 1556f)
             )
 
             return leftThighArea.map { it.toProportionalPoint(width, height) }
@@ -235,11 +220,11 @@ enum class BackArea(val image: Int) {
 
         private fun getRightKneeArea(width: Int, height: Int): List<Point> {
             val rightKneeArea = listOf(
-                Point(524f, 1997f),
-                Point(675f, 1993f),
-                Point(683f, 2118f),
-                Point(523f, 2118f),
-                Point(524f, 1997f)
+                Point(475f, 1988f),
+                Point(589f, 1988f),
+                Point(589f, 2098f),
+                Point(475f, 2098f),
+                Point(475f, 1988f)
             )
 
             return rightKneeArea.map { it.toProportionalPoint(width, height) }
@@ -247,11 +232,11 @@ enum class BackArea(val image: Int) {
 
         private fun getLeftKneeArea(width: Int, height: Int): List<Point> {
             val leftKneeArea = listOf(
-                Point(788f, 1997f),
-                Point(935f, 1993f),
-                Point(928f, 2118f),
-                Point(781f, 2118f),
-                Point(788f, 1997f),
+                Point(733f, 1988f),
+                Point(842f, 1988f),
+                Point(842f, 2105f),
+                Point(733f, 2105f),
+                Point(733f, 1988f),
             )
 
             return leftKneeArea.map { it.toProportionalPoint(width, height) }
@@ -259,14 +244,11 @@ enum class BackArea(val image: Int) {
 
         private fun getRightLegArea(width: Int, height: Int): List<Point> {
             val rightLegArea = listOf(
-                Point(536f, 2144f),
-                Point(679f, 2144f),
-                Point(664f, 2446f),
-                Point(679f, 2675f),
-                Point(577f, 2675f),
-                Point(573f, 2461f),
-                Point(521f, 2246f),
-                Point(536f, 2144f)
+                Point(462f, 2136f),
+                Point(609f, 2136f),
+                Point(595f, 2674f),
+                Point(513f, 2674f),
+                Point(462f, 2136f)
             )
 
             return rightLegArea.map { it.toProportionalPoint(width, height) }
@@ -274,14 +256,11 @@ enum class BackArea(val image: Int) {
 
         private fun getLeftLegArea(width: Int, height: Int): List<Point> {
             val leftLegArea = listOf(
-                Point(781f, 2144f),
-                Point(931f, 2144f),
-                Point(939f, 2227f),
-                Point(898f, 2442f),
-                Point(882f, 2679f),
-                Point(784f, 2672f),
-                Point(796f, 2430f),
-                Point(781f, 2144f)
+                Point(709f, 2143f),
+                Point(856f, 2143f),
+                Point(805f, 2679f),
+                Point(722f, 2679f),
+                Point(709f, 2143f)
             )
 
             return leftLegArea.map { it.toProportionalPoint(width, height) }
@@ -289,11 +268,11 @@ enum class BackArea(val image: Int) {
 
         private fun getRightFootArea(width: Int, height: Int): List<Point> {
             val rightFootArea = listOf(
-                Point(573f, 2694f),
-                Point(671f, 2675f),
-                Point(683f, 2800f),
-                Point(551f, 2800f),
-                Point(573f, 2694f)
+                Point(510f, 2700f),
+                Point(602f, 2700f),
+                Point(616f, 2797f),
+                Point(479f, 2797f),
+                Point(510f, 2700f)
             )
 
             return rightFootArea.map { it.toProportionalPoint(width, height) }
@@ -301,11 +280,11 @@ enum class BackArea(val image: Int) {
 
         private fun getLeftFootArea(width: Int, height: Int): List<Point> {
             val leftFootArea = listOf(
-                Point(784f, 2698f),
-                Point(879f, 2698f),
-                Point(909f, 2800f),
-                Point(773f, 2800f),
-                Point(784f, 2698f)
+                Point(715f, 2700f),
+                Point(808f, 2700f),
+                Point(853f, 2797f),
+                Point(705f, 2797f),
+                Point(715f, 2700f)
             )
 
             return leftFootArea.map { it.toProportionalPoint(width, height) }
