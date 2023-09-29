@@ -69,4 +69,11 @@ class WoundsViewModel @Inject constructor() : ViewModel() {
             selectedWounds = list
         )
     }
+
+    fun onSelectedWoundsHandled() {
+        uiState = uiState.copy(
+            selectedWounds = emptyList(),
+            onBurnSelected = false
+        )
+    }
 }

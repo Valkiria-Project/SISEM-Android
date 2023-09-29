@@ -18,8 +18,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.skgtecnologia.sisem.ui.commons.extensions.getWindowHeight
-import com.skgtecnologia.sisem.ui.commons.extensions.getWindowWidth
 import com.skgtecnologia.sisem.ui.humanbody.area.BASE_HEIGHT
 import com.skgtecnologia.sisem.ui.humanbody.area.BASE_WIDTH
 import com.valkiria.uicomponents.R
@@ -29,8 +27,8 @@ fun HumanBodyComponent(
     onAction: (id: String, wounds: Map<String, List<String>>) -> Unit
 ) {
     val viewModel = hiltViewModel<HumanBodyViewModel>()
-    val height = LocalContext.current.getWindowHeight() ?: BASE_HEIGHT
-    val width = LocalContext.current.getWindowWidth() ?: BASE_WIDTH
+    val width = LocalContext.current.display?.width ?: BASE_WIDTH
+    val height = LocalContext.current.display?.height ?: BASE_HEIGHT
 
     Box(modifier = Modifier.fillMaxSize()) {
         var isFront by rememberSaveable { mutableStateOf(true) }
