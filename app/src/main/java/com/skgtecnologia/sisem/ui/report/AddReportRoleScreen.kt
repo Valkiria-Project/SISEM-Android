@@ -22,7 +22,7 @@ import com.valkiria.uicomponents.components.loader.LoaderComponent
 @Composable
 fun AddReportRoleScreen(
     modifier: Modifier = Modifier,
-    onNavigation: (role: String) -> Unit,
+    onNavigation: () -> Unit,
     onCancel: () -> Unit
 ) {
     val viewModel = hiltViewModel<AddReportRoleViewModel>()
@@ -81,11 +81,11 @@ fun AddReportRoleScreen(
 
 private fun handleUiAction(
     uiAction: UiAction,
-    onNavigation: (role: String) -> Unit
+    onNavigation: () -> Unit
 ) {
     (uiAction as? NewsUiAction)?.let {
         when (uiAction) {
-            is NewsUiAction.NewsStepOneOnChipClick -> onNavigation(uiAction.text)
+            is NewsUiAction.NewsStepOneOnChipClick -> onNavigation()
         }
     }
 }

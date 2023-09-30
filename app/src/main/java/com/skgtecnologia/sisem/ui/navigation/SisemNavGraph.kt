@@ -281,8 +281,8 @@ private fun NavGraphBuilder.reportGraph(
         ) {
             AddReportRoleScreen(
                 modifier = modifier,
-                onNavigation = { role ->
-                    navController.navigate("${ReportNavigationRoute.AddReportScreen.route}/$role")
+                onNavigation = {
+                    navController.navigate(ReportNavigationRoute.AddReportScreen.route)
                 },
                 onCancel = {
                     navController.navigate(NavigationGraph.Main.route) {
@@ -295,12 +295,10 @@ private fun NavGraphBuilder.reportGraph(
         }
 
         composable(
-            route = "${ReportNavigationRoute.AddReportScreen.route}/{${NavigationArgument.ROLE}}",
-            arguments = listOf(navArgument(NavigationArgument.ROLE) { type = NavType.StringType })
+            route = ReportNavigationRoute.AddReportScreen.route,
         ) { backStackEntry ->
             AddReportScreen(
                 viewModel = backStackEntry.sharedViewModel(navController = navController),
-                role = backStackEntry.arguments?.getString(NavigationArgument.ROLE).orEmpty(),
                 onNavigation = { navigationModel ->
                     navigateToNextStep(navController, navigationModel)
                 }
