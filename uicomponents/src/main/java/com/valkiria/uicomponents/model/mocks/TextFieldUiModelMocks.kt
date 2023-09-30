@@ -9,9 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.model.props.TextFieldStyle
+import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
-import com.valkiria.uicomponents.model.props.TextStyle
 import kotlin.random.Random
 
 fun getLoginUserTextFieldUiModel(): TextFieldUiModel {
@@ -48,7 +48,7 @@ fun getPreOpDriverAuxGuardianTextFieldUiModel(): TextFieldUiModel {
             keyboardType = KeyboardType.Number
         ),
         textStyle = TextStyle.HEADLINE_5,
-        style = TextFieldStyle.DATE,
+        style = TextFieldStyle.FIXED_DATE,
         validations = listOf(
             ValidationUiModel(
                 regex = "^(?!\\s*$).+",
