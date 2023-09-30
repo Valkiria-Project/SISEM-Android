@@ -30,7 +30,7 @@ import java.time.Instant
 
 @Suppress("UnusedPrivateMember")
 @Composable
-fun DateTextFieldView(
+fun FixedDateTextFieldView(
     uiModel: TextFieldUiModel,
     validateFields: Boolean,
     onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
