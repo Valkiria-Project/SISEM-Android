@@ -16,7 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.bricks.textfield.DateTextFieldView
+import com.valkiria.uicomponents.bricks.textfield.FixedDateTextFieldView
 import com.valkiria.uicomponents.bricks.textfield.FilledTextFieldView
 import com.valkiria.uicomponents.bricks.textfield.OutlinedTextFieldView
 import com.valkiria.uicomponents.model.mocks.getLoginUserTextFieldUiModel
@@ -54,14 +54,16 @@ fun TextFieldComponent(
         }
 
         when (uiModel.style) {
-            TextFieldStyle.DATE -> DateTextFieldView(
+            TextFieldStyle.DATE_PICKER -> TODO("not implemented")
+
+            TextFieldStyle.FILLED -> FilledTextFieldView(
                 uiModel = uiModel,
                 validateFields = validateFields
             ) { id, updatedValue, fieldValidated ->
                 onAction(id, updatedValue, fieldValidated)
             }
 
-            TextFieldStyle.FILLED -> FilledTextFieldView(
+            TextFieldStyle.FIXED_DATE -> FixedDateTextFieldView(
                 uiModel = uiModel,
                 validateFields = validateFields
             ) { id, updatedValue, fieldValidated ->

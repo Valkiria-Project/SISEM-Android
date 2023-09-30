@@ -88,91 +88,13 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    // region Finding
+    // region AddFinding
     fun cancelFinding() {
         uiState = uiState.copy(
             navigationModel = ReportNavigationModel(
                 cancelFinding = true
             ),
             cancelInfoModel = findingCancellationBanner().mapToUi()
-        )
-    }
-    // endregion
-
-    // region Report
-    fun cancelReport() {
-        uiState = uiState.copy(
-            navigationModel = ReportNavigationModel(
-                cancelReport = true
-            ),
-            cancelInfoModel = reportCancellationBanner().mapToUi()
-        )
-    }
-    // endregion
-
-    fun updateSelectedImages(selectedImages: List<Uri>) {
-        val updateSelectedImages = buildList {
-            addAll(uiState.selectedImageUris)
-
-            selectedImages.forEachIndexed { index, image ->
-                if (imageLimit < uiState.selectedImageUris.size + index + 1) {
-                    uiState = uiState.copy(
-                        errorModel = imagesLimitErrorBanner(imageLimit).mapToUi()
-                    )
-                    return@forEachIndexed
-                } else {
-                    add(image)
-                }
-            }
-        }
-
-        uiState = uiState.copy(
-            selectedImageUris = updateSelectedImages
-        )
-    }
-
-    fun showCamera() {
-        uiState = uiState.copy(
-            navigationModel = ReportNavigationModel(
-                showCamera = true
-            )
-        )
-    }
-
-    fun onPhotoTaken(savedUri: Uri) {
-        val updatedSelectedImages = buildList {
-            uiState.selectedImageUris.forEach {
-                add(it)
-            }
-
-            if (imageLimit < uiState.selectedImageUris.size + 1) {
-                uiState = uiState.copy(
-                    errorModel = imagesLimitErrorBanner(imageLimit).mapToUi()
-                )
-            } else {
-                add(savedUri)
-            }
-        }
-
-        uiState = uiState.copy(
-            selectedImageUris = updatedSelectedImages,
-            navigationModel = ReportNavigationModel(
-                photoTaken = true
-            )
-        )
-    }
-
-    fun removeCurrentImage() {
-        val updateSelectedImages = buildList {
-            uiState.selectedImageUris.mapIndexed { index, uri ->
-                if (index != currentImage) {
-                    add(uri)
-                }
-            }
-        }
-
-        uiState = uiState.copy(
-            selectedImageUris = updateSelectedImages
         )
     }
 
@@ -192,6 +114,39 @@ class ReportViewModel @Inject constructor(
         )
     }
 
+    fun confirmSendFinding() {
+        uiState = uiState.copy(
+            navigationModel = ReportNavigationModel(
+                confirmFinding = true
+            ),
+            confirmInfoModel = findingConfirmationBanner().mapToUi()
+        )
+    }
+
+    @Suppress("UnusedPrivateMember")
+    fun saveFindingWithImages(images: List<String>? = null) {
+        // FIXME: Save to the database with a key and retrieve this afterwards
+        uiState = uiState.copy(
+            confirmInfoModel = null,
+            successInfoModel = findingSavedBanner().mapToUi(),
+            isLoading = false,
+            navigationModel = ReportNavigationModel(
+                closeFinding = true
+            )
+        )
+    }
+    // endregion
+
+    // region AddReport
+    fun cancelReport() {
+        uiState = uiState.copy(
+            navigationModel = ReportNavigationModel(
+                cancelReport = true
+            ),
+            cancelInfoModel = reportCancellationBanner().mapToUi()
+        )
+    }
+
     fun saveReport() {
         val navigationModel = if (isValidTopic && isValidDescription) {
             ReportNavigationModel(
@@ -207,34 +162,12 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    fun confirmSendFinding() {
-        uiState = uiState.copy(
-            navigationModel = ReportNavigationModel(
-                confirmFinding = true
-            ),
-            confirmInfoModel = findingConfirmationBanner().mapToUi()
-        )
-    }
-
     fun confirmSendReport() {
         uiState = uiState.copy(
             navigationModel = ReportNavigationModel(
                 confirmSendReport = true
             ),
             confirmInfoModel = reportConfirmationBanner().mapToUi()
-        )
-    }
-
-    @Suppress("UnusedPrivateMember")
-    fun saveFindingWithImages(images: List<String>? = null) {
-        // FIXME: Save to the database with a key and retrieve this afterwards
-        uiState = uiState.copy(
-            confirmInfoModel = null,
-            successInfoModel = findingSavedBanner().mapToUi(),
-            isLoading = false,
-            navigationModel = ReportNavigationModel(
-                closeFinding = true
-            )
         )
     }
 
@@ -272,6 +205,75 @@ class ReportViewModel @Inject constructor(
                 }
             }
         }
+    }
+    // endregion
+
+    // region ImageConfirmation
+    fun updateSelectedImages(selectedImages: List<Uri>) {
+        val updateSelectedImages = buildList {
+            addAll(uiState.selectedImageUris)
+
+            selectedImages.forEachIndexed { index, image ->
+                if (imageLimit < uiState.selectedImageUris.size + index + 1) {
+                    uiState = uiState.copy(
+                        errorModel = imagesLimitErrorBanner(imageLimit).mapToUi()
+                    )
+                    return@forEachIndexed
+                } else {
+                    add(image)
+                }
+            }
+        }
+
+        uiState = uiState.copy(
+            selectedImageUris = updateSelectedImages
+        )
+    }
+
+    fun removeCurrentImage() {
+        val updateSelectedImages = buildList {
+            uiState.selectedImageUris.mapIndexed { index, uri ->
+                if (index != currentImage) {
+                    add(uri)
+                }
+            }
+        }
+
+        uiState = uiState.copy(
+            selectedImageUris = updateSelectedImages
+        )
+    }
+    // endregion
+
+    fun showCamera() {
+        uiState = uiState.copy(
+            navigationModel = ReportNavigationModel(
+                showCamera = true
+            )
+        )
+    }
+
+    fun onPhotoTaken(savedUri: Uri) {
+        val updatedSelectedImages = buildList {
+            uiState.selectedImageUris.forEach {
+                add(it)
+            }
+
+            if (imageLimit < uiState.selectedImageUris.size + 1) {
+                uiState = uiState.copy(
+                    errorModel = imagesLimitErrorBanner(imageLimit).mapToUi()
+                )
+            } else {
+                add(savedUri)
+            }
+        }
+
+        uiState = uiState.copy(
+            selectedImageUris = updatedSelectedImages,
+            navigationModel = ReportNavigationModel(
+                photoTaken = true
+            )
+        )
     }
 
     fun handleNavigation() {

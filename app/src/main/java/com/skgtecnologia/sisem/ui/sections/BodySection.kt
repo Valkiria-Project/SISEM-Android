@@ -163,7 +163,7 @@ private fun LazyListScope.handleBodyRows(
             is FiltersModel -> stickyHeader(key = model.identifier) {
                 FiltersComponent(
                     uiModel = model.mapToUiModel()
-                ) { selected, isSelection ->
+                ) { selected, _ ->
                     coroutineScope.launch {
                         val contentHeader = body.indexOfFirst {
                             it is HeaderModel && it.title.text == selected
@@ -304,7 +304,7 @@ private fun HandleChipRows(
         AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DOCTOR.name,
         AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DRIVER.name -> ChipComponent(
             uiModel = model.mapToUiModel(),
-            onAction = { onAction(NewsUiAction.NewsStepOneOnChipClick(it)) }
+            onAction = { onAction(NewsUiAction.NewsStepOneOnChipClick) }
         )
 
         else -> ChipComponent(
