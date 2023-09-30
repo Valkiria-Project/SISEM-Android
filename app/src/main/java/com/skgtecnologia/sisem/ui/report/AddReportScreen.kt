@@ -37,6 +37,7 @@ import kotlin.random.Random
 @Composable
 fun AddReportScreen(
     viewModel: ReportViewModel,
+    role: String,
     modifier: Modifier = Modifier,
     onNavigation: (addReportNavigationModel: NavigationModel?) -> Unit
 ) {

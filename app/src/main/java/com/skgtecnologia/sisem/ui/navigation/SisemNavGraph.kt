@@ -295,10 +295,12 @@ private fun NavGraphBuilder.reportGraph(
         }
 
         composable(
-            route = ReportNavigationRoute.AddReportScreen.route,
+            route = "${ReportNavigationRoute.AddReportScreen.route}/{${NavigationArgument.ROLE}}",
+            arguments = listOf(navArgument(NavigationArgument.ROLE) { type = NavType.StringType })
         ) { backStackEntry ->
             AddReportScreen(
                 viewModel = backStackEntry.sharedViewModel(navController = navController),
+                role = backStackEntry.arguments?.getString(NavigationArgument.ROLE).orEmpty(),
                 onNavigation = { navigationModel ->
                     navigateToNextStep(navController, navigationModel)
                 }

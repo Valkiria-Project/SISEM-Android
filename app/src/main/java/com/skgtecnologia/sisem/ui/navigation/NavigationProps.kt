@@ -41,5 +41,6 @@ sealed class ReportNavigationRoute(override val route: String) : NavigationRoute
 
 object NavigationArgument {
     const val FROM = "from"
+    const val ROLE = "operation_role"
     const val REVERT_FINDING = "revert_finding"
 }
