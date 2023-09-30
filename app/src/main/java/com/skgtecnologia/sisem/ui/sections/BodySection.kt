@@ -214,7 +214,7 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is HumanBodyModel -> item(key = model.identifier) {
-                HumanBodyComponent(model = model) { _,_ ->
+                HumanBodyComponent(model = model) { _, _ ->
                     // TODO:, implement action
                 }
             }

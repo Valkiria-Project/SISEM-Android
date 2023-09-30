@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.ui.humanbody.area
 
-const val BASE_WIDTH = 1440 - ((40 * 160)/1400)
+const val BASE_WIDTH = 1440 - ((40 * 160) / 1400)
 const val BASE_HEIGHT = 2900
 const val REAL_BASE_HEIGHT = 3120
 
