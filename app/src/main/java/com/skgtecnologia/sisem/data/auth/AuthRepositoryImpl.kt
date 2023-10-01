@@ -32,6 +32,18 @@ class AuthRepositoryImpl @Inject constructor(
             authCacheDataSource.storeAccessToken(accessTokenModel)
         }.getOrThrow()
 
+    override suspend fun refreshToken(refreshToken: String): AccessTokenModel =
+        authRemoteDataSource.refreshToken(refreshToken = refreshToken)
+            .onSuccess { accessTokenModel ->
+                if (accessTokenModel.isAdmin) {
+                    getAllAccessTokens().forEach { accessToken ->
+                        logout(accessToken.username)
+                    }
+                }
+
+                authCacheDataSource.storeAccessToken(accessTokenModel)
+            }.getOrThrow()
+
     override suspend fun getLastToken(): String? =
         authCacheDataSource.observeAccessToken().first()?.accessToken
 
