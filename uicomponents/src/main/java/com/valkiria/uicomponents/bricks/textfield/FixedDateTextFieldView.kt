@@ -32,7 +32,6 @@ fun FixedDateTextFieldView(
     validateFields: Boolean,
     onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
 ) {
-
     val startLabel = buildString {
         val today = getLocalDateFromInstant(Instant.now())
         val dayOfMonth = today.dayOfMonth.toString().padStart(2, '0')
@@ -90,7 +89,7 @@ fun FixedDateTextFieldViewPreview() {
     Column(
         modifier = Modifier.background(Color.DarkGray)
     ) {
-        OutlinedTextFieldView(
+        FixedDateTextFieldView(
             uiModel = getPreOpDriverAuxGuardianTextFieldUiModel(),
             onAction = { _, _, _ -> },
             validateFields = true
