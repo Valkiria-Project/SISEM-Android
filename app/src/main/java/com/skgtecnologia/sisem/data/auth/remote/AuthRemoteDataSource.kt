@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.data.auth.remote
 
 import com.skgtecnologia.sisem.commons.extensions.mapResult
 import com.skgtecnologia.sisem.data.auth.remote.model.AuthenticateBody
+import com.skgtecnologia.sisem.data.auth.remote.model.RefreshBody
 import com.skgtecnologia.sisem.data.auth.remote.model.mapToDomain
 import com.skgtecnologia.sisem.data.remote.extensions.apiCall
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
@@ -28,6 +29,13 @@ class AuthRemoteDataSource @Inject constructor(
                     idTurn = turnId
                 )
             )
+        }.mapResult {
+            it.mapToDomain()
+        }
+
+    suspend fun refreshToken(refreshToken: String): Result<AccessTokenModel> =
+        apiCall(errorModelFactory) {
+            authApi.refresh(refreshBody = RefreshBody(refreshToken = refreshToken))
         }.mapResult {
             it.mapToDomain()
         }
