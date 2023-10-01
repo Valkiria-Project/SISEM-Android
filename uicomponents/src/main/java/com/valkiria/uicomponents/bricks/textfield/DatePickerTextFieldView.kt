@@ -11,8 +11,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -27,7 +30,7 @@ import java.time.Instant
 
 @Suppress("UnusedPrivateMember")
 @Composable
-fun FixedDateTextFieldView(
+fun DatePickerTextFieldView(
     uiModel: TextFieldUiModel,
     validateFields: Boolean,
     onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
@@ -46,12 +49,14 @@ fun FixedDateTextFieldView(
         mutableStateOf(TextFieldValue(startLabel))
     }
 
-    // FIXME: Do this at IconButton onClick level
+    // FIXME: Do this at the dialog level
     onAction(
         uiModel.identifier,
         date.text,
         true
     )
+
+    var showDialog by remember { mutableStateOf(false) }
 
     OutlinedTextField(
         value = date,
@@ -59,7 +64,10 @@ fun FixedDateTextFieldView(
         readOnly = true,
         modifier = Modifier
             .fillMaxWidth()
-            .imePadding(),
+            .imePadding()
+            .onFocusChanged {
+                showDialog = it.isFocused
+            },
         label = {
             uiModel.label?.let { label ->
                 Text(text = label)
@@ -70,7 +78,7 @@ fun FixedDateTextFieldView(
         trailingIcon = {
             IconButton(
                 onClick = {
-                    // FIXME: Update the date time
+                    showDialog = true
                 }
             ) {
                 Icon(
@@ -86,7 +94,7 @@ fun FixedDateTextFieldView(
 
 @Preview(showBackground = true)
 @Composable
-fun FixedDateTextFieldViewPreview() {
+fun DatePickerTextFieldViewPreview() {
     Column(
         modifier = Modifier.background(Color.DarkGray)
     ) {
