@@ -21,7 +21,7 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
     ): ScreenModel = medicalHistoryRemoteDataSource.getMedicalHistoryScreen(
         serial = serial,
         code = operationCacheDataSource.observeOperationConfig().first()?.vehicleCode.orEmpty(),
-        turnId = "1", //authCacheDataSource.retrieveAccessToken()?.turn?.id?.toString().orEmpty(),
+        turnId = authCacheDataSource.observeAccessToken().first()?.turn?.id.toString(),
         incidentCode = incidentCode,
         patientId = patientId
     ).getOrThrow()

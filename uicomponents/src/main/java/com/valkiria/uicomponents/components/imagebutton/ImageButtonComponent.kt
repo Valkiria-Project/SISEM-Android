@@ -40,6 +40,7 @@ fun ImageButtonComponent(
     }
 }
 
+@Suppress("MagicNumber")
 @Composable
 fun ImageButtonView2(
     uiModel: ImageButtonUiModel2,

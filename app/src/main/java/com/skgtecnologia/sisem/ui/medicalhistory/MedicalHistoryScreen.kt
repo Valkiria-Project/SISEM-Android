@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 
+@Suppress("UnusedPrivateMember")
 @Composable
 fun MedicalHistoryScreen(
     modifier: Modifier = Modifier
