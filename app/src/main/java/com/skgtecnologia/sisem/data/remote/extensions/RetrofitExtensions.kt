@@ -3,7 +3,6 @@ package com.skgtecnologia.sisem.data.remote.extensions
 import okhttp3.Request
 import okhttp3.Response
 
-
 // Bearer Authentication
 private const val HTTP_AUTHORIZATION_HEADER = "Authorization"
 private const val BEARER_TOKEN_PREFIX = "Bearer "
