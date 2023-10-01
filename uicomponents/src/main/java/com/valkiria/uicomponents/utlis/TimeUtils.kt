@@ -7,6 +7,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 const val AMERICA_BOGOTA_TIME_ZONE = "GMT-5"
+const val AMERICA_BOGOTA_ZONE = "America/Bogota"
 const val MINUTES_SECONDS_12_HOURS_PATTERN = "hh:mm"
 
 object TimeUtils {
@@ -19,6 +20,14 @@ object TimeUtils {
         localTime: LocalTime = LocalTime.now(),
         pattern: String = MINUTES_SECONDS_12_HOURS_PATTERN
     ): String = localTime.format(DateTimeFormatter.ofPattern(pattern))
+
+    fun getLocalDateInMillis(selectedDate: LocalDate): Long {
+        return selectedDate
+            .atStartOfDay()
+            .atZone(ZoneId.of(AMERICA_BOGOTA_ZONE))
+            .toInstant()
+            .toEpochMilli()
+    }
 
     fun getLocalHourFromInstantAsInt(instant: Instant): Int {
         val localTime = LocalTime.from(instant.atZone(ZoneId.of(AMERICA_BOGOTA_TIME_ZONE)))
