@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.di
 
 import com.skgtecnologia.sisem.BuildConfig
+import com.skgtecnologia.sisem.data.remote.interceptors.AccessTokenAuthenticator
 import com.skgtecnologia.sisem.data.remote.interceptors.AccessTokenInterceptor
 import com.skgtecnologia.sisem.data.remote.interceptors.AuditInterceptor
 import com.skgtecnologia.sisem.di.qualifiers.BearerAuthentication
@@ -24,8 +25,9 @@ object BearerNetworkModule {
     @Singleton
     @Provides
     internal fun providesOkHttpClient(
-        loggingInterceptor: HttpLoggingInterceptor?,
         auditInterceptor: AuditInterceptor,
+        accessTokenAuthenticator: AccessTokenAuthenticator,
+        loggingInterceptor: HttpLoggingInterceptor?,
         accessTokenInterceptor: AccessTokenInterceptor
     ): OkHttpClient = OkHttpClient.Builder().apply {
         connectTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
@@ -34,6 +36,7 @@ object BearerNetworkModule {
         loggingInterceptor?.also { addInterceptor(it) }
         addInterceptor(auditInterceptor)
         addInterceptor(accessTokenInterceptor)
+        authenticator(accessTokenAuthenticator)
     }.build()
 
     @BearerAuthentication
