@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.ui.text.google.fonts)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
+    implementation(libs.material.icons.extended)
 
     // Logging
     implementation(libs.timber)
