@@ -13,7 +13,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.model.toLegalContentModel
-import com.skgtecnologia.sisem.ui.bottomsheet.LegalContent
+import com.skgtecnologia.sisem.ui.login.legal.LegalContent
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.LoginUiAction
@@ -23,7 +23,7 @@ import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
 import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.banner.OnErrorHandler
+import com.valkiria.uicomponents.components.banner.OnBannerHandler
 import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
@@ -87,13 +87,13 @@ fun LoginScreen(
         }
     }
 
-    OnErrorHandler(uiState.warning) {
+    OnBannerHandler(uiState.warning) {
         viewModel.onNavigationHandled()
         viewModel.handleShownWarning()
         onNavigation(uiState.navigationModel)
     }
 
-    OnErrorHandler(uiState.errorModel) {
+    OnBannerHandler(uiState.errorModel) {
         viewModel.handleShownError()
     }
 

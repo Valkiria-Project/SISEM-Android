@@ -18,6 +18,12 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
         val status: Boolean
     ) : GenericUiAction(identifier)
 
+    data class ChipSelectionAction(
+        override val identifier: String,
+        val text: String,
+        val status: Boolean
+    ) : GenericUiAction(identifier)
+
     data class FindingAction(
         override val identifier: String,
         val status: Boolean
@@ -38,6 +44,11 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
     data class SegmentedSwitchAction(
         override val identifier: String,
         val status: Boolean
+    ) : GenericUiAction(identifier)
+
+    data class SliderAction(
+        override val identifier: String,
+        val value: Int
     ) : GenericUiAction(identifier)
 }
 
@@ -96,7 +107,7 @@ sealed class ChangePasswordUiAction : UiAction {
 }
 
 sealed class NewsUiAction : UiAction {
-    data class NewsStepOneOnChipClick(val text: String) : NewsUiAction()
+    data object NewsStepOneOnChipClick : NewsUiAction()
 }
 
 sealed class RecordNewsUiAction : UiAction {

@@ -2,6 +2,7 @@ package com.valkiria.uicomponents.components.segmentedswitch
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -15,7 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,8 +25,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.valkiria.uicomponents.model.mocks.getDeviceAuthSegmentedSwitchUiModel
+import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.props.toTextStyle
 import com.valkiria.uicomponents.model.ui.segmentedswitch.SegmentedSwitchUiModel
+import timber.log.Timber
 
 @Suppress("LongMethod", "MagicNumber", "UnusedPrivateMember")
 @Composable
@@ -33,8 +36,17 @@ fun SegmentedSwitchComponent(
     uiModel: SegmentedSwitchUiModel,
     onAction: (id: String, status: Boolean) -> Unit
 ) {
+    Timber.d("Segmented: SegmentedSwitchComponent pass")
+    if (uiModel.identifier == "14") {
+        Timber.d("Segmented: id ${uiModel.identifier} and selected ${uiModel.selected}")
+    }
     val items = uiModel.options.map { it.text }
-    var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
+    var selectedIndex by remember(uiModel.selected) {
+        mutableIntStateOf(if (uiModel.selected) 0 else 1)
+    }
+    if (uiModel.identifier == "14") {
+        Timber.d("Segmented: id ${uiModel.identifier} and selectedIndex $selectedIndex")
+    }
 
     Row(
         modifier = uiModel.modifier.fillMaxWidth(),
@@ -60,7 +72,7 @@ fun SegmentedSwitchComponent(
                             Modifier
                                 .wrapContentSize()
                                 .offset(0.dp, 0.dp)
-                                .zIndex(if (selectedIndex == index) 1f else 0f)
+                                .zIndex(if (selectedIndex == 0) 1f else 0f)
                         }
 
                         else -> {
@@ -114,6 +126,7 @@ fun SegmentedSwitchComponent(
                     } else {
                         ButtonDefaults.outlinedButtonColors(containerColor = Color.DarkGray)
                     },
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
                 ) {
                     Text(
                         text = item,
@@ -122,7 +135,8 @@ fun SegmentedSwitchComponent(
                         } else {
                             Color.White
                         },
-                        maxLines = 1
+                        maxLines = 1,
+                        style = TextStyle.BUTTON_2.toTextStyle()
                     )
                 }
             }

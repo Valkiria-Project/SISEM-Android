@@ -5,6 +5,8 @@ import com.skgtecnologia.sisem.data.auth.remote.AuthRemoteDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -17,8 +19,9 @@ class AuthRepositoryImpl @Inject constructor(
         authRemoteDataSource.authenticate(
             username = username,
             password = password,
-            code = operationCacheDataSource.retrieveOperationConfig()?.vehicleCode.orEmpty(),
-            turnId = authCacheDataSource.retrieveAccessToken()?.turn?.id?.toString().orEmpty()
+            code = operationCacheDataSource.observeOperationConfig().first()?.vehicleCode.orEmpty(),
+            turnId = authCacheDataSource.observeAccessToken().first()?.turn?.id?.toString()
+                .orEmpty()
         ).onSuccess { accessTokenModel ->
             if (accessTokenModel.isAdmin) {
                 getAllAccessTokens().forEach { accessToken ->
@@ -29,11 +32,23 @@ class AuthRepositoryImpl @Inject constructor(
             authCacheDataSource.storeAccessToken(accessTokenModel)
         }.getOrThrow()
 
-    override suspend fun getLastToken(): String? =
-        authCacheDataSource.retrieveAccessToken()?.accessToken
+    override suspend fun refreshToken(refreshToken: String): AccessTokenModel =
+        authRemoteDataSource.refreshToken(refreshToken = refreshToken)
+            .onSuccess { accessTokenModel ->
+                if (accessTokenModel.isAdmin) {
+                    getAllAccessTokens().forEach { accessToken ->
+                        logout(accessToken.username)
+                    }
+                }
 
-    override suspend fun getLastAccessToken(): AccessTokenModel? =
-        authCacheDataSource.retrieveAccessToken()
+                authCacheDataSource.storeAccessToken(accessTokenModel)
+            }.getOrThrow()
+
+    override suspend fun getLastToken(): String? =
+        authCacheDataSource.observeAccessToken().first()?.accessToken
+
+    override suspend fun observeCurrentAccessToken(): Flow<AccessTokenModel?> =
+        authCacheDataSource.observeAccessToken()
 
     override suspend fun getAllAccessTokens(): List<AccessTokenModel> =
         authCacheDataSource.retrieveAllAccessTokens()

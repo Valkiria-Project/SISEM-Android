@@ -11,11 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -30,12 +27,11 @@ import java.time.Instant
 
 @Suppress("UnusedPrivateMember")
 @Composable
-fun DateTextFieldView(
+fun FixedDateTextFieldView(
     uiModel: TextFieldUiModel,
     validateFields: Boolean,
     onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
 ) {
-
     val startLabel = buildString {
         val today = getLocalDateFromInstant(Instant.now())
         val dayOfMonth = today.dayOfMonth.toString().padStart(2, '0')
@@ -49,14 +45,12 @@ fun DateTextFieldView(
         mutableStateOf(TextFieldValue(startLabel))
     }
 
-    // FIXME: Do this at the dialog level
+    // FIXME: Do this at IconButton onClick level
     onAction(
         uiModel.identifier,
         date.text,
         true
     )
-
-    var showDialog by remember { mutableStateOf(false) }
 
     OutlinedTextField(
         value = date,
@@ -64,10 +58,7 @@ fun DateTextFieldView(
         readOnly = true,
         modifier = Modifier
             .fillMaxWidth()
-            .imePadding()
-            .onFocusChanged {
-                showDialog = it.isFocused
-            },
+            .imePadding(),
         label = {
             uiModel.label?.let { label ->
                 Text(text = label)
@@ -78,12 +69,12 @@ fun DateTextFieldView(
         trailingIcon = {
             IconButton(
                 onClick = {
-                    showDialog = true
+                    // FIXME: Update the date time
                 }
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(
-                        id = R.drawable.ic_update
+                        id = R.drawable.ic_update_time
                     ),
                     contentDescription = null
                 )
@@ -94,11 +85,11 @@ fun DateTextFieldView(
 
 @Preview(showBackground = true)
 @Composable
-fun DateTextFieldViewPreview() {
+fun FixedDateTextFieldViewPreview() {
     Column(
         modifier = Modifier.background(Color.DarkGray)
     ) {
-        OutlinedTextFieldView(
+        FixedDateTextFieldView(
             uiModel = getPreOpDriverAuxGuardianTextFieldUiModel(),
             onAction = { _, _, _ -> },
             validateFields = true

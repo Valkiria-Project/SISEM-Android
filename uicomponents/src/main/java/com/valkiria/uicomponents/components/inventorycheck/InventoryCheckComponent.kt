@@ -67,6 +67,7 @@ fun InventoryCheckComponent(
                     DigitsTextFieldView(
                         identifier = checkItemUiModel.name.identifier,
                         style = checkItemUiModel.registeredValueTextStyle.toTextStyle(),
+                        validations = uiModel.validations,
                         validateFields = validateFields
                     ) { id, updatedValue, fieldValidated ->
                         onAction(id, updatedValue, fieldValidated)

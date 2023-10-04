@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.bottomsheet
+package com.skgtecnologia.sisem.ui.login.legal
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

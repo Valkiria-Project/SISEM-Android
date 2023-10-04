@@ -25,6 +25,7 @@ import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.map.MapScreen
 import com.skgtecnologia.sisem.ui.media.CameraScreen
 import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
 import com.skgtecnologia.sisem.ui.report.AddFindingScreen
@@ -117,9 +118,13 @@ private fun NavGraphBuilder.authGraph(
 
         composable(
             route = AuthNavigationRoute.PreOperationalScreen.route
-        ) {
+        ) { navBackStackEntry ->
+            val revertFinding = navBackStackEntry.savedStateHandle.get<Boolean>(REVERT_FINDING)
+            navBackStackEntry.savedStateHandle.remove<Boolean>(REVERT_FINDING)
+
             PreOperationalScreen(
-                modifier = modifier
+                modifier = modifier,
+                revertFinding = revertFinding
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
@@ -152,7 +157,7 @@ private fun NavGraphBuilder.mainGraph(
             route = MainNavigationRoute.MainScreen.route
         ) {
             MapScreen(
-                onClick = { menuNavigationRoute ->
+                onAction = { menuNavigationRoute ->
                     navController.navigate(menuNavigationRoute.route)
                 },
                 onLogout = {
@@ -237,12 +242,10 @@ private fun NavGraphBuilder.reportGraph(
         route = NavigationGraph.Report.route
     ) {
         composable(
-            route = "${ReportNavigationRoute.AddFindingScreen.route}/{${NavigationArgument.ROLE}}",
-            arguments = listOf(navArgument(NavigationArgument.ROLE) { type = NavType.StringType })
+            route = ReportNavigationRoute.AddFindingScreen.route,
         ) { backStackEntry ->
             AddFindingScreen(
                 viewModel = backStackEntry.sharedViewModel(navController = navController),
-                role = backStackEntry.arguments?.getString(NavigationArgument.ROLE).orEmpty(),
                 modifier = modifier
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
@@ -278,8 +281,8 @@ private fun NavGraphBuilder.reportGraph(
         ) {
             AddReportRoleScreen(
                 modifier = modifier,
-                onNavigation = { role ->
-                    navController.navigate("${ReportNavigationRoute.AddReportScreen.route}/$role")
+                onNavigation = {
+                    navController.navigate(ReportNavigationRoute.AddReportScreen.route)
                 },
                 onCancel = {
                     navController.navigate(NavigationGraph.Main.route) {
@@ -292,12 +295,10 @@ private fun NavGraphBuilder.reportGraph(
         }
 
         composable(
-            route = "${ReportNavigationRoute.AddReportScreen.route}/{${NavigationArgument.ROLE}}",
-            arguments = listOf(navArgument(NavigationArgument.ROLE) { type = NavType.StringType })
+            route = ReportNavigationRoute.AddReportScreen.route,
         ) { backStackEntry ->
             AddReportScreen(
                 viewModel = backStackEntry.sharedViewModel(navController = navController),
-                role = backStackEntry.arguments?.getString(NavigationArgument.ROLE).orEmpty(),
                 onNavigation = { navigationModel ->
                     navigateToNextStep(navController, navigationModel)
                 }

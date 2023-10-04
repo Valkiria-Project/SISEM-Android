@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.navigation.NavHostController
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.model.DeviceAuthNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
@@ -13,9 +14,7 @@ fun getAppStartDestination(model: StartupNavigationModel?): String {
         NavigationGraph.Auth.route
     } else when {
         model.isAdmin && !model.vehicleCode.isNullOrEmpty() -> NavigationGraph.Main.route
-
         model.isTurnStarted -> NavigationGraph.Main.route
-
         else -> NavigationGraph.Auth.route
     }
 }
@@ -37,6 +36,7 @@ fun navigateToNextStep(
         is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
         is DeviceAuthNavigationModel ->
             deviceAuthToNextStep(navController, navigationModel, onNavigationFallback)
+
         else -> {}
     }
 
@@ -45,7 +45,6 @@ private fun loginToNextStep(
     model: LoginNavigationModel
 ) = when {
     model.isWarning -> navController.navigate(AuthNavigationRoute.ChangePasswordScreen.route)
-
     model.isAdmin && model.requiresDeviceAuth ->
         navController.navigate("${AuthNavigationRoute.DeviceAuthScreen.route}/$LOGIN")
 
@@ -87,9 +86,13 @@ private fun preOpToNextStep(
     }
 
     model.isNewFinding ->
-        navController.navigate("${ReportNavigationRoute.AddFindingScreen.route}/${model.role}")
+        navController.navigate(ReportNavigationRoute.AddFindingScreen.route)
 
-    else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route)
+    else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
+        popUpTo(AuthNavigationRoute.PreOperationalScreen.route) {
+            inclusive = true
+        }
+    }
 }
 
 private fun reportToNextStep(
@@ -97,16 +100,18 @@ private fun reportToNextStep(
     model: ReportNavigationModel
 ) {
     when {
-        model.goBack || model.photoTaken -> navController.popBackStack()
+        model.goBack -> with(navController) {
+            popBackStack()
 
+            currentBackStackEntry
+                ?.savedStateHandle
+                ?.set(REVERT_FINDING, true)
+        }
+
+        model.photoTaken -> navController.popBackStack()
         model.showCamera -> navController.navigate(ReportNavigationRoute.CameraScreen.route)
-
-        model.saveFinding && model.imagesSize > 0 -> navController.navigate(
+        model.closeFinding && model.imagesSize > 0 -> navController.navigate(
             "${ReportNavigationRoute.ImagesConfirmationScreen.route}/finding"
-        )
-
-        model.saveReport && model.imagesSize > 0 -> navController.navigate(
-            "${ReportNavigationRoute.ImagesConfirmationScreen.route}/recordNews"
         )
 
         model.closeFinding -> navController.popBackStack(
@@ -114,11 +119,16 @@ private fun reportToNextStep(
             inclusive = false
         )
 
-        model.closeReport -> navController.navigate(NavigationGraph.Main.route) {
-            popUpTo(ReportNavigationRoute.AddReportRoleScreen.route) {
-                inclusive = true
+        model.closeReport && model.imagesSize > 0 -> navController.navigate(
+            "${ReportNavigationRoute.ImagesConfirmationScreen.route}/recordNews"
+        )
+
+        model.closeReport ->
+            navController.navigate(NavigationGraph.Main.route) {
+                popUpTo(ReportNavigationRoute.AddReportRoleScreen.route) {
+                    inclusive = true
+                }
             }
-        }
     }
 }
 

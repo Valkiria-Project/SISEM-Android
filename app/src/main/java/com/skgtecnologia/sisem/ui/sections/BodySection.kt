@@ -62,6 +62,7 @@ import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.card.InfoCardComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
 import com.valkiria.uicomponents.components.chip.ChipOptionsComponent
+import com.valkiria.uicomponents.components.chip.ChipSelectionComponent
 import com.valkiria.uicomponents.components.chip.FiltersComponent
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListComponent
 import com.valkiria.uicomponents.components.finding.FindingComponent
@@ -69,6 +70,7 @@ import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckCompone
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
+import com.valkiria.uicomponents.components.slider.SliderComponent
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
 import com.valkiria.uicomponents.components.textfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
@@ -136,7 +138,15 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is ChipSelectionModel -> item(key = model.identifier) {
-                TODO("Create ChipSelectionComponent")
+                ChipSelectionComponent(uiModel = model.mapToUiModel()) { id, text, isSelection ->
+                    onAction(
+                        GenericUiAction.ChipSelectionAction(
+                            identifier = id,
+                            text = text,
+                            status = isSelection
+                        )
+                    )
+                }
             }
 
             is DropDownModel -> item(key = model.identifier) {
@@ -154,7 +164,7 @@ private fun LazyListScope.handleBodyRows(
             is FiltersModel -> stickyHeader(key = model.identifier) {
                 FiltersComponent(
                     uiModel = model.mapToUiModel()
-                ) { selected, isSelection ->
+                ) { selected, _ ->
                     coroutineScope.launch {
                         val contentHeader = body.indexOfFirst {
                             it is HeaderModel && it.title.text == selected
@@ -228,7 +238,9 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is SliderModel -> item(key = model.identifier) {
-                TODO("Create SliderComponent")
+                SliderComponent(uiModel = model.mapToUiModel()) { id, value ->
+                    onAction(GenericUiAction.SliderAction(identifier = id, value = value))
+                }
             }
 
             is PasswordTextFieldModel -> item(key = model.identifier) {
@@ -295,7 +307,7 @@ private fun HandleChipRows(
         AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DOCTOR.name,
         AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DRIVER.name -> ChipComponent(
             uiModel = model.mapToUiModel(),
-            onClick = { onAction(NewsUiAction.NewsStepOneOnChipClick(it)) }
+            onAction = { onAction(NewsUiAction.NewsStepOneOnChipClick) }
         )
 
         else -> ChipComponent(

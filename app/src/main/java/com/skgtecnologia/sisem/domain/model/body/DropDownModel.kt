@@ -8,7 +8,7 @@ data class DropDownModel(
     val identifier: String,
     val label: String,
     val options: List<DropDownItemUiModel>,
-    val selected: String? = null,
+    val selected: String?,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier
 ) : BodyRowModel {

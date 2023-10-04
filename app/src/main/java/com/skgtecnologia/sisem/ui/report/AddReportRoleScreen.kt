@@ -16,13 +16,13 @@ import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.NewsUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.banner.OnErrorHandler
+import com.valkiria.uicomponents.components.banner.OnBannerHandler
 import com.valkiria.uicomponents.components.loader.LoaderComponent
 
 @Composable
 fun AddReportRoleScreen(
     modifier: Modifier = Modifier,
-    onNavigation: (role: String) -> Unit,
+    onNavigation: () -> Unit,
     onCancel: () -> Unit
 ) {
     val viewModel = hiltViewModel<AddReportRoleViewModel>()
@@ -69,7 +69,7 @@ fun AddReportRoleScreen(
         }
     }
 
-    OnErrorHandler(uiState.errorModel) {
+    OnBannerHandler(uiState.errorModel) {
         viewModel.handleShownError()
     }
 
@@ -81,11 +81,11 @@ fun AddReportRoleScreen(
 
 private fun handleUiAction(
     uiAction: UiAction,
-    onNavigation: (role: String) -> Unit
+    onNavigation: () -> Unit
 ) {
     (uiAction as? NewsUiAction)?.let {
         when (uiAction) {
-            is NewsUiAction.NewsStepOneOnChipClick -> onNavigation(uiAction.text)
+            is NewsUiAction.NewsStepOneOnChipClick -> onNavigation()
         }
     }
 }

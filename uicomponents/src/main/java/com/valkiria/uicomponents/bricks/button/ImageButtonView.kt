@@ -16,10 +16,10 @@ import com.valkiria.uicomponents.model.ui.button.ImageButtonUiModel
 @Composable
 fun ImageButtonView(
     uiModel: ImageButtonUiModel,
-    onClick: () -> Unit
+    onAction: (id: String) -> Unit
 ) {
     Column(
-        modifier = uiModel.modifier.clickable { onClick() },
+        modifier = uiModel.modifier.clickable { onAction(uiModel.identifier) },
         horizontalAlignment = uiModel.alignment
     ) {
         Image(

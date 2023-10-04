@@ -11,10 +11,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
@@ -25,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.header.imagesConfirmationHeader
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
-import com.skgtecnologia.sisem.ui.bottomsheet.PagerIndicator
+import com.skgtecnologia.sisem.ui.authcards.report.PagerIndicator
 import com.skgtecnologia.sisem.ui.commons.extensions.decodeAsBitmap
 import com.skgtecnologia.sisem.ui.commons.extensions.encodeAsBase64
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
@@ -35,7 +37,7 @@ import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.button.ButtonView
-import com.valkiria.uicomponents.components.banner.OnErrorHandler
+import com.valkiria.uicomponents.components.banner.OnBannerHandler
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import com.valkiria.uicomponents.model.props.ButtonSize
 import com.valkiria.uicomponents.model.props.ButtonStyle
@@ -46,6 +48,7 @@ import timber.log.Timber
 import kotlin.random.Random
 
 @Suppress("LongMethod", "MagicNumber")
+@androidx.compose.foundation.ExperimentalFoundationApi
 @Composable
 fun ImagesConfirmationScreen(
     viewModel: ReportViewModel,
@@ -56,7 +59,19 @@ fun ImagesConfirmationScreen(
     val uiState = viewModel.uiState
     val contentResolver = LocalContext.current.contentResolver
 
-    LaunchedEffect(uiState) {
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        viewModel.uiState.selectedImageUris.size
+    }
+
+    LaunchedEffect(uiState, pagerState) {
+        snapshotFlow { pagerState.currentPage }.collect { page ->
+            Timber.d("Page change", "Page changed to $page")
+            viewModel.currentImage = page
+        }
+
         with(uiState) {
             when {
                 navigationModel != null && successInfoModel == null && confirmInfoModel == null -> {
@@ -78,7 +93,7 @@ fun ImagesConfirmationScreen(
             )
         ) { uiAction ->
             if (uiAction is HeaderUiAction.GoBack) {
-                viewModel.goBack()
+                viewModel.navigateBack()
             }
         }
 
@@ -101,7 +116,7 @@ fun ImagesConfirmationScreen(
                     modifier = Modifier
                 )
             ) {
-                Timber.d("Eliminar clicked")
+                viewModel.removeCurrentImage()
             }
 
             ButtonView(
@@ -129,25 +144,25 @@ fun ImagesConfirmationScreen(
             uri.decodeAsBitmap(LocalContext.current.contentResolver)
         }
 
-        ImagesPager(bitmaps)
+        ImagesPager(pagerState = pagerState, images = bitmaps)
     }
 
-    OnErrorHandler(uiState.confirmInfoModel) {
+    OnBannerHandler(uiState.confirmInfoModel) {
         handleAction(it, from, contentResolver, viewModel)
     }
 
-    OnErrorHandler(uiState.successInfoModel) {
+    OnBannerHandler(uiState.successInfoModel) {
         onNavigation(uiState.navigationModel)
     }
 
-    OnErrorHandler(uiState.errorModel) {
+    OnBannerHandler(uiState.errorModel) {
         viewModel.handleShownError()
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)
 }
 
-fun handleAction(
+private fun handleAction(
     uiAction: UiAction,
     from: String,
     contentResolver: ContentResolver,
@@ -166,7 +181,7 @@ fun handleAction(
                 if (from == "recordNews") {
                     viewModel.sendReport(images)
                 } else {
-                    viewModel.saveFinding(images)
+                    viewModel.saveFindingWithImages(images)
                 }
 
                 viewModel.handleShownConfirm()
@@ -176,16 +191,9 @@ fun handleAction(
 }
 
 @Composable
-private fun ImagesPager(images: List<Bitmap>) {
+private fun ImagesPager(pagerState: PagerState, images: List<Bitmap>) {
     val pageCount = images.size
     Box {
-        val pagerState = rememberPagerState(
-            initialPage = 0,
-            initialPageOffsetFraction = 0f
-        ) {
-            pageCount
-        }
-
         HorizontalPager(state = pagerState) { index ->
             Image(
                 bitmap = images[index].asImageBitmap(),

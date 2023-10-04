@@ -9,7 +9,7 @@ import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
 import com.skgtecnologia.sisem.domain.auth.usecases.Logout
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
-import com.skgtecnologia.sisem.domain.operation.usecases.RetrieveOperationConfig
+import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -21,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MenuViewModel @Inject constructor(
     private val getAllAccessTokens: GetAllAccessTokens,
-    private val retrieveOperationConfig: RetrieveOperationConfig,
+    private val observeOperationConfig: ObserveOperationConfig,
     private val logout: Logout
 ) : ViewModel() {
 
@@ -76,7 +76,7 @@ class MenuViewModel @Inject constructor(
     }
 
     private suspend fun retrieveOperationConfig(accessTokenModel: List<AccessTokenModel>) {
-        retrieveOperationConfig.invoke()
+        observeOperationConfig.invoke()
             .onSuccess { operationModel ->
                 withContext(Dispatchers.Main) {
                     uiState = uiState.copy(
