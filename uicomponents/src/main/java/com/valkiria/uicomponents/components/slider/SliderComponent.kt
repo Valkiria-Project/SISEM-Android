@@ -57,18 +57,18 @@ fun SliderComponent(
                 onAction(uiModel.identifier, value.toInt())
             },
             thumb = {
-                SliderLabel(value = value.roundToInt())
+                SliderThumb(value = value.roundToInt())
             },
             colors = SliderDefaults.colors(
                 thumbColor = getColorFromValue(value.roundToInt()),
-                activeTrackColor = getColorFromValue(value.roundToInt()),
+                activeTrackColor = getColorFromValue(value.roundToInt())
             )
         )
     }
 }
 
 @Composable
-private fun SliderLabel(value: Int) {
+private fun SliderThumb(value: Int) {
     Box(
         modifier = Modifier.padding(bottom = 40.dp),
         contentAlignment = Alignment.Center
