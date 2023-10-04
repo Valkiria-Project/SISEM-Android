@@ -164,6 +164,13 @@ fun deviceAuthToNextStep(
                 }
             }
 
+        model.isCancel && model.from == MAIN ->
+            navController.navigate(NavigationGraph.Main.route) {
+                popUpTo(AuthNavigationRoute.DeviceAuthScreen.route) {
+                    inclusive = true
+                }
+            }
+
         model.isCancel -> {
             val goBack = navController.popBackStack()
             if (!goBack) {
