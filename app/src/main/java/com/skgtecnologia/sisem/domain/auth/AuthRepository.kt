@@ -7,7 +7,7 @@ interface AuthRepository {
 
     suspend fun authenticate(username: String, password: String): AccessTokenModel
 
-    suspend fun refreshToken(refreshToken: String): AccessTokenModel
+    suspend fun refreshToken(currentToken: AccessTokenModel): AccessTokenModel
 
     suspend fun getLastToken(): String?
 

@@ -4,6 +4,7 @@ import com.skgtecnologia.sisem.data.auth.remote.model.AccessTokenResponse
 import com.skgtecnologia.sisem.data.auth.remote.model.AuthenticateBody
 import com.skgtecnologia.sisem.data.auth.remote.model.LogoutResponse
 import com.skgtecnologia.sisem.data.auth.remote.model.RefreshBody
+import com.skgtecnologia.sisem.data.auth.remote.model.RefreshTokenResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -20,7 +21,7 @@ interface AuthApi {
     @POST("auth/refresh-token")
     suspend fun refresh(
         @Body refreshBody: RefreshBody
-    ): Response<AccessTokenResponse>
+    ): Response<RefreshTokenResponse>
 
     @GET("auth/logout")
     suspend fun logout(
