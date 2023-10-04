@@ -45,6 +45,11 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
         override val identifier: String,
         val status: Boolean
     ) : GenericUiAction(identifier)
+
+    data class SliderAction(
+        override val identifier: String,
+        val value: Int
+    ) : GenericUiAction(identifier)
 }
 
 sealed class HeaderUiAction : UiAction {
