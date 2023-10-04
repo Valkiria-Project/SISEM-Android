@@ -45,8 +45,8 @@ private const val MAX_FINDINGS = 3
 fun InfoCardComponent(
     uiModel: InfoCardUiModel,
     onAction: () -> Unit,
-    onNewsAction: (reportDetail: ReportsDetailUiModel) -> Unit,
-    onFindingsAction: (chipSection: ChipSectionUiModel) -> Unit
+    onNewsAction: (reportDetail: ReportsDetailUiModel) -> Unit = {},
+    onFindingsAction: (chipSection: ChipSectionUiModel) -> Unit = {}
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon, DefType.DRAWABLE
@@ -119,38 +119,40 @@ fun InfoCardComponent(
                     }
                 }
 
-                Row(
-                    modifier = Modifier.padding(top = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(end = 8.dp),
-                        painter = painterResource(id = R.drawable.ic_calendar),
-                        contentDescription = "",
-                        tint = MaterialTheme.colorScheme.primary,
-                    )
+                uiModel.dateTextStyle?.let {
+                    Row(
+                        modifier = Modifier.padding(top = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(end = 8.dp),
+                            painter = painterResource(id = R.drawable.ic_calendar),
+                            contentDescription = "",
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
 
-                    Text(
-                        text = uiModel.dateText?.split(" - ")?.firstOrNull().orEmpty(),
-                        style = uiModel.dateTextStyle.toTextStyle(),
-                        modifier = Modifier.padding(end = 12.dp),
-                    )
+                        Text(
+                            text = uiModel.dateText?.split(" - ")?.firstOrNull().orEmpty(),
+                            style = uiModel.dateTextStyle.toTextStyle(),
+                            modifier = Modifier.padding(end = 12.dp),
+                        )
 
-                    Icon(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(end = 8.dp),
-                        painter = painterResource(id = R.drawable.ic_clock),
-                        contentDescription = "",
-                        tint = MaterialTheme.colorScheme.primary,
-                    )
+                        Icon(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(end = 8.dp),
+                            painter = painterResource(id = R.drawable.ic_clock),
+                            contentDescription = "",
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
 
-                    Text(
-                        text = uiModel.dateText?.split(" - ")?.lastOrNull().orEmpty(),
-                        style = uiModel.dateTextStyle.toTextStyle(),
-                    )
+                        Text(
+                            text = uiModel.dateText?.split(" - ")?.lastOrNull().orEmpty(),
+                            style = uiModel.dateTextStyle.toTextStyle(),
+                        )
+                    }
                 }
 
                 uiModel.chipSection?.let { it ->
@@ -166,18 +168,26 @@ fun InfoCardComponent(
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
-                        it.listText.forEachIndexed { index, text ->
-                            if (index < MAX_FINDINGS) {
-                                SuggestionChipView(text = text, textStyle = it.listTextStyle)
-                            } else {
-                                SuggestionChipView(
-                                    text = "...",
-                                    textStyle = it.listTextStyle,
-                                ) { _ ->
-                                    onFindingsAction(it)
-                                }
+                        var count = 0
 
-                                return@forEachIndexed
+                        it.listText.forEachIndexed { index, text ->
+                            when {
+                                uiModel.dateTextStyle == null ->
+                                    SuggestionChipView(text = text, textStyle = it.listTextStyle)
+
+                                index < MAX_FINDINGS ->
+                                    SuggestionChipView(text = text, textStyle = it.listTextStyle)
+
+                                count == 0 -> {
+                                    SuggestionChipView(
+                                        text = "...",
+                                        textStyle = it.listTextStyle,
+                                    ) { _ ->
+                                        onFindingsAction(it)
+                                    }
+
+                                    count++
+                                }
                             }
                         }
                     }
