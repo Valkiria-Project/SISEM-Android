@@ -332,6 +332,10 @@ private fun HandleInfoCardRows(
                 onFindingsAction = { onAction(AuthCardsUiAction.AuthCardFindings(it)) }
             )
         }
+        else -> InfoCardComponent(
+            uiModel = model.mapToUiModel(),
+            onAction = { onAction(AuthCardsUiAction.AuthCard) }
+        )
     }
 }
 
