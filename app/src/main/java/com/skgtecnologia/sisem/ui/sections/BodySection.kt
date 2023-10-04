@@ -70,6 +70,7 @@ import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckCompone
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
+import com.valkiria.uicomponents.components.slider.SliderComponent
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
 import com.valkiria.uicomponents.components.textfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
@@ -237,7 +238,9 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is SliderModel -> item(key = model.identifier) {
-                TODO("Create SliderComponent")
+                SliderComponent(uiModel = model.mapToUiModel()) { id, value ->
+                    onAction(GenericUiAction.SliderAction(identifier = id, value = value))
+                }
             }
 
             is PasswordTextFieldModel -> item(key = model.identifier) {
@@ -329,6 +332,10 @@ private fun HandleInfoCardRows(
                 onFindingsAction = { onAction(AuthCardsUiAction.AuthCardFindings(it)) }
             )
         }
+        else -> InfoCardComponent(
+            uiModel = model.mapToUiModel(),
+            onAction = { onAction(AuthCardsUiAction.AuthCard) }
+        )
     }
 }
 
