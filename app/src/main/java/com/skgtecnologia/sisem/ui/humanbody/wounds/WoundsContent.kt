@@ -21,7 +21,6 @@ import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.props.toTextStyle
 import com.valkiria.uicomponents.model.ui.chip.ChipOptionUiModel
 import com.valkiria.uicomponents.model.ui.chip.ChipSelectionItemUiModel
-import com.valkiria.uicomponents.model.ui.chip.ChipSelectionUiModel
 
 @Suppress("LongMethod")
 @Composable
@@ -34,7 +33,7 @@ fun WoundsContent(
     viewModel.setBurnList(stringArrayResource(id = R.array.wounds_burn_grade_list).toList())
 
     HeaderSection(
-        headerModel = woundsHeader(
+        headerUiModel = woundsHeader(
             titleText = stringResource(R.string.wounds_title),
             subtitleText = stringResource(R.string.wounds_subtitle),
             leftIcon = stringResource(R.string.wounds_left_icon)

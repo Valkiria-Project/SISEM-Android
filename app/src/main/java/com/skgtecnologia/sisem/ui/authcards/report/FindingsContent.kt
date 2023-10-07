@@ -9,15 +9,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
-import com.skgtecnologia.sisem.domain.model.bricks.ChipSectionModel
+import com.valkiria.uicomponents.model.ui.chip.ChipSectionUiModel
 import com.skgtecnologia.sisem.domain.model.header.findingsHeader
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.bricks.chip.SuggestionChipView
 
 @Composable
-fun FindingsContent(chipSection: ChipSectionModel) {
+fun FindingsContent(chipSection: ChipSectionUiModel) {
     HeaderSection(
-        headerModel = findingsHeader(
+        headerUiModel = findingsHeader(
             titleText = chipSection.title.text,
             subtitleText = stringResource(id = R.string.finding_subtitle),
             leftIcon = stringResource(id = R.string.finding_left_icon)

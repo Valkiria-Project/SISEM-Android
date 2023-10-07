@@ -3,10 +3,10 @@ package com.skgtecnologia.sisem.data.remote.model.body
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.bricks.FindingsDetailResponse
-import com.skgtecnologia.sisem.domain.model.body.FindingModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.ui.body.BodyRowType
+import com.valkiria.uicomponents.model.ui.body.FindingUiModel
 
 @JsonClass(generateAdapter = true)
 data class FindingResponse(
@@ -19,7 +19,7 @@ data class FindingResponse(
 
     override val type: BodyRowType = BodyRowType.FINDING
 
-    override fun mapToDomain(): FindingModel = FindingModel(
+    override fun mapToUi(): FindingUiModel = FindingUiModel(
         identifier = identifier ?: error("Finding identifier cannot be null"),
         segmentedSwitchUiModel = segmentedSwitch?.mapToDomain()
             ?: error("Finding segmentedSwitchModel cannot be null"),

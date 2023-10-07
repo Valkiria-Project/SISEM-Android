@@ -86,7 +86,7 @@ fun ImagesConfirmationScreen(
         modifier = modifier.fillMaxWidth()
     ) {
         HeaderSection(
-            headerModel = imagesConfirmationHeader(
+            headerUiModel = imagesConfirmationHeader(
                 titleText = stringResource(id = R.string.images_confirmation_title),
                 subtitleText = stringResource(R.string.images_confirmation_subtitle),
                 leftIcon = stringResource(R.string.images_confirmation_left_icon)

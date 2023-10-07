@@ -20,17 +20,17 @@ import com.skgtecnologia.sisem.domain.changepassword.model.ChangePasswordIdentif
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
 import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.valkiria.uicomponents.model.ui.body.ButtonModel
-import com.skgtecnologia.sisem.domain.model.body.ChipModel
+import com.valkiria.uicomponents.model.ui.body.ChipUiModel
 import com.valkiria.uicomponents.model.ui.body.ChipOptionsUiModel
-import com.skgtecnologia.sisem.domain.model.body.ChipSelectionModel
-import com.skgtecnologia.sisem.domain.model.body.DetailedInfoListModel
-import com.skgtecnologia.sisem.domain.model.body.DropDownModel
-import com.skgtecnologia.sisem.domain.model.body.FiltersModel
+import com.valkiria.uicomponents.model.ui.body.ChipSelectionUiModel
+import com.valkiria.uicomponents.model.ui.body.DetailedInfoListUiModel
+import com.valkiria.uicomponents.model.ui.body.DropDownUiModel
+import com.valkiria.uicomponents.model.ui.body.FiltersUiModel
 import com.skgtecnologia.sisem.domain.model.body.FindingModel
-import com.skgtecnologia.sisem.domain.model.body.FingerprintModel
+import com.valkiria.uicomponents.model.ui.body.FingerprintUiModel
 import com.skgtecnologia.sisem.domain.model.body.FooterBodyModel
-import com.skgtecnologia.sisem.domain.model.body.HeaderModel
-import com.skgtecnologia.sisem.domain.model.body.InfoCardModel
+import com.valkiria.uicomponents.model.ui.body.HeaderUiModel
+import com.valkiria.uicomponents.model.ui.body.InfoCardUiModel
 import com.valkiria.uicomponents.model.ui.body.InventoryCheckUiModel
 import com.skgtecnologia.sisem.domain.model.body.LabelModel
 import com.skgtecnologia.sisem.domain.model.body.PasswordTextFieldModel
@@ -120,7 +120,7 @@ private fun LazyListScope.handleBodyRows(
                 HandleButtonRows(model, onAction)
             }
 
-            is ChipModel -> item(key = model.identifier) {
+            is ChipUiModel -> item(key = model.identifier) {
                 HandleChipRows(model, onAction)
             }
 
@@ -136,7 +136,7 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
-            is ChipSelectionModel -> item(key = model.identifier) {
+            is ChipSelectionUiModel -> item(key = model.identifier) {
                 ChipSelectionComponent(uiModel = model.mapToUiModel()) { id, text, isSelection ->
                     onAction(
                         GenericUiAction.ChipSelectionAction(
@@ -148,25 +148,25 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
-            is DropDownModel -> item(key = model.identifier) {
+            is DropDownUiModel -> item(key = model.identifier) {
                 TODO("Create DropDownComponent")
             }
 
-            is InfoCardModel -> item(key = model.identifier) {
+            is InfoCardUiModel -> item(key = model.identifier) {
                 HandleInfoCardRows(model, onAction)
             }
 
-            is DetailedInfoListModel -> item(key = model.identifier) {
+            is DetailedInfoListUiModel -> item(key = model.identifier) {
                 DetailedInfoListComponent(uiModel = model.mapToUiModel())
             }
 
-            is FiltersModel -> stickyHeader(key = model.identifier) {
+            is FiltersUiModel -> stickyHeader(key = model.identifier) {
                 FiltersComponent(
                     uiModel = model.mapToUiModel()
                 ) { selected, _ ->
                     coroutineScope.launch {
                         val contentHeader = body.indexOfFirst {
-                            it is HeaderModel && it.title.text == selected
+                            it is HeaderUiModel && it.title.text == selected
                         }
 
                         if (contentHeader >= 0) {
@@ -184,7 +184,7 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
-            is FingerprintModel -> item(key = model.identifier) {
+            is FingerprintUiModel -> item(key = model.identifier) {
                 Image(
                     modifier = Modifier.padding(vertical = 20.dp),
                     painter = painterResource(id = R.drawable.ic_login_fingerprint),
@@ -200,9 +200,9 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
-            is HeaderModel -> item(key = model.identifier) {
+            is HeaderUiModel -> item(key = model.identifier) {
                 HeaderSection(
-                    headerModel = model
+                    headerUiModel = model
                 )
             }
 
@@ -298,7 +298,7 @@ private fun HandleButtonRows(
 @Suppress("UnusedPrivateMember")
 @Composable
 private fun HandleChipRows(
-    model: ChipModel,
+    model: ChipUiModel,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
@@ -317,7 +317,7 @@ private fun HandleChipRows(
 
 @Composable
 private fun HandleInfoCardRows(
-    model: InfoCardModel,
+    model: InfoCardUiModel,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {

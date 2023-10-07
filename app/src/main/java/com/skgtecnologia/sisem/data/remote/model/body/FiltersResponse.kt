@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.body.FiltersModel
+import com.valkiria.uicomponents.model.ui.body.FiltersUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.props.TextStyle
@@ -17,7 +17,7 @@ data class FiltersResponse(
 
     override val type: BodyRowType = BodyRowType.CHIP
 
-    override fun mapToDomain(): FiltersModel = FiltersModel(
+    override fun mapToUi(): FiltersUiModel = FiltersUiModel(
         identifier = identifier ?: error("Filters identifier cannot be null"),
         options = options ?: error("Filters options cannot be null"),
         textStyle = textStyle ?: error("Filters textStyle cannot be null"),

@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToDomain
-import com.skgtecnologia.sisem.domain.model.body.HeaderModel
+import com.valkiria.uicomponents.model.ui.body.HeaderUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.ui.body.BodyRowType
@@ -22,7 +22,7 @@ data class HeaderResponse(
 
     override val type: BodyRowType = BodyRowType.HEADER
 
-    override fun mapToDomain(): HeaderModel = HeaderModel(
+    override fun mapToUi(): HeaderUiModel = HeaderUiModel(
         identifier = identifier ?: error("Header identifier cannot be null"),
         title = title?.mapToDomain() ?: error("Header title cannot be null"),
         subtitle = subtitle?.mapToDomain(),

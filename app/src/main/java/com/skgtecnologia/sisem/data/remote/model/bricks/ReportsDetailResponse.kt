@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.data.remote.model.bricks
 
 import com.skgtecnologia.sisem.data.remote.model.body.HeaderResponse
-import com.skgtecnologia.sisem.domain.model.bricks.ReportsDetailModel
+import com.valkiria.uicomponents.model.ui.report.ReportsDetailModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -12,6 +12,6 @@ data class ReportsDetailResponse(
 )
 
 fun ReportsDetailResponse.mapToDomain(): ReportsDetailModel = ReportsDetailModel(
-    header = header?.mapToDomain() ?: error("ReportsDetail header cannot be null"),
+    header = header?.mapToUi() ?: error("ReportsDetail header cannot be null"),
     details = details?.map { it.mapToDomain() } ?: error("ReportsDetail details cannot be null")
 )

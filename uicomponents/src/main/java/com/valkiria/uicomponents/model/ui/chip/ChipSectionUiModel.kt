@@ -1,10 +1,10 @@
 package com.valkiria.uicomponents.model.ui.chip
 
-import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.model.props.ListTextModel
+import com.valkiria.uicomponents.model.props.TextModel
 
 data class ChipSectionUiModel(
-    val title: String,
-    val titleTextStyle: TextStyle,
-    val listText: List<String>,
-    val listTextStyle: TextStyle
+    val title: TextModel,
+    val listText: ListTextModel
 )
+

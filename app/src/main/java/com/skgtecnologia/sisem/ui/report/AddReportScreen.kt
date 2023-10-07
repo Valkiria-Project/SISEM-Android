@@ -57,7 +57,7 @@ fun AddReportScreen(
         modifier = modifier.fillMaxWidth()
     ) {
         addReportUiState.screenModel?.header?.let {
-            HeaderSection(headerModel = it) { uiAction ->
+            HeaderSection(headerUiModel = it) { uiAction ->
                 if (uiAction is HeaderUiAction.GoBack) {
                     viewModel.navigateBack()
                 }

@@ -32,9 +32,6 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.bricks.chip.SuggestionChipView
 import com.valkiria.uicomponents.model.props.toTextStyle
-import com.valkiria.uicomponents.model.ui.card.InfoCardUiModel
-import com.valkiria.uicomponents.model.ui.chip.ChipSectionUiModel
-import com.valkiria.uicomponents.model.ui.report.ReportsDetailUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 

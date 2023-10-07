@@ -1,8 +1,7 @@
-package com.skgtecnologia.sisem.domain.model.bricks
+package com.valkiria.uicomponents.model.ui.report
 
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.model.props.TextModel
-import com.valkiria.uicomponents.model.ui.report.ReportDetailUiModel
 
 data class ReportDetailModel(
     val images: List<String>,

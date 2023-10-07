@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.data.remote.model.bricks
 
 import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToDomain
-import com.skgtecnologia.sisem.domain.model.bricks.PillModel
+import com.valkiria.uicomponents.model.ui.pill.PillUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -12,7 +12,7 @@ data class PillResponse(
     @Json(name = "color") val color: String?
 )
 
-fun PillResponse.mapToDomain(): PillModel = PillModel(
+fun PillResponse.mapToDomain(): PillUiModel = PillUiModel(
     title = title?.mapToDomain() ?: error("Pill title cannot be null"),
     color = color ?: error("Pill color cannot be null")
 )

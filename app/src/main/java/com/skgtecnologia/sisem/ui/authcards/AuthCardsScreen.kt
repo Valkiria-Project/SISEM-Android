@@ -15,7 +15,7 @@ import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
-import com.skgtecnologia.sisem.domain.model.bricks.mapToDomain
+import com.valkiria.uicomponents.model.ui.chip.mapToDomain
 import com.skgtecnologia.sisem.ui.authcards.report.FindingsContent
 import com.skgtecnologia.sisem.ui.authcards.report.ReportDetailContent
 import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
@@ -73,7 +73,7 @@ fun AuthCardsScreen(
 
             uiState.screenModel?.header?.let {
                 HeaderSection(
-                    headerModel = it,
+                    headerUiModel = it,
                     modifier = modifier.constrainAs(header) {
                         top.linkTo(parent.top)
                         start.linkTo(parent.start)

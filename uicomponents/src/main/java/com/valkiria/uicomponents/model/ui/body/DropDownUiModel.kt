@@ -1,11 +1,11 @@
-package com.skgtecnologia.sisem.domain.model.body
+package com.valkiria.uicomponents.model.ui.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.model.ui.body.BodyRowType
 import com.valkiria.uicomponents.model.ui.dropdown.DropDownItemUiModel
 
-data class DropDownModel(
+// FIXME: Unused, should be removed
+data class DropDownUiModel(
     val identifier: String,
     val label: String,
     val options: List<DropDownItemUiModel>,

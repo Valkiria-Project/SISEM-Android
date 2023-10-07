@@ -1,13 +1,11 @@
-package com.skgtecnologia.sisem.domain.model.body
+package com.valkiria.uicomponents.model.ui.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.model.props.TextModel
-import com.valkiria.uicomponents.model.ui.body.BodyRowType
 import com.valkiria.uicomponents.model.ui.chip.ChipSelectionItemUiModel
-import com.valkiria.uicomponents.model.ui.chip.ChipSelectionUiModel
 
-data class ChipSelectionModel(
+data class ChipSelectionUiModel(
     val identifier: String,
     val title: TextModel?,
     val items: List<ChipSelectionItemUiModel>,
@@ -18,13 +16,3 @@ data class ChipSelectionModel(
 
     override val type: BodyRowType = BodyRowType.CHIP_SELECTION
 }
-
-fun ChipSelectionModel.mapToUiModel(): ChipSelectionUiModel = ChipSelectionUiModel(
-    identifier = identifier,
-    titleText = title?.text,
-    titleTextStyle = title?.textStyle,
-    items = items,
-    selected = selected,
-    arrangement = arrangement,
-    modifier = modifier
-)

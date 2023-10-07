@@ -64,7 +64,7 @@ fun AddFindingScreen(
         modifier = modifier.fillMaxWidth()
     ) {
         HeaderSection(
-            headerModel = addFindingHeader(
+            headerUiModel = addFindingHeader(
                 titleText = stringResource(id = R.string.findings_title),
                 subtitleText = stringResource(id = R.string.findings_subtitle),
                 leftIcon = stringResource(id = R.string.findings_left_icon)

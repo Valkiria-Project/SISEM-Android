@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.skgtecnologia.sisem.domain.model.body.HeaderModel
+import com.valkiria.uicomponents.model.ui.body.HeaderUiModel
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.label.LabelComponent
@@ -27,12 +27,12 @@ import com.valkiria.uicomponents.utlis.getResourceIdByName
 @Suppress("LongMethod")
 @Composable
 fun HeaderSection(
-    headerModel: HeaderModel,
+    headerUiModel: HeaderUiModel,
     modifier: Modifier = Modifier,
     onAction: (actionInput: UiAction) -> Unit = {}
 ) {
     Column(
-        modifier = headerModel.modifier
+        modifier = headerUiModel.modifier
             .fillMaxWidth()
             .then(modifier),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -42,7 +42,7 @@ fun HeaderSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             val leftIconResourceId = LocalContext.current.getResourceIdByName(
-                headerModel.leftIcon.orEmpty(), DefType.DRAWABLE
+                headerUiModel.leftIcon.orEmpty(), DefType.DRAWABLE
             )
 
             leftIconResourceId?.let {
@@ -59,8 +59,8 @@ fun HeaderSection(
 
             LabelComponent(
                 uiModel = LabelUiModel(
-                    text = headerModel.title.text,
-                    textStyle = headerModel.title.textStyle,
+                    text = headerUiModel.title.text,
+                    textStyle = headerUiModel.title.textStyle,
                     arrangement = Arrangement.Start
                 )
             )
@@ -68,7 +68,7 @@ fun HeaderSection(
             Spacer(modifier = Modifier.weight(1f))
 
             val rightIconResourceId = LocalContext.current.getResourceIdByName(
-                headerModel.rightIcon.orEmpty(), DefType.DRAWABLE
+                headerUiModel.rightIcon.orEmpty(), DefType.DRAWABLE
             )
 
             rightIconResourceId?.let {
@@ -83,7 +83,7 @@ fun HeaderSection(
             }
         }
 
-        headerModel.subtitle?.let {
+        headerUiModel.subtitle?.let {
             LabelComponent(
                 uiModel = LabelUiModel(
                     text = it.text,

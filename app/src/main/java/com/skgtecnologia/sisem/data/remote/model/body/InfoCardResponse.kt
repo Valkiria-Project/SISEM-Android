@@ -8,7 +8,7 @@ import com.skgtecnologia.sisem.data.remote.model.bricks.ReportsDetailResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToDomain
 import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToDomain
-import com.skgtecnologia.sisem.domain.model.body.InfoCardModel
+import com.valkiria.uicomponents.model.ui.body.InfoCardUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.ui.body.BodyRowType
@@ -28,7 +28,7 @@ data class InfoCardResponse(
 
     override val type: BodyRowType = BodyRowType.INFO_CARD
 
-    override fun mapToDomain(): InfoCardModel = InfoCardModel(
+    override fun mapToUi(): InfoCardUiModel = InfoCardUiModel(
         identifier = identifier ?: error("InfoCard identifier cannot be null"),
         icon = icon ?: error("InfoCard icon cannot be null"),
         title = title?.mapToDomain() ?: error("InfoCard title cannot be null"),

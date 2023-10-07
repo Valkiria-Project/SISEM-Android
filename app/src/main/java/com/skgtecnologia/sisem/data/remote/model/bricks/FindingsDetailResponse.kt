@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.data.remote.model.bricks
 
 import com.skgtecnologia.sisem.data.remote.model.body.HeaderResponse
-import com.skgtecnologia.sisem.domain.model.bricks.FindingsDetailModel
+import com.valkiria.uicomponents.model.ui.finding.FindingsDetailModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

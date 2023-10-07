@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.bricks.DetailedInfoResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
-import com.skgtecnologia.sisem.domain.model.body.DetailedInfoListModel
+import com.valkiria.uicomponents.model.ui.body.DetailedInfoListUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.props.TextStyle
@@ -22,7 +22,7 @@ data class DetailedInfoListResponse(
 
     override val type: BodyRowType = BodyRowType.DETAILED_INFO_LIST
 
-    override fun mapToDomain(): DetailedInfoListModel = DetailedInfoListModel(
+    override fun mapToUi(): DetailedInfoListUiModel = DetailedInfoListUiModel(
         identifier = identifier ?: error("Detailed info list identifier cannot be null"),
         details = details?.map { it.mapToUi() }
             ?: error("Detailed info list details cannot be null"),

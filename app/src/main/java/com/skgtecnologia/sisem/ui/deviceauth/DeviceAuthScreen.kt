@@ -52,7 +52,7 @@ fun DeviceAuthScreen(
 
         uiState.screenModel?.header?.let {
             HeaderSection(
-                headerModel = it,
+                headerUiModel = it,
                 modifier = modifier.constrainAs(header) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)

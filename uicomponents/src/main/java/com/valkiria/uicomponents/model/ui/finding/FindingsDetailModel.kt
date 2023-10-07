@@ -1,10 +1,9 @@
-package com.skgtecnologia.sisem.domain.model.bricks
+package com.valkiria.uicomponents.model.ui.finding
 
-import com.skgtecnologia.sisem.domain.model.body.HeaderModel
-import com.valkiria.uicomponents.model.ui.finding.FindingsDetailUiModel
+import com.valkiria.uicomponents.model.ui.body.HeaderUiModel
 
 data class FindingsDetailModel(
-    val header: HeaderModel,
+    val header: HeaderUiModel,
     val details: List<FindingDetailModel>
 )
 

@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.bricks.DropDownItemResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
-import com.skgtecnologia.sisem.domain.model.body.DropDownModel
+import com.valkiria.uicomponents.model.ui.body.DropDownUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.ui.body.BodyRowType
@@ -21,7 +21,7 @@ data class DropDownResponse(
 
     override val type: BodyRowType = BodyRowType.DROP_DOWN
 
-    override fun mapToDomain(): DropDownModel = DropDownModel(
+    override fun mapToUi(): DropDownUiModel = DropDownUiModel(
         identifier = identifier ?: error("DropDown identifier cannot be null"),
         label = label ?: error("DropDown min cannot be null"),
         options = options?.map { it.mapToUi() } ?: error("DropDown options cannot be null"),

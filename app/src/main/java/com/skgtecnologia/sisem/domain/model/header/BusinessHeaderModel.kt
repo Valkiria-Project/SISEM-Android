@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.domain.model.header
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.skgtecnologia.sisem.domain.model.body.HeaderModel
+import com.valkiria.uicomponents.model.ui.body.HeaderUiModel
 import com.valkiria.uicomponents.model.props.TextModel
 import com.valkiria.uicomponents.model.props.TextStyle
 
@@ -11,7 +11,7 @@ fun addFindingHeader(
     titleText: String,
     subtitleText: String,
     leftIcon: String
-): HeaderModel = HeaderModel(
+): HeaderUiModel = HeaderUiModel(
     identifier = "ADD_FINDING_HEADER",
     title = TextModel(
         text = titleText,
@@ -29,7 +29,7 @@ fun findingsHeader(
     titleText: String,
     subtitleText: String,
     leftIcon: String
-): HeaderModel = HeaderModel(
+): HeaderUiModel = HeaderUiModel(
     identifier = "FINDINGS_HEADER",
     title = TextModel(
         text = titleText,
@@ -47,7 +47,7 @@ fun imagesConfirmationHeader(
     titleText: String,
     subtitleText: String,
     leftIcon: String
-): HeaderModel = HeaderModel(
+): HeaderUiModel = HeaderUiModel(
     identifier = "IMAGES_CONFIRMATION_HEADER",
     title = TextModel(
         text = titleText,
@@ -65,7 +65,7 @@ fun woundsHeader(
     titleText: String,
     subtitleText: String,
     leftIcon: String
-): HeaderModel = HeaderModel(
+): HeaderUiModel = HeaderUiModel(
     identifier = "WOUNDS_HEADER",
     title = TextModel(
         text = titleText,

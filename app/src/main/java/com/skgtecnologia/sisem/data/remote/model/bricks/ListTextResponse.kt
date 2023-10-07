@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.data.remote.model.bricks
 
-import com.skgtecnologia.sisem.domain.model.bricks.ListTextModel
+import com.valkiria.uicomponents.model.props.ListTextModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.props.TextStyle
