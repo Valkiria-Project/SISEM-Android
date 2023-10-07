@@ -5,8 +5,8 @@ import com.valkiria.uicomponents.model.ui.detailedinfolist.DetailedInfoUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.components.body.DetailedInfoListUiModel
 
-fun getPreOperationalDetailedInfoListUiModel(): com.valkiria.uicomponents.components.body.DetailedInfoListUiModel {
-    return com.valkiria.uicomponents.components.body.DetailedInfoListUiModel(
+fun getPreOperationalDetailedInfoListUiModel(): DetailedInfoListUiModel {
+    return DetailedInfoListUiModel(
         identifier = "PRE_OP_REGISTRATION_DETAILS",
         details = listOf(
             DetailedInfoUiModel(

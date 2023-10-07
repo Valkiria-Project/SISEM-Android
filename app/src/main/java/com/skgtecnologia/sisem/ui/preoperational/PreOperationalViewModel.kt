@@ -17,6 +17,7 @@ import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
 import com.skgtecnologia.sisem.ui.navigation.model.PreOpNavigationModel
+import com.valkiria.uicomponents.components.body.FindingUiModel
 import com.valkiria.uicomponents.components.body.InventoryCheckUiModel
 import com.valkiria.uicomponents.components.body.TextFieldUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -78,7 +79,7 @@ class PreOperationalViewModel @Inject constructor(
     private fun ScreenModel.getFormInitialValues() {
         this.body.forEach { bodyRowModel ->
             when (bodyRowModel) {
-                is com.valkiria.uicomponents.components.body.FindingUiModel -> {
+                is FindingUiModel -> {
                     Timber.d("it's a FindingModel with id ${bodyRowModel.identifier}")
                     val model = bodyRowModel.segmentedSwitchUiModel
                     findings[model.identifier] = model.selected
@@ -110,7 +111,7 @@ class PreOperationalViewModel @Inject constructor(
 
     fun showFindingForm() {
         val updatedBody = uiState.screenModel?.body?.map {
-            if (it is com.valkiria.uicomponents.components.body.FindingUiModel && it.segmentedSwitchUiModel.identifier == temporalFinding) {
+            if (it is FindingUiModel && it.segmentedSwitchUiModel.identifier == temporalFinding) {
                 val temporalFindingModel = it.copy(
                     segmentedSwitchUiModel = it.segmentedSwitchUiModel.copy(selected = false)
                 )
@@ -134,7 +135,7 @@ class PreOperationalViewModel @Inject constructor(
 
     fun revertFinding() {
         val updatedBody = uiState.screenModel?.body?.map {
-            if (it is com.valkiria.uicomponents.components.body.FindingUiModel && it.segmentedSwitchUiModel.identifier == temporalFinding) {
+            if (it is FindingUiModel && it.segmentedSwitchUiModel.identifier == temporalFinding) {
                 findings[temporalFinding] = true
                 temporalFinding = ""
                 val temporalFindingModel = it.copy(

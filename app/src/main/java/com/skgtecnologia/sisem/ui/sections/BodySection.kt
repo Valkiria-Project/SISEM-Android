@@ -42,6 +42,10 @@ import com.valkiria.uicomponents.components.body.ChipSelectionUiModel
 import com.valkiria.uicomponents.components.body.ChipUiModel
 import com.valkiria.uicomponents.components.body.DetailedInfoListUiModel
 import com.valkiria.uicomponents.components.body.DropDownUiModel
+import com.valkiria.uicomponents.components.body.FiltersUiModel
+import com.valkiria.uicomponents.components.body.FindingUiModel
+import com.valkiria.uicomponents.components.body.FingerprintUiModel
+import com.valkiria.uicomponents.components.body.FooterBodyUiModel
 import com.valkiria.uicomponents.components.body.HeaderUiModel
 import com.valkiria.uicomponents.components.body.InfoCardUiModel
 import com.valkiria.uicomponents.components.body.InventoryCheckUiModel
@@ -156,7 +160,7 @@ private fun LazyListScope.handleBodyRows(
                 DetailedInfoListComponent(uiModel = model)
             }
 
-            is com.valkiria.uicomponents.components.body.FiltersUiModel -> stickyHeader(key = model.identifier) {
+            is FiltersUiModel -> stickyHeader(key = model.identifier) {
                 FiltersComponent(uiModel = model) { selected, _ ->
                     coroutineScope.launch {
                         val contentHeader = body.indexOfFirst {
@@ -170,13 +174,13 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
-            is com.valkiria.uicomponents.components.body.FindingUiModel -> item(key = model.identifier) {
+            is FindingUiModel -> item(key = model.identifier) {
                 FindingComponent(uiModel = model) { id, status ->
                     onAction(GenericUiAction.FindingAction(identifier = id, status = status))
                 }
             }
 
-            is com.valkiria.uicomponents.components.body.FingerprintUiModel -> item(key = model.identifier) {
+            is FingerprintUiModel -> item(key = model.identifier) {
                 Image(
                     modifier = Modifier.padding(vertical = 20.dp),
                     painter = painterResource(id = R.drawable.ic_login_fingerprint),
@@ -184,7 +188,7 @@ private fun LazyListScope.handleBodyRows(
                 )
             }
 
-            is com.valkiria.uicomponents.components.body.FooterBodyUiModel -> item(key = model.identifier) {
+            is FooterBodyUiModel -> item(key = model.identifier) {
                 FooterSection(footerModel = model.mapToSection()) { uiAction ->
                     onAction(uiAction)
                 }
