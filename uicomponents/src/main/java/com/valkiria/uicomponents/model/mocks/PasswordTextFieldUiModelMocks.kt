@@ -6,10 +6,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.mapbox.maps.extension.style.expressions.dsl.generated.id
-import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.ui.body.PasswordTextFieldUiModel
+import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
 
 fun getLoginPasswordTextFieldUiModel(): PasswordTextFieldUiModel {
     return PasswordTextFieldUiModel(

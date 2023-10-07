@@ -135,9 +135,6 @@ class PreOperationalViewModel @Inject constructor(
     }
 
     fun revertFinding() {
-        if (temporalFinding == "14") {
-            Timber.d("revertFinding: id $temporalFinding")
-        }
         val updatedBody = uiState.screenModel?.body?.map {
             if (it is FindingUiModel && it.segmentedSwitchUiModel.identifier == temporalFinding) {
                 findings[temporalFinding] = true
@@ -145,8 +142,6 @@ class PreOperationalViewModel @Inject constructor(
                 val temporalFindingModel = it.copy(
                     segmentedSwitchUiModel = it.segmentedSwitchUiModel.copy(selected = true)
                 )
-
-                Timber.d("revertFinding: id ${temporalFindingModel.segmentedSwitchUiModel.selected}")
                 temporalFindingModel
             } else {
                 it

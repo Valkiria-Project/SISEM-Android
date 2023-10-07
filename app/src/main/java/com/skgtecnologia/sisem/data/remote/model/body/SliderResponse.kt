@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.model.ui.body.SliderModel
+import com.valkiria.uicomponents.model.ui.body.SliderUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.ui.body.BodyRowType
@@ -19,7 +19,7 @@ data class SliderResponse(
 
     override val type: BodyRowType = BodyRowType.SLIDER
 
-    override fun mapToUi(): SliderModel = SliderModel(
+    override fun mapToUi(): SliderUiModel = SliderUiModel(
         identifier = identifier ?: error("Slider identifier cannot be null"),
         min = min ?: error("Slider min cannot be null"),
         max = max ?: error("Slider max cannot be null"),

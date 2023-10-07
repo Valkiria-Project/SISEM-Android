@@ -15,4 +15,3 @@ data class ChipOptionsUiModel(
 
     override val type: BodyRowType = BodyRowType.CHIP_OPTIONS
 }
-

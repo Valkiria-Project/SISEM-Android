@@ -69,11 +69,10 @@ import com.valkiria.uicomponents.model.ui.body.LabelUiModel
 import com.valkiria.uicomponents.model.ui.body.PasswordTextFieldUiModel
 import com.valkiria.uicomponents.model.ui.body.RichLabelUiModel
 import com.valkiria.uicomponents.model.ui.body.SegmentedSwitchUiModel
-import com.valkiria.uicomponents.model.ui.body.SliderModel
+import com.valkiria.uicomponents.model.ui.body.SliderUiModel
 import com.valkiria.uicomponents.model.ui.body.TermsAndConditionsUiModel
 import com.valkiria.uicomponents.model.ui.body.TextFieldUiModel
 import com.valkiria.uicomponents.model.ui.body.mapToSection
-import com.valkiria.uicomponents.model.ui.body.mapToUiModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -231,8 +230,8 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
-            is SliderModel -> item(key = model.identifier) {
-                SliderComponent(uiModel = model.mapToUiModel()) { id, value ->
+            is SliderUiModel -> item(key = model.identifier) {
+                SliderComponent(uiModel = model) { id, value ->
                     onAction(GenericUiAction.SliderAction(identifier = id, value = value))
                 }
             }

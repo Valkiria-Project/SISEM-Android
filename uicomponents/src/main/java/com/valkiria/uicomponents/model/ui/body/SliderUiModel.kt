@@ -2,9 +2,8 @@ package com.valkiria.uicomponents.model.ui.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.model.ui.slider.SliderUiModel
 
-data class SliderModel(
+data class SliderUiModel(
     val identifier: String,
     val min: Int,
     val max: Int,
@@ -15,12 +14,3 @@ data class SliderModel(
 
     override val type: BodyRowType = BodyRowType.SLIDER
 }
-
-fun SliderModel.mapToUiModel(): SliderUiModel = SliderUiModel(
-    identifier = identifier,
-    min = min,
-    max = max,
-    selected = selected,
-    arrangement = arrangement,
-    modifier = modifier
-)
