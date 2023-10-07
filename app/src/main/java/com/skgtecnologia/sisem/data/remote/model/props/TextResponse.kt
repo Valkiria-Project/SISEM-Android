@@ -11,7 +11,7 @@ data class TextResponse(
     @Json(name = "text_style") val textStyle: TextStyle?,
 )
 
-fun TextResponse.mapToDomain(): TextModel = TextModel(
+fun TextResponse.mapToUI(): TextModel = TextModel(
     text = text ?: error("TextModel text cannot be null"),
     textStyle = textStyle ?: error("TextModel textStyle cannot be null")
 )

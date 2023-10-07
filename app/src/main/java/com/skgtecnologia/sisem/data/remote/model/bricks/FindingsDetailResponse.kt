@@ -11,7 +11,7 @@ data class FindingsDetailResponse(
     @Json(name = "details") val details: List<FindingDetailResponse>?
 )
 
-fun FindingsDetailResponse.mapToDomain(): FindingsDetailModel = FindingsDetailModel(
+fun FindingsDetailResponse.mapToUi(): FindingsDetailModel = FindingsDetailModel(
     header = header?.mapToUi() ?: error("FindingsDetail header cannot be null"),
-    details = details?.map { it.mapToDomain() } ?: error("FindingsDetail details cannot be null")
+    details = details?.map { it.mapToUi() } ?: error("FindingsDetail details cannot be null")
 )

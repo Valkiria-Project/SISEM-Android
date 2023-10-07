@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.bricks.ChipOptionResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
 import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
-import com.skgtecnologia.sisem.data.remote.model.props.mapToDomain
+import com.skgtecnologia.sisem.data.remote.model.props.mapToUI
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.components.BodyRowType
@@ -24,7 +24,7 @@ data class ChipOptionsResponse(
 
     override fun mapToUi(): ChipOptionsUiModel = ChipOptionsUiModel(
         identifier = identifier ?: error("ChipOptions identifier cannot be null"),
-        title = title?.mapToDomain(),
+        title = title?.mapToUI(),
         items = items?.map { it.mapToUi() } ?: error("ChipOptions items cannot be null"),
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier

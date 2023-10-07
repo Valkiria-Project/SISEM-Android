@@ -6,7 +6,7 @@ import com.skgtecnologia.sisem.data.remote.model.bricks.InventoryCheckItemRespon
 import com.skgtecnologia.sisem.data.remote.model.bricks.ValidationResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
 import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
-import com.skgtecnologia.sisem.data.remote.model.props.mapToDomain
+import com.skgtecnologia.sisem.data.remote.model.props.mapToUI
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.components.BodyRowType
@@ -27,9 +27,9 @@ data class InventoryCheckResponse(
 
     override fun mapToUi(): InventoryCheckUiModel = InventoryCheckUiModel(
         identifier = identifier ?: error("InventoryCheck identifier cannot be null"),
-        registered = registered?.mapToDomain()
+        registered = registered?.mapToUI()
             ?: error("InventoryCheck registered cannot be null"),
-        received = received?.mapToDomain() ?: error("InventoryCheck received cannot be null"),
+        received = received?.mapToUI() ?: error("InventoryCheck received cannot be null"),
         items = items?.map { it.mapToUi() } ?: error("InventoryCheck items cannot be null"),
         validations = validations?.map { it.mapToUi() }
             ?: error("InventoryCheck validations cannot be null"),

@@ -5,9 +5,10 @@ import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.bricks.ChipSectionResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.PillResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.ReportsDetailResponse
-import com.skgtecnologia.sisem.data.remote.model.bricks.mapToDomain
+import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
 import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
-import com.skgtecnologia.sisem.data.remote.model.props.mapToDomain
+import com.skgtecnologia.sisem.data.remote.model.props.mapToUI
+import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.components.BodyRowType
@@ -31,12 +32,16 @@ data class InfoCardResponse(
     override fun mapToUi(): InfoCardUiModel = InfoCardUiModel(
         identifier = identifier ?: error("InfoCard identifier cannot be null"),
         icon = icon ?: error("InfoCard icon cannot be null"),
-        title = title?.mapToDomain() ?: error("InfoCard title cannot be null"),
-        pill = pill?.mapToDomain() ?: error("InfoCard pill cannot be null"),
-        date = date?.mapToDomain(),
-        chipSection = chipSection?.mapToDomain(),
-        reportsDetail = reportsDetail?.mapToDomain(),
+        title = title?.mapToUI()?.copy(text = getHumanizedRoleName())
+            ?: error("InfoCard title cannot be null"),
+        pill = pill?.mapToUi() ?: error("InfoCard pill cannot be null"),
+        date = date?.mapToUI(),
+        chipSection = chipSection?.mapToUi(),
+        reportsDetail = reportsDetail?.mapToUi(),
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )
+
+    private fun getHumanizedRoleName() =
+        OperationRole.getRoleByName(title?.text.orEmpty())?.humanizedName ?: title?.text.orEmpty()
 }
