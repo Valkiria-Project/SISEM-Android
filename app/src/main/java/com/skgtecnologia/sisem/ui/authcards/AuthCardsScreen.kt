@@ -29,6 +29,7 @@ import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 
 @Suppress("LongMethod")
+@androidx.compose.material3.ExperimentalMaterial3Api
 @Composable
 fun AuthCardsScreen(
     modifier: Modifier = Modifier,
