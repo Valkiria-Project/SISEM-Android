@@ -17,13 +17,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.bricks.textfield.DatePickerTextFieldView
-import com.valkiria.uicomponents.bricks.textfield.FixedDateTextFieldView
 import com.valkiria.uicomponents.bricks.textfield.FilledTextFieldView
+import com.valkiria.uicomponents.bricks.textfield.FixedDateTextFieldView
 import com.valkiria.uicomponents.bricks.textfield.OutlinedTextFieldView
+import com.valkiria.uicomponents.components.body.TextFieldUiModel
 import com.valkiria.uicomponents.model.mocks.getLoginUserTextFieldUiModel
 import com.valkiria.uicomponents.model.mocks.getPreOpDriverVehicleKMTextFieldUiModel
 import com.valkiria.uicomponents.model.props.TextFieldStyle
-import com.valkiria.uicomponents.model.ui.body.TextFieldUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import timber.log.Timber

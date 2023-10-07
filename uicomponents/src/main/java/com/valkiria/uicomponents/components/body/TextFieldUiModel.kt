@@ -1,9 +1,10 @@
-package com.valkiria.uicomponents.model.ui.body
+package com.valkiria.uicomponents.components.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
+import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.model.props.TextFieldStyle
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
@@ -23,7 +24,7 @@ data class TextFieldUiModel(
     val minLines: Int = 1,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
-) : BodyRowModel {
+) : com.valkiria.uicomponents.components.body.BodyRowModel {
 
     override val type: BodyRowType = BodyRowType.TEXT_FIELD
 }

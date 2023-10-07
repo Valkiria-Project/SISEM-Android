@@ -17,10 +17,8 @@ import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
 import com.skgtecnologia.sisem.ui.navigation.model.PreOpNavigationModel
-import com.valkiria.uicomponents.model.ui.body.ChipOptionsUiModel
-import com.valkiria.uicomponents.model.ui.body.FindingUiModel
-import com.valkiria.uicomponents.model.ui.body.InventoryCheckUiModel
-import com.valkiria.uicomponents.model.ui.body.TextFieldUiModel
+import com.valkiria.uicomponents.components.body.InventoryCheckUiModel
+import com.valkiria.uicomponents.components.body.TextFieldUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -80,13 +78,13 @@ class PreOperationalViewModel @Inject constructor(
     private fun ScreenModel.getFormInitialValues() {
         this.body.forEach { bodyRowModel ->
             when (bodyRowModel) {
-                is FindingUiModel -> {
+                is com.valkiria.uicomponents.components.body.FindingUiModel -> {
                     Timber.d("it's a FindingModel with id ${bodyRowModel.identifier}")
                     val model = bodyRowModel.segmentedSwitchUiModel
                     findings[model.identifier] = model.selected
                 }
 
-                is ChipOptionsUiModel -> {
+                is com.valkiria.uicomponents.components.body.ChipOptionsUiModel -> {
                     Timber.d("it's a ChipOptionsModel with id ${bodyRowModel.identifier}")
                     bodyRowModel.items.forEach { optionUiModel ->
                         findings[optionUiModel.id] = optionUiModel.selected
@@ -112,7 +110,7 @@ class PreOperationalViewModel @Inject constructor(
 
     fun showFindingForm() {
         val updatedBody = uiState.screenModel?.body?.map {
-            if (it is FindingUiModel && it.segmentedSwitchUiModel.identifier == temporalFinding) {
+            if (it is com.valkiria.uicomponents.components.body.FindingUiModel && it.segmentedSwitchUiModel.identifier == temporalFinding) {
                 val temporalFindingModel = it.copy(
                     segmentedSwitchUiModel = it.segmentedSwitchUiModel.copy(selected = false)
                 )
@@ -136,7 +134,7 @@ class PreOperationalViewModel @Inject constructor(
 
     fun revertFinding() {
         val updatedBody = uiState.screenModel?.body?.map {
-            if (it is FindingUiModel && it.segmentedSwitchUiModel.identifier == temporalFinding) {
+            if (it is com.valkiria.uicomponents.components.body.FindingUiModel && it.segmentedSwitchUiModel.identifier == temporalFinding) {
                 findings[temporalFinding] = true
                 temporalFinding = ""
                 val temporalFindingModel = it.copy(

@@ -1,7 +1,8 @@
-package com.valkiria.uicomponents.model.ui.body
+package com.valkiria.uicomponents.components.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
+import com.valkiria.uicomponents.components.BodyRowType
 
 data class SliderUiModel(
     val identifier: String,
@@ -10,7 +11,7 @@ data class SliderUiModel(
     val selected: Int = 0,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier
-) : BodyRowModel {
+) : com.valkiria.uicomponents.components.body.BodyRowModel {
 
     override val type: BodyRowType = BodyRowType.SLIDER
 }

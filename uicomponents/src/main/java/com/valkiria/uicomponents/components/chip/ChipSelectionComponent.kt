@@ -11,10 +11,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.bricks.chip.FilterChipView
+import com.valkiria.uicomponents.components.body.ChipSelectionUiModel
+import com.valkiria.uicomponents.components.body.LabelUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.body.ChipSelectionUiModel
-import com.valkiria.uicomponents.model.ui.body.LabelUiModel
 
 @Suppress("UnusedPrivateMember")
 @Composable

@@ -2,12 +2,12 @@ package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.model.ui.body.ChipUiModel
+import com.valkiria.uicomponents.components.body.ChipUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.props.ChipStyle
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.body.BodyRowType
+import com.valkiria.uicomponents.components.BodyRowType
 
 @JsonClass(generateAdapter = true)
 data class ChipResponse(
@@ -22,13 +22,14 @@ data class ChipResponse(
 
     override val type: BodyRowType = BodyRowType.CHIP
 
-    override fun mapToUi(): ChipUiModel = ChipUiModel(
-        identifier = identifier ?: error("Chip identifier cannot be null"),
-        icon = icon,
-        text = text ?: error("Chip text cannot be null"),
-        textStyle = textStyle ?: error("Chip textStyle cannot be null"),
-        style = style ?: error("Chip style cannot be null"),
-        arrangement = arrangement ?: Arrangement.Center,
-        modifier = modifier ?: Modifier
-    )
+    override fun mapToUi(): com.valkiria.uicomponents.components.body.ChipUiModel =
+        com.valkiria.uicomponents.components.body.ChipUiModel(
+            identifier = identifier ?: error("Chip identifier cannot be null"),
+            icon = icon,
+            text = text ?: error("Chip text cannot be null"),
+            textStyle = textStyle ?: error("Chip textStyle cannot be null"),
+            style = style ?: error("Chip style cannot be null"),
+            arrangement = arrangement ?: Arrangement.Center,
+            modifier = modifier ?: Modifier
+        )
 }

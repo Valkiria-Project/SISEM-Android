@@ -4,11 +4,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.bricks.OptionResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
-import com.valkiria.uicomponents.model.ui.body.SegmentedSwitchUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.valkiria.uicomponents.components.BodyRowType
+import com.valkiria.uicomponents.components.body.SegmentedSwitchUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.body.BodyRowType
 
 @JsonClass(generateAdapter = true)
 data class SegmentedSwitchResponse(

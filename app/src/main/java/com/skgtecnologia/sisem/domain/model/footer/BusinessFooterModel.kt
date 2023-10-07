@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.domain.model.footer
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.model.ui.body.ButtonUiModel
+import com.valkiria.uicomponents.components.body.ButtonUiModel
 import com.skgtecnologia.sisem.domain.report.model.AddFindingIdentifier
 import com.valkiria.uicomponents.model.props.ButtonSize
 import com.valkiria.uicomponents.model.props.ButtonStyle
@@ -14,7 +14,7 @@ fun findingsFooter(
     leftButtonText: String,
     rightButtonText: String,
 ): FooterUiModel = FooterUiModel(
-    leftButton = ButtonUiModel(
+    leftButton = com.valkiria.uicomponents.components.body.ButtonUiModel(
         identifier = AddFindingIdentifier.ADD_FINDING_CANCEL_BUTTON.name,
         label = leftButtonText,
         style = ButtonStyle.LOUD,
@@ -24,7 +24,7 @@ fun findingsFooter(
         arrangement = Arrangement.Center,
         modifier = Modifier
     ),
-    rightButton = ButtonUiModel(
+    rightButton = com.valkiria.uicomponents.components.body.ButtonUiModel(
         identifier = AddFindingIdentifier.ADD_FINDING_SAVE_BUTTON.name,
         label = rightButtonText,
         style = ButtonStyle.LOUD,

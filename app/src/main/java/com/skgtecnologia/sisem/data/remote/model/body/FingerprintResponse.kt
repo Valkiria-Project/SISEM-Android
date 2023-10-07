@@ -1,9 +1,9 @@
 package com.skgtecnologia.sisem.data.remote.model.body
 
-import com.valkiria.uicomponents.model.ui.body.FingerprintUiModel
+import com.valkiria.uicomponents.components.body.FingerprintUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.valkiria.uicomponents.model.ui.body.BodyRowType
+import com.valkiria.uicomponents.components.BodyRowType
 
 @JsonClass(generateAdapter = true)
 data class FingerprintResponse(
@@ -12,7 +12,8 @@ data class FingerprintResponse(
 
     override val type: BodyRowType = BodyRowType.FINGERPRINT
 
-    override fun mapToUi(): FingerprintUiModel = FingerprintUiModel(
-        identifier = identifier ?: error("Fingerprint identifier cannot be null")
-    )
+    override fun mapToUi(): com.valkiria.uicomponents.components.body.FingerprintUiModel =
+        com.valkiria.uicomponents.components.body.FingerprintUiModel(
+            identifier = identifier ?: error("Fingerprint identifier cannot be null")
+        )
 }

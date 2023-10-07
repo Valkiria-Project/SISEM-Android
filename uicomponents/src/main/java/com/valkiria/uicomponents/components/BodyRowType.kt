@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.model.ui.body
+package com.valkiria.uicomponents.components
 
 enum class BodyRowType {
     BUTTON,

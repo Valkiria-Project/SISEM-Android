@@ -4,10 +4,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.bricks.DropDownItemResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
-import com.valkiria.uicomponents.model.ui.body.DropDownUiModel
+import com.valkiria.uicomponents.components.body.DropDownUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.valkiria.uicomponents.model.ui.body.BodyRowType
+import com.valkiria.uicomponents.components.BodyRowType
 
 @JsonClass(generateAdapter = true)
 data class DropDownResponse(
@@ -21,12 +21,13 @@ data class DropDownResponse(
 
     override val type: BodyRowType = BodyRowType.DROP_DOWN
 
-    override fun mapToUi(): DropDownUiModel = DropDownUiModel(
-        identifier = identifier ?: error("DropDown identifier cannot be null"),
-        label = label ?: error("DropDown min cannot be null"),
-        options = options?.map { it.mapToUi() } ?: error("DropDown options cannot be null"),
-        selected = selected,
-        arrangement = arrangement ?: Arrangement.Center,
-        modifier = modifier ?: Modifier
-    )
+    override fun mapToUi(): com.valkiria.uicomponents.components.body.DropDownUiModel =
+        com.valkiria.uicomponents.components.body.DropDownUiModel(
+            identifier = identifier ?: error("DropDown identifier cannot be null"),
+            label = label ?: error("DropDown min cannot be null"),
+            options = options?.map { it.mapToUi() } ?: error("DropDown options cannot be null"),
+            selected = selected,
+            arrangement = arrangement ?: Arrangement.Center,
+            modifier = modifier ?: Modifier
+        )
 }

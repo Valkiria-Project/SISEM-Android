@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.valkiria.uicomponents.components.body.RichLabelUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.body.RichLabelUiModel
 import kotlin.random.Random
 
 fun getLoginWelcomeRichLabelUiModel(): RichLabelUiModel {

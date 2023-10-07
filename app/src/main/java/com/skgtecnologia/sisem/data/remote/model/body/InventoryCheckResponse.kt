@@ -9,8 +9,8 @@ import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToDomain
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.valkiria.uicomponents.model.ui.body.BodyRowType
-import com.valkiria.uicomponents.model.ui.body.InventoryCheckUiModel
+import com.valkiria.uicomponents.components.BodyRowType
+import com.valkiria.uicomponents.components.body.InventoryCheckUiModel
 
 @JsonClass(generateAdapter = true)
 data class InventoryCheckResponse(

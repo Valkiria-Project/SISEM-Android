@@ -5,12 +5,12 @@ package com.valkiria.uicomponents.model.mocks
 import androidx.compose.foundation.layout.Arrangement
 import com.valkiria.uicomponents.model.props.TextModel
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.body.ChipOptionsUiModel
+import com.valkiria.uicomponents.components.body.ChipOptionsUiModel
 import com.valkiria.uicomponents.model.ui.chip.ChipOptionUiModel
 import kotlin.random.Random
 
-fun getPreOperationalChipOptionsUiModel(): ChipOptionsUiModel {
-    return ChipOptionsUiModel(
+fun getPreOperationalChipOptionsUiModel(): com.valkiria.uicomponents.components.body.ChipOptionsUiModel {
+    return com.valkiria.uicomponents.components.body.ChipOptionsUiModel(
         identifier = Random(100).toString(),
         title = TextModel(
             "Seleccione las herramientas que hacen falta",

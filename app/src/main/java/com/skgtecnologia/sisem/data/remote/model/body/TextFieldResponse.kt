@@ -9,8 +9,8 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.props.TextFieldStyle
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.body.BodyRowType
-import com.valkiria.uicomponents.model.ui.body.TextFieldUiModel
+import com.valkiria.uicomponents.components.BodyRowType
+import com.valkiria.uicomponents.components.body.TextFieldUiModel
 
 @JsonClass(generateAdapter = true)
 data class TextFieldResponse(

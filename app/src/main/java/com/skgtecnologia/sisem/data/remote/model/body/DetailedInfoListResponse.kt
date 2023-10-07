@@ -4,11 +4,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.bricks.DetailedInfoResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
-import com.valkiria.uicomponents.model.ui.body.DetailedInfoListUiModel
+import com.valkiria.uicomponents.components.body.DetailedInfoListUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.body.BodyRowType
+import com.valkiria.uicomponents.components.BodyRowType
 
 @JsonClass(generateAdapter = true)
 data class DetailedInfoListResponse(
@@ -22,15 +22,16 @@ data class DetailedInfoListResponse(
 
     override val type: BodyRowType = BodyRowType.DETAILED_INFO_LIST
 
-    override fun mapToUi(): DetailedInfoListUiModel = DetailedInfoListUiModel(
-        identifier = identifier ?: error("Detailed info list identifier cannot be null"),
-        details = details?.map { it.mapToUi() }
-            ?: error("Detailed info list details cannot be null"),
-        labelTextStyle = labelTextStyle
-            ?: error("Detailed info list labelTextStyle cannot be null"),
-        textTextStyle = textTextStyle
-            ?: error("Detailed info list textTextStyle cannot be null"),
-        arrangement = arrangement ?: Arrangement.Center,
-        modifier = modifier ?: Modifier
-    )
+    override fun mapToUi(): com.valkiria.uicomponents.components.body.DetailedInfoListUiModel =
+        com.valkiria.uicomponents.components.body.DetailedInfoListUiModel(
+            identifier = identifier ?: error("Detailed info list identifier cannot be null"),
+            details = details?.map { it.mapToUi() }
+                ?: error("Detailed info list details cannot be null"),
+            labelTextStyle = labelTextStyle
+                ?: error("Detailed info list labelTextStyle cannot be null"),
+            textTextStyle = textTextStyle
+                ?: error("Detailed info list textTextStyle cannot be null"),
+            arrangement = arrangement ?: Arrangement.Center,
+            modifier = modifier ?: Modifier
+        )
 }

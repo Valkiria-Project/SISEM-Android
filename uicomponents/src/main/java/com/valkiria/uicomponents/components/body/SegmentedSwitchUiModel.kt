@@ -1,7 +1,8 @@
-package com.valkiria.uicomponents.model.ui.body
+package com.valkiria.uicomponents.components.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
+import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.ui.segmentedswitch.OptionUiModel
 
@@ -13,7 +14,7 @@ data class SegmentedSwitchUiModel(
     val selected: Boolean = true,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
-) : BodyRowModel {
+) : com.valkiria.uicomponents.components.body.BodyRowModel {
 
     override val type: BodyRowType = BodyRowType.SEGMENTED_SWITCH
 }

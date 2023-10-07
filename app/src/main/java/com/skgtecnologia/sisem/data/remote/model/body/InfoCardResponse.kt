@@ -8,10 +8,10 @@ import com.skgtecnologia.sisem.data.remote.model.bricks.ReportsDetailResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToDomain
 import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToDomain
-import com.valkiria.uicomponents.model.ui.body.InfoCardUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.valkiria.uicomponents.model.ui.body.BodyRowType
+import com.valkiria.uicomponents.components.BodyRowType
+import com.valkiria.uicomponents.components.body.InfoCardUiModel
 
 @JsonClass(generateAdapter = true)
 data class InfoCardResponse(

@@ -7,8 +7,8 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.login.model.LoginLink.PRIVACY_POLICY
 import com.skgtecnologia.sisem.domain.login.model.LoginLink.TERMS_AND_CONDITIONS
 import com.valkiria.uicomponents.R.drawable
+import com.valkiria.uicomponents.components.body.TermsAndConditionsUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.body.TermsAndConditionsUiModel
 import com.valkiria.uicomponents.model.ui.link.Link
 import java.util.Locale
 

@@ -19,6 +19,7 @@ import com.skgtecnologia.sisem.domain.authcards.model.AuthCardsIdentifier
 import com.skgtecnologia.sisem.domain.changepassword.model.ChangePasswordIdentifier
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
 import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
+import com.skgtecnologia.sisem.domain.login.model.mapToLoginModel
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
 import com.valkiria.uicomponents.action.AuthCardsUiAction
@@ -35,6 +36,23 @@ import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.NewsUiAction
 import com.valkiria.uicomponents.action.RecordNewsUiAction
 import com.valkiria.uicomponents.action.UiAction
+import com.valkiria.uicomponents.components.body.ButtonUiModel
+import com.valkiria.uicomponents.components.body.ChipOptionsUiModel
+import com.valkiria.uicomponents.components.body.ChipSelectionUiModel
+import com.valkiria.uicomponents.components.body.ChipUiModel
+import com.valkiria.uicomponents.components.body.DetailedInfoListUiModel
+import com.valkiria.uicomponents.components.body.DropDownUiModel
+import com.valkiria.uicomponents.components.body.HeaderUiModel
+import com.valkiria.uicomponents.components.body.InfoCardUiModel
+import com.valkiria.uicomponents.components.body.InventoryCheckUiModel
+import com.valkiria.uicomponents.components.body.LabelUiModel
+import com.valkiria.uicomponents.components.body.PasswordTextFieldUiModel
+import com.valkiria.uicomponents.components.body.RichLabelUiModel
+import com.valkiria.uicomponents.components.body.SegmentedSwitchUiModel
+import com.valkiria.uicomponents.components.body.SliderUiModel
+import com.valkiria.uicomponents.components.body.TermsAndConditionsUiModel
+import com.valkiria.uicomponents.components.body.TextFieldUiModel
+import com.valkiria.uicomponents.components.body.mapToSection
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.card.InfoCardComponent
 import com.valkiria.uicomponents.components.chip.ChipComponent
@@ -51,35 +69,13 @@ import com.valkiria.uicomponents.components.slider.SliderComponent
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
 import com.valkiria.uicomponents.components.textfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
-import com.valkiria.uicomponents.model.ui.body.BodyRowModel
-import com.valkiria.uicomponents.model.ui.body.ButtonUiModel
-import com.valkiria.uicomponents.model.ui.body.ChipOptionsUiModel
-import com.valkiria.uicomponents.model.ui.body.ChipSelectionUiModel
-import com.valkiria.uicomponents.model.ui.body.ChipUiModel
-import com.valkiria.uicomponents.model.ui.body.DetailedInfoListUiModel
-import com.valkiria.uicomponents.model.ui.body.DropDownUiModel
-import com.valkiria.uicomponents.model.ui.body.FiltersUiModel
-import com.valkiria.uicomponents.model.ui.body.FindingUiModel
-import com.valkiria.uicomponents.model.ui.body.FingerprintUiModel
-import com.valkiria.uicomponents.model.ui.body.FooterBodyUiModel
-import com.valkiria.uicomponents.model.ui.body.HeaderUiModel
-import com.valkiria.uicomponents.model.ui.body.InfoCardUiModel
-import com.valkiria.uicomponents.model.ui.body.InventoryCheckUiModel
-import com.valkiria.uicomponents.model.ui.body.LabelUiModel
-import com.valkiria.uicomponents.model.ui.body.PasswordTextFieldUiModel
-import com.valkiria.uicomponents.model.ui.body.RichLabelUiModel
-import com.valkiria.uicomponents.model.ui.body.SegmentedSwitchUiModel
-import com.valkiria.uicomponents.model.ui.body.SliderUiModel
-import com.valkiria.uicomponents.model.ui.body.TermsAndConditionsUiModel
-import com.valkiria.uicomponents.model.ui.body.TextFieldUiModel
-import com.valkiria.uicomponents.model.ui.body.mapToSection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Suppress("ComplexMethod", "LongMethod")
 @Composable
 fun BodySection(
-    body: List<BodyRowModel>?,
+    body: List<com.valkiria.uicomponents.components.body.BodyRowModel>?,
     modifier: Modifier = Modifier,
     validateFields: Boolean = false,
     onAction: (actionInput: UiAction) -> Unit
@@ -108,7 +104,7 @@ fun BodySection(
 
 @Suppress("ComplexMethod", "LongMethod", "LongParameterList")
 private fun LazyListScope.handleBodyRows(
-    body: List<BodyRowModel>,
+    body: List<com.valkiria.uicomponents.components.body.BodyRowModel>,
     listState: LazyListState,
     coroutineScope: CoroutineScope,
     validateFields: Boolean,
@@ -160,7 +156,7 @@ private fun LazyListScope.handleBodyRows(
                 DetailedInfoListComponent(uiModel = model)
             }
 
-            is FiltersUiModel -> stickyHeader(key = model.identifier) {
+            is com.valkiria.uicomponents.components.body.FiltersUiModel -> stickyHeader(key = model.identifier) {
                 FiltersComponent(uiModel = model) { selected, _ ->
                     coroutineScope.launch {
                         val contentHeader = body.indexOfFirst {
@@ -174,13 +170,13 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
-            is FindingUiModel -> item(key = model.identifier) {
+            is com.valkiria.uicomponents.components.body.FindingUiModel -> item(key = model.identifier) {
                 FindingComponent(uiModel = model) { id, status ->
                     onAction(GenericUiAction.FindingAction(identifier = id, status = status))
                 }
             }
 
-            is FingerprintUiModel -> item(key = model.identifier) {
+            is com.valkiria.uicomponents.components.body.FingerprintUiModel -> item(key = model.identifier) {
                 Image(
                     modifier = Modifier.padding(vertical = 20.dp),
                     painter = painterResource(id = R.drawable.ic_login_fingerprint),
@@ -188,7 +184,7 @@ private fun LazyListScope.handleBodyRows(
                 )
             }
 
-            is FooterBodyUiModel -> item(key = model.identifier) {
+            is com.valkiria.uicomponents.components.body.FooterBodyUiModel -> item(key = model.identifier) {
                 FooterSection(footerModel = model.mapToSection()) { uiAction ->
                     onAction(uiAction)
                 }
@@ -245,7 +241,7 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is TermsAndConditionsUiModel -> item(key = model.identifier) {
-                TermsAndConditionsComponent(uiModel = model) { link ->
+                TermsAndConditionsComponent(uiModel = model.mapToLoginModel()) { link ->
                     onAction(TermsAndConditions(link = link))
                 }
             }

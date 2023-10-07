@@ -22,7 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
-import com.valkiria.uicomponents.model.ui.body.SliderUiModel
+import com.valkiria.uicomponents.components.body.SliderUiModel
 import kotlin.math.roundToInt
 
 private const val COLOR_0 = "#56ADB2"

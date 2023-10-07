@@ -5,11 +5,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.bricks.ValidationResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
-import com.valkiria.uicomponents.model.ui.body.PasswordTextFieldUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.body.BodyRowType
+import com.valkiria.uicomponents.components.BodyRowType
+import com.valkiria.uicomponents.components.body.PasswordTextFieldUiModel
 
 @JsonClass(generateAdapter = true)
 data class PasswordTextFieldResponse(

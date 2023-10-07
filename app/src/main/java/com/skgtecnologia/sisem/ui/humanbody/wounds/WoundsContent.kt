@@ -20,8 +20,8 @@ import com.valkiria.uicomponents.components.chip.ChipSelectionComponent
 import com.valkiria.uicomponents.model.props.TextModel
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.props.toTextStyle
-import com.valkiria.uicomponents.model.ui.body.ChipOptionsUiModel
-import com.valkiria.uicomponents.model.ui.body.ChipSelectionUiModel
+import com.valkiria.uicomponents.components.body.ChipOptionsUiModel
+import com.valkiria.uicomponents.components.body.ChipSelectionUiModel
 import com.valkiria.uicomponents.model.ui.chip.ChipOptionUiModel
 import com.valkiria.uicomponents.model.ui.chip.ChipSelectionItemUiModel
 
@@ -47,7 +47,7 @@ fun WoundsContent(
         modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
     ) {
         ChipOptionsComponent(
-            uiModel = ChipOptionsUiModel(
+            uiModel = com.valkiria.uicomponents.components.body.ChipOptionsUiModel(
                 identifier = "wounds",
                 items = stringArrayResource(id = R.array.wounds_list).mapIndexed { index, text ->
                     ChipOptionUiModel(id = index.toString(), name = text, selected = false)
@@ -61,7 +61,7 @@ fun WoundsContent(
 
         if (uiState.onBurnSelected) {
             ChipSelectionComponent(
-                uiModel = ChipSelectionUiModel(
+                uiModel = com.valkiria.uicomponents.components.body.ChipSelectionUiModel(
                     identifier = "burn_type",
                     title = TextModel(
                         stringResource(R.string.wounds_burn_description),

@@ -8,10 +8,10 @@ import com.valkiria.uicomponents.model.ui.button.OnClick
 import com.valkiria.uicomponents.model.props.ButtonSize
 import com.valkiria.uicomponents.model.props.ButtonStyle
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.body.ButtonUiModel
+import com.valkiria.uicomponents.components.body.ButtonUiModel
 
-fun getLoginForgotButtonUiModel(): ButtonUiModel {
-    return ButtonUiModel(
+fun getLoginForgotButtonUiModel(): com.valkiria.uicomponents.components.body.ButtonUiModel {
+    return com.valkiria.uicomponents.components.body.ButtonUiModel(
         identifier = "forgot_password",
         label = "¿Olvidaste la contraseña?",
         style = ButtonStyle.TRANSPARENT,
@@ -28,8 +28,8 @@ fun getLoginForgotButtonUiModel(): ButtonUiModel {
     )
 }
 
-fun getLoginButtonUiModel(): ButtonUiModel {
-    return ButtonUiModel(
+fun getLoginButtonUiModel(): com.valkiria.uicomponents.components.body.ButtonUiModel {
+    return com.valkiria.uicomponents.components.body.ButtonUiModel(
         identifier = "login",
         label = "INGRESAR",
         style = ButtonStyle.LOUD,

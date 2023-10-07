@@ -17,12 +17,12 @@ import com.valkiria.uicomponents.model.props.ButtonSize
 import com.valkiria.uicomponents.model.props.mapToColors
 import com.valkiria.uicomponents.model.props.mapToTextColor
 import com.valkiria.uicomponents.model.props.toTextStyle
-import com.valkiria.uicomponents.model.ui.body.ButtonUiModel
+import com.valkiria.uicomponents.components.body.ButtonUiModel
 import timber.log.Timber
 
 @Composable
 fun ButtonComponent(
-    uiModel: ButtonUiModel,
+    uiModel: com.valkiria.uicomponents.components.body.ButtonUiModel,
     onAction: (id: String) -> Unit
 ) {
     Row(

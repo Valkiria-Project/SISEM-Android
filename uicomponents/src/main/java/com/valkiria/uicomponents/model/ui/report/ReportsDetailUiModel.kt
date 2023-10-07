@@ -1,6 +1,6 @@
 package com.valkiria.uicomponents.model.ui.report
 
-import com.valkiria.uicomponents.model.ui.body.HeaderUiModel
+import com.valkiria.uicomponents.components.body.HeaderUiModel
 
 data class ReportsDetailUiModel(
     val header: HeaderUiModel,

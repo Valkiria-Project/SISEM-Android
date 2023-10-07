@@ -1,8 +1,8 @@
 package com.valkiria.uicomponents.model.ui.footer
 
-import com.valkiria.uicomponents.model.ui.body.ButtonUiModel
+import com.valkiria.uicomponents.components.body.ButtonUiModel
 
 data class FooterUiModel(
-    val leftButton: ButtonUiModel,
-    val rightButton: ButtonUiModel?
+    val leftButton: com.valkiria.uicomponents.components.body.ButtonUiModel,
+    val rightButton: com.valkiria.uicomponents.components.body.ButtonUiModel?
 )
