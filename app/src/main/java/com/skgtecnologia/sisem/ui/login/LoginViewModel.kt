@@ -68,7 +68,9 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun List<BodyRowModel>.toVehicleCode() {
-        code = (this.find { it is ChipModel && it.text.isNotBlank() } as? ChipModel)?.text.orEmpty()
+        code = filterIsInstance<ChipModel>()
+            .firstOrNull { it.text.isNotBlank() }
+            ?.text.orEmpty()
     }
 
     fun forgotPassword() {
