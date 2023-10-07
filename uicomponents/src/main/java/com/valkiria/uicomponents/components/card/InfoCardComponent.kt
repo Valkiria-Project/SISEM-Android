@@ -31,7 +31,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.bricks.chip.SuggestionChipView
-import com.valkiria.uicomponents.components.body.InfoCardUiModel
 import com.valkiria.uicomponents.model.props.toTextStyle
 import com.valkiria.uicomponents.model.ui.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.model.ui.report.ReportsDetailUiModel

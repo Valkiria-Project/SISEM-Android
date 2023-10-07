@@ -17,9 +17,10 @@ import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
 import com.skgtecnologia.sisem.ui.navigation.model.PreOpNavigationModel
-import com.valkiria.uicomponents.components.body.FindingUiModel
-import com.valkiria.uicomponents.components.body.InventoryCheckUiModel
-import com.valkiria.uicomponents.components.body.TextFieldUiModel
+import com.valkiria.uicomponents.components.finding.FindingUiModel
+import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
+import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -85,7 +86,7 @@ class PreOperationalViewModel @Inject constructor(
                     findings[model.identifier] = model.selected
                 }
 
-                is com.valkiria.uicomponents.components.body.ChipOptionsUiModel -> {
+                is ChipOptionsUiModel -> {
                     Timber.d("it's a ChipOptionsModel with id ${bodyRowModel.identifier}")
                     bodyRowModel.items.forEach { optionUiModel ->
                         findings[optionUiModel.id] = optionUiModel.selected

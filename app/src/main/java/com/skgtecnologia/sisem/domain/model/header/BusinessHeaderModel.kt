@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.domain.model.header
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.components.body.HeaderUiModel
+import com.valkiria.uicomponents.components.headerbody.HeaderUiModel
 import com.valkiria.uicomponents.model.props.TextModel
 import com.valkiria.uicomponents.model.props.TextStyle
 

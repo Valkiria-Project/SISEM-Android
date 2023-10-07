@@ -13,7 +13,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import com.ireward.htmlcompose.HtmlText
-import com.valkiria.uicomponents.components.body.TermsAndConditionsUiModel
 import com.valkiria.uicomponents.model.mocks.getLoginTermsAndConditionsUiModel
 import timber.log.Timber
 

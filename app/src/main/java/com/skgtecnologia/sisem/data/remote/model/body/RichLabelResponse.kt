@@ -6,7 +6,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.components.BodyRowType
-import com.valkiria.uicomponents.components.body.RichLabelUiModel
+import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
 
 @JsonClass(generateAdapter = true)
 data class RichLabelResponse(

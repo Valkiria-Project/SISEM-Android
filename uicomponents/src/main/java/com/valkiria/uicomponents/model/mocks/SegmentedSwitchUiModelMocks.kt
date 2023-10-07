@@ -4,7 +4,7 @@ package com.valkiria.uicomponents.model.mocks
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.components.body.SegmentedSwitchUiModel
+import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.props.TextStyle.BUTTON_2
 import com.valkiria.uicomponents.model.ui.segmentedswitch.OptionUiModel

@@ -1,6 +1,6 @@
 package com.valkiria.uicomponents.model.ui.finding
 
-import com.valkiria.uicomponents.components.body.HeaderUiModel
+import com.valkiria.uicomponents.components.headerbody.HeaderUiModel
 
 data class FindingsDetailModel(
     val header: HeaderUiModel,

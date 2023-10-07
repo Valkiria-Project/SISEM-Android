@@ -4,10 +4,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.components.body.FindingUiModel
+import com.valkiria.uicomponents.components.finding.FindingUiModel
 
-fun getPreOperationalOilFindingUiModel(): com.valkiria.uicomponents.components.body.FindingUiModel {
-    return com.valkiria.uicomponents.components.body.FindingUiModel(
+fun getPreOperationalOilFindingUiModel(): FindingUiModel {
+    return FindingUiModel(
         identifier = "PRE_OP_OIL",
         segmentedSwitchUiModel = getPreOperationalOilSegmentedSwitchUiModel(),
         arrangement = Arrangement.Center,

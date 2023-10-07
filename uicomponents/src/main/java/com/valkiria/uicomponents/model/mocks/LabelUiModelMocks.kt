@@ -2,7 +2,7 @@ package com.valkiria.uicomponents.model.mocks
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.components.body.LabelUiModel
+import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
 
 fun getDeviceAuthSerialLabelUiModel(): LabelUiModel {

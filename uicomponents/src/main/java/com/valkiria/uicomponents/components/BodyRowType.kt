@@ -7,7 +7,6 @@ enum class BodyRowType {
     CHIP_SELECTION,
     INFO_CARD,
     DETAILED_INFO_LIST,
-    DROP_DOWN,
     FILTERS,
     FINDING,
     FINGERPRINT,

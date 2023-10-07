@@ -19,7 +19,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import com.valkiria.uicomponents.R
-import com.valkiria.uicomponents.components.body.TextFieldUiModel
+import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.model.mocks.getPreOpDriverAuxGuardianTextFieldUiModel
 import com.valkiria.uicomponents.utlis.TimeUtils.getFormattedLocalTimeAsString
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDateFromInstant

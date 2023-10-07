@@ -6,7 +6,7 @@ import com.skgtecnologia.sisem.data.remote.model.bricks.FindingsDetailResponse
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.components.BodyRowType
-import com.valkiria.uicomponents.components.body.FindingUiModel
+import com.valkiria.uicomponents.components.finding.FindingUiModel
 
 @JsonClass(generateAdapter = true)
 data class FindingResponse(
@@ -19,8 +19,7 @@ data class FindingResponse(
 
     override val type: BodyRowType = BodyRowType.FINDING
 
-    override fun mapToUi(): com.valkiria.uicomponents.components.body.FindingUiModel =
-        com.valkiria.uicomponents.components.body.FindingUiModel(
+    override fun mapToUi(): FindingUiModel = FindingUiModel(
             identifier = identifier ?: error("Finding identifier cannot be null"),
             segmentedSwitchUiModel = segmentedSwitch?.mapToUi()
                 ?: error("Finding segmentedSwitchModel cannot be null"),

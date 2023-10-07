@@ -22,13 +22,12 @@ import com.valkiria.uicomponents.model.props.ChipStyle
 import com.valkiria.uicomponents.model.props.toChipBorder
 import com.valkiria.uicomponents.model.props.toChipColors
 import com.valkiria.uicomponents.model.props.toTextStyle
-import com.valkiria.uicomponents.components.body.ChipUiModel
 import com.valkiria.uicomponents.utlis.DefType.DRAWABLE
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 
 @Composable
 fun ChipComponent(
-    uiModel: com.valkiria.uicomponents.components.body.ChipUiModel,
+    uiModel: ChipUiModel,
     onAction: (value: String) -> Unit = { }
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(

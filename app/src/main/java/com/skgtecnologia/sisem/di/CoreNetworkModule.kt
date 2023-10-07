@@ -10,7 +10,6 @@ import com.skgtecnologia.sisem.data.remote.model.body.ChipOptionsResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ChipResponse
 import com.skgtecnologia.sisem.data.remote.model.body.ChipSelectionResponse
 import com.skgtecnologia.sisem.data.remote.model.body.DetailedInfoListResponse
-import com.skgtecnologia.sisem.data.remote.model.body.DropDownResponse
 import com.skgtecnologia.sisem.data.remote.model.body.FiltersResponse
 import com.skgtecnologia.sisem.data.remote.model.body.FindingResponse
 import com.skgtecnologia.sisem.data.remote.model.body.FingerprintResponse
@@ -28,12 +27,12 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.EnumJsonAdapter
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.model.props.ButtonSize
 import com.valkiria.uicomponents.model.props.ButtonStyle
 import com.valkiria.uicomponents.model.props.ChipStyle
 import com.valkiria.uicomponents.model.props.TextFieldStyle
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.model.ui.button.OnClick
 import dagger.Module
 import dagger.Provides
@@ -102,9 +101,6 @@ object CoreNetworkModule {
         ).withSubtype(
             DetailedInfoListResponse::class.java,
             BodyRowType.DETAILED_INFO_LIST.name
-        ).withSubtype(
-            DropDownResponse::class.java,
-            BodyRowType.DROP_DOWN.name
         ).withSubtype(
             FiltersResponse::class.java,
             BodyRowType.FILTERS.name

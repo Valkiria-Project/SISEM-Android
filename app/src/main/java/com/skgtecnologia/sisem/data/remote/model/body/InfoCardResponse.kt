@@ -11,7 +11,7 @@ import com.skgtecnologia.sisem.data.remote.model.props.mapToDomain
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.components.BodyRowType
-import com.valkiria.uicomponents.components.body.InfoCardUiModel
+import com.valkiria.uicomponents.components.card.InfoCardUiModel
 
 @JsonClass(generateAdapter = true)
 data class InfoCardResponse(

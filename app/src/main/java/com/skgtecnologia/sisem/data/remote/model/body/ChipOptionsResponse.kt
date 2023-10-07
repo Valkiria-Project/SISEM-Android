@@ -9,7 +9,7 @@ import com.skgtecnologia.sisem.data.remote.model.props.mapToDomain
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.components.BodyRowType
-import com.valkiria.uicomponents.components.body.ChipOptionsUiModel
+import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
 
 @JsonClass(generateAdapter = true)
 data class ChipOptionsResponse(
@@ -22,8 +22,7 @@ data class ChipOptionsResponse(
 
     override val type: BodyRowType = BodyRowType.CHIP_OPTIONS
 
-    override fun mapToUi(): com.valkiria.uicomponents.components.body.ChipOptionsUiModel =
-        com.valkiria.uicomponents.components.body.ChipOptionsUiModel(
+    override fun mapToUi(): ChipOptionsUiModel = ChipOptionsUiModel(
             identifier = identifier ?: error("ChipOptions identifier cannot be null"),
             title = title?.mapToDomain(),
             items = items?.map { it.mapToUi() } ?: error("ChipOptions items cannot be null"),

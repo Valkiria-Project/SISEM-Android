@@ -9,12 +9,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
 import com.valkiria.uicomponents.model.mocks.getPreOperationalOilFindingUiModel
-import com.valkiria.uicomponents.components.body.FindingUiModel
 import timber.log.Timber
 
 @Composable
 fun FindingComponent(
-    uiModel: com.valkiria.uicomponents.components.body.FindingUiModel,
+    uiModel: FindingUiModel,
     onAction: (id: String, status: Boolean) -> Unit
 ) {
     SegmentedSwitchComponent(uiModel = uiModel.segmentedSwitchUiModel) { id, status ->

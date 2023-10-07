@@ -12,8 +12,8 @@ import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
-import com.valkiria.uicomponents.components.body.BodyRowModel
-import com.valkiria.uicomponents.components.body.ChipUiModel
+import com.valkiria.uicomponents.components.BodyRowModel
+import com.valkiria.uicomponents.components.chip.ChipUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -67,8 +67,8 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun List<com.valkiria.uicomponents.components.body.BodyRowModel>.toVehicleCode() {
-        code = filterIsInstance<com.valkiria.uicomponents.components.body.ChipUiModel>()
+    private fun List<BodyRowModel>.toVehicleCode() {
+        code = filterIsInstance<ChipUiModel>()
             .firstOrNull { it.text.isNotBlank() }
             ?.text.orEmpty()
     }

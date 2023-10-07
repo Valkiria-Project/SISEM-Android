@@ -13,8 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.bricks.chip.OptionChipView
-import com.valkiria.uicomponents.components.body.ChipOptionsUiModel
-import com.valkiria.uicomponents.components.body.LabelUiModel
+import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.model.mocks.getPreOperationalChipOptionsUiModel
 import com.valkiria.uicomponents.model.props.TextStyle

@@ -5,7 +5,7 @@ package com.valkiria.uicomponents.model.mocks
 import androidx.compose.foundation.layout.Arrangement
 import com.valkiria.uicomponents.model.props.TextModel
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.components.body.ChipOptionsUiModel
+import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
 import com.valkiria.uicomponents.model.ui.chip.ChipOptionUiModel
 import kotlin.random.Random
 

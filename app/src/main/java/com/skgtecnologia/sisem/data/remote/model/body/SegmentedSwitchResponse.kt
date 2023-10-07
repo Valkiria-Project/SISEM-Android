@@ -7,7 +7,7 @@ import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.components.BodyRowType
-import com.valkiria.uicomponents.components.body.SegmentedSwitchUiModel
+import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
 
 @JsonClass(generateAdapter = true)

@@ -20,12 +20,11 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.bricks.chip.FilterChipView
 import com.valkiria.uicomponents.model.mocks.getPreOperationalFiltersUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.components.body.FiltersUiModel
 import timber.log.Timber
 
 @Composable
 fun FiltersComponent(
-    uiModel: com.valkiria.uicomponents.components.body.FiltersUiModel,
+    uiModel: FiltersUiModel,
     onAction: (text: String, isSelection: Boolean) -> Unit
 ) {
     val selected = rememberSaveable { mutableStateOf("") }

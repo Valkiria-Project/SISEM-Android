@@ -30,7 +30,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
-import com.valkiria.uicomponents.components.body.PasswordTextFieldUiModel
 import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.model.mocks.getLoginPasswordTextFieldUiModel
 import com.valkiria.uicomponents.model.mocks.getNoIconPasswordTextFieldUiModel

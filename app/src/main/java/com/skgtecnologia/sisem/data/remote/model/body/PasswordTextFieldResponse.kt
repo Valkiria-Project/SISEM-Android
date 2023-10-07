@@ -9,7 +9,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.components.BodyRowType
-import com.valkiria.uicomponents.components.body.PasswordTextFieldUiModel
+import com.valkiria.uicomponents.components.textfield.PasswordTextFieldUiModel
 
 @JsonClass(generateAdapter = true)
 data class PasswordTextFieldResponse(

@@ -6,10 +6,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.model.props.ChipStyle
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.components.body.ChipUiModel
+import com.valkiria.uicomponents.components.chip.ChipUiModel
 
-fun getLoginChipUiModel(): com.valkiria.uicomponents.components.body.ChipUiModel {
-    return com.valkiria.uicomponents.components.body.ChipUiModel(
+fun getLoginChipUiModel(): ChipUiModel {
+    return ChipUiModel(
         identifier = "LOGIN_CHIP",
         icon = "ic_ambulance",
         text = "5421244",

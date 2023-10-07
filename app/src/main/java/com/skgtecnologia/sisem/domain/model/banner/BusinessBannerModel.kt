@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
-import com.valkiria.uicomponents.components.body.ButtonUiModel
+import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.model.ui.footer.FooterUiModel
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddFindingIdentifier
@@ -42,7 +42,7 @@ fun disassociateDeviceBanner(): BannerModel = BannerModel(
     title = "Continuar",
     description = "¿Desea continuar con las actividades en la aplicación?",
     footerModel = FooterUiModel(
-        leftButton = com.valkiria.uicomponents.components.body.ButtonUiModel(
+        leftButton = ButtonUiModel(
             identifier = DeviceAuthIdentifier.DEVICE_AUTH_CANCEL_BANNER.name,
             label = "CANCELAR",
             style = ButtonStyle.LOUD,
@@ -57,7 +57,7 @@ fun disassociateDeviceBanner(): BannerModel = BannerModel(
                 bottom = 0.dp
             )
         ),
-        rightButton = com.valkiria.uicomponents.components.body.ButtonUiModel(
+        rightButton = ButtonUiModel(
             identifier = DeviceAuthIdentifier.DEVICE_AUTH_CONTINUE_BANNER.name,
             label = "CONTINUAR",
             style = ButtonStyle.LOUD,
@@ -80,7 +80,7 @@ fun findingCancellationBanner(): BannerModel = BannerModel(
     title = "¿Descartar hallazgo?",
     description = "Las modificaciones elaboradas no serán guardadas.",
     footerModel = FooterUiModel(
-        leftButton = com.valkiria.uicomponents.components.body.ButtonUiModel(
+        leftButton = ButtonUiModel(
             identifier = AddFindingIdentifier.ADD_FINDING_CANCEL_BANNER.name,
             label = "CANCELAR",
             style = ButtonStyle.LOUD,
@@ -95,7 +95,7 @@ fun findingCancellationBanner(): BannerModel = BannerModel(
                 bottom = 0.dp
             )
         ),
-        rightButton = com.valkiria.uicomponents.components.body.ButtonUiModel(
+        rightButton = ButtonUiModel(
             identifier = AddFindingIdentifier.ADD_FINDING_CONTINUE_BANNER.name,
             label = "CONTINUAR",
             style = ButtonStyle.LOUD,
@@ -118,7 +118,7 @@ fun findingConfirmationBanner(): BannerModel = BannerModel(
     title = "Guardar hallazgo",
     description = "¿Desea guardar el hallazgo registrado?",
     footerModel = FooterUiModel(
-        leftButton = com.valkiria.uicomponents.components.body.ButtonUiModel(
+        leftButton = ButtonUiModel(
             identifier = ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_CANCEL_BANNER.name,
             label = "CANCELAR",
             style = ButtonStyle.LOUD,
@@ -133,7 +133,7 @@ fun findingConfirmationBanner(): BannerModel = BannerModel(
                 bottom = 0.dp
             )
         ),
-        rightButton = com.valkiria.uicomponents.components.body.ButtonUiModel(
+        rightButton = ButtonUiModel(
             identifier = ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name,
             label = "GUARDAR",
             style = ButtonStyle.LOUD,
@@ -175,7 +175,7 @@ fun preOperationalConfirmationBanner(): BannerModel = BannerModel(
         "deberá ser diligenciada por cada una de las tripulaciones que entregan y reciben\n" +
         "turno en tiempo establecido",
     footerModel = FooterUiModel(
-        leftButton = com.valkiria.uicomponents.components.body.ButtonUiModel(
+        leftButton = ButtonUiModel(
             identifier = PreOperationalIdentifier.PREOP_CANCEL_BUTTON.name,
             label = "CANCELAR",
             style = ButtonStyle.LOUD,
@@ -190,7 +190,7 @@ fun preOperationalConfirmationBanner(): BannerModel = BannerModel(
                 bottom = 0.dp
             )
         ),
-        rightButton = com.valkiria.uicomponents.components.body.ButtonUiModel(
+        rightButton = ButtonUiModel(
             identifier = PreOperationalIdentifier.PREOP_SAVE_BUTTON.name,
             label = "GUARDAR",
             style = ButtonStyle.LOUD,
@@ -219,7 +219,7 @@ fun reportCancellationBanner(): BannerModel = BannerModel(
     title = "Cancelar novedad",
     description = "¿Está seguro que desea cancelar el registro de la novedad?",
     footerModel = FooterUiModel(
-        leftButton = com.valkiria.uicomponents.components.body.ButtonUiModel(
+        leftButton = ButtonUiModel(
             identifier = AddReportIdentifier.ADD_REPORT_CANCEL_BANNER.name,
             label = "CANCELAR",
             style = ButtonStyle.LOUD,
@@ -234,7 +234,7 @@ fun reportCancellationBanner(): BannerModel = BannerModel(
                 bottom = 0.dp
             )
         ),
-        rightButton = com.valkiria.uicomponents.components.body.ButtonUiModel(
+        rightButton = ButtonUiModel(
             identifier = AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name,
             label = "CONTINUAR",
             style = ButtonStyle.LOUD,
@@ -257,7 +257,7 @@ fun reportConfirmationBanner(): BannerModel = BannerModel(
     title = "Guardar novedad",
     description = "¿Desea guardar la novedad registrada?",
     footerModel = FooterUiModel(
-        leftButton = com.valkiria.uicomponents.components.body.ButtonUiModel(
+        leftButton = ButtonUiModel(
             identifier = ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_CANCEL_BANNER.name,
             label = "CANCELAR",
             style = ButtonStyle.LOUD,
@@ -272,7 +272,7 @@ fun reportConfirmationBanner(): BannerModel = BannerModel(
                 bottom = 0.dp
             )
         ),
-        rightButton = com.valkiria.uicomponents.components.body.ButtonUiModel(
+        rightButton = ButtonUiModel(
             identifier = ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name,
             label = "GUARDAR",
             style = ButtonStyle.LOUD,

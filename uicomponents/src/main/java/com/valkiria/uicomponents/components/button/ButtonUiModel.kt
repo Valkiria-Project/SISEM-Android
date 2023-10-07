@@ -1,8 +1,9 @@
-package com.valkiria.uicomponents.components.body
+package com.valkiria.uicomponents.components.button
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.model.props.ButtonSize
 import com.valkiria.uicomponents.model.props.ButtonStyle
@@ -19,7 +20,7 @@ data class ButtonUiModel(
     val size: ButtonSize,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier
-) : com.valkiria.uicomponents.components.body.BodyRowModel {
+) : BodyRowModel {
 
     override val type: BodyRowType = BodyRowType.BUTTON
 }

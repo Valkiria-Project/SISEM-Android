@@ -42,7 +42,7 @@ import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import com.valkiria.uicomponents.model.props.ButtonSize
 import com.valkiria.uicomponents.model.props.ButtonStyle
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.components.body.ButtonUiModel
+import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.model.ui.button.OnClick
 import timber.log.Timber
 import kotlin.random.Random
@@ -104,7 +104,7 @@ fun ImagesConfirmationScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             ButtonView(
-                uiModel = com.valkiria.uicomponents.components.body.ButtonUiModel(
+                uiModel = ButtonUiModel(
                     identifier = Random(100).toString(),
                     label = stringResource(R.string.images_confirmation_delete_image_cta),
                     textStyle = TextStyle.BUTTON_2,
@@ -120,7 +120,7 @@ fun ImagesConfirmationScreen(
             }
 
             ButtonView(
-                uiModel = com.valkiria.uicomponents.components.body.ButtonUiModel(
+                uiModel = ButtonUiModel(
                     identifier = Random(100).toString(),
                     label = stringResource(R.string.images_confirmation_confirm_images_cta),
                     textStyle = TextStyle.BUTTON_2,

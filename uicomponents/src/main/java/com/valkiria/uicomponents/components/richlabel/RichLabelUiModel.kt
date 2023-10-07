@@ -1,20 +1,18 @@
-package com.valkiria.uicomponents.components.body
+package com.valkiria.uicomponents.components.richlabel
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
+import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.BodyRowType
-import com.valkiria.uicomponents.model.props.ChipStyle
 import com.valkiria.uicomponents.model.props.TextStyle
 
-data class ChipUiModel(
+data class RichLabelUiModel(
     val identifier: String,
-    val icon: String?,
     val text: String,
     val textStyle: TextStyle,
-    val style: ChipStyle,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
-) : com.valkiria.uicomponents.components.body.BodyRowModel {
+) : BodyRowModel {
 
-    override val type: BodyRowType = BodyRowType.CHIP
+    override val type: BodyRowType = BodyRowType.RICH_LABEL
 }

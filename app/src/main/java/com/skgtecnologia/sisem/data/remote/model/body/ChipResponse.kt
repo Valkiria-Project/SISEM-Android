@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.components.body.ChipUiModel
+import com.valkiria.uicomponents.components.chip.ChipUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.props.ChipStyle
@@ -22,8 +22,7 @@ data class ChipResponse(
 
     override val type: BodyRowType = BodyRowType.CHIP
 
-    override fun mapToUi(): com.valkiria.uicomponents.components.body.ChipUiModel =
-        com.valkiria.uicomponents.components.body.ChipUiModel(
+    override fun mapToUi(): ChipUiModel = ChipUiModel(
             identifier = identifier ?: error("Chip identifier cannot be null"),
             icon = icon,
             text = text ?: error("Chip text cannot be null"),

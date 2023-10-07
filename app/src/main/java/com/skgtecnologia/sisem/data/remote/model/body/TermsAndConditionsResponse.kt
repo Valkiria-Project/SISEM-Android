@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.components.BodyRowType
-import com.valkiria.uicomponents.components.body.TermsAndConditionsUiModel
+import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsUiModel
 
 @JsonClass(generateAdapter = true)
 data class TermsAndConditionsResponse(

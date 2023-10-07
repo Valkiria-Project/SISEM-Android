@@ -1,6 +1,7 @@
-package com.valkiria.uicomponents.components.body
+package com.valkiria.uicomponents.components.chip
 
 import androidx.compose.ui.Modifier
+import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.model.props.TextStyle
 
@@ -9,7 +10,7 @@ data class FiltersUiModel(
     val options: List<String>,
     val textStyle: TextStyle,
     val modifier: Modifier = Modifier
-) : com.valkiria.uicomponents.components.body.BodyRowModel {
+) : BodyRowModel {
 
     override val type: BodyRowType = BodyRowType.FILTERS
 }
