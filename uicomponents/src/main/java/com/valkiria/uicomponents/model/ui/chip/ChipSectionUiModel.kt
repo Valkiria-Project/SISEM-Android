@@ -7,4 +7,3 @@ data class ChipSectionUiModel(
     val title: TextModel,
     val listText: ListTextModel
 )
-

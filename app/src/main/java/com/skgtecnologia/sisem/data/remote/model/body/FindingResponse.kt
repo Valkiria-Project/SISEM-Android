@@ -20,10 +20,10 @@ data class FindingResponse(
     override val type: BodyRowType = BodyRowType.FINDING
 
     override fun mapToUi(): FindingUiModel = FindingUiModel(
-            identifier = identifier ?: error("Finding identifier cannot be null"),
-            segmentedSwitchUiModel = segmentedSwitch?.mapToUi()
-                ?: error("Finding segmentedSwitchModel cannot be null"),
-            arrangement = arrangement ?: Arrangement.Center,
-            modifier = modifier ?: Modifier
-        )
+        identifier = identifier ?: error("Finding identifier cannot be null"),
+        segmentedSwitchUiModel = segmentedSwitch?.mapToUi()
+            ?: error("Finding segmentedSwitchModel cannot be null"),
+        arrangement = arrangement ?: Arrangement.Center,
+        modifier = modifier ?: Modifier
+    )
 }

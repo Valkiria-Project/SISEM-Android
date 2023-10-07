@@ -23,10 +23,10 @@ data class ChipOptionsResponse(
     override val type: BodyRowType = BodyRowType.CHIP_OPTIONS
 
     override fun mapToUi(): ChipOptionsUiModel = ChipOptionsUiModel(
-            identifier = identifier ?: error("ChipOptions identifier cannot be null"),
-            title = title?.mapToDomain(),
-            items = items?.map { it.mapToUi() } ?: error("ChipOptions items cannot be null"),
-            arrangement = arrangement ?: Arrangement.Center,
-            modifier = modifier ?: Modifier
-        )
+        identifier = identifier ?: error("ChipOptions identifier cannot be null"),
+        title = title?.mapToDomain(),
+        items = items?.map { it.mapToUi() } ?: error("ChipOptions items cannot be null"),
+        arrangement = arrangement ?: Arrangement.Center,
+        modifier = modifier ?: Modifier
+    )
 }
