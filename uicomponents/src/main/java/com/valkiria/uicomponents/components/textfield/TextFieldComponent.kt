@@ -23,7 +23,7 @@ import com.valkiria.uicomponents.bricks.textfield.OutlinedTextFieldView
 import com.valkiria.uicomponents.model.mocks.getLoginUserTextFieldUiModel
 import com.valkiria.uicomponents.model.mocks.getPreOpDriverVehicleKMTextFieldUiModel
 import com.valkiria.uicomponents.model.props.TextFieldStyle
-import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.model.ui.body.TextFieldUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import timber.log.Timber

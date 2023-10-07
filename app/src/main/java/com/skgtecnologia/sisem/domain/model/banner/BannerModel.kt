@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.domain.model.banner
 
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.resources.StringProvider
-import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
+import com.valkiria.uicomponents.model.ui.body.mapToUiModel
 import com.skgtecnologia.sisem.domain.model.footer.FooterModel
 import com.valkiria.uicomponents.model.ui.banner.DEFAULT_ICON_COLOR
 import com.valkiria.uicomponents.model.ui.banner.BannerUiModel

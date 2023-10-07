@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.domain.model.footer
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.body.ButtonModel
+import com.valkiria.uicomponents.model.ui.body.ButtonModel
 import com.skgtecnologia.sisem.domain.report.model.AddFindingIdentifier
 import com.valkiria.uicomponents.model.props.ButtonSize
 import com.valkiria.uicomponents.model.props.ButtonStyle

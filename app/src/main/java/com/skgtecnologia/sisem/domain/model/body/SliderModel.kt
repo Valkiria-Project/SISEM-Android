@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.domain.model.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
+import com.valkiria.uicomponents.model.ui.body.BodyRowType
 import com.valkiria.uicomponents.model.ui.slider.SliderUiModel
 
 data class SliderModel(

@@ -1,12 +1,11 @@
-package com.skgtecnologia.sisem.domain.model.body
+package com.valkiria.uicomponents.model.ui.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.props.TextModel
+import com.valkiria.uicomponents.model.props.TextModel
 import com.valkiria.uicomponents.model.ui.chip.ChipOptionUiModel
-import com.valkiria.uicomponents.model.ui.chip.ChipOptionsUiModel
 
-data class ChipOptionsModel(
+data class ChipOptionsUiModel(
     val identifier: String,
     val title: TextModel?,
     val items: List<ChipOptionUiModel>,
@@ -17,10 +16,3 @@ data class ChipOptionsModel(
     override val type: BodyRowType = BodyRowType.CHIP_OPTIONS
 }
 
-fun ChipOptionsModel.mapToUiModel() = ChipOptionsUiModel(
-    identifier = identifier,
-    title = title?.text,
-    textStyle = title?.textStyle,
-    items = items,
-    modifier = modifier
-)

@@ -27,7 +27,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.model.mocks.getPreOpDriverAuxGuardianTextFieldUiModel
-import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.model.ui.body.TextFieldUiModel
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDateFromInstant
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDateInMillis
 import java.time.Instant

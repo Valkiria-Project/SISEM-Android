@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.domain.model.body.HeaderModel
-import com.skgtecnologia.sisem.domain.model.props.TextModel
+import com.valkiria.uicomponents.model.props.TextModel
 import com.valkiria.uicomponents.model.props.TextStyle
 
 fun addFindingHeader(

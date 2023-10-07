@@ -7,10 +7,10 @@ import com.skgtecnologia.sisem.data.remote.model.bricks.ValidationResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
 import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToDomain
-import com.skgtecnologia.sisem.domain.model.body.BodyRowType
-import com.skgtecnologia.sisem.domain.model.body.InventoryCheckModel
+import com.valkiria.uicomponents.model.ui.body.InventoryCheckUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.valkiria.uicomponents.model.ui.body.BodyRowType
 
 @JsonClass(generateAdapter = true)
 data class InventoryCheckResponse(
@@ -25,7 +25,7 @@ data class InventoryCheckResponse(
 
     override val type: BodyRowType = BodyRowType.INVENTORY_CHECK
 
-    override fun mapToDomain(): InventoryCheckModel = InventoryCheckModel(
+    override fun mapToDomain(): InventoryCheckUiModel = InventoryCheckUiModel(
         identifier = identifier ?: error("InventoryCheck identifier cannot be null"),
         registered = registered?.mapToDomain()
             ?: error("InventoryCheck registered cannot be null"),

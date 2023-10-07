@@ -5,12 +5,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.bricks.ValidationResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
-import com.skgtecnologia.sisem.domain.model.body.BodyRowType
-import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.props.TextFieldStyle
 import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.model.ui.body.BodyRowType
+import com.valkiria.uicomponents.model.ui.body.TextFieldUiModel
 
 @JsonClass(generateAdapter = true)
 data class TextFieldResponse(
@@ -29,7 +29,7 @@ data class TextFieldResponse(
 
     override val type: BodyRowType = BodyRowType.TEXT_FIELD
 
-    override fun mapToDomain(): TextFieldModel = TextFieldModel(
+    override fun mapToUi(): TextFieldUiModel = TextFieldUiModel(
         identifier = identifier ?: error("TextField identifier cannot be null"),
         icon = icon,
         placeholder = placeholder,

@@ -2,14 +2,14 @@ package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.body.BodyRowType
-import com.skgtecnologia.sisem.domain.model.body.ButtonModel
+import com.valkiria.uicomponents.model.ui.body.ButtonModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.ui.button.OnClick
 import com.valkiria.uicomponents.model.props.ButtonSize
 import com.valkiria.uicomponents.model.props.ButtonStyle
 import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.model.ui.body.BodyRowType
 
 @JsonClass(generateAdapter = true)
 data class ButtonResponse(
@@ -25,7 +25,7 @@ data class ButtonResponse(
 
     override val type: BodyRowType = BodyRowType.BUTTON
 
-    override fun mapToDomain(): ButtonModel = ButtonModel(
+    override fun mapToUi(): ButtonModel = ButtonModel(
         identifier = identifier ?: error("Button identifier cannot be null"),
         label = label ?: error("Button label cannot be null"),
         style = style ?: error("Button style cannot be null"),

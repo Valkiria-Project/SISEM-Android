@@ -4,10 +4,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.bricks.DropDownItemResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
-import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.DropDownModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.valkiria.uicomponents.model.ui.body.BodyRowType
 
 @JsonClass(generateAdapter = true)
 data class DropDownResponse(

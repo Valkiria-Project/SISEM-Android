@@ -6,10 +6,10 @@ import com.skgtecnologia.sisem.data.remote.model.bricks.ChipSelectionItemRespons
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
 import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToDomain
-import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.skgtecnologia.sisem.domain.model.body.ChipSelectionModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.valkiria.uicomponents.model.ui.body.BodyRowType
 
 @JsonClass(generateAdapter = true)
 data class ChipSelectionResponse(

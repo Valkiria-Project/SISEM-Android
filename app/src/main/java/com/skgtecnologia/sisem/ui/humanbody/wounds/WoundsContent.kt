@@ -20,7 +20,6 @@ import com.valkiria.uicomponents.components.chip.ChipSelectionComponent
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.props.toTextStyle
 import com.valkiria.uicomponents.model.ui.chip.ChipOptionUiModel
-import com.valkiria.uicomponents.model.ui.chip.ChipOptionsUiModel
 import com.valkiria.uicomponents.model.ui.chip.ChipSelectionItemUiModel
 import com.valkiria.uicomponents.model.ui.chip.ChipSelectionUiModel
 

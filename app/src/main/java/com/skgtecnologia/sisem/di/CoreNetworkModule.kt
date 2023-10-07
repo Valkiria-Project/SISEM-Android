@@ -24,7 +24,6 @@ import com.skgtecnologia.sisem.data.remote.model.body.SegmentedSwitchResponse
 import com.skgtecnologia.sisem.data.remote.model.body.SliderResponse
 import com.skgtecnologia.sisem.data.remote.model.body.TermsAndConditionsResponse
 import com.skgtecnologia.sisem.data.remote.model.body.TextFieldResponse
-import com.skgtecnologia.sisem.domain.model.body.BodyRowType
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.EnumJsonAdapter
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
@@ -34,6 +33,7 @@ import com.valkiria.uicomponents.model.props.ButtonStyle
 import com.valkiria.uicomponents.model.props.ChipStyle
 import com.valkiria.uicomponents.model.props.TextFieldStyle
 import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.model.ui.body.BodyRowType
 import com.valkiria.uicomponents.model.ui.button.OnClick
 import dagger.Module
 import dagger.Provides

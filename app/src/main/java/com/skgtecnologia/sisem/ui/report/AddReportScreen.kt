@@ -29,7 +29,7 @@ import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.model.props.TextFieldStyle
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.ui.label.LabelUiModel
-import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.model.ui.body.TextFieldUiModel
 import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
 import kotlin.random.Random
 

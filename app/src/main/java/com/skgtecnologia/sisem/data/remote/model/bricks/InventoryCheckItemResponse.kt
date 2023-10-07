@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.data.remote.model.bricks
 
 import com.skgtecnologia.sisem.data.remote.model.body.RichLabelResponse
 import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
-import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
+import com.valkiria.uicomponents.model.ui.body.mapToUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.ui.inventorycheck.InventoryCheckItemUiModel

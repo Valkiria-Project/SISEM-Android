@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.model.ui.chip.ChipUiModel
 import com.valkiria.uicomponents.model.props.ChipStyle
 import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.model.ui.body.BodyRowType
 
 data class ChipModel(
     val identifier: String,

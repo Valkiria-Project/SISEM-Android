@@ -7,7 +7,8 @@ import com.skgtecnologia.sisem.domain.model.bricks.ChipSectionModel
 import com.skgtecnologia.sisem.domain.model.bricks.PillModel
 import com.skgtecnologia.sisem.domain.model.bricks.ReportsDetailModel
 import com.skgtecnologia.sisem.domain.model.bricks.mapToUiModel
-import com.skgtecnologia.sisem.domain.model.props.TextModel
+import com.valkiria.uicomponents.model.props.TextModel
+import com.valkiria.uicomponents.model.ui.body.BodyRowType
 import com.valkiria.uicomponents.model.ui.card.InfoCardUiModel
 
 data class InfoCardModel(

@@ -1,12 +1,12 @@
-package com.skgtecnologia.sisem.domain.model.body
+package com.valkiria.uicomponents.model.ui.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.model.ui.button.ButtonUiModel
-import com.valkiria.uicomponents.model.ui.button.OnClick
 import com.valkiria.uicomponents.model.props.ButtonSize
 import com.valkiria.uicomponents.model.props.ButtonStyle
 import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.model.ui.button.ButtonUiModel
+import com.valkiria.uicomponents.model.ui.button.OnClick
 
 data class ButtonModel(
     val identifier: String,

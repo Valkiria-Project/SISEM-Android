@@ -2,10 +2,12 @@
 
 package com.valkiria.uicomponents.model.mocks
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
+import com.valkiria.uicomponents.model.props.TextModel
 import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.model.ui.body.InventoryCheckUiModel
 import com.valkiria.uicomponents.model.ui.inventorycheck.InventoryCheckItemUiModel
-import com.valkiria.uicomponents.model.ui.inventorycheck.InventoryCheckUiModel
 import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
 import kotlin.random.Random
 
@@ -29,10 +31,14 @@ fun getPreOperationalInventoryCheckUiModel(): InventoryCheckUiModel {
 
     return InventoryCheckUiModel(
         identifier = Random(100).toString(),
-        registeredText = "Registrado",
-        registeredTextStyle = TextStyle.BODY_1,
-        receivedText = "Recibido",
-        receivedTextStyle = TextStyle.BODY_1,
+        registered = TextModel(
+            "Registrado",
+            TextStyle.BODY_1,
+        ),
+        received = TextModel(
+            "Recibido",
+            TextStyle.BODY_1,
+        ),
         items = items,
         validations = listOf(
             ValidationUiModel(
@@ -40,6 +46,7 @@ fun getPreOperationalInventoryCheckUiModel(): InventoryCheckUiModel {
                 message = "El campo no debe estar vacío"
             )
         ),
+        arrangement = Arrangement.Center,
         modifier = Modifier
     )
 }

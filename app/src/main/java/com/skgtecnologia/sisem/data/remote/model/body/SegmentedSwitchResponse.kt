@@ -4,11 +4,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.bricks.OptionResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.mapToUi
-import com.skgtecnologia.sisem.domain.model.body.BodyRowType
-import com.skgtecnologia.sisem.domain.model.body.SegmentedSwitchModel
+import com.valkiria.uicomponents.model.ui.body.SegmentedSwitchUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.model.ui.body.BodyRowType
 
 @JsonClass(generateAdapter = true)
 data class SegmentedSwitchResponse(
@@ -23,7 +23,7 @@ data class SegmentedSwitchResponse(
 
     override val type: BodyRowType = BodyRowType.SEGMENTED_SWITCH
 
-    override fun mapToDomain(): SegmentedSwitchModel = SegmentedSwitchModel(
+    override fun mapToDomain(): SegmentedSwitchUiModel = SegmentedSwitchUiModel(
         identifier = identifier ?: error("SegmentedSwitch identifier cannot be null"),
         text = text ?: error("SegmentedSwitch text cannot be null"),
         textStyle = textStyle ?: error("SegmentedSwitch textStyle cannot be null"),

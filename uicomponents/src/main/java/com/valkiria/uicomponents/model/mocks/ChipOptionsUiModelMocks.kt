@@ -2,16 +2,20 @@
 
 package com.valkiria.uicomponents.model.mocks
 
-import com.valkiria.uicomponents.model.ui.chip.ChipOptionUiModel
-import com.valkiria.uicomponents.model.ui.chip.ChipOptionsUiModel
+import androidx.compose.foundation.layout.Arrangement
+import com.valkiria.uicomponents.model.props.TextModel
 import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.model.ui.body.ChipOptionsUiModel
+import com.valkiria.uicomponents.model.ui.chip.ChipOptionUiModel
 import kotlin.random.Random
 
 fun getPreOperationalChipOptionsUiModel(): ChipOptionsUiModel {
     return ChipOptionsUiModel(
         identifier = Random(100).toString(),
-        title = "Seleccione las herramientas que hacen falta",
-        textStyle = TextStyle.BODY_1,
+        title = TextModel(
+            "Seleccione las herramientas que hacen falta",
+            TextStyle.BODY_1,
+        ),
         items = listOf(
             ChipOptionUiModel(
                 id = "1",
@@ -58,6 +62,7 @@ fun getPreOperationalChipOptionsUiModel(): ChipOptionsUiModel {
                 name = "Juego de destornilladores",
                 selected = false
             )
-        )
+        ),
+        arrangement = Arrangement.Center
     )
 }

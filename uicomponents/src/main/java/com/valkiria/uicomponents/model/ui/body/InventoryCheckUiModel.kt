@@ -1,13 +1,12 @@
-package com.skgtecnologia.sisem.domain.model.body
+package com.valkiria.uicomponents.model.ui.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.props.TextModel
+import com.valkiria.uicomponents.model.props.TextModel
 import com.valkiria.uicomponents.model.ui.inventorycheck.InventoryCheckItemUiModel
-import com.valkiria.uicomponents.model.ui.inventorycheck.InventoryCheckUiModel
 import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
 
-data class InventoryCheckModel(
+data class InventoryCheckUiModel(
     val identifier: String,
     val registered: TextModel,
     val received: TextModel,
@@ -19,14 +18,3 @@ data class InventoryCheckModel(
 
     override val type: BodyRowType = BodyRowType.INVENTORY_CHECK
 }
-
-fun InventoryCheckModel.mapToUiModel() = InventoryCheckUiModel(
-    identifier = identifier,
-    registeredText = registered.text,
-    registeredTextStyle = registered.textStyle,
-    receivedText = received.text,
-    receivedTextStyle = received.textStyle,
-    items = items,
-    validations = validations,
-    modifier = modifier
-)

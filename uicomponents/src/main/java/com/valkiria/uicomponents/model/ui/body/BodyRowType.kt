@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.domain.model.body
+package com.valkiria.uicomponents.model.ui.body
 
 enum class BodyRowType {
     BUTTON,

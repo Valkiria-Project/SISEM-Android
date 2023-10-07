@@ -19,10 +19,9 @@ import com.skgtecnologia.sisem.domain.authcards.model.AuthCardsIdentifier
 import com.skgtecnologia.sisem.domain.changepassword.model.ChangePasswordIdentifier
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
 import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
-import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
-import com.skgtecnologia.sisem.domain.model.body.ButtonModel
+import com.valkiria.uicomponents.model.ui.body.ButtonModel
 import com.skgtecnologia.sisem.domain.model.body.ChipModel
-import com.skgtecnologia.sisem.domain.model.body.ChipOptionsModel
+import com.valkiria.uicomponents.model.ui.body.ChipOptionsUiModel
 import com.skgtecnologia.sisem.domain.model.body.ChipSelectionModel
 import com.skgtecnologia.sisem.domain.model.body.DetailedInfoListModel
 import com.skgtecnologia.sisem.domain.model.body.DropDownModel
@@ -32,16 +31,16 @@ import com.skgtecnologia.sisem.domain.model.body.FingerprintModel
 import com.skgtecnologia.sisem.domain.model.body.FooterBodyModel
 import com.skgtecnologia.sisem.domain.model.body.HeaderModel
 import com.skgtecnologia.sisem.domain.model.body.InfoCardModel
-import com.skgtecnologia.sisem.domain.model.body.InventoryCheckModel
+import com.valkiria.uicomponents.model.ui.body.InventoryCheckUiModel
 import com.skgtecnologia.sisem.domain.model.body.LabelModel
 import com.skgtecnologia.sisem.domain.model.body.PasswordTextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.RichLabelModel
-import com.skgtecnologia.sisem.domain.model.body.SegmentedSwitchModel
+import com.valkiria.uicomponents.model.ui.body.SegmentedSwitchUiModel
 import com.skgtecnologia.sisem.domain.model.body.SliderModel
 import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
 import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.body.mapToSection
-import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
+import com.valkiria.uicomponents.model.ui.body.mapToUiModel
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
 import com.valkiria.uicomponents.action.AuthCardsUiAction
@@ -125,7 +124,7 @@ private fun LazyListScope.handleBodyRows(
                 HandleChipRows(model, onAction)
             }
 
-            is ChipOptionsModel -> item(key = model.identifier) {
+            is ChipOptionsUiModel -> item(key = model.identifier) {
                 ChipOptionsComponent(uiModel = model.mapToUiModel()) { id, text, isSelection ->
                     onAction(
                         GenericUiAction.ChipOptionAction(
@@ -207,7 +206,7 @@ private fun LazyListScope.handleBodyRows(
                 )
             }
 
-            is InventoryCheckModel -> item(key = model.identifier) {
+            is InventoryCheckUiModel -> item(key = model.identifier) {
                 InventoryCheckComponent(
                     uiModel = model.mapToUiModel(),
                     validateFields
@@ -226,7 +225,7 @@ private fun LazyListScope.handleBodyRows(
                 LabelComponent(uiModel = model.mapToUiModel())
             }
 
-            is SegmentedSwitchModel -> item(key = model.identifier) {
+            is SegmentedSwitchUiModel -> item(key = model.identifier) {
                 SegmentedSwitchComponent(uiModel = model.mapToUiModel()) { id, status ->
                     onAction(
                         GenericUiAction.SegmentedSwitchAction(

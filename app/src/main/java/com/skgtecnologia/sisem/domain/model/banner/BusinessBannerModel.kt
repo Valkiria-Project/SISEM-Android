@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
-import com.skgtecnologia.sisem.domain.model.body.ButtonModel
+import com.valkiria.uicomponents.model.ui.body.ButtonModel
 import com.skgtecnologia.sisem.domain.model.footer.FooterModel
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddFindingIdentifier

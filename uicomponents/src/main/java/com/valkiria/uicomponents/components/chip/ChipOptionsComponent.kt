@@ -16,7 +16,7 @@ import com.valkiria.uicomponents.bricks.chip.OptionChipView
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.model.mocks.getPreOperationalChipOptionsUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.chip.ChipOptionsUiModel
+import com.valkiria.uicomponents.model.ui.body.ChipOptionsUiModel
 import com.valkiria.uicomponents.model.ui.label.LabelUiModel
 import timber.log.Timber
 
@@ -30,11 +30,11 @@ fun ChipOptionsComponent(
         modifier = uiModel.modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Top
     ) {
-        uiModel.textStyle?.let {
+        uiModel.title?.textStyle?.let {
             LabelComponent(
                 uiModel = LabelUiModel(
-                    text = uiModel.title.orEmpty(),
-                    textStyle = uiModel.textStyle
+                    text = uiModel.title.text,
+                    textStyle = uiModel.title.textStyle
                 )
             )
         }

@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.model.ui.detailedinfolist.DetailedInfoListUiModel
 import com.valkiria.uicomponents.model.ui.detailedinfolist.DetailedInfoUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.model.ui.body.BodyRowType
 
 data class DetailedInfoListModel(
     val identifier: String,
