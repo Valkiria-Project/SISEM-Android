@@ -11,8 +11,9 @@ import com.skgtecnologia.sisem.domain.auth.usecases.Login
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
-import com.valkiria.uicomponents.model.ui.body.ChipUiModel
 import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
+import com.valkiria.uicomponents.model.ui.body.BodyRowModel
+import com.valkiria.uicomponents.model.ui.body.ChipUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

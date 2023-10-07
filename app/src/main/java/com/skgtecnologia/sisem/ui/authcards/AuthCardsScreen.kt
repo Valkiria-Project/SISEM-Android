@@ -15,7 +15,6 @@ import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
-import com.valkiria.uicomponents.model.ui.chip.mapToDomain
 import com.skgtecnologia.sisem.ui.authcards.report.FindingsContent
 import com.skgtecnologia.sisem.ui.authcards.report.ReportDetailContent
 import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
@@ -150,10 +149,10 @@ private fun handleAction(
             AuthCardsUiAction.AuthCard -> onNavigation(AuthNavigationRoute.LoginScreen)
 
             is AuthCardsUiAction.AuthCardNews ->
-                viewModel.showReportBottomSheet(uiAction.reportDetail.mapToDomain())
+                viewModel.showReportBottomSheet(uiAction.reportDetail)
 
             is AuthCardsUiAction.AuthCardFindings ->
-                viewModel.showFindingsBottomSheet(uiAction.chipSectionUiModel.mapToDomain())
+                viewModel.showFindingsBottomSheet(uiAction.chipSectionUiModel)
         }
     }
 }

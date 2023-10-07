@@ -21,7 +21,7 @@ data class FindingResponse(
 
     override fun mapToUi(): FindingUiModel = FindingUiModel(
         identifier = identifier ?: error("Finding identifier cannot be null"),
-        segmentedSwitchUiModel = segmentedSwitch?.mapToDomain()
+        segmentedSwitchUiModel = segmentedSwitch?.mapToUi()
             ?: error("Finding segmentedSwitchModel cannot be null"),
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier

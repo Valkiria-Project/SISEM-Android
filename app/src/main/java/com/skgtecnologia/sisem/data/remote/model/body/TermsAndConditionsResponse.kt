@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
+import com.valkiria.uicomponents.model.ui.body.TermsAndConditionsUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.ui.body.BodyRowType
@@ -16,7 +16,7 @@ data class TermsAndConditionsResponse(
 
     override val type: BodyRowType = BodyRowType.TERMS_AND_CONDITIONS
 
-    override fun mapToDomain(): TermsAndConditionsModel = TermsAndConditionsModel(
+    override fun mapToUi(): TermsAndConditionsUiModel = TermsAndConditionsUiModel(
         identifier = identifier,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier

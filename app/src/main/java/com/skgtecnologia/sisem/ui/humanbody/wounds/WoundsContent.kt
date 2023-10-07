@@ -17,8 +17,11 @@ import com.skgtecnologia.sisem.domain.model.header.woundsHeader
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.components.chip.ChipOptionsComponent
 import com.valkiria.uicomponents.components.chip.ChipSelectionComponent
+import com.valkiria.uicomponents.model.props.TextModel
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.props.toTextStyle
+import com.valkiria.uicomponents.model.ui.body.ChipOptionsUiModel
+import com.valkiria.uicomponents.model.ui.body.ChipSelectionUiModel
 import com.valkiria.uicomponents.model.ui.chip.ChipOptionUiModel
 import com.valkiria.uicomponents.model.ui.chip.ChipSelectionItemUiModel
 
@@ -49,6 +52,7 @@ fun WoundsContent(
                 items = stringArrayResource(id = R.array.wounds_list).mapIndexed { index, text ->
                     ChipOptionUiModel(id = index.toString(), name = text, selected = false)
                 },
+                arrangement = Arrangement.Center,
                 modifier = Modifier
             )
         ) { _, text, isSelected ->
@@ -59,8 +63,10 @@ fun WoundsContent(
             ChipSelectionComponent(
                 uiModel = ChipSelectionUiModel(
                     identifier = "burn_type",
-                    titleText = stringResource(R.string.wounds_burn_description),
-                    titleTextStyle = TextStyle.HEADLINE_5,
+                    title = TextModel(
+                        stringResource(R.string.wounds_burn_description),
+                        TextStyle.HEADLINE_5,
+                    ),
                     items = stringArrayResource(
                         id = R.array.wounds_burn_grade_list
                     ).mapIndexed { index, text ->

@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.model.ui.richlabel
+package com.valkiria.uicomponents.model.ui.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
@@ -10,4 +10,7 @@ data class RichLabelUiModel(
     val textStyle: TextStyle,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
-)
+) : BodyRowModel {
+
+    override val type: BodyRowType = BodyRowType.RICH_LABEL
+}

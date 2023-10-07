@@ -16,11 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.model.ui.body.HeaderUiModel
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.label.LabelComponent
-import com.valkiria.uicomponents.model.ui.label.LabelUiModel
+import com.valkiria.uicomponents.model.ui.body.HeaderUiModel
+import com.valkiria.uicomponents.model.ui.body.LabelUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 
@@ -59,6 +59,7 @@ fun HeaderSection(
 
             LabelComponent(
                 uiModel = LabelUiModel(
+                    identifier = headerUiModel.title.text,
                     text = headerUiModel.title.text,
                     textStyle = headerUiModel.title.textStyle,
                     arrangement = Arrangement.Start
@@ -86,6 +87,7 @@ fun HeaderSection(
         headerUiModel.subtitle?.let {
             LabelComponent(
                 uiModel = LabelUiModel(
+                    identifier = it.text,
                     text = it.text,
                     textStyle = it.textStyle,
                     modifier = Modifier.padding(top = 12.dp)

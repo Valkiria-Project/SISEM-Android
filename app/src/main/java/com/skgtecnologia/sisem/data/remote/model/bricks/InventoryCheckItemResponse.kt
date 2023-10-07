@@ -2,7 +2,6 @@ package com.skgtecnologia.sisem.data.remote.model.bricks
 
 import com.skgtecnologia.sisem.data.remote.model.body.RichLabelResponse
 import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
-import com.valkiria.uicomponents.model.ui.body.mapToUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.ui.inventorycheck.InventoryCheckItemUiModel
@@ -15,7 +14,7 @@ data class InventoryCheckItemResponse(
 )
 
 fun InventoryCheckItemResponse.mapToUi(): InventoryCheckItemUiModel = InventoryCheckItemUiModel(
-    name = name?.mapToDomain()?.mapToUiModel() ?: error("InventoryCheckItem name cannot be null"),
+    name = name?.mapToUi() ?: error("InventoryCheckItem name cannot be null"),
     registeredValueText = registeredValue?.text
         ?: error("InventoryCheckItem registeredValueText cannot be null"),
     registeredValueTextStyle = registeredValue.textStyle

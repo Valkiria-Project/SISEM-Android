@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.model.props.TextModel
 import com.valkiria.uicomponents.model.ui.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.model.ui.pill.PillUiModel
+import com.valkiria.uicomponents.model.ui.report.ReportsDetailUiModel
 
 data class InfoCardUiModel(
     val identifier: String,

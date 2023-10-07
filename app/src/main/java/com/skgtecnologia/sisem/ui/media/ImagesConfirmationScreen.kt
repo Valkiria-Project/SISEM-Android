@@ -42,7 +42,7 @@ import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import com.valkiria.uicomponents.model.props.ButtonSize
 import com.valkiria.uicomponents.model.props.ButtonStyle
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.button.ButtonUiModel
+import com.valkiria.uicomponents.model.ui.body.ButtonUiModel
 import com.valkiria.uicomponents.model.ui.button.OnClick
 import timber.log.Timber
 import kotlin.random.Random

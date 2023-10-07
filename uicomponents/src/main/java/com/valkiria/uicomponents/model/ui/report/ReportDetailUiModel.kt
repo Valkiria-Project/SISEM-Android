@@ -1,15 +1,12 @@
 package com.valkiria.uicomponents.model.ui.report
 
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.model.props.TextModel
 
 data class ReportDetailUiModel(
     val images: List<String>,
-    val title: String,
-    val titleTextStyle: TextStyle,
-    val subtitle: String,
-    val subtitleTextStyle: TextStyle,
-    val description: String,
-    val descriptionTextStyle: TextStyle,
+    val title: TextModel,
+    val subtitle: TextModel,
+    val description: TextModel,
     val modifier: Modifier
 )

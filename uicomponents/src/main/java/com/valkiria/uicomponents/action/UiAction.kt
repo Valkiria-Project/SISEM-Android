@@ -1,5 +1,8 @@
 package com.valkiria.uicomponents.action
 
+import com.valkiria.uicomponents.model.ui.chip.ChipSectionUiModel
+import com.valkiria.uicomponents.model.ui.report.ReportsDetailUiModel
+
 const val DISMISS_IDENTIFIER = "dismiss"
 
 sealed interface UiAction

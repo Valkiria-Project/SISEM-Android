@@ -1,6 +1,6 @@
 package com.valkiria.uicomponents.model.ui.banner
 
-import com.valkiria.uicomponents.model.ui.button.ButtonUiModel
+import com.valkiria.uicomponents.model.ui.body.ButtonUiModel
 
 const val DEFAULT_ICON_COLOR = "#F55757" // FIXME: update with backend
 

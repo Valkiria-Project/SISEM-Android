@@ -24,7 +24,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.model.ui.report.ReportDetailModel
+import com.valkiria.uicomponents.model.ui.report.ReportDetailUiModel
 import com.skgtecnologia.sisem.ui.commons.extensions.decodeAsBase64Bitmap
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.model.props.toTextStyle
@@ -32,7 +32,7 @@ import com.valkiria.uicomponents.model.props.toTextStyle
 @androidx.compose.foundation.ExperimentalFoundationApi
 @Composable
 fun ReportContent(
-    model: ReportDetailModel
+    model: ReportDetailUiModel
 ) {
     val imagesBitmap = model.images.map { image ->
         image.decodeAsBase64Bitmap()
@@ -75,7 +75,7 @@ fun ReportContent(
 }
 
 @Composable
-private fun ReportTitle(model: ReportDetailModel) {
+private fun ReportTitle(model: ReportDetailUiModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

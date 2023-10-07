@@ -17,7 +17,7 @@ import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.model.mocks.getPreOperationalChipOptionsUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.ui.body.ChipOptionsUiModel
-import com.valkiria.uicomponents.model.ui.label.LabelUiModel
+import com.valkiria.uicomponents.model.ui.body.LabelUiModel
 import timber.log.Timber
 
 @Suppress("UnusedPrivateMember")
@@ -33,6 +33,7 @@ fun ChipOptionsComponent(
         uiModel.title?.textStyle?.let {
             LabelComponent(
                 uiModel = LabelUiModel(
+                    identifier = uiModel.identifier,
                     text = uiModel.title.text,
                     textStyle = uiModel.title.textStyle
                 )

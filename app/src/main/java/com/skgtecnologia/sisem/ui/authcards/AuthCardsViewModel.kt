@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.authcards.usecases.GetAuthCardsScreen
 import com.valkiria.uicomponents.model.ui.chip.ChipSectionUiModel
-import com.valkiria.uicomponents.model.ui.report.ReportsDetailModel
+import com.valkiria.uicomponents.model.ui.report.ReportsDetailUiModel
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.operation.usecases.GetOperationConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -71,7 +71,7 @@ class AuthCardsViewModel @Inject constructor(
             }
     }
 
-    fun showReportBottomSheet(reportDetail: ReportsDetailModel) {
+    fun showReportBottomSheet(reportDetail: ReportsDetailUiModel) {
         uiState = uiState.copy(
             reportDetail = reportDetail
         )

@@ -28,7 +28,7 @@ import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.model.props.TextFieldStyle
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.label.LabelUiModel
+import com.valkiria.uicomponents.model.ui.body.LabelUiModel
 import com.valkiria.uicomponents.model.ui.body.TextFieldUiModel
 import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
 import kotlin.random.Random
@@ -64,7 +64,7 @@ fun AddReportScreen(
             }
         }
 
-        LabelComponent(uiModel = getRecordNewsTopicModel())
+        LabelComponent(uiModel = getAddReportTopicModel())
 
         TextFieldComponent(
             uiModel = getFindingsTopicModel(),
@@ -74,7 +74,7 @@ fun AddReportScreen(
             viewModel.isValidTopic = fieldValidated
         }
 
-        LabelComponent(uiModel = getRecordNewsDescriptionModel())
+        LabelComponent(uiModel = getAddReportDescriptionModel())
 
         TextFieldComponent(
             uiModel = getFindingsDescriptionModel(),
@@ -183,7 +183,8 @@ private fun getFindingsDescriptionModel() = TextFieldUiModel(
 )
 
 @Composable
-private fun getRecordNewsTopicModel() = LabelUiModel(
+private fun getAddReportTopicModel() = LabelUiModel(
+    identifier = "ADD_REPORT_TOPIC",
     text = stringResource(id = R.string.record_news_topic_label),
     textStyle = TextStyle.HEADLINE_3,
     arrangement = Arrangement.Start,
@@ -196,7 +197,8 @@ private fun getRecordNewsTopicModel() = LabelUiModel(
 )
 
 @Composable
-private fun getRecordNewsDescriptionModel() = LabelUiModel(
+private fun getAddReportDescriptionModel() = LabelUiModel(
+    identifier = "ADD_REPORT_DESCRIPTION",
     text = stringResource(id = R.string.record_news_description_label),
     textStyle = TextStyle.HEADLINE_3,
     arrangement = Arrangement.Start,
@@ -210,6 +212,7 @@ private fun getRecordNewsDescriptionModel() = LabelUiModel(
 
 @Composable
 private fun getFindingsAddFilesModel() = LabelUiModel(
+    identifier = "FINDINGS_ADD_FILES",
     text = stringResource(id = R.string.findings_add_files_label),
     textStyle = TextStyle.HEADLINE_3,
     arrangement = Arrangement.Start,

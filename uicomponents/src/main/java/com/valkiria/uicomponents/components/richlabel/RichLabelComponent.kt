@@ -14,7 +14,7 @@ import com.ireward.htmlcompose.HtmlText
 import com.valkiria.uicomponents.model.mocks.getLoginWelcomeRichLabelUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.props.toTextStyle
-import com.valkiria.uicomponents.model.ui.richlabel.RichLabelUiModel
+import com.valkiria.uicomponents.model.ui.body.RichLabelUiModel
 import timber.log.Timber
 
 @Composable

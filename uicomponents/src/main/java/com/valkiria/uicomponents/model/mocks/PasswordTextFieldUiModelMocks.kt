@@ -6,12 +6,14 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.model.ui.textfield.PasswordTextFieldUiModel
+import com.mapbox.maps.extension.style.expressions.dsl.generated.id
 import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.model.ui.body.PasswordTextFieldUiModel
 
 fun getLoginPasswordTextFieldUiModel(): PasswordTextFieldUiModel {
     return PasswordTextFieldUiModel(
+        identifier = "LOGIN_PASSWORD_INPUT",
         icon = "ic_lock",
         placeholder = "Contraseña",
         label = "Ingresar contraseña",
@@ -37,6 +39,7 @@ fun getLoginPasswordTextFieldUiModel(): PasswordTextFieldUiModel {
 
 fun getNoIconPasswordTextFieldUiModel(): PasswordTextFieldUiModel {
     return PasswordTextFieldUiModel(
+        identifier = "NO_ICON_PASSWORD_INPUT",
         placeholder = "Contraseña",
         label = "Ingresar contraseña",
         keyboardOptions = KeyboardOptions.Default.copy(

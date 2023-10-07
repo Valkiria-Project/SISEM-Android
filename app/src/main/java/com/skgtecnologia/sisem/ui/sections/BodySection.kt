@@ -19,28 +19,6 @@ import com.skgtecnologia.sisem.domain.authcards.model.AuthCardsIdentifier
 import com.skgtecnologia.sisem.domain.changepassword.model.ChangePasswordIdentifier
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
 import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
-import com.valkiria.uicomponents.model.ui.body.ButtonModel
-import com.valkiria.uicomponents.model.ui.body.ChipUiModel
-import com.valkiria.uicomponents.model.ui.body.ChipOptionsUiModel
-import com.valkiria.uicomponents.model.ui.body.ChipSelectionUiModel
-import com.valkiria.uicomponents.model.ui.body.DetailedInfoListUiModel
-import com.valkiria.uicomponents.model.ui.body.DropDownUiModel
-import com.valkiria.uicomponents.model.ui.body.FiltersUiModel
-import com.skgtecnologia.sisem.domain.model.body.FindingModel
-import com.valkiria.uicomponents.model.ui.body.FingerprintUiModel
-import com.skgtecnologia.sisem.domain.model.body.FooterBodyModel
-import com.valkiria.uicomponents.model.ui.body.HeaderUiModel
-import com.valkiria.uicomponents.model.ui.body.InfoCardUiModel
-import com.valkiria.uicomponents.model.ui.body.InventoryCheckUiModel
-import com.skgtecnologia.sisem.domain.model.body.LabelModel
-import com.skgtecnologia.sisem.domain.model.body.PasswordTextFieldModel
-import com.skgtecnologia.sisem.domain.model.body.RichLabelModel
-import com.valkiria.uicomponents.model.ui.body.SegmentedSwitchUiModel
-import com.skgtecnologia.sisem.domain.model.body.SliderModel
-import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
-import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
-import com.skgtecnologia.sisem.domain.model.body.mapToSection
-import com.valkiria.uicomponents.model.ui.body.mapToUiModel
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
 import com.valkiria.uicomponents.action.AuthCardsUiAction
@@ -73,6 +51,29 @@ import com.valkiria.uicomponents.components.slider.SliderComponent
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
 import com.valkiria.uicomponents.components.textfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
+import com.valkiria.uicomponents.model.ui.body.BodyRowModel
+import com.valkiria.uicomponents.model.ui.body.ButtonUiModel
+import com.valkiria.uicomponents.model.ui.body.ChipOptionsUiModel
+import com.valkiria.uicomponents.model.ui.body.ChipSelectionUiModel
+import com.valkiria.uicomponents.model.ui.body.ChipUiModel
+import com.valkiria.uicomponents.model.ui.body.DetailedInfoListUiModel
+import com.valkiria.uicomponents.model.ui.body.DropDownUiModel
+import com.valkiria.uicomponents.model.ui.body.FiltersUiModel
+import com.valkiria.uicomponents.model.ui.body.FindingUiModel
+import com.valkiria.uicomponents.model.ui.body.FingerprintUiModel
+import com.valkiria.uicomponents.model.ui.body.FooterBodyUiModel
+import com.valkiria.uicomponents.model.ui.body.HeaderUiModel
+import com.valkiria.uicomponents.model.ui.body.InfoCardUiModel
+import com.valkiria.uicomponents.model.ui.body.InventoryCheckUiModel
+import com.valkiria.uicomponents.model.ui.body.LabelUiModel
+import com.valkiria.uicomponents.model.ui.body.PasswordTextFieldUiModel
+import com.valkiria.uicomponents.model.ui.body.RichLabelUiModel
+import com.valkiria.uicomponents.model.ui.body.SegmentedSwitchUiModel
+import com.valkiria.uicomponents.model.ui.body.SliderModel
+import com.valkiria.uicomponents.model.ui.body.TermsAndConditionsUiModel
+import com.valkiria.uicomponents.model.ui.body.TextFieldUiModel
+import com.valkiria.uicomponents.model.ui.body.mapToSection
+import com.valkiria.uicomponents.model.ui.body.mapToUiModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -116,7 +117,7 @@ private fun LazyListScope.handleBodyRows(
 ) {
     body.forEach { model ->
         when (model) {
-            is ButtonModel -> item(key = model.identifier) {
+            is ButtonUiModel -> item(key = model.identifier) {
                 HandleButtonRows(model, onAction)
             }
 
@@ -125,7 +126,7 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is ChipOptionsUiModel -> item(key = model.identifier) {
-                ChipOptionsComponent(uiModel = model.mapToUiModel()) { id, text, isSelection ->
+                ChipOptionsComponent(uiModel = model) { id, text, isSelection ->
                     onAction(
                         GenericUiAction.ChipOptionAction(
                             identifier = id,
@@ -137,7 +138,7 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is ChipSelectionUiModel -> item(key = model.identifier) {
-                ChipSelectionComponent(uiModel = model.mapToUiModel()) { id, text, isSelection ->
+                ChipSelectionComponent(uiModel = model) { id, text, isSelection ->
                     onAction(
                         GenericUiAction.ChipSelectionAction(
                             identifier = id,
@@ -157,13 +158,11 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is DetailedInfoListUiModel -> item(key = model.identifier) {
-                DetailedInfoListComponent(uiModel = model.mapToUiModel())
+                DetailedInfoListComponent(uiModel = model)
             }
 
             is FiltersUiModel -> stickyHeader(key = model.identifier) {
-                FiltersComponent(
-                    uiModel = model.mapToUiModel()
-                ) { selected, _ ->
+                FiltersComponent(uiModel = model) { selected, _ ->
                     coroutineScope.launch {
                         val contentHeader = body.indexOfFirst {
                             it is HeaderUiModel && it.title.text == selected
@@ -176,10 +175,8 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
-            is FindingModel -> item(key = model.identifier) {
-                FindingComponent(
-                    uiModel = model.mapToUiModel(),
-                ) { id, status ->
+            is FindingUiModel -> item(key = model.identifier) {
+                FindingComponent(uiModel = model) { id, status ->
                     onAction(GenericUiAction.FindingAction(identifier = id, status = status))
                 }
             }
@@ -192,10 +189,8 @@ private fun LazyListScope.handleBodyRows(
                 )
             }
 
-            is FooterBodyModel -> item(key = model.identifier) {
-                FooterSection(
-                    footerModel = model.mapToSection()
-                ) { uiAction ->
+            is FooterBodyUiModel -> item(key = model.identifier) {
+                FooterSection(footerModel = model.mapToSection()) { uiAction ->
                     onAction(uiAction)
                 }
             }
@@ -208,8 +203,8 @@ private fun LazyListScope.handleBodyRows(
 
             is InventoryCheckUiModel -> item(key = model.identifier) {
                 InventoryCheckComponent(
-                    uiModel = model.mapToUiModel(),
-                    validateFields
+                    uiModel = model,
+                    validateFields = validateFields
                 ) { id, updatedValue, fieldValidated ->
                     onAction(
                         GenericUiAction.InventoryAction(
@@ -221,12 +216,12 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
-            is LabelModel -> item(key = model.identifier) {
-                LabelComponent(uiModel = model.mapToUiModel())
+            is LabelUiModel -> item(key = model.identifier) {
+                LabelComponent(uiModel = model)
             }
 
             is SegmentedSwitchUiModel -> item(key = model.identifier) {
-                SegmentedSwitchComponent(uiModel = model.mapToUiModel()) { id, status ->
+                SegmentedSwitchComponent(uiModel = model) { id, status ->
                     onAction(
                         GenericUiAction.SegmentedSwitchAction(
                             identifier = id,
@@ -242,21 +237,21 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
-            is PasswordTextFieldModel -> item(key = model.identifier) {
+            is PasswordTextFieldUiModel -> item(key = model.identifier) {
                 HandlePasswordTextFieldRows(model, validateFields, onAction)
             }
 
-            is RichLabelModel -> item(key = model.identifier) {
-                RichLabelComponent(uiModel = model.mapToUiModel())
+            is RichLabelUiModel -> item(key = model.identifier) {
+                RichLabelComponent(uiModel = model)
             }
 
-            is TermsAndConditionsModel -> item(key = model.identifier) {
-                TermsAndConditionsComponent(uiModel = model.mapToUiModel()) { link ->
+            is TermsAndConditionsUiModel -> item(key = model.identifier) {
+                TermsAndConditionsComponent(uiModel = model) { link ->
                     onAction(TermsAndConditions(link = link))
                 }
             }
 
-            is TextFieldModel -> item(key = model.identifier) {
+            is TextFieldUiModel -> item(key = model.identifier) {
                 HandleTextFieldRows(model, validateFields, onAction)
             }
         }
@@ -265,30 +260,30 @@ private fun LazyListScope.handleBodyRows(
 
 @Composable
 private fun HandleButtonRows(
-    model: ButtonModel,
+    model: ButtonUiModel,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
         AuthCardsIdentifier.CREW_MEMBER_CARD_ADMIN_BUTTON.name -> ButtonComponent(
-            uiModel = model.mapToUiModel()
+            uiModel = model
         ) {
             onAction(AuthCardsUiAction.AuthCard)
         }
 
         LoginIdentifier.LOGIN_FORGOT_PASSWORD_BUTTON.name -> ButtonComponent(
-            uiModel = model.mapToUiModel()
+            uiModel = model
         ) {
             onAction(ForgotPassword)
         }
 
         LoginIdentifier.LOGIN_BUTTON.name -> ButtonComponent(
-            uiModel = model.mapToUiModel()
+            uiModel = model
         ) {
             onAction(Login)
         }
 
         else -> ButtonComponent(
-            uiModel = model.mapToUiModel()
+            uiModel = model
         ) { id ->
             onAction(GenericUiAction.ButtonAction(id))
         }
@@ -305,12 +300,12 @@ private fun HandleChipRows(
         AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_ASSISTANT.name,
         AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DOCTOR.name,
         AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DRIVER.name -> ChipComponent(
-            uiModel = model.mapToUiModel(),
+            uiModel = model,
             onAction = { onAction(NewsUiAction.NewsStepOneOnChipClick) }
         )
 
         else -> ChipComponent(
-            uiModel = model.mapToUiModel(),
+            uiModel = model,
         )
     }
 }
@@ -325,14 +320,15 @@ private fun HandleInfoCardRows(
         AuthCardsIdentifier.CREW_MEMBER_CARD_DRIVER.name,
         AuthCardsIdentifier.CREW_MEMBER_CARD_DOCTOR.name -> {
             InfoCardComponent(
-                uiModel = model.mapToUiModel(),
+                uiModel = model,
                 onAction = { onAction(AuthCardsUiAction.AuthCard) },
                 onNewsAction = { onAction(AuthCardsUiAction.AuthCardNews(it)) },
                 onFindingsAction = { onAction(AuthCardsUiAction.AuthCardFindings(it)) }
             )
         }
+
         else -> InfoCardComponent(
-            uiModel = model.mapToUiModel(),
+            uiModel = model,
             onAction = { onAction(AuthCardsUiAction.AuthCard) }
         )
     }
@@ -340,13 +336,13 @@ private fun HandleInfoCardRows(
 
 @Composable
 private fun HandlePasswordTextFieldRows(
-    model: PasswordTextFieldModel,
+    model: PasswordTextFieldUiModel,
     validateFields: Boolean,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
         ChangePasswordIdentifier.CHANGE_PASSWORD_CONFIRM.name -> PasswordTextFieldComponent(
-            uiModel = model.mapToUiModel(),
+            uiModel = model,
             validateFields = validateFields
         ) { updatedValue, fieldValidated ->
             onAction(
@@ -358,7 +354,7 @@ private fun HandlePasswordTextFieldRows(
         }
 
         ChangePasswordIdentifier.CHANGE_PASSWORD_NEW.name -> PasswordTextFieldComponent(
-            uiModel = model.mapToUiModel(),
+            uiModel = model,
             validateFields = validateFields
         ) { updatedValue, fieldValidated ->
             onAction(
@@ -370,7 +366,7 @@ private fun HandlePasswordTextFieldRows(
         }
 
         LoginIdentifier.LOGIN_PASSWORD.name -> PasswordTextFieldComponent(
-            uiModel = model.mapToUiModel(),
+            uiModel = model,
             validateFields = validateFields
         ) { updatedValue, fieldValidated ->
             onAction(
@@ -386,13 +382,13 @@ private fun HandlePasswordTextFieldRows(
 @Suppress("LongMethod")
 @Composable
 private fun HandleTextFieldRows(
-    model: TextFieldModel,
+    model: TextFieldUiModel,
     validateFields: Boolean,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
         DeviceAuthIdentifier.DEVICE_AUTH_CODE.name -> TextFieldComponent(
-            uiModel = model.mapToUiModel(),
+            uiModel = model,
             validateFields = validateFields
         ) { _, updatedValue, fieldValidated ->
             onAction(
@@ -404,7 +400,7 @@ private fun HandleTextFieldRows(
         }
 
         LoginIdentifier.LOGIN_EMAIL.name -> TextFieldComponent(
-            uiModel = model.mapToUiModel(),
+            uiModel = model,
             validateFields = validateFields
         ) { _, updatedValue, fieldValidated ->
             onAction(
@@ -416,7 +412,7 @@ private fun HandleTextFieldRows(
         }
 
         ChangePasswordIdentifier.CHANGE_PASSWORD_CURRENT.name -> TextFieldComponent(
-            uiModel = model.mapToUiModel(),
+            uiModel = model,
             validateFields = validateFields
         ) { _, updatedValue, _ ->
             onAction(
@@ -427,7 +423,7 @@ private fun HandleTextFieldRows(
         }
 
         AddReportIdentifier.ADD_REPORT_ENTRY_TOPIC.name -> TextFieldComponent(
-            uiModel = model.mapToUiModel(),
+            uiModel = model,
             validateFields = validateFields
         ) { _, updatedValue, _ ->
             onAction(
@@ -439,7 +435,7 @@ private fun HandleTextFieldRows(
         }
 
         AddReportIdentifier.ADD_REPORT_ENTRY_DESCRIPTION.name -> TextFieldComponent(
-            uiModel = model.mapToUiModel(),
+            uiModel = model,
             validateFields = validateFields
         ) { _, updatedValue, _ ->
             onAction(
@@ -451,7 +447,7 @@ private fun HandleTextFieldRows(
         }
 
         else -> TextFieldComponent(
-            uiModel = model.mapToUiModel(),
+            uiModel = model,
             validateFields = validateFields
         ) { id, updatedValue, fieldValidated ->
             onAction(

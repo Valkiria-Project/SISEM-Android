@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.data.remote.model.body
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.model.ui.body.ButtonModel
+import com.valkiria.uicomponents.model.ui.body.ButtonUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.model.ui.button.OnClick
@@ -25,7 +25,7 @@ data class ButtonResponse(
 
     override val type: BodyRowType = BodyRowType.BUTTON
 
-    override fun mapToUi(): ButtonModel = ButtonModel(
+    override fun mapToUi(): ButtonUiModel = ButtonUiModel(
         identifier = identifier ?: error("Button identifier cannot be null"),
         label = label ?: error("Button label cannot be null"),
         style = style ?: error("Button style cannot be null"),

@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.model.mocks.getDeviceAuthLicensePlateLabelUiModel
 import com.valkiria.uicomponents.model.mocks.getDeviceAuthSerialLabelUiModel
 import com.valkiria.uicomponents.model.props.toTextStyle
-import com.valkiria.uicomponents.model.ui.label.LabelUiModel
+import com.valkiria.uicomponents.model.ui.body.LabelUiModel
 
 @Composable
 fun LabelComponent(

@@ -7,7 +7,7 @@ import com.valkiria.uicomponents.model.ui.chip.ChipOptionUiModel
 
 data class ChipOptionsUiModel(
     val identifier: String,
-    val title: TextModel?,
+    val title: TextModel? = null,
     val items: List<ChipOptionUiModel>,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier

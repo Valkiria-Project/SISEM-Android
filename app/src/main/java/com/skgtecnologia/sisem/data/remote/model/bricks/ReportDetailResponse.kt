@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.data.remote.model.bricks
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToDomain
-import com.valkiria.uicomponents.model.ui.report.ReportDetailModel
+import com.valkiria.uicomponents.model.ui.report.ReportDetailUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -16,7 +16,7 @@ data class ReportDetailResponse(
     @Json(name = "margins") val modifier: Modifier?
 )
 
-fun ReportDetailResponse.mapToDomain(): ReportDetailModel = ReportDetailModel(
+fun ReportDetailResponse.mapToDomain(): ReportDetailUiModel = ReportDetailUiModel(
     images = images ?: error("Detail images cannot be null"),
     title = title?.mapToDomain() ?: error("Detail title cannot be null"),
     subtitle = subtitle?.mapToDomain() ?: error("Detail subtitle cannot be null"),

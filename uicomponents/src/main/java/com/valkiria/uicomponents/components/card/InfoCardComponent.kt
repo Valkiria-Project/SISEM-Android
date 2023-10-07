@@ -32,6 +32,9 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.bricks.chip.SuggestionChipView
 import com.valkiria.uicomponents.model.props.toTextStyle
+import com.valkiria.uicomponents.model.ui.body.InfoCardUiModel
+import com.valkiria.uicomponents.model.ui.chip.ChipSectionUiModel
+import com.valkiria.uicomponents.model.ui.report.ReportsDetailUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 
@@ -89,20 +92,20 @@ fun InfoCardComponent(
 
                     Column(modifier = Modifier.padding(start = 12.dp, end = 8.dp)) {
                         Text(
-                            text = uiModel.titleText,
-                            style = uiModel.titleTextStyle.toTextStyle(),
+                            text = uiModel.title.text,
+                            style = uiModel.title.textStyle.toTextStyle(),
                         )
 
                         Text(
                             modifier = Modifier
                                 .padding(top = 5.dp)
                                 .background(
-                                    color = Color(parseColor(uiModel.pillColor)),
+                                    color = Color(parseColor(uiModel.pill.color)),
                                     shape = RoundedCornerShape(25.dp)
                                 )
                                 .padding(horizontal = 8.dp),
-                            text = uiModel.pillText,
-                            style = uiModel.pillTextStyle.toTextStyle(),
+                            text = uiModel.pill.title.text,
+                            style = uiModel.pill.title.textStyle.toTextStyle(),
                             color = Color.Black
                         )
                     }
@@ -116,7 +119,7 @@ fun InfoCardComponent(
                     }
                 }
 
-                uiModel.dateTextStyle?.let {
+                uiModel.date?.textStyle?.let {
                     Row(
                         modifier = Modifier.padding(top = 10.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -131,8 +134,8 @@ fun InfoCardComponent(
                         )
 
                         Text(
-                            text = uiModel.dateText?.split(" - ")?.firstOrNull().orEmpty(),
-                            style = uiModel.dateTextStyle.toTextStyle(),
+                            text = uiModel.date.text.split(" - ").firstOrNull().orEmpty(),
+                            style = uiModel.date.textStyle.toTextStyle(),
                             modifier = Modifier.padding(end = 12.dp),
                         )
 
@@ -146,16 +149,16 @@ fun InfoCardComponent(
                         )
 
                         Text(
-                            text = uiModel.dateText?.split(" - ")?.lastOrNull().orEmpty(),
-                            style = uiModel.dateTextStyle.toTextStyle(),
+                            text = uiModel.date.text.split(" - ").lastOrNull().orEmpty(),
+                            style = uiModel.date.textStyle.toTextStyle(),
                         )
                     }
                 }
 
                 uiModel.chipSection?.let { it ->
                     Text(
-                        text = it.title,
-                        style = it.titleTextStyle.toTextStyle(),
+                        text = it.title.text,
+                        style = it.title.textStyle.toTextStyle(),
                         modifier = Modifier.padding(top = 10.dp),
                     )
 
@@ -167,18 +170,24 @@ fun InfoCardComponent(
                     ) {
                         var count = 0
 
-                        it.listText.forEachIndexed { index, text ->
+                        it.listText.texts.forEachIndexed { index, text ->
                             when {
-                                uiModel.dateTextStyle == null ->
-                                    SuggestionChipView(text = text, textStyle = it.listTextStyle)
+                                uiModel.date?.textStyle == null ->
+                                    SuggestionChipView(
+                                        text = text,
+                                        textStyle = it.listText.textStyle
+                                    )
 
                                 index < MAX_FINDINGS ->
-                                    SuggestionChipView(text = text, textStyle = it.listTextStyle)
+                                    SuggestionChipView(
+                                        text = text,
+                                        textStyle = it.listText.textStyle
+                                    )
 
                                 count == 0 -> {
                                     SuggestionChipView(
                                         text = "...",
-                                        textStyle = it.listTextStyle,
+                                        textStyle = it.listText.textStyle,
                                     ) { _ ->
                                         onFindingsAction(it)
                                     }

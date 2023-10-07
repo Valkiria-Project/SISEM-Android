@@ -34,7 +34,7 @@ import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.model.mocks.getLoginPasswordTextFieldUiModel
 import com.valkiria.uicomponents.model.mocks.getNoIconPasswordTextFieldUiModel
 import com.valkiria.uicomponents.model.props.toTextStyle
-import com.valkiria.uicomponents.model.ui.textfield.PasswordTextFieldUiModel
+import com.valkiria.uicomponents.model.ui.body.PasswordTextFieldUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import timber.log.Timber

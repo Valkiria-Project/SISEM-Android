@@ -2,7 +2,7 @@ package com.valkiria.uicomponents.model.ui.report
 
 import com.valkiria.uicomponents.model.ui.body.HeaderUiModel
 
-data class ReportsDetailModel(
+data class ReportsDetailUiModel(
     val header: HeaderUiModel,
-    val details: List<ReportDetailModel>
+    val details: List<ReportDetailUiModel>
 )

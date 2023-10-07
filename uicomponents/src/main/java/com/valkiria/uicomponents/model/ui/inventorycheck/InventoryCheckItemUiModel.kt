@@ -1,7 +1,7 @@
 package com.valkiria.uicomponents.model.ui.inventorycheck
 
-import com.valkiria.uicomponents.model.ui.richlabel.RichLabelUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.model.ui.body.RichLabelUiModel
 
 data class InventoryCheckItemUiModel(
     val name: RichLabelUiModel,
