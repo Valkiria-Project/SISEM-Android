@@ -36,11 +36,12 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun refreshToken(currentToken: AccessTokenModel): AccessTokenModel =
         authRemoteDataSource.refreshToken(refreshToken = currentToken.refreshToken)
             .mapResult { refreshTokenModel ->
-                currentToken.copy(
+                val token = currentToken.copy(
                     accessToken = refreshTokenModel.accessToken,
                     refreshToken = refreshTokenModel.refreshToken,
                     isAdmin = refreshTokenModel.isAdmin
                 )
+                token
             }.onSuccess { accessTokenModel ->
                 authCacheDataSource.storeAccessToken(accessTokenModel)
             }.getOrThrow()

@@ -6,9 +6,9 @@ import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.components.BodyRowResponse
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.valkiria.uicomponents.components.textfield.TextFieldStyle
-import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.BodyRowType
+import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.textfield.TextFieldStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 
 @JsonClass(generateAdapter = true)
@@ -36,7 +36,7 @@ data class TextFieldResponse(
         keyboardOptions = keyboardOptions ?: error("TextField keyboardOptions cannot be null"),
         textStyle = textStyle ?: error("TextField textStyle cannot be null"),
         style = style ?: error("TextField style cannot be null"),
-        charLimit = charLimit,
+        charLimit = charLimit ?: error("TextField charLimit cannot be null"),
         validations = validations?.map { it.mapToUi() }
             ?: error("TextField validations cannot be null"),
         arrangement = arrangement ?: Arrangement.Center,

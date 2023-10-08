@@ -76,9 +76,9 @@ fun AddReportScreen(
         TextFieldComponent(
             uiModel = getFindingsTopicModel(),
             validateFields = uiState.validateFields
-        ) { _, updatedValue, fieldValidated ->
-            viewModel.topic = updatedValue
-            viewModel.isValidTopic = fieldValidated
+        ) { inputUiModel ->
+            viewModel.topic = inputUiModel.updatedValue
+            viewModel.isValidTopic = inputUiModel.fieldValidated
         }
 
         LabelComponent(
@@ -90,9 +90,9 @@ fun AddReportScreen(
         TextFieldComponent(
             uiModel = getFindingsDescriptionModel(),
             validateFields = uiState.validateFields
-        ) { _, updatedValue, fieldValidated ->
-            viewModel.description = updatedValue
-            viewModel.isValidDescription = fieldValidated
+        ) { inputUiModel ->
+            viewModel.description = inputUiModel.updatedValue
+            viewModel.isValidDescription = inputUiModel.fieldValidated
         }
 
         LabelComponent(
@@ -151,6 +151,7 @@ private fun getFindingsTopicModel() = TextFieldUiModel(
         keyboardType = KeyboardType.Text
     ),
     textStyle = TextStyle.HEADLINE_5,
+    charLimit = 100,
     validations = listOf(
         ValidationUiModel(
             regex = "^(?!\\s*$).+",
@@ -177,6 +178,7 @@ private fun getFindingsDescriptionModel() = TextFieldUiModel(
         keyboardType = KeyboardType.Text
     ),
     textStyle = TextStyle.HEADLINE_5,
+    charLimit = 100,
     validations = listOf(
         ValidationUiModel(
             regex = "^(?!\\s*$).+",

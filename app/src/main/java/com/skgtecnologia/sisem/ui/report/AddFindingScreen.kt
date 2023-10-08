@@ -72,9 +72,9 @@ fun AddFindingScreen(
         TextFieldComponent(
             uiModel = getFindingsDescriptionModel(),
             validateFields = uiState.validateFields
-        ) { _, updatedValue, fieldValidated ->
-            viewModel.description = updatedValue
-            viewModel.isValidDescription = fieldValidated
+        ) { inputUiModel ->
+            viewModel.description = inputUiModel.updatedValue
+            viewModel.isValidDescription = inputUiModel.fieldValidated
         }
 
         LabelComponent(

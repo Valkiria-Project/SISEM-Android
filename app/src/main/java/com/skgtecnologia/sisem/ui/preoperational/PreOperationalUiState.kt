@@ -7,7 +7,7 @@ import com.valkiria.uicomponents.bricks.banner.BannerUiModel
 data class PreOperationalUiState(
     val screenModel: ScreenModel? = null,
     val validateFields: Boolean = false,
-    val navigationModel: PreOpNavigationModel? = null,
     val isLoading: Boolean = false,
-    val infoModel: BannerUiModel? = null
+    val infoEvent: BannerUiModel? = null,
+    val navigationModel: PreOpNavigationModel? = null
 )

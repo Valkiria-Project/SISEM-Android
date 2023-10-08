@@ -22,6 +22,7 @@ import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.login.model.mapToLoginModel
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
+import com.valkiria.uicomponents.action.AddReportUiAction
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.ConfirmPasswordInput
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.NewPasswordInput
@@ -34,25 +35,12 @@ import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
 import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.NewsUiAction
-import com.valkiria.uicomponents.action.AddReportUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.BodyRowModel
-import com.valkiria.uicomponents.components.fingerprint.FingerprintUiModel
-import com.valkiria.uicomponents.components.footer.FooterBodyUiModel
-import com.valkiria.uicomponents.components.header.HeaderUiModel
-import com.valkiria.uicomponents.components.card.InfoCardUiModel
-import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
-import com.valkiria.uicomponents.components.label.LabelUiModel
-import com.valkiria.uicomponents.components.textfield.PasswordTextFieldUiModel
-import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
-import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
-import com.valkiria.uicomponents.components.slider.SliderUiModel
-import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsUiModel
-import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
-import com.valkiria.uicomponents.components.footer.mapToSection
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.card.InfoCardComponent
+import com.valkiria.uicomponents.components.card.InfoCardUiModel
 import com.valkiria.uicomponents.components.chip.ChipComponent
 import com.valkiria.uicomponents.components.chip.ChipOptionsComponent
 import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
@@ -65,14 +53,26 @@ import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListCom
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListUiModel
 import com.valkiria.uicomponents.components.finding.FindingComponent
 import com.valkiria.uicomponents.components.finding.FindingUiModel
+import com.valkiria.uicomponents.components.fingerprint.FingerprintUiModel
+import com.valkiria.uicomponents.components.footer.FooterBodyUiModel
+import com.valkiria.uicomponents.components.footer.mapToSection
+import com.valkiria.uicomponents.components.header.HeaderUiModel
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckComponent
+import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
+import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
+import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
+import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import com.valkiria.uicomponents.components.slider.SliderComponent
+import com.valkiria.uicomponents.components.slider.SliderUiModel
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
+import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsUiModel
 import com.valkiria.uicomponents.components.textfield.PasswordTextFieldComponent
+import com.valkiria.uicomponents.components.textfield.PasswordTextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
+import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -385,11 +385,11 @@ private fun HandleTextFieldRows(
         DeviceAuthIdentifier.DEVICE_AUTH_CODE.name -> TextFieldComponent(
             uiModel = model,
             validateFields = validateFields
-        ) { _, updatedValue, fieldValidated ->
+        ) { inputUiModel ->
             onAction(
                 DeviceAuthCodeInput(
-                    updatedValue = updatedValue,
-                    fieldValidated = fieldValidated
+                    updatedValue = inputUiModel.updatedValue,
+                    fieldValidated = inputUiModel.fieldValidated
                 )
             )
         }
@@ -397,11 +397,11 @@ private fun HandleTextFieldRows(
         LoginIdentifier.LOGIN_EMAIL.name -> TextFieldComponent(
             uiModel = model,
             validateFields = validateFields
-        ) { _, updatedValue, fieldValidated ->
+        ) { inputUiModel ->
             onAction(
                 LoginUserInput(
-                    updatedValue = updatedValue,
-                    fieldValidated = fieldValidated
+                    updatedValue = inputUiModel.updatedValue,
+                    fieldValidated = inputUiModel.fieldValidated
                 )
             )
         }
@@ -409,10 +409,10 @@ private fun HandleTextFieldRows(
         ChangePasswordIdentifier.CHANGE_PASSWORD_CURRENT.name -> TextFieldComponent(
             uiModel = model,
             validateFields = validateFields
-        ) { _, updatedValue, _ ->
+        ) { inputUiModel ->
             onAction(
                 OldPasswordInput(
-                    updatedValue = updatedValue
+                    updatedValue = inputUiModel.updatedValue
                 )
             )
         }
@@ -420,11 +420,11 @@ private fun HandleTextFieldRows(
         AddReportIdentifier.ADD_REPORT_ENTRY_TOPIC.name -> TextFieldComponent(
             uiModel = model,
             validateFields = validateFields
-        ) { _, updatedValue, _ ->
+        ) { inputUiModel ->
             onAction(
                 AddReportUiAction.TopicInput(
-                    updatedValue = updatedValue,
-                    fieldValidated = validateFields
+                    updatedValue = inputUiModel.updatedValue,
+                    fieldValidated = inputUiModel.fieldValidated
                 )
             )
         }
@@ -432,11 +432,11 @@ private fun HandleTextFieldRows(
         AddReportIdentifier.ADD_REPORT_ENTRY_DESCRIPTION.name -> TextFieldComponent(
             uiModel = model,
             validateFields = validateFields
-        ) { _, updatedValue, _ ->
+        ) { inputUiModel ->
             onAction(
                 AddReportUiAction.DescriptionInput(
-                    updatedValue = updatedValue,
-                    fieldValidated = validateFields
+                    updatedValue = inputUiModel.updatedValue,
+                    fieldValidated = inputUiModel.fieldValidated
                 )
             )
         }
@@ -444,10 +444,12 @@ private fun HandleTextFieldRows(
         else -> TextFieldComponent(
             uiModel = model,
             validateFields = validateFields
-        ) { id, updatedValue, fieldValidated ->
+        ) { inputUiModel ->
             onAction(
                 GenericUiAction.InputAction(
-                    identifier = id, updatedValue = updatedValue, fieldValidated = fieldValidated
+                    identifier = inputUiModel.identifier,
+                    updatedValue = inputUiModel.updatedValue,
+                    fieldValidated = inputUiModel.fieldValidated
                 )
             )
         }

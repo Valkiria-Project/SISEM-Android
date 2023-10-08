@@ -16,10 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import com.valkiria.uicomponents.components.label.toTextStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.mocks.getLoginUserTextFieldUiModel
-import com.valkiria.uicomponents.components.label.toTextStyle
+import timber.log.Timber
 
 @Composable
 fun OutlinedTextFieldView(
@@ -34,19 +35,13 @@ fun OutlinedTextFieldView(
     OutlinedTextField(
         value = text,
         onValueChange = { updatedValue ->
-            if (uiModel.charLimit != null && updatedValue.text.length <= uiModel.charLimit) {
+            if (updatedValue.text.length <= uiModel.charLimit) {
                 text = updatedValue
+                Timber.d("Validacion: $text")
                 onAction(
                     uiModel.identifier,
                     updatedValue.text,
-                    text.toFailedValidation(uiModel.validations, validateFields) == null
-                )
-            } else if (uiModel.charLimit == null) {
-                text = updatedValue
-                onAction(
-                    uiModel.identifier,
-                    updatedValue.text,
-                    text.toFailedValidation(uiModel.validations, validateFields) == null
+                    text.toFailedValidation(uiModel.validations, true) == null
                 )
             }
         },

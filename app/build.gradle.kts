@@ -98,7 +98,7 @@ dependencies {
     implementation(libs.material3.window.size)
     implementation(libs.material.icons.extended)
 
-    implementation("com.google.guava:guava:31.1-jre")
+    implementation(libs.guava)
 
     // Desugaring
     coreLibraryDesugaring(libs.desugar.jdk.libs)
