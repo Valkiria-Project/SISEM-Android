@@ -4,11 +4,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.skgtecnologia.sisem.domain.report.model.AddFindingIdentifier
-import com.valkiria.uicomponents.model.props.ButtonSize
-import com.valkiria.uicomponents.model.props.ButtonStyle
-import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.footer.FooterUiModel
-import com.valkiria.uicomponents.model.props.OnClick
+import com.valkiria.uicomponents.components.button.ButtonSize
+import com.valkiria.uicomponents.components.button.ButtonStyle
+import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.footerbody.FooterUiModel
+import com.valkiria.uicomponents.components.button.OnClick
 
 fun findingsFooter(
     leftButtonText: String,

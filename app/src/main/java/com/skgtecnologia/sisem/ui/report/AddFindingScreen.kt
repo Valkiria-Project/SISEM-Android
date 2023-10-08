@@ -35,7 +35,7 @@ import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
-import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.bricks.button.ImageButtonUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 import kotlin.random.Random

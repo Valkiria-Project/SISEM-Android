@@ -8,15 +8,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
 import com.valkiria.uicomponents.components.button.ButtonUiModel
-import com.valkiria.uicomponents.model.ui.footer.FooterUiModel
+import com.valkiria.uicomponents.components.footerbody.FooterUiModel
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddFindingIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
-import com.valkiria.uicomponents.model.props.ButtonSize
-import com.valkiria.uicomponents.model.props.ButtonStyle
-import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.props.OnClick
+import com.valkiria.uicomponents.components.button.ButtonSize
+import com.valkiria.uicomponents.components.button.ButtonStyle
+import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.button.OnClick
 
 fun changePasswordEmptyFieldsBanner(): BannerModel = BannerModel(
     icon = "ic_alert",

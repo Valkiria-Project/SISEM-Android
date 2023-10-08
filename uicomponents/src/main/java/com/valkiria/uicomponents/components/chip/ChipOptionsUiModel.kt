@@ -4,11 +4,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.BodyRowType
-import com.valkiria.uicomponents.model.props.TextModel
+import com.valkiria.uicomponents.components.label.TextUiModel
 
 data class ChipOptionsUiModel(
     val identifier: String,
-    val title: TextModel? = null,
+    val title: TextUiModel? = null,
     val items: List<ChipOptionUiModel>,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier

@@ -6,10 +6,10 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.button.ButtonUiModel
-import com.valkiria.uicomponents.model.props.ButtonSize
-import com.valkiria.uicomponents.model.props.ButtonStyle
-import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.props.OnClick
+import com.valkiria.uicomponents.components.button.ButtonSize
+import com.valkiria.uicomponents.components.button.ButtonStyle
+import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.button.OnClick
 
 @JsonClass(generateAdapter = true)
 data class ButtonResponse(

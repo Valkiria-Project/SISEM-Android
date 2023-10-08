@@ -24,10 +24,10 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.model.ui.report.ReportDetailUiModel
+import com.valkiria.uicomponents.components.banner.report.ReportDetailUiModel
 import com.skgtecnologia.sisem.ui.commons.extensions.decodeAsBase64Bitmap
 import com.valkiria.uicomponents.R
-import com.valkiria.uicomponents.model.props.toTextStyle
+import com.valkiria.uicomponents.components.label.toTextStyle
 
 @androidx.compose.foundation.ExperimentalFoundationApi
 @Composable

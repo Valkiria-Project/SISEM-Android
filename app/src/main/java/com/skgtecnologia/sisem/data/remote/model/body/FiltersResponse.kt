@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.chip.FiltersUiModel
-import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.components.label.TextStyle
 
 @JsonClass(generateAdapter = true)
 data class FiltersResponse(

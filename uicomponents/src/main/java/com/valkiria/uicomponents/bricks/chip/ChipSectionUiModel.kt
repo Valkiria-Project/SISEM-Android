@@ -1,9 +1,9 @@
 package com.valkiria.uicomponents.bricks.chip
 
-import com.valkiria.uicomponents.model.props.ListTextModel
-import com.valkiria.uicomponents.model.props.TextModel
+import com.valkiria.uicomponents.components.label.ListTextUiModel
+import com.valkiria.uicomponents.components.label.TextUiModel
 
 data class ChipSectionUiModel(
-    val title: TextModel,
-    val listText: ListTextModel
+    val title: TextUiModel,
+    val listText: ListTextUiModel
 )

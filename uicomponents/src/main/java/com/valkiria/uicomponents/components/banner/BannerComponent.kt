@@ -30,7 +30,7 @@ import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.button.ButtonView
-import com.valkiria.uicomponents.model.mocks.getLoginBlockedErrorUiModel
+import com.valkiria.uicomponents.mocks.getLoginBlockedErrorUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import timber.log.Timber

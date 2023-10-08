@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.BodyRowType
-import com.valkiria.uicomponents.model.props.TextStyle
 
 private const val DEFAULT_TEXT_COLOR = "#FFFFFF"
 

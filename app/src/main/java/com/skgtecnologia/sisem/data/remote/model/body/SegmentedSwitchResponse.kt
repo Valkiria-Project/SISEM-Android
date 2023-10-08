@@ -8,7 +8,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
-import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.components.label.TextStyle
 
 @JsonClass(generateAdapter = true)
 data class SegmentedSwitchResponse(

@@ -7,7 +7,7 @@ import com.skgtecnologia.sisem.data.remote.model.props.mapToUI
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.components.BodyRowType
-import com.valkiria.uicomponents.components.headerbody.HeaderUiModel
+import com.valkiria.uicomponents.components.header.HeaderUiModel
 
 @JsonClass(generateAdapter = true)
 data class HeaderResponse(

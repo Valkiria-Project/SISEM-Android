@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.data.remote.model.footer
 
 import com.skgtecnologia.sisem.data.remote.model.body.ButtonResponse
-import com.valkiria.uicomponents.model.ui.footer.FooterUiModel
+import com.valkiria.uicomponents.components.footerbody.FooterUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

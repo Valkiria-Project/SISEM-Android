@@ -39,7 +39,7 @@ import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.fingerprint.FingerprintUiModel
 import com.valkiria.uicomponents.components.footerbody.FooterBodyUiModel
-import com.valkiria.uicomponents.components.headerbody.HeaderUiModel
+import com.valkiria.uicomponents.components.header.HeaderUiModel
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
 import com.valkiria.uicomponents.components.label.LabelUiModel

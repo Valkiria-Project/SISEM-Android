@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.data.remote.model.bricks
 import com.skgtecnologia.sisem.data.remote.model.body.HeaderResponse
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.valkiria.uicomponents.model.ui.finding.FindingsDetailUiModel
+import com.valkiria.uicomponents.components.banner.finding.FindingsDetailUiModel
 
 @JsonClass(generateAdapter = true)
 data class FindingsDetailResponse(

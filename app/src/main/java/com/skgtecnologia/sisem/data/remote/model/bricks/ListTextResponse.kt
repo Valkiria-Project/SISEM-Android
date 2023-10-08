@@ -1,9 +1,9 @@
 package com.skgtecnologia.sisem.data.remote.model.bricks
 
-import com.valkiria.uicomponents.model.props.ListTextModel
+import com.valkiria.uicomponents.components.label.ListTextUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.components.label.TextStyle
 
 @JsonClass(generateAdapter = true)
 data class ListTextResponse(
@@ -11,7 +11,7 @@ data class ListTextResponse(
     @Json(name = "text_style") val textStyle: TextStyle?
 )
 
-fun ListTextResponse.mapToUi(): ListTextModel = ListTextModel(
+fun ListTextResponse.mapToUi(): ListTextUiModel = ListTextUiModel(
     texts = texts ?: error("ListText texts cannot be null"),
     textStyle = textStyle ?: error("ListText textStyle cannot be null")
 )

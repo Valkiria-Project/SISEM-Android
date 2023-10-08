@@ -18,7 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.headerbody.HeaderUiModel
+import com.valkiria.uicomponents.components.header.HeaderUiModel
 import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.utlis.DefType

@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.label.LabelUiModel
 

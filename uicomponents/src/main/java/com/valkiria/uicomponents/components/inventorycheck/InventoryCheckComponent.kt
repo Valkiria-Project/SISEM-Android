@@ -16,10 +16,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.bricks.textfield.DigitsTextFieldView
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
-import com.valkiria.uicomponents.model.mocks.getPreOperationalInventoryCheckUiModel
-import com.valkiria.uicomponents.model.props.FORTY_PERCENT_WEIGHT
-import com.valkiria.uicomponents.model.props.THIRTY_PERCENT_WEIGHT
-import com.valkiria.uicomponents.model.props.toTextStyle
+import com.valkiria.uicomponents.mocks.getPreOperationalInventoryCheckUiModel
+import com.valkiria.uicomponents.utlis.FORTY_PERCENT_WEIGHT
+import com.valkiria.uicomponents.utlis.THIRTY_PERCENT_WEIGHT
+import com.valkiria.uicomponents.components.label.toTextStyle
 import timber.log.Timber
 
 @Suppress("UnusedPrivateMember")

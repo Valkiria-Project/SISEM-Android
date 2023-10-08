@@ -17,9 +17,9 @@ import com.skgtecnologia.sisem.domain.model.header.woundsHeader
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.components.chip.ChipOptionsComponent
 import com.valkiria.uicomponents.components.chip.ChipSelectionComponent
-import com.valkiria.uicomponents.model.props.TextModel
-import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.props.toTextStyle
+import com.valkiria.uicomponents.components.label.TextUiModel
+import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.label.toTextStyle
 import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
 import com.valkiria.uicomponents.components.chip.ChipSelectionUiModel
 import com.valkiria.uicomponents.components.chip.ChipOptionUiModel
@@ -63,7 +63,7 @@ fun WoundsContent(
             ChipSelectionComponent(
                 uiModel = ChipSelectionUiModel(
                     identifier = "burn_type",
-                    title = TextModel(
+                    title = TextUiModel(
                         stringResource(R.string.wounds_burn_description),
                         TextStyle.HEADLINE_5
                     ),

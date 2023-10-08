@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.data.remote.model.bricks
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToUI
-import com.valkiria.uicomponents.model.ui.finding.FindingDetailUiModel
+import com.valkiria.uicomponents.components.banner.finding.FindingDetailUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

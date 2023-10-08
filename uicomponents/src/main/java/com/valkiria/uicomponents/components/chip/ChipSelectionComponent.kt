@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.bricks.chip.FilterChipView
 import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
-import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.components.label.TextStyle
 
 @Suppress("UnusedPrivateMember")
 @Composable

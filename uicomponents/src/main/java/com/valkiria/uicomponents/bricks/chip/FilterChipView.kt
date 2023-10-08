@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.props.toTextStyle
+import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.label.toTextStyle
 
 @Suppress("LongParameterList")
 @Composable

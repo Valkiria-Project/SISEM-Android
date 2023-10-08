@@ -39,11 +39,11 @@ import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.button.ButtonView
 import com.valkiria.uicomponents.components.banner.OnBannerHandler
 import com.valkiria.uicomponents.components.loader.OnLoadingHandler
-import com.valkiria.uicomponents.model.props.ButtonSize
-import com.valkiria.uicomponents.model.props.ButtonStyle
-import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.components.button.ButtonSize
+import com.valkiria.uicomponents.components.button.ButtonStyle
+import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.button.ButtonUiModel
-import com.valkiria.uicomponents.model.props.OnClick
+import com.valkiria.uicomponents.components.button.OnClick
 import timber.log.Timber
 import kotlin.random.Random
 

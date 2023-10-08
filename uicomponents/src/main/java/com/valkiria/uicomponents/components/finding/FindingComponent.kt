@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
-import com.valkiria.uicomponents.model.mocks.getPreOperationalOilFindingUiModel
+import com.valkiria.uicomponents.mocks.getPreOperationalOilFindingUiModel
 import timber.log.Timber
 
 @Composable

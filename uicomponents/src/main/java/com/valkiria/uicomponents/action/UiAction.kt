@@ -1,7 +1,7 @@
 package com.valkiria.uicomponents.action
 
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
-import com.valkiria.uicomponents.model.ui.report.ReportsDetailUiModel
+import com.valkiria.uicomponents.components.banner.report.ReportsDetailUiModel
 
 const val DISMISS_IDENTIFIER = "dismiss"
 
@@ -9,8 +9,6 @@ sealed interface UiAction
 
 sealed class GenericUiAction(open val identifier: String) : UiAction {
     data class ButtonAction(override val identifier: String) : GenericUiAction(identifier)
-
-    data object DismissAction : GenericUiAction(identifier = DISMISS_IDENTIFIER)
 
     data class ChipOptionAction(
         override val identifier: String,
@@ -23,6 +21,8 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
         val text: String,
         val status: Boolean
     ) : GenericUiAction(identifier)
+
+    data object DismissAction : GenericUiAction(identifier = DISMISS_IDENTIFIER)
 
     data class FindingAction(
         override val identifier: String,

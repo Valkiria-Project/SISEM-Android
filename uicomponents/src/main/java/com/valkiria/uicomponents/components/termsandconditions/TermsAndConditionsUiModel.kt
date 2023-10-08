@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.BodyRowType
-import com.valkiria.uicomponents.model.ui.link.Link
 
 data class TermsAndConditionsUiModel(
     val identifier: String?,

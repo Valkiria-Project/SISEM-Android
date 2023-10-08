@@ -11,12 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import com.valkiria.uicomponents.model.mocks.getLoginButtonUiModel
-import com.valkiria.uicomponents.model.mocks.getLoginForgotButtonUiModel
-import com.valkiria.uicomponents.model.props.ButtonSize
-import com.valkiria.uicomponents.model.props.mapToColors
-import com.valkiria.uicomponents.model.props.mapToTextColor
-import com.valkiria.uicomponents.model.props.toTextStyle
+import com.valkiria.uicomponents.mocks.getLoginButtonUiModel
+import com.valkiria.uicomponents.mocks.getLoginForgotButtonUiModel
+import com.valkiria.uicomponents.components.label.toTextStyle
 import timber.log.Timber
 
 @Composable
