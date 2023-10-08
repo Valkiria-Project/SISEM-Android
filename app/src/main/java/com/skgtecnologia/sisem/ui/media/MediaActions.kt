@@ -38,7 +38,9 @@ fun MediaActions(viewModel: ReportViewModel) {
             uiModel = ImageButtonUiModel(
                 identifier = "CAMERA",
                 iconResId = R.drawable.ic_camera,
-                label = stringResource(id = com.skgtecnologia.sisem.R.string.findings_take_picture_label),
+                label = stringResource(
+                    id = com.skgtecnologia.sisem.R.string.findings_take_picture_label
+                ),
                 textStyle = TextStyle.HEADLINE_6,
                 alignment = Alignment.CenterHorizontally,
                 modifier = Modifier
@@ -52,7 +54,9 @@ fun MediaActions(viewModel: ReportViewModel) {
             uiModel = ImageButtonUiModel(
                 identifier = "GALLERY",
                 iconResId = R.drawable.ic_image,
-                label = stringResource(id = com.skgtecnologia.sisem.R.string.findings_select_pictures),
+                label = stringResource(
+                    id = com.skgtecnologia.sisem.R.string.findings_select_pictures
+                ),
                 textStyle = TextStyle.HEADLINE_6,
                 alignment = Alignment.CenterHorizontally,
                 modifier = Modifier

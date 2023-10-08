@@ -67,7 +67,11 @@ fun AddReportScreen(
             }
         }
 
-        LabelComponent(uiModel = addReportTopic(stringResource(id = R.string.record_news_topic_label)))
+        LabelComponent(
+            uiModel = addReportTopic(
+                stringResource(id = R.string.record_news_topic_label)
+            )
+        )
 
         TextFieldComponent(
             uiModel = getFindingsTopicModel(),
