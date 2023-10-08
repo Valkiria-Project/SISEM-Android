@@ -8,7 +8,7 @@ import com.valkiria.uicomponents.components.label.TextUiModel
 @JsonClass(generateAdapter = true)
 data class TextResponse(
     @Json(name = "text") val text: String?,
-    @Json(name = "text_style") val textStyle: TextStyle?,
+    @Json(name = "text_style") val textStyle: TextStyle?
 )
 
 fun TextResponse.mapToUI(alternativeText: String? = null): TextUiModel = TextUiModel(

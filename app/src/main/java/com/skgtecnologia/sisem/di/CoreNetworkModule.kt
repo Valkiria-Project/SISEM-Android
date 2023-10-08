@@ -4,6 +4,8 @@ import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.data.remote.adapters.ArrangementAdapter
 import com.skgtecnologia.sisem.data.remote.adapters.KeyboardOptionsAdapter
 import com.skgtecnologia.sisem.data.remote.adapters.ModifierAdapter
+import com.skgtecnologia.sisem.data.remote.model.components.BodyRowResponse
+import com.skgtecnologia.sisem.data.remote.model.components.button.ButtonResponse
 import com.skgtecnologia.sisem.data.remote.model.components.card.InfoCardResponse
 import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipOptionsResponse
 import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipResponse
@@ -82,10 +84,10 @@ object CoreNetworkModule {
         EnumJsonAdapter.create(BodyRowType::class.java).withUnknownFallback(null)
     ).add(
         PolymorphicJsonAdapterFactory.of(
-            com.skgtecnologia.sisem.data.remote.model.components.BodyRowResponse::class.java,
+            BodyRowResponse::class.java,
             "type"
         ).withSubtype(
-            com.skgtecnologia.sisem.data.remote.model.components.button.ButtonResponse::class.java,
+            ButtonResponse::class.java,
             BodyRowType.BUTTON.name
         ).withSubtype(
             ChipResponse::class.java,

@@ -15,7 +15,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.domain.model.label.addFilesHint
+import com.skgtecnologia.sisem.domain.model.label.addReportDescription
+import com.skgtecnologia.sisem.domain.model.label.addReportTopic
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
+import com.skgtecnologia.sisem.ui.media.MediaActions
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
@@ -23,13 +27,12 @@ import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
-import com.valkiria.uicomponents.components.label.LabelUiModel
-import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
-import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
+import com.valkiria.uicomponents.components.label.LabelComponent
+import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldStyle
-import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 import kotlin.random.Random
 
@@ -64,7 +67,7 @@ fun AddReportScreen(
             }
         }
 
-        LabelComponent(uiModel = getAddReportTopicModel())
+        LabelComponent(uiModel = addReportTopic(stringResource(id = R.string.record_news_topic_label)))
 
         TextFieldComponent(
             uiModel = getFindingsTopicModel(),
@@ -74,7 +77,11 @@ fun AddReportScreen(
             viewModel.isValidTopic = fieldValidated
         }
 
-        LabelComponent(uiModel = getAddReportDescriptionModel())
+        LabelComponent(
+            uiModel = addReportDescription(
+                stringResource(id = R.string.record_news_description_label)
+            )
+        )
 
         TextFieldComponent(
             uiModel = getFindingsDescriptionModel(),
@@ -84,7 +91,9 @@ fun AddReportScreen(
             viewModel.isValidDescription = fieldValidated
         }
 
-        LabelComponent(uiModel = getFindingsAddFilesModel())
+        LabelComponent(
+            uiModel = addFilesHint(stringResource(id = R.string.findings_add_files_label))
+        )
 
         MediaActions(viewModel)
 
@@ -174,48 +183,6 @@ private fun getFindingsDescriptionModel() = TextFieldUiModel(
     singleLine = false,
     minLines = DESCRIPTION_INPUT_MIN_LINES,
     arrangement = Arrangement.Center,
-    modifier = Modifier.padding(
-        start = 20.dp,
-        top = 20.dp,
-        end = 20.dp,
-        bottom = 0.dp
-    )
-)
-
-@Composable
-private fun getAddReportTopicModel() = LabelUiModel(
-    identifier = "ADD_REPORT_TOPIC",
-    text = stringResource(id = R.string.record_news_topic_label),
-    textStyle = TextStyle.HEADLINE_3,
-    arrangement = Arrangement.Start,
-    modifier = Modifier.padding(
-        start = 20.dp,
-        top = 20.dp,
-        end = 20.dp,
-        bottom = 0.dp
-    )
-)
-
-@Composable
-private fun getAddReportDescriptionModel() = LabelUiModel(
-    identifier = "ADD_REPORT_DESCRIPTION",
-    text = stringResource(id = R.string.record_news_description_label),
-    textStyle = TextStyle.HEADLINE_3,
-    arrangement = Arrangement.Start,
-    modifier = Modifier.padding(
-        start = 20.dp,
-        top = 20.dp,
-        end = 20.dp,
-        bottom = 0.dp
-    )
-)
-
-@Composable
-private fun getFindingsAddFilesModel() = LabelUiModel(
-    identifier = "FINDINGS_ADD_FILES",
-    text = stringResource(id = R.string.findings_add_files_label),
-    textStyle = TextStyle.HEADLINE_3,
-    arrangement = Arrangement.Start,
     modifier = Modifier.padding(
         start = 20.dp,
         top = 20.dp,
