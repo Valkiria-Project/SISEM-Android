@@ -6,7 +6,7 @@ import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.label.TextUiModel
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
-import com.valkiria.uicomponents.components.banner.report.ReportsDetailUiModel
+import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel
 
 data class InfoCardUiModel(
     val identifier: String,

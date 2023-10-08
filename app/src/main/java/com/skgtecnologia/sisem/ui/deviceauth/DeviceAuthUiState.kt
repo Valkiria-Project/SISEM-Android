@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.ui.deviceauth
 
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.ui.navigation.model.DeviceAuthNavigationModel
-import com.valkiria.uicomponents.components.banner.BannerUiModel
+import com.valkiria.uicomponents.bricks.banner.BannerUiModel
 
 data class DeviceAuthUiState(
     val screenModel: ScreenModel? = null,

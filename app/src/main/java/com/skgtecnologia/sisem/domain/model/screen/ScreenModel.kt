@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.domain.model.screen
 
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.header.HeaderUiModel
-import com.valkiria.uicomponents.components.footerbody.FooterUiModel
+import com.valkiria.uicomponents.components.footer.FooterUiModel
 
 data class ScreenModel(
     val header: HeaderUiModel? = null,

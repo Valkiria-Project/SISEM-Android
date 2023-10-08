@@ -38,7 +38,7 @@ import com.valkiria.uicomponents.action.AddReportUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.fingerprint.FingerprintUiModel
-import com.valkiria.uicomponents.components.footerbody.FooterBodyUiModel
+import com.valkiria.uicomponents.components.footer.FooterBodyUiModel
 import com.valkiria.uicomponents.components.header.HeaderUiModel
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
@@ -49,7 +49,7 @@ import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiMod
 import com.valkiria.uicomponents.components.slider.SliderUiModel
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
-import com.valkiria.uicomponents.components.footerbody.mapToSection
+import com.valkiria.uicomponents.components.footer.mapToSection
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.card.InfoCardComponent

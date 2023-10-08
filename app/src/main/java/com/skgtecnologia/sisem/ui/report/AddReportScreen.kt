@@ -22,11 +22,11 @@ import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.banner.OnBannerHandler
+import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
-import com.valkiria.uicomponents.components.loader.OnLoadingHandler
+import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldStyle
 import com.valkiria.uicomponents.components.label.TextStyle

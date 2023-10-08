@@ -37,8 +37,8 @@ import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.button.ButtonView
-import com.valkiria.uicomponents.components.banner.OnBannerHandler
-import com.valkiria.uicomponents.components.loader.OnLoadingHandler
+import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
+import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.button.ButtonSize
 import com.valkiria.uicomponents.components.button.ButtonStyle
 import com.valkiria.uicomponents.components.label.TextStyle

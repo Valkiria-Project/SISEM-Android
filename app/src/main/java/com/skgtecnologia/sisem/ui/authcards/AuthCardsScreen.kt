@@ -22,9 +22,9 @@ import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.banner.OnBannerHandler
-import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
-import com.valkiria.uicomponents.components.loader.OnLoadingHandler
+import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
+import com.valkiria.uicomponents.bricks.bottomsheet.BottomSheetView
+import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 
 @Suppress("LongMethod")
@@ -96,7 +96,7 @@ fun AuthCardsScreen(
         uiState.reportDetail?.let {
             scope.launch { sheetState.show() }
 
-            BottomSheetComponent(
+            BottomSheetView(
                 content = { ReportDetailContent(model = uiState.reportDetail) },
                 sheetState = sheetState,
                 scope = scope
@@ -108,7 +108,7 @@ fun AuthCardsScreen(
         uiState.chipSection?.let {
             scope.launch { sheetState.show() }
 
-            BottomSheetComponent(
+            BottomSheetView(
                 content = {
                     FindingsContent(chipSection = uiState.chipSection)
                 },

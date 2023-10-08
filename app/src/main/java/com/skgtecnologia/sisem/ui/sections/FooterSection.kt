@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.action.FooterUiAction.FooterButton
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.button.ButtonView
-import com.valkiria.uicomponents.components.footerbody.FooterUiModel
+import com.valkiria.uicomponents.components.footer.FooterUiModel
 
 @Composable
 fun FooterSection(

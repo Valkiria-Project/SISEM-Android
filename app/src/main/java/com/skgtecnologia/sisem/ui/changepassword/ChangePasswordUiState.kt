@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.ui.changepassword
 
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
-import com.valkiria.uicomponents.components.banner.BannerUiModel
+import com.valkiria.uicomponents.bricks.banner.BannerUiModel
 
 data class ChangePasswordUiState(
     val screenModel: ScreenModel? = null,

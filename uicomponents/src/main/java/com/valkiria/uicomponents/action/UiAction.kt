@@ -1,7 +1,7 @@
 package com.valkiria.uicomponents.action
 
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
-import com.valkiria.uicomponents.components.banner.report.ReportsDetailUiModel
+import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel
 
 const val DISMISS_IDENTIFIER = "dismiss"
 

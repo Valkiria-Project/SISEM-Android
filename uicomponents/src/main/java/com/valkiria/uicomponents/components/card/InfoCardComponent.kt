@@ -33,7 +33,7 @@ import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.bricks.chip.SuggestionChipView
 import com.valkiria.uicomponents.components.label.toTextStyle
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
-import com.valkiria.uicomponents.components.banner.report.ReportsDetailUiModel
+import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 

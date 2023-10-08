@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.ui.humanbody.area.FrontArea
 import com.skgtecnologia.sisem.ui.humanbody.wounds.WoundsContent
-import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
+import com.valkiria.uicomponents.bricks.bottomsheet.BottomSheetView
 import kotlinx.coroutines.launch
 
 @Suppress("LongMethod")
@@ -68,7 +68,7 @@ fun HumanBodyFrontComponent(
         )
 
         if (uiState.onSelectWound) {
-            BottomSheetComponent(
+            BottomSheetView(
                 content = {
                     WoundsContent { wounds ->
                         viewModel.saveFrontList(selectedFrontArea)
