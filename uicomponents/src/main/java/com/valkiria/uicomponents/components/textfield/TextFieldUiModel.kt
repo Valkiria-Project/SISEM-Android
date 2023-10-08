@@ -2,15 +2,12 @@ package com.valkiria.uicomponents.components.textfield
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.model.props.TextFieldStyle
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
 
-@Immutable
 data class TextFieldUiModel(
     val identifier: String,
     val icon: String? = null,

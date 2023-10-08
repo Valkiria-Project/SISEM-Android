@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.model.ui.inventorycheck
+package com.valkiria.uicomponents.components.inventorycheck
 
 import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
 import com.valkiria.uicomponents.model.props.TextStyle

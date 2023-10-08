@@ -2,8 +2,8 @@ package com.skgtecnologia.sisem.domain.model.banner
 
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.resources.StringProvider
-import com.valkiria.uicomponents.model.ui.banner.BannerUiModel
-import com.valkiria.uicomponents.model.ui.banner.DEFAULT_ICON_COLOR
+import com.valkiria.uicomponents.components.banner.BannerUiModel
+import com.valkiria.uicomponents.components.banner.DEFAULT_ICON_COLOR
 import com.valkiria.uicomponents.model.ui.footer.FooterUiModel
 import retrofit2.HttpException
 import timber.log.Timber

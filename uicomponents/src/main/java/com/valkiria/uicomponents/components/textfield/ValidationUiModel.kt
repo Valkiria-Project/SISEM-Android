@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.model.ui.textfield
+package com.valkiria.uicomponents.components.textfield
 
 data class ValidationUiModel(
     val regex: String,

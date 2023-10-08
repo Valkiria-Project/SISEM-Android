@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
-import com.valkiria.uicomponents.model.ui.chip.ChipSectionUiModel
+import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.skgtecnologia.sisem.domain.model.header.findingsHeader
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.bricks.chip.SuggestionChipView

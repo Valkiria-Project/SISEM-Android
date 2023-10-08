@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.props.TextStyle.BUTTON_2
-import com.valkiria.uicomponents.model.ui.segmentedswitch.OptionUiModel
+import com.valkiria.uicomponents.components.segmentedswitch.OptionUiModel
 import kotlin.random.Random
 
 fun getDeviceAuthSegmentedSwitchUiModel(): SegmentedSwitchUiModel {

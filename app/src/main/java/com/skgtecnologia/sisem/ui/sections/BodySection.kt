@@ -34,7 +34,7 @@ import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
 import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.NewsUiAction
-import com.valkiria.uicomponents.action.RecordNewsUiAction
+import com.valkiria.uicomponents.action.AddReportUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.fingerprint.FingerprintUiModel
@@ -422,7 +422,7 @@ private fun HandleTextFieldRows(
             validateFields = validateFields
         ) { _, updatedValue, _ ->
             onAction(
-                RecordNewsUiAction.TopicInput(
+                AddReportUiAction.TopicInput(
                     updatedValue = updatedValue,
                     fieldValidated = validateFields
                 )
@@ -434,7 +434,7 @@ private fun HandleTextFieldRows(
             validateFields = validateFields
         ) { _, updatedValue, _ ->
             onAction(
-                RecordNewsUiAction.DescriptionInput(
+                AddReportUiAction.DescriptionInput(
                     updatedValue = updatedValue,
                     fieldValidated = validateFields
                 )

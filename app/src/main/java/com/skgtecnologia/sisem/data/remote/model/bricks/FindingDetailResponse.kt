@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.data.remote.model.bricks
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToUI
-import com.valkiria.uicomponents.model.ui.finding.FindingDetailModel
+import com.valkiria.uicomponents.model.ui.finding.FindingDetailUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -15,7 +15,7 @@ data class FindingDetailResponse(
     @Json(name = "margins") val modifier: Modifier?
 )
 
-fun FindingDetailResponse.mapToUi(): FindingDetailModel = FindingDetailModel(
+fun FindingDetailResponse.mapToUi(): FindingDetailUiModel = FindingDetailUiModel(
     images = images ?: error("FindingDetail images cannot be null"),
     description = description?.mapToUI() ?: error("FindingDetail description cannot be null"),
     reporter = reporter?.mapToUI() ?: error("FindingDetail reporter cannot be null"),

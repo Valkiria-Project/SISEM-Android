@@ -5,8 +5,7 @@ import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.model.props.TextModel
-import com.valkiria.uicomponents.model.ui.inventorycheck.InventoryCheckItemUiModel
-import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
+import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 
 data class InventoryCheckUiModel(
     val identifier: String,

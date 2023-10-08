@@ -5,7 +5,6 @@ import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.model.props.TextModel
-import com.valkiria.uicomponents.model.ui.chip.ChipSelectionItemUiModel
 
 data class ChipSelectionUiModel(
     val identifier: String,

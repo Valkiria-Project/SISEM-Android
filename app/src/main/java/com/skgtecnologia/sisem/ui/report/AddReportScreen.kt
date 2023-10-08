@@ -30,7 +30,7 @@ import com.valkiria.uicomponents.components.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.model.props.TextFieldStyle
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
+import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 import kotlin.random.Random
 
 @Suppress("LongParameterList", "LongMethod")

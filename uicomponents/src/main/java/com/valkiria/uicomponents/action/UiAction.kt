@@ -1,6 +1,6 @@
 package com.valkiria.uicomponents.action
 
-import com.valkiria.uicomponents.model.ui.chip.ChipSectionUiModel
+import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.model.ui.report.ReportsDetailUiModel
 
 const val DISMISS_IDENTIFIER = "dismiss"
@@ -62,7 +62,7 @@ sealed class FooterUiAction(open val identifier: String) : UiAction {
 
 sealed class AuthCardsUiAction : UiAction {
     data object AuthCard : AuthCardsUiAction()
-    data class AuthCardNews(val reportDetail: ReportsDetailUiModel) : AuthCardsUiAction()
+    data class AuthCardNews(val reportUiDetail: ReportsDetailUiModel) : AuthCardsUiAction()
     data class AuthCardFindings(val chipSectionUiModel: ChipSectionUiModel) : AuthCardsUiAction()
 }
 
@@ -110,14 +110,14 @@ sealed class NewsUiAction : UiAction {
     data object NewsStepOneOnChipClick : NewsUiAction()
 }
 
-sealed class RecordNewsUiAction : UiAction {
+sealed class AddReportUiAction : UiAction {
     data class TopicInput(
         val updatedValue: String,
         val fieldValidated: Boolean
-    ) : RecordNewsUiAction()
+    ) : AddReportUiAction()
 
     data class DescriptionInput(
         val updatedValue: String,
         val fieldValidated: Boolean
-    ) : RecordNewsUiAction()
+    ) : AddReportUiAction()
 }

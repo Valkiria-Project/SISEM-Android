@@ -1,5 +1,3 @@
-@file:Suppress("MagicNumber")
-
 package com.valkiria.uicomponents.model.mocks
 
 import androidx.compose.foundation.layout.Arrangement
@@ -7,9 +5,8 @@ import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
 import com.valkiria.uicomponents.model.props.TextModel
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.inventorycheck.InventoryCheckItemUiModel
-import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
-import kotlin.random.Random
+import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckItemUiModel
+import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 
 fun getPreOperationalInventoryCheckUiModel(): InventoryCheckUiModel {
     val items = listOf(
@@ -30,7 +27,7 @@ fun getPreOperationalInventoryCheckUiModel(): InventoryCheckUiModel {
     )
 
     return InventoryCheckUiModel(
-        identifier = Random(100).toString(),
+        identifier = "PRE_OP_INVENTORY_CHECK",
         registered = TextModel(
             "Registrado",
             TextStyle.BODY_1,

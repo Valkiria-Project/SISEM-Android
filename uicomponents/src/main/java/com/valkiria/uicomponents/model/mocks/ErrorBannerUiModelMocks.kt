@@ -1,6 +1,6 @@
 package com.valkiria.uicomponents.model.mocks
 
-import com.valkiria.uicomponents.model.ui.banner.BannerUiModel
+import com.valkiria.uicomponents.components.banner.BannerUiModel
 
 fun getLoginBlockedErrorUiModel(): BannerUiModel {
     return BannerUiModel(

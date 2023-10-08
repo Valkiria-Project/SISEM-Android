@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.model.ui.pill
+package com.valkiria.uicomponents.components.card
 
 import com.valkiria.uicomponents.model.props.TextModel
 

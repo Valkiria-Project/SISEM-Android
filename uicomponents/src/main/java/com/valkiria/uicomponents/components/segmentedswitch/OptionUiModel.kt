@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.model.ui.segmentedswitch
+package com.valkiria.uicomponents.components.segmentedswitch
 
 import com.valkiria.uicomponents.model.props.TextStyle
 

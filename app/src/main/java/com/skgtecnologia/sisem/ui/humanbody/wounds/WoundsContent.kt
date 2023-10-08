@@ -22,8 +22,8 @@ import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.props.toTextStyle
 import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
 import com.valkiria.uicomponents.components.chip.ChipSelectionUiModel
-import com.valkiria.uicomponents.model.ui.chip.ChipOptionUiModel
-import com.valkiria.uicomponents.model.ui.chip.ChipSelectionItemUiModel
+import com.valkiria.uicomponents.components.chip.ChipOptionUiModel
+import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
 
 @Suppress("LongMethod")
 @Composable
@@ -65,7 +65,7 @@ fun WoundsContent(
                     identifier = "burn_type",
                     title = TextModel(
                         stringResource(R.string.wounds_burn_description),
-                        TextStyle.HEADLINE_5,
+                        TextStyle.HEADLINE_5
                     ),
                     items = stringArrayResource(
                         id = R.array.wounds_burn_grade_list

@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.data.remote.model.bricks
 
 import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToUI
-import com.valkiria.uicomponents.model.ui.chip.ChipSectionUiModel
+import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

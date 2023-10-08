@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.model.ui.banner
+package com.valkiria.uicomponents.components.banner
 
 import com.valkiria.uicomponents.components.button.ButtonUiModel
 

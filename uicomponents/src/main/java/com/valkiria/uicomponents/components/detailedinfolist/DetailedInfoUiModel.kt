@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.model.ui.detailedinfolist
+package com.valkiria.uicomponents.components.detailedinfolist
 
 data class DetailedInfoUiModel(
     val label: String,

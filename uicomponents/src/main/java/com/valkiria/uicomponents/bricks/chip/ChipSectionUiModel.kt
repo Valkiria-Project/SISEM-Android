@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.model.ui.chip
+package com.valkiria.uicomponents.bricks.chip
 
 import com.valkiria.uicomponents.model.props.ListTextModel
 import com.valkiria.uicomponents.model.props.TextModel

@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.data.remote.model.bricks
 import com.skgtecnologia.sisem.data.remote.model.body.HeaderResponse
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.valkiria.uicomponents.model.ui.finding.FindingsDetailModel
+import com.valkiria.uicomponents.model.ui.finding.FindingsDetailUiModel
 
 @JsonClass(generateAdapter = true)
 data class FindingsDetailResponse(
@@ -11,7 +11,7 @@ data class FindingsDetailResponse(
     @Json(name = "details") val details: List<FindingDetailResponse>?
 )
 
-fun FindingsDetailResponse.mapToUi(): FindingsDetailModel = FindingsDetailModel(
+fun FindingsDetailResponse.mapToUi(): FindingsDetailUiModel = FindingsDetailUiModel(
     header = header?.mapToUi() ?: error("FindingsDetail header cannot be null"),
     details = details?.map { it.mapToUi() } ?: error("FindingsDetail details cannot be null")
 )

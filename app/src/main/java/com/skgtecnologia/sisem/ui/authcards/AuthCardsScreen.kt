@@ -149,7 +149,7 @@ private fun handleAction(
             AuthCardsUiAction.AuthCard -> onNavigation(AuthNavigationRoute.LoginScreen)
 
             is AuthCardsUiAction.AuthCardNews ->
-                viewModel.showReportBottomSheet(uiAction.reportDetail)
+                viewModel.showReportBottomSheet(uiAction.reportUiDetail)
 
             is AuthCardsUiAction.AuthCardFindings ->
                 viewModel.showFindingsBottomSheet(uiAction.chipSectionUiModel)

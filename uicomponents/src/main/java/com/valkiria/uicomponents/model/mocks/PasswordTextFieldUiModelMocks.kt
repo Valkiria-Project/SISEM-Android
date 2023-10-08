@@ -8,7 +8,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.components.textfield.PasswordTextFieldUiModel
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
+import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 
 fun getLoginPasswordTextFieldUiModel(): PasswordTextFieldUiModel {
     return PasswordTextFieldUiModel(

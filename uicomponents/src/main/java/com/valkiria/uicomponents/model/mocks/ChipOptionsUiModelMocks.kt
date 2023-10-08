@@ -1,17 +1,14 @@
-@file:Suppress("MagicNumber")
-
 package com.valkiria.uicomponents.model.mocks
 
 import androidx.compose.foundation.layout.Arrangement
+import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
 import com.valkiria.uicomponents.model.props.TextModel
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
-import com.valkiria.uicomponents.model.ui.chip.ChipOptionUiModel
-import kotlin.random.Random
+import com.valkiria.uicomponents.components.chip.ChipOptionUiModel
 
 fun getPreOperationalChipOptionsUiModel(): ChipOptionsUiModel {
     return ChipOptionsUiModel(
-        identifier = Random(100).toString(),
+        identifier = "PRE_OP_CHIP_OPTIONS",
         title = TextModel(
             "Seleccione las herramientas que hacen falta",
             TextStyle.BODY_1,

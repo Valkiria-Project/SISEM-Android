@@ -8,7 +8,7 @@ import com.valkiria.uicomponents.model.props.ButtonSize
 import com.valkiria.uicomponents.model.props.ButtonStyle
 import com.valkiria.uicomponents.model.props.TextStyle
 import com.valkiria.uicomponents.model.ui.footer.FooterUiModel
-import com.valkiria.uicomponents.model.ui.button.OnClick
+import com.valkiria.uicomponents.model.props.OnClick
 
 fun findingsFooter(
     leftButtonText: String,

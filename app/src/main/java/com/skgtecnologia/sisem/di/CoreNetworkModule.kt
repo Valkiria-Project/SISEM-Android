@@ -33,7 +33,7 @@ import com.valkiria.uicomponents.model.props.ButtonStyle
 import com.valkiria.uicomponents.model.props.ChipStyle
 import com.valkiria.uicomponents.model.props.TextFieldStyle
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.button.OnClick
+import com.valkiria.uicomponents.model.props.OnClick
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

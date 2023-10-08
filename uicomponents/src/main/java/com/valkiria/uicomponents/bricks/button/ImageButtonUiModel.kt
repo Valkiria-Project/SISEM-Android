@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.model.ui.button
+package com.valkiria.uicomponents.bricks.button
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.Alignment

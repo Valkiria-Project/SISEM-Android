@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.data.remote.model.bricks
 
 import com.skgtecnologia.sisem.data.remote.model.props.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.props.mapToUI
-import com.valkiria.uicomponents.model.ui.pill.PillUiModel
+import com.valkiria.uicomponents.components.card.PillUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

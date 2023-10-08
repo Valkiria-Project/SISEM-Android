@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.model.props.TextFieldStyle
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
+import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 import kotlin.random.Random
 
 fun getLoginUserTextFieldUiModel(): TextFieldUiModel {

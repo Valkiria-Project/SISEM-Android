@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.model.ui.chip
+package com.valkiria.uicomponents.components.chip
 
 data class ChipSelectionItemUiModel(
     val id: String,

@@ -16,7 +16,7 @@ import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
 import com.valkiria.uicomponents.model.props.ButtonSize
 import com.valkiria.uicomponents.model.props.ButtonStyle
 import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.button.OnClick
+import com.valkiria.uicomponents.model.props.OnClick
 
 fun changePasswordEmptyFieldsBanner(): BannerModel = BannerModel(
     icon = "ic_alert",

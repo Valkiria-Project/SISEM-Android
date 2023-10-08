@@ -32,8 +32,7 @@ data class InfoCardResponse(
     override fun mapToUi(): InfoCardUiModel = InfoCardUiModel(
         identifier = identifier ?: error("InfoCard identifier cannot be null"),
         icon = icon ?: error("InfoCard icon cannot be null"),
-        title = title?.mapToUI()?.copy(text = getHumanizedRoleName())
-            ?: error("InfoCard title cannot be null"),
+        title = title?.mapToUI(getHumanizedRoleName()) ?: error("InfoCard title cannot be null"),
         pill = pill?.mapToUi() ?: error("InfoCard pill cannot be null"),
         date = date?.mapToUI(),
         chipSection = chipSection?.mapToUi(),
