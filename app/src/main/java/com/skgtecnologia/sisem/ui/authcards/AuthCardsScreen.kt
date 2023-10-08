@@ -15,7 +15,6 @@ import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
-import com.skgtecnologia.sisem.domain.model.bricks.mapToDomain
 import com.skgtecnologia.sisem.ui.authcards.report.FindingsContent
 import com.skgtecnologia.sisem.ui.authcards.report.ReportDetailContent
 import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
@@ -23,9 +22,9 @@ import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.banner.OnBannerHandler
-import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
-import com.valkiria.uicomponents.components.loader.OnLoadingHandler
+import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
+import com.valkiria.uicomponents.bricks.bottomsheet.BottomSheetView
+import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 
 @Suppress("LongMethod")
@@ -73,7 +72,7 @@ fun AuthCardsScreen(
 
             uiState.screenModel?.header?.let {
                 HeaderSection(
-                    headerModel = it,
+                    headerUiModel = it,
                     modifier = modifier.constrainAs(header) {
                         top.linkTo(parent.top)
                         start.linkTo(parent.start)
@@ -97,7 +96,7 @@ fun AuthCardsScreen(
         uiState.reportDetail?.let {
             scope.launch { sheetState.show() }
 
-            BottomSheetComponent(
+            BottomSheetView(
                 content = { ReportDetailContent(model = uiState.reportDetail) },
                 sheetState = sheetState,
                 scope = scope
@@ -109,7 +108,7 @@ fun AuthCardsScreen(
         uiState.chipSection?.let {
             scope.launch { sheetState.show() }
 
-            BottomSheetComponent(
+            BottomSheetView(
                 content = {
                     FindingsContent(chipSection = uiState.chipSection)
                 },
@@ -150,10 +149,10 @@ private fun handleAction(
             AuthCardsUiAction.AuthCard -> onNavigation(AuthNavigationRoute.LoginScreen)
 
             is AuthCardsUiAction.AuthCardNews ->
-                viewModel.showReportBottomSheet(uiAction.reportDetail.mapToDomain())
+                viewModel.showReportBottomSheet(uiAction.reportUiDetail)
 
             is AuthCardsUiAction.AuthCardFindings ->
-                viewModel.showFindingsBottomSheet(uiAction.chipSectionUiModel.mapToDomain())
+                viewModel.showFindingsBottomSheet(uiAction.chipSectionUiModel)
         }
     }
 }

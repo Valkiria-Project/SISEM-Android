@@ -15,22 +15,25 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.domain.model.label.addFilesHint
+import com.skgtecnologia.sisem.domain.model.label.addReportDescription
+import com.skgtecnologia.sisem.domain.model.label.addReportTopic
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
+import com.skgtecnologia.sisem.ui.media.MediaActions
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.banner.OnBannerHandler
+import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
+import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.label.LabelComponent
-import com.valkiria.uicomponents.components.loader.OnLoadingHandler
+import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
-import com.valkiria.uicomponents.model.props.TextFieldStyle
-import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.label.LabelUiModel
-import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
-import com.valkiria.uicomponents.model.ui.textfield.ValidationUiModel
+import com.valkiria.uicomponents.components.textfield.TextFieldStyle
+import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 import kotlin.random.Random
 
 @Suppress("LongParameterList", "LongMethod")
@@ -57,14 +60,18 @@ fun AddReportScreen(
         modifier = modifier.fillMaxWidth()
     ) {
         addReportUiState.screenModel?.header?.let {
-            HeaderSection(headerModel = it) { uiAction ->
+            HeaderSection(headerUiModel = it) { uiAction ->
                 if (uiAction is HeaderUiAction.GoBack) {
                     viewModel.navigateBack()
                 }
             }
         }
 
-        LabelComponent(uiModel = getRecordNewsTopicModel())
+        LabelComponent(
+            uiModel = addReportTopic(
+                stringResource(id = R.string.record_news_topic_label)
+            )
+        )
 
         TextFieldComponent(
             uiModel = getFindingsTopicModel(),
@@ -74,7 +81,11 @@ fun AddReportScreen(
             viewModel.isValidTopic = fieldValidated
         }
 
-        LabelComponent(uiModel = getRecordNewsDescriptionModel())
+        LabelComponent(
+            uiModel = addReportDescription(
+                stringResource(id = R.string.record_news_description_label)
+            )
+        )
 
         TextFieldComponent(
             uiModel = getFindingsDescriptionModel(),
@@ -84,7 +95,9 @@ fun AddReportScreen(
             viewModel.isValidDescription = fieldValidated
         }
 
-        LabelComponent(uiModel = getFindingsAddFilesModel())
+        LabelComponent(
+            uiModel = addFilesHint(stringResource(id = R.string.findings_add_files_label))
+        )
 
         MediaActions(viewModel)
 
@@ -174,45 +187,6 @@ private fun getFindingsDescriptionModel() = TextFieldUiModel(
     singleLine = false,
     minLines = DESCRIPTION_INPUT_MIN_LINES,
     arrangement = Arrangement.Center,
-    modifier = Modifier.padding(
-        start = 20.dp,
-        top = 20.dp,
-        end = 20.dp,
-        bottom = 0.dp
-    )
-)
-
-@Composable
-private fun getRecordNewsTopicModel() = LabelUiModel(
-    text = stringResource(id = R.string.record_news_topic_label),
-    textStyle = TextStyle.HEADLINE_3,
-    arrangement = Arrangement.Start,
-    modifier = Modifier.padding(
-        start = 20.dp,
-        top = 20.dp,
-        end = 20.dp,
-        bottom = 0.dp
-    )
-)
-
-@Composable
-private fun getRecordNewsDescriptionModel() = LabelUiModel(
-    text = stringResource(id = R.string.record_news_description_label),
-    textStyle = TextStyle.HEADLINE_3,
-    arrangement = Arrangement.Start,
-    modifier = Modifier.padding(
-        start = 20.dp,
-        top = 20.dp,
-        end = 20.dp,
-        bottom = 0.dp
-    )
-)
-
-@Composable
-private fun getFindingsAddFilesModel() = LabelUiModel(
-    text = stringResource(id = R.string.findings_add_files_label),
-    textStyle = TextStyle.HEADLINE_3,
-    arrangement = Arrangement.Start,
     modifier = Modifier.padding(
         start = 20.dp,
         top = 20.dp,
