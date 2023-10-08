@@ -39,7 +39,7 @@ fun FilledTextFieldView(
                 onAction(
                     uiModel.identifier,
                     updatedValue.text,
-                    text.toFailedValidation(uiModel.validations, validateFields) == null
+                    text.toFailedValidation(uiModel.validations, true) == null
                 )
             }
         },
