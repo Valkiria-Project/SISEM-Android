@@ -211,10 +211,11 @@ class ReportViewModel @Inject constructor(
     // region ImageConfirmation
     fun updateSelectedImages(selectedImages: List<Uri>) {
         val updateSelectedImages = buildList {
+
             addAll(uiState.selectedImageUris)
 
             selectedImages.forEachIndexed { index, image ->
-                if (imageLimit < uiState.selectedImageUris.size + index + 1) {
+                if (imageLimit < uiState.selectedImageUris.size + index) {
                     uiState = uiState.copy(
                         errorModel = imagesLimitErrorBanner(imageLimit).mapToUi()
                     )
@@ -259,7 +260,7 @@ class ReportViewModel @Inject constructor(
                 add(it)
             }
 
-            if (imageLimit < uiState.selectedImageUris.size + 1) {
+            if (imageLimit < uiState.selectedImageUris.size) {
                 uiState = uiState.copy(
                     errorModel = imagesLimitErrorBanner(imageLimit).mapToUi()
                 )
