@@ -82,7 +82,10 @@ fun AddFindingScreen(
             uiModel = addFilesHint(stringResource(id = R.string.findings_add_files_label))
         )
         Text(
-            text = "Imágenes adjuntadas: ${viewModel.uiState.selectedImageUris.size}",
+            text = stringResource(
+                id = R.string.findings_selected_files_label,
+                viewModel.uiState.selectedImageUris.size.toString()
+            ),
             modifier = Modifier.padding(
                 start = 20.dp,
                 end = 20.dp,
