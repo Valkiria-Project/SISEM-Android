@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.data.auth
 
+import com.skgtecnologia.sisem.commons.extensions.mapResult
 import com.skgtecnologia.sisem.data.auth.cache.AuthCacheDataSource
 import com.skgtecnologia.sisem.data.auth.remote.AuthRemoteDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
@@ -32,15 +33,16 @@ class AuthRepositoryImpl @Inject constructor(
             authCacheDataSource.storeAccessToken(accessTokenModel)
         }.getOrThrow()
 
-    override suspend fun refreshToken(refreshToken: String): AccessTokenModel =
-        authRemoteDataSource.refreshToken(refreshToken = refreshToken)
-            .onSuccess { accessTokenModel ->
-                if (accessTokenModel.isAdmin) {
-                    getAllAccessTokens().forEach { accessToken ->
-                        logout(accessToken.username)
-                    }
-                }
-
+    override suspend fun refreshToken(currentToken: AccessTokenModel): AccessTokenModel =
+        authRemoteDataSource.refreshToken(refreshToken = currentToken.refreshToken)
+            .mapResult { refreshTokenModel ->
+                val token = currentToken.copy(
+                    accessToken = refreshTokenModel.accessToken,
+                    refreshToken = refreshTokenModel.refreshToken,
+                    isAdmin = refreshTokenModel.isAdmin
+                )
+                token
+            }.onSuccess { accessTokenModel ->
                 authCacheDataSource.storeAccessToken(accessTokenModel)
             }.getOrThrow()
 

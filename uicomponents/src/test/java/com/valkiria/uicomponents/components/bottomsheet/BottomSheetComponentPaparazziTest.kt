@@ -3,6 +3,7 @@ package com.valkiria.uicomponents.components.bottomsheet
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.android.ide.common.rendering.api.SessionParams.RenderingMode.V_SCROLL
+import com.valkiria.uicomponents.bricks.bottomsheet.BottomSheetComponentPreview
 import org.junit.Rule
 import org.junit.Test
 

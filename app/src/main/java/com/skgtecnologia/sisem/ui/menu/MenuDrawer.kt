@@ -12,8 +12,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.menu.header.toCrewMemberItemModel
 import com.skgtecnologia.sisem.ui.menu.items.getDrawerMenuItemList
 import com.skgtecnologia.sisem.ui.navigation.NavigationRoute
-import com.valkiria.uicomponents.components.banner.OnBannerHandler
-import com.valkiria.uicomponents.components.loader.LoaderComponent
+import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
+import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 
 @Suppress("LongMethod", "LongParameterList")
@@ -65,9 +65,7 @@ fun MenuDrawer(
         viewModel.handleShownError()
     }
 
-    if (uiState.isLoading) {
-        LoaderComponent()
-    }
+    OnLoadingHandler(uiState.isLoading)
 }
 
 @Preview

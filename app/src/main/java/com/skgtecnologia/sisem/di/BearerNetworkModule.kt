@@ -25,10 +25,10 @@ object BearerNetworkModule {
     @Singleton
     @Provides
     internal fun providesOkHttpClient(
-        auditInterceptor: AuditInterceptor,
         accessTokenAuthenticator: AccessTokenAuthenticator,
-        loggingInterceptor: HttpLoggingInterceptor?,
-        accessTokenInterceptor: AccessTokenInterceptor
+        accessTokenInterceptor: AccessTokenInterceptor,
+        auditInterceptor: AuditInterceptor,
+        loggingInterceptor: HttpLoggingInterceptor?
     ): OkHttpClient = OkHttpClient.Builder().apply {
         connectTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
         readTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)

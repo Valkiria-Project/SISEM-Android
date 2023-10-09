@@ -11,10 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.model.mocks.getDeviceAuthLicensePlateLabelUiModel
-import com.valkiria.uicomponents.model.mocks.getDeviceAuthSerialLabelUiModel
-import com.valkiria.uicomponents.model.props.toTextStyle
-import com.valkiria.uicomponents.model.ui.label.LabelUiModel
+import com.valkiria.uicomponents.mocks.getDeviceAuthLicensePlateLabelUiModel
+import com.valkiria.uicomponents.mocks.getDeviceAuthSerialLabelUiModel
 
 @Composable
 fun LabelComponent(

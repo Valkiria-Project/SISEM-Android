@@ -8,15 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
-import com.skgtecnologia.sisem.domain.model.footer.FooterModel
 import com.valkiria.uicomponents.action.FooterUiAction.FooterButton
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.button.ButtonView
+import com.valkiria.uicomponents.components.footer.FooterUiModel
 
 @Composable
 fun FooterSection(
-    footerModel: FooterModel,
+    footerModel: FooterUiModel,
     modifier: Modifier = Modifier,
     onAction: (actionInput: UiAction) -> Unit
 ) {
@@ -26,13 +25,13 @@ fun FooterSection(
             .padding(bottom = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterHorizontally)
     ) {
-        ButtonView(uiModel = footerModel.leftButton.mapToUiModel()) {
+        ButtonView(uiModel = footerModel.leftButton) {
             onAction(FooterButton(footerModel.leftButton.identifier))
         }
 
         footerModel.rightButton?.let {
-            ButtonView(uiModel = it.mapToUiModel()) {
-                onAction(FooterButton(footerModel.rightButton.identifier))
+            ButtonView(uiModel = it) {
+                onAction(FooterButton(it.identifier))
             }
         }
     }

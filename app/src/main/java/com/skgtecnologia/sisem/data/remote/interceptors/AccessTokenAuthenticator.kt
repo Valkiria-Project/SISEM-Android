@@ -38,10 +38,14 @@ class AccessTokenAuthenticator @Inject constructor(
     private fun Response.createSignedRequest(currentToken: AccessTokenModel): Request? =
         synchronized(this) {
             val newToken = runBlocking {
-                authRepository.refreshToken(refreshToken = currentToken.refreshToken)
+                runCatching {
+                    authRepository.refreshToken(
+                        currentToken = currentToken
+                    )
+                }.getOrNull()
             }
 
-            if (currentToken.accessToken != newToken.accessToken) {
+            if (newToken != null && currentToken.accessToken != newToken.accessToken) {
                 request.signWithToken(newToken.accessToken)
             } else {
                 null

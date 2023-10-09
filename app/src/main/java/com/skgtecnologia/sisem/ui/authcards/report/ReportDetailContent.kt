@@ -10,14 +10,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.skgtecnologia.sisem.domain.model.bricks.ReportsDetailModel
+import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 
 @Composable
 fun ReportDetailContent(
-    model: ReportsDetailModel
+    model: ReportsDetailUiModel
 ) {
-    HeaderSection(headerModel = model.header, modifier = Modifier)
+    HeaderSection(headerUiModel = model.header, modifier = Modifier)
 
     Column(
         modifier = Modifier

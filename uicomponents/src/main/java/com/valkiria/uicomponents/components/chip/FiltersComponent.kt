@@ -18,9 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.bricks.chip.FilterChipView
-import com.valkiria.uicomponents.model.ui.chip.FiltersUiModel
-import com.valkiria.uicomponents.model.mocks.getPreOperationalFiltersUiModel
-import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.mocks.getPreOperationalFiltersUiModel
+import com.valkiria.uicomponents.components.label.TextStyle
 import timber.log.Timber
 
 @Composable

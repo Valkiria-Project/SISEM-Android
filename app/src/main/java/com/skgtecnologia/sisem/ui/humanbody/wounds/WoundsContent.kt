@@ -17,12 +17,13 @@ import com.skgtecnologia.sisem.domain.model.header.woundsHeader
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.components.chip.ChipOptionsComponent
 import com.valkiria.uicomponents.components.chip.ChipSelectionComponent
-import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.props.toTextStyle
-import com.valkiria.uicomponents.model.ui.chip.ChipOptionUiModel
-import com.valkiria.uicomponents.model.ui.chip.ChipOptionsUiModel
-import com.valkiria.uicomponents.model.ui.chip.ChipSelectionItemUiModel
-import com.valkiria.uicomponents.model.ui.chip.ChipSelectionUiModel
+import com.valkiria.uicomponents.components.label.TextUiModel
+import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.label.toTextStyle
+import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
+import com.valkiria.uicomponents.components.chip.ChipSelectionUiModel
+import com.valkiria.uicomponents.components.chip.ChipOptionUiModel
+import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
 
 @Suppress("LongMethod")
 @Composable
@@ -35,7 +36,7 @@ fun WoundsContent(
     viewModel.setBurnList(stringArrayResource(id = R.array.wounds_burn_grade_list).toList())
 
     HeaderSection(
-        headerModel = woundsHeader(
+        headerUiModel = woundsHeader(
             titleText = stringResource(R.string.wounds_title),
             subtitleText = stringResource(R.string.wounds_subtitle),
             leftIcon = stringResource(R.string.wounds_left_icon)
@@ -51,6 +52,7 @@ fun WoundsContent(
                 items = stringArrayResource(id = R.array.wounds_list).mapIndexed { index, text ->
                     ChipOptionUiModel(id = index.toString(), name = text, selected = false)
                 },
+                arrangement = Arrangement.Center,
                 modifier = Modifier
             )
         ) { _, text, isSelected ->
@@ -61,8 +63,10 @@ fun WoundsContent(
             ChipSelectionComponent(
                 uiModel = ChipSelectionUiModel(
                     identifier = "burn_type",
-                    titleText = stringResource(R.string.wounds_burn_description),
-                    titleTextStyle = TextStyle.HEADLINE_5,
+                    title = TextUiModel(
+                        stringResource(R.string.wounds_burn_description),
+                        TextStyle.HEADLINE_5
+                    ),
                     items = stringArrayResource(
                         id = R.array.wounds_burn_grade_list
                     ).mapIndexed { index, text ->

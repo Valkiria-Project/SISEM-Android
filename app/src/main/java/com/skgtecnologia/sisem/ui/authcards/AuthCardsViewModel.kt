@@ -7,10 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.authcards.usecases.GetAuthCardsScreen
-import com.skgtecnologia.sisem.domain.model.bricks.ChipSectionModel
-import com.skgtecnologia.sisem.domain.model.bricks.ReportsDetailModel
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.operation.usecases.GetOperationConfig
+import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
+import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -71,7 +71,7 @@ class AuthCardsViewModel @Inject constructor(
             }
     }
 
-    fun showReportBottomSheet(reportDetail: ReportsDetailModel) {
+    fun showReportBottomSheet(reportDetail: ReportsDetailUiModel) {
         uiState = uiState.copy(
             reportDetail = reportDetail
         )
@@ -83,7 +83,7 @@ class AuthCardsViewModel @Inject constructor(
         )
     }
 
-    fun showFindingsBottomSheet(chipSection: ChipSectionModel) {
+    fun showFindingsBottomSheet(chipSection: ChipSectionUiModel) {
         uiState = uiState.copy(
             chipSection = chipSection
         )

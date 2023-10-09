@@ -7,16 +7,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
-import com.skgtecnologia.sisem.domain.model.body.ButtonModel
-import com.skgtecnologia.sisem.domain.model.footer.FooterModel
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddFindingIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
-import com.valkiria.uicomponents.model.props.ButtonSize
-import com.valkiria.uicomponents.model.props.ButtonStyle
-import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.button.OnClick
+import com.valkiria.uicomponents.components.button.ButtonSize
+import com.valkiria.uicomponents.components.button.ButtonStyle
+import com.valkiria.uicomponents.components.button.ButtonUiModel
+import com.valkiria.uicomponents.components.button.OnClick
+import com.valkiria.uicomponents.components.footer.FooterUiModel
+import com.valkiria.uicomponents.components.label.TextStyle
 
 fun changePasswordEmptyFieldsBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
@@ -41,8 +41,8 @@ fun disassociateDeviceBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "Continuar",
     description = "¿Desea continuar con las actividades en la aplicación?",
-    footerModel = FooterModel(
-        leftButton = ButtonModel(
+    footerModel = FooterUiModel(
+        leftButton = ButtonUiModel(
             identifier = DeviceAuthIdentifier.DEVICE_AUTH_CANCEL_BANNER.name,
             label = "CANCELAR",
             style = ButtonStyle.LOUD,
@@ -57,7 +57,7 @@ fun disassociateDeviceBanner(): BannerModel = BannerModel(
                 bottom = 0.dp
             )
         ),
-        rightButton = ButtonModel(
+        rightButton = ButtonUiModel(
             identifier = DeviceAuthIdentifier.DEVICE_AUTH_CONTINUE_BANNER.name,
             label = "CONTINUAR",
             style = ButtonStyle.LOUD,
@@ -79,8 +79,8 @@ fun findingCancellationBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "¿Descartar hallazgo?",
     description = "Las modificaciones elaboradas no serán guardadas.",
-    footerModel = FooterModel(
-        leftButton = ButtonModel(
+    footerModel = FooterUiModel(
+        leftButton = ButtonUiModel(
             identifier = AddFindingIdentifier.ADD_FINDING_CANCEL_BANNER.name,
             label = "CANCELAR",
             style = ButtonStyle.LOUD,
@@ -95,7 +95,7 @@ fun findingCancellationBanner(): BannerModel = BannerModel(
                 bottom = 0.dp
             )
         ),
-        rightButton = ButtonModel(
+        rightButton = ButtonUiModel(
             identifier = AddFindingIdentifier.ADD_FINDING_CONTINUE_BANNER.name,
             label = "CONTINUAR",
             style = ButtonStyle.LOUD,
@@ -117,8 +117,8 @@ fun findingConfirmationBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "Guardar hallazgo",
     description = "¿Desea guardar el hallazgo registrado?",
-    footerModel = FooterModel(
-        leftButton = ButtonModel(
+    footerModel = FooterUiModel(
+        leftButton = ButtonUiModel(
             identifier = ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_CANCEL_BANNER.name,
             label = "CANCELAR",
             style = ButtonStyle.LOUD,
@@ -133,7 +133,7 @@ fun findingConfirmationBanner(): BannerModel = BannerModel(
                 bottom = 0.dp
             )
         ),
-        rightButton = ButtonModel(
+        rightButton = ButtonUiModel(
             identifier = ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name,
             label = "GUARDAR",
             style = ButtonStyle.LOUD,
@@ -174,8 +174,8 @@ fun preOperationalConfirmationBanner(): BannerModel = BannerModel(
         "radiocomunicaciones y demás que hacen parte de los vehículos de emergencia está\n" +
         "deberá ser diligenciada por cada una de las tripulaciones que entregan y reciben\n" +
         "turno en tiempo establecido",
-    footerModel = FooterModel(
-        leftButton = ButtonModel(
+    footerModel = FooterUiModel(
+        leftButton = ButtonUiModel(
             identifier = PreOperationalIdentifier.PREOP_CANCEL_BUTTON.name,
             label = "CANCELAR",
             style = ButtonStyle.LOUD,
@@ -190,7 +190,7 @@ fun preOperationalConfirmationBanner(): BannerModel = BannerModel(
                 bottom = 0.dp
             )
         ),
-        rightButton = ButtonModel(
+        rightButton = ButtonUiModel(
             identifier = PreOperationalIdentifier.PREOP_SAVE_BUTTON.name,
             label = "GUARDAR",
             style = ButtonStyle.LOUD,
@@ -218,8 +218,8 @@ fun reportCancellationBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "Cancelar novedad",
     description = "¿Está seguro que desea cancelar el registro de la novedad?",
-    footerModel = FooterModel(
-        leftButton = ButtonModel(
+    footerModel = FooterUiModel(
+        leftButton = ButtonUiModel(
             identifier = AddReportIdentifier.ADD_REPORT_CANCEL_BANNER.name,
             label = "CANCELAR",
             style = ButtonStyle.LOUD,
@@ -234,7 +234,7 @@ fun reportCancellationBanner(): BannerModel = BannerModel(
                 bottom = 0.dp
             )
         ),
-        rightButton = ButtonModel(
+        rightButton = ButtonUiModel(
             identifier = AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name,
             label = "CONTINUAR",
             style = ButtonStyle.LOUD,
@@ -256,8 +256,8 @@ fun reportConfirmationBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "Guardar novedad",
     description = "¿Desea guardar la novedad registrada?",
-    footerModel = FooterModel(
-        leftButton = ButtonModel(
+    footerModel = FooterUiModel(
+        leftButton = ButtonUiModel(
             identifier = ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_CANCEL_BANNER.name,
             label = "CANCELAR",
             style = ButtonStyle.LOUD,
@@ -272,7 +272,7 @@ fun reportConfirmationBanner(): BannerModel = BannerModel(
                 bottom = 0.dp
             )
         ),
-        rightButton = ButtonModel(
+        rightButton = ButtonUiModel(
             identifier = ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name,
             label = "GUARDAR",
             style = ButtonStyle.LOUD,

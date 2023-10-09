@@ -2,8 +2,8 @@ package com.skgtecnologia.sisem.data.remote.extensions
 
 import com.skgtecnologia.sisem.commons.extensions.recoverResult
 import com.skgtecnologia.sisem.commons.extensions.resultOf
-import com.skgtecnologia.sisem.data.remote.model.banner.BannerResponse
-import com.skgtecnologia.sisem.data.remote.model.banner.mapToDomain
+import com.skgtecnologia.sisem.data.remote.model.bricks.banner.BannerResponse
+import com.skgtecnologia.sisem.data.remote.model.bricks.banner.mapToDomain
 import com.skgtecnologia.sisem.domain.model.banner.BannerModel
 import com.skgtecnologia.sisem.domain.model.banner.ErrorModelFactory
 import com.squareup.moshi.Moshi

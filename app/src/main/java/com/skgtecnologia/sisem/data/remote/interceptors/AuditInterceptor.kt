@@ -3,22 +3,27 @@ package com.skgtecnologia.sisem.data.remote.interceptors
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.ui.commons.extensions.locationFlow
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
-const val HTTP_CLIENT_VERSION_HEADER = "User-Agent"
-const val CLIENT_VERSION = "sisem/Android/" + BuildConfig.VERSION_NAME
-const val HTTP_LOCATION_HEADER = "geolocation"
-const val UNAVAILABLE_LOCATION = "UNAVAILABLE_LOCATION"
-const val LOCATION_TIMEOUT = 1000L
+private const val HTTP_CLIENT_VERSION_HEADER = "User-Agent"
+private const val CLIENT_VERSION = "sisem/Android/" + BuildConfig.VERSION_NAME
+private const val HTTP_LOCATION_HEADER = "geolocation"
+private const val UNAVAILABLE_LOCATION = "UNAVAILABLE_LOCATION"
+private const val LOCATION_TIMEOUT = 1000L
+private const val IP_ADDRESS_URL = "https://api.ipify.org/"
+private const val IP_ADDRESS_HEADER = "ip"
 
 @Singleton
 class AuditInterceptor @Inject constructor(
@@ -30,6 +35,7 @@ class AuditInterceptor @Inject constructor(
             .newBuilder()
             .addHeader(HTTP_CLIENT_VERSION_HEADER, CLIENT_VERSION)
             .withCurrentLocation()
+            .withCurrentIPAddress()
             .build()
 
         return chain.proceed(request)
@@ -54,6 +60,21 @@ class AuditInterceptor @Inject constructor(
 
         this@withCurrentLocation.addHeader(
             HTTP_LOCATION_HEADER, formattedLocation
+        )
+    }
+
+    private fun Request.Builder.withCurrentIPAddress(): Request.Builder = runBlocking {
+        val client = OkHttpClient()
+        val response = withContext(Dispatchers.IO) {
+            val request: Request = Request.Builder()
+                .url(IP_ADDRESS_URL)
+                .build()
+            client.newCall(request).execute()
+        }
+        val ipAddress = response.body?.string().orEmpty()
+
+        this@withCurrentIPAddress.addHeader(
+            IP_ADDRESS_HEADER, ipAddress
         )
     }
 }

@@ -11,10 +11,10 @@ import com.skgtecnologia.sisem.domain.deviceauth.usecases.AssociateDevice
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.GetDeviceAuthScreen
 import com.skgtecnologia.sisem.domain.model.banner.disassociateDeviceBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
-import com.skgtecnologia.sisem.domain.model.body.SegmentedSwitchModel
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.ui.navigation.LOGIN
 import com.skgtecnologia.sisem.ui.navigation.model.DeviceAuthNavigationModel
+import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -69,7 +69,7 @@ class DeviceAuthViewModel @Inject constructor(
         }
     }
 
-    private fun ScreenModel.isAssociateDevice() = body.find { it is SegmentedSwitchModel } == null
+    private fun ScreenModel.isAssociateDevice() = body.find { it is SegmentedSwitchUiModel } == null
 
     fun associateDevice() {
         if (isAssociateDevice) {

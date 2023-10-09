@@ -23,12 +23,13 @@ import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
 import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.banner.OnBannerHandler
-import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
-import com.valkiria.uicomponents.components.loader.OnLoadingHandler
+import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
+import com.valkiria.uicomponents.bricks.bottomsheet.BottomSheetView
+import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 
 @Suppress("LongMethod")
+@androidx.compose.material3.ExperimentalMaterial3Api
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
@@ -78,7 +79,7 @@ fun LoginScreen(
     uiState.onLoginLink?.let { link ->
         scope.launch { sheetState.show() }
 
-        BottomSheetComponent(
+        BottomSheetView(
             content = { LegalContent(uiModel = link.toLegalContentModel()) },
             sheetState = sheetState,
             scope = scope

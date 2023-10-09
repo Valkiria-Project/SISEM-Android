@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.data.auth.remote.model
 
-import com.skgtecnologia.sisem.data.remote.model.banner.BannerResponse
-import com.skgtecnologia.sisem.data.remote.model.banner.mapToDomain
+import com.skgtecnologia.sisem.data.remote.model.bricks.banner.BannerResponse
+import com.skgtecnologia.sisem.data.remote.model.bricks.banner.mapToDomain
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

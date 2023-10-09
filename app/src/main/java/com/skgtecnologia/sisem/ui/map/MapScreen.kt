@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.NavigationRoute
-import com.valkiria.uicomponents.components.map.MapComponent
+import com.valkiria.uicomponents.bricks.map.MapView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -63,7 +63,7 @@ fun MapScreen(
         Box(
             modifier = modifier.fillMaxSize(),
         ) {
-            MapComponent(
+            MapView(
                 modifier = Modifier.fillMaxSize(),
                 coordinates = viewModel.uiState.location
             )

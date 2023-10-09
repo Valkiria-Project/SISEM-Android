@@ -79,13 +79,13 @@ private fun preOpToNextStep(
     navController: NavHostController,
     model: PreOpNavigationModel
 ) = when {
-    model.isTurnComplete -> navController.navigate(NavigationGraph.Main.route) {
+    model.isTurnCompleteEvent -> navController.navigate(NavigationGraph.Main.route) {
         popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
             inclusive = true
         }
     }
 
-    model.isNewFinding ->
+    model.isNewFindingEvent ->
         navController.navigate(ReportNavigationRoute.AddFindingScreen.route)
 
     else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {

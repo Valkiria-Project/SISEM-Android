@@ -2,10 +2,9 @@ package com.skgtecnologia.sisem.domain.model.banner
 
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.resources.StringProvider
-import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
-import com.skgtecnologia.sisem.domain.model.footer.FooterModel
-import com.valkiria.uicomponents.model.ui.banner.DEFAULT_ICON_COLOR
-import com.valkiria.uicomponents.model.ui.banner.BannerUiModel
+import com.valkiria.uicomponents.bricks.banner.BannerUiModel
+import com.valkiria.uicomponents.bricks.banner.DEFAULT_ICON_COLOR
+import com.valkiria.uicomponents.components.footer.FooterUiModel
 import retrofit2.HttpException
 import timber.log.Timber
 import java.net.ConnectException
@@ -20,7 +19,7 @@ data class BannerModel(
     val iconColor: String = DEFAULT_ICON_COLOR,
     val title: String,
     val description: String,
-    val footerModel: FooterModel? = null
+    val footerModel: FooterUiModel? = null
 ) : RuntimeException()
 
 fun Throwable.mapToUi(): BannerUiModel = (this as? BannerModel)?.mapToUi() ?: BannerUiModel(
@@ -34,8 +33,8 @@ private fun BannerModel.mapToUi() = BannerUiModel(
     iconColor = iconColor,
     title = title,
     description = description,
-    leftButton = footerModel?.leftButton?.mapToUiModel(),
-    rightButton = footerModel?.rightButton?.mapToUiModel()
+    leftButton = footerModel?.leftButton,
+    rightButton = footerModel?.rightButton
 )
 
 class ErrorModelFactory @Inject constructor(

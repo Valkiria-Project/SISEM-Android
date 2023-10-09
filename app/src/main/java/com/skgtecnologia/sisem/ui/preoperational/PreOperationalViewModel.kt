@@ -12,15 +12,16 @@ import com.skgtecnologia.sisem.domain.changepassword.usecases.GetLoginNavigation
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.banner.preOperationalConfirmationBanner
 import com.skgtecnologia.sisem.domain.model.banner.preOperationalIncompleteFormBanner
-import com.skgtecnologia.sisem.domain.model.body.ChipOptionsModel
-import com.skgtecnologia.sisem.domain.model.body.FindingModel
-import com.skgtecnologia.sisem.domain.model.body.InventoryCheckModel
-import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
 import com.skgtecnologia.sisem.ui.navigation.model.PreOpNavigationModel
+import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
+import com.valkiria.uicomponents.components.finding.FindingUiModel
+import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
+import com.valkiria.uicomponents.components.textfield.InputUiModel
+import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -46,8 +47,7 @@ class PreOperationalViewModel @Inject constructor(
     var findings = mutableStateMapOf<String, Boolean>()
     var inventoryValues = mutableStateMapOf<String, Int>()
     var inventoryValidated = mutableStateMapOf<String, Boolean>()
-    var fieldsValues = mutableStateMapOf<String, String>()
-    var fieldsValidated = mutableStateMapOf<String, Boolean>()
+    var fieldsValues = mutableStateMapOf<String, InputUiModel>()
     var novelties = mutableStateListOf<Novelty>()
 
     init {
@@ -71,7 +71,7 @@ class PreOperationalViewModel @Inject constructor(
 
                     uiState = uiState.copy(
                         isLoading = false,
-                        infoModel = throwable.mapToUi()
+                        infoEvent = throwable.mapToUi()
                     )
                 }
         }
@@ -80,29 +80,29 @@ class PreOperationalViewModel @Inject constructor(
     private fun ScreenModel.getFormInitialValues() {
         this.body.forEach { bodyRowModel ->
             when (bodyRowModel) {
-                is FindingModel -> {
+                is FindingUiModel -> {
                     Timber.d("it's a FindingModel with id ${bodyRowModel.identifier}")
-                    val model = bodyRowModel.segmentedSwitchModel
+                    val model = bodyRowModel.segmentedSwitchUiModel
                     findings[model.identifier] = model.selected
                 }
 
-                is ChipOptionsModel -> {
+                is ChipOptionsUiModel -> {
                     Timber.d("it's a ChipOptionsModel with id ${bodyRowModel.identifier}")
                     bodyRowModel.items.forEach { optionUiModel ->
                         findings[optionUiModel.id] = optionUiModel.selected
                     }
                 }
 
-                is InventoryCheckModel -> {
+                is InventoryCheckUiModel -> {
                     Timber.d("it's a InventoryCheckModel with id ${bodyRowModel.identifier}")
                     bodyRowModel.items.forEach { checkItemUiModel ->
                         inventoryValidated[checkItemUiModel.name.identifier] = false
                     }
                 }
 
-                is TextFieldModel -> {
+                is TextFieldUiModel -> {
                     Timber.d("it's a TextFieldModel with id ${bodyRowModel.identifier}")
-                    fieldsValidated[bodyRowModel.identifier] = false
+                    fieldsValues[bodyRowModel.identifier] = InputUiModel(bodyRowModel.identifier)
                 }
 
                 else -> Timber.d("no-op")
@@ -112,9 +112,9 @@ class PreOperationalViewModel @Inject constructor(
 
     fun showFindingForm() {
         val updatedBody = uiState.screenModel?.body?.map {
-            if (it is FindingModel && it.segmentedSwitchModel.identifier == temporalFinding) {
+            if (it is FindingUiModel && it.segmentedSwitchUiModel.identifier == temporalFinding) {
                 val temporalFindingModel = it.copy(
-                    segmentedSwitchModel = it.segmentedSwitchModel.copy(selected = false)
+                    segmentedSwitchUiModel = it.segmentedSwitchUiModel.copy(selected = false)
                 )
 
                 temporalFindingModel
@@ -128,25 +128,19 @@ class PreOperationalViewModel @Inject constructor(
                 body = updatedBody
             ),
             navigationModel = PreOpNavigationModel(
-                isNewFinding = true,
-                role = "Conductor" // FIXME: Think better about this
+                isNewFindingEvent = true,
             )
         )
     }
 
     fun revertFinding() {
-        if (temporalFinding == "14") {
-            Timber.d("revertFinding: id $temporalFinding")
-        }
         val updatedBody = uiState.screenModel?.body?.map {
-            if (it is FindingModel && it.segmentedSwitchModel.identifier == temporalFinding) {
+            if (it is FindingUiModel && it.segmentedSwitchUiModel.identifier == temporalFinding) {
                 findings[temporalFinding] = true
                 temporalFinding = ""
                 val temporalFindingModel = it.copy(
-                    segmentedSwitchModel = it.segmentedSwitchModel.copy(selected = true)
+                    segmentedSwitchUiModel = it.segmentedSwitchUiModel.copy(selected = true)
                 )
-
-                Timber.d("revertFinding: id ${temporalFindingModel.segmentedSwitchModel.selected}")
                 temporalFindingModel
             } else {
                 it
@@ -160,29 +154,25 @@ class PreOperationalViewModel @Inject constructor(
         )
     }
 
-    fun handleShownFindingForm() {
-        uiState = uiState.copy(
-            navigationModel = null
-        )
-    }
+    fun savePreOperational() {
+        val isValidInventory = inventoryValidated.toMap().containsValue(false).not()
+        val areValidFields = fieldsValues
+            .mapValues {
+                it.value.fieldValidated
+            }
+            .containsValue(false)
+            .not()
 
-    fun validatePreOperational() {
-        uiState = uiState.copy(
-            validateFields = true
-        )
-
-        val isValidInventory = !inventoryValidated.toMap().containsValue(false)
-        val areValidFields = !fieldsValidated.toMap().containsValue(false)
-
-        uiState = if (isValidInventory && areValidFields) {
-            uiState.copy(
-                infoModel = preOperationalConfirmationBanner().mapToUi()
-            )
+        val infoEvent = if (isValidInventory && areValidFields) {
+            preOperationalConfirmationBanner().mapToUi()
         } else {
-            uiState.copy(
-                infoModel = preOperationalIncompleteFormBanner().mapToUi()
-            )
+            preOperationalIncompleteFormBanner().mapToUi()
         }
+
+        uiState = uiState.copy(
+            validateFields = true,
+            infoEvent = infoEvent
+        )
     }
 
     fun sendPreOperational() {
@@ -195,7 +185,7 @@ class PreOperationalViewModel @Inject constructor(
             sendPreOperational.invoke(
                 findings.toMap(),
                 inventoryValues.toMap(),
-                fieldsValues.toMap(),
+                fieldsValues.mapValues { it.value.updatedValue },
                 novelties.toList()
             ).onSuccess {
                 getLoginNavigationModel()
@@ -204,7 +194,7 @@ class PreOperationalViewModel @Inject constructor(
 
                 uiState = uiState.copy(
                     isLoading = false,
-                    infoModel = throwable.mapToUi()
+                    infoEvent = throwable.mapToUi()
                 )
             }
         }
@@ -215,7 +205,7 @@ class PreOperationalViewModel @Inject constructor(
             .onSuccess { loginNavigationModel ->
                 uiState = uiState.copy(
                     navigationModel = PreOpNavigationModel(
-                        isTurnComplete = loginNavigationModel.isTurnComplete
+                        isTurnCompleteEvent = loginNavigationModel.isTurnComplete
                     ),
                     isLoading = false
                 )
@@ -225,21 +215,21 @@ class PreOperationalViewModel @Inject constructor(
 
                 uiState = uiState.copy(
                     isLoading = false,
-                    infoModel = throwable.mapToUi()
+                    infoEvent = throwable.mapToUi()
                 )
             }
     }
 
-    fun onPreOpHandled() {
+    fun consumeNavigationEvent() {
         uiState = uiState.copy(
             navigationModel = null,
             isLoading = false
         )
     }
 
-    fun handleShownError() {
+    fun consumeBannerEvent() {
         uiState = uiState.copy(
-            infoModel = null
+            infoEvent = null
         )
     }
 }

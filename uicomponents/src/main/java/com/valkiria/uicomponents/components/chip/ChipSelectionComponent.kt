@@ -11,10 +11,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.bricks.chip.FilterChipView
+import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
-import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.chip.ChipSelectionUiModel
-import com.valkiria.uicomponents.model.ui.label.LabelUiModel
+import com.valkiria.uicomponents.components.label.TextStyle
 
 @Suppress("UnusedPrivateMember")
 @Composable
@@ -29,11 +28,12 @@ fun ChipSelectionComponent(
         modifier = uiModel.modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Top
     ) {
-        uiModel.titleTextStyle?.let {
+        uiModel.title?.textStyle?.let {
             LabelComponent(
                 uiModel = LabelUiModel(
-                    text = uiModel.titleText.orEmpty(),
-                    textStyle = it
+                    identifier = uiModel.identifier,
+                    text = uiModel.title.text,
+                    textStyle = uiModel.title.textStyle
                 )
             )
         }

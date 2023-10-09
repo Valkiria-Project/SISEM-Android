@@ -7,10 +7,12 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.login.model.LoginLink.PRIVACY_POLICY
 import com.skgtecnologia.sisem.domain.login.model.LoginLink.TERMS_AND_CONDITIONS
 import com.valkiria.uicomponents.R.drawable
-import com.valkiria.uicomponents.model.props.TextStyle
+import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsUiModel
+import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.termsandconditions.Link
 import java.util.Locale
 
-enum class LoginLink {
+enum class LoginLink : Link {
     PRIVACY_POLICY,
     TERMS_AND_CONDITIONS;
 
@@ -39,5 +41,17 @@ fun LoginLink.toLegalContentModel() = when (this) {
         subtitleTextStyle = TextStyle.HEADLINE_6,
         text = stringResource(id = R.string.terms_and_conditions_text),
         textStyle = TextStyle.HEADLINE_5
+    )
+}
+
+fun TermsAndConditionsUiModel.mapToLoginModel(): TermsAndConditionsUiModel {
+    return TermsAndConditionsUiModel(
+        identifier = identifier,
+        links = listOf(
+            TERMS_AND_CONDITIONS,
+            PRIVACY_POLICY
+        ),
+        arrangement = arrangement,
+        modifier = modifier
     )
 }

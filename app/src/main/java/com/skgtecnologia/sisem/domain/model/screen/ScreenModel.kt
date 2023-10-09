@@ -1,11 +1,11 @@
 package com.skgtecnologia.sisem.domain.model.screen
 
-import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
-import com.skgtecnologia.sisem.domain.model.footer.FooterModel
-import com.skgtecnologia.sisem.domain.model.body.HeaderModel
+import com.valkiria.uicomponents.components.BodyRowModel
+import com.valkiria.uicomponents.components.header.HeaderUiModel
+import com.valkiria.uicomponents.components.footer.FooterUiModel
 
 data class ScreenModel(
-    val header: HeaderModel? = null,
+    val header: HeaderUiModel? = null,
     val body: List<BodyRowModel>,
-    val footer: FooterModel? = null
+    val footer: FooterUiModel? = null
 )
