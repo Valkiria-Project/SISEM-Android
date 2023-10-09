@@ -19,7 +19,9 @@ import com.valkiria.uicomponents.bricks.button.ImageButtonView
 import com.valkiria.uicomponents.components.label.TextStyle
 
 @Composable
-fun MediaActions(viewModel: ReportViewModel) {
+fun MediaActions(
+    viewModel: ReportViewModel
+) {
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
         onResult = { uris -> viewModel.updateSelectedImages(uris) }

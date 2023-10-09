@@ -103,9 +103,11 @@ private fun reportToNextStep(
         model.goBack -> with(navController) {
             popBackStack()
 
-            currentBackStackEntry
-                ?.savedStateHandle
-                ?.set(REVERT_FINDING, true)
+            if (model.fromImages.not()) {
+                currentBackStackEntry
+                    ?.savedStateHandle
+                    ?.set(REVERT_FINDING, true)
+            }
         }
 
         model.photoTaken -> navController.popBackStack()

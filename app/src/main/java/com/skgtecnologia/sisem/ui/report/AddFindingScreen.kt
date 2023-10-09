@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -48,8 +49,8 @@ fun AddFindingScreen(
     LaunchedEffect(uiState) {
         when {
             uiState.navigationModel != null && uiState.cancelInfoModel == null -> {
-                viewModel.handleNavigation()
                 onNavigation(uiState.navigationModel)
+                viewModel.consumeNavigationEvent()
             }
         }
     }
@@ -80,6 +81,13 @@ fun AddFindingScreen(
         LabelComponent(
             uiModel = addFilesHint(stringResource(id = R.string.findings_add_files_label))
         )
+        Text(
+            text = "Imágenes adjuntadas: ${viewModel.uiState.selectedImageUris.size}",
+            modifier = Modifier.padding(
+                start = 20.dp,
+                end = 20.dp,
+            )
+        )
 
         MediaActions(viewModel)
 
@@ -101,7 +109,7 @@ fun AddFindingScreen(
     }
 
     OnBannerHandler(uiState.errorModel) {
-        viewModel.handleShownError()
+        viewModel.consumeShownError()
     }
 
     LocalFocusManager.current.clearFocus()
@@ -149,7 +157,7 @@ private fun handleFooterAction(
             AddFindingIdentifier.ADD_FINDING_CANCEL_BUTTON.name -> viewModel.cancelFinding()
             AddFindingIdentifier.ADD_FINDING_SAVE_BUTTON.name -> viewModel.saveFinding()
 
-            AddFindingIdentifier.ADD_FINDING_CANCEL_BANNER.name -> viewModel.handleNavigation()
+            AddFindingIdentifier.ADD_FINDING_CANCEL_BANNER.name -> viewModel.consumeNavigationEvent()
             AddFindingIdentifier.ADD_FINDING_CONTINUE_BANNER.name -> viewModel.navigateBack()
         }
     }

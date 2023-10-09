@@ -50,7 +50,7 @@ fun AddReportScreen(
     LaunchedEffect(uiState) {
         when {
             uiState.navigationModel != null && uiState.cancelInfoModel == null -> {
-                viewModel.handleNavigation()
+                viewModel.consumeNavigationEvent()
                 onNavigation(uiState.navigationModel)
             }
         }
@@ -119,7 +119,7 @@ fun AddReportScreen(
     }
 
     OnBannerHandler(uiState.errorModel) {
-        viewModel.handleShownError()
+        viewModel.consumeShownError()
     }
 
     LocalFocusManager.current.clearFocus()
@@ -137,7 +137,7 @@ private fun handleFooterAction(
             AddReportIdentifier.ADD_REPORT_ENTRY_CANCEL_BUTTON.name -> viewModel.cancelReport()
             AddReportIdentifier.SEND_REPORT_ENTRY_SEND_BUTTON.name -> viewModel.saveReport()
 
-            AddReportIdentifier.ADD_REPORT_CANCEL_BANNER.name -> viewModel.handleNavigation()
+            AddReportIdentifier.ADD_REPORT_CANCEL_BANNER.name -> viewModel.consumeNavigationEvent()
             AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name -> viewModel.navigateBack()
         }
     }

@@ -65,7 +65,7 @@ fun CameraScreen(
         }
 
         if (uiState.navigationModel != null) {
-            viewModel.handleNavigation()
+            viewModel.consumeNavigationEvent()
             onNavigation(uiState.navigationModel)
         }
     }

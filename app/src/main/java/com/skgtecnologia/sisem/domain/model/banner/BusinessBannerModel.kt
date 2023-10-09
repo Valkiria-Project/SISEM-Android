@@ -161,8 +161,7 @@ fun findingSavedBanner(): BannerModel = BannerModel(
 fun imagesLimitErrorBanner(imageLimit: Int): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "Cantidad de fotos",
-    description = """Se ha excedido el número de imágenes permitido por
-        | el sistema $imageLimit""".trimMargin()
+    description = "Se ha excedido el número de imágenes permitido por el sistema $imageLimit"
 )
 
 fun preOperationalConfirmationBanner(): BannerModel = BannerModel(
