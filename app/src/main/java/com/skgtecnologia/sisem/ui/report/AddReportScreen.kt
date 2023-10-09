@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -34,6 +35,7 @@ import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
+import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 @Suppress("LongParameterList", "LongMethod")
@@ -48,10 +50,12 @@ fun AddReportScreen(
     val addReportUiState = addReportViewModel.uiState
 
     LaunchedEffect(uiState) {
-        when {
-            uiState.navigationModel != null && uiState.cancelInfoModel == null -> {
-                viewModel.consumeNavigationEvent()
-                onNavigation(uiState.navigationModel)
+        launch {
+            when {
+                uiState.navigationModel != null && uiState.cancelInfoModel == null -> {
+                    onNavigation(uiState.navigationModel)
+                    viewModel.consumeNavigationEvent()
+                }
             }
         }
     }
@@ -97,6 +101,17 @@ fun AddReportScreen(
 
         LabelComponent(
             uiModel = addFilesHint(stringResource(id = R.string.findings_add_files_label))
+        )
+
+        Text(
+            text = stringResource(
+                id = R.string.findings_selected_files_label,
+                viewModel.uiState.selectedImageUris.size.toString()
+            ),
+            modifier = Modifier.padding(
+                start = 20.dp,
+                end = 20.dp,
+            )
         )
 
         MediaActions(viewModel)

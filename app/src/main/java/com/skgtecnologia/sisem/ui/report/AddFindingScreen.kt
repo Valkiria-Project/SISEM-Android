@@ -33,6 +33,7 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
+import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 const val DESCRIPTION_INPUT_MIN_LINES = 3
@@ -47,10 +48,12 @@ fun AddFindingScreen(
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState) {
-        when {
-            uiState.navigationModel != null && uiState.cancelInfoModel == null -> {
-                onNavigation(uiState.navigationModel)
-                viewModel.consumeNavigationEvent()
+        launch {
+            when {
+                uiState.navigationModel != null && uiState.cancelInfoModel == null -> {
+                    onNavigation(uiState.navigationModel)
+                    viewModel.consumeNavigationEvent()
+                }
             }
         }
     }
@@ -81,6 +84,7 @@ fun AddFindingScreen(
         LabelComponent(
             uiModel = addFilesHint(stringResource(id = R.string.findings_add_files_label))
         )
+
         Text(
             text = stringResource(
                 id = R.string.findings_selected_files_label,
