@@ -79,11 +79,21 @@ class ReportViewModel @Inject constructor(
         }
     }
 
-    fun navigateBack() {
+    fun navigateBackFromReport() {
         uiState = uiState.copy(
             navigationModel = ReportNavigationModel(
-                goBack = true,
-                fromImages = true
+                goBackFromReport = true
+            ),
+            successInfoModel = null,
+            cancelInfoModel = null,
+            confirmInfoModel = null
+        )
+    }
+
+    fun navigateBackFromImages() {
+        uiState = uiState.copy(
+            navigationModel = ReportNavigationModel(
+                goBackFromImages = true
             ),
             successInfoModel = null,
             cancelInfoModel = null,

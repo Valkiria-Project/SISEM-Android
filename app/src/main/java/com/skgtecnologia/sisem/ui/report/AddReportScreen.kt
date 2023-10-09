@@ -66,7 +66,7 @@ fun AddReportScreen(
         addReportUiState.screenModel?.header?.let {
             HeaderSection(headerUiModel = it) { uiAction ->
                 if (uiAction is HeaderUiAction.GoBack) {
-                    viewModel.navigateBack()
+                    viewModel.navigateBackFromReport()
                 }
             }
         }
@@ -153,7 +153,7 @@ private fun handleFooterAction(
             AddReportIdentifier.SEND_REPORT_ENTRY_SEND_BUTTON.name -> viewModel.saveReport()
 
             AddReportIdentifier.ADD_REPORT_CANCEL_BANNER.name -> viewModel.consumeNavigationEvent()
-            AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name -> viewModel.navigateBack()
+            AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name -> viewModel.navigateBackFromReport()
         }
     }
 }

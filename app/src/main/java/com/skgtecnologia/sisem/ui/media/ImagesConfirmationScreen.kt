@@ -90,7 +90,7 @@ fun ImagesConfirmationScreen(
     LaunchedEffect(uiState.selectedImageUris) {
         launch {
             if (uiState.selectedImageUris.isEmpty()) {
-                viewModel.navigateBack()
+                viewModel.navigateBackFromImages()
             }
         }
     }
@@ -106,7 +106,7 @@ fun ImagesConfirmationScreen(
             )
         ) { uiAction ->
             if (uiAction is HeaderUiAction.GoBack) {
-                viewModel.navigateBack()
+                viewModel.navigateBackFromImages()
             }
         }
 
