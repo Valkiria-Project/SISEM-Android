@@ -59,6 +59,15 @@ class AuthRepositoryImpl @Inject constructor(
         authRemoteDataSource.logout(username)
             .onSuccess {
                 authCacheDataSource.deleteAccessTokenByUsername(username = username)
+                authCacheDataSource.observeAccessToken().first()?.let { accessToken ->
+                    authCacheDataSource.storeAccessToken(
+                        accessToken.copy(
+                            turn = accessToken.turn?.copy(
+                                isComplete = false
+                            )
+                        )
+                    )
+                }
             }.getOrThrow()
 
     override suspend fun deleteAccessToken() = authCacheDataSource.deleteAccessToken()
