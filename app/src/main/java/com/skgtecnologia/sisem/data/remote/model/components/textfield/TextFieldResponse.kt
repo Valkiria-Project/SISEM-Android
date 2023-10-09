@@ -36,7 +36,7 @@ data class TextFieldResponse(
         keyboardOptions = keyboardOptions ?: error("TextField keyboardOptions cannot be null"),
         textStyle = textStyle ?: error("TextField textStyle cannot be null"),
         style = style ?: error("TextField style cannot be null"),
-        charLimit = charLimit ?: error("TextField charLimit cannot be null"),
+        charLimit = charLimit ?: 600,
         validations = validations?.map { it.mapToUi() }
             ?: error("TextField validations cannot be null"),
         arrangement = arrangement ?: Arrangement.Center,

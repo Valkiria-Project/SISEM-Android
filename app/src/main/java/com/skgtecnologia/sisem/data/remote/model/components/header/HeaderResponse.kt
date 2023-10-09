@@ -24,7 +24,7 @@ data class HeaderResponse(
     override val type: BodyRowType = BodyRowType.HEADER
 
     override fun mapToUi(): HeaderUiModel = HeaderUiModel(
-        identifier = identifier ?: error("Header identifier cannot be null"),
+        identifier = identifier ?: title?.text ?: error("Header identifier cannot be null"),
         title = title?.mapToUI() ?: error("Header title cannot be null"),
         subtitle = subtitle?.mapToUI(),
         leftIcon = leftIcon,
