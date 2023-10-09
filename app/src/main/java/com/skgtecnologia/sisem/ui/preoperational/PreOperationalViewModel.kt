@@ -227,7 +227,7 @@ class PreOperationalViewModel @Inject constructor(
         )
     }
 
-    fun consumeBannerEvent() {
+    fun consumeInfoEvent() {
         uiState = uiState.copy(
             infoEvent = null
         )

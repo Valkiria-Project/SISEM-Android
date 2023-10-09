@@ -125,6 +125,7 @@
     <string name="findings_left_icon">ic_back</string>
     <string name="findings_input_label">Descripción</string>
     <string name="findings_add_files_label">Adjuntar archivos</string>
+    <string name="findings_selected_files_label">Imágenes seleccionadas: %1$s</string>
     <string name="findings_take_picture_label">Cámara</string>
     <string name="findings_select_pictures">Imagen</string>
 

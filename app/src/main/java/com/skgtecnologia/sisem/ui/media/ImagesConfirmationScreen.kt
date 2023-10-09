@@ -36,14 +36,15 @@ import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.bricks.button.ButtonView
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
+import com.valkiria.uicomponents.bricks.button.ButtonView
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.button.ButtonSize
 import com.valkiria.uicomponents.components.button.ButtonStyle
-import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.button.OnClick
+import com.valkiria.uicomponents.components.label.TextStyle
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.random.Random
 
@@ -66,18 +67,30 @@ fun ImagesConfirmationScreen(
         viewModel.uiState.selectedImageUris.size
     }
 
-    LaunchedEffect(uiState, pagerState) {
+    LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.currentPage }.collect { page ->
             Timber.d("Page change", "Page changed to $page")
             viewModel.currentImage = page
         }
+    }
 
-        with(uiState) {
-            when {
-                navigationModel != null && successInfoModel == null && confirmInfoModel == null -> {
-                    viewModel.handleNavigation()
+    LaunchedEffect(uiState) {
+        launch {
+            with(uiState) {
+                if (navigationModel != null && successInfoModel == null &&
+                    confirmInfoModel == null
+                ) {
                     onNavigation(uiState.navigationModel)
+                    viewModel.consumeNavigationEvent()
                 }
+            }
+        }
+    }
+
+    LaunchedEffect(uiState.selectedImageUris) {
+        launch {
+            if (uiState.selectedImageUris.isEmpty()) {
+                viewModel.navigateBackFromImages()
             }
         }
     }
@@ -93,7 +106,7 @@ fun ImagesConfirmationScreen(
             )
         ) { uiAction ->
             if (uiAction is HeaderUiAction.GoBack) {
-                viewModel.navigateBack()
+                viewModel.navigateBackFromImages()
             }
         }
 
@@ -156,7 +169,7 @@ fun ImagesConfirmationScreen(
     }
 
     OnBannerHandler(uiState.errorModel) {
-        viewModel.handleShownError()
+        viewModel.consumeShownError()
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)
@@ -171,7 +184,7 @@ private fun handleAction(
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
             ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_CANCEL_BANNER.name ->
-                viewModel.handleNavigation()
+                viewModel.consumeNavigationEvent()
 
             ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name -> {
                 val images = viewModel.uiState.selectedImageUris.map { uri ->
@@ -184,7 +197,7 @@ private fun handleAction(
                     viewModel.saveFindingWithImages(images)
                 }
 
-                viewModel.handleShownConfirm()
+                viewModel.consumeShownConfirm()
             }
         }
     }

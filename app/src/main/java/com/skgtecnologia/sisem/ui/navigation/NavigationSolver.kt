@@ -101,7 +101,7 @@ private fun reportToNextStep(
     model: ReportNavigationModel
 ) {
     when {
-        model.goBack -> with(navController) {
+        model.goBackFromReport -> with(navController) {
             popBackStack()
 
             currentBackStackEntry
@@ -109,6 +109,7 @@ private fun reportToNextStep(
                 ?.set(REVERT_FINDING, true)
         }
 
+        model.goBackFromImages -> navController.popBackStack()
         model.photoTaken -> navController.popBackStack()
         model.showCamera -> navController.navigate(ReportNavigationRoute.CameraScreen.route)
         model.closeFinding && model.imagesSize > 0 -> navController.navigate(

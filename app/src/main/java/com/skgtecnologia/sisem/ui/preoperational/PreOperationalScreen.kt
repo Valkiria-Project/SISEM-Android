@@ -60,7 +60,7 @@ fun PreOperationalScreen(
 
     OnBannerHandler(uiModel = uiState.infoEvent) { uiAction ->
         handleFooterAction(uiAction, viewModel)
-        viewModel.consumeBannerEvent()
+        viewModel.consumeInfoEvent()
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)
