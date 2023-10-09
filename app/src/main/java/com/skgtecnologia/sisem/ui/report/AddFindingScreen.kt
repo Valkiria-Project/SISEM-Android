@@ -167,7 +167,8 @@ private fun handleFooterAction(
             AddFindingIdentifier.ADD_FINDING_CANCEL_BANNER.name ->
                 viewModel.consumeNavigationEvent()
 
-            AddFindingIdentifier.ADD_FINDING_CONTINUE_BANNER.name -> viewModel.navigateBackFromReport()
+            AddFindingIdentifier.ADD_FINDING_CONTINUE_BANNER.name ->
+                viewModel.navigateBackFromReport()
         }
     }
 }

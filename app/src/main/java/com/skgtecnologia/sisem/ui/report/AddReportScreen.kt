@@ -153,7 +153,8 @@ private fun handleFooterAction(
             AddReportIdentifier.SEND_REPORT_ENTRY_SEND_BUTTON.name -> viewModel.saveReport()
 
             AddReportIdentifier.ADD_REPORT_CANCEL_BANNER.name -> viewModel.consumeNavigationEvent()
-            AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name -> viewModel.navigateBackFromReport()
+            AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name ->
+                viewModel.navigateBackFromReport()
         }
     }
 }
