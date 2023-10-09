@@ -11,6 +11,7 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 
+@Suppress("MagicNumber")
 @JsonClass(generateAdapter = true)
 data class TextFieldResponse(
     @Json(name = "identifier") val identifier: String?,
