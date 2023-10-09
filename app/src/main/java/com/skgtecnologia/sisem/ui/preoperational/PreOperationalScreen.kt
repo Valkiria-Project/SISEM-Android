@@ -13,8 +13,9 @@ import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.banner.OnBannerHandler
-import com.valkiria.uicomponents.components.loader.OnLoadingHandler
+import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
+import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
+import com.valkiria.uicomponents.components.textfield.InputUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -28,22 +29,22 @@ fun PreOperationalScreen(
     val viewModel = hiltViewModel<PreOperationalViewModel>()
     val uiState = viewModel.uiState
 
-    LaunchedEffect(uiState, revertFinding) {
-        Timber.d("PreOperationalScreen: LaunchedEffect pass")
+    LaunchedEffect(uiState.navigationModel) {
+        Timber.d("PreOperationalScreen: LaunchedEffect uiState pass")
         launch {
-            when {
-                uiState.navigationModel?.isNewFinding == true -> {
-                    viewModel.handleShownFindingForm()
+            with(uiState.navigationModel) {
+                if (this?.isNewFindingEvent == true || this?.isTurnCompleteEvent != null) {
                     onNavigation(uiState.navigationModel)
+                    viewModel.consumeNavigationEvent()
                 }
-
-                uiState.navigationModel?.isTurnComplete != null -> {
-                    viewModel.onPreOpHandled()
-                    onNavigation(uiState.navigationModel)
-                }
-
-                revertFinding == true -> viewModel.revertFinding()
             }
+        }
+    }
+
+    LaunchedEffect(revertFinding) {
+        Timber.d("PreOperationalScreen: LaunchedEffect revertFinding pass")
+        launch {
+            if (revertFinding == true) viewModel.revertFinding()
         }
     }
 
@@ -57,9 +58,9 @@ fun PreOperationalScreen(
         handleBodyAction(uiAction, viewModel)
     }
 
-    OnBannerHandler(uiModel = uiState.infoModel) { uiAction ->
-        viewModel.handleShownError()
+    OnBannerHandler(uiModel = uiState.infoEvent) { uiAction ->
         handleFooterAction(uiAction, viewModel)
+        viewModel.consumeBannerEvent()
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)
@@ -70,10 +71,7 @@ private fun handleBodyAction(
     viewModel: PreOperationalViewModel
 ) {
     when (uiAction) {
-        is GenericUiAction.ButtonAction -> viewModel.validatePreOperational()
-
-        is GenericUiAction.ChipOptionAction ->
-            viewModel.findings[uiAction.identifier] = uiAction.status
+        is GenericUiAction.ButtonAction -> viewModel.savePreOperational()
 
         is GenericUiAction.FindingAction -> {
             viewModel.findings[uiAction.identifier] = uiAction.status
@@ -85,8 +83,11 @@ private fun handleBodyAction(
         }
 
         is GenericUiAction.InputAction -> {
-            viewModel.fieldsValues[uiAction.identifier] = uiAction.updatedValue
-            viewModel.fieldsValidated[uiAction.identifier] = uiAction.fieldValidated
+            viewModel.fieldsValues[uiAction.identifier] = InputUiModel(
+                uiAction.identifier,
+                uiAction.updatedValue,
+                uiAction.fieldValidated
+            )
         }
 
         is GenericUiAction.InventoryAction -> {

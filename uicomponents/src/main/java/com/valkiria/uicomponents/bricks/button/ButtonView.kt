@@ -2,15 +2,13 @@ package com.valkiria.uicomponents.bricks.button
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.painterResource
-import com.valkiria.uicomponents.model.props.ButtonSize
-import com.valkiria.uicomponents.model.props.mapToColors
-import com.valkiria.uicomponents.model.props.mapToTextColor
-import com.valkiria.uicomponents.model.props.toTextStyle
-import com.valkiria.uicomponents.model.ui.button.ButtonUiModel
+import com.valkiria.uicomponents.components.button.ButtonSize
+import com.valkiria.uicomponents.components.button.mapToColors
+import com.valkiria.uicomponents.components.button.mapToTextColor
+import com.valkiria.uicomponents.components.label.toTextStyle
+import com.valkiria.uicomponents.components.button.ButtonUiModel
 
 @Suppress("UnusedPrivateMember")
 @Composable
@@ -27,20 +25,10 @@ fun ButtonView(
             uiModel.modifier
         }
     ) {
-        uiModel.iconResId?.let { iconResId ->
-            Icon(
-                painter = painterResource(id = iconResId),
-                contentDescription = null,
-                tint = uiModel.style.mapToTextColor()
-            )
-        }
-
-        uiModel.label?.let { text ->
-            Text(
-                text = text,
-                color = uiModel.style.mapToTextColor(uiModel.overrideColor),
-                style = uiModel.textStyle.toTextStyle()
-            )
-        }
+        Text(
+            text = uiModel.label,
+            color = uiModel.style.mapToTextColor(uiModel.overrideColor),
+            style = uiModel.textStyle.toTextStyle()
+        )
     }
 }

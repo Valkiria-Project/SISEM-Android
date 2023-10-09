@@ -4,37 +4,36 @@ import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.data.remote.adapters.ArrangementAdapter
 import com.skgtecnologia.sisem.data.remote.adapters.KeyboardOptionsAdapter
 import com.skgtecnologia.sisem.data.remote.adapters.ModifierAdapter
-import com.skgtecnologia.sisem.data.remote.model.body.BodyRowResponse
-import com.skgtecnologia.sisem.data.remote.model.body.ButtonResponse
-import com.skgtecnologia.sisem.data.remote.model.body.ChipOptionsResponse
-import com.skgtecnologia.sisem.data.remote.model.body.ChipResponse
-import com.skgtecnologia.sisem.data.remote.model.body.ChipSelectionResponse
-import com.skgtecnologia.sisem.data.remote.model.body.DetailedInfoListResponse
-import com.skgtecnologia.sisem.data.remote.model.body.DropDownResponse
-import com.skgtecnologia.sisem.data.remote.model.body.FiltersResponse
-import com.skgtecnologia.sisem.data.remote.model.body.FindingResponse
-import com.skgtecnologia.sisem.data.remote.model.body.FingerprintResponse
-import com.skgtecnologia.sisem.data.remote.model.body.HeaderResponse
-import com.skgtecnologia.sisem.data.remote.model.body.InfoCardResponse
-import com.skgtecnologia.sisem.data.remote.model.body.InventoryCheckResponse
-import com.skgtecnologia.sisem.data.remote.model.body.LabelResponse
-import com.skgtecnologia.sisem.data.remote.model.body.PasswordTextFieldResponse
-import com.skgtecnologia.sisem.data.remote.model.body.RichLabelResponse
-import com.skgtecnologia.sisem.data.remote.model.body.SegmentedSwitchResponse
-import com.skgtecnologia.sisem.data.remote.model.body.SliderResponse
-import com.skgtecnologia.sisem.data.remote.model.body.TermsAndConditionsResponse
-import com.skgtecnologia.sisem.data.remote.model.body.TextFieldResponse
-import com.skgtecnologia.sisem.domain.model.body.BodyRowType
+import com.skgtecnologia.sisem.data.remote.model.components.BodyRowResponse
+import com.skgtecnologia.sisem.data.remote.model.components.button.ButtonResponse
+import com.skgtecnologia.sisem.data.remote.model.components.card.InfoCardResponse
+import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipOptionsResponse
+import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipResponse
+import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipSelectionResponse
+import com.skgtecnologia.sisem.data.remote.model.components.chip.FiltersResponse
+import com.skgtecnologia.sisem.data.remote.model.components.detailedinfolist.DetailedInfoListResponse
+import com.skgtecnologia.sisem.data.remote.model.components.finding.FindingResponse
+import com.skgtecnologia.sisem.data.remote.model.components.fingerprint.FingerprintResponse
+import com.skgtecnologia.sisem.data.remote.model.components.header.HeaderResponse
+import com.skgtecnologia.sisem.data.remote.model.components.inventorycheck.InventoryCheckResponse
+import com.skgtecnologia.sisem.data.remote.model.components.label.LabelResponse
+import com.skgtecnologia.sisem.data.remote.model.components.richlabel.RichLabelResponse
+import com.skgtecnologia.sisem.data.remote.model.components.segmentedswitch.SegmentedSwitchResponse
+import com.skgtecnologia.sisem.data.remote.model.components.slider.SliderResponse
+import com.skgtecnologia.sisem.data.remote.model.components.termsandconditions.TermsAndConditionsResponse
+import com.skgtecnologia.sisem.data.remote.model.components.textfield.PasswordTextFieldResponse
+import com.skgtecnologia.sisem.data.remote.model.components.textfield.TextFieldResponse
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.EnumJsonAdapter
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.valkiria.uicomponents.model.props.ButtonSize
-import com.valkiria.uicomponents.model.props.ButtonStyle
-import com.valkiria.uicomponents.model.props.ChipStyle
-import com.valkiria.uicomponents.model.props.TextFieldStyle
-import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.button.OnClick
+import com.valkiria.uicomponents.components.BodyRowType
+import com.valkiria.uicomponents.components.button.ButtonSize
+import com.valkiria.uicomponents.components.button.ButtonStyle
+import com.valkiria.uicomponents.components.button.OnClick
+import com.valkiria.uicomponents.components.chip.ChipStyle
+import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.textfield.TextFieldStyle
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -103,9 +102,6 @@ object CoreNetworkModule {
             DetailedInfoListResponse::class.java,
             BodyRowType.DETAILED_INFO_LIST.name
         ).withSubtype(
-            DropDownResponse::class.java,
-            BodyRowType.DROP_DOWN.name
-        ).withSubtype(
             FiltersResponse::class.java,
             BodyRowType.FILTERS.name
         ).withSubtype(
@@ -130,14 +126,14 @@ object CoreNetworkModule {
             SegmentedSwitchResponse::class.java,
             BodyRowType.SEGMENTED_SWITCH.name
         ).withSubtype(
-            SliderResponse::class.java,
-            BodyRowType.SLIDER.name
-        ).withSubtype(
             PasswordTextFieldResponse::class.java,
             BodyRowType.PASSWORD_TEXT_FIELD.name
         ).withSubtype(
             RichLabelResponse::class.java,
             BodyRowType.RICH_LABEL.name
+        ).withSubtype(
+            SliderResponse::class.java,
+            BodyRowType.SLIDER.name
         ).withSubtype(
             TermsAndConditionsResponse::class.java,
             BodyRowType.TERMS_AND_CONDITIONS.name

@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.ui.report
 
-import HideKeyboard
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -16,8 +15,8 @@ import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.NewsUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.banner.OnBannerHandler
-import com.valkiria.uicomponents.components.loader.LoaderComponent
+import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
+import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 
 @Composable
 fun AddReportRoleScreen(
@@ -35,7 +34,7 @@ fun AddReportRoleScreen(
 
         uiState.screenModel?.header?.let {
             HeaderSection(
-                headerModel = it,
+                headerUiModel = it,
                 modifier = modifier.constrainAs(header) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
@@ -73,10 +72,7 @@ fun AddReportRoleScreen(
         viewModel.handleShownError()
     }
 
-    if (uiState.isLoading) {
-        HideKeyboard()
-        LoaderComponent(modifier)
-    }
+    OnLoadingHandler(uiState.isLoading, modifier)
 }
 
 private fun handleUiAction(

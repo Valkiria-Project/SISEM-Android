@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.ui.report
 import android.net.Uri
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.skgtecnologia.sisem.ui.navigation.model.ReportNavigationModel
-import com.valkiria.uicomponents.model.ui.banner.BannerUiModel
+import com.valkiria.uicomponents.bricks.banner.BannerUiModel
 
 data class ReportUiState(
     val selectedImageUris: List<Uri> = listOf(),

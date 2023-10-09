@@ -17,13 +17,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.bricks.textfield.DatePickerTextFieldView
-import com.valkiria.uicomponents.bricks.textfield.FixedDateTextFieldView
 import com.valkiria.uicomponents.bricks.textfield.FilledTextFieldView
+import com.valkiria.uicomponents.bricks.textfield.FixedDateTextFieldView
 import com.valkiria.uicomponents.bricks.textfield.OutlinedTextFieldView
-import com.valkiria.uicomponents.model.mocks.getLoginUserTextFieldUiModel
-import com.valkiria.uicomponents.model.mocks.getPreOpDriverVehicleKMTextFieldUiModel
-import com.valkiria.uicomponents.model.props.TextFieldStyle
-import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.mocks.getLoginUserTextFieldUiModel
+import com.valkiria.uicomponents.mocks.getPreOpDriverVehicleKMTextFieldUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import timber.log.Timber
@@ -32,7 +30,7 @@ import timber.log.Timber
 fun TextFieldComponent(
     uiModel: TextFieldUiModel,
     validateFields: Boolean = false,
-    onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
+    onAction: (inputUiModel: InputUiModel) -> Unit
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon.orEmpty(), DefType.DRAWABLE
@@ -59,21 +57,21 @@ fun TextFieldComponent(
                 uiModel = uiModel,
                 validateFields = validateFields
             ) { id, updatedValue, fieldValidated ->
-                onAction(id, updatedValue, fieldValidated)
+                onAction(InputUiModel(id, updatedValue, fieldValidated))
             }
 
             TextFieldStyle.FILLED -> FilledTextFieldView(
                 uiModel = uiModel,
                 validateFields = validateFields
             ) { id, updatedValue, fieldValidated ->
-                onAction(id, updatedValue, fieldValidated)
+                onAction(InputUiModel(id, updatedValue, fieldValidated))
             }
 
             TextFieldStyle.FIXED_DATE -> FixedDateTextFieldView(
                 uiModel = uiModel,
                 validateFields = validateFields
             ) { id, updatedValue, fieldValidated ->
-                onAction(id, updatedValue, fieldValidated)
+                onAction(InputUiModel(id, updatedValue, fieldValidated))
             }
 
             TextFieldStyle.OUTLINED ->
@@ -81,7 +79,7 @@ fun TextFieldComponent(
                     uiModel = uiModel,
                     validateFields = validateFields
                 ) { id, updatedValue, fieldValidated ->
-                    onAction(id, updatedValue, fieldValidated)
+                    onAction(InputUiModel(id, updatedValue, fieldValidated))
                 }
         }
     }
@@ -95,13 +93,13 @@ fun TextFieldComponentPreview() {
     ) {
         TextFieldComponent(
             uiModel = getLoginUserTextFieldUiModel()
-        ) { _, updatedValue, fieldValidated ->
-            Timber.d("Handle $updatedValue with $fieldValidated")
+        ) { inputUiModel ->
+            Timber.d("Handle ${inputUiModel.updatedValue} with ${inputUiModel.fieldValidated}")
         }
         TextFieldComponent(
             uiModel = getPreOpDriverVehicleKMTextFieldUiModel()
-        ) { _, updatedValue, fieldValidated ->
-            Timber.d("Handle $updatedValue with $fieldValidated")
+        ) { inputUiModel ->
+            Timber.d("Handle ${inputUiModel.updatedValue} with ${inputUiModel.fieldValidated}")
         }
     }
 }

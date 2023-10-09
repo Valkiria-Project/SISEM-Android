@@ -17,12 +17,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.model.mocks.getLoginChipUiModel
-import com.valkiria.uicomponents.model.props.ChipStyle
-import com.valkiria.uicomponents.model.props.toChipBorder
-import com.valkiria.uicomponents.model.props.toChipColors
-import com.valkiria.uicomponents.model.props.toTextStyle
-import com.valkiria.uicomponents.model.ui.chip.ChipUiModel
+import com.valkiria.uicomponents.mocks.getLoginChipUiModel
+import com.valkiria.uicomponents.components.label.toTextStyle
 import com.valkiria.uicomponents.utlis.DefType.DRAWABLE
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 

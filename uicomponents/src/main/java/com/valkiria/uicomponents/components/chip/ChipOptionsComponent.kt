@@ -13,11 +13,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.bricks.chip.OptionChipView
+import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
-import com.valkiria.uicomponents.model.mocks.getPreOperationalChipOptionsUiModel
-import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.ui.chip.ChipOptionsUiModel
-import com.valkiria.uicomponents.model.ui.label.LabelUiModel
+import com.valkiria.uicomponents.mocks.getPreOperationalChipOptionsUiModel
+import com.valkiria.uicomponents.components.label.TextStyle
 import timber.log.Timber
 
 @Suppress("UnusedPrivateMember")
@@ -30,11 +29,12 @@ fun ChipOptionsComponent(
         modifier = uiModel.modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Top
     ) {
-        uiModel.textStyle?.let {
+        uiModel.title?.textStyle?.let {
             LabelComponent(
                 uiModel = LabelUiModel(
-                    text = uiModel.title.orEmpty(),
-                    textStyle = uiModel.textStyle
+                    identifier = uiModel.identifier,
+                    text = uiModel.title.text,
+                    textStyle = uiModel.title.textStyle
                 )
             )
         }

@@ -18,8 +18,8 @@ import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.banner.OnBannerHandler
-import com.valkiria.uicomponents.components.loader.OnLoadingHandler
+import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
+import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -52,7 +52,7 @@ fun DeviceAuthScreen(
 
         uiState.screenModel?.header?.let {
             HeaderSection(
-                headerModel = it,
+                headerUiModel = it,
                 modifier = modifier.constrainAs(header) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)

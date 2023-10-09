@@ -13,8 +13,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import com.ireward.htmlcompose.HtmlText
-import com.valkiria.uicomponents.model.mocks.getLoginTermsAndConditionsUiModel
-import com.valkiria.uicomponents.model.ui.termsandconditions.TermsAndConditionsUiModel
+import com.valkiria.uicomponents.mocks.getLoginTermsAndConditionsUiModel
 import timber.log.Timber
 
 @Composable
@@ -30,9 +29,9 @@ fun TermsAndConditionsComponent(
         HtmlText(
             text =
             """<font color="#FFFFFF">Al ingresar aceptas nuestros</font> 
-            |<a href="${uiModel.termsAndConditionsLink}">términos y condiciones</a> 
+            |<a href="${uiModel.links.first()}">términos y condiciones</a> 
             |<font color="#FFFFFF">y nuestra</font> 
-            |<a href="${uiModel.privacyPolicyLink}">política de protección de datos personales.</a>
+            |<a href="${uiModel.links[1]}">política de protección de datos personales.</a>
             |</font>""".trimMargin(),
             style = MaterialTheme.typography.labelMedium,
             linkClicked = { link ->
