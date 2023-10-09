@@ -8,6 +8,7 @@ import kotlinx.parcelize.Parcelize
 data class StartupNavigationModel(
     val isAdmin: Boolean = false,
     val isTurnStarted: Boolean = false,
+    val isWarning: Boolean = false,
     val requiresPreOperational: Boolean = false,
     val preOperationRole: OperationRole? = null,
     val vehicleCode: String? = null

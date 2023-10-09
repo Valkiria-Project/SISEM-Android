@@ -34,6 +34,7 @@ fun AccessTokenResponse.mapToDomain(): AccessTokenModel = AccessTokenModel(
     preoperational = preoperational?.mapToDomain(),
     turn = turn?.mapToDomain(),
     isAdmin = isAdmin,
+    isWarning = warning != null,
     userId = userId,
     nameUser = nameUser,
     warning = warning?.mapToDomain(),

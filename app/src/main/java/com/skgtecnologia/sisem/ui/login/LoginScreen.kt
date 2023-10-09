@@ -44,7 +44,7 @@ fun LoginScreen(
     LaunchedEffect(uiState) {
         launch {
             when {
-                uiState.navigationModel != null -> {
+                uiState.navigationModel != null && uiState.warning == null -> {
                     viewModel.onNavigationHandled()
                     onNavigation(uiState.navigationModel)
                 }

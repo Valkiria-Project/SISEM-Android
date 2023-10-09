@@ -16,6 +16,7 @@ data class AccessTokenModel(
     val preoperational: PreOperationalModel?,
     val turn: TurnModel?,
     val warning: BannerModel? = null,
+    val isWarning: Boolean,
     val docType: String,
     val document: String
 )
