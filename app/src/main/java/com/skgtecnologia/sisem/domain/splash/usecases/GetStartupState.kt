@@ -22,6 +22,7 @@ class GetStartupState @Inject constructor(
         StartupNavigationModel(
             isAdmin = accessToken.first()?.isAdmin == true,
             isTurnStarted = accessToken.first()?.turn?.isComplete == true,
+            isWarning = accessToken.first()?.isWarning == true,
             requiresPreOperational = accessToken.first()?.preoperational?.status == true,
             preOperationRole = OperationRole.getRoleByName(accessToken.first()?.role.orEmpty()),
             vehicleCode = operationConfig?.vehicleCode

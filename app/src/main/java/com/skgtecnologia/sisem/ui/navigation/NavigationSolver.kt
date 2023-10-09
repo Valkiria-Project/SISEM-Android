@@ -20,6 +20,7 @@ fun getAppStartDestination(model: StartupNavigationModel?): String {
 }
 
 fun getAuthStartDestination(model: StartupNavigationModel?): String = when {
+    model?.isWarning == true -> AuthNavigationRoute.ChangePasswordScreen.route
     model?.isAdmin == true -> "${AuthNavigationRoute.DeviceAuthScreen.route}/$APP_STARTED"
     model?.requiresPreOperational == true -> AuthNavigationRoute.PreOperationalScreen.route
     else -> AuthNavigationRoute.AuthCardsScreen.route

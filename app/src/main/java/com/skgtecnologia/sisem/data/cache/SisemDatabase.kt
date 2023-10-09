@@ -14,7 +14,7 @@ import com.skgtecnologia.sisem.data.cache.converters.CacheConverters
         AccessTokenEntity::class,
         OperationEntity::class
     ],
-    version = 3
+    version = 4
 )
 @TypeConverters(CacheConverters::class)
 abstract class SisemDatabase : RoomDatabase() {
