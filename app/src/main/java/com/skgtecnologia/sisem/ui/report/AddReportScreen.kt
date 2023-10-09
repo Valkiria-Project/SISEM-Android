@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -34,6 +35,7 @@ import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
+import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 @Suppress("LongParameterList", "LongMethod")
@@ -48,10 +50,12 @@ fun AddReportScreen(
     val addReportUiState = addReportViewModel.uiState
 
     LaunchedEffect(uiState) {
-        when {
-            uiState.navigationModel != null && uiState.cancelInfoModel == null -> {
-                viewModel.handleNavigation()
-                onNavigation(uiState.navigationModel)
+        launch {
+            when {
+                uiState.navigationModel != null && uiState.cancelInfoModel == null -> {
+                    onNavigation(uiState.navigationModel)
+                    viewModel.consumeNavigationEvent()
+                }
             }
         }
     }
@@ -62,7 +66,7 @@ fun AddReportScreen(
         addReportUiState.screenModel?.header?.let {
             HeaderSection(headerUiModel = it) { uiAction ->
                 if (uiAction is HeaderUiAction.GoBack) {
-                    viewModel.navigateBack()
+                    viewModel.navigateBackFromReport()
                 }
             }
         }
@@ -99,6 +103,17 @@ fun AddReportScreen(
             uiModel = addFilesHint(stringResource(id = R.string.findings_add_files_label))
         )
 
+        Text(
+            text = stringResource(
+                id = R.string.findings_selected_files_label,
+                viewModel.uiState.selectedImageUris.size.toString()
+            ),
+            modifier = Modifier.padding(
+                start = 20.dp,
+                end = 20.dp,
+            )
+        )
+
         MediaActions(viewModel)
 
         Spacer(modifier = Modifier.weight(1f))
@@ -119,7 +134,7 @@ fun AddReportScreen(
     }
 
     OnBannerHandler(uiState.errorModel) {
-        viewModel.handleShownError()
+        viewModel.consumeShownError()
     }
 
     LocalFocusManager.current.clearFocus()
@@ -137,8 +152,9 @@ private fun handleFooterAction(
             AddReportIdentifier.ADD_REPORT_ENTRY_CANCEL_BUTTON.name -> viewModel.cancelReport()
             AddReportIdentifier.SEND_REPORT_ENTRY_SEND_BUTTON.name -> viewModel.saveReport()
 
-            AddReportIdentifier.ADD_REPORT_CANCEL_BANNER.name -> viewModel.handleNavigation()
-            AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name -> viewModel.navigateBack()
+            AddReportIdentifier.ADD_REPORT_CANCEL_BANNER.name -> viewModel.consumeNavigationEvent()
+            AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name ->
+                viewModel.navigateBackFromReport()
         }
     }
 }

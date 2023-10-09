@@ -79,12 +79,25 @@ class ReportViewModel @Inject constructor(
         }
     }
 
-    fun navigateBack() {
+    fun navigateBackFromReport() {
         uiState = uiState.copy(
             navigationModel = ReportNavigationModel(
-                goBack = true
+                goBackFromReport = true
             ),
-            cancelInfoModel = null
+            successInfoModel = null,
+            cancelInfoModel = null,
+            confirmInfoModel = null
+        )
+    }
+
+    fun navigateBackFromImages() {
+        uiState = uiState.copy(
+            navigationModel = ReportNavigationModel(
+                goBackFromImages = true
+            ),
+            successInfoModel = null,
+            cancelInfoModel = null,
+            confirmInfoModel = null
         )
     }
 
@@ -211,10 +224,11 @@ class ReportViewModel @Inject constructor(
     // region ImageConfirmation
     fun updateSelectedImages(selectedImages: List<Uri>) {
         val updateSelectedImages = buildList {
+
             addAll(uiState.selectedImageUris)
 
             selectedImages.forEachIndexed { index, image ->
-                if (imageLimit < uiState.selectedImageUris.size + index + 1) {
+                if (imageLimit <= (uiState.selectedImageUris.size + index)) {
                     uiState = uiState.copy(
                         errorModel = imagesLimitErrorBanner(imageLimit).mapToUi()
                     )
@@ -255,11 +269,9 @@ class ReportViewModel @Inject constructor(
 
     fun onPhotoTaken(savedUri: Uri) {
         val updatedSelectedImages = buildList {
-            uiState.selectedImageUris.forEach {
-                add(it)
-            }
+            addAll(uiState.selectedImageUris)
 
-            if (imageLimit < uiState.selectedImageUris.size + 1) {
+            if (imageLimit < uiState.selectedImageUris.size) {
                 uiState = uiState.copy(
                     errorModel = imagesLimitErrorBanner(imageLimit).mapToUi()
                 )
@@ -276,7 +288,7 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    fun handleNavigation() {
+    fun consumeNavigationEvent() {
         uiState = uiState.copy(
             validateFields = false,
             cancelInfoModel = null,
@@ -285,13 +297,13 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    fun handleShownError() {
+    fun consumeShownError() {
         uiState = uiState.copy(
             errorModel = null
         )
     }
 
-    fun handleShownConfirm() {
+    fun consumeShownConfirm() {
         uiState = uiState.copy(
             confirmInfoModel = null
         )

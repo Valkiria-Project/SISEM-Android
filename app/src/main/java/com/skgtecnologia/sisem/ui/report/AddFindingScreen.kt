@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -32,6 +33,7 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
+import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 const val DESCRIPTION_INPUT_MIN_LINES = 3
@@ -46,10 +48,12 @@ fun AddFindingScreen(
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState) {
-        when {
-            uiState.navigationModel != null && uiState.cancelInfoModel == null -> {
-                viewModel.handleNavigation()
-                onNavigation(uiState.navigationModel)
+        launch {
+            when {
+                uiState.navigationModel != null && uiState.cancelInfoModel == null -> {
+                    onNavigation(uiState.navigationModel)
+                    viewModel.consumeNavigationEvent()
+                }
             }
         }
     }
@@ -65,7 +69,7 @@ fun AddFindingScreen(
             )
         ) { uiAction ->
             if (uiAction is HeaderUiAction.GoBack) {
-                viewModel.navigateBack()
+                viewModel.navigateBackFromReport()
             }
         }
 
@@ -79,6 +83,17 @@ fun AddFindingScreen(
 
         LabelComponent(
             uiModel = addFilesHint(stringResource(id = R.string.findings_add_files_label))
+        )
+
+        Text(
+            text = stringResource(
+                id = R.string.findings_selected_files_label,
+                viewModel.uiState.selectedImageUris.size.toString()
+            ),
+            modifier = Modifier.padding(
+                start = 20.dp,
+                end = 20.dp,
+            )
         )
 
         MediaActions(viewModel)
@@ -101,7 +116,7 @@ fun AddFindingScreen(
     }
 
     OnBannerHandler(uiState.errorModel) {
-        viewModel.handleShownError()
+        viewModel.consumeShownError()
     }
 
     LocalFocusManager.current.clearFocus()
@@ -149,8 +164,11 @@ private fun handleFooterAction(
             AddFindingIdentifier.ADD_FINDING_CANCEL_BUTTON.name -> viewModel.cancelFinding()
             AddFindingIdentifier.ADD_FINDING_SAVE_BUTTON.name -> viewModel.saveFinding()
 
-            AddFindingIdentifier.ADD_FINDING_CANCEL_BANNER.name -> viewModel.handleNavigation()
-            AddFindingIdentifier.ADD_FINDING_CONTINUE_BANNER.name -> viewModel.navigateBack()
+            AddFindingIdentifier.ADD_FINDING_CANCEL_BANNER.name ->
+                viewModel.consumeNavigationEvent()
+
+            AddFindingIdentifier.ADD_FINDING_CONTINUE_BANNER.name ->
+                viewModel.navigateBackFromReport()
         }
     }
 }
