@@ -29,6 +29,15 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
         val status: Boolean
     ) : GenericUiAction(identifier)
 
+    data class HumanBodyAction(
+        override val identifier: String,
+        val values: Map<String, List<String>>
+    ) : GenericUiAction(identifier)
+
+    data class InfoCardAction(
+        override val identifier: String
+    ) : GenericUiAction(identifier)
+
     data class InputAction(
         override val identifier: String,
         val updatedValue: String,

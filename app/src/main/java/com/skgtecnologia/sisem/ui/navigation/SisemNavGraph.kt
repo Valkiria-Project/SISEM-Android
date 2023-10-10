@@ -25,6 +25,7 @@ import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.map.MapScreen
 import com.skgtecnologia.sisem.ui.media.CameraScreen
 import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
+import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryScreen
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
@@ -174,6 +175,7 @@ private fun NavGraphBuilder.mainGraph(
             route = MainNavigationRoute.IncidentScreen.route
         ) {
             // FIXME: Finish this work
+            MedicalHistoryScreen()
         }
 
         composable(

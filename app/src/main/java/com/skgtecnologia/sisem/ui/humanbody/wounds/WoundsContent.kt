@@ -13,7 +13,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.R
-import com.skgtecnologia.sisem.domain.model.header.woundsHeader
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.components.chip.ChipOptionsComponent
 import com.valkiria.uicomponents.components.chip.ChipSelectionComponent
@@ -24,24 +23,22 @@ import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
 import com.valkiria.uicomponents.components.chip.ChipSelectionUiModel
 import com.valkiria.uicomponents.components.chip.ChipOptionUiModel
 import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
+import com.valkiria.uicomponents.components.header.HeaderUiModel
 
 @Suppress("LongMethod")
 @Composable
 fun WoundsContent(
+    header: HeaderUiModel,
+    wounds: List<String>,
+    burningLevel: List<String>,
     onAction: (wounds: List<String>) -> Unit
 ) {
     val viewModel = hiltViewModel<WoundsViewModel>()
     val uiState = viewModel.uiState
 
-    viewModel.setBurnList(stringArrayResource(id = R.array.wounds_burn_grade_list).toList())
+    viewModel.setBurnList(burningLevel)
 
-    HeaderSection(
-        headerUiModel = woundsHeader(
-            titleText = stringResource(R.string.wounds_title),
-            subtitleText = stringResource(R.string.wounds_subtitle),
-            leftIcon = stringResource(R.string.wounds_left_icon)
-        )
-    )
+    HeaderSection(header)
 
     Column(
         modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
@@ -49,7 +46,7 @@ fun WoundsContent(
         ChipOptionsComponent(
             uiModel = ChipOptionsUiModel(
                 identifier = "wounds",
-                items = stringArrayResource(id = R.array.wounds_list).mapIndexed { index, text ->
+                items = wounds.mapIndexed { index, text ->
                     ChipOptionUiModel(id = index.toString(), name = text, selected = false)
                 },
                 arrangement = Arrangement.Center,
@@ -67,9 +64,7 @@ fun WoundsContent(
                         stringResource(R.string.wounds_burn_description),
                         TextStyle.HEADLINE_5
                     ),
-                    items = stringArrayResource(
-                        id = R.array.wounds_burn_grade_list
-                    ).mapIndexed { index, text ->
+                    items = burningLevel.mapIndexed { index, text ->
                         ChipSelectionItemUiModel(id = index.toString(), name = text)
                     },
                     arrangement = Arrangement.Center,

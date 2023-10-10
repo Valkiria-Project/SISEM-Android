@@ -23,6 +23,7 @@ import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.login.model.mapToLoginModel
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
+import com.skgtecnologia.sisem.ui.humanbody.HumanBodyComponent
 import com.valkiria.uicomponents.action.AddReportUiAction
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.ConfirmPasswordInput
@@ -40,6 +41,10 @@ import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.button.ButtonUiModel
+import com.valkiria.uicomponents.components.button.ImageButtonComponent
+import com.valkiria.uicomponents.components.button.ImageButtonSectionComponent
+import com.valkiria.uicomponents.components.button.ImageButtonSectionUiModel
+import com.valkiria.uicomponents.components.button.ImageButtonUiModel
 import com.valkiria.uicomponents.components.card.InfoCardComponent
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
 import com.valkiria.uicomponents.components.chip.ChipComponent
@@ -58,6 +63,7 @@ import com.valkiria.uicomponents.components.fingerprint.FingerprintUiModel
 import com.valkiria.uicomponents.components.footer.FooterBodyUiModel
 import com.valkiria.uicomponents.components.footer.mapToSection
 import com.valkiria.uicomponents.components.header.HeaderUiModel
+import com.valkiria.uicomponents.components.humanbody.HumanBodyUiModel
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckComponent
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
@@ -146,6 +152,25 @@ private fun LazyListScope.handleBodyRows(
                             status = isSelection
                         )
                     )
+                }
+            }
+
+            is HumanBodyUiModel -> item(key = model.identifier) {
+                HumanBodyComponent(model) { identifier, values ->
+                    onAction(GenericUiAction.HumanBodyAction(identifier, values))
+                }
+            }
+
+            is ImageButtonUiModel -> item(key = model.identifier) {
+                ImageButtonComponent(model) { identifier ->
+                    onAction(GenericUiAction.ButtonAction(identifier = identifier))
+                }
+            }
+
+            is ImageButtonSectionUiModel -> item(key = model.identifier) {
+                ImageButtonSectionComponent(model) { identifier ->
+                    onAction(GenericUiAction.ButtonAction(identifier = identifier))
+                    // TODO: "Do we use this action?"
                 }
             }
 
@@ -317,7 +342,7 @@ private fun HandleInfoCardRows(
         AuthCardsIdentifier.CREW_MEMBER_CARD_DOCTOR.name -> {
             InfoCardComponent(
                 uiModel = model,
-                onAction = { onAction(AuthCardsUiAction.AuthCard) },
+                onAction = { onAction(GenericUiAction.InfoCardAction(it)) },
                 onNewsAction = { onAction(AuthCardsUiAction.AuthCardNews(it)) },
                 onFindingsAction = { onAction(AuthCardsUiAction.AuthCardFindings(it)) }
             )
@@ -325,7 +350,7 @@ private fun HandleInfoCardRows(
 
         else -> InfoCardComponent(
             uiModel = model,
-            onAction = { onAction(AuthCardsUiAction.AuthCard) }
+            onAction = { onAction(GenericUiAction.InfoCardAction(it)) }
         )
     }
 }

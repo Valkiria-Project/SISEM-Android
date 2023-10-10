@@ -72,7 +72,7 @@ fun DatePickerTextFieldView(
                     showDialog = it.isFocused
                 }
                 .widthIn(max = 320.dp),
-            label = { Text("Check–in date") },
+            label = { uiModel.placeholder?.let { Text(it) } },
             trailingIcon = {
                 Icon(Icons.Filled.Event, contentDescription = "Select date")
             }

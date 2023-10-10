@@ -20,12 +20,14 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.ui.humanbody.area.FrontArea
 import com.skgtecnologia.sisem.ui.humanbody.wounds.WoundsContent
 import com.valkiria.uicomponents.bricks.bottomsheet.BottomSheetView
+import com.valkiria.uicomponents.components.humanbody.HumanBodyUiModel
 import kotlinx.coroutines.launch
 
 @Suppress("LongMethod")
 @androidx.compose.material3.ExperimentalMaterial3Api
 @Composable
 fun HumanBodyFrontComponent(
+    uiModel: HumanBodyUiModel,
     viewModel: HumanBodyViewModel,
     width: Int,
     height: Int,
@@ -71,7 +73,11 @@ fun HumanBodyFrontComponent(
         if (uiState.onSelectWound) {
             BottomSheetView(
                 content = {
-                    WoundsContent { wounds ->
+                    WoundsContent(
+                        header = uiModel.header,
+                        wounds = uiModel.wounds,
+                        burningLevel = uiModel.burningLevel
+                    ) { wounds ->
                         viewModel.saveFrontList(selectedFrontArea)
                         onAction("identifier", mapOf(selectedFrontArea.name to wounds))
                         selectedFrontArea = FrontArea.NONE

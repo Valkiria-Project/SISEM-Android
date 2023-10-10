@@ -44,7 +44,7 @@ private const val MAX_FINDINGS = 3
 @Composable
 fun InfoCardComponent(
     uiModel: InfoCardUiModel,
-    onAction: () -> Unit,
+    onAction: (identifier: String) -> Unit,
     onNewsAction: (reportDetail: ReportsDetailUiModel) -> Unit = {},
     onFindingsAction: (chipSection: ChipSectionUiModel) -> Unit = {}
 ) {
@@ -71,7 +71,7 @@ fun InfoCardComponent(
     ) {
         Box(
             modifier = Modifier
-                .clickable { onAction() }
+                .clickable { onAction(uiModel.identifier) }
                 .background(brush = brush)
                 .fillMaxWidth()
         ) {

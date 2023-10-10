@@ -3,4 +3,6 @@
 
     <string name="network_error_message">Please check your network connection</string>
     <string name="network_error_cta">Try again</string>
+
+    <string name="human_body_label">Rotar</string>
 </resources>

@@ -5,6 +5,7 @@ import com.skgtecnologia.sisem.data.remote.adapters.ArrangementAdapter
 import com.skgtecnologia.sisem.data.remote.adapters.KeyboardOptionsAdapter
 import com.skgtecnologia.sisem.data.remote.adapters.ModifierAdapter
 import com.skgtecnologia.sisem.data.remote.model.components.BodyRowResponse
+import com.skgtecnologia.sisem.data.remote.model.components.body.HumanBodyResponse
 import com.skgtecnologia.sisem.data.remote.model.components.button.ButtonResponse
 import com.skgtecnologia.sisem.data.remote.model.components.card.InfoCardResponse
 import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipOptionsResponse
@@ -15,11 +16,15 @@ import com.skgtecnologia.sisem.data.remote.model.components.detailedinfolist.Det
 import com.skgtecnologia.sisem.data.remote.model.components.finding.FindingResponse
 import com.skgtecnologia.sisem.data.remote.model.components.fingerprint.FingerprintResponse
 import com.skgtecnologia.sisem.data.remote.model.components.header.HeaderResponse
+import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonResponse
+import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonSectionResponse
+import com.skgtecnologia.sisem.data.remote.model.components.dropdown.DropDownResponse
 import com.skgtecnologia.sisem.data.remote.model.components.inventorycheck.InventoryCheckResponse
 import com.skgtecnologia.sisem.data.remote.model.components.label.LabelResponse
 import com.skgtecnologia.sisem.data.remote.model.components.richlabel.RichLabelResponse
 import com.skgtecnologia.sisem.data.remote.model.components.segmentedswitch.SegmentedSwitchResponse
 import com.skgtecnologia.sisem.data.remote.model.components.slider.SliderResponse
+import com.skgtecnologia.sisem.data.remote.model.components.stepper.StepperResponse
 import com.skgtecnologia.sisem.data.remote.model.components.termsandconditions.TermsAndConditionsResponse
 import com.skgtecnologia.sisem.data.remote.model.components.textfield.PasswordTextFieldResponse
 import com.skgtecnologia.sisem.data.remote.model.components.textfield.TextFieldResponse
@@ -102,6 +107,9 @@ object CoreNetworkModule {
             DetailedInfoListResponse::class.java,
             BodyRowType.DETAILED_INFO_LIST.name
         ).withSubtype(
+            DropDownResponse::class.java,
+            BodyRowType.DROP_DOWN.name
+        ).withSubtype(
             FiltersResponse::class.java,
             BodyRowType.FILTERS.name
         ).withSubtype(
@@ -113,6 +121,15 @@ object CoreNetworkModule {
         ).withSubtype(
             HeaderResponse::class.java,
             BodyRowType.HEADER.name
+        ).withSubtype(
+            HumanBodyResponse::class.java,
+            BodyRowType.HUMAN_BODY.name
+        ).withSubtype(
+            ImageButtonResponse::class.java,
+            BodyRowType.IMAGE_BUTTON.name
+        ).withSubtype(
+            ImageButtonSectionResponse::class.java,
+            BodyRowType.IMAGE_BUTTON_SECTION.name
         ).withSubtype(
             InfoCardResponse::class.java,
             BodyRowType.INFO_CARD.name
@@ -134,6 +151,9 @@ object CoreNetworkModule {
         ).withSubtype(
             SliderResponse::class.java,
             BodyRowType.SLIDER.name
+        ).withSubtype(
+            StepperResponse::class.java,
+            BodyRowType.STEPPER.name
         ).withSubtype(
             TermsAndConditionsResponse::class.java,
             BodyRowType.TERMS_AND_CONDITIONS.name

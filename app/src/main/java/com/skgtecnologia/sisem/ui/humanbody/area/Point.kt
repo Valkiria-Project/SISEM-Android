@@ -1,13 +1,18 @@
 package com.skgtecnologia.sisem.ui.humanbody.area
 
-const val BASE_WIDTH = 1440
+const val BASE_WIDTH = 1440 - ((40 * 160) / 1400)
 const val BASE_HEIGHT = 2900
+const val REAL_BASE_HEIGHT = 3120
 
 data class Point(val x: Float, val y: Float)
 
 fun Point.toProportionalPoint(width: Int, height: Int): Point = Point(
     x = this.x * width / BASE_WIDTH,
-    y = this.y * height / BASE_HEIGHT
+    y = if (height == BASE_HEIGHT) {
+        this.y * height / BASE_HEIGHT
+    } else {
+        this.y * height / REAL_BASE_HEIGHT
+    }
 )
 
 @Suppress("NestedBlockDepth")

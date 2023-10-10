@@ -21,11 +21,13 @@ import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.AuthCardsUiAction
+import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.bottomsheet.BottomSheetView
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Suppress("LongMethod")
 @androidx.compose.material3.ExperimentalMaterial3Api
@@ -144,15 +146,15 @@ private fun handleAction(
     viewModel: AuthCardsViewModel,
     onNavigation: (route: AuthNavigationRoute) -> Unit
 ) {
-    (uiAction as? AuthCardsUiAction)?.let {
-        when (uiAction) {
-            AuthCardsUiAction.AuthCard -> onNavigation(AuthNavigationRoute.LoginScreen)
+    when (uiAction) {
+        is GenericUiAction.InfoCardAction -> onNavigation(AuthNavigationRoute.LoginScreen)
 
-            is AuthCardsUiAction.AuthCardNews ->
-                viewModel.showReportBottomSheet(uiAction.reportUiDetail)
+        is AuthCardsUiAction.AuthCardNews ->
+            viewModel.showReportBottomSheet(uiAction.reportUiDetail)
 
-            is AuthCardsUiAction.AuthCardFindings ->
-                viewModel.showFindingsBottomSheet(uiAction.chipSectionUiModel)
-        }
+        is AuthCardsUiAction.AuthCardFindings ->
+            viewModel.showFindingsBottomSheet(uiAction.chipSectionUiModel)
+
+        else -> Timber.d("no-op")
     }
 }
