@@ -26,14 +26,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
+import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel
+import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.bricks.chip.SuggestionChipView
 import com.valkiria.uicomponents.components.label.toTextStyle
-import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
-import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 
@@ -80,7 +81,7 @@ fun InfoCardComponent(
                 Row(verticalAlignment = Alignment.Bottom) {
                     iconResourceId?.let {
                         Icon(
-                            painter = painterResource(id = iconResourceId),
+                            imageVector = ImageVector.vectorResource(id = iconResourceId),
                             contentDescription = "",
                             modifier = Modifier
                                 .size(40.dp)
@@ -127,7 +128,7 @@ fun InfoCardComponent(
                             modifier = Modifier
                                 .wrapContentSize()
                                 .padding(end = 8.dp),
-                            painter = painterResource(id = R.drawable.ic_calendar),
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_calendar),
                             contentDescription = "",
                             tint = MaterialTheme.colorScheme.primary,
                         )
@@ -142,7 +143,7 @@ fun InfoCardComponent(
                             modifier = Modifier
                                 .wrapContentSize()
                                 .padding(end = 8.dp),
-                            painter = painterResource(id = R.drawable.ic_clock),
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_clock),
                             contentDescription = "",
                             tint = MaterialTheme.colorScheme.primary,
                         )
@@ -221,7 +222,7 @@ fun BadgedBoxView(
         Icon(
             modifier = Modifier
                 .fillMaxSize(),
-            painter = painterResource(id = R.drawable.ic_news),
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_news),
             contentDescription = "",
             tint = MaterialTheme.colorScheme.primary,
         )

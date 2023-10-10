@@ -21,12 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.bricks.banner.report.ReportDetailUiModel
 import com.skgtecnologia.sisem.ui.commons.extensions.decodeAsBase64Bitmap
 import com.valkiria.uicomponents.R
+import com.valkiria.uicomponents.bricks.banner.report.ReportDetailUiModel
 import com.valkiria.uicomponents.components.label.toTextStyle
 
 @androidx.compose.foundation.ExperimentalFoundationApi
@@ -90,7 +91,7 @@ private fun ReportTitle(model: ReportDetailUiModel) {
 
         Icon(
             modifier = Modifier.padding(start = 16.dp),
-            painter = painterResource(id = R.drawable.ic_clock),
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_clock),
             contentDescription = "Clock icon"
         )
 

@@ -21,8 +21,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
@@ -76,7 +77,7 @@ internal fun BannerView(
                 ) {
                     iconResourceId?.let {
                         Icon(
-                            painter = painterResource(id = it),
+                            imageVector = ImageVector.vectorResource(id = it),
                             contentDescription = null,
                             modifier = Modifier
                                 .padding(top = 20.dp, end = 16.dp)
@@ -100,7 +101,7 @@ internal fun BannerView(
                                 .size(42.dp),
                         ) {
                             Icon(
-                                painter = painterResource(id = R.drawable.ic_close),
+                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_close),
                                 contentDescription = null,
                                 tint = Color.White
                             )
