@@ -15,8 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -44,7 +45,7 @@ fun MenuHeaderComponent(
     Column(modifier = modifier) {
         Row {
             Icon(
-                painter = painterResource(id = R.drawable.ic_ambulance_box),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_ambulance_box),
                 contentDescription = null,
                 modifier = Modifier
                     .padding(start = 33.dp, top = 30.dp, bottom = 10.dp)

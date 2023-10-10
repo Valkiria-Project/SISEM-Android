@@ -1,15 +1,16 @@
 package com.skgtecnologia.sisem.domain.login.model
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.login.model.LoginLink.PRIVACY_POLICY
 import com.skgtecnologia.sisem.domain.login.model.LoginLink.TERMS_AND_CONDITIONS
 import com.valkiria.uicomponents.R.drawable
-import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.termsandconditions.Link
+import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsUiModel
 import java.util.Locale
 
 enum class LoginLink : Link {
@@ -24,7 +25,7 @@ enum class LoginLink : Link {
 @Composable
 fun LoginLink.toLegalContentModel() = when (this) {
     PRIVACY_POLICY -> LegalContentModel(
-        icon = painterResource(id = drawable.ic_message),
+        icon = ImageVector.vectorResource(id = drawable.ic_message),
         title = stringResource(id = R.string.privacy_policy_title),
         titleTextStyle = TextStyle.HEADLINE_1,
         subtitle = stringResource(id = R.string.privacy_policy_subtitle),
@@ -34,7 +35,7 @@ fun LoginLink.toLegalContentModel() = when (this) {
     )
 
     TERMS_AND_CONDITIONS -> LegalContentModel(
-        icon = painterResource(id = drawable.ic_message),
+        icon = ImageVector.vectorResource(id = drawable.ic_message),
         title = stringResource(id = R.string.terms_and_conditions_title),
         titleTextStyle = TextStyle.HEADLINE_1,
         subtitle = stringResource(id = R.string.terms_and_conditions_subtitle),

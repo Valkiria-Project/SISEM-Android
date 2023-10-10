@@ -13,14 +13,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.header.HeaderUiModel
-import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
+import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 
@@ -47,7 +48,7 @@ fun HeaderSection(
 
             leftIconResourceId?.let {
                 Icon(
-                    painter = painterResource(id = leftIconResourceId),
+                    imageVector = ImageVector.vectorResource(id = leftIconResourceId),
                     contentDescription = null,
                     modifier = Modifier
                         .clickable { onAction(HeaderUiAction.GoBack) }
@@ -74,7 +75,7 @@ fun HeaderSection(
 
             rightIconResourceId?.let {
                 Icon(
-                    painter = painterResource(id = rightIconResourceId),
+                    imageVector = ImageVector.vectorResource(id = rightIconResourceId),
                     contentDescription = null,
                     modifier = Modifier
                         .padding(end = 12.dp)

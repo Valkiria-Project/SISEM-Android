@@ -167,12 +167,12 @@ fun imagesLimitErrorBanner(imageLimit: Int): BannerModel = BannerModel(
 fun preOperationalConfirmationBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "Guardar cambios",
-    description = "\"Firmado electrónicamente - Unidad Funcional de APH unidad funcional, " +
+    description = "Firmado electrónicamente - Unidad Funcional de APH unidad funcional, " +
         "en razón, de la obligación contractual \"7.22 elaborar y verificar el " +
         "diligenciamiento de la bitácora de estado de los elementos equipos biomédicos y de " +
         "radiocomunicaciones y demás que hacen parte de los vehículos de emergencia está\n" +
         "deberá ser diligenciada por cada una de las tripulaciones que entregan y reciben\n" +
-        "turno en tiempo establecido",
+        "turno en tiempo establecido\"",
     footerModel = FooterUiModel(
         leftButton = ButtonUiModel(
             identifier = PreOperationalIdentifier.PREOP_CANCEL_BUTTON.name,

@@ -13,12 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.mocks.getPreOperationalDetailedInfoListUiModel
 import com.valkiria.uicomponents.components.label.toTextStyle
+import com.valkiria.uicomponents.mocks.getPreOperationalDetailedInfoListUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 
@@ -45,7 +46,7 @@ fun DetailedInfoListComponent(
 
                     iconResourceId?.let {
                         Icon(
-                            painter = painterResource(id = iconResourceId),
+                            imageVector = ImageVector.vectorResource(id = iconResourceId),
                             contentDescription = null,
                             modifier = Modifier
                                 .padding(end = 12.dp)

@@ -23,6 +23,7 @@ import com.valkiria.uicomponents.bricks.bottomsheet.BottomSheetView
 import kotlinx.coroutines.launch
 
 @Suppress("LongMethod")
+@androidx.compose.material3.ExperimentalMaterial3Api
 @Composable
 fun HumanBodyFrontComponent(
     viewModel: HumanBodyViewModel,
