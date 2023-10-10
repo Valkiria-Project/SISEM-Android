@@ -30,6 +30,7 @@ import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
 import com.skgtecnologia.sisem.ui.authcards.report.PagerIndicator
 import com.skgtecnologia.sisem.ui.commons.extensions.decodeAsBitmap
 import com.skgtecnologia.sisem.ui.commons.extensions.encodeAsBase64
+import com.skgtecnologia.sisem.ui.navigation.REPORT
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
@@ -145,7 +146,7 @@ fun ImagesConfirmationScreen(
                     modifier = Modifier
                 )
             ) {
-                if (from == "recordNews") {
+                if (from == REPORT) {
                     viewModel.confirmSendReport()
                 } else {
                     viewModel.confirmSendFinding()
@@ -191,7 +192,7 @@ private fun handleAction(
                     uri.decodeAsBitmap(contentResolver).encodeAsBase64()
                 }
 
-                if (from == "recordNews") {
+                if (from == REPORT) {
                     viewModel.sendReport(images)
                 } else {
                     viewModel.saveFindingWithImages(images)

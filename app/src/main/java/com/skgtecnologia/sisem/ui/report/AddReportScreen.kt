@@ -17,8 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.label.addFilesHint
-import com.skgtecnologia.sisem.domain.model.label.addReportDescription
-import com.skgtecnologia.sisem.domain.model.label.addReportTopic
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.ui.media.MediaActions
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
@@ -32,11 +30,12 @@ import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
-import com.valkiria.uicomponents.components.textfield.TextFieldStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 import kotlinx.coroutines.launch
 import kotlin.random.Random
+
+private const val DESCRIPTION_INPUT_MIN_LINES = 3
 
 @Suppress("LongParameterList", "LongMethod")
 @Composable
@@ -71,12 +70,6 @@ fun AddReportScreen(
             }
         }
 
-        LabelComponent(
-            uiModel = addReportTopic(
-                stringResource(id = R.string.record_news_topic_label)
-            )
-        )
-
         TextFieldComponent(
             uiModel = getFindingsTopicModel(),
             validateFields = uiState.validateFields
@@ -85,14 +78,8 @@ fun AddReportScreen(
             viewModel.isValidTopic = inputUiModel.fieldValidated
         }
 
-        LabelComponent(
-            uiModel = addReportDescription(
-                stringResource(id = R.string.record_news_description_label)
-            )
-        )
-
         TextFieldComponent(
-            uiModel = getFindingsDescriptionModel(),
+            uiModel = getReportDescriptionModel(),
             validateFields = uiState.validateFields
         ) { inputUiModel ->
             viewModel.description = inputUiModel.updatedValue
@@ -163,18 +150,22 @@ private fun handleFooterAction(
 @Composable
 private fun getFindingsTopicModel() = TextFieldUiModel(
     identifier = Random(100).toString(),
+    label = stringResource(id = R.string.findings_description_label),
     keyboardOptions = KeyboardOptions.Default.copy(
         keyboardType = KeyboardType.Text
     ),
     textStyle = TextStyle.HEADLINE_5,
-    charLimit = 100,
+    charLimit = 50,
     validations = listOf(
         ValidationUiModel(
             regex = "^(?!\\s*$).+",
             message = "El campo no debe estar vacío"
+        ),
+        ValidationUiModel(
+            regex = "^(?!.*[^,.A-Za-z0-9 A-zÀ-ú\\r\\n].*).+",
+            message = "El campo no debe tener caracteres especiales"
         )
     ),
-    style = TextFieldStyle.FILLED,
     singleLine = true,
     minLines = 1,
     arrangement = Arrangement.Center,
@@ -188,20 +179,24 @@ private fun getFindingsTopicModel() = TextFieldUiModel(
 
 @Suppress("MagicNumber")
 @Composable
-private fun getFindingsDescriptionModel() = TextFieldUiModel(
+private fun getReportDescriptionModel() = TextFieldUiModel(
     identifier = Random(100).toString(),
+    label = stringResource(id = R.string.findings_description_label),
     keyboardOptions = KeyboardOptions.Default.copy(
         keyboardType = KeyboardType.Text
     ),
     textStyle = TextStyle.HEADLINE_5,
-    charLimit = 100,
+    charLimit = 600,
     validations = listOf(
         ValidationUiModel(
             regex = "^(?!\\s*$).+",
             message = "El campo no debe estar vacío"
+        ),
+        ValidationUiModel(
+            regex = "^(?!.*[^,.A-Za-z0-9 A-zÀ-ú\\r\\n].*).+",
+            message = "El campo no debe tener caracteres especiales"
         )
     ),
-    style = TextFieldStyle.FILLED,
     singleLine = false,
     minLines = DESCRIPTION_INPUT_MIN_LINES,
     arrangement = Arrangement.Center,
