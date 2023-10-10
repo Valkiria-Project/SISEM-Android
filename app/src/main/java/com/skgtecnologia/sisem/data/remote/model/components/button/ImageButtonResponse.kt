@@ -26,7 +26,7 @@ data class ImageButtonResponse(
         identifier = identifier ?: error("ImageButton identifier cannot be null"),
         title = title?.mapToUI(),
         image = image ?: error("ImageButton image cannot be null"),
-        selected = selected == true, // ?: error("ImageButton selected cannot be null"),
+        selected = selected ?: false,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

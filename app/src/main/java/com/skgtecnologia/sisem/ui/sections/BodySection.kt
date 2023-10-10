@@ -23,6 +23,7 @@ import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.login.model.mapToLoginModel
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
+import com.skgtecnologia.sisem.ui.dropdown.DropDownComponent
 import com.skgtecnologia.sisem.ui.humanbody.HumanBodyComponent
 import com.valkiria.uicomponents.action.AddReportUiAction
 import com.valkiria.uicomponents.action.AuthCardsUiAction
@@ -57,6 +58,7 @@ import com.valkiria.uicomponents.components.chip.FiltersComponent
 import com.valkiria.uicomponents.components.chip.FiltersUiModel
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListComponent
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListUiModel
+import com.valkiria.uicomponents.components.dropdown.DropDownUiModel
 import com.valkiria.uicomponents.components.finding.FindingComponent
 import com.valkiria.uicomponents.components.finding.FindingUiModel
 import com.valkiria.uicomponents.components.fingerprint.FingerprintUiModel
@@ -150,6 +152,18 @@ private fun LazyListScope.handleBodyRows(
                             identifier = id,
                             text = text,
                             status = isSelection
+                        )
+                    )
+                }
+            }
+
+            is DropDownUiModel -> item(key = model.identifier) {
+                DropDownComponent(model, validateFields) { inputUiModel ->
+                    onAction(
+                        GenericUiAction.InputAction(
+                            identifier = inputUiModel.identifier,
+                            updatedValue = inputUiModel.updatedValue,
+                            fieldValidated = inputUiModel.fieldValidated
                         )
                     )
                 }

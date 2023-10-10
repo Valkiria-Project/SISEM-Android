@@ -168,4 +168,7 @@
     <string name="wounds_burn_description">¿Que tipo de quemadura presenta el paciente?</string>
 
     <string name="wounds_save_cta">Guardar</string>
+
+    <!-- validations -->
+    <string name="validation_empty">El campo no debe estar vacío</string>
 </resources>
