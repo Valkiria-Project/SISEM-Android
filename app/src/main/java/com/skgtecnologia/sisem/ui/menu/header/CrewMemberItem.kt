@@ -12,8 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
@@ -36,7 +37,7 @@ fun CrewMemberItem(item: CrewMemberMenuItemModel, onClick: () -> Unit) {
     ) {
         iconResourceId?.let {
             Icon(
-                painter = painterResource(id = it),
+                imageVector = ImageVector.vectorResource(id = it),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary
             )
@@ -63,7 +64,7 @@ fun CrewMemberItem(item: CrewMemberMenuItemModel, onClick: () -> Unit) {
         }
 
         Icon(
-            painter = painterResource(id = R.drawable.ic_logout),
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_logout),
             contentDescription = null,
             modifier = Modifier
                 .padding(end = 20.dp)

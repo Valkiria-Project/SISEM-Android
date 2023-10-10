@@ -28,7 +28,7 @@ fun LegalContent(
     ) {
         uiModel.icon?.let {
             Icon(
-                painter = it,
+                imageVector = it,
                 contentDescription = null,
                 modifier = Modifier
                     .padding(end = 16.dp)

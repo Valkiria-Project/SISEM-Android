@@ -1,11 +1,11 @@
 package com.skgtecnologia.sisem.domain.login.model
 
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.valkiria.uicomponents.components.label.TextStyle
 
 data class LegalContentModel(
-    val icon: Painter? = null,
+    val icon: ImageVector? = null,
     val title: String,
     val titleTextStyle: TextStyle,
     val subtitle: String? = null,
