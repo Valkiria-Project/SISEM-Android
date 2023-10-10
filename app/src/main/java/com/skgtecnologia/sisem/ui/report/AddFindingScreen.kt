@@ -36,7 +36,7 @@ import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
-const val DESCRIPTION_INPUT_MIN_LINES = 3
+private const val DESCRIPTION_INPUT_MIN_LINES = 3
 
 @Suppress("LongMethod")
 @Composable
@@ -128,7 +128,7 @@ fun AddFindingScreen(
 @Composable
 private fun getFindingsDescriptionModel() = TextFieldUiModel(
     identifier = Random(100).toString(),
-    label = stringResource(id = R.string.findings_input_label),
+    label = stringResource(id = R.string.findings_description_label),
     keyboardOptions = KeyboardOptions.Default.copy(
         keyboardType = KeyboardType.Text
     ),
@@ -137,7 +137,7 @@ private fun getFindingsDescriptionModel() = TextFieldUiModel(
     validations = listOf(
         ValidationUiModel(
             regex = "^(?!\\s*$).+",
-            message = "El campo no debe contener espacios"
+            message = "El campo no debe estar vacío"
         ),
         ValidationUiModel(
             regex = "^(?!.*[^,.A-Za-z0-9 A-zÀ-ú\\r\\n].*).+",
