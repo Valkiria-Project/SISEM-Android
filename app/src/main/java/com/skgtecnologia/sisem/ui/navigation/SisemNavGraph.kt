@@ -26,7 +26,9 @@ import com.skgtecnologia.sisem.ui.map.MapScreen
 import com.skgtecnologia.sisem.ui.media.CameraScreen
 import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryScreen
+import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsScreen
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
 import com.skgtecnologia.sisem.ui.report.AddFindingScreen
@@ -173,9 +175,13 @@ private fun NavGraphBuilder.mainGraph(
 
         composable(
             route = MainNavigationRoute.IncidentScreen.route
-        ) {
+        ) { navBackStackEntry ->
             // FIXME: Finish this work
-            MedicalHistoryScreen()
+            val vitalSigns = navBackStackEntry.savedStateHandle.get<List<String>>(VITAL_SIGNS)
+            navBackStackEntry.savedStateHandle.remove<List<String>>(VITAL_SIGNS)
+            MedicalHistoryScreen(vitalSigns = vitalSigns) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
         }
 
         composable(
@@ -230,6 +236,15 @@ private fun NavGraphBuilder.mainGraph(
             route = MainNavigationRoute.SignatureAndFingerprint.route
         ) {
             // FIXME: Finish this work
+        }
+
+        composable(
+            route = MainNavigationRoute.VitalSignsScreen.route
+        ) {
+            // FIXME: Finish this work
+            VitalSignsScreen { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
         }
     }
 }

@@ -26,6 +26,9 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
         patientId = patientId
     ).getOrThrow()
 
+    override suspend fun getVitalSignsScreen(): ScreenModel =
+        medicalHistoryRemoteDataSource.getVitalSignsScreen().getOrThrow()
+
     override suspend fun sendMedicalHistory(
         humanBodyValues: List<Map<String, List<String>>>,
         segmentedValues: Map<String, String>,

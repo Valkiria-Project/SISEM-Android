@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -74,6 +75,12 @@ fun DropDownContent(
             value = text,
             onValueChange = { updatedValue ->
                 text = updatedValue
+            },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Filled.List,
+                    contentDescription = null
+                )
             },
             trailingIcon = {
                 Icon(

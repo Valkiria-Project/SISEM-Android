@@ -10,6 +10,8 @@ interface MedicalHistoryRepository {
         patientId: String
     ): ScreenModel
 
+    suspend fun getVitalSignsScreen(): ScreenModel
+
     suspend fun sendMedicalHistory(
         humanBodyValues: List<Map<String, List<String>>>,
         segmentedValues: Map<String, String>,

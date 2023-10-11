@@ -2,12 +2,15 @@ package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.navigation.NavHostController
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
 import com.skgtecnologia.sisem.ui.navigation.model.DeviceAuthNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
+import com.skgtecnologia.sisem.ui.navigation.model.MedicalHistoryNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.PreOpNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
+import com.skgtecnologia.sisem.ui.navigation.model.VitalSignsNavigationModel
 
 fun getAppStartDestination(model: StartupNavigationModel?): String {
     return if (model == null) {
@@ -37,6 +40,8 @@ fun navigateToNextStep(
         is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
         is DeviceAuthNavigationModel ->
             deviceAuthToNextStep(navController, navigationModel, onNavigationFallback)
+        is MedicalHistoryNavigationModel -> medicalHistoryToNextStep(navController, navigationModel)
+        is VitalSignsNavigationModel -> vitalSignsToNextStep(navController, navigationModel)
 
         else -> {}
     }
@@ -178,6 +183,38 @@ fun deviceAuthToNextStep(
             if (!goBack) {
                 onNavigationFallback()
             }
+        }
+    }
+}
+
+fun medicalHistoryToNextStep(
+    navController: NavHostController,
+    model: MedicalHistoryNavigationModel
+) {
+    when {
+        model.isInfoCardEvent -> navController.navigate(MainNavigationRoute.VitalSignsScreen.route)
+    }
+}
+
+fun vitalSignsToNextStep(
+    navController: NavHostController,
+    model: VitalSignsNavigationModel
+) {
+    when {
+        model.goBack -> with(navController) {
+            popBackStack()
+
+            currentBackStackEntry
+                ?.savedStateHandle
+                ?.set(VITAL_SIGNS, null)
+        }
+
+        model.confirmVitalSings -> with(navController) {
+            popBackStack()
+
+            currentBackStackEntry
+                ?.savedStateHandle
+                ?.set(VITAL_SIGNS, model.values)
         }
     }
 }
