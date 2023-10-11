@@ -1,5 +1,7 @@
 package com.skgtecnologia.sisem.ui.navigation.model
 
+import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
+
 data class ReportNavigationModel(
     val goBackFromReport: Boolean = false,
     val goBackFromImages: Boolean = false,
@@ -11,5 +13,6 @@ data class ReportNavigationModel(
     val cancelReport: Boolean = false,
     val confirmSendReport: Boolean = false,
     val closeReport: Boolean = false,
-    val imagesSize: Int = 0
+    val imagesSize: Int = 0,
+    val novelty: Novelty? = null
 ) : NavigationModel

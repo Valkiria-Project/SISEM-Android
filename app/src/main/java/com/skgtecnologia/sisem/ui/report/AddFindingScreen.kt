@@ -9,6 +9,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -33,8 +34,9 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
-import kotlinx.coroutines.launch
 import kotlin.random.Random
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 private const val DESCRIPTION_INPUT_MIN_LINES = 3
 
@@ -42,6 +44,7 @@ private const val DESCRIPTION_INPUT_MIN_LINES = 3
 @Composable
 fun AddFindingScreen(
     viewModel: ReportViewModel,
+    findingId: Int,
     modifier: Modifier = Modifier,
     onNavigation: (findingsNavigationModel: NavigationModel?) -> Unit
 ) {
@@ -56,6 +59,16 @@ fun AddFindingScreen(
                 }
             }
         }
+    }
+
+    LaunchedEffect(findingId) {
+        launch {
+            viewModel.findingId = findingId
+        }
+    }
+
+    SideEffect {
+        Timber.d("Finding id: $findingId")
     }
 
     Column(
