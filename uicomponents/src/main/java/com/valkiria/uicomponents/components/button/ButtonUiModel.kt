@@ -10,6 +10,7 @@ import com.valkiria.uicomponents.components.label.TextStyle
 data class ButtonUiModel(
     val identifier: String,
     val label: String,
+    val leftIcon: String?,
     val style: ButtonStyle,
     val textStyle: TextStyle,
     val overrideColor: Color? = null,
