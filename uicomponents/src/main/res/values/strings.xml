@@ -5,4 +5,8 @@
     <string name="network_error_cta">Try again</string>
 
     <string name="human_body_label">Rotar</string>
+
+    <!-- Time picker -->
+    <string name="time_picker_hour">Hora</string>
+    <string name="time_picker_minutes">Minutos</string>
 </resources>

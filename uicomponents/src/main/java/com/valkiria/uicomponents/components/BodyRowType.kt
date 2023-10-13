@@ -24,5 +24,6 @@ enum class BodyRowType {
     SLIDER,
     STEPPER,
     TERMS_AND_CONDITIONS,
-    TEXT_FIELD
+    TEXT_FIELD,
+    TIME_PICKER
 }
