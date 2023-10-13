@@ -153,7 +153,7 @@ private fun getFindingsDescriptionModel() = TextFieldUiModel(
             message = "El campo no debe estar vacío"
         ),
         ValidationUiModel(
-            regex = "^(?!.*[^,.A-Za-z0-9 A-zÀ-ú\\r\\n].*).+",
+            regex = "^(?!.*[^,.:A-Za-z0-9 A-zÀ-ú\\r\\n].*).+",
             message = "El campo no debe tener caracteres especiales"
         )
     ),
