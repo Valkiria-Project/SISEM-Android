@@ -25,6 +25,7 @@ import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
 import com.skgtecnologia.sisem.ui.dropdown.DropDownComponent
 import com.skgtecnologia.sisem.ui.humanbody.HumanBodyComponent
+import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.MedsSelectorComponent
 import com.valkiria.uicomponents.action.AddReportUiAction
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.ConfirmPasswordInput
@@ -70,6 +71,7 @@ import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckCompone
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.LabelUiModel
+import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
@@ -82,6 +84,8 @@ import com.valkiria.uicomponents.components.textfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.textfield.PasswordTextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.components.timepicker.TimePickerComponent
+import com.valkiria.uicomponents.components.timepicker.TimePickerUiModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -158,12 +162,13 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is DropDownUiModel -> item(key = model.identifier) {
-                DropDownComponent(model, validateFields) { inputUiModel ->
+                DropDownComponent(model, validateFields) { dropDownInputUiModel ->
                     onAction(
-                        GenericUiAction.InputAction(
-                            identifier = inputUiModel.identifier,
-                            updatedValue = inputUiModel.updatedValue,
-                            fieldValidated = inputUiModel.fieldValidated
+                        GenericUiAction.DropDownAction(
+                            identifier = dropDownInputUiModel.identifier,
+                            id = dropDownInputUiModel.id,
+                            name = dropDownInputUiModel.name,
+                            fieldValidated = dropDownInputUiModel.fieldValidated
                         )
                     )
                 }
@@ -255,6 +260,12 @@ private fun LazyListScope.handleBodyRows(
                 LabelComponent(uiModel = model)
             }
 
+            is MedsSelectorUiModel -> item(key = model.identifier) {
+                MedsSelectorComponent(uiModel = model) { id ->
+                    onAction(GenericUiAction.MedsSelectorAction(identifier = id))
+                }
+            }
+
             is SegmentedSwitchUiModel -> item(key = model.identifier) {
                 SegmentedSwitchComponent(uiModel = model) { id, status ->
                     onAction(
@@ -288,6 +299,12 @@ private fun LazyListScope.handleBodyRows(
 
             is TextFieldUiModel -> item(key = model.identifier) {
                 HandleTextFieldRows(model, validateFields, onAction)
+            }
+
+            is TimePickerUiModel -> item(key = model.identifier) {
+                TimePickerComponent(uiModel = model) { id, time ->
+                    onAction(GenericUiAction.TimePickerAction(identifier = id, value = time))
+                }
             }
         }
     }

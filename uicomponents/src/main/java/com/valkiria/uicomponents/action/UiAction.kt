@@ -24,6 +24,13 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
 
     data object DismissAction : GenericUiAction(identifier = DISMISS_IDENTIFIER)
 
+    data class DropDownAction(
+        override val identifier: String,
+        val id: String,
+        val name: String,
+        val fieldValidated: Boolean
+    ) : GenericUiAction(identifier)
+
     data class FindingAction(
         override val identifier: String,
         val status: Boolean
@@ -50,6 +57,10 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
         val fieldValidated: Boolean
     ) : GenericUiAction(identifier)
 
+    data class MedsSelectorAction(
+        override val identifier: String
+    ) : GenericUiAction(identifier)
+
     data class SegmentedSwitchAction(
         override val identifier: String,
         val status: Boolean
@@ -58,6 +69,11 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
     data class SliderAction(
         override val identifier: String,
         val value: Int
+    ) : GenericUiAction(identifier)
+
+    data class TimePickerAction(
+        override val identifier: String,
+        val value: String
     ) : GenericUiAction(identifier)
 }
 

@@ -47,6 +47,16 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
         it.mapToDomain()
     }
 
+    suspend fun getMedicineScreen(): Result<ScreenModel> = apiCall(errorModelFactory) {
+        medicalHistoryApi.getMedicineScreen(
+            screenBody = ScreenBody(
+                params = Params()
+            )
+        )
+    }.mapResult {
+        it.mapToDomain()
+    }
+
     suspend fun sendMedicalHistory(
         idTurn: String,
         idAph: String,

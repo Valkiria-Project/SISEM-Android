@@ -30,12 +30,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
 import com.valkiria.uicomponents.bricks.bottomsheet.BottomSheetView
+import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
 import com.valkiria.uicomponents.components.dropdown.DropDownItemUiModel
 import com.valkiria.uicomponents.components.dropdown.DropDownUiModel
 import com.valkiria.uicomponents.components.header.HeaderUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextUiModel
-import com.valkiria.uicomponents.components.textfield.InputUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 import com.valkiria.uicomponents.extensions.toFailedValidation
 import kotlinx.coroutines.launch
@@ -46,7 +46,7 @@ private const val EMPTY_REGEX = "^(?!\\s*$).+"
 fun DropDownComponent(
     uiModel: DropDownUiModel,
     validateFields: Boolean,
-    onAction: (inputUiModel: InputUiModel) -> Unit
+    onAction: (dropDownInputUiModel: DropDownInputUiModel) -> Unit
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
@@ -130,9 +130,10 @@ fun DropDownComponent(
                         showDialog = false
                         text = TextFieldValue(selectedItem.name)
                         onAction(
-                            InputUiModel(
+                            DropDownInputUiModel(
                                 identifier = uiModel.identifier,
-                                updatedValue = selectedItem.id,
+                                id = selectedItem.id,
+                                name = selectedItem.name,
                                 fieldValidated = selectedItem.name.isNotEmpty()
                             )
                         )

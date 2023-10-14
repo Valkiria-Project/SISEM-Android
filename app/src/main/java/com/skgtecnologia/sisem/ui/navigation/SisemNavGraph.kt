@@ -26,7 +26,10 @@ import com.skgtecnologia.sisem.ui.map.MapScreen
 import com.skgtecnologia.sisem.ui.media.CameraScreen
 import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryScreen
+import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.MedicineScreen
+import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.model.MedicineModel
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsScreen
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
@@ -179,7 +182,13 @@ private fun NavGraphBuilder.mainGraph(
             // FIXME: Finish this work
             val vitalSigns = navBackStackEntry.savedStateHandle.get<List<String>>(VITAL_SIGNS)
             navBackStackEntry.savedStateHandle.remove<List<String>>(VITAL_SIGNS)
-            MedicalHistoryScreen(vitalSigns = vitalSigns) { navigationModel ->
+            val medicine = navBackStackEntry.savedStateHandle.get<MedicineModel>(MEDICINE)
+            navBackStackEntry.savedStateHandle.remove<MedicineModel>(MEDICINE)
+
+            MedicalHistoryScreen(
+                vitalSigns = vitalSigns,
+                medicine = medicine
+            ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
         }
@@ -243,6 +252,15 @@ private fun NavGraphBuilder.mainGraph(
         ) {
             // FIXME: Finish this work
             VitalSignsScreen { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = MainNavigationRoute.MedicineScreen.route
+        ) {
+            // FIXME: Finish this work
+            MedicineScreen { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
         }

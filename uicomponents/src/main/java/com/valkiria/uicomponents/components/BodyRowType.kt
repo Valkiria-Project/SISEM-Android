@@ -10,6 +10,7 @@ enum class BodyRowType {
     IMAGE_BUTTON,
     IMAGE_BUTTON_SECTION,
     INFO_CARD,
+    INFO_CARD_BUTTON,
     DETAILED_INFO_LIST,
     FILTERS,
     FINDING,

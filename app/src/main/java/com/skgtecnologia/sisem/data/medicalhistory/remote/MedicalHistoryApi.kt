@@ -15,6 +15,9 @@ interface MedicalHistoryApi {
     @POST("screen/aph-vital-signs")
     suspend fun getVitalSignsScreen(@Body screenBody: ScreenBody): Response<ScreenResponse>
 
+    @POST("screen/aph-medicines")
+    suspend fun getMedicineScreen(@Body screenBody: ScreenBody): Response<ScreenResponse>
+
     @POST("aph")
     suspend fun sendMedicalHistory(@Body medicalHistoryBody: MedicalHistoryBody): Response<Unit>
 }

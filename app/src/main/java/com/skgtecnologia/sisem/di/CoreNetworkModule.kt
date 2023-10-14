@@ -21,6 +21,7 @@ import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonSe
 import com.skgtecnologia.sisem.data.remote.model.components.dropdown.DropDownResponse
 import com.skgtecnologia.sisem.data.remote.model.components.inventorycheck.InventoryCheckResponse
 import com.skgtecnologia.sisem.data.remote.model.components.label.LabelResponse
+import com.skgtecnologia.sisem.data.remote.model.components.medsselector.MedsSelectorResponse
 import com.skgtecnologia.sisem.data.remote.model.components.richlabel.RichLabelResponse
 import com.skgtecnologia.sisem.data.remote.model.components.segmentedswitch.SegmentedSwitchResponse
 import com.skgtecnologia.sisem.data.remote.model.components.slider.SliderResponse
@@ -134,6 +135,9 @@ object CoreNetworkModule {
         ).withSubtype(
             InfoCardResponse::class.java,
             BodyRowType.INFO_CARD.name
+        ).withSubtype(
+            MedsSelectorResponse::class.java,
+            BodyRowType.INFO_CARD_BUTTON.name
         ).withSubtype(
             InventoryCheckResponse::class.java,
             BodyRowType.INVENTORY_CHECK.name

@@ -1,11 +1,13 @@
 package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.navigation.NavHostController
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
 import com.skgtecnologia.sisem.ui.navigation.model.DeviceAuthNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.MedicalHistoryNavigationModel
+import com.skgtecnologia.sisem.ui.navigation.model.MedicineNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.PreOpNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.ReportNavigationModel
@@ -42,6 +44,7 @@ fun navigateToNextStep(
             deviceAuthToNextStep(navController, navigationModel, onNavigationFallback)
         is MedicalHistoryNavigationModel -> medicalHistoryToNextStep(navController, navigationModel)
         is VitalSignsNavigationModel -> vitalSignsToNextStep(navController, navigationModel)
+        is MedicineNavigationModel -> medicineToNextStep(navController, navigationModel)
 
         else -> {}
     }
@@ -193,6 +196,9 @@ fun medicalHistoryToNextStep(
 ) {
     when {
         model.isInfoCardEvent -> navController.navigate(MainNavigationRoute.VitalSignsScreen.route)
+
+        model.isMedsSelectorEvent ->
+            navController.navigate(MainNavigationRoute.MedicineScreen.route)
     }
 }
 
@@ -215,6 +221,29 @@ fun vitalSignsToNextStep(
             currentBackStackEntry
                 ?.savedStateHandle
                 ?.set(VITAL_SIGNS, model.values)
+        }
+    }
+}
+
+fun medicineToNextStep(
+    navController: NavHostController,
+    model: MedicineNavigationModel
+) {
+    when {
+        model.goBack -> with(navController) {
+            popBackStack()
+
+            currentBackStackEntry
+                ?.savedStateHandle
+                ?.set(MEDICINE, null)
+        }
+
+        model.medicine != null -> with(navController) {
+            popBackStack()
+
+            currentBackStackEntry
+                ?.savedStateHandle
+                ?.set(MEDICINE, model.medicine)
         }
     }
 }
