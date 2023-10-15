@@ -34,6 +34,7 @@ import com.valkiria.uicomponents.components.header.HeaderUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.toTextStyle
 
+@Suppress("LongMethod")
 @Composable
 fun DropDownContent(
     headerModel: HeaderUiModel,

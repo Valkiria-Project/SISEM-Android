@@ -89,7 +89,7 @@ private fun TimeBox(label: String, value: TextUiModel) {
         Text(
             text = label,
             color = Color.White,
-            style = TextStyle.HEADLINE_8 .toTextStyle()
+            style = TextStyle.HEADLINE_8.toTextStyle()
         )
     }
 }

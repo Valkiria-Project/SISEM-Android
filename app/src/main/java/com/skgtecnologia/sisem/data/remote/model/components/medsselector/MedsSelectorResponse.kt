@@ -21,14 +21,14 @@ data class MedsSelectorResponse(
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
-        override val type: BodyRowType = BodyRowType.INFO_CARD_BUTTON
+    override val type: BodyRowType = BodyRowType.INFO_CARD_BUTTON
 
-        override fun mapToUi(): BodyRowModel = MedsSelectorUiModel(
-            identifier = identifier ?: error("MedsSelector identifier cannot be null"),
-            button = button?.mapToUi() ?: error("MedsSelector button cannot be null"),
-            medicines = medicines?.map { it.mapToUi() } ?: emptyList(),
-            section = section,
-            arrangement = arrangement ?: Arrangement.Center,
-            modifier = modifier ?: Modifier
-        )
+    override fun mapToUi(): BodyRowModel = MedsSelectorUiModel(
+        identifier = identifier ?: error("MedsSelector identifier cannot be null"),
+        button = button?.mapToUi() ?: error("MedsSelector button cannot be null"),
+        medicines = medicines?.map { it.mapToUi() } ?: emptyList(),
+        section = section,
+        arrangement = arrangement ?: Arrangement.Center,
+        modifier = modifier ?: Modifier
+    )
 }

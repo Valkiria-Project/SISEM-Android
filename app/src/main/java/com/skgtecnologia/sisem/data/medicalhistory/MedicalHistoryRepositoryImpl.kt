@@ -8,8 +8,9 @@ import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
+@Suppress("UnusedPrivateMember")
 class MedicalHistoryRepositoryImpl @Inject constructor(
-    private val authCacheDataSource: AuthCacheDataSource,
+    private val authCacheDataSource: AuthCacheDataSource, // FIXME: UnusedPrivateMember
     private val medicalHistoryRemoteDataSource: MedicalHistoryRemoteDataSource,
     private val operationCacheDataSource: OperationCacheDataSource
 ) : MedicalHistoryRepository {
@@ -21,7 +22,7 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
     ): ScreenModel = medicalHistoryRemoteDataSource.getMedicalHistoryScreen(
         serial = serial,
         code = operationCacheDataSource.observeOperationConfig().first()?.vehicleCode.orEmpty(),
-        turnId = "1", //authCacheDataSource.observeAccessToken().first()?.turn?.id.orEmpty(),
+        turnId = "1", // authCacheDataSource.observeAccessToken().first()?.turn?.id.orEmpty(),
         incidentCode = incidentCode,
         patientId = patientId
     ).getOrThrow()
@@ -42,8 +43,8 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
         imageButtonSectionValues: Map<String, String>,
         vitalSigns: Map<String, List<String>>
     ) = medicalHistoryRemoteDataSource.sendMedicalHistory(
-        idTurn = "1", //authCacheDataSource.observeAccessToken().first()?.turn?.id.orEmpty(),
-        idAph = "1", // TODO: where is this value?
+        idTurn = "1", // authCacheDataSource.observeAccessToken().first()?.turn?.id.orEmpty(),
+        idAph = "1", // FIXME: where is this value?
         humanBodyValues = humanBodyValues,
         segmentedValues = segmentedValues,
         fieldsValue = fieldsValue,

@@ -68,15 +68,18 @@ fun handleAction(
     viewModel: MedicalHistoryViewModel
 ) {
     when (uiAction) {
-        is GenericUiAction.ButtonAction -> { }
-        is GenericUiAction.ChipOptionAction -> { }
-        is GenericUiAction.ChipSelectionAction -> { }
+        is GenericUiAction.ButtonAction -> {}
+        is GenericUiAction.ChipOptionAction -> {}
+        is GenericUiAction.ChipSelectionAction -> {}
         is GenericUiAction.InfoCardAction -> viewModel.showVitalSignsForm(uiAction.identifier)
-        is GenericUiAction.InputAction -> { }
-        is GenericUiAction.HumanBodyAction -> { }
-        is GenericUiAction.MedsSelectorAction -> { viewModel.showMedicineForm(uiAction.identifier) }
-        is GenericUiAction.SegmentedSwitchAction -> { }
-        is GenericUiAction.SliderAction -> { }
+        is GenericUiAction.InputAction -> {}
+        is GenericUiAction.HumanBodyAction -> {}
+        is GenericUiAction.MedsSelectorAction -> {
+            viewModel.showMedicineForm(uiAction.identifier)
+        }
+
+        is GenericUiAction.SegmentedSwitchAction -> {}
+        is GenericUiAction.SliderAction -> {}
         else -> Timber.d("no-op")
     }
 }

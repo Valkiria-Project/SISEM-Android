@@ -99,6 +99,7 @@ class VitalSignsViewModel @Inject constructor(
         }
     }
 
+    @Suppress("MagicNumber")
     private fun calculateTAM() {
         val tas = fieldsValues[TAS_KEY]?.updatedValue?.toFloatOrNull() ?: 0f
         val tad = fieldsValues[TAD_KEY]?.updatedValue?.toFloatOrNull() ?: 0f

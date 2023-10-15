@@ -14,6 +14,7 @@ interface MedicalHistoryRepository {
 
     suspend fun getMedicineScreen(): ScreenModel
 
+    @Suppress("LongParameterList")
     suspend fun sendMedicalHistory(
         humanBodyValues: List<Map<String, List<String>>>,
         segmentedValues: Map<String, String>,

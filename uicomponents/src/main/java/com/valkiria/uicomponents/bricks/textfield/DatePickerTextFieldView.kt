@@ -31,9 +31,9 @@ import com.valkiria.uicomponents.mocks.getPreOpDriverAuxGuardianTextFieldUiModel
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDateFromInstant
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDateInMillis
 import java.time.Instant
+import java.time.LocalDate
 
-// FIXME: Pass data to upper level and use given data
-@Suppress("LongMethod", "UnusedPrivateMember")
+@Suppress("LongMethod")
 @androidx.compose.material3.ExperimentalMaterial3Api
 @Composable
 fun DatePickerTextFieldView(
@@ -43,18 +43,17 @@ fun DatePickerTextFieldView(
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
-    val startLabel = buildString {
-        val today = getLocalDateFromInstant(Instant.now())
-        val dayOfMonth = today.dayOfMonth.toString().padStart(2, '0')
-        val month = today.monthValue.toString().padStart(2, '0')
-        val year = today.year.toString()
-
-        append("$dayOfMonth/$month/$year")
+    var selectedDate by remember {
+        mutableStateOf(LocalDate.now())
     }
 
-    var selectedDate by remember {
-        val today = getLocalDateFromInstant(Instant.now())
-        mutableStateOf(today)
+    fun getDateLabel() = buildString {
+        val date = selectedDate
+        val dayOfMonth = date.dayOfMonth.toString().padStart(2, '0')
+        val month = date.monthValue.toString().padStart(2, '0')
+        val year = date.year.toString()
+
+        append("$dayOfMonth/$month/$year")
     }
 
     val focusManager = LocalFocusManager.current
@@ -64,7 +63,7 @@ fun DatePickerTextFieldView(
         contentAlignment = Alignment.Center
     ) {
         OutlinedTextField(
-            value = startLabel,
+            value = getDateLabel(),
             onValueChange = {},
             readOnly = true,
             modifier = Modifier
@@ -91,10 +90,14 @@ fun DatePickerTextFieldView(
                 TextButton(
                     onClick = {
                         val instant = Instant.ofEpochMilli(pickerState.selectedDateMillis!!)
-                        selectedDate = getLocalDateFromInstant(instant)
-                        instant.toEpochMilli()
+                        selectedDate = getLocalDateFromInstant(instant).plusDays(1L)
                         showDialog = false
                         focusManager.clearFocus()
+                        onAction(
+                            uiModel.identifier,
+                            selectedDate.toString(),
+                            getDateLabel().isNotBlank() && validateFields
+                        )
                     }
                 ) {
                     Text("Select")
