@@ -68,7 +68,7 @@ fun TextFieldComponent(
                 onAction(InputUiModel(id, updatedValue, fieldValidated))
             }
 
-            TextFieldStyle.FIXED_DATE -> DatePickerTextFieldView(
+            TextFieldStyle.FIXED_DATE -> FixedDateTextFieldView(
                 uiModel = uiModel,
                 validateFields = validateFields
             ) { id, updatedValue, fieldValidated ->
