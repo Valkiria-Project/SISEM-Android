@@ -105,7 +105,11 @@ fun DropDownContent(
                 contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(itemList.filter { it.name.startsWith(text, true) }) {
+                items(
+                    itemList.filter {
+                        it.name.startsWith(text, true)
+                    }
+                ) {
                     Text(
                         modifier = Modifier
                             .fillMaxWidth()

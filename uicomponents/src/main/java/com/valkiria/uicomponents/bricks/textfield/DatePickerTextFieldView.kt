@@ -18,15 +18,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.mocks.getPreOpDriverAuxGuardianTextFieldUiModel
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDateFromInstant
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDateInMillis
@@ -41,13 +44,17 @@ fun DatePickerTextFieldView(
     validateFields: Boolean,
     onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
 ) {
+    var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue(""))
+    }
+
     var showDialog by remember { mutableStateOf(false) }
 
     var selectedDate by remember {
         mutableStateOf(LocalDate.now())
     }
 
-    fun getDateLabel() = buildString {
+    fun getLabelDate() = buildString {
         val date = selectedDate
         val dayOfMonth = date.dayOfMonth.toString().padStart(2, '0')
         val month = date.monthValue.toString().padStart(2, '0')
@@ -63,7 +70,7 @@ fun DatePickerTextFieldView(
         contentAlignment = Alignment.Center
     ) {
         OutlinedTextField(
-            value = getDateLabel(),
+            value = text,
             onValueChange = {},
             readOnly = true,
             modifier = Modifier
@@ -77,6 +84,7 @@ fun DatePickerTextFieldView(
             }
         )
     }
+
     if (showDialog) {
         val pickerState = rememberDatePickerState(
             initialSelectedDateMillis = getLocalDateInMillis(selectedDate)
@@ -91,12 +99,14 @@ fun DatePickerTextFieldView(
                     onClick = {
                         val instant = Instant.ofEpochMilli(pickerState.selectedDateMillis!!)
                         selectedDate = getLocalDateFromInstant(instant).plusDays(1L)
+                        text = TextFieldValue(getLabelDate())
                         showDialog = false
                         focusManager.clearFocus()
+
                         onAction(
                             uiModel.identifier,
                             selectedDate.toString(),
-                            getDateLabel().isNotBlank() && validateFields
+                            text.toFailedValidation(uiModel.validations, true) == null
                         )
                     }
                 ) {

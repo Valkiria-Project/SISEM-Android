@@ -140,8 +140,8 @@ class MedicalHistoryViewModel @Inject constructor(
 
     fun updateMedicineInfoCard(medicine: MedicineModel) {
         val updateBody = uiState.screenModel?.body?.map { bodyRowModel ->
-            if (bodyRowModel is MedsSelectorUiModel
-                && bodyRowModel.identifier == temporalMedsSelector
+            if (bodyRowModel is MedsSelectorUiModel &&
+                bodyRowModel.identifier == temporalMedsSelector
             ) {
                 val medicines = buildList {
                     addAll(bodyRowModel.medicines)

@@ -93,7 +93,7 @@ class MedicineViewModel @Inject constructor(
                     medicine = MedicineModel(
                         title = dropDownValue.value.name,
                         date = "${fieldsValues[DATE_MEDICINE_KEY]?.updatedValue} - " +
-                                timePickerValue.value,
+                            timePickerValue.value,
                         specifications = buildSpecifications()
                     )
                 )

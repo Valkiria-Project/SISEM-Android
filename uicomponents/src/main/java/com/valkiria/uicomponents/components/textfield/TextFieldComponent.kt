@@ -68,20 +68,19 @@ fun TextFieldComponent(
                 onAction(InputUiModel(id, updatedValue, fieldValidated))
             }
 
-            TextFieldStyle.FIXED_DATE -> FixedDateTextFieldView(
+            TextFieldStyle.FIXED_DATE -> DatePickerTextFieldView(
                 uiModel = uiModel,
                 validateFields = validateFields
             ) { id, updatedValue, fieldValidated ->
                 onAction(InputUiModel(id, updatedValue, fieldValidated))
             }
 
-            TextFieldStyle.OUTLINED ->
-                OutlinedTextFieldView(
-                    uiModel = uiModel,
-                    validateFields = validateFields
-                ) { id, updatedValue, fieldValidated ->
-                    onAction(InputUiModel(id, updatedValue, fieldValidated))
-                }
+            TextFieldStyle.OUTLINED -> OutlinedTextFieldView(
+                uiModel = uiModel,
+                validateFields = validateFields
+            ) { id, updatedValue, fieldValidated ->
+                onAction(InputUiModel(id, updatedValue, fieldValidated))
+            }
         }
     }
 }

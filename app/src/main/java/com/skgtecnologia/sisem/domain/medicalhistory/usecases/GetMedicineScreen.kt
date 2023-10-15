@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class GetMedicineScreen @Inject constructor(
     private val medicalHistoryRepository: MedicalHistoryRepository
-){
+) {
 
     @CheckResult
     suspend operator fun invoke(): Result<ScreenModel> = resultOf {
