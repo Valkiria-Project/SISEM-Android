@@ -103,7 +103,7 @@ class MedicineViewModel @Inject constructor(
 
     private fun buildSpecifications(): List<String> = listOf(
         "$APPLIED_DOSES ${fieldsValues[APPLIED_DOSE_KEY]?.updatedValue}" +
-                "${chipValues[DOSE_UNIT_KEY]}",
+            "${chipValues[DOSE_UNIT_KEY]}",
         "$CODE ${dropDownValue.value.id}",
         "$QUANTITY_USED ${fieldsValues[QUANTITY_USED_KEY]?.updatedValue}",
         "$ADMINISTRATION_ROUTE ${chipValues[ADMINISTRATION_ROUTE_KEY]}"
