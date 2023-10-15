@@ -14,6 +14,12 @@ import com.skgtecnologia.sisem.ui.navigation.model.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.VitalSignsNavigationModel
 
+const val APP_STARTED = "APP_STARTED"
+const val FINDING = "FINDING"
+const val LOGIN = "LOGIN"
+const val MAIN = "MAIN"
+const val REPORT = "REPORT"
+
 fun getAppStartDestination(model: StartupNavigationModel?): String {
     return if (model == null) {
         NavigationGraph.Auth.route
@@ -121,7 +127,7 @@ private fun reportToNextStep(
         model.photoTaken -> navController.popBackStack()
         model.showCamera -> navController.navigate(ReportNavigationRoute.CameraScreen.route)
         model.closeFinding && model.imagesSize > 0 -> navController.navigate(
-            "${ReportNavigationRoute.ImagesConfirmationScreen.route}/finding"
+            "${ReportNavigationRoute.ImagesConfirmationScreen.route}/$FINDING"
         )
 
         model.closeFinding -> navController.popBackStack(
@@ -130,7 +136,7 @@ private fun reportToNextStep(
         )
 
         model.closeReport && model.imagesSize > 0 -> navController.navigate(
-            "${ReportNavigationRoute.ImagesConfirmationScreen.route}/recordNews"
+            "${ReportNavigationRoute.ImagesConfirmationScreen.route}/$REPORT"
         )
 
         model.closeReport ->
@@ -141,10 +147,6 @@ private fun reportToNextStep(
             }
     }
 }
-
-const val LOGIN = "LOGIN"
-const val MAIN = "MAIN"
-const val APP_STARTED = "APP_STARTED"
 
 fun deviceAuthToNextStep(
     navController: NavHostController,

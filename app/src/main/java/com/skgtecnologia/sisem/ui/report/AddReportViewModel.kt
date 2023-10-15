@@ -8,12 +8,12 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.report.usecases.GetAddReportScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltViewModel
 class AddReportViewModel @Inject constructor(
@@ -31,10 +31,10 @@ class AddReportViewModel @Inject constructor(
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
             getAddReportScreen.invoke()
-                .onSuccess { recordNewsScreenModel ->
+                .onSuccess { addReportScreenModel ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
-                            screenModel = recordNewsScreenModel,
+                            screenModel = addReportScreenModel,
                             isLoading = false
                         )
                     }
