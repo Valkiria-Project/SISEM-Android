@@ -4,12 +4,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -81,7 +83,17 @@ fun DatePickerTextFieldView(
             label = { uiModel.placeholder?.let { Text(it) } },
             trailingIcon = {
                 Icon(Icons.Filled.Event, contentDescription = "Select date")
-            }
+            },
+            supportingText = {
+                if (validateFields) {
+                    Text(
+                        text = text.toFailedValidation(uiModel.validations)?.message.orEmpty(),
+                        modifier = Modifier.fillMaxWidth(),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            },
+            isError = text.toFailedValidation(uiModel.validations, validateFields) != null
         )
     }
 
