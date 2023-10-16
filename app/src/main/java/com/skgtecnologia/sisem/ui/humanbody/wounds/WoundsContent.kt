@@ -8,22 +8,21 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
-import com.valkiria.uicomponents.components.chip.ChipOptionsComponent
-import com.valkiria.uicomponents.components.chip.ChipSelectionComponent
-import com.valkiria.uicomponents.components.label.TextUiModel
-import com.valkiria.uicomponents.components.label.TextStyle
-import com.valkiria.uicomponents.components.label.toTextStyle
-import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
-import com.valkiria.uicomponents.components.chip.ChipSelectionUiModel
 import com.valkiria.uicomponents.components.chip.ChipOptionUiModel
+import com.valkiria.uicomponents.components.chip.ChipOptionsComponent
+import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
+import com.valkiria.uicomponents.components.chip.ChipSelectionComponent
 import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
+import com.valkiria.uicomponents.components.chip.ChipSelectionUiModel
 import com.valkiria.uicomponents.components.header.HeaderUiModel
+import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.label.TextUiModel
+import com.valkiria.uicomponents.components.label.toTextStyle
 
 @Suppress("LongMethod")
 @Composable

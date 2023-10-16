@@ -36,10 +36,11 @@ import javax.inject.Inject
 private const val DATE_FORMAT = "HH:mm"
 private const val SAVE_COLOR = "#3cf2dd"
 
+@Suppress("UnusedPrivateMember")
 @HiltViewModel
 class MedicalHistoryViewModel @Inject constructor(
     private val getMedicalHistoryScreen: GetMedicalHistoryScreen,
-    private val sendMedicalHistory: SendMedicalHistory,
+    private val sendMedicalHistory: SendMedicalHistory, // FIXME: UnusedPrivateMember
     androidIdProvider: AndroidIdProvider
 ) : ViewModel() {
 
@@ -139,8 +140,8 @@ class MedicalHistoryViewModel @Inject constructor(
 
     fun updateMedicineInfoCard(medicine: MedicineModel) {
         val updateBody = uiState.screenModel?.body?.map { bodyRowModel ->
-            if (bodyRowModel is MedsSelectorUiModel
-                && bodyRowModel.identifier == temporalMedsSelector
+            if (bodyRowModel is MedsSelectorUiModel &&
+                bodyRowModel.identifier == temporalMedsSelector
             ) {
                 val medicines = buildList {
                     addAll(bodyRowModel.medicines)

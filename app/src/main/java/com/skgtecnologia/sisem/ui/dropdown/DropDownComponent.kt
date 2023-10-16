@@ -42,6 +42,7 @@ import kotlinx.coroutines.launch
 
 private const val EMPTY_REGEX = "^(?!\\s*$).+"
 
+@Suppress("LongMethod")
 @Composable
 fun DropDownComponent(
     uiModel: DropDownUiModel,

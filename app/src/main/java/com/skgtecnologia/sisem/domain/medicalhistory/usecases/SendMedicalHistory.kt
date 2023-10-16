@@ -9,6 +9,7 @@ class SendMedicalHistory @Inject constructor(
     private val medicalHistoryRepository: MedicalHistoryRepository
 ) {
 
+    @Suppress("LongParameterList")
     @CheckResult
     suspend operator fun invoke(
         humanBodyValues: List<Map<String, List<String>>>,

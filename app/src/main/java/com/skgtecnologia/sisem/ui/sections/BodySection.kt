@@ -189,7 +189,7 @@ private fun LazyListScope.handleBodyRows(
             is ImageButtonSectionUiModel -> item(key = model.identifier) {
                 ImageButtonSectionComponent(model) { identifier ->
                     onAction(GenericUiAction.ButtonAction(identifier = identifier))
-                    // TODO: "Do we use this action?"
+                    // FIXME: "Do we use this action?"
                 }
             }
 

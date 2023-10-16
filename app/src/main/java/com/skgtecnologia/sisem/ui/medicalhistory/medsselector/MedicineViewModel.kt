@@ -84,7 +84,7 @@ class MedicineViewModel @Inject constructor(
 
         val isValidDropDown = dropDownValue.value.fieldValidated
 
-        // TODO: 2021-10-14 Validate chip values ???
+        // FIXME: 2021-10-14 Validate chip values ???
         // val areValidChip = chipValues.size == 2
 
         if (areValidFields && isValidDropDown) {
@@ -93,7 +93,7 @@ class MedicineViewModel @Inject constructor(
                     medicine = MedicineModel(
                         title = dropDownValue.value.name,
                         date = "${fieldsValues[DATE_MEDICINE_KEY]?.updatedValue} - " +
-                                timePickerValue.value,
+                            timePickerValue.value,
                         specifications = buildSpecifications()
                     )
                 )
@@ -103,7 +103,7 @@ class MedicineViewModel @Inject constructor(
 
     private fun buildSpecifications(): List<String> = listOf(
         "$APPLIED_DOSES ${fieldsValues[APPLIED_DOSE_KEY]?.updatedValue}" +
-                "${chipValues[DOSE_UNIT_KEY]}",
+            "${chipValues[DOSE_UNIT_KEY]}",
         "$CODE ${dropDownValue.value.id}",
         "$QUANTITY_USED ${fieldsValues[QUANTITY_USED_KEY]?.updatedValue}",
         "$ADMINISTRATION_ROUTE ${chipValues[ADMINISTRATION_ROUTE_KEY]}"

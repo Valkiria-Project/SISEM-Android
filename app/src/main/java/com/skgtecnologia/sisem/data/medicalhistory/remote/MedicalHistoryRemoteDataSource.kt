@@ -57,6 +57,7 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
         it.mapToDomain()
     }
 
+    @Suppress("LongParameterList")
     suspend fun sendMedicalHistory(
         idTurn: String,
         idAph: String,
