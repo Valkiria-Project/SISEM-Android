@@ -45,9 +45,9 @@ import com.valkiria.uicomponents.components.button.ButtonStyle
 import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.components.label.TextStyle
-import kotlin.random.Random
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.random.Random
 
 @Suppress("LongMethod", "MagicNumber")
 @androidx.compose.foundation.ExperimentalFoundationApi
@@ -195,7 +195,7 @@ private fun handleAction(
                 if (from == REPORT) {
                     viewModel.sendReport(images)
                 } else {
-                    viewModel.saveFindingWithImages()
+                    viewModel.saveFindingWithImages(images)
                 }
 
                 viewModel.consumeShownConfirm()

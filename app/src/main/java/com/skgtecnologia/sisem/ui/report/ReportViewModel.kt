@@ -22,11 +22,11 @@ import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.domain.report.usecases.SendReport
 import com.skgtecnologia.sisem.ui.navigation.model.ReportNavigationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 @HiltViewModel
@@ -138,8 +138,7 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    fun saveFindingWithImages() {
-        // FIXME: Save to the database with a key and retrieve this afterwards
+    fun saveFindingWithImages(images: List<String>) {
         uiState = uiState.copy(
             confirmInfoModel = null,
             successInfoModel = findingSavedBanner().mapToUi(),
@@ -149,7 +148,12 @@ class ReportViewModel @Inject constructor(
                 novelty = Novelty(
                     idPreoperational = findingId,
                     novelty = description,
-                    images = listOf() // FIXME: Transform uiState.selectedImageUris
+                    images = images.mapIndexed { index, image ->
+                        ImageModel(
+                            fileName = "Img_$findingId" + "_$index.jpg",
+                            file = image
+                        )
+                    }
                 )
             )
         )
