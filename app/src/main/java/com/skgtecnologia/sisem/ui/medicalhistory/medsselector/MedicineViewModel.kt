@@ -10,7 +10,6 @@ import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicineScreen
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.model.MedicineModel
 import com.skgtecnologia.sisem.ui.navigation.model.MedicineNavigationModel
-import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
