@@ -18,7 +18,7 @@ import timber.log.Timber
 @Composable
 fun MedicalHistoryScreen(
     modifier: Modifier = Modifier,
-    vitalSigns: List<String>?,
+    vitalSigns: Map<String, String>?,
     medicine: MedicineModel?,
     onNavigation: (medicalHistoryNavigationModel: NavigationModel?) -> Unit
 ) {
@@ -70,14 +70,16 @@ fun handleAction(
     when (uiAction) {
         is GenericUiAction.ButtonAction -> {}
         is GenericUiAction.ChipOptionAction -> {}
-        is GenericUiAction.ChipSelectionAction -> {}
+        is GenericUiAction.ChipSelectionAction -> {
+            viewModel.chipValues[uiAction.identifier] = uiAction.text
+            viewModel.updateGlasgow()
+        }
         is GenericUiAction.InfoCardAction -> viewModel.showVitalSignsForm(uiAction.identifier)
         is GenericUiAction.InputAction -> {}
         is GenericUiAction.HumanBodyAction -> {}
         is GenericUiAction.MedsSelectorAction -> {
             viewModel.showMedicineForm(uiAction.identifier)
         }
-
         is GenericUiAction.SegmentedSwitchAction -> {}
         is GenericUiAction.SliderAction -> {}
         else -> Timber.d("no-op")

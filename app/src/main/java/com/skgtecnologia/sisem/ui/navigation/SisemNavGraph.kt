@@ -180,8 +180,9 @@ private fun NavGraphBuilder.mainGraph(
             route = MainNavigationRoute.IncidentScreen.route
         ) { navBackStackEntry ->
             // FIXME: Finish this work
-            val vitalSigns = navBackStackEntry.savedStateHandle.get<List<String>>(VITAL_SIGNS)
-            navBackStackEntry.savedStateHandle.remove<List<String>>(VITAL_SIGNS)
+            val vitalSigns =
+                navBackStackEntry.savedStateHandle.get<Map<String, String>>(VITAL_SIGNS)
+            navBackStackEntry.savedStateHandle.remove<Map<String, String>>(VITAL_SIGNS)
             val medicine = navBackStackEntry.savedStateHandle.get<MedicineModel>(MEDICINE)
             navBackStackEntry.savedStateHandle.remove<MedicineModel>(MEDICINE)
 

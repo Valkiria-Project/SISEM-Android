@@ -32,7 +32,7 @@ fun VitalSignsScreen(
     LaunchedEffect(uiState.navigationModel) {
         launch {
             with(uiState.navigationModel) {
-                if (this?.goBack == true || this?.confirmVitalSings == true) {
+                if (this?.goBack == true || this?.values != null) {
                     onNavigation(uiState.navigationModel)
                     viewModel.consumeNavigationEvent()
                 }

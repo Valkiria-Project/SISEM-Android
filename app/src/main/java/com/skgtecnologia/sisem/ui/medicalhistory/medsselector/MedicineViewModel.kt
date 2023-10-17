@@ -41,7 +41,7 @@ class MedicineViewModel @Inject constructor(
     var uiState by mutableStateOf(MedicineUiState())
         private set
 
-    private var chipValues = mutableStateMapOf<String, String>()
+    var chipValues = mutableStateMapOf<String, String>()
     var fieldsValues = mutableStateMapOf<String, InputUiModel>()
     var dropDownValue = mutableStateOf(DropDownInputUiModel())
     var timePickerValue = mutableStateOf("")
@@ -128,13 +128,5 @@ class MedicineViewModel @Inject constructor(
                 goBack = true
             )
         )
-    }
-
-    fun updateChipSelection(uiAction: GenericUiAction.ChipSelectionAction) {
-        if (uiAction.status) {
-            chipValues[uiAction.identifier] = uiAction.text
-        } else {
-            chipValues.remove(uiAction.identifier)
-        }
     }
 }

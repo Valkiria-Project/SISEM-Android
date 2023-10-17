@@ -19,6 +19,7 @@ import com.skgtecnologia.sisem.ui.navigation.model.MedicalHistoryNavigationModel
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
 import com.valkiria.uicomponents.components.card.PillUiModel
+import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.ListTextUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextUiModel
@@ -35,6 +36,16 @@ import javax.inject.Inject
 
 private const val DATE_FORMAT = "HH:mm"
 private const val SAVE_COLOR = "#3cf2dd"
+private const val INITIAL_VITAL_SIGNS = "INITIAL_VITAL_SIGNS"
+private const val DURING_VITAL_SIGNS = "DURING_VITAL_SIGNS"
+private const val END_VITAL_SIGNS = "END_VITAL_SIGNS"
+private const val GLASGOW_MRO_KEY = "KEY_GLASGOW_SCALE_MRO"
+private const val GLASGOW_MRV_KEY = "KEY_GLASGOW_SCALE_MRV"
+private const val GLASGOW_MRM_KEY = "KEY_GLASGOW_SCALE_MRM"
+private const val GLASGOW_TOTAL_KEY = "GLASGOW_TOTAL_VALUE"
+private const val GLASGOW_RTS_KEY = "GLASGOW_RTS"
+private const val TAS_KEY = "TAS"
+private const val FC_KEY = "FC"
 
 @Suppress("UnusedPrivateMember")
 @HiltViewModel
@@ -50,13 +61,15 @@ class MedicalHistoryViewModel @Inject constructor(
         private set
 
     private val allowInfoCardIdentifiers = listOf(
-        "INITIAL_VITAL_SIGNS",
-        "DURING_VITAL_SIGNS",
-        "END_VITAL_SIGNS"
+        INITIAL_VITAL_SIGNS,
+        DURING_VITAL_SIGNS,
+        END_VITAL_SIGNS
     )
     private var temporalInfoCard by mutableStateOf("")
     private var temporalMedsSelector by mutableStateOf("")
-    private var vitalSignsValues = mutableStateMapOf<String, List<String>>()
+    private var vitalSignsValues = mutableStateMapOf<String, Map<String, String>>()
+
+    var chipValues = mutableStateMapOf<String, String>()
 
     init {
         uiState = uiState.copy(isLoading = true)
@@ -96,8 +109,11 @@ class MedicalHistoryViewModel @Inject constructor(
         }
     }
 
-    fun updateVitalSignsInfoCard(values: List<String>) {
+    fun updateVitalSignsInfoCard(values: Map<String, String>) {
         vitalSignsValues[temporalInfoCard] = values
+        updateGlasgow()
+
+        val list = values.map { "${it.key} ${it.value}" }
 
         val updateBody = uiState.screenModel?.body?.map { bodyRowModel ->
             if (bodyRowModel is InfoCardUiModel && bodyRowModel.identifier == temporalInfoCard) {
@@ -111,7 +127,7 @@ class MedicalHistoryViewModel @Inject constructor(
                         ),
                         color = SAVE_COLOR
                     ),
-                    chipSection = bodyRowModel.chipSection?.listText?.copy(texts = values)?.let {
+                    chipSection = bodyRowModel.chipSection?.listText?.copy(texts = list)?.let {
                         bodyRowModel.chipSection?.copy(
                             listText = it
                         )
@@ -134,6 +150,67 @@ class MedicalHistoryViewModel @Inject constructor(
         uiState = uiState.copy(
             navigationModel = MedicalHistoryNavigationModel(
                 isMedsSelectorEvent = true
+            )
+        )
+    }
+
+    @Suppress("MagicNumber", "ComplexMethod")
+    fun updateGlasgow() {
+        val mro = chipValues[GLASGOW_MRO_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
+        val mrv = chipValues[GLASGOW_MRV_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
+        val mrm = chipValues[GLASGOW_MRM_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
+        val ecg = mro + mrv + mrm
+
+        val tas = vitalSignsValues[DURING_VITAL_SIGNS]?.get(TAS_KEY)?.toIntOrNull() ?: 0
+        val fc = vitalSignsValues[DURING_VITAL_SIGNS]?.get(FC_KEY)?.toIntOrNull() ?: 0
+
+        val ecgScore = when (ecg) {
+            in 13..15 -> 4
+            in 9..12 -> 3
+            in 6..8 -> 2
+            in 4..5 -> 1
+            else -> 0
+        }
+
+        val tasScore = when {
+            tas > 89 -> 4
+            tas in 76..89 -> 3
+            tas in 50..75 -> 2
+            tas in 1..49 -> 1
+            else -> 0
+        }
+
+        val fcScore = when {
+            fc > 29 -> 4
+            fc in 10..29 -> 3
+            fc in 6..9 -> 2
+            fc in 1..5 -> 1
+            else -> 0
+        }
+
+        val rts = ecgScore + tasScore + fcScore
+
+        updateGlasgowValues(ecg, rts)
+    }
+
+    private fun updateGlasgowValues(ecg: Int, rts: Int) {
+        val updateBody = uiState.screenModel?.body?.map { bodyRowModel ->
+            if (bodyRowModel is LabelUiModel && bodyRowModel.identifier == GLASGOW_TOTAL_KEY) {
+                bodyRowModel.copy(
+                    text = ecg.toString()
+                )
+            } else if (bodyRowModel is LabelUiModel && bodyRowModel.identifier == GLASGOW_RTS_KEY) {
+                bodyRowModel.copy(
+                    text = rts.toString()
+                )
+            } else {
+                bodyRowModel
+            }
+        }.orEmpty()
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updateBody
             )
         )
     }

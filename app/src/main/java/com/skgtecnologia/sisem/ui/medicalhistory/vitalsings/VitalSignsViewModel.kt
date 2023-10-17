@@ -90,10 +90,7 @@ class VitalSignsViewModel @Inject constructor(
             calculateTAM()
             uiState = uiState.copy(
                 navigationModel = VitalSignsNavigationModel(
-                    confirmVitalSings = true,
-                    values = fieldsValues.mapValues { it.value.updatedValue }.map {
-                        "${it.key}  ${it.value}"
-                    }
+                    values = fieldsValues.mapValues { it.value.updatedValue }
                 )
             )
         }

@@ -217,7 +217,7 @@ fun vitalSignsToNextStep(
                 ?.set(VITAL_SIGNS, null)
         }
 
-        model.confirmVitalSings -> with(navController) {
+        model.values != null -> with(navController) {
             popBackStack()
 
             currentBackStackEntry
