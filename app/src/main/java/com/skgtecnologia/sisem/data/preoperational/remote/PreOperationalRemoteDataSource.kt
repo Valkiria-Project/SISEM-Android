@@ -62,6 +62,7 @@ class PreOperationalRemoteDataSource @Inject constructor(
         fieldsValues: Map<String, String>,
         novelties: List<Novelty>
     ): Result<Unit> = apiCall(errorModelFactory) {
+        // FIXME: Wrap up this stuff
         preOperationalApi.sendPreOperational(
             savePreOperationalBody = SavePreOperationalBody(
                 type = role.name,
