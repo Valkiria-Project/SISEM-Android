@@ -5,15 +5,15 @@ import com.skgtecnologia.sisem.data.remote.extensions.apiCall
 import com.skgtecnologia.sisem.data.remote.model.screen.Params
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
 import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
+import com.skgtecnologia.sisem.data.report.remote.model.buildReportFormDataBody
+import com.skgtecnologia.sisem.data.report.remote.model.buildReportImagesBody
 import com.skgtecnologia.sisem.domain.model.banner.ErrorModelFactory
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
-import com.skgtecnologia.sisem.ui.commons.constants.IMAGE_FILE
-import com.skgtecnologia.sisem.ui.commons.constants.IMAGE_TYPE
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import javax.inject.Inject
+
+
+private const val SEND_REPORT_FILES = "files"
 
 class ReportRemoteDataSource @Inject constructor(
     private val errorModelFactory: ErrorModelFactory,
@@ -41,17 +41,10 @@ class ReportRemoteDataSource @Inject constructor(
         images: List<ImageModel>,
         turnId: String
     ): Result<Unit> = apiCall(errorModelFactory) {
-        // FIXME: Wrap up this stuff
-        val image = images[0]
-        val requestBodyFile = image.file.asRequestBody(IMAGE_TYPE.toMediaType())
-        val imagePart = MultipartBody.Part.createFormData(
-            name = IMAGE_FILE,
-            filename = image.file.name,
-            body = requestBodyFile
-        )
         reportApi.sendReport(
-            mapOf(),
-            imagePart
+            turnId,
+            partMap = buildReportFormDataBody(topic, description),
+            files = buildReportImagesBody(images)
         )
     }
 }

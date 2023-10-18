@@ -10,6 +10,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.PartMap
+import retrofit2.http.Path
 
 interface ReportApi {
 
@@ -20,9 +21,10 @@ interface ReportApi {
     suspend fun getAddReportEntryScreen(@Body screenBody: ScreenBody): Response<ScreenResponse>
 
     @Multipart
-    @POST("novelty")
+    @POST("novelty/{idTurn}")
     suspend fun sendReport(
+        @Path("idTurn") idTurn: String,
         @PartMap partMap: Map<String, RequestBody>,
-        @Part file: MultipartBody.Part
+        @PartMap files: Map<String, RequestBody>
     ): Response<Unit>
 }

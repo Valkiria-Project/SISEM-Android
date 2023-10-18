@@ -1,11 +1,14 @@
 package com.skgtecnologia.sisem.data.report.remote.model
 
-import com.skgtecnologia.sisem.data.remote.model.images.ImageBody
-import com.squareup.moshi.Json
+import com.skgtecnologia.sisem.data.remote.extensions.createRequestBody
+import com.skgtecnologia.sisem.domain.report.model.ImageModel
 
-data class ReportBody(
-    @Json(name = "subject") val topic: String,
-    @Json(name = "description") val description: String,
-    @Json(name = "id_turn") val idTurn: Int,
-    @Json(name = "images") val images: List<ImageBody>
-)
+fun buildReportFormDataBody(topic: String, description: String) = buildMap {
+    put("subject", topic.createRequestBody())
+    put("description", description.createRequestBody())
+}
+
+fun buildReportImagesBody(images: List<ImageModel>) = images.associate { imageModel ->
+    val file = imageModel.file
+    file.name to file.createRequestBody()
+}
