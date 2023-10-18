@@ -1,14 +1,20 @@
 package com.skgtecnologia.sisem.ui.commons.extensions
 
 import android.content.ContentResolver
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.net.Uri
+import android.provider.OpenableColumns
 import android.util.Base64
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
 
 const val COMPRESSION_QUALITY = 60
+const val CONTENT_URI_SCHEME = "content"
 
 fun Bitmap.encodeAsBase64(): String {
     val output = ByteArrayOutputStream()
@@ -44,4 +50,37 @@ fun Bitmap.scaleByLargestSide(largestSideDimension: Int): Bitmap {
         newWidth = newHeight * currentWidth / currentHeight
     }
     return scale(newWidth, newHeight)
+}
+
+fun Context.storeUriAsFileToCache(uri: Uri): File {
+    val fileContents = try {
+        contentResolver.openInputStream(uri)
+    } catch (e: FileNotFoundException) {
+        null
+    }
+
+    val file = when (uri.scheme) {
+        CONTENT_URI_SCHEME -> File(cacheDir, contentResolver.getFileName(uri))
+        else -> File(cacheDir, uri.lastPathSegment!!)
+    }
+
+    FileOutputStream(file).use {
+        it.write(fileContents?.readBytes())
+    }
+
+    fileContents?.close()
+
+    return file
+}
+
+private fun ContentResolver.getFileName(fileUri: Uri): String {
+    val returnCursor = query(fileUri, null, null, null, null)
+    return buildString {
+        if (returnCursor != null) {
+            val nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            returnCursor.moveToFirst()
+            append(returnCursor.getString(nameIndex))
+            returnCursor.close()
+        }
+    }
 }

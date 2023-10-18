@@ -26,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -138,7 +139,7 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    fun saveFindingWithImages(images: List<String>) {
+    fun saveFindingWithImages(images: List<File>) {
         uiState = uiState.copy(
             confirmInfoModel = null,
             successInfoModel = findingSavedBanner().mapToUi(),
@@ -194,7 +195,7 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    fun sendReport(images: List<String>) {
+    fun sendReport(images: List<File>) {
         uiState = uiState.copy(isLoading = true)
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {

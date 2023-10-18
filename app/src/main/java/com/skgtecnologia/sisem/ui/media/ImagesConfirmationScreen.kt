@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.ui.media
 
-import android.content.ContentResolver
+import android.content.Context
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -29,7 +29,7 @@ import com.skgtecnologia.sisem.domain.model.header.imagesConfirmationHeader
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
 import com.skgtecnologia.sisem.ui.authcards.report.PagerIndicator
 import com.skgtecnologia.sisem.ui.commons.extensions.decodeAsBitmap
-import com.skgtecnologia.sisem.ui.commons.extensions.encodeAsBase64
+import com.skgtecnologia.sisem.ui.commons.extensions.storeUriAsFileToCache
 import com.skgtecnologia.sisem.ui.navigation.REPORT
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportViewModel
@@ -59,7 +59,7 @@ fun ImagesConfirmationScreen(
     onNavigation: (imageSelectionNavigationModel: NavigationModel?) -> Unit
 ) {
     val uiState = viewModel.uiState
-    val contentResolver = LocalContext.current.contentResolver
+    val context = LocalContext.current
 
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -162,7 +162,7 @@ fun ImagesConfirmationScreen(
     }
 
     OnBannerHandler(uiState.confirmInfoModel) {
-        handleAction(it, from, contentResolver, viewModel)
+        handleAction(it, from, context, viewModel)
     }
 
     OnBannerHandler(uiState.successInfoModel) {
@@ -179,7 +179,7 @@ fun ImagesConfirmationScreen(
 private fun handleAction(
     uiAction: UiAction,
     from: String,
-    contentResolver: ContentResolver,
+    context: Context,
     viewModel: ReportViewModel
 ) {
     (uiAction as? FooterUiAction)?.let {
@@ -189,7 +189,7 @@ private fun handleAction(
 
             ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name -> {
                 val images = viewModel.uiState.selectedImageUris.map { uri ->
-                    uri.decodeAsBitmap(contentResolver).encodeAsBase64()
+                    context.storeUriAsFileToCache(uri)
                 }
 
                 if (from == REPORT) {
