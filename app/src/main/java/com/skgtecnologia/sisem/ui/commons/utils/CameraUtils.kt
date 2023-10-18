@@ -5,7 +5,7 @@ import android.content.Context
 import android.provider.MediaStore
 import androidx.camera.core.ImageCapture
 import com.skgtecnologia.sisem.R
-import com.skgtecnologia.sisem.ui.commons.constants.MULTI_PART_FORM_DATA
+import com.skgtecnologia.sisem.data.remote.extensions.MULTI_PART_FORM_DATA
 import java.text.SimpleDateFormat
 import java.util.Locale
 
