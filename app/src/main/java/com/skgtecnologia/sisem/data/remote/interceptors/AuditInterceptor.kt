@@ -21,9 +21,10 @@ private const val HTTP_CLIENT_VERSION_HEADER = "User-Agent"
 private const val CLIENT_VERSION = "sisem/Android/" + BuildConfig.VERSION_NAME
 private const val HTTP_LOCATION_HEADER = "geolocation"
 private const val UNAVAILABLE_LOCATION = "UNAVAILABLE_LOCATION"
-private const val LOCATION_TIMEOUT = 1000L
+private const val AUDIT_TIMEOUT = 1000L
 private const val IP_ADDRESS_URL = "https://api.ipify.org/"
-private const val IP_ADDRESS_HEADER = "ip"
+private const val IP_ADDRESS_HEADER = "x-ip"
+private const val UNAVAILABLE_IP_ADDRESS = "UNAVAILABLE_LOCATION"
 
 @Singleton
 class AuditInterceptor @Inject constructor(
@@ -43,7 +44,7 @@ class AuditInterceptor @Inject constructor(
 
     private fun Request.Builder.withCurrentLocation(): Request.Builder = runBlocking {
         val location = runCatching {
-            withTimeout(LOCATION_TIMEOUT) {
+            withTimeout(AUDIT_TIMEOUT) {
                 fusedLocationClient.locationFlow()
                     .catch { throwable ->
                         Timber.d("Unable to get location $throwable")
@@ -64,14 +65,18 @@ class AuditInterceptor @Inject constructor(
     }
 
     private fun Request.Builder.withCurrentIPAddress(): Request.Builder = runBlocking {
-        val client = OkHttpClient()
-        val response = withContext(Dispatchers.IO) {
-            val request: Request = Request.Builder()
-                .url(IP_ADDRESS_URL)
-                .build()
-            client.newCall(request).execute()
-        }
-        val ipAddress = response.body?.string().orEmpty()
+        val ipAddress = runCatching {
+            withTimeout(AUDIT_TIMEOUT) {
+                val client = OkHttpClient()
+                val response = withContext(Dispatchers.IO) {
+                    val request: Request = Request.Builder()
+                        .url(IP_ADDRESS_URL)
+                        .build()
+                    client.newCall(request).execute()
+                }
+                response.body?.string().orEmpty()
+            }
+        }.getOrNull() ?: UNAVAILABLE_IP_ADDRESS
 
         this@withCurrentIPAddress.addHeader(
             IP_ADDRESS_HEADER, ipAddress

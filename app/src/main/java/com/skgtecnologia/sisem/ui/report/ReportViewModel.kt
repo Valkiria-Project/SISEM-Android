@@ -17,6 +17,7 @@ import com.skgtecnologia.sisem.domain.model.banner.reportCancellationBanner
 import com.skgtecnologia.sisem.domain.model.banner.reportConfirmationBanner
 import com.skgtecnologia.sisem.domain.model.banner.reportSentBanner
 import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
+import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.domain.report.usecases.SendReport
 import com.skgtecnologia.sisem.ui.navigation.model.ReportNavigationModel
@@ -39,6 +40,7 @@ class ReportViewModel @Inject constructor(
     var uiState by mutableStateOf(ReportUiState())
         private set
 
+    var findingId by mutableIntStateOf(0)
     var topic by mutableStateOf("")
     var description by mutableStateOf("")
     var isValidTopic by mutableStateOf(false)
@@ -127,7 +129,7 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    fun confirmSendFinding() {
+    fun confirmFindingImages() {
         uiState = uiState.copy(
             navigationModel = ReportNavigationModel(
                 confirmFinding = true
@@ -136,15 +138,23 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    @Suppress("UnusedPrivateMember")
-    fun saveFindingWithImages(images: List<String>? = null) {
-        // FIXME: Save to the database with a key and retrieve this afterwards
+    fun saveFindingWithImages(images: List<String>) {
         uiState = uiState.copy(
             confirmInfoModel = null,
             successInfoModel = findingSavedBanner().mapToUi(),
             isLoading = false,
             navigationModel = ReportNavigationModel(
-                closeFinding = true
+                closeFinding = true,
+                novelty = Novelty(
+                    idPreoperational = findingId,
+                    novelty = description,
+                    images = images.mapIndexed { index, image ->
+                        ImageModel(
+                            fileName = "Img_$findingId" + "_$index.jpg",
+                            file = image
+                        )
+                    }
+                )
             )
         )
     }
@@ -175,7 +185,7 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    fun confirmSendReport() {
+    fun confirmReportImages() {
         uiState = uiState.copy(
             navigationModel = ReportNavigationModel(
                 confirmSendReport = true

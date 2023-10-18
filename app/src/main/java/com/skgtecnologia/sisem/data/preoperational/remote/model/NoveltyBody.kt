@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.data.preoperational.remote.model
 
 import com.skgtecnologia.sisem.data.remote.model.images.ImageBody
+import com.skgtecnologia.sisem.data.remote.model.images.mapToBody
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.squareup.moshi.Json
 
@@ -13,5 +14,5 @@ data class NoveltyBody(
 fun Novelty.mapToBody() = NoveltyBody(
     idPreoperational = idPreoperational,
     novelty = novelty,
-    images = images
+    images = images.map { it.mapToBody() }
 )
