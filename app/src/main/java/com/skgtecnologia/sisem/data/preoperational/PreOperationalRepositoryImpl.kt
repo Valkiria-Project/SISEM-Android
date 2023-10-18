@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.data.preoperational
 
+import com.skgtecnologia.sisem.commons.extensions.mapResult
 import com.skgtecnologia.sisem.data.auth.cache.AuthCacheDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.data.preoperational.remote.PreOperationalRemoteDataSource
@@ -41,16 +42,22 @@ class PreOperationalRepositoryImpl @Inject constructor(
         novelties: List<Novelty>
     ) {
         val accessToken = checkNotNull(authCacheDataSource.observeAccessToken().first())
+        val role = checkNotNull(OperationRole.getRoleByName(accessToken.role))
+        val idTurn = accessToken.turn?.id?.toString().orEmpty()
 
         preOperationalRemoteDataSource.sendPreOperational(
-            role = checkNotNull(OperationRole.getRoleByName(accessToken.role)),
-            idTurn = accessToken.turn?.id?.toString().orEmpty(),
+            role = role,
+            idTurn = idTurn,
             findings = findings,
             inventoryValues = inventoryValues,
-            fieldsValues = fieldsValues,
-            novelties = novelties
+            fieldsValues = fieldsValues
         ).onSuccess {
             authCacheDataSource.updatePreOperationalStatus(accessToken.role)
+            preOperationalRemoteDataSource.sendFinding(
+                role = role,
+                idTurn = idTurn,
+                novelties = novelties
+            )
         }.getOrThrow()
     }
 }

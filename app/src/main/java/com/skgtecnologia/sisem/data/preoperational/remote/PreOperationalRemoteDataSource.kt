@@ -2,7 +2,8 @@ package com.skgtecnologia.sisem.data.preoperational.remote
 
 import com.skgtecnologia.sisem.commons.extensions.mapResult
 import com.skgtecnologia.sisem.data.preoperational.remote.model.SavePreOperationalBody
-import com.skgtecnologia.sisem.data.preoperational.remote.model.mapToBody
+import com.skgtecnologia.sisem.data.preoperational.remote.model.buildFindingFormDataBody
+import com.skgtecnologia.sisem.data.preoperational.remote.model.buildFindingImagesBody
 import com.skgtecnologia.sisem.data.remote.extensions.apiCall
 import com.skgtecnologia.sisem.data.remote.model.screen.Params
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
@@ -53,25 +54,34 @@ class PreOperationalRemoteDataSource @Inject constructor(
             it.mapToDomain()
         }
 
-    @Suppress("LongParameterList")
     suspend fun sendPreOperational(
         role: OperationRole,
         idTurn: String,
         findings: Map<String, Boolean>,
         inventoryValues: Map<String, Int>,
-        fieldsValues: Map<String, String>,
-        novelties: List<Novelty>
+        fieldsValues: Map<String, String>
     ): Result<Unit> = apiCall(errorModelFactory) {
-        // FIXME: Wrap up this stuff
         preOperationalApi.sendPreOperational(
             savePreOperationalBody = SavePreOperationalBody(
                 type = role.name,
                 idTurn = idTurn.toInt(),
                 findingValues = findings,
                 inventoryValues = inventoryValues,
-                fieldsValues = fieldsValues,
-                novelties = novelties.map { it.mapToBody() }
+                fieldsValues = fieldsValues
             )
+        )
+    }
+
+    suspend fun sendFinding(
+        role: OperationRole,
+        idTurn: String,
+        novelties: List<Novelty>
+    ): Result<Unit> = apiCall(errorModelFactory) {
+        val images = novelties.flatMap { it.images }
+
+        preOperationalApi.sendFinding(
+            partMap = buildFindingFormDataBody(role, idTurn, novelties),
+            images = buildFindingImagesBody(images)
         )
     }
 }
