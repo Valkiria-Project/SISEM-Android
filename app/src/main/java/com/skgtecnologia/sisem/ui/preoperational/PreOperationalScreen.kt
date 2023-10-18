@@ -7,6 +7,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
@@ -23,6 +24,7 @@ import timber.log.Timber
 @Composable
 fun PreOperationalScreen(
     modifier: Modifier = Modifier,
+    novelty: Novelty?,
     revertFinding: Boolean?,
     onNavigation: (preOpNavigationModel: NavigationModel?) -> Unit
 ) {
@@ -30,7 +32,7 @@ fun PreOperationalScreen(
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState.navigationModel) {
-        Timber.d("PreOperationalScreen: LaunchedEffect uiState pass")
+        Timber.d("PreOperationalScreen: LaunchedEffect navigationModel pass")
         launch {
             with(uiState.navigationModel) {
                 if (this?.isNewFindingEvent == true || this?.isTurnCompleteEvent != null) {
@@ -41,10 +43,13 @@ fun PreOperationalScreen(
         }
     }
 
-    LaunchedEffect(revertFinding) {
-        Timber.d("PreOperationalScreen: LaunchedEffect revertFinding pass")
+    LaunchedEffect(novelty, revertFinding) {
+        Timber.d("PreOperationalScreen: LaunchedEffect novelty and revertFinding pass")
         launch {
-            if (revertFinding == true) viewModel.revertFinding()
+            when {
+                novelty != null -> viewModel.novelties.add(novelty)
+                revertFinding == true -> viewModel.revertFinding()
+            }
         }
     }
 

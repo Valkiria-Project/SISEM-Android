@@ -32,8 +32,8 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
-import kotlinx.coroutines.launch
 import kotlin.random.Random
+import kotlinx.coroutines.launch
 
 private const val DESCRIPTION_INPUT_MIN_LINES = 3
 
@@ -162,7 +162,7 @@ private fun getFindingsTopicModel() = TextFieldUiModel(
             message = "El campo no debe estar vacío"
         ),
         ValidationUiModel(
-            regex = "^(?!.*[^,.A-Za-z0-9 A-zÀ-ú\\r\\n].*).+",
+            regex = "^(?!.*[^,.:A-Za-z0-9 A-zÀ-ú\\r\\n].*).+",
             message = "El campo no debe tener caracteres especiales"
         )
     ),
@@ -193,7 +193,7 @@ private fun getReportDescriptionModel() = TextFieldUiModel(
             message = "El campo no debe estar vacío"
         ),
         ValidationUiModel(
-            regex = "^(?!.*[^,.A-Za-z0-9 A-zÀ-ú\\r\\n].*).+",
+            regex = "^(?!.*[^,.:A-Za-z0-9 A-zÀ-ú\\r\\n].*).+",
             message = "El campo no debe tener caracteres especiales"
         )
     ),

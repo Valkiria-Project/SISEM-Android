@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.ui.authcards.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.sharedViewModel
@@ -25,6 +26,7 @@ import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.map.MapScreen
 import com.skgtecnologia.sisem.ui.media.CameraScreen
 import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
@@ -122,8 +124,12 @@ private fun NavGraphBuilder.authGraph(
             val revertFinding = navBackStackEntry.savedStateHandle.get<Boolean>(REVERT_FINDING)
             navBackStackEntry.savedStateHandle.remove<Boolean>(REVERT_FINDING)
 
+            val novelty = navBackStackEntry.savedStateHandle.get<Novelty>(NOVELTY)
+            navBackStackEntry.savedStateHandle.remove<Novelty>(NOVELTY)
+
             PreOperationalScreen(
                 modifier = modifier,
+                novelty = novelty,
                 revertFinding = revertFinding
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
@@ -242,10 +248,15 @@ private fun NavGraphBuilder.reportGraph(
         route = NavigationGraph.Report.route
     ) {
         composable(
-            route = ReportNavigationRoute.AddFindingScreen.route,
+            route = ReportNavigationRoute.AddFindingScreen.route +
+                "?${NavigationArgument.FINDING_ID}={${NavigationArgument.FINDING_ID}}",
+            arguments = listOf(
+                navArgument(NavigationArgument.FINDING_ID) { type = NavType.IntType }
+            )
         ) { backStackEntry ->
             AddFindingScreen(
                 viewModel = backStackEntry.sharedViewModel(navController = navController),
+                findingId = backStackEntry.arguments?.getInt(NavigationArgument.FINDING_ID) ?: 0,
                 modifier = modifier
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
@@ -254,9 +265,9 @@ private fun NavGraphBuilder.reportGraph(
 
         composable(
             route = ReportNavigationRoute.CameraScreen.route
-        ) {
+        ) { backStackEntry ->
             CameraScreen(
-                viewModel = it.sharedViewModel(navController = navController)
+                viewModel = backStackEntry.sharedViewModel(navController = navController)
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }

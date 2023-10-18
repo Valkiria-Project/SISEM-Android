@@ -147,9 +147,9 @@ fun ImagesConfirmationScreen(
                 )
             ) {
                 if (from == REPORT) {
-                    viewModel.confirmSendReport()
+                    viewModel.confirmReportImages()
                 } else {
-                    viewModel.confirmSendFinding()
+                    viewModel.confirmFindingImages()
                 }
             }
         }

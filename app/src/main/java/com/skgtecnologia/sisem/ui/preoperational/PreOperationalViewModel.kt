@@ -23,12 +23,12 @@ import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
 
 @HiltViewModel
 class PreOperationalViewModel @Inject constructor(
@@ -129,6 +129,7 @@ class PreOperationalViewModel @Inject constructor(
             ),
             navigationModel = PreOpNavigationModel(
                 isNewFindingEvent = true,
+                findingId = temporalFinding.toIntOrNull()
             )
         )
     }

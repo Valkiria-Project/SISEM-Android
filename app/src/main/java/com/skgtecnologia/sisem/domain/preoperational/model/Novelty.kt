@@ -1,9 +1,12 @@
 package com.skgtecnologia.sisem.domain.preoperational.model
 
-import com.skgtecnologia.sisem.data.remote.model.images.ImageBody
+import android.os.Parcelable
+import com.skgtecnologia.sisem.domain.report.model.ImageModel
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Novelty(
     val idPreoperational: Int,
     val novelty: String,
-    val images: List<ImageBody>
-)
+    val images: List<ImageModel>
+) : Parcelable
