@@ -5,7 +5,7 @@ import android.content.Context
 import android.provider.MediaStore
 import androidx.camera.core.ImageCapture
 import com.skgtecnologia.sisem.R
-import com.skgtecnologia.sisem.data.remote.extensions.MULTI_PART_FORM_DATA
+import com.skgtecnologia.sisem.data.remote.extensions.IMAGE_MEDIA_TYPE
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -23,7 +23,7 @@ class CameraUtils(private val context: Context) {
 
     private fun getContentValues() = ContentValues().apply {
         put(MediaStore.MediaColumns.DISPLAY_NAME, name)
-        put(MediaStore.MediaColumns.MIME_TYPE, MULTI_PART_FORM_DATA)
+        put(MediaStore.MediaColumns.MIME_TYPE, IMAGE_MEDIA_TYPE)
         val appName = context.resources.getString(R.string.app_name)
         put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/$appName")
     }
