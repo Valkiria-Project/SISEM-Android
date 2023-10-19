@@ -32,8 +32,8 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
-import kotlin.random.Random
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 private const val DESCRIPTION_INPUT_MIN_LINES = 3
 
@@ -68,42 +68,42 @@ fun AddReportScreen(
                     viewModel.navigateBackFromReport()
                 }
             }
-        }
 
-        TextFieldComponent(
-            uiModel = getFindingsTopicModel(),
-            validateFields = uiState.validateFields
-        ) { inputUiModel ->
-            viewModel.topic = inputUiModel.updatedValue
-            viewModel.isValidTopic = inputUiModel.fieldValidated
-        }
+            TextFieldComponent(
+                uiModel = getReportTopicModel(),
+                validateFields = uiState.validateFields
+            ) { inputUiModel ->
+                viewModel.topic = inputUiModel.updatedValue
+                viewModel.isValidTopic = inputUiModel.fieldValidated
+            }
 
-        TextFieldComponent(
-            uiModel = getReportDescriptionModel(),
-            validateFields = uiState.validateFields
-        ) { inputUiModel ->
-            viewModel.description = inputUiModel.updatedValue
-            viewModel.isValidDescription = inputUiModel.fieldValidated
-        }
+            TextFieldComponent(
+                uiModel = getReportDescriptionModel(),
+                validateFields = uiState.validateFields
+            ) { inputUiModel ->
+                viewModel.description = inputUiModel.updatedValue
+                viewModel.isValidDescription = inputUiModel.fieldValidated
+            }
 
-        LabelComponent(
-            uiModel = addFilesHint(stringResource(id = R.string.findings_add_files_label))
-        )
-
-        Text(
-            text = stringResource(
-                id = R.string.findings_selected_files_label,
-                viewModel.uiState.selectedImageUris.size.toString()
-            ),
-            modifier = Modifier.padding(
-                start = 20.dp,
-                end = 20.dp,
+            LabelComponent(
+                uiModel = addFilesHint(stringResource(id = R.string.findings_add_files_label))
             )
-        )
 
-        MediaActions(viewModel)
+            Text(
+                text = stringResource(
+                    id = R.string.findings_selected_files_label,
+                    viewModel.uiState.selectedImageUris.size.toString()
+                ),
+                modifier = Modifier.padding(
+                    start = 20.dp,
+                    end = 20.dp,
+                )
+            )
 
-        Spacer(modifier = Modifier.weight(1f))
+            MediaActions(viewModel)
+
+            Spacer(modifier = Modifier.weight(1f))
+        }
 
         addReportUiState.screenModel?.footer?.let {
             FooterSection(footerModel = it) { uiAction ->
@@ -148,9 +148,9 @@ private fun handleFooterAction(
 
 @Suppress("MagicNumber")
 @Composable
-private fun getFindingsTopicModel() = TextFieldUiModel(
+private fun getReportTopicModel() = TextFieldUiModel(
     identifier = Random(100).toString(),
-    label = stringResource(id = R.string.findings_description_label),
+    label = stringResource(id = R.string.findings_topic_label),
     keyboardOptions = KeyboardOptions.Default.copy(
         keyboardType = KeyboardType.Text
     ),

@@ -1,9 +1,10 @@
 package com.skgtecnologia.sisem.data.preoperational.remote
 
 import com.skgtecnologia.sisem.commons.extensions.mapResult
+import com.skgtecnologia.sisem.commons.extensions.resultOf
 import com.skgtecnologia.sisem.data.preoperational.remote.model.SavePreOperationalBody
-import com.skgtecnologia.sisem.data.preoperational.remote.model.mapToBody
 import com.skgtecnologia.sisem.data.remote.extensions.apiCall
+import com.skgtecnologia.sisem.data.remote.extensions.createRequestBody
 import com.skgtecnologia.sisem.data.remote.model.screen.Params
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
 import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
@@ -11,7 +12,13 @@ import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.model.banner.ErrorModelFactory
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
+import okhttp3.MultipartBody
 import javax.inject.Inject
+
+private const val FINDING_FILE_NAME = "images"
 
 class PreOperationalRemoteDataSource @Inject constructor(
     private val errorModelFactory: ErrorModelFactory,
@@ -53,14 +60,12 @@ class PreOperationalRemoteDataSource @Inject constructor(
             it.mapToDomain()
         }
 
-    @Suppress("LongParameterList")
     suspend fun sendPreOperational(
         role: OperationRole,
         idTurn: String,
         findings: Map<String, Boolean>,
         inventoryValues: Map<String, Int>,
-        fieldsValues: Map<String, String>,
-        novelties: List<Novelty>
+        fieldsValues: Map<String, String>
     ): Result<Unit> = apiCall(errorModelFactory) {
         preOperationalApi.sendPreOperational(
             savePreOperationalBody = SavePreOperationalBody(
@@ -68,9 +73,38 @@ class PreOperationalRemoteDataSource @Inject constructor(
                 idTurn = idTurn.toInt(),
                 findingValues = findings,
                 inventoryValues = inventoryValues,
-                fieldsValues = fieldsValues,
-                novelties = novelties.map { it.mapToBody() }
+                fieldsValues = fieldsValues
             )
         )
+    }
+
+    suspend fun sendFinding(
+        role: OperationRole,
+        idTurn: String,
+        novelties: List<Novelty>
+    ): Result<Unit> = resultOf {
+        coroutineScope {
+            novelties.map { novelty ->
+                async {
+                    apiCall(errorModelFactory) {
+                        preOperationalApi.sendFinding2(
+                            type = role.name.createRequestBody(),
+                            idPreoperational = novelty.idPreoperational.toString()
+                                .createRequestBody(),
+                            idTurn = idTurn.createRequestBody(),
+                            novelty = novelty.novelty.createRequestBody(),
+                            images = novelty.images.map { imageModel ->
+                                val requestFile = imageModel.file.createRequestBody()
+                                MultipartBody.Part.createFormData(
+                                    FINDING_FILE_NAME,
+                                    imageModel.file.name,
+                                    requestFile
+                                )
+                            }
+                        )
+                    }
+                }
+            }.awaitAll()
+        }
     }
 }
