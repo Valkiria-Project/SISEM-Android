@@ -96,10 +96,11 @@ private fun handleBodyAction(
         }
 
         is GenericUiAction.InventoryAction -> {
-            uiAction.updatedValue.toIntOrNull()?.let { checkItemValue ->
-                viewModel.inventoryValues[uiAction.identifier] = checkItemValue
-                viewModel.inventoryValidated[uiAction.identifier] = uiAction.fieldValidated
-            }
+            viewModel.inventoryValues[uiAction.identifier] = InputUiModel(
+                uiAction.identifier,
+                uiAction.updatedValue,
+                uiAction.fieldValidated
+            )
         }
 
         else -> Timber.d("no-op")

@@ -98,7 +98,8 @@ dependencies {
     implementation(libs.material3.window.size)
     implementation(libs.material.icons.extended)
 
-    implementation(libs.guava)
+    // Compose performance
+    implementation(libs.kotlinx.collections.immutable)
 
     // Desugaring
     coreLibraryDesugaring(libs.desugar.jdk.libs)

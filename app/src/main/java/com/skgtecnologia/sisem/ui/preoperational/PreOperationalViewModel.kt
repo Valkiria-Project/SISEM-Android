@@ -23,12 +23,12 @@ import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltViewModel
 class PreOperationalViewModel @Inject constructor(
@@ -45,9 +45,8 @@ class PreOperationalViewModel @Inject constructor(
 
     var temporalFinding by mutableStateOf("")
     var findings = mutableStateMapOf<String, Boolean>()
-    var inventoryValues = mutableStateMapOf<String, Int>()
-    var inventoryValidated = mutableStateMapOf<String, Boolean>()
     var fieldsValues = mutableStateMapOf<String, InputUiModel>()
+    var inventoryValues = mutableStateMapOf<String, InputUiModel>()
     var novelties = mutableStateListOf<Novelty>()
 
     init {
@@ -96,7 +95,8 @@ class PreOperationalViewModel @Inject constructor(
                 is InventoryCheckUiModel -> {
                     Timber.d("it's a InventoryCheckModel with id ${bodyRowModel.identifier}")
                     bodyRowModel.items.forEach { checkItemUiModel ->
-                        inventoryValidated[checkItemUiModel.name.identifier] = false
+                        inventoryValues[checkItemUiModel.name.identifier] =
+                            InputUiModel(bodyRowModel.identifier)
                     }
                 }
 
@@ -156,13 +156,22 @@ class PreOperationalViewModel @Inject constructor(
     }
 
     fun savePreOperational() {
-        val isValidInventory = inventoryValidated.toMap().containsValue(false).not()
+        val isValidInventory = inventoryValues
+            .mapValues {
+                it.value.fieldValidated
+            }
+            .containsValue(false)
+            .not()
+
         val areValidFields = fieldsValues
             .mapValues {
                 it.value.fieldValidated
             }
             .containsValue(false)
             .not()
+
+        Timber.d("Inventory is $isValidInventory")
+        Timber.d("Fields are $areValidFields")
 
         val infoEvent = if (isValidInventory && areValidFields) {
             preOperationalConfirmationBanner().mapToUi()
@@ -185,7 +194,7 @@ class PreOperationalViewModel @Inject constructor(
         job = viewModelScope.launch(Dispatchers.IO) {
             sendPreOperational.invoke(
                 findings.toMap(),
-                inventoryValues.toMap(),
+                inventoryValues.mapValues { it.value.updatedValue.toInt() },
                 fieldsValues.mapValues { it.value.updatedValue },
                 novelties.toList()
             ).onSuccess {
