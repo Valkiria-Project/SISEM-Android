@@ -14,7 +14,14 @@ import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryScreen
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SendMedicalHistory
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.model.MedicineModel
+import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.ADMINISTRATION_ROUTE_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.APPLICATION_TIME_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.APPLIED_DOSE_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.CODE_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.DATE_MEDICINE_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.DOSE_UNIT_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.GENERIC_NAME_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.QUANTITY_USED_KEY
 import com.skgtecnologia.sisem.ui.navigation.model.MedicalHistoryNavigationModel
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
@@ -47,6 +54,11 @@ private const val GLASGOW_RTS_KEY = "GLASGOW_RTS"
 private const val TAS_KEY = "TAS"
 private const val FC_KEY = "FC"
 
+private const val APPLIED_DOSES = "Dosis aplicada"
+private const val CODE = "Código"
+private const val QUANTITY_USED = "Cantidad utilizada"
+private const val ADMINISTRATION_ROUTE = "Via de administración"
+
 @Suppress("UnusedPrivateMember")
 @HiltViewModel
 class MedicalHistoryViewModel @Inject constructor(
@@ -68,6 +80,7 @@ class MedicalHistoryViewModel @Inject constructor(
     private var temporalInfoCard by mutableStateOf("")
     private var temporalMedsSelector by mutableStateOf("")
     private var vitalSignsValues = mutableStateMapOf<String, Map<String, String>>()
+    private var medicineValues = mutableListOf<Map<String, String>>()
 
     var chipValues = mutableStateMapOf<String, String>()
 
@@ -215,7 +228,8 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
-    fun updateMedicineInfoCard(medicine: MedicineModel) {
+    fun updateMedicineInfoCard(medicine: Map<String, String>) {
+        medicineValues.add(medicine)
         val updateBody = uiState.screenModel?.body?.map { bodyRowModel ->
             if (bodyRowModel is MedsSelectorUiModel &&
                 bodyRowModel.identifier == temporalMedsSelector
@@ -239,16 +253,16 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
-    private fun buildMedicine(medicine: MedicineModel): InfoCardUiModel = InfoCardUiModel(
+    private fun buildMedicine(medicine: Map<String, String>): InfoCardUiModel = InfoCardUiModel(
         identifier = UUID.randomUUID().toString(),
         icon = "ic_pill",
         title = TextUiModel(
-            text = medicine.title,
+            text = medicine[GENERIC_NAME_KEY]?.split(" - ")?.firstOrNull().orEmpty(),
             textStyle = TextStyle.HEADLINE_4
         ),
         pill = PillUiModel(
             title = TextUiModel(
-                text = medicine.date,
+                text = "${medicine[DATE_MEDICINE_KEY]} - ${medicine[APPLICATION_TIME_KEY]}",
                 textStyle = TextStyle.BUTTON_1
             ),
             color = "#3E4146"
@@ -260,7 +274,7 @@ class MedicalHistoryViewModel @Inject constructor(
                 textStyle = TextStyle.HEADLINE_7
             ),
             listText = ListTextUiModel(
-                texts = medicine.specifications,
+                texts = buildSpecifications(medicine),
                 textStyle = TextStyle.BUTTON_1
             )
         ),
@@ -268,6 +282,16 @@ class MedicalHistoryViewModel @Inject constructor(
         arrangement = Arrangement.Center,
         modifier = Modifier.padding(top = 8.dp)
     )
+
+    private fun buildSpecifications(medicine: Map<String, String>): List<String> {
+        val presentation = medicine[GENERIC_NAME_KEY]?.split(" - ")?.lastOrNull()
+        return listOf(
+            "$APPLIED_DOSES ${medicine[APPLIED_DOSE_KEY]} ${medicine[DOSE_UNIT_KEY]}",
+            "$CODE ${medicine[CODE_KEY]}",
+            "$QUANTITY_USED ${medicine[QUANTITY_USED_KEY]} $presentation",
+            "$ADMINISTRATION_ROUTE ${medicine[ADMINISTRATION_ROUTE_KEY]}"
+        )
+    }
 
     fun handleShownError() {
         uiState = uiState.copy(

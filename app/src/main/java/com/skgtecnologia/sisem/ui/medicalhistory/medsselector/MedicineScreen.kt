@@ -34,7 +34,7 @@ fun MedicineScreen(
     LaunchedEffect(uiState.navigationModel) {
         launch {
             with(uiState.navigationModel) {
-                if (this?.goBack == true || this?.medicine != null) {
+                if (this?.goBack == true || this?.values != null) {
                     onNavigation(uiState.navigationModel)
                     viewModel.consumeNavigationEvent()
                 }
@@ -111,6 +111,8 @@ fun handleAction(
 
         is GenericUiAction.ButtonAction -> viewModel.saveMedicine()
 
-        else -> { Timber.d("no-op") }
+        else -> {
+            Timber.d("no-op")
+        }
     }
 }

@@ -48,6 +48,7 @@ fun navigateToNextStep(
         is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
         is DeviceAuthNavigationModel ->
             deviceAuthToNextStep(navController, navigationModel, onNavigationFallback)
+
         is MedicalHistoryNavigationModel -> medicalHistoryToNextStep(navController, navigationModel)
         is VitalSignsNavigationModel -> vitalSignsToNextStep(navController, navigationModel)
         is MedicineNavigationModel -> medicineToNextStep(navController, navigationModel)
@@ -240,12 +241,12 @@ fun medicineToNextStep(
                 ?.set(MEDICINE, null)
         }
 
-        model.medicine != null -> with(navController) {
+        model.values != null -> with(navController) {
             popBackStack()
 
             currentBackStackEntry
                 ?.savedStateHandle
-                ?.set(MEDICINE, model.medicine)
+                ?.set(MEDICINE, model.values)
         }
     }
 }

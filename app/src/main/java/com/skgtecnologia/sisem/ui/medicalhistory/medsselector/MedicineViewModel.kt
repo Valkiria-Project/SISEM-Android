@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicineScreen
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.model.MedicineModel
 import com.skgtecnologia.sisem.ui.navigation.model.MedicineNavigationModel
 import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
@@ -19,16 +18,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-private const val DATE_MEDICINE_KEY = "KEY_APPLICATION_DATE"
-private const val APPLIED_DOSE_KEY = "KEY_DOSE_APPLIED"
-private const val DOSE_UNIT_KEY = "KEY_DOSE_UNIT"
-private const val QUANTITY_USED_KEY = "KEY_CANT_APPLIED"
-private const val ADMINISTRATION_ROUTE_KEY = "KEY_VIA_ADMIN"
-
-private const val APPLIED_DOSES = "Dosis aplicada"
-private const val CODE = "Código"
-private const val QUANTITY_USED = "Cantidad utilizada"
-private const val ADMINISTRATION_ROUTE = "Via de administración"
+const val GENERIC_NAME_KEY = "KEY_GENERIC_NAME"
+const val DATE_MEDICINE_KEY = "KEY_APPLICATION_DATE"
+const val APPLICATION_TIME_KEY = "KEY_APPLICATION_TIME"
+const val DOSE_UNIT_KEY = "KEY_DOSE_UNIT"
+const val APPLIED_DOSE_KEY = "KEY_DOSE_APPLIED"
+const val CODE_KEY = "CODE_KEY"
+const val QUANTITY_USED_KEY = "KEY_CANT_APPLIED"
+const val ADMINISTRATION_ROUTE_KEY = "KEY_VIA_ADMIN"
 
 @HiltViewModel
 class MedicineViewModel @Inject constructor(
@@ -89,23 +86,21 @@ class MedicineViewModel @Inject constructor(
         if (areValidFields && isValidDropDown) {
             uiState = uiState.copy(
                 navigationModel = MedicineNavigationModel(
-                    medicine = MedicineModel(
-                        title = dropDownValue.value.name,
-                        date = "${fieldsValues[DATE_MEDICINE_KEY]?.updatedValue} - " +
-                            timePickerValue.value,
-                        specifications = buildSpecifications()
-                    )
+                    values = buildMedicineInformation()
                 )
             )
         }
     }
 
-    private fun buildSpecifications(): List<String> = listOf(
-        "$APPLIED_DOSES ${fieldsValues[APPLIED_DOSE_KEY]?.updatedValue}" +
-            "${chipValues[DOSE_UNIT_KEY]}",
-        "$CODE ${dropDownValue.value.id}",
-        "$QUANTITY_USED ${fieldsValues[QUANTITY_USED_KEY]?.updatedValue}",
-        "$ADMINISTRATION_ROUTE ${chipValues[ADMINISTRATION_ROUTE_KEY]}"
+    private fun buildMedicineInformation(): Map<String, String> = mapOf(
+        GENERIC_NAME_KEY to dropDownValue.value.name,
+        CODE_KEY to dropDownValue.value.id,
+        DATE_MEDICINE_KEY to fieldsValues[DATE_MEDICINE_KEY]?.updatedValue.orEmpty(),
+        APPLICATION_TIME_KEY to timePickerValue.value,
+        DOSE_UNIT_KEY to chipValues[DOSE_UNIT_KEY].orEmpty(),
+        APPLIED_DOSE_KEY to fieldsValues[APPLIED_DOSE_KEY]?.updatedValue.orEmpty(),
+        QUANTITY_USED_KEY to fieldsValues[QUANTITY_USED_KEY]?.updatedValue.orEmpty(),
+        ADMINISTRATION_ROUTE_KEY to chipValues[ADMINISTRATION_ROUTE_KEY].orEmpty()
     )
 
     fun consumeInfoEvent() {

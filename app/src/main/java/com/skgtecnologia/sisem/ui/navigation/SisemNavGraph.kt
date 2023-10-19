@@ -27,7 +27,6 @@ import com.skgtecnologia.sisem.ui.media.CameraScreen
 import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.MedicineScreen
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.model.MedicineModel
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsScreen
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
@@ -109,7 +108,7 @@ private fun NavGraphBuilder.authGraph(
 
         composable(
             route = AuthNavigationRoute.DeviceAuthScreen.route +
-                "/{${NavigationArgument.FROM}}",
+                    "/{${NavigationArgument.FROM}}",
             arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
         ) {
             DeviceAuthScreen(
@@ -183,8 +182,8 @@ private fun NavGraphBuilder.mainGraph(
             val vitalSigns =
                 navBackStackEntry.savedStateHandle.get<Map<String, String>>(VITAL_SIGNS)
             navBackStackEntry.savedStateHandle.remove<Map<String, String>>(VITAL_SIGNS)
-            val medicine = navBackStackEntry.savedStateHandle.get<MedicineModel>(MEDICINE)
-            navBackStackEntry.savedStateHandle.remove<MedicineModel>(MEDICINE)
+            val medicine = navBackStackEntry.savedStateHandle.get<Map<String, String>>(MEDICINE)
+            navBackStackEntry.savedStateHandle.remove<Map<String, String>>(MEDICINE)
 
             MedicalHistoryScreen(
                 vitalSigns = vitalSigns,
@@ -300,7 +299,7 @@ private fun NavGraphBuilder.reportGraph(
 
         composable(
             route = ReportNavigationRoute.ImagesConfirmationScreen.route +
-                "/{${NavigationArgument.FROM}}",
+                    "/{${NavigationArgument.FROM}}",
             arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
         ) { backStackEntry ->
             ImagesConfirmationScreen(

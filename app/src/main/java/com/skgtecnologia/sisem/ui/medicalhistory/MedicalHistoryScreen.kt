@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.model.MedicineModel
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.GenericUiAction
@@ -19,7 +18,7 @@ import timber.log.Timber
 fun MedicalHistoryScreen(
     modifier: Modifier = Modifier,
     vitalSigns: Map<String, String>?,
-    medicine: MedicineModel?,
+    medicine: Map<String, String>?,
     onNavigation: (medicalHistoryNavigationModel: NavigationModel?) -> Unit
 ) {
 
@@ -74,12 +73,14 @@ fun handleAction(
             viewModel.chipValues[uiAction.identifier] = uiAction.text
             viewModel.updateGlasgow()
         }
+
         is GenericUiAction.InfoCardAction -> viewModel.showVitalSignsForm(uiAction.identifier)
         is GenericUiAction.InputAction -> {}
         is GenericUiAction.HumanBodyAction -> {}
         is GenericUiAction.MedsSelectorAction -> {
             viewModel.showMedicineForm(uiAction.identifier)
         }
+
         is GenericUiAction.SegmentedSwitchAction -> {}
         is GenericUiAction.SliderAction -> {}
         else -> Timber.d("no-op")

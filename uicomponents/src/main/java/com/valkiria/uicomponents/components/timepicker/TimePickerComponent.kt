@@ -78,6 +78,7 @@ private fun TimeBox(label: String, value: TextUiModel) {
             modifier = Modifier
                 .clip(RoundedCornerShape(8.dp))
                 .background(MaterialTheme.colorScheme.primary)
+                .padding(8.dp)
         ) {
             Text(
                 text = value.text,
