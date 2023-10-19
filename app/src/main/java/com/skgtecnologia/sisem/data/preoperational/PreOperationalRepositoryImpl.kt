@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.data.preoperational
 
-import com.skgtecnologia.sisem.commons.extensions.mapResult
 import com.skgtecnologia.sisem.data.auth.cache.AuthCacheDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.data.preoperational.remote.PreOperationalRemoteDataSource

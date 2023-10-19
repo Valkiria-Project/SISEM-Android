@@ -1,3 +1,5 @@
+@file:Suppress("SwallowedException")
+
 package com.skgtecnologia.sisem.ui.commons.extensions
 
 import android.content.ContentResolver
