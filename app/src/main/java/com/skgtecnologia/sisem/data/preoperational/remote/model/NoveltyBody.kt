@@ -1,18 +1,14 @@
 package com.skgtecnologia.sisem.data.preoperational.remote.model
 
-import com.skgtecnologia.sisem.data.remote.model.images.ImageBody
-import com.skgtecnologia.sisem.data.remote.model.images.mapToBody
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.squareup.moshi.Json
 
 data class NoveltyBody(
-    @Json(name = "id_preoperational") val idPreoperational: Int,
-    @Json(name = "novelty") val novelty: String,
-    @Json(name = "images") val images: List<ImageBody>
+    @Json(name = "id_preoperational") val idPreoperational: String,
+    @Json(name = "novelty") val novelty: String
 )
 
 fun Novelty.mapToBody() = NoveltyBody(
     idPreoperational = idPreoperational,
-    novelty = novelty,
-    images = images.map { it.mapToBody() }
+    novelty = novelty
 )

@@ -26,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -40,7 +41,7 @@ class ReportViewModel @Inject constructor(
     var uiState by mutableStateOf(ReportUiState())
         private set
 
-    var findingId by mutableIntStateOf(0)
+    var findingId by mutableStateOf("")
     var topic by mutableStateOf("")
     var description by mutableStateOf("")
     var isValidTopic by mutableStateOf(false)
@@ -75,7 +76,7 @@ class ReportViewModel @Inject constructor(
                 .onFailure { throwable ->
                     uiState = uiState.copy(
                         isLoading = false,
-                        errorModel = throwable.mapToUi()
+                        infoEvent = throwable.mapToUi()
                     )
                 }
         }
@@ -114,31 +115,45 @@ class ReportViewModel @Inject constructor(
     }
 
     fun saveFinding() {
-        val navigationModel = if (isValidDescription) {
-            ReportNavigationModel(
-                closeFinding = true,
-                imagesSize = uiState.selectedImageUris.size
-            )
-        } else {
-            null
-        }
+        val (confirmInfoModel, navigationModel) =
+            if (isValidDescription && uiState.selectedImageUris.isNotEmpty()) {
+                null to ReportNavigationModel(
+                    closeFinding = true,
+                    imagesSize = uiState.selectedImageUris.size
+                )
+            } else {
+                findingConfirmationBanner().mapToUi() to null
+            }
 
         uiState = uiState.copy(
+            confirmInfoModel = confirmInfoModel,
             validateFields = true,
             navigationModel = navigationModel
         )
     }
 
-    fun confirmFindingImages() {
+    fun confirmFinding() {
         uiState = uiState.copy(
+            successInfoModel = findingSavedBanner().mapToUi(),
             navigationModel = ReportNavigationModel(
-                confirmFinding = true
-            ),
+                closeFinding = true,
+                imagesSize = uiState.selectedImageUris.size,
+                novelty = Novelty(
+                    idPreoperational = findingId,
+                    novelty = description,
+                    images = emptyList()
+                )
+            )
+        )
+    }
+
+    fun saveFindingImages() {
+        uiState = uiState.copy(
             confirmInfoModel = findingConfirmationBanner().mapToUi()
         )
     }
 
-    fun saveFindingWithImages(images: List<String>) {
+    fun confirmFindingImages(images: List<File>) {
         uiState = uiState.copy(
             confirmInfoModel = null,
             successInfoModel = findingSavedBanner().mapToUi(),
@@ -171,30 +186,42 @@ class ReportViewModel @Inject constructor(
     }
 
     fun saveReport() {
-        val navigationModel = if (isValidTopic && isValidDescription) {
-            ReportNavigationModel(
+        val (confirmInfoModel, navigationModel) = if (
+            isValidTopic && isValidDescription && uiState.selectedImageUris.isEmpty()
+        ) {
+            reportConfirmationBanner().mapToUi() to null
+        } else if (isValidTopic && isValidDescription && uiState.selectedImageUris.isNotEmpty()) {
+            null to ReportNavigationModel(
                 closeReport = true,
                 imagesSize = uiState.selectedImageUris.size
             )
         } else {
-            null
+            null to null
         }
+
         uiState = uiState.copy(
+            confirmInfoModel = confirmInfoModel,
             validateFields = true,
             navigationModel = navigationModel
         )
     }
 
-    fun confirmReportImages() {
+    fun confirmReport() {
         uiState = uiState.copy(
+            successInfoModel = reportSentBanner().mapToUi(),
             navigationModel = ReportNavigationModel(
-                confirmSendReport = true
-            ),
+                closeReport = true
+            )
+        )
+    }
+
+    fun saveReportImages() {
+        uiState = uiState.copy(
             confirmInfoModel = reportConfirmationBanner().mapToUi()
         )
     }
 
-    fun sendReport(images: List<String>) {
+    fun confirmReportImages(images: List<File>) {
         uiState = uiState.copy(isLoading = true)
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
@@ -223,7 +250,7 @@ class ReportViewModel @Inject constructor(
                     uiState = uiState.copy(
                         isLoading = false,
                         confirmInfoModel = null,
-                        errorModel = throwable.mapToUi()
+                        infoEvent = throwable.mapToUi()
                     )
                 }
             }
@@ -240,7 +267,7 @@ class ReportViewModel @Inject constructor(
             selectedImages.forEachIndexed { index, image ->
                 if (imageLimit <= (uiState.selectedImageUris.size + index)) {
                     uiState = uiState.copy(
-                        errorModel = imagesLimitErrorBanner(imageLimit).mapToUi()
+                        infoEvent = imagesLimitErrorBanner(imageLimit).mapToUi()
                     )
                     return@forEachIndexed
                 } else {
@@ -283,7 +310,7 @@ class ReportViewModel @Inject constructor(
 
             if (imageLimit < uiState.selectedImageUris.size) {
                 uiState = uiState.copy(
-                    errorModel = imagesLimitErrorBanner(imageLimit).mapToUi()
+                    infoEvent = imagesLimitErrorBanner(imageLimit).mapToUi()
                 )
             } else {
                 add(savedUri)
@@ -309,7 +336,7 @@ class ReportViewModel @Inject constructor(
 
     fun consumeShownError() {
         uiState = uiState.copy(
-            errorModel = null
+            infoEvent = null
         )
     }
 

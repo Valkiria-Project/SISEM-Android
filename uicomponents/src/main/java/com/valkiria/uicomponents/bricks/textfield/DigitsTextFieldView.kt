@@ -16,8 +16,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
+import com.valkiria.uicomponents.extensions.toFailedValidation
 
 @Composable
 fun DigitsTextFieldView(
@@ -38,7 +38,7 @@ fun DigitsTextFieldView(
             onAction(
                 identifier,
                 updatedValue.text,
-                text.toFailedValidation(validations, validateFields) == null
+                text.toFailedValidation(validations, true) == null
             )
         },
         modifier = Modifier.size(56.dp),
@@ -46,7 +46,7 @@ fun DigitsTextFieldView(
         supportingText = {
             if (validateFields) {
                 Text(
-                    text = "El campo no debe estar vacío",
+                    text = text.toFailedValidation(validations)?.message.orEmpty(),
                     modifier = Modifier.fillMaxWidth(),
                     color = MaterialTheme.colorScheme.error
                 )

@@ -251,12 +251,13 @@ private fun NavGraphBuilder.reportGraph(
             route = ReportNavigationRoute.AddFindingScreen.route +
                 "?${NavigationArgument.FINDING_ID}={${NavigationArgument.FINDING_ID}}",
             arguments = listOf(
-                navArgument(NavigationArgument.FINDING_ID) { type = NavType.IntType }
+                navArgument(NavigationArgument.FINDING_ID) { type = NavType.StringType }
             )
         ) { backStackEntry ->
             AddFindingScreen(
                 viewModel = backStackEntry.sharedViewModel(navController = navController),
-                findingId = backStackEntry.arguments?.getInt(NavigationArgument.FINDING_ID) ?: 0,
+                findingId = backStackEntry.arguments?.getString(NavigationArgument.FINDING_ID)
+                    .orEmpty(),
                 modifier = modifier
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
