@@ -129,7 +129,7 @@ class PreOperationalViewModel @Inject constructor(
             ),
             navigationModel = PreOpNavigationModel(
                 isNewFindingEvent = true,
-                findingId = temporalFinding.toIntOrNull()
+                findingId = temporalFinding
             )
         )
     }

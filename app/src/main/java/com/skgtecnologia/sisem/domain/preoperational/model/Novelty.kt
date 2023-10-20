@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Novelty(
-    val idPreoperational: Int,
+    val idPreoperational: String,
     val novelty: String,
     val images: List<ImageModel>
 ) : Parcelable

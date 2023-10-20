@@ -41,7 +41,7 @@ class ReportViewModel @Inject constructor(
     var uiState by mutableStateOf(ReportUiState())
         private set
 
-    var findingId by mutableIntStateOf(0)
+    var findingId by mutableStateOf("")
     var topic by mutableStateOf("")
     var description by mutableStateOf("")
     var isValidTopic by mutableStateOf(false)
