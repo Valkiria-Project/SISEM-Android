@@ -52,8 +52,8 @@ fun AddReportScreen(
     LaunchedEffect(uiState) {
         launch {
             when {
-                uiState.navigationModel != null && uiState.cancelInfoModel == null
-                    && uiState.confirmInfoModel == null -> {
+                uiState.navigationModel != null && uiState.cancelInfoModel == null &&
+                    uiState.confirmInfoModel == null -> {
                     onNavigation(uiState.navigationModel)
                     viewModel.consumeNavigationEvent()
                 }

@@ -54,8 +54,8 @@ fun AddFindingScreen(
     LaunchedEffect(uiState) {
         launch {
             when {
-                uiState.navigationModel != null && uiState.cancelInfoModel == null
-                    && uiState.confirmInfoModel == null && uiState.successInfoModel == null -> {
+                uiState.navigationModel != null && uiState.cancelInfoModel == null &&
+                    uiState.confirmInfoModel == null && uiState.successInfoModel == null -> {
                     onNavigation(uiState.navigationModel)
                     viewModel.consumeNavigationEvent()
                 }

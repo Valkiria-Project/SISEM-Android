@@ -61,6 +61,7 @@ class PreOperationalRemoteDataSource @Inject constructor(
             it.mapToDomain()
         }
 
+    @Suppress("LongParameterList")
     suspend fun sendPreOperational(
         role: OperationRole,
         idTurn: String,
