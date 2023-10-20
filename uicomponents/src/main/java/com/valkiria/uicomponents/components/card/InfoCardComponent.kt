@@ -29,11 +29,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.valkiria.uicomponents.R
+import com.valkiria.uicomponents.bricks.banner.report.ReportDetailUiModel
 import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.bricks.chip.SuggestionChipView
+import com.valkiria.uicomponents.components.header.HeaderUiModel
+import com.valkiria.uicomponents.components.label.ListTextUiModel
+import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.label.TextUiModel
 import com.valkiria.uicomponents.components.label.toTextStyle
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
@@ -78,19 +87,35 @@ fun InfoCardComponent(
             Column(
                 modifier = Modifier.padding(horizontal = 32.dp, vertical = 24.dp)
             ) {
-                Row(verticalAlignment = Alignment.Bottom) {
+                ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
+                    val (icon, text, badged) = createRefs()
+
                     iconResourceId?.let {
                         Icon(
                             imageVector = ImageVector.vectorResource(id = iconResourceId),
                             contentDescription = "",
                             modifier = Modifier
-                                .size(40.dp)
-                                .align(Alignment.CenterVertically),
+                                .constrainAs(icon) {
+                                    start.linkTo(parent.start)
+                                    top.linkTo(parent.top)
+                                    bottom.linkTo(parent.bottom)
+                                }
+                                .size(40.dp),
                             tint = MaterialTheme.colorScheme.primary,
                         )
                     }
 
-                    Column(modifier = Modifier.padding(start = 12.dp, end = 8.dp)) {
+                    Column(
+                        modifier = Modifier
+                            .constrainAs(text) {
+                                start.linkTo(icon.end)
+                                top.linkTo(parent.top)
+                                bottom.linkTo(parent.bottom)
+                                end.linkTo(badged.start)
+                                width = Dimension.preferredWrapContent
+                            }
+                            .padding(start = 12.dp)
+                    ) {
                         Text(
                             text = uiModel.title.text,
                             style = uiModel.title.textStyle.toTextStyle(),
@@ -106,12 +131,21 @@ fun InfoCardComponent(
                                 .padding(horizontal = 8.dp),
                             text = uiModel.pill.title.text,
                             style = uiModel.pill.title.textStyle.toTextStyle(),
-                            color = Color.Black
+                            color = Color.Black,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
 
                     uiModel.reportsDetail?.let {
                         BadgedBoxView(
+                            modifier = Modifier
+                                .constrainAs(badged) {
+                                    end.linkTo(parent.end)
+                                    top.linkTo(parent.top)
+                                    bottom.linkTo(parent.bottom)
+                                }
+                                .padding(start = 12.dp),
                             count = it.details.size,
                             reportDetail = it,
                             onAction = onNewsAction
@@ -205,12 +239,13 @@ fun InfoCardComponent(
 
 @Composable
 fun BadgedBoxView(
+    modifier: Modifier = Modifier,
     count: Int,
     reportDetail: ReportsDetailUiModel,
     onAction: (reportDetail: ReportsDetailUiModel) -> Unit
 ) {
     BadgedBox(
-        modifier = Modifier
+        modifier = modifier
             .clickable { onAction(reportDetail) }
             .size(25.dp),
         badge = {
@@ -227,4 +262,75 @@ fun BadgedBoxView(
             tint = MaterialTheme.colorScheme.primary,
         )
     }
+}
+
+@Suppress("LongMethod")
+@Preview(showBackground = true)
+@Composable
+fun InfoCardComponentPreview() {
+    InfoCardComponent(
+        uiModel = InfoCardUiModel(
+            identifier = "identifier",
+            icon = "ic_aux",
+            title = TextUiModel(
+                text = "Title",
+                textStyle = TextStyle.HEADLINE_4
+            ),
+            pill = PillUiModel(
+                title = TextUiModel(
+                    text = "Anterior: RODOLFO BARRIOS GOMEZ",
+                    textStyle = TextStyle.HEADLINE_7
+                ),
+                color = "#FF0000"
+            ),
+            date = TextUiModel(
+                text = "10:30",
+                textStyle = TextStyle.HEADLINE_4
+            ),
+            chipSection = ChipSectionUiModel(
+                title = TextUiModel(
+                    text = "ChipSection",
+                    textStyle = TextStyle.HEADLINE_7
+                ),
+                listText = ListTextUiModel(
+                    listOf("Prueba1", "Prueba2"),
+                    textStyle = TextStyle.HEADLINE_7
+                )
+            ),
+            reportsDetail = ReportsDetailUiModel(
+                header = HeaderUiModel(
+                    identifier = "identifier",
+                    title = TextUiModel(
+                        text = "Title",
+                        textStyle = TextStyle.HEADLINE_4
+                    ),
+                    arrangement = Arrangement.Center,
+                    modifier = Modifier
+                ),
+                details = listOf(
+                    ReportDetailUiModel(
+                        images = listOf("ic_aux"),
+                        title = TextUiModel(
+                            text = "Title",
+                            textStyle = TextStyle.HEADLINE_4
+                        ),
+                        subtitle = TextUiModel(
+                            text = "Subtitle",
+                            textStyle = TextStyle.HEADLINE_7
+                        ),
+                        description = TextUiModel(
+                            text = "Description",
+                            textStyle = TextStyle.HEADLINE_7
+                        ),
+                        modifier = Modifier
+                    )
+                )
+            ),
+            arrangement = Arrangement.Center,
+            modifier = Modifier
+        ),
+        onAction = {},
+        onNewsAction = {},
+        onFindingsAction = {}
+    )
 }
