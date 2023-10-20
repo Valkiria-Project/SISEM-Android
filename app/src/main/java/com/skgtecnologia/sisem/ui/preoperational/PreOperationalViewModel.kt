@@ -97,7 +97,6 @@ class PreOperationalViewModel @Inject constructor(
                     }
             }
 
-
             awaitAll(operationConfig, screenModel)
         }
     }
