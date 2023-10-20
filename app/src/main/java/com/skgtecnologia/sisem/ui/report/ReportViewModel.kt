@@ -115,31 +115,45 @@ class ReportViewModel @Inject constructor(
     }
 
     fun saveFinding() {
-        val navigationModel = if (isValidDescription) {
-            ReportNavigationModel(
-                closeFinding = true,
-                imagesSize = uiState.selectedImageUris.size
-            )
-        } else {
-            null
-        }
+        val (confirmInfoModel, navigationModel) =
+            if (isValidDescription && uiState.selectedImageUris.isNotEmpty()) {
+                null to ReportNavigationModel(
+                    closeFinding = true,
+                    imagesSize = uiState.selectedImageUris.size
+                )
+            } else {
+                findingConfirmationBanner().mapToUi() to null
+            }
 
         uiState = uiState.copy(
+            confirmInfoModel = confirmInfoModel,
             validateFields = true,
             navigationModel = navigationModel
         )
     }
 
-    fun confirmFindingImages() {
+    fun confirmFinding() {
         uiState = uiState.copy(
+            successInfoModel = findingSavedBanner().mapToUi(),
             navigationModel = ReportNavigationModel(
-                confirmFinding = true
-            ),
+                closeFinding = true,
+                imagesSize = uiState.selectedImageUris.size,
+                novelty = Novelty(
+                    idPreoperational = findingId,
+                    novelty = description,
+                    images = emptyList()
+                )
+            )
+        )
+    }
+
+    fun saveFindingImages() {
+        uiState = uiState.copy(
             confirmInfoModel = findingConfirmationBanner().mapToUi()
         )
     }
 
-    fun saveFindingWithImages(images: List<File>) {
+    fun confirmFindingImages(images: List<File>) {
         uiState = uiState.copy(
             confirmInfoModel = null,
             successInfoModel = findingSavedBanner().mapToUi(),
@@ -172,30 +186,36 @@ class ReportViewModel @Inject constructor(
     }
 
     fun saveReport() {
-        val navigationModel = if (isValidTopic && isValidDescription) {
+        val (navigationModel, confirmInfoModel) = if (isValidTopic && isValidDescription) {
             ReportNavigationModel(
-                closeReport = true,
                 imagesSize = uiState.selectedImageUris.size
-            )
+            ) to reportConfirmationBanner().mapToUi()
         } else {
-            null
+            null to null
         }
         uiState = uiState.copy(
+            confirmInfoModel = confirmInfoModel,
             validateFields = true,
             navigationModel = navigationModel
         )
     }
 
-    fun confirmReportImages() {
+    fun confirmReport() {
         uiState = uiState.copy(
-            navigationModel = ReportNavigationModel(
-                confirmSendReport = true
-            ),
+            confirmInfoModel = reportSentBanner().mapToUi(),
+            navigationModel = uiState.navigationModel?.copy(
+                closeReport = true,
+            )
+        )
+    }
+
+    fun saveReportImages() {
+        uiState = uiState.copy(
             confirmInfoModel = reportConfirmationBanner().mapToUi()
         )
     }
 
-    fun sendReport(images: List<File>) {
+    fun confirmReportImages(images: List<File>) {
         uiState = uiState.copy(isLoading = true)
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {

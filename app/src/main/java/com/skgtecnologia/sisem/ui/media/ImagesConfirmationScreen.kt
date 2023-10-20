@@ -16,6 +16,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +46,7 @@ import com.valkiria.uicomponents.components.button.ButtonStyle
 import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.components.label.TextStyle
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.random.Random
@@ -60,6 +62,7 @@ fun ImagesConfirmationScreen(
 ) {
     val uiState = viewModel.uiState
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -147,9 +150,9 @@ fun ImagesConfirmationScreen(
                 )
             ) {
                 if (from == REPORT) {
-                    viewModel.confirmReportImages()
+                    viewModel.saveReportImages()
                 } else {
-                    viewModel.confirmFindingImages()
+                    viewModel.saveFindingImages()
                 }
             }
         }
@@ -162,7 +165,7 @@ fun ImagesConfirmationScreen(
     }
 
     OnBannerHandler(uiState.confirmInfoModel) {
-        handleAction(it, from, context, viewModel)
+        handleAction(it, from, context, viewModel, coroutineScope)
     }
 
     OnBannerHandler(uiState.successInfoModel) {
@@ -180,7 +183,8 @@ private fun handleAction(
     uiAction: UiAction,
     from: String,
     context: Context,
-    viewModel: ReportViewModel
+    viewModel: ReportViewModel,
+    coroutineScope: CoroutineScope
 ) {
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
@@ -188,18 +192,22 @@ private fun handleAction(
                 viewModel.consumeNavigationEvent()
 
             ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name -> {
-                val images = viewModel.uiState.selectedImageUris.map { uri ->
-                    context.storeUriAsFileToCache(uri)
-                }
+                coroutineScope.launch {
+                    val images = viewModel.uiState.selectedImageUris.map { uri ->
+                        context.storeUriAsFileToCache(uri)
+                    }
 
-                if (from == REPORT) {
-                    viewModel.sendReport(images)
-                } else {
-                    viewModel.saveFindingWithImages(images)
-                }
+                    if (from == REPORT) {
+                        viewModel.confirmReportImages(images)
+                    } else {
+                        viewModel.confirmFindingImages(images)
+                    }
 
-                viewModel.consumeShownConfirm()
+                    viewModel.consumeShownConfirm()
+                }
             }
+
+            else -> Timber.d("no-op")
         }
     }
 }

@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.data.preoperational.remote
 import com.skgtecnologia.sisem.commons.extensions.mapResult
 import com.skgtecnologia.sisem.commons.extensions.resultOf
 import com.skgtecnologia.sisem.data.preoperational.remote.model.SavePreOperationalBody
+import com.skgtecnologia.sisem.data.preoperational.remote.model.mapToBody
 import com.skgtecnologia.sisem.data.remote.extensions.apiCall
 import com.skgtecnologia.sisem.data.remote.extensions.createRequestBody
 import com.skgtecnologia.sisem.data.remote.model.screen.Params
@@ -65,7 +66,8 @@ class PreOperationalRemoteDataSource @Inject constructor(
         idTurn: String,
         findings: Map<String, Boolean>,
         inventoryValues: Map<String, Int>,
-        fieldsValues: Map<String, String>
+        fieldsValues: Map<String, String>,
+        novelties: List<Novelty>
     ): Result<Unit> = apiCall(errorModelFactory) {
         preOperationalApi.sendPreOperational(
             savePreOperationalBody = SavePreOperationalBody(
@@ -73,12 +75,13 @@ class PreOperationalRemoteDataSource @Inject constructor(
                 idTurn = idTurn.toInt(),
                 findingValues = findings,
                 inventoryValues = inventoryValues,
-                fieldsValues = fieldsValues
+                fieldsValues = fieldsValues,
+                novelties = novelties.map { it.mapToBody() }
             )
         )
     }
 
-    suspend fun sendFinding(
+    suspend fun sendFindings(
         role: OperationRole,
         idTurn: String,
         novelties: List<Novelty>
@@ -86,25 +89,35 @@ class PreOperationalRemoteDataSource @Inject constructor(
         coroutineScope {
             novelties.map { novelty ->
                 async {
-                    apiCall(errorModelFactory) {
-                        preOperationalApi.sendFinding2(
-                            type = role.name.createRequestBody(),
-                            idPreoperational = novelty.idPreoperational.toString()
-                                .createRequestBody(),
-                            idTurn = idTurn.createRequestBody(),
-                            novelty = novelty.novelty.createRequestBody(),
-                            images = novelty.images.map { imageModel ->
-                                val requestFile = imageModel.file.createRequestBody()
-                                MultipartBody.Part.createFormData(
-                                    FINDING_FILE_NAME,
-                                    imageModel.file.name,
-                                    requestFile
-                                )
-                            }
-                        )
-                    }
+                    validateAndSendFinding(novelty, role, idTurn)
                 }
             }.awaitAll()
+        }
+    }
+
+    private suspend fun validateAndSendFinding(
+        novelty: Novelty,
+        role: OperationRole,
+        idTurn: String
+    ) {
+        if (novelty.images.isNotEmpty()) {
+            apiCall(errorModelFactory) {
+                preOperationalApi.sendFinding(
+                    type = role.name.createRequestBody(),
+                    idPreoperational = novelty.idPreoperational.toString()
+                        .createRequestBody(),
+                    idTurn = idTurn.createRequestBody(),
+                    novelty = novelty.novelty.createRequestBody(),
+                    images = novelty.images.map { imageModel ->
+                        val requestFile = imageModel.file.createRequestBody()
+                        MultipartBody.Part.createFormData(
+                            FINDING_FILE_NAME,
+                            imageModel.file.name,
+                            requestFile
+                        )
+                    }
+                )
+            }
         }
     }
 }

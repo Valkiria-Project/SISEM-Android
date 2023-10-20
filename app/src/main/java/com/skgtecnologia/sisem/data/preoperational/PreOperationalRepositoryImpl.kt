@@ -49,10 +49,11 @@ class PreOperationalRepositoryImpl @Inject constructor(
             idTurn = idTurn,
             findings = findings,
             inventoryValues = inventoryValues,
-            fieldsValues = fieldsValues
+            fieldsValues = fieldsValues,
+            novelties = novelties
         ).onSuccess {
             authCacheDataSource.updatePreOperationalStatus(accessToken.role)
-            preOperationalRemoteDataSource.sendFinding(
+            preOperationalRemoteDataSource.sendFindings(
                 role = role,
                 idTurn = idTurn,
                 novelties = novelties

@@ -147,6 +147,7 @@ dependencies {
     implementation(libs.accompanist.permissions)
     implementation(libs.accompanist.placeholder.material)
     implementation(libs.coil.compose)
+    implementation(libs.compressor)
 
     // Location
     implementation(libs.play.services.location)

@@ -35,7 +35,7 @@ interface PreOperationalApi {
 
     @Multipart
     @POST("preoperational/novelty")
-    suspend fun sendFinding2(
+    suspend fun sendFinding(
         @Part("type") type: RequestBody,
         @Part("id_preoperational") idPreoperational: RequestBody,
         @Part("id_turn") idTurn: RequestBody,
