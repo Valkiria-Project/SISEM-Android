@@ -164,10 +164,10 @@ fun imagesLimitErrorBanner(imageLimit: Int): BannerModel = BannerModel(
     description = "Se ha excedido el número de imágenes permitido por el sistema $imageLimit"
 )
 
-fun preOperationalConfirmationBanner(): BannerModel = BannerModel(
+fun preOperationalConfirmationBanner(zone: String): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "Guardar cambios",
-    description = "Firmado electrónicamente - Unidad Funcional de APH unidad funcional, " +
+    description = "Firmado electrónicamente - Unidad Funcional de APH $zone, " +
         "en razón, de la obligación contractual \"7.22 elaborar y verificar el " +
         "diligenciamiento de la bitácora de estado de los elementos equipos biomédicos y de " +
         "radiocomunicaciones y demás que hacen parte de los vehículos de emergencia está\n" +

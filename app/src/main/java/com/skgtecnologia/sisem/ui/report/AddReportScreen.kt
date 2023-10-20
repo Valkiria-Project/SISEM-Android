@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.label.addFilesHint
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
+import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
 import com.skgtecnologia.sisem.ui.media.MediaActions
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.FooterSection
@@ -32,8 +33,8 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
-import kotlin.random.Random
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 private const val DESCRIPTION_INPUT_MIN_LINES = 3
 
@@ -51,7 +52,8 @@ fun AddReportScreen(
     LaunchedEffect(uiState) {
         launch {
             when {
-                uiState.navigationModel != null && uiState.cancelInfoModel == null -> {
+                uiState.navigationModel != null && uiState.cancelInfoModel == null &&
+                    uiState.confirmInfoModel == null && uiState.successInfoModel == null -> {
                     onNavigation(uiState.navigationModel)
                     viewModel.consumeNavigationEvent()
                 }
@@ -68,48 +70,56 @@ fun AddReportScreen(
                     viewModel.navigateBackFromReport()
                 }
             }
-        }
 
-        TextFieldComponent(
-            uiModel = getFindingsTopicModel(),
-            validateFields = uiState.validateFields
-        ) { inputUiModel ->
-            viewModel.topic = inputUiModel.updatedValue
-            viewModel.isValidTopic = inputUiModel.fieldValidated
-        }
+            TextFieldComponent(
+                uiModel = getReportTopicModel(),
+                validateFields = uiState.validateFields
+            ) { inputUiModel ->
+                viewModel.topic = inputUiModel.updatedValue
+                viewModel.isValidTopic = inputUiModel.fieldValidated
+            }
 
-        TextFieldComponent(
-            uiModel = getReportDescriptionModel(),
-            validateFields = uiState.validateFields
-        ) { inputUiModel ->
-            viewModel.description = inputUiModel.updatedValue
-            viewModel.isValidDescription = inputUiModel.fieldValidated
-        }
+            TextFieldComponent(
+                uiModel = getReportDescriptionModel(),
+                validateFields = uiState.validateFields
+            ) { inputUiModel ->
+                viewModel.description = inputUiModel.updatedValue
+                viewModel.isValidDescription = inputUiModel.fieldValidated
+            }
 
-        LabelComponent(
-            uiModel = addFilesHint(stringResource(id = R.string.findings_add_files_label))
-        )
-
-        Text(
-            text = stringResource(
-                id = R.string.findings_selected_files_label,
-                viewModel.uiState.selectedImageUris.size.toString()
-            ),
-            modifier = Modifier.padding(
-                start = 20.dp,
-                end = 20.dp,
+            LabelComponent(
+                uiModel = addFilesHint(stringResource(id = R.string.findings_add_files_label))
             )
-        )
 
-        MediaActions(viewModel)
+            Text(
+                text = stringResource(
+                    id = R.string.findings_selected_files_label,
+                    viewModel.uiState.selectedImageUris.size.toString()
+                ),
+                modifier = Modifier.padding(
+                    start = 20.dp,
+                    end = 20.dp,
+                )
+            )
 
-        Spacer(modifier = Modifier.weight(1f))
+            MediaActions(viewModel)
+
+            Spacer(modifier = Modifier.weight(1f))
+        }
 
         addReportUiState.screenModel?.footer?.let {
             FooterSection(footerModel = it) { uiAction ->
                 handleFooterAction(uiAction, viewModel)
             }
         }
+    }
+
+    OnBannerHandler(uiState.confirmInfoModel) {
+        handleFooterAction(it, viewModel)
+    }
+
+    OnBannerHandler(uiState.successInfoModel) {
+        onNavigation(uiState.navigationModel)
     }
 
     OnBannerHandler(uiState.cancelInfoModel) {
@@ -120,7 +130,7 @@ fun AddReportScreen(
         addReportViewModel.handleShownError()
     }
 
-    OnBannerHandler(uiState.errorModel) {
+    OnBannerHandler(uiState.infoEvent) {
         viewModel.consumeShownError()
     }
 
@@ -142,15 +152,23 @@ private fun handleFooterAction(
             AddReportIdentifier.ADD_REPORT_CANCEL_BANNER.name -> viewModel.consumeNavigationEvent()
             AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name ->
                 viewModel.navigateBackFromReport()
+
+            ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_CANCEL_BANNER.name ->
+                viewModel.consumeNavigationEvent()
+
+            ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name -> {
+                viewModel.confirmReport()
+                viewModel.consumeShownConfirm()
+            }
         }
     }
 }
 
 @Suppress("MagicNumber")
 @Composable
-private fun getFindingsTopicModel() = TextFieldUiModel(
+private fun getReportTopicModel() = TextFieldUiModel(
     identifier = Random(100).toString(),
-    label = stringResource(id = R.string.findings_description_label),
+    label = stringResource(id = R.string.findings_topic_label),
     keyboardOptions = KeyboardOptions.Default.copy(
         keyboardType = KeyboardType.Text
     ),

@@ -201,12 +201,12 @@ private fun LazyListScope.handleBodyRows(
                 InventoryCheckComponent(
                     uiModel = model,
                     validateFields = validateFields
-                ) { id, updatedValue, fieldValidated ->
+                ) { inputUiModel ->
                     onAction(
                         GenericUiAction.InventoryAction(
-                            identifier = id,
-                            updatedValue = updatedValue,
-                            fieldValidated = fieldValidated
+                            identifier = inputUiModel.identifier,
+                            updatedValue = inputUiModel.updatedValue,
+                            fieldValidated = inputUiModel.fieldValidated
                         )
                     )
                 }

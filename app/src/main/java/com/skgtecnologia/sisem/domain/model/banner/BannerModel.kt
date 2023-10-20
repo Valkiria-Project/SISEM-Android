@@ -23,9 +23,9 @@ data class BannerModel(
 ) : RuntimeException()
 
 fun Throwable.mapToUi(): BannerUiModel = (this as? BannerModel)?.mapToUi() ?: BannerUiModel(
-    icon = "Default icon", // FIXME: Add Default
-    title = "Default title", // FIXME: Add Default
-    description = "Default description" // FIXME: Add Default
+    icon = "ic_alert",
+    title = "Error en servidor",
+    description = ""
 )
 
 private fun BannerModel.mapToUi() = BannerUiModel(
@@ -45,7 +45,7 @@ class ErrorModelFactory @Inject constructor(
 
         return when (error) {
             is ConnectException, is UnknownHostException -> BannerModel(
-                icon = "",
+                icon = stringProvider.getString(R.string.error_default_icon),
                 title = stringProvider.getString(R.string.error_connectivity_title),
                 description = ""
             )
@@ -53,13 +53,13 @@ class ErrorModelFactory @Inject constructor(
             is HttpException -> {
                 if (error.code() == FORBIDDEN_HTTP_STATUS_CODE) {
                     BannerModel(
-                        icon = "",
+                        icon = stringProvider.getString(R.string.error_default_icon),
                         title = stringProvider.getString(R.string.error_forbidden_title),
                         description = ""
                     )
                 } else {
                     BannerModel(
-                        icon = "",
+                        icon = stringProvider.getString(R.string.error_default_icon),
                         title = error.message(),
                         description = ""
                     )
@@ -67,13 +67,13 @@ class ErrorModelFactory @Inject constructor(
             }
 
             is SocketTimeoutException -> BannerModel(
-                icon = "",
+                icon = stringProvider.getString(R.string.error_default_icon),
                 title = stringProvider.getString(R.string.error_server_title),
                 description = ""
             )
 
             else -> BannerModel(
-                icon = "",
+                icon = stringProvider.getString(R.string.error_default_icon),
                 title = stringProvider.getString(R.string.error_general_title),
                 description = ""
             )

@@ -2,10 +2,14 @@ package com.skgtecnologia.sisem.data.report.remote
 
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenResponse
-import com.skgtecnologia.sisem.data.report.remote.model.ReportBody
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
+import retrofit2.http.Path
 
 interface ReportApi {
 
@@ -15,6 +19,12 @@ interface ReportApi {
     @POST("screen/addReportEntry")
     suspend fun getAddReportEntryScreen(@Body screenBody: ScreenBody): Response<ScreenResponse>
 
-    @POST("novelty")
-    suspend fun sendReport(@Body reportBody: ReportBody): Response<Unit>
+    @Multipart
+    @POST("novelty/{idTurn}")
+    suspend fun sendReport(
+        @Path("idTurn") idTurn: String,
+        @Part("subject") topic: RequestBody,
+        @Part("description") description: RequestBody,
+        @Part files: List<MultipartBody.Part>
+    ): Response<Unit>
 }
