@@ -172,7 +172,7 @@ fun ImagesConfirmationScreen(
         onNavigation(uiState.navigationModel)
     }
 
-    OnBannerHandler(uiState.errorModel) {
+    OnBannerHandler(uiState.infoEvent) {
         viewModel.consumeShownError()
     }
 

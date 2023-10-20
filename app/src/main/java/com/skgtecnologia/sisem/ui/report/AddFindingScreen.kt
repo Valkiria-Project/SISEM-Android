@@ -138,7 +138,7 @@ fun AddFindingScreen(
         handleFooterAction(it, viewModel)
     }
 
-    OnBannerHandler(uiState.errorModel) {
+    OnBannerHandler(uiState.infoEvent) {
         viewModel.consumeShownError()
     }
 

@@ -13,6 +13,7 @@ import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.banner.preOperationalConfirmationBanner
 import com.skgtecnologia.sisem.domain.model.banner.preOperationalIncompleteFormBanner
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
@@ -25,6 +26,8 @@ import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -35,6 +38,7 @@ class PreOperationalViewModel @Inject constructor(
     private val androidIdProvider: AndroidIdProvider,
     private val getLoginNavigationModel: GetLoginNavigationModel,
     private val getPreOperationalScreen: GetPreOperationalScreen,
+    private val observeOperationConfig: ObserveOperationConfig,
     private val sendPreOperational: SendPreOperational
 ) : ViewModel() {
 
@@ -54,25 +58,47 @@ class PreOperationalViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            getPreOperationalScreen.invoke(androidIdProvider.getAndroidId())
-                .onSuccess { preOperationalScreenModel ->
-                    preOperationalScreenModel.getFormInitialValues()
-
-                    withContext(Dispatchers.Main) {
+            val operationConfig = async {
+                observeOperationConfig.invoke()
+                    .onSuccess { operationModel ->
+                        withContext(Dispatchers.Main) {
+                            uiState = uiState.copy(
+                                operationModel = operationModel,
+                            )
+                        }
+                    }
+                    .onFailure { throwable ->
                         uiState = uiState.copy(
-                            screenModel = preOperationalScreenModel,
-                            isLoading = false
+                            isLoading = false,
+                            infoEvent = throwable.mapToUi()
                         )
                     }
-                }
-                .onFailure { throwable ->
-                    Timber.wtf(throwable, "This is a failure")
+            }
 
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        infoEvent = throwable.mapToUi()
-                    )
-                }
+            val screenModel = async {
+                getPreOperationalScreen.invoke(androidIdProvider.getAndroidId())
+                    .onSuccess { preOperationalScreenModel ->
+                        preOperationalScreenModel.getFormInitialValues()
+
+                        withContext(Dispatchers.Main) {
+                            uiState = uiState.copy(
+                                screenModel = preOperationalScreenModel,
+                                isLoading = false
+                            )
+                        }
+                    }
+                    .onFailure { throwable ->
+                        Timber.wtf(throwable, "This is a failure")
+
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            infoEvent = throwable.mapToUi()
+                        )
+                    }
+            }
+
+
+            awaitAll(operationConfig, screenModel)
         }
     }
 
@@ -174,7 +200,9 @@ class PreOperationalViewModel @Inject constructor(
         Timber.d("Fields are $areValidFields")
 
         val infoEvent = if (isValidInventory && areValidFields) {
-            preOperationalConfirmationBanner().mapToUi()
+            preOperationalConfirmationBanner(
+                uiState.operationModel?.vehicleConfig?.zone.orEmpty()
+            ).mapToUi()
         } else {
             preOperationalIncompleteFormBanner().mapToUi()
         }

@@ -76,7 +76,7 @@ class ReportViewModel @Inject constructor(
                 .onFailure { throwable ->
                     uiState = uiState.copy(
                         isLoading = false,
-                        errorModel = throwable.mapToUi()
+                        infoEvent = throwable.mapToUi()
                     )
                 }
         }
@@ -250,7 +250,7 @@ class ReportViewModel @Inject constructor(
                     uiState = uiState.copy(
                         isLoading = false,
                         confirmInfoModel = null,
-                        errorModel = throwable.mapToUi()
+                        infoEvent = throwable.mapToUi()
                     )
                 }
             }
@@ -267,7 +267,7 @@ class ReportViewModel @Inject constructor(
             selectedImages.forEachIndexed { index, image ->
                 if (imageLimit <= (uiState.selectedImageUris.size + index)) {
                     uiState = uiState.copy(
-                        errorModel = imagesLimitErrorBanner(imageLimit).mapToUi()
+                        infoEvent = imagesLimitErrorBanner(imageLimit).mapToUi()
                     )
                     return@forEachIndexed
                 } else {
@@ -310,7 +310,7 @@ class ReportViewModel @Inject constructor(
 
             if (imageLimit < uiState.selectedImageUris.size) {
                 uiState = uiState.copy(
-                    errorModel = imagesLimitErrorBanner(imageLimit).mapToUi()
+                    infoEvent = imagesLimitErrorBanner(imageLimit).mapToUi()
                 )
             } else {
                 add(savedUri)
@@ -336,7 +336,7 @@ class ReportViewModel @Inject constructor(
 
     fun consumeShownError() {
         uiState = uiState.copy(
-            errorModel = null
+            infoEvent = null
         )
     }
 

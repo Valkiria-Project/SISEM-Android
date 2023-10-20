@@ -12,7 +12,7 @@ data class ReportUiState(
     val cancelInfoModel: BannerUiModel? = null,
     val confirmInfoModel: BannerUiModel? = null,
     val validateFields: Boolean = false,
-    val navigationModel: ReportNavigationModel? = null,
     val isLoading: Boolean = false,
-    val errorModel: BannerUiModel? = null
+    val infoEvent: BannerUiModel? = null,
+    val navigationModel: ReportNavigationModel? = null
 )

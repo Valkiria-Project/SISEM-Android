@@ -130,7 +130,7 @@ fun AddReportScreen(
         addReportViewModel.handleShownError()
     }
 
-    OnBannerHandler(uiState.errorModel) {
+    OnBannerHandler(uiState.infoEvent) {
         viewModel.consumeShownError()
     }
 
