@@ -186,13 +186,19 @@ class ReportViewModel @Inject constructor(
     }
 
     fun saveReport() {
-        val (navigationModel, confirmInfoModel) = if (isValidTopic && isValidDescription) {
-            ReportNavigationModel(
+        val (confirmInfoModel, navigationModel) = if (
+            isValidTopic && isValidDescription && uiState.selectedImageUris.isEmpty()
+        ) {
+            reportConfirmationBanner().mapToUi() to null
+        } else if (isValidTopic && isValidDescription && uiState.selectedImageUris.isNotEmpty()) {
+            null to ReportNavigationModel(
+                closeReport = true,
                 imagesSize = uiState.selectedImageUris.size
-            ) to reportConfirmationBanner().mapToUi()
+            )
         } else {
             null to null
         }
+
         uiState = uiState.copy(
             confirmInfoModel = confirmInfoModel,
             validateFields = true,
@@ -202,9 +208,9 @@ class ReportViewModel @Inject constructor(
 
     fun confirmReport() {
         uiState = uiState.copy(
-            confirmInfoModel = reportSentBanner().mapToUi(),
-            navigationModel = uiState.navigationModel?.copy(
-                closeReport = true,
+            successInfoModel = reportSentBanner().mapToUi(),
+            navigationModel = ReportNavigationModel(
+                closeReport = true
             )
         )
     }

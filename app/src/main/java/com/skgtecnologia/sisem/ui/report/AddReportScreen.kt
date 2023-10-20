@@ -53,7 +53,7 @@ fun AddReportScreen(
         launch {
             when {
                 uiState.navigationModel != null && uiState.cancelInfoModel == null &&
-                    uiState.confirmInfoModel == null -> {
+                    uiState.confirmInfoModel == null && uiState.successInfoModel == null -> {
                     onNavigation(uiState.navigationModel)
                     viewModel.consumeNavigationEvent()
                 }
@@ -116,6 +116,10 @@ fun AddReportScreen(
 
     OnBannerHandler(uiState.confirmInfoModel) {
         handleFooterAction(it, viewModel)
+    }
+
+    OnBannerHandler(uiState.successInfoModel) {
+        onNavigation(uiState.navigationModel)
     }
 
     OnBannerHandler(uiState.cancelInfoModel) {
