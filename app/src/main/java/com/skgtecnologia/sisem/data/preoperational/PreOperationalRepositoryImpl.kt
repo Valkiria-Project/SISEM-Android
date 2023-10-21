@@ -41,16 +41,23 @@ class PreOperationalRepositoryImpl @Inject constructor(
         novelties: List<Novelty>
     ) {
         val accessToken = checkNotNull(authCacheDataSource.observeAccessToken().first())
+        val role = checkNotNull(OperationRole.getRoleByName(accessToken.role))
+        val idTurn = accessToken.turn?.id?.toString().orEmpty()
 
         preOperationalRemoteDataSource.sendPreOperational(
-            role = checkNotNull(OperationRole.getRoleByName(accessToken.role)),
-            idTurn = accessToken.turn?.id?.toString().orEmpty(),
+            role = role,
+            idTurn = idTurn,
             findings = findings,
             inventoryValues = inventoryValues,
             fieldsValues = fieldsValues,
             novelties = novelties
         ).onSuccess {
             authCacheDataSource.updatePreOperationalStatus(accessToken.role)
+            preOperationalRemoteDataSource.sendFindings(
+                role = role,
+                idTurn = idTurn,
+                novelties = novelties
+            )
         }.getOrThrow()
     }
 }

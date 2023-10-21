@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.ui.authcards.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.sharedViewModel
@@ -29,6 +30,7 @@ import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.MedicineScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsScreen
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
@@ -108,7 +110,7 @@ private fun NavGraphBuilder.authGraph(
 
         composable(
             route = AuthNavigationRoute.DeviceAuthScreen.route +
-                    "/{${NavigationArgument.FROM}}",
+                "/{${NavigationArgument.FROM}}",
             arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
         ) {
             DeviceAuthScreen(
@@ -127,8 +129,12 @@ private fun NavGraphBuilder.authGraph(
             val revertFinding = navBackStackEntry.savedStateHandle.get<Boolean>(REVERT_FINDING)
             navBackStackEntry.savedStateHandle.remove<Boolean>(REVERT_FINDING)
 
+            val novelty = navBackStackEntry.savedStateHandle.get<Novelty>(NOVELTY)
+            navBackStackEntry.savedStateHandle.remove<Novelty>(NOVELTY)
+
             PreOperationalScreen(
                 modifier = modifier,
+                novelty = novelty,
                 revertFinding = revertFinding
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
@@ -277,10 +283,16 @@ private fun NavGraphBuilder.reportGraph(
         route = NavigationGraph.Report.route
     ) {
         composable(
-            route = ReportNavigationRoute.AddFindingScreen.route,
+            route = ReportNavigationRoute.AddFindingScreen.route +
+                "?${NavigationArgument.FINDING_ID}={${NavigationArgument.FINDING_ID}}",
+            arguments = listOf(
+                navArgument(NavigationArgument.FINDING_ID) { type = NavType.StringType }
+            )
         ) { backStackEntry ->
             AddFindingScreen(
                 viewModel = backStackEntry.sharedViewModel(navController = navController),
+                findingId = backStackEntry.arguments?.getString(NavigationArgument.FINDING_ID)
+                    .orEmpty(),
                 modifier = modifier
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
@@ -289,9 +301,9 @@ private fun NavGraphBuilder.reportGraph(
 
         composable(
             route = ReportNavigationRoute.CameraScreen.route
-        ) {
+        ) { backStackEntry ->
             CameraScreen(
-                viewModel = it.sharedViewModel(navController = navController)
+                viewModel = backStackEntry.sharedViewModel(navController = navController)
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
@@ -299,7 +311,7 @@ private fun NavGraphBuilder.reportGraph(
 
         composable(
             route = ReportNavigationRoute.ImagesConfirmationScreen.route +
-                    "/{${NavigationArgument.FROM}}",
+                "/{${NavigationArgument.FROM}}",
             arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
         ) { backStackEntry ->
             ImagesConfirmationScreen(

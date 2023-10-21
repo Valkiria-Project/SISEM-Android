@@ -23,6 +23,7 @@ data class TextFieldResponse(
     @Json(name = "style") val style: TextFieldStyle?,
     @Json(name = "char_limit") val charLimit: Int?,
     @Json(name = "validations") val validations: List<ValidationResponse>?,
+    @Json(name = "real_time_validation") val realTimeValidation: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val margins: Modifier?
 ) : BodyRowResponse {

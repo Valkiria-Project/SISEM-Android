@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.navigation.NavHostController
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
 import com.skgtecnologia.sisem.ui.navigation.model.DeviceAuthNavigationModel
@@ -14,11 +15,11 @@ import com.skgtecnologia.sisem.ui.navigation.model.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.model.VitalSignsNavigationModel
 
-const val APP_STARTED = "APP_STARTED"
-const val FINDING = "FINDING"
-const val LOGIN = "LOGIN"
-const val MAIN = "MAIN"
-const val REPORT = "REPORT"
+const val APP_STARTED = "app_started"
+const val FINDING = "finding"
+const val LOGIN = "login"
+const val MAIN = "main"
+const val REPORT = "report"
 
 fun getAppStartDestination(model: StartupNavigationModel?): String {
     return if (model == null) {
@@ -102,7 +103,10 @@ private fun preOpToNextStep(
     }
 
     model.isNewFindingEvent ->
-        navController.navigate(ReportNavigationRoute.AddFindingScreen.route)
+        navController.navigate(
+            ReportNavigationRoute.AddFindingScreen.route +
+                "?${NavigationArgument.FINDING_ID}=${model.findingId}"
+        )
 
     else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
         popUpTo(AuthNavigationRoute.PreOperationalScreen.route) {
@@ -131,10 +135,16 @@ private fun reportToNextStep(
             "${ReportNavigationRoute.ImagesConfirmationScreen.route}/$FINDING"
         )
 
-        model.closeFinding -> navController.popBackStack(
-            route = AuthNavigationRoute.PreOperationalScreen.route,
-            inclusive = false
-        )
+        model.closeFinding -> with(navController) {
+            popBackStack(
+                route = AuthNavigationRoute.PreOperationalScreen.route,
+                inclusive = false
+            )
+
+            currentBackStackEntry
+                ?.savedStateHandle
+                ?.set(NOVELTY, model.novelty)
+        }
 
         model.closeReport && model.imagesSize > 0 -> navController.navigate(
             "${ReportNavigationRoute.ImagesConfirmationScreen.route}/$REPORT"

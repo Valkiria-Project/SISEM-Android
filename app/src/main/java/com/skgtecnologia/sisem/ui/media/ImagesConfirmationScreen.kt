@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.ui.media
 
-import android.content.ContentResolver
+import android.content.Context
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +16,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,7 +30,7 @@ import com.skgtecnologia.sisem.domain.model.header.imagesConfirmationHeader
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
 import com.skgtecnologia.sisem.ui.authcards.report.PagerIndicator
 import com.skgtecnologia.sisem.ui.commons.extensions.decodeAsBitmap
-import com.skgtecnologia.sisem.ui.commons.extensions.encodeAsBase64
+import com.skgtecnologia.sisem.ui.commons.extensions.storeUriAsFileToCache
 import com.skgtecnologia.sisem.ui.navigation.REPORT
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportViewModel
@@ -45,6 +46,7 @@ import com.valkiria.uicomponents.components.button.ButtonStyle
 import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.components.label.TextStyle
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.random.Random
@@ -59,7 +61,8 @@ fun ImagesConfirmationScreen(
     onNavigation: (imageSelectionNavigationModel: NavigationModel?) -> Unit
 ) {
     val uiState = viewModel.uiState
-    val contentResolver = LocalContext.current.contentResolver
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -147,9 +150,9 @@ fun ImagesConfirmationScreen(
                 )
             ) {
                 if (from == REPORT) {
-                    viewModel.confirmSendReport()
+                    viewModel.saveReportImages()
                 } else {
-                    viewModel.confirmSendFinding()
+                    viewModel.saveFindingImages()
                 }
             }
         }
@@ -162,14 +165,14 @@ fun ImagesConfirmationScreen(
     }
 
     OnBannerHandler(uiState.confirmInfoModel) {
-        handleAction(it, from, contentResolver, viewModel)
+        handleAction(it, from, context, viewModel, coroutineScope)
     }
 
     OnBannerHandler(uiState.successInfoModel) {
         onNavigation(uiState.navigationModel)
     }
 
-    OnBannerHandler(uiState.errorModel) {
+    OnBannerHandler(uiState.infoEvent) {
         viewModel.consumeShownError()
     }
 
@@ -179,8 +182,9 @@ fun ImagesConfirmationScreen(
 private fun handleAction(
     uiAction: UiAction,
     from: String,
-    contentResolver: ContentResolver,
-    viewModel: ReportViewModel
+    context: Context,
+    viewModel: ReportViewModel,
+    coroutineScope: CoroutineScope
 ) {
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
@@ -188,18 +192,22 @@ private fun handleAction(
                 viewModel.consumeNavigationEvent()
 
             ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name -> {
-                val images = viewModel.uiState.selectedImageUris.map { uri ->
-                    uri.decodeAsBitmap(contentResolver).encodeAsBase64()
-                }
+                coroutineScope.launch {
+                    val images = viewModel.uiState.selectedImageUris.map { uri ->
+                        context.storeUriAsFileToCache(uri)
+                    }
 
-                if (from == REPORT) {
-                    viewModel.sendReport(images)
-                } else {
-                    viewModel.saveFindingWithImages(images)
-                }
+                    if (from == REPORT) {
+                        viewModel.confirmReportImages(images)
+                    } else {
+                        viewModel.confirmFindingImages(images)
+                    }
 
-                viewModel.consumeShownConfirm()
+                    viewModel.consumeShownConfirm()
+                }
             }
+
+            else -> Timber.d("no-op")
         }
     }
 }

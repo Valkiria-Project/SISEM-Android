@@ -9,6 +9,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -19,6 +20,7 @@ import com.skgtecnologia.sisem.domain.model.footer.findingsFooter
 import com.skgtecnologia.sisem.domain.model.header.addFindingHeader
 import com.skgtecnologia.sisem.domain.model.label.addFilesHint
 import com.skgtecnologia.sisem.domain.report.model.AddFindingIdentifier
+import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
 import com.skgtecnologia.sisem.ui.media.MediaActions
 import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.FooterSection
@@ -34,6 +36,7 @@ import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import kotlin.random.Random
 
 private const val DESCRIPTION_INPUT_MIN_LINES = 3
@@ -42,6 +45,7 @@ private const val DESCRIPTION_INPUT_MIN_LINES = 3
 @Composable
 fun AddFindingScreen(
     viewModel: ReportViewModel,
+    findingId: String,
     modifier: Modifier = Modifier,
     onNavigation: (findingsNavigationModel: NavigationModel?) -> Unit
 ) {
@@ -50,12 +54,23 @@ fun AddFindingScreen(
     LaunchedEffect(uiState) {
         launch {
             when {
-                uiState.navigationModel != null && uiState.cancelInfoModel == null -> {
+                uiState.navigationModel != null && uiState.cancelInfoModel == null &&
+                    uiState.confirmInfoModel == null && uiState.successInfoModel == null -> {
                     onNavigation(uiState.navigationModel)
                     viewModel.consumeNavigationEvent()
                 }
             }
         }
+    }
+
+    LaunchedEffect(findingId) {
+        launch {
+            viewModel.findingId = findingId
+        }
+    }
+
+    SideEffect {
+        Timber.d("Finding id: $findingId")
     }
 
     Column(
@@ -111,11 +126,19 @@ fun AddFindingScreen(
         }
     }
 
+    OnBannerHandler(uiState.confirmInfoModel) {
+        handleFooterAction(it, viewModel)
+    }
+
+    OnBannerHandler(uiState.successInfoModel) {
+        onNavigation(uiState.navigationModel)
+    }
+
     OnBannerHandler(uiState.cancelInfoModel) {
         handleFooterAction(it, viewModel)
     }
 
-    OnBannerHandler(uiState.errorModel) {
+    OnBannerHandler(uiState.infoEvent) {
         viewModel.consumeShownError()
     }
 
@@ -140,7 +163,7 @@ private fun getFindingsDescriptionModel() = TextFieldUiModel(
             message = "El campo no debe estar vacío"
         ),
         ValidationUiModel(
-            regex = "^(?!.*[^,.A-Za-z0-9 A-zÀ-ú\\r\\n].*).+",
+            regex = "^(?!.*[^,.:A-Za-z0-9 A-zÀ-ú\\r\\n].*).+",
             message = "El campo no debe tener caracteres especiales"
         )
     ),
@@ -169,6 +192,14 @@ private fun handleFooterAction(
 
             AddFindingIdentifier.ADD_FINDING_CONTINUE_BANNER.name ->
                 viewModel.navigateBackFromReport()
+
+            ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_CANCEL_BANNER.name ->
+                viewModel.consumeNavigationEvent()
+
+            ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name -> {
+                viewModel.confirmFinding()
+                viewModel.consumeShownConfirm()
+            }
         }
     }
 }

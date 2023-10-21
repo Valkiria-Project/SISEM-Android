@@ -44,6 +44,8 @@ sealed class ReportNavigationRoute(override val route: String) : NavigationRoute
 object NavigationArgument {
     const val FROM = "from"
     const val REVERT_FINDING = "revert_finding"
+    const val FINDING_ID = "finding_id"
+    const val NOVELTY = "novelty"
     const val VITAL_SIGNS = "vital_signs"
     const val MEDICINE = "medicine"
 }

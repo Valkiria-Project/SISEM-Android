@@ -15,11 +15,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.bricks.textfield.DigitsTextFieldView
+import com.valkiria.uicomponents.components.label.toTextStyle
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
+import com.valkiria.uicomponents.components.textfield.InputUiModel
 import com.valkiria.uicomponents.mocks.getPreOperationalInventoryCheckUiModel
 import com.valkiria.uicomponents.utlis.FORTY_PERCENT_WEIGHT
 import com.valkiria.uicomponents.utlis.THIRTY_PERCENT_WEIGHT
-import com.valkiria.uicomponents.components.label.toTextStyle
 import timber.log.Timber
 
 @Suppress("UnusedPrivateMember")
@@ -27,7 +28,7 @@ import timber.log.Timber
 fun InventoryCheckComponent(
     uiModel: InventoryCheckUiModel,
     validateFields: Boolean = false,
-    onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
+    onAction: (inputUiModel: InputUiModel) -> Unit
 ) {
     Column(
         modifier = uiModel.modifier.fillMaxWidth()
@@ -69,7 +70,7 @@ fun InventoryCheckComponent(
                         validations = uiModel.validations,
                         validateFields = validateFields
                     ) { id, updatedValue, fieldValidated ->
-                        onAction(id, updatedValue, fieldValidated)
+                        onAction(InputUiModel(id, updatedValue, fieldValidated))
                     }
                 }
             }
@@ -118,7 +119,7 @@ fun InventoryCheckComponentPreview() {
             .fillMaxSize()
             .background(Color.DarkGray)
     ) {
-        InventoryCheckComponent(uiModel = getPreOperationalInventoryCheckUiModel()) { _, _, _ ->
+        InventoryCheckComponent(uiModel = getPreOperationalInventoryCheckUiModel()) { _ ->
             Timber.d("Inventory action")
         }
     }
