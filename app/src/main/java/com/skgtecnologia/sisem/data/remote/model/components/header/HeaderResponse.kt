@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.components.BodyRowResponse
 import com.skgtecnologia.sisem.data.remote.model.components.label.TextResponse
-import com.skgtecnologia.sisem.data.remote.model.components.label.mapToUI
+import com.skgtecnologia.sisem.data.remote.model.components.label.mapToUi
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.components.BodyRowType
@@ -25,8 +25,8 @@ data class HeaderResponse(
 
     override fun mapToUi(): HeaderUiModel = HeaderUiModel(
         identifier = identifier ?: title?.text ?: error("Header identifier cannot be null"),
-        title = title?.mapToUI() ?: error("Header title cannot be null"),
-        subtitle = subtitle?.mapToUI(),
+        title = title?.mapToUi() ?: error("Header title cannot be null"),
+        subtitle = subtitle?.mapToUi(),
         leftIcon = leftIcon,
         rightIcon = rightIcon,
         badgeCount = badgeCount,

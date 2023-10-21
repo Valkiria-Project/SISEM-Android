@@ -7,23 +7,24 @@ import com.skgtecnologia.sisem.data.remote.adapters.ModifierAdapter
 import com.skgtecnologia.sisem.data.remote.model.components.BodyRowResponse
 import com.skgtecnologia.sisem.data.remote.model.components.body.HumanBodyResponse
 import com.skgtecnologia.sisem.data.remote.model.components.button.ButtonResponse
+import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonResponse
+import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonSectionResponse
 import com.skgtecnologia.sisem.data.remote.model.components.card.InfoCardResponse
 import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipOptionsResponse
 import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipResponse
 import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipSelectionResponse
 import com.skgtecnologia.sisem.data.remote.model.components.chip.FiltersResponse
 import com.skgtecnologia.sisem.data.remote.model.components.detailedinfolist.DetailedInfoListResponse
+import com.skgtecnologia.sisem.data.remote.model.components.dropdown.DropDownResponse
 import com.skgtecnologia.sisem.data.remote.model.components.finding.FindingResponse
 import com.skgtecnologia.sisem.data.remote.model.components.fingerprint.FingerprintResponse
 import com.skgtecnologia.sisem.data.remote.model.components.header.HeaderResponse
-import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonResponse
-import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonSectionResponse
-import com.skgtecnologia.sisem.data.remote.model.components.dropdown.DropDownResponse
 import com.skgtecnologia.sisem.data.remote.model.components.inventorycheck.InventoryCheckResponse
 import com.skgtecnologia.sisem.data.remote.model.components.label.LabelResponse
 import com.skgtecnologia.sisem.data.remote.model.components.medsselector.MedsSelectorResponse
 import com.skgtecnologia.sisem.data.remote.model.components.richlabel.RichLabelResponse
 import com.skgtecnologia.sisem.data.remote.model.components.segmentedswitch.SegmentedSwitchResponse
+import com.skgtecnologia.sisem.data.remote.model.components.signature.SignatureResponse
 import com.skgtecnologia.sisem.data.remote.model.components.slider.SliderResponse
 import com.skgtecnologia.sisem.data.remote.model.components.stepper.StepperResponse
 import com.skgtecnologia.sisem.data.remote.model.components.termsandconditions.TermsAndConditionsResponse
@@ -145,14 +146,17 @@ object CoreNetworkModule {
             LabelResponse::class.java,
             BodyRowType.LABEL.name
         ).withSubtype(
-            SegmentedSwitchResponse::class.java,
-            BodyRowType.SEGMENTED_SWITCH.name
-        ).withSubtype(
             PasswordTextFieldResponse::class.java,
             BodyRowType.PASSWORD_TEXT_FIELD.name
         ).withSubtype(
             RichLabelResponse::class.java,
             BodyRowType.RICH_LABEL.name
+        ).withSubtype(
+            SegmentedSwitchResponse::class.java,
+            BodyRowType.SEGMENTED_SWITCH.name
+        ).withSubtype(
+            SignatureResponse::class.java,
+            BodyRowType.SIGNATURE.name
         ).withSubtype(
             SliderResponse::class.java,
             BodyRowType.SLIDER.name

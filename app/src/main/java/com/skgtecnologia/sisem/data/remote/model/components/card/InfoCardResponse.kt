@@ -8,7 +8,7 @@ import com.skgtecnologia.sisem.data.remote.model.bricks.chip.ChipSectionResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.chip.mapToUi
 import com.skgtecnologia.sisem.data.remote.model.components.BodyRowResponse
 import com.skgtecnologia.sisem.data.remote.model.components.label.TextResponse
-import com.skgtecnologia.sisem.data.remote.model.components.label.mapToUI
+import com.skgtecnologia.sisem.data.remote.model.components.label.mapToUi
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -33,9 +33,9 @@ data class InfoCardResponse(
     override fun mapToUi(): InfoCardUiModel = InfoCardUiModel(
         identifier = identifier ?: error("InfoCard identifier cannot be null"),
         icon = icon ?: error("InfoCard icon cannot be null"),
-        title = title?.mapToUI(getHumanizedRoleName()) ?: error("InfoCard title cannot be null"),
+        title = title?.mapToUi(getHumanizedRoleName()) ?: error("InfoCard title cannot be null"),
         pill = pill?.mapToUi() ?: error("InfoCard pill cannot be null"),
-        date = date?.mapToUI(),
+        date = date?.mapToUi(),
         chipSection = chipSection?.mapToUi(),
         reportsDetail = reportsDetail?.mapToUi(),
         arrangement = arrangement ?: Arrangement.Center,

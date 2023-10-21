@@ -76,6 +76,7 @@ import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
+import com.valkiria.uicomponents.components.signature.SignatureUiModel
 import com.valkiria.uicomponents.components.slider.SliderComponent
 import com.valkiria.uicomponents.components.slider.SliderUiModel
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
@@ -213,6 +214,8 @@ private fun LazyListScope.handleBodyRows(
                         }
                     }
                 }
+
+                // Mandar data al stepper aca en cada accion recibida
             }
 
             is FindingUiModel -> item(key = model.identifier) {
@@ -266,6 +269,14 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
+            is PasswordTextFieldUiModel -> item(key = model.identifier) {
+                HandlePasswordTextFieldRows(model, validateFields, onAction)
+            }
+
+            is RichLabelUiModel -> item(key = model.identifier) {
+                RichLabelComponent(uiModel = model)
+            }
+
             is SegmentedSwitchUiModel -> item(key = model.identifier) {
                 SegmentedSwitchComponent(uiModel = model) { id, status ->
                     onAction(
@@ -277,18 +288,14 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
+            is SignatureUiModel -> item(key = model.identifier) {
+                // TODO: Finish this
+            }
+
             is SliderUiModel -> item(key = model.identifier) {
                 SliderComponent(uiModel = model) { id, value ->
                     onAction(GenericUiAction.SliderAction(identifier = id, value = value))
                 }
-            }
-
-            is PasswordTextFieldUiModel -> item(key = model.identifier) {
-                HandlePasswordTextFieldRows(model, validateFields, onAction)
-            }
-
-            is RichLabelUiModel -> item(key = model.identifier) {
-                RichLabelComponent(uiModel = model)
             }
 
             is TermsAndConditionsUiModel -> item(key = model.identifier) {

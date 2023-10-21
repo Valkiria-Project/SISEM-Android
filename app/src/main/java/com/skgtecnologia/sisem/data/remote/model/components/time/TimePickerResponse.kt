@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.components.BodyRowResponse
 import com.skgtecnologia.sisem.data.remote.model.components.label.TextResponse
-import com.skgtecnologia.sisem.data.remote.model.components.label.mapToUI
+import com.skgtecnologia.sisem.data.remote.model.components.label.mapToUi
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.components.BodyRowType
@@ -24,9 +24,9 @@ data class TimePickerResponse(
 
     override fun mapToUi(): TimePickerUiModel = TimePickerUiModel(
         identifier = identifier ?: error("TimePicker identifier cannot be null"),
-        title = title?.mapToUI() ?: error("TimePicker title cannot be null"),
-        hour = hour?.mapToUI() ?: error("TimePicker hour cannot be null"),
-        minute = minute?.mapToUI() ?: error("TimePicker minute cannot be null"),
+        title = title?.mapToUi() ?: error("TimePicker title cannot be null"),
+        hour = hour?.mapToUi() ?: error("TimePicker hour cannot be null"),
+        minute = minute?.mapToUi() ?: error("TimePicker minute cannot be null"),
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )
