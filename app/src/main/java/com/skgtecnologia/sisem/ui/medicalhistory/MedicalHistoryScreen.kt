@@ -68,21 +68,32 @@ fun handleAction(
 ) {
     when (uiAction) {
         is GenericUiAction.ButtonAction -> {}
+        // crear modelo para ImageButtonSection
+
         is GenericUiAction.ChipOptionAction -> {}
+        // Lateralidad - dificultad paciente
+
         is GenericUiAction.ChipSelectionAction -> {
             viewModel.chipValues[uiAction.identifier] = uiAction.text
             viewModel.updateGlasgow()
         }
 
+        is GenericUiAction.DropDownAction -> {}
+
         is GenericUiAction.InfoCardAction -> viewModel.showVitalSignsForm(uiAction.identifier)
+
         is GenericUiAction.InputAction -> {}
+
         is GenericUiAction.HumanBodyAction -> {}
-        is GenericUiAction.MedsSelectorAction -> {
+
+        is GenericUiAction.MedsSelectorAction ->
             viewModel.showMedicineForm(uiAction.identifier)
-        }
+
 
         is GenericUiAction.SegmentedSwitchAction -> {}
+
         is GenericUiAction.SliderAction -> {}
+
         else -> Timber.d("no-op")
     }
 }
