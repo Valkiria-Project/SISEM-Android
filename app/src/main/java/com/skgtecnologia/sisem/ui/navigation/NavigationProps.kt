@@ -31,6 +31,7 @@ sealed class MainNavigationRoute(override val route: String) : NavigationRoute(r
     data object SignatureAndFingerprint : MainNavigationRoute("menu_signature_and_fingerprint")
     data object VitalSignsScreen : MainNavigationRoute("vital_signs_screen")
     data object MedicineScreen : MainNavigationRoute("medicine_screen")
+    data object SignaturePadScreen : MainNavigationRoute("signature_pad_screen")
 }
 
 sealed class ReportNavigationRoute(override val route: String) : NavigationRoute(route) {

@@ -6,7 +6,7 @@ import com.android.ide.common.rendering.api.SessionParams.RenderingMode.V_SCROLL
 import org.junit.Rule
 import org.junit.Test
 
-class CrewMemberCardComponentPaparazziTest {
+class InfoCardComponentPaparazziTest {
 
     @get:Rule
     val paparazziRule: Paparazzi = Paparazzi(
@@ -16,7 +16,7 @@ class CrewMemberCardComponentPaparazziTest {
     )
 
     @Test
-    fun snapCrewMemberCardComponent() {
+    fun snapInfoCardComponent() {
         paparazziRule.snapshot {}
     }
 }

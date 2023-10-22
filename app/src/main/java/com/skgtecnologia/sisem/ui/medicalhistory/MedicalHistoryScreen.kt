@@ -21,18 +21,15 @@ fun MedicalHistoryScreen(
     medicine: Map<String, String>?,
     onNavigation: (medicalHistoryNavigationModel: NavigationModel?) -> Unit
 ) {
-
     val viewModel = hiltViewModel<MedicalHistoryViewModel>()
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState.navigationModel) {
         Timber.d("MedicalHistoryScreen: LaunchedEffect uiState pass")
         launch {
-            with(uiState.navigationModel) {
-                if (this?.isInfoCardEvent == true || this?.isMedsSelectorEvent == true) {
-                    onNavigation(uiState.navigationModel)
-                    viewModel.consumeNavigationEvent()
-                }
+            uiState.navigationModel?.let {
+                onNavigation(uiState.navigationModel)
+                viewModel.consumeNavigationEvent()
             }
         }
     }
@@ -74,23 +71,24 @@ fun handleAction(
         // Lateralidad - dificultad paciente
 
         is GenericUiAction.ChipSelectionAction -> {
-            viewModel.chipValues[uiAction.identifier] = uiAction.text
+            viewModel.chipSelectionValues[uiAction.identifier] = uiAction.text
             viewModel.updateGlasgow()
         }
 
         is GenericUiAction.DropDownAction -> {}
 
+        is GenericUiAction.HumanBodyAction -> {}
+
         is GenericUiAction.InfoCardAction -> viewModel.showVitalSignsForm(uiAction.identifier)
 
         is GenericUiAction.InputAction -> {}
 
-        is GenericUiAction.HumanBodyAction -> {}
-
         is GenericUiAction.MedsSelectorAction ->
             viewModel.showMedicineForm(uiAction.identifier)
 
-
         is GenericUiAction.SegmentedSwitchAction -> {}
+
+        is GenericUiAction.SignatureAction -> viewModel.showSignaturePad(uiAction.identifier)
 
         is GenericUiAction.SliderAction -> {}
 

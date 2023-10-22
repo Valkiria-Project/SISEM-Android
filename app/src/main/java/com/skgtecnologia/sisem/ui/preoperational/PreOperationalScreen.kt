@@ -79,7 +79,7 @@ private fun handleBodyAction(
         is GenericUiAction.ButtonAction -> viewModel.savePreOperational()
 
         is GenericUiAction.FindingAction -> {
-            viewModel.findings[uiAction.identifier] = uiAction.status
+            viewModel.findingValues[uiAction.identifier] = uiAction.status
 
             if (uiAction.status.not()) {
                 viewModel.temporalFinding = uiAction.identifier

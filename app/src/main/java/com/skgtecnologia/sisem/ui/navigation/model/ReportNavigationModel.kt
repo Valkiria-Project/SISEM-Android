@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.ui.navigation.model
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 
 data class ReportNavigationModel(
+    val isFromPreOperational: Boolean = true,
     val goBackFromReport: Boolean = false,
     val goBackFromImages: Boolean = false,
     val showCamera: Boolean = false,

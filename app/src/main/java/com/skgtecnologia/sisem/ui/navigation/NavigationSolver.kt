@@ -44,16 +44,15 @@ fun navigateToNextStep(
     onNavigationFallback: () -> Unit = {}
 ) =
     when (navigationModel) {
-        is LoginNavigationModel -> loginToNextStep(navController, navigationModel)
-        is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
-        is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
         is DeviceAuthNavigationModel ->
             deviceAuthToNextStep(navController, navigationModel, onNavigationFallback)
 
+        is LoginNavigationModel -> loginToNextStep(navController, navigationModel)
         is MedicalHistoryNavigationModel -> medicalHistoryToNextStep(navController, navigationModel)
-        is VitalSignsNavigationModel -> vitalSignsToNextStep(navController, navigationModel)
         is MedicineNavigationModel -> medicineToNextStep(navController, navigationModel)
-
+        is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
+        is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
+        is VitalSignsNavigationModel -> vitalSignsToNextStep(navController, navigationModel)
         else -> {}
     }
 
@@ -105,7 +104,7 @@ private fun preOpToNextStep(
     model.isNewFindingEvent ->
         navController.navigate(
             ReportNavigationRoute.AddFindingScreen.route +
-                "?${NavigationArgument.FINDING_ID}=${model.findingId}"
+                    "?${NavigationArgument.FINDING_ID}=${model.findingId}"
         )
 
     else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
@@ -129,8 +128,8 @@ private fun reportToNextStep(
         }
 
         model.goBackFromImages -> navController.popBackStack()
-        model.photoTaken -> navController.popBackStack()
         model.showCamera -> navController.navigate(ReportNavigationRoute.CameraScreen.route)
+        model.photoTaken -> navController.popBackStack()
         model.closeFinding && model.imagesSize > 0 -> navController.navigate(
             "${ReportNavigationRoute.ImagesConfirmationScreen.route}/$FINDING"
         )
@@ -212,6 +211,9 @@ fun medicalHistoryToNextStep(
 
         model.isMedsSelectorEvent ->
             navController.navigate(MainNavigationRoute.MedicineScreen.route)
+
+        model.isSignatureEvent ->
+            navController.navigate(MainNavigationRoute.SignaturePadScreen.route)
     }
 }
 

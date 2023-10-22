@@ -22,12 +22,12 @@ import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.domain.report.usecases.SendReport
 import com.skgtecnologia.sisem.ui.navigation.model.ReportNavigationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.io.File
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
-import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 @HiltViewModel
@@ -48,8 +48,10 @@ class ReportViewModel @Inject constructor(
     var isValidDescription by mutableStateOf(false)
     var currentImage by mutableIntStateOf(0)
 
-    private val imageLimit
-        get() = when (uiState.operationModel?.operationRole) {
+    private fun getImageLimit(isFromPreOperational: Boolean) = if (isFromPreOperational.not()) {
+        uiState.operationModel?.numImgNovelty ?: 0
+    } else {
+        when (uiState.operationModel?.operationRole) {
             OperationRole.AUXILIARY_AND_OR_TAPH ->
                 uiState.operationModel?.numImgPreoperationalAux ?: 0
 
@@ -58,6 +60,7 @@ class ReportViewModel @Inject constructor(
             OperationRole.MEDIC_APH -> uiState.operationModel?.numImgPreoperationalDoctor ?: 0
             null -> 0
         }
+    }
 
     init {
         uiState = uiState.copy(isLoading = true)
@@ -259,11 +262,12 @@ class ReportViewModel @Inject constructor(
     // endregion
 
     // region ImageConfirmation
-    fun updateSelectedImages(selectedImages: List<Uri>) {
+    fun updateSelectedImages(selectedImages: List<Uri>, isFromPreOperational: Boolean) {
         val updateSelectedImages = buildList {
 
             addAll(uiState.selectedImageUris)
 
+            val imageLimit = getImageLimit(isFromPreOperational)
             selectedImages.forEachIndexed { index, image ->
                 if (imageLimit <= (uiState.selectedImageUris.size + index)) {
                     uiState = uiState.copy(
@@ -296,9 +300,10 @@ class ReportViewModel @Inject constructor(
     }
     // endregion
 
-    fun showCamera() {
+    fun showCamera(isFromPreOperational: Boolean) {
         uiState = uiState.copy(
             navigationModel = ReportNavigationModel(
+                isFromPreOperational = isFromPreOperational,
                 showCamera = true
             )
         )
@@ -308,6 +313,7 @@ class ReportViewModel @Inject constructor(
         val updatedSelectedImages = buildList {
             addAll(uiState.selectedImageUris)
 
+            val imageLimit = getImageLimit(uiState.navigationModel?.isFromPreOperational == true)
             if (imageLimit < uiState.selectedImageUris.size) {
                 uiState = uiState.copy(
                     infoEvent = imagesLimitErrorBanner(imageLimit).mapToUi()

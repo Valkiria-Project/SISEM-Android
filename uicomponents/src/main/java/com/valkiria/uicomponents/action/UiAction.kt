@@ -1,7 +1,7 @@
 package com.valkiria.uicomponents.action
 
-import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel
+import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 
 const val DISMISS_IDENTIFIER = "dismiss"
 
@@ -64,6 +64,10 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
     data class SegmentedSwitchAction(
         override val identifier: String,
         val status: Boolean
+    ) : GenericUiAction(identifier)
+
+    data class SignatureAction(
+        override val identifier: String
     ) : GenericUiAction(identifier)
 
     data class SliderAction(

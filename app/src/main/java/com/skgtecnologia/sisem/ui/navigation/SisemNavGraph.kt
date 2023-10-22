@@ -28,6 +28,7 @@ import com.skgtecnologia.sisem.ui.media.CameraScreen
 import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.MedicineScreen
+import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsScreen
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
@@ -256,7 +257,6 @@ private fun NavGraphBuilder.mainGraph(
         composable(
             route = MainNavigationRoute.VitalSignsScreen.route
         ) {
-            // FIXME: Finish this work
             VitalSignsScreen { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
@@ -265,8 +265,16 @@ private fun NavGraphBuilder.mainGraph(
         composable(
             route = MainNavigationRoute.MedicineScreen.route
         ) {
-            // FIXME: Finish this work
             MedicineScreen { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = MainNavigationRoute.SignaturePadScreen.route
+        ) {
+            // FIXME: Finish this work
+            SignaturePadScreen{ navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
         }

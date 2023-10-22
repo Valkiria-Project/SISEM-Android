@@ -1,5 +1,6 @@
 package com.valkiria.uicomponents.components.signature
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.BodyRowType
@@ -10,6 +11,7 @@ data class CrewMemberSignatureUiModel(
     val name: TextUiModel,
     val identification: TextUiModel,
     val signature: String,
+    val arrangement: Arrangement.Horizontal,
     val modifier: Modifier
 ) : BodyRowModel {
 

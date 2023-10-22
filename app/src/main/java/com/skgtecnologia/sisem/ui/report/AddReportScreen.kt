@@ -33,8 +33,8 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
-import kotlinx.coroutines.launch
 import kotlin.random.Random
+import kotlinx.coroutines.launch
 
 private const val DESCRIPTION_INPUT_MIN_LINES = 3
 
@@ -53,7 +53,7 @@ fun AddReportScreen(
         launch {
             when {
                 uiState.navigationModel != null && uiState.cancelInfoModel == null &&
-                    uiState.confirmInfoModel == null && uiState.successInfoModel == null -> {
+                        uiState.confirmInfoModel == null && uiState.successInfoModel == null -> {
                     onNavigation(uiState.navigationModel)
                     viewModel.consumeNavigationEvent()
                 }
@@ -102,7 +102,7 @@ fun AddReportScreen(
                 )
             )
 
-            MediaActions(viewModel)
+            MediaActions(viewModel, false)
 
             Spacer(modifier = Modifier.weight(1f))
         }

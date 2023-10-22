@@ -42,11 +42,14 @@ import com.valkiria.uicomponents.action.NewsUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.button.ButtonComponent
+import com.valkiria.uicomponents.components.button.ButtonSize
+import com.valkiria.uicomponents.components.button.ButtonStyle
 import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.button.ImageButtonComponent
 import com.valkiria.uicomponents.components.button.ImageButtonSectionComponent
 import com.valkiria.uicomponents.components.button.ImageButtonSectionUiModel
 import com.valkiria.uicomponents.components.button.ImageButtonUiModel
+import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.components.card.InfoCardComponent
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
 import com.valkiria.uicomponents.components.chip.ChipComponent
@@ -71,6 +74,9 @@ import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckCompone
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.LabelUiModel
+import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.label.TextStyle.HEADLINE_5
+import com.valkiria.uicomponents.components.label.TextUiModel
 import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
@@ -165,7 +171,35 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is CrewMemberSignatureUiModel -> item(key = model.identifier) {
-                // FIXME: Finish this
+                SignatureComponent(
+                    uiModel = SignatureUiModel(
+                        identifier = "RESPONSIBLE_SIGNATURE",
+                        signatureLabel = TextUiModel(
+                            text = "Firma del responsable",
+                            textStyle = HEADLINE_5
+                        ),
+                        signatureButton = ButtonUiModel(
+                            identifier = "RESPONSIBLE_SIGNATURE",
+                            label = "FIRMAR",
+                            leftIcon = "ic_edit",
+                            style = ButtonStyle.LOUD,
+                            textStyle = TextStyle.HEADLINE_5,
+                            onClick = OnClick.DISMISS,
+                            size = ButtonSize.FULL_WIDTH,
+                            arrangement = Arrangement.Center,
+                            modifier = Modifier.padding(
+                                start = 0.dp,
+                                top = 20.dp,
+                                end = 0.dp,
+                                bottom = 0.dp
+                            )
+                        ),
+                        modifier = Modifier
+                    )
+                ) { id ->
+                    onAction(GenericUiAction.SignatureAction(identifier = id))
+                }
+//                CrewMemberSignatureComponent(uiModel = model)
             }
 
             is DropDownUiModel -> item(key = model.identifier) {
@@ -188,14 +222,14 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is ImageButtonUiModel -> item(key = model.identifier) {
-                ImageButtonComponent(model) { identifier ->
-                    onAction(GenericUiAction.ButtonAction(identifier = identifier))
+                ImageButtonComponent(model) { id ->
+                    onAction(GenericUiAction.ButtonAction(identifier = id))
                 }
             }
 
             is ImageButtonSectionUiModel -> item(key = model.identifier) {
-                ImageButtonSectionComponent(model) { identifier ->
-                    onAction(GenericUiAction.ButtonAction(identifier = identifier))
+                ImageButtonSectionComponent(model) { id ->
+                    onAction(GenericUiAction.ButtonAction(identifier = id))
                     // FIXME: "Do we use this action?"
                 }
             }
@@ -295,7 +329,7 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is SignatureUiModel -> item(key = model.identifier) {
-                 SignatureComponent(uiModel = model) {
+                SignatureComponent(uiModel = model) {
                     // FIXME: Handle signature
                 }
             }

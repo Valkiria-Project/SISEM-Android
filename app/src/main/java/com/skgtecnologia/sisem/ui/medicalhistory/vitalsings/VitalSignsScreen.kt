@@ -25,7 +25,6 @@ fun VitalSignsScreen(
     modifier: Modifier = Modifier,
     onNavigation: (vitalSignsNavigationModel: NavigationModel?) -> Unit
 ) {
-
     val viewModel = hiltViewModel<VitalSignsViewModel>()
     val uiState = viewModel.uiState
 

@@ -28,6 +28,7 @@ data class CrewMemberSignatureResponse(
         identification = identification?.mapToUi()
             ?: error("Signature identification cannot be null"),
         signature = signature ?: error("Signature signature cannot be null"),
+        arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )
 }

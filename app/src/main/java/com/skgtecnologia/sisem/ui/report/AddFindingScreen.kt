@@ -35,9 +35,9 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
+import kotlin.random.Random
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import kotlin.random.Random
 
 private const val DESCRIPTION_INPUT_MIN_LINES = 3
 
@@ -111,7 +111,7 @@ fun AddFindingScreen(
             )
         )
 
-        MediaActions(viewModel)
+        MediaActions(viewModel, true)
 
         Spacer(modifier = Modifier.weight(1f))
 

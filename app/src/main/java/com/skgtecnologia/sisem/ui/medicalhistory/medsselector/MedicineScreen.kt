@@ -27,7 +27,6 @@ fun MedicineScreen(
     modifier: Modifier = Modifier,
     onNavigation: (medicineNavigationModel: NavigationModel?) -> Unit
 ) {
-
     val viewModel = hiltViewModel<MedicineViewModel>()
     val uiState = viewModel.uiState
 

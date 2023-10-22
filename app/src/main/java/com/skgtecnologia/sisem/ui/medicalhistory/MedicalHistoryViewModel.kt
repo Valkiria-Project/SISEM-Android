@@ -32,14 +32,14 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextUiModel
 import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 private const val DATE_FORMAT = "HH:mm"
 private const val SAVE_COLOR = "#3cf2dd"
@@ -77,12 +77,15 @@ class MedicalHistoryViewModel @Inject constructor(
         DURING_VITAL_SIGNS,
         END_VITAL_SIGNS
     )
-    private var temporalInfoCard by mutableStateOf("")
-    private var temporalMedsSelector by mutableStateOf("")
-    private var vitalSignsValues = mutableStateMapOf<String, Map<String, String>>()
-    private var medicineValues = mutableListOf<Map<String, String>>()
 
-    var chipValues = mutableStateMapOf<String, String>()
+    var temporalInfoCard by mutableStateOf("")
+    var temporalMedsSelector by mutableStateOf("")
+    var temporalSignature by mutableStateOf("")
+    var chipSelectionValues = mutableStateMapOf<String, String>()
+    var chipOptionValues = mutableStateMapOf<String, String>()
+    var medicineValues = mutableListOf<Map<String, String>>()
+    var vitalSignsValues = mutableStateMapOf<String, Map<String, String>>()
+    var signatureValues = mutableStateMapOf<String, String>()
 
     init {
         uiState = uiState.copy(isLoading = true)
@@ -167,11 +170,20 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
+    fun showSignaturePad(identifier: String) {
+        temporalSignature = identifier
+        uiState = uiState.copy(
+            navigationModel = MedicalHistoryNavigationModel(
+                isSignatureEvent = true
+            )
+        )
+    }
+
     @Suppress("MagicNumber", "ComplexMethod")
     fun updateGlasgow() {
-        val mro = chipValues[GLASGOW_MRO_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
-        val mrv = chipValues[GLASGOW_MRV_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
-        val mrm = chipValues[GLASGOW_MRM_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
+        val mro = chipSelectionValues[GLASGOW_MRO_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
+        val mrv = chipSelectionValues[GLASGOW_MRV_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
+        val mrm = chipSelectionValues[GLASGOW_MRM_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
         val ecg = mro + mrv + mrm
 
         val tas = vitalSignsValues[DURING_VITAL_SIGNS]?.get(TAS_KEY)?.toIntOrNull() ?: 0
