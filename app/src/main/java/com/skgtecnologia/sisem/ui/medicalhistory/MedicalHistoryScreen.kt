@@ -1,10 +1,8 @@
 package com.skgtecnologia.sisem.ui.medicalhistory
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
@@ -71,6 +69,7 @@ fun MedicalHistoryScreen(
                 StepperComponent(it) {
                     Timber.d("Stepper action")
                     // FIXME: Hardcode for now Api call
+                    viewModel.sendMedicalHistory()
                 }
             }
         }
@@ -78,7 +77,7 @@ fun MedicalHistoryScreen(
         handleAction(uiAction, viewModel)
     }
 
-    OnBannerHandler(uiModel = uiState.errorModel) {
+    OnBannerHandler(uiModel = uiState.infoEvent) {
         viewModel.handleShownError()
     }
 

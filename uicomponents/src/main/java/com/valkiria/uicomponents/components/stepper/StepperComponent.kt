@@ -33,7 +33,7 @@ fun StepperComponent(
                 onAction(uiModel.identifier)
             },
             colors = ButtonStyle.LOUD.mapToColors(),
-            modifier = Modifier.fillMaxWidth()
+            modifier = uiModel.modifier.fillMaxWidth()
         ) {
             Text(
                 text = "FINALIZADO",

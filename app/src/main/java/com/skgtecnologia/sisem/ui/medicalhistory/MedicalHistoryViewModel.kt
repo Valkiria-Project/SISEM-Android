@@ -32,14 +32,15 @@ import com.valkiria.uicomponents.components.label.TextUiModel
 import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
 import com.valkiria.uicomponents.components.signature.SignatureUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.UUID
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.UUID
+import javax.inject.Inject
 
 private const val DATE_FORMAT = "HH:mm"
 private const val SAVE_COLOR = "#3cf2dd"
@@ -107,7 +108,7 @@ class MedicalHistoryViewModel @Inject constructor(
                 withContext(Dispatchers.Main) {
                     uiState = uiState.copy(
                         isLoading = false,
-                        errorModel = throwable.mapToUi()
+                        infoEvent = throwable.mapToUi()
                     )
                 }
             }
@@ -324,9 +325,38 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
+    fun sendMedicalHistory() {
+        uiState = uiState.copy(
+            isLoading = true
+        )
+
+        job?.cancel()
+        job = viewModelScope.launch(Dispatchers.IO) {
+            sendMedicalHistory.invoke(
+                humanBodyValues = emptyList(),
+                segmentedValues = emptyMap(),
+                fieldsValue = emptyMap(),
+                sliderValues = emptyMap(),
+                dropDownValues = emptyMap(),
+                chipSelectionValues = emptyMap(),
+                imageButtonSectionValues = emptyMap(),
+                vitalSigns = emptyMap()
+            ).onSuccess {
+                Timber.d("This is a success")
+            }.onFailure { throwable ->
+                Timber.wtf(throwable, "This is a failure")
+
+                uiState = uiState.copy(
+                    isLoading = false,
+                    infoEvent = throwable.mapToUi()
+                )
+            }
+        }
+    }
+
     fun handleShownError() {
         uiState = uiState.copy(
-            errorModel = null
+            infoEvent = null
         )
     }
 

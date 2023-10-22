@@ -137,7 +137,7 @@ private fun arePermissionsGranted(
         true
     } else {
         notificationsPermissionState.status.isGranted &&
-                fineLocationPermissionState.status.isGranted
+            fineLocationPermissionState.status.isGranted
     }
 }
 
