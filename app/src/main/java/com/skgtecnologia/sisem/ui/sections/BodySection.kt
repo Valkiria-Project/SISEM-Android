@@ -48,10 +48,8 @@ import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.button.ButtonUiModel
-import com.valkiria.uicomponents.components.button.ImageButtonComponent
 import com.valkiria.uicomponents.components.button.ImageButtonSectionComponent
 import com.valkiria.uicomponents.components.button.ImageButtonSectionUiModel
-import com.valkiria.uicomponents.components.button.ImageButtonUiModel
 import com.valkiria.uicomponents.components.card.InfoCardComponent
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
 import com.valkiria.uicomponents.components.chip.ChipComponent
@@ -207,20 +205,14 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is HumanBodyUiModel -> item(key = model.identifier) {
-                HumanBodyComponent(model) { identifier, values ->
-                    onAction(GenericUiAction.HumanBodyAction(identifier, values))
-                }
-            }
-
-            is ImageButtonUiModel -> item(key = model.identifier) {
-                ImageButtonComponent(model) { id ->
-                    onAction(GenericUiAction.ButtonAction(identifier = id))
+                HumanBodyComponent(model) { values ->
+                    onAction(GenericUiAction.HumanBodyAction(model.identifier, values))
                 }
             }
 
             is ImageButtonSectionUiModel -> item(key = model.identifier) {
                 ImageButtonSectionComponent(model) { id ->
-                    onAction(GenericUiAction.ButtonAction(identifier = id))
+                    onAction(GenericUiAction.ImageButtonAction(identifier = id))
                     // FIXME: "Do we use this action?"
                 }
             }

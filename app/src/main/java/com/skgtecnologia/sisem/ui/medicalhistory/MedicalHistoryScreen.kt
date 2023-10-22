@@ -10,8 +10,10 @@ import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
+import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
 import com.valkiria.uicomponents.components.stepper.StepperComponent
 import com.valkiria.uicomponents.components.stepper.StepperUiModel
+import com.valkiria.uicomponents.components.textfield.InputUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -89,33 +91,67 @@ fun handleAction(
     viewModel: MedicalHistoryViewModel
 ) {
     when (uiAction) {
-        is GenericUiAction.ButtonAction -> {}
-        // crear modelo para ImageButtonSection
+        is GenericUiAction.ChipOptionAction -> {
+            val chipOption = viewModel.chipOptionValues[uiAction.identifier]
 
-        is GenericUiAction.ChipOptionAction -> {}
-        // Lateralidad - dificultad paciente
+            if (chipOption != null) {
+                if (chipOption.contains(uiAction.text)) {
+                    chipOption.remove(uiAction.text)
+
+                    if (chipOption.isEmpty()) viewModel.chipOptionValues.remove(uiAction.identifier)
+                } else {
+                    chipOption.add(uiAction.text)
+                }
+            } else {
+                viewModel.chipOptionValues[uiAction.identifier] = mutableListOf(uiAction.text)
+            }
+        }
 
         is GenericUiAction.ChipSelectionAction -> {
             viewModel.chipSelectionValues[uiAction.identifier] = uiAction.text
             viewModel.updateGlasgow()
         }
 
-        is GenericUiAction.DropDownAction -> {}
+        is GenericUiAction.DropDownAction ->
+            viewModel.dropDownValues[uiAction.identifier] = DropDownInputUiModel(
+                uiAction.identifier,
+                uiAction.id,
+                uiAction.name,
+                uiAction.fieldValidated
+            )
 
-        is GenericUiAction.HumanBodyAction -> {}
+        is GenericUiAction.HumanBodyAction -> {
+            val humanBody = viewModel.humanBodyUiValues.find { it.area == uiAction.values.area }
+
+            if (humanBody != null) {
+                viewModel.humanBodyUiValues.remove(humanBody)
+            } else {
+                viewModel.humanBodyUiValues.add(uiAction.values)
+            }
+        }
+
+        is GenericUiAction.ImageButtonAction ->
+            viewModel.imageButtonSectionValues[uiAction.identifier] = uiAction.identifier
 
         is GenericUiAction.InfoCardAction -> viewModel.showVitalSignsForm(uiAction.identifier)
 
-        is GenericUiAction.InputAction -> {}
+        is GenericUiAction.InputAction ->
+            viewModel.fieldsValues[uiAction.identifier] = InputUiModel(
+                uiAction.identifier,
+                uiAction.updatedValue,
+                uiAction.fieldValidated
+            )
 
         is GenericUiAction.MedsSelectorAction ->
             viewModel.showMedicineForm(uiAction.identifier)
 
-        is GenericUiAction.SegmentedSwitchAction -> {}
+        is GenericUiAction.SegmentedSwitchAction ->
+            viewModel.segmentedValues[uiAction.identifier] = uiAction.status
 
         is GenericUiAction.SignatureAction -> viewModel.showSignaturePad(uiAction.identifier)
 
-        is GenericUiAction.SliderAction -> {}
+        is GenericUiAction.SliderAction ->
+            viewModel.sliderValues[uiAction.identifier] = uiAction.value.toString()
 
         else -> Timber.d("no-op")
     }

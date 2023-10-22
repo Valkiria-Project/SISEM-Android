@@ -20,6 +20,7 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.ui.humanbody.area.BackArea
 import com.skgtecnologia.sisem.ui.humanbody.wounds.WoundsContent
 import com.valkiria.uicomponents.bricks.bottomsheet.BottomSheetView
+import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUiModel
 import kotlinx.coroutines.launch
 
@@ -31,7 +32,7 @@ fun HumanBodyBackComponent(
     viewModel: HumanBodyViewModel,
     width: Int,
     height: Int,
-    onAction: (id: String, wounds: Map<String, List<String>>) -> Unit
+    onAction: (humanBodyUi: HumanBodyUi) -> Unit
 ) {
     val uiState = viewModel.uiState
     val selectedBackAreas = uiState.selectedBackAreas
@@ -79,7 +80,13 @@ fun HumanBodyBackComponent(
                         burningLevel = uiModel.burningLevel
                     ) { wounds ->
                         viewModel.saveBackList(selectedBackArea)
-                        onAction("identifier", mapOf(selectedBackArea.name to wounds))
+                        onAction(
+                            HumanBodyUi(
+                                type = "BACK",
+                                area = selectedBackArea.name,
+                                wounds = wounds
+                            )
+                        )
                         selectedBackArea = BackArea.NONE
                         viewModel.handledOnWoundSelected()
                     }

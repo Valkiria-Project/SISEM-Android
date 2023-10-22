@@ -5,6 +5,7 @@ import com.skgtecnologia.sisem.data.medicalhistory.remote.MedicalHistoryRemoteDa
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.domain.medicalhistory.MedicalHistoryRepository
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
@@ -34,23 +35,27 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
         medicalHistoryRemoteDataSource.getMedicineScreen().getOrThrow()
 
     override suspend fun sendMedicalHistory(
-        humanBodyValues: List<Map<String, List<String>>>,
-        segmentedValues: Map<String, String>,
-        fieldsValue: Map<String, Boolean>,
+        humanBodyUiValues: List<HumanBodyUi>,
+        segmentedValues: Map<String, Boolean>,
+        signatureValues: Map<String, String>,
+        fieldsValue: Map<String, String>,
         sliderValues: Map<String, String>,
         dropDownValues: Map<String, String>,
         chipSelectionValues: Map<String, String>,
+        chipOptionsValues: Map<String, List<String>>,
         imageButtonSectionValues: Map<String, String>,
-        vitalSigns: Map<String, List<String>>
+        vitalSigns: Map<String, Map<String, String>>
     ) = medicalHistoryRemoteDataSource.sendMedicalHistory(
         idTurn = "1", // authCacheDataSource.observeAccessToken().first()?.turn?.id.orEmpty(),
         idAph = "1", // FIXME: where is this value?
-        humanBodyValues = humanBodyValues,
+        humanBodyUiValues = humanBodyUiValues,
         segmentedValues = segmentedValues,
+        signatureValues = signatureValues,
         fieldsValue = fieldsValue,
         sliderValues = sliderValues,
         dropDownValues = dropDownValues,
         chipSelectionValues = chipSelectionValues,
+        chipOptionsValues = chipOptionsValues,
         imageButtonSectionValues = imageButtonSectionValues,
         vitalSigns = vitalSigns
     ).getOrThrow()

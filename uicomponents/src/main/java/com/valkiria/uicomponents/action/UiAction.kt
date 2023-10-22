@@ -2,6 +2,7 @@ package com.valkiria.uicomponents.action
 
 import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
+import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 
 const val DISMISS_IDENTIFIER = "dismiss"
 
@@ -38,7 +39,11 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
 
     data class HumanBodyAction(
         override val identifier: String,
-        val values: Map<String, List<String>>
+        val values: HumanBodyUi
+    ) : GenericUiAction(identifier)
+
+    data class ImageButtonAction(
+        override val identifier: String
     ) : GenericUiAction(identifier)
 
     data class InfoCardAction(

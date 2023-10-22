@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.ui.medicalhistory
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -14,6 +15,7 @@ import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryScreen
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SendMedicalHistory
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
+import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.ADMINISTRATION_ROUTE_KEY
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.APPLICATION_TIME_KEY
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.APPLIED_DOSE_KEY
@@ -25,12 +27,15 @@ import com.skgtecnologia.sisem.ui.medicalhistory.medicine.QUANTITY_USED_KEY
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
 import com.valkiria.uicomponents.components.card.PillUiModel
+import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
+import com.valkiria.uicomponents.components.dropdown.DropDownUiModel
 import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.ListTextUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextUiModel
 import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
 import com.valkiria.uicomponents.components.signature.SignatureUiModel
+import com.valkiria.uicomponents.components.textfield.InputUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -82,11 +87,18 @@ class MedicalHistoryViewModel @Inject constructor(
     var temporalInfoCard by mutableStateOf("")
     var temporalMedsSelector by mutableStateOf("")
     var temporalSignature by mutableStateOf("")
-    var chipSelectionValues = mutableStateMapOf<String, String>()
-    var chipOptionValues = mutableStateMapOf<String, String>()
-    var medicineValues = mutableListOf<Map<String, String>>()
-    var vitalSignsValues = mutableStateMapOf<String, Map<String, String>>()
+    var humanBodyUiValues = mutableStateListOf<HumanBodyUi>()
+    var segmentedValues = mutableStateMapOf<String, Boolean>()
     var signatureValues = mutableStateMapOf<String, String>()
+    var fieldsValues = mutableStateMapOf<String, InputUiModel>()
+    var sliderValues = mutableStateMapOf<String, String>()
+    var dropDownValues = mutableStateMapOf<String, DropDownInputUiModel>()
+    var chipSelectionValues = mutableStateMapOf<String, String>()
+    var chipOptionValues = mutableStateMapOf<String, MutableList<String>>()
+    var imageButtonSectionValues = mutableStateMapOf<String, String>()
+    var vitalSignsValues = mutableStateMapOf<String, Map<String, String>>()
+
+    var medicineValues = mutableListOf<Map<String, String>>()
 
     init {
         uiState = uiState.copy(isLoading = true)
@@ -333,14 +345,16 @@ class MedicalHistoryViewModel @Inject constructor(
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
             sendMedicalHistory.invoke(
-                humanBodyValues = emptyList(),
-                segmentedValues = emptyMap(),
-                fieldsValue = emptyMap(),
-                sliderValues = emptyMap(),
-                dropDownValues = emptyMap(),
-                chipSelectionValues = emptyMap(),
-                imageButtonSectionValues = emptyMap(),
-                vitalSigns = emptyMap()
+                humanBodyUiValues = humanBodyUiValues,
+                segmentedValues = segmentedValues,
+                signatureValues = signatureValues,
+                fieldsValue = fieldsValues.mapValues { it.value.updatedValue },
+                sliderValues = sliderValues,
+                dropDownValues = dropDownValues.mapValues { it.value.id },
+                chipSelectionValues = chipSelectionValues,
+                chipOptionsValues = chipOptionValues,
+                imageButtonSectionValues = imageButtonSectionValues,
+                vitalSigns = vitalSignsValues
             ).onSuccess {
                 Timber.d("This is a success")
             }.onFailure { throwable ->
