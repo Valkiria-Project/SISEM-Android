@@ -59,7 +59,7 @@ private const val CODE = "Código"
 private const val QUANTITY_USED = "Cantidad utilizada"
 private const val ADMINISTRATION_ROUTE = "Via de administración"
 
-@Suppress("UnusedPrivateMember")
+@Suppress("TooManyFunctions", "UnusedPrivateMember")
 @HiltViewModel
 class MedicalHistoryViewModel @Inject constructor(
     private val getMedicalHistoryScreen: GetMedicalHistoryScreen,

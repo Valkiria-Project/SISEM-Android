@@ -1,19 +1,20 @@
+@file:Suppress("TooManyFunctions")
 package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.navigation.NavHostController
+import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthNavigationModel
 import com.skgtecnologia.sisem.ui.login.LoginNavigationModel
+import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryNavigationModel
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineNavigationModel
+import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadNavigationModel
+import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
-import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthNavigationModel
-import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryNavigationModel
-import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineNavigationModel
 import com.skgtecnologia.sisem.ui.preoperational.PreOpNavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
-import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadNavigationModel
-import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsNavigationModel
 
 const val APP_STARTED = "app_started"
 const val FINDING = "finding"
@@ -187,7 +188,7 @@ private fun preOpToNextStep(
     model.isNewFindingEvent ->
         navController.navigate(
             ReportNavigationRoute.AddFindingScreen.route +
-                    "?${NavigationArgument.FINDING_ID}=${model.findingId}"
+                "?${NavigationArgument.FINDING_ID}=${model.findingId}"
         )
 
     else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {

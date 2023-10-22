@@ -27,6 +27,7 @@ import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.extensions.encodeAsBase64
 
+@Suppress("LongMethod")
 @Composable
 fun SignaturePadScreen(
     modifier: Modifier = Modifier,
