@@ -37,6 +37,8 @@ fun SignaturePadScreen(
             mutableStateOf(null)
         }
 
+        // FIXME: Add header
+
         ComposeSignature(
             modifier = Modifier
                 .fillMaxWidth()
