@@ -221,7 +221,7 @@ private fun LazyListScope.handleBodyRows(
                     }
                 }
 
-                // Mandar data al stepper aca en cada accion recibida
+                // FIXME: Send data to Stepper or create shared fun
             }
 
             is FindingUiModel -> item(key = model.identifier) {
@@ -295,7 +295,7 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is SignatureUiModel -> item(key = model.identifier) {
-                SignatureComponent(uiModel = model) {
+                 SignatureComponent(uiModel = model) {
                     // FIXME: Handle signature
                 }
             }
