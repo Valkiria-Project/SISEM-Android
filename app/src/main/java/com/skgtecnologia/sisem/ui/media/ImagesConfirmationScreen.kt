@@ -106,7 +106,7 @@ fun ImagesConfirmationScreen(
             headerUiModel = imagesConfirmationHeader(
                 titleText = stringResource(id = R.string.images_confirmation_title),
                 subtitleText = stringResource(R.string.images_confirmation_subtitle),
-                leftIcon = stringResource(R.string.images_confirmation_left_icon)
+                leftIcon = stringResource(R.string.back_icon)
             )
         ) { uiAction ->
             if (uiAction is HeaderUiAction.GoBack) {

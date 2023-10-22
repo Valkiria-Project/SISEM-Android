@@ -45,7 +45,7 @@ class ErrorModelFactory @Inject constructor(
 
         return when (error) {
             is ConnectException, is UnknownHostException -> BannerModel(
-                icon = stringProvider.getString(R.string.error_default_icon),
+                icon = stringProvider.getString(R.string.alert_icon),
                 title = stringProvider.getString(R.string.error_connectivity_title),
                 description = ""
             )
@@ -53,13 +53,13 @@ class ErrorModelFactory @Inject constructor(
             is HttpException -> {
                 if (error.code() == FORBIDDEN_HTTP_STATUS_CODE) {
                     BannerModel(
-                        icon = stringProvider.getString(R.string.error_default_icon),
+                        icon = stringProvider.getString(R.string.alert_icon),
                         title = stringProvider.getString(R.string.error_forbidden_title),
                         description = ""
                     )
                 } else {
                     BannerModel(
-                        icon = stringProvider.getString(R.string.error_default_icon),
+                        icon = stringProvider.getString(R.string.alert_icon),
                         title = error.message(),
                         description = ""
                     )
@@ -67,13 +67,13 @@ class ErrorModelFactory @Inject constructor(
             }
 
             is SocketTimeoutException -> BannerModel(
-                icon = stringProvider.getString(R.string.error_default_icon),
+                icon = stringProvider.getString(R.string.alert_icon),
                 title = stringProvider.getString(R.string.error_server_title),
                 description = stringProvider.getString(R.string.error_server_description)
             )
 
             else -> BannerModel(
-                icon = stringProvider.getString(R.string.error_default_icon),
+                icon = stringProvider.getString(R.string.alert_icon),
                 title = stringProvider.getString(R.string.error_general_title),
                 description = ""
             )

@@ -58,7 +58,7 @@ fun navigateToNextStep(
         else -> {}
     }
 
-fun deviceAuthToNextStep(
+private fun deviceAuthToNextStep(
     navController: NavHostController,
     model: DeviceAuthNavigationModel,
     onNavigationFallback: () -> Unit = {}
@@ -137,7 +137,7 @@ private fun loginToNextStep(
     else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route)
 }
 
-fun medicalHistoryToNextStep(
+private fun medicalHistoryToNextStep(
     navController: NavHostController,
     model: MedicalHistoryNavigationModel
 ) {
@@ -152,7 +152,7 @@ fun medicalHistoryToNextStep(
     }
 }
 
-fun medicineToNextStep(
+private fun medicineToNextStep(
     navController: NavHostController,
     model: MedicineNavigationModel
 ) {
@@ -259,7 +259,7 @@ private fun signaturePadToNextStep(
     }
 }
 
-fun vitalSignsToNextStep(
+private fun vitalSignsToNextStep(
     navController: NavHostController,
     model: VitalSignsNavigationModel
 ) {

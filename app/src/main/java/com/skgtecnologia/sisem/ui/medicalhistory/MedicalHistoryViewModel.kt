@@ -170,15 +170,6 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
-    fun showSignaturePad(identifier: String) {
-        temporalSignature = identifier
-        uiState = uiState.copy(
-            navigationModel = MedicalHistoryNavigationModel(
-                isSignatureEvent = true
-            )
-        )
-    }
-
     @Suppress("MagicNumber", "ComplexMethod")
     fun updateGlasgow() {
         val mro = chipSelectionValues[GLASGOW_MRO_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
@@ -300,6 +291,15 @@ class MedicalHistoryViewModel @Inject constructor(
             "$CODE ${medicine[CODE_KEY]}",
             "$QUANTITY_USED ${medicine[QUANTITY_USED_KEY]} $presentation",
             "$ADMINISTRATION_ROUTE ${medicine[ADMINISTRATION_ROUTE_KEY]}"
+        )
+    }
+
+    fun showSignaturePad(identifier: String) {
+        temporalSignature = identifier
+        uiState = uiState.copy(
+            navigationModel = MedicalHistoryNavigationModel(
+                isSignatureEvent = true
+            )
         )
     }
 

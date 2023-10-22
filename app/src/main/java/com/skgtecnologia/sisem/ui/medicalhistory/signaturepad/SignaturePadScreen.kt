@@ -18,7 +18,10 @@ import androidx.compose.ui.unit.dp
 import com.joelkanyi.composesignature.ComposeSignature
 import com.skgtecnologia.sisem.R.string
 import com.skgtecnologia.sisem.domain.medicalhistory.model.MedicalHistoryIdentifier
+import com.skgtecnologia.sisem.domain.model.header.signaturePadHeader
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
+import com.skgtecnologia.sisem.ui.sections.HeaderSection
+import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.bricks.button.ButtonView
 import com.valkiria.uicomponents.components.button.ButtonSize
 import com.valkiria.uicomponents.components.button.ButtonStyle
@@ -38,7 +41,19 @@ fun SignaturePadScreen(
             mutableStateOf(null)
         }
 
-        // FIXME: Add header
+        HeaderSection(
+            headerUiModel = signaturePadHeader(
+                titleText = stringResource(id = string.signature_pad_title),
+                subtitleText = stringResource(id = string.signature_pad_subtitle),
+                leftIcon = stringResource(id = string.back_icon)
+            )
+        ) { uiAction ->
+            if (uiAction is HeaderUiAction.GoBack) {
+                onNavigation(
+                    SignaturePadNavigationModel(goBack = true)
+                )
+            }
+        }
 
         ComposeSignature(
             modifier = Modifier

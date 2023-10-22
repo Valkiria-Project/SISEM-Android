@@ -98,7 +98,7 @@ fun DropDownComponent(
                             listOf(
                                 ValidationUiModel(
                                     regex = EMPTY_REGEX,
-                                    message = stringResource(id = R.string.validation_empty)
+                                    message = stringResource(id = R.string.field_empty_validation_message)
                                 )
                             )
                         )?.message.orEmpty(),
@@ -111,7 +111,7 @@ fun DropDownComponent(
                 listOf(
                     ValidationUiModel(
                         regex = EMPTY_REGEX,
-                        message = stringResource(id = R.string.validation_empty)
+                        message = stringResource(id = R.string.field_empty_validation_message)
                     )
                 ),
                 validateFields

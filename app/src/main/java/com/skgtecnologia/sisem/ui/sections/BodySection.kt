@@ -82,6 +82,7 @@ import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
+import com.valkiria.uicomponents.components.signature.CrewMemberSignatureComponent
 import com.valkiria.uicomponents.components.signature.CrewMemberSignatureUiModel
 import com.valkiria.uicomponents.components.signature.SignatureComponent
 import com.valkiria.uicomponents.components.signature.SignatureUiModel
@@ -171,35 +172,7 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is CrewMemberSignatureUiModel -> item(key = model.identifier) {
-                SignatureComponent(
-                    uiModel = SignatureUiModel(
-                        identifier = "RESPONSIBLE_SIGNATURE",
-                        signatureLabel = TextUiModel(
-                            text = "Firma del responsable",
-                            textStyle = HEADLINE_5
-                        ),
-                        signatureButton = ButtonUiModel(
-                            identifier = "RESPONSIBLE_SIGNATURE",
-                            label = "FIRMAR",
-                            leftIcon = "ic_edit",
-                            style = ButtonStyle.LOUD,
-                            textStyle = TextStyle.HEADLINE_5,
-                            onClick = OnClick.DISMISS,
-                            size = ButtonSize.FULL_WIDTH,
-                            arrangement = Arrangement.Center,
-                            modifier = Modifier.padding(
-                                start = 0.dp,
-                                top = 20.dp,
-                                end = 0.dp,
-                                bottom = 0.dp
-                            )
-                        ),
-                        modifier = Modifier
-                    )
-                ) { id ->
-                    onAction(GenericUiAction.SignatureAction(identifier = id))
-                }
-//                CrewMemberSignatureComponent(uiModel = model)
+                CrewMemberSignatureComponent(uiModel = model)
             }
 
             is DropDownUiModel -> item(key = model.identifier) {
@@ -329,8 +302,8 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is SignatureUiModel -> item(key = model.identifier) {
-                SignatureComponent(uiModel = model) {
-                    // FIXME: Handle signature
+                SignatureComponent(uiModel = model) { id ->
+                    onAction(GenericUiAction.SignatureAction(identifier = id))
                 }
             }
 

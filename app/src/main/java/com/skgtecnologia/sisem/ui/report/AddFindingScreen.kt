@@ -80,7 +80,7 @@ fun AddFindingScreen(
             headerUiModel = addFindingHeader(
                 titleText = stringResource(id = R.string.findings_title),
                 subtitleText = stringResource(id = R.string.findings_subtitle),
-                leftIcon = stringResource(id = R.string.findings_left_icon)
+                leftIcon = stringResource(id = R.string.back_icon)
             )
         ) { uiAction ->
             if (uiAction is HeaderUiAction.GoBack) {

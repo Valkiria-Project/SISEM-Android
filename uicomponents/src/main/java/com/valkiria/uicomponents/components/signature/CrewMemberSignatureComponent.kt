@@ -40,8 +40,11 @@ fun CrewMemberSignatureComponent(
             )
 
             Image(
-                bitmap = uiModel.signature.substringAfter(",").decodeAsBase64Bitmap()
-                    .asImageBitmap(), // FIXME: Temporal hack
+                // FIXME: Temporal hack
+                bitmap = uiModel.signature
+                    .substringAfter(",")
+                    .decodeAsBase64Bitmap()
+                    .asImageBitmap(),
                 contentDescription = uiModel.name.text,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
