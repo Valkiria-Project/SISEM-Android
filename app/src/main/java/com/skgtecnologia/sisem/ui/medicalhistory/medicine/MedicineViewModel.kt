@@ -92,8 +92,8 @@ class MedicineViewModel @Inject constructor(
     }
 
     private fun buildMedicineInformation(): Map<String, String> = mapOf(
-        GENERIC_NAME_KEY to dropDownValue.value.name,
-        CODE_KEY to dropDownValue.value.id,
+        GENERIC_NAME_KEY to dropDownValue.value.id,
+        CODE_KEY to dropDownValue.value.name,
         DATE_MEDICINE_KEY to fieldsValues[DATE_MEDICINE_KEY]?.updatedValue.orEmpty(),
         APPLICATION_TIME_KEY to timePickerValue.value,
         DOSE_UNIT_KEY to chipValues[DOSE_UNIT_KEY].orEmpty(),

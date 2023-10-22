@@ -15,7 +15,6 @@ import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryScreen
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SendMedicalHistory
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
-import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.ADMINISTRATION_ROUTE_KEY
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.APPLICATION_TIME_KEY
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.APPLIED_DOSE_KEY
@@ -28,7 +27,7 @@ import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
 import com.valkiria.uicomponents.components.card.PillUiModel
 import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
-import com.valkiria.uicomponents.components.dropdown.DropDownUiModel
+import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.ListTextUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
@@ -97,7 +96,6 @@ class MedicalHistoryViewModel @Inject constructor(
     var chipOptionValues = mutableStateMapOf<String, MutableList<String>>()
     var imageButtonSectionValues = mutableStateMapOf<String, String>()
     var vitalSignsValues = mutableStateMapOf<String, Map<String, String>>()
-
     var medicineValues = mutableListOf<Map<String, String>>()
 
     init {
@@ -271,7 +269,7 @@ class MedicalHistoryViewModel @Inject constructor(
         identifier = UUID.randomUUID().toString(),
         icon = "ic_pill",
         title = TextUiModel(
-            text = medicine[GENERIC_NAME_KEY]?.split(" - ")?.firstOrNull().orEmpty(),
+            text = medicine[CODE_KEY]?.split(" - ")?.firstOrNull().orEmpty(),
             textStyle = TextStyle.HEADLINE_4
         ),
         pill = PillUiModel(
@@ -298,10 +296,10 @@ class MedicalHistoryViewModel @Inject constructor(
     )
 
     private fun buildSpecifications(medicine: Map<String, String>): List<String> {
-        val presentation = medicine[GENERIC_NAME_KEY]?.split(" - ")?.lastOrNull()
+        val presentation = medicine[CODE_KEY]?.split(" - ")?.lastOrNull()
         return listOf(
             "$APPLIED_DOSES ${medicine[APPLIED_DOSE_KEY]} ${medicine[DOSE_UNIT_KEY]}",
-            "$CODE ${medicine[CODE_KEY]}",
+            "$CODE ${medicine[GENERIC_NAME_KEY]}",
             "$QUANTITY_USED ${medicine[QUANTITY_USED_KEY]} $presentation",
             "$ADMINISTRATION_ROUTE ${medicine[ADMINISTRATION_ROUTE_KEY]}"
         )
@@ -354,7 +352,8 @@ class MedicalHistoryViewModel @Inject constructor(
                 chipSelectionValues = chipSelectionValues,
                 chipOptionsValues = chipOptionValues,
                 imageButtonSectionValues = imageButtonSectionValues,
-                vitalSigns = vitalSignsValues
+                vitalSigns = vitalSignsValues,
+                infoCardButtonValues = medicineValues
             ).onSuccess {
                 Timber.d("This is a success")
             }.onFailure { throwable ->

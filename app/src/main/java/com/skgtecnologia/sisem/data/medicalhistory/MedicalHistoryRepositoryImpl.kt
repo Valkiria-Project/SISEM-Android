@@ -44,7 +44,8 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
         chipSelectionValues: Map<String, String>,
         chipOptionsValues: Map<String, List<String>>,
         imageButtonSectionValues: Map<String, String>,
-        vitalSigns: Map<String, Map<String, String>>
+        vitalSigns: Map<String, Map<String, String>>,
+        infoCardButtonValues: List<Map<String, String>>
     ) = medicalHistoryRemoteDataSource.sendMedicalHistory(
         idTurn = "1", // authCacheDataSource.observeAccessToken().first()?.turn?.id.orEmpty(),
         idAph = "1", // FIXME: where is this value?
@@ -57,6 +58,7 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
         chipSelectionValues = chipSelectionValues,
         chipOptionsValues = chipOptionsValues,
         imageButtonSectionValues = imageButtonSectionValues,
-        vitalSigns = vitalSigns
+        vitalSigns = vitalSigns,
+        infoCardButtonValues = infoCardButtonValues
     ).getOrThrow()
 }

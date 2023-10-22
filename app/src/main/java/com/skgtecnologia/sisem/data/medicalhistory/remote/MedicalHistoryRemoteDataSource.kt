@@ -72,7 +72,8 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
         chipSelectionValues: Map<String, String>,
         chipOptionsValues: Map<String, List<String>>,
         imageButtonSectionValues: Map<String, String>,
-        vitalSigns: Map<String, Map<String, String>>
+        vitalSigns: Map<String, Map<String, String>>,
+        infoCardButtonValues: List<Map<String,String>>
     ): Result<Unit> = apiCall(errorModelFactory) {
         medicalHistoryApi.sendMedicalHistory(
             medicalHistoryBody = MedicalHistoryBody(
@@ -87,7 +88,8 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
                 chipSelectionValues = chipSelectionValues,
                 chipOptionsValues = chipOptionsValues,
                 imageButtonSectionValues = imageButtonSectionValues,
-                vitalSigns = vitalSigns
+                vitalSigns = vitalSigns,
+                infoCardButtonValues = infoCardButtonValues
             )
         )
     }
