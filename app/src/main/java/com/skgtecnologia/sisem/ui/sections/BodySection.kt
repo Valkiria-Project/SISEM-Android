@@ -2,7 +2,12 @@ package com.skgtecnologia.sisem.ui.sections
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -98,6 +103,7 @@ import kotlinx.coroutines.launch
 fun BodySection(
     body: List<BodyRowModel>?,
     modifier: Modifier = Modifier,
+    stickyFooterContent: (@Composable ColumnScope.() -> Unit)? = null,
     validateFields: Boolean = false,
     onAction: (actionInput: UiAction) -> Unit
 ) {
@@ -105,20 +111,38 @@ fun BodySection(
     val coroutineScope = rememberCoroutineScope()
 
     if (body?.isNotEmpty() == true) {
-        LazyColumn(
-            modifier = modifier,
-            state = listState,
-            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Top),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            handleBodyRows(
-                body = body,
-                listState = listState,
-                coroutineScope = coroutineScope,
-                validateFields = validateFields,
-                onAction = onAction
-            )
+        Box(modifier = modifier.fillMaxSize()) {
+            val updatedModifier = if (stickyFooterContent != null) {
+                modifier.then(Modifier.padding(bottom = 60.dp))
+            } else {
+                modifier
+            }
+
+            LazyColumn(
+                modifier = updatedModifier,
+                state = listState,
+                contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Top),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                handleBodyRows(
+                    body = body,
+                    listState = listState,
+                    coroutineScope = coroutineScope,
+                    validateFields = validateFields,
+                    onAction = onAction
+                )
+            }
+
+            stickyFooterContent?.let {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter)
+                ) {
+                    stickyFooterContent()
+                }
+            }
         }
     }
 }

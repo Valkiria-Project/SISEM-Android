@@ -1,8 +1,10 @@
 package com.skgtecnologia.sisem.ui.medicalhistory
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
@@ -10,6 +12,8 @@ import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
+import com.valkiria.uicomponents.components.stepper.StepperComponent
+import com.valkiria.uicomponents.components.stepper.StepperUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -56,7 +60,21 @@ fun MedicalHistoryScreen(
         }
     }
 
-    BodySection(body = uiState.screenModel?.body) { uiAction ->
+    BodySection(
+        body = uiState.screenModel?.body,
+        stickyFooterContent = {
+            val stepperUiModel = uiState.screenModel?.body
+                ?.filterIsInstance<StepperUiModel>()
+                ?.firstOrNull()
+
+            stepperUiModel?.let {
+                StepperComponent(it) {
+                    Timber.d("Stepper action")
+                    // FIXME: Hardcode for now Api call
+                }
+            }
+        }
+    ) { uiAction ->
         handleAction(uiAction, viewModel)
     }
 
