@@ -25,7 +25,7 @@ import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
 import com.skgtecnologia.sisem.ui.dropdown.DropDownComponent
 import com.skgtecnologia.sisem.ui.humanbody.HumanBodyComponent
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.MedsSelectorComponent
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedsSelectorComponent
 import com.valkiria.uicomponents.action.AddReportUiAction
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.ConfirmPasswordInput

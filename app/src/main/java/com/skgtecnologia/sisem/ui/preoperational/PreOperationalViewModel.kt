@@ -17,7 +17,6 @@ import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
-import com.skgtecnologia.sisem.ui.navigation.model.PreOpNavigationModel
 import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
 import com.valkiria.uicomponents.components.finding.FindingUiModel
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel

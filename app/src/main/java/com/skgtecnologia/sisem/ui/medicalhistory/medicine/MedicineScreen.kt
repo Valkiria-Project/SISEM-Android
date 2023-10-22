@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.medicalhistory.medsselector
+package com.skgtecnologia.sisem.ui.medicalhistory.medicine
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
+import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.GenericUiAction

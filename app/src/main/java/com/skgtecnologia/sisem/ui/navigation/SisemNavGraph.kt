@@ -27,14 +27,14 @@ import com.skgtecnologia.sisem.ui.map.MapScreen
 import com.skgtecnologia.sisem.ui.media.CameraScreen
 import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryScreen
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.MedicineScreen
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsScreen
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
-import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
 import com.skgtecnologia.sisem.ui.report.AddFindingScreen
 import com.skgtecnologia.sisem.ui.report.AddReportRoleScreen
@@ -111,7 +111,7 @@ private fun NavGraphBuilder.authGraph(
 
         composable(
             route = AuthNavigationRoute.DeviceAuthScreen.route +
-                "/{${NavigationArgument.FROM}}",
+                    "/{${NavigationArgument.FROM}}",
             arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
         ) {
             DeviceAuthScreen(
@@ -189,12 +189,17 @@ private fun NavGraphBuilder.mainGraph(
             val vitalSigns =
                 navBackStackEntry.savedStateHandle.get<Map<String, String>>(VITAL_SIGNS)
             navBackStackEntry.savedStateHandle.remove<Map<String, String>>(VITAL_SIGNS)
+
             val medicine = navBackStackEntry.savedStateHandle.get<Map<String, String>>(MEDICINE)
             navBackStackEntry.savedStateHandle.remove<Map<String, String>>(MEDICINE)
 
+            val signature = navBackStackEntry.savedStateHandle.get<String>(SIGNATURE)
+            navBackStackEntry.savedStateHandle.remove<String>(SIGNATURE)
+
             MedicalHistoryScreen(
                 vitalSigns = vitalSigns,
-                medicine = medicine
+                medicine = medicine,
+                signature = signature
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
@@ -274,7 +279,7 @@ private fun NavGraphBuilder.mainGraph(
             route = MainNavigationRoute.SignaturePadScreen.route
         ) {
             // FIXME: Finish this work
-            SignaturePadScreen{ navigationModel ->
+            SignaturePadScreen { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
         }
@@ -292,7 +297,7 @@ private fun NavGraphBuilder.reportGraph(
     ) {
         composable(
             route = ReportNavigationRoute.AddFindingScreen.route +
-                "?${NavigationArgument.FINDING_ID}={${NavigationArgument.FINDING_ID}}",
+                    "?${NavigationArgument.FINDING_ID}={${NavigationArgument.FINDING_ID}}",
             arguments = listOf(
                 navArgument(NavigationArgument.FINDING_ID) { type = NavType.StringType }
             )
@@ -319,7 +324,7 @@ private fun NavGraphBuilder.reportGraph(
 
         composable(
             route = ReportNavigationRoute.ImagesConfirmationScreen.route +
-                "/{${NavigationArgument.FROM}}",
+                    "/{${NavigationArgument.FROM}}",
             arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
         ) { backStackEntry ->
             ImagesConfirmationScreen(

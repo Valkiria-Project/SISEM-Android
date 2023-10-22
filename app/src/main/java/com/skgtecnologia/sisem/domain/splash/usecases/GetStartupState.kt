@@ -5,7 +5,7 @@ import com.skgtecnologia.sisem.commons.extensions.resultOf
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
 import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
-import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
+import com.skgtecnologia.sisem.ui.navigation.StartupNavigationModel
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 

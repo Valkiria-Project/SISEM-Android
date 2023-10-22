@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
+import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
@@ -19,6 +19,7 @@ fun MedicalHistoryScreen(
     modifier: Modifier = Modifier,
     vitalSigns: Map<String, String>?,
     medicine: Map<String, String>?,
+    signature: String?,
     onNavigation: (medicalHistoryNavigationModel: NavigationModel?) -> Unit
 ) {
     val viewModel = hiltViewModel<MedicalHistoryViewModel>()
@@ -37,14 +38,21 @@ fun MedicalHistoryScreen(
     LaunchedEffect(vitalSigns) {
         Timber.d("MedicalHistoryScreen: LaunchedEffect vitalSigns pass")
         launch {
-            if (vitalSigns != null) viewModel.updateVitalSignsInfoCard(vitalSigns)
+            vitalSigns?.let { viewModel.updateVitalSignsInfoCard(vitalSigns) }
         }
     }
 
     LaunchedEffect(medicine) {
         Timber.d("MedicalHistoryScreen: LaunchedEffect medicine pass")
         launch {
-            if (medicine != null) viewModel.updateMedicineInfoCard(medicine)
+            medicine?.let { viewModel.updateMedicineInfoCard(medicine) }
+        }
+    }
+
+    LaunchedEffect(signature) {
+        Timber.d("MedicalHistoryScreen: LaunchedEffect medicine pass")
+        launch {
+            signature?.let { viewModel.updateSignature(signature) }
         }
     }
 

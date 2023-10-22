@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.ui.splash
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.domain.splash.usecases.GetStartupState
-import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
+import com.skgtecnologia.sisem.ui.navigation.StartupNavigationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

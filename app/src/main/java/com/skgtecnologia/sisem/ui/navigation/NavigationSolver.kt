@@ -1,19 +1,19 @@
 package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.navigation.NavHostController
+import com.skgtecnologia.sisem.ui.login.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
-import com.skgtecnologia.sisem.ui.navigation.model.DeviceAuthNavigationModel
-import com.skgtecnologia.sisem.ui.navigation.model.LoginNavigationModel
-import com.skgtecnologia.sisem.ui.navigation.model.MedicalHistoryNavigationModel
-import com.skgtecnologia.sisem.ui.navigation.model.MedicineNavigationModel
-import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
-import com.skgtecnologia.sisem.ui.navigation.model.PreOpNavigationModel
-import com.skgtecnologia.sisem.ui.navigation.model.ReportNavigationModel
-import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
-import com.skgtecnologia.sisem.ui.navigation.model.VitalSignsNavigationModel
+import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthNavigationModel
+import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryNavigationModel
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineNavigationModel
+import com.skgtecnologia.sisem.ui.preoperational.PreOpNavigationModel
+import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
+import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadNavigationModel
+import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsNavigationModel
 
 const val APP_STARTED = "app_started"
 const val FINDING = "finding"
@@ -52,9 +52,54 @@ fun navigateToNextStep(
         is MedicineNavigationModel -> medicineToNextStep(navController, navigationModel)
         is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
         is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
+        is SignaturePadNavigationModel -> signaturePadToNextStep(navController, navigationModel)
         is VitalSignsNavigationModel -> vitalSignsToNextStep(navController, navigationModel)
         else -> {}
     }
+
+fun deviceAuthToNextStep(
+    navController: NavHostController,
+    model: DeviceAuthNavigationModel,
+    onNavigationFallback: () -> Unit = {}
+) {
+    when {
+        model.isCrewList && model.from == LOGIN ->
+            navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
+                popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
+                    inclusive = true
+                }
+            }
+
+        // FIXME: revisit this logic, back is navigated to DeviceAuthScreen
+        model.isCrewList && model.from == "" ->
+            navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
+                popUpTo(AuthNavigationRoute.DeviceAuthScreen.route) {
+                    inclusive = true
+                }
+            }
+
+        model.isCrewList && model.from == MAIN ->
+            navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
+                popUpTo(NavigationGraph.Main.route) {
+                    inclusive = true
+                }
+            }
+
+        model.isCancel && model.from == MAIN ->
+            navController.navigate(NavigationGraph.Main.route) {
+                popUpTo(AuthNavigationRoute.DeviceAuthScreen.route) {
+                    inclusive = true
+                }
+            }
+
+        model.isCancel -> {
+            val goBack = navController.popBackStack()
+            if (!goBack) {
+                onNavigationFallback()
+            }
+        }
+    }
+}
 
 private fun loginToNextStep(
     navController: NavHostController,
@@ -89,6 +134,44 @@ private fun loginToNextStep(
     model.forgotPassword -> navController.navigate(AuthNavigationRoute.ForgotPasswordScreen.route)
 
     else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route)
+}
+
+fun medicalHistoryToNextStep(
+    navController: NavHostController,
+    model: MedicalHistoryNavigationModel
+) {
+    when {
+        model.isInfoCardEvent -> navController.navigate(MainNavigationRoute.VitalSignsScreen.route)
+
+        model.isMedsSelectorEvent ->
+            navController.navigate(MainNavigationRoute.MedicineScreen.route)
+
+        model.isSignatureEvent ->
+            navController.navigate(MainNavigationRoute.SignaturePadScreen.route)
+    }
+}
+
+fun medicineToNextStep(
+    navController: NavHostController,
+    model: MedicineNavigationModel
+) {
+    when {
+        model.goBack -> with(navController) {
+            popBackStack()
+
+            currentBackStackEntry
+                ?.savedStateHandle
+                ?.set(MEDICINE, null)
+        }
+
+        model.values != null -> with(navController) {
+            popBackStack()
+
+            currentBackStackEntry
+                ?.savedStateHandle
+                ?.set(MEDICINE, model.values)
+        }
+    }
 }
 
 private fun preOpToNextStep(
@@ -158,62 +241,20 @@ private fun reportToNextStep(
     }
 }
 
-fun deviceAuthToNextStep(
+private fun signaturePadToNextStep(
     navController: NavHostController,
-    model: DeviceAuthNavigationModel,
-    onNavigationFallback: () -> Unit = {}
+    model: SignaturePadNavigationModel
 ) {
     when {
-        model.isCrewList && model.from == LOGIN ->
-            navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
-                popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
-                    inclusive = true
-                }
-            }
+        model.goBack -> navController.popBackStack()
 
-        // FIXME: revisit this logic, back is navigated to DeviceAuthScreen
-        model.isCrewList && model.from == "" ->
-            navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
-                popUpTo(AuthNavigationRoute.DeviceAuthScreen.route) {
-                    inclusive = true
-                }
-            }
+        model.signature != null -> with(navController) {
+            popBackStack()
 
-        model.isCrewList && model.from == MAIN ->
-            navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
-                popUpTo(NavigationGraph.Main.route) {
-                    inclusive = true
-                }
-            }
-
-        model.isCancel && model.from == MAIN ->
-            navController.navigate(NavigationGraph.Main.route) {
-                popUpTo(AuthNavigationRoute.DeviceAuthScreen.route) {
-                    inclusive = true
-                }
-            }
-
-        model.isCancel -> {
-            val goBack = navController.popBackStack()
-            if (!goBack) {
-                onNavigationFallback()
-            }
+            currentBackStackEntry
+                ?.savedStateHandle
+                ?.set(SIGNATURE, model.signature)
         }
-    }
-}
-
-fun medicalHistoryToNextStep(
-    navController: NavHostController,
-    model: MedicalHistoryNavigationModel
-) {
-    when {
-        model.isInfoCardEvent -> navController.navigate(MainNavigationRoute.VitalSignsScreen.route)
-
-        model.isMedsSelectorEvent ->
-            navController.navigate(MainNavigationRoute.MedicineScreen.route)
-
-        model.isSignatureEvent ->
-            navController.navigate(MainNavigationRoute.SignaturePadScreen.route)
     }
 }
 
@@ -236,29 +277,6 @@ fun vitalSignsToNextStep(
             currentBackStackEntry
                 ?.savedStateHandle
                 ?.set(VITAL_SIGNS, model.values)
-        }
-    }
-}
-
-fun medicineToNextStep(
-    navController: NavHostController,
-    model: MedicineNavigationModel
-) {
-    when {
-        model.goBack -> with(navController) {
-            popBackStack()
-
-            currentBackStackEntry
-                ?.savedStateHandle
-                ?.set(MEDICINE, null)
-        }
-
-        model.values != null -> with(navController) {
-            popBackStack()
-
-            currentBackStackEntry
-                ?.savedStateHandle
-                ?.set(MEDICINE, model.values)
         }
     }
 }

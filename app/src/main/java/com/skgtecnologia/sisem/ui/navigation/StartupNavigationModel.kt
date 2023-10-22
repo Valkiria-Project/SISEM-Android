@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.navigation.model
+package com.skgtecnologia.sisem.ui.navigation
 
 import android.os.Parcelable
 import com.skgtecnologia.sisem.di.operation.OperationRole

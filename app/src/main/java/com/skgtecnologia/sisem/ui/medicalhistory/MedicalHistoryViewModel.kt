@@ -14,15 +14,14 @@ import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryScreen
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SendMedicalHistory
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.ADMINISTRATION_ROUTE_KEY
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.APPLICATION_TIME_KEY
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.APPLIED_DOSE_KEY
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.CODE_KEY
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.DATE_MEDICINE_KEY
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.DOSE_UNIT_KEY
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.GENERIC_NAME_KEY
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.QUANTITY_USED_KEY
-import com.skgtecnologia.sisem.ui.navigation.model.MedicalHistoryNavigationModel
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.ADMINISTRATION_ROUTE_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.APPLICATION_TIME_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.APPLIED_DOSE_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.CODE_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.DATE_MEDICINE_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.DOSE_UNIT_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.GENERIC_NAME_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.QUANTITY_USED_KEY
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
 import com.valkiria.uicomponents.components.card.PillUiModel
@@ -303,6 +302,31 @@ class MedicalHistoryViewModel @Inject constructor(
             "$QUANTITY_USED ${medicine[QUANTITY_USED_KEY]} $presentation",
             "$ADMINISTRATION_ROUTE ${medicine[ADMINISTRATION_ROUTE_KEY]}"
         )
+    }
+
+    fun updateSignature(signature: String) {
+        signatureValues[temporalSignature] = signature
+//        val updateBody = uiState.screenModel?.body?.map { bodyRowModel ->
+//            if (bodyRowModel is MedsSelectorUiModel &&
+//                bodyRowModel.identifier == temporalMedsSelector
+//            ) {
+//                val medicines = buildList {
+//                    addAll(bodyRowModel.medicines)
+//                    add(buildMedicine(medicine))
+//                }
+//                bodyRowModel.copy(
+//                    medicines = medicines
+//                )
+//            } else {
+//                bodyRowModel
+//            }
+//        }.orEmpty()
+//
+//        uiState = uiState.copy(
+//            screenModel = uiState.screenModel?.copy(
+//                body = updateBody
+//            )
+//        )
     }
 
     fun handleShownError() {

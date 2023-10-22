@@ -1,6 +1,7 @@
 <resources>
     <!-- CTA's -->
     <string name="cancel_cta">CANCELAR</string>
+    <string name="erase_cta">BORRAR</string>
     <string name="save_cta">GUARDAR</string>
     <string name="continue_cta">CONTINUAR</string>
 

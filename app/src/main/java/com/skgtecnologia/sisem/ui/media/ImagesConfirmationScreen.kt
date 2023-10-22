@@ -32,7 +32,7 @@ import com.skgtecnologia.sisem.ui.authcards.report.PagerIndicator
 import com.valkiria.uicomponents.extensions.decodeAsBitmap
 import com.valkiria.uicomponents.extensions.storeUriAsFileToCache
 import com.skgtecnologia.sisem.ui.navigation.REPORT
-import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
+import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction

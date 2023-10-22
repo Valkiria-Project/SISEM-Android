@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.medicalhistory.medsselector
+package com.skgtecnologia.sisem.ui.medicalhistory.medicine
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

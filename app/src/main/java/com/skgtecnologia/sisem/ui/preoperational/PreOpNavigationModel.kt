@@ -1,4 +1,6 @@
-package com.skgtecnologia.sisem.ui.navigation.model
+package com.skgtecnologia.sisem.ui.preoperational
+
+import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 
 data class PreOpNavigationModel(
     val isTurnCompleteEvent: Boolean = false,
