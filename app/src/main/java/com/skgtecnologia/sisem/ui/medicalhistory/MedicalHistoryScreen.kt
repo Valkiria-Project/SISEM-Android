@@ -95,20 +95,21 @@ fun handleAction(
             val chipOption = viewModel.chipOptionValues[uiAction.identifier]
 
             if (chipOption != null) {
-                if (chipOption.contains(uiAction.text)) {
-                    chipOption.remove(uiAction.text)
+                if (chipOption.contains(uiAction.chipOptionUiModel.id)) {
+                    chipOption.remove(uiAction.chipOptionUiModel.id)
 
                     if (chipOption.isEmpty()) viewModel.chipOptionValues.remove(uiAction.identifier)
                 } else {
-                    chipOption.add(uiAction.text)
+                    chipOption.add(uiAction.chipOptionUiModel.id)
                 }
             } else {
-                viewModel.chipOptionValues[uiAction.identifier] = mutableListOf(uiAction.text)
+                viewModel.chipOptionValues[uiAction.identifier] =
+                    mutableListOf(uiAction.chipOptionUiModel.id)
             }
         }
 
         is GenericUiAction.ChipSelectionAction -> {
-            viewModel.chipSelectionValues[uiAction.identifier] = uiAction.text
+            viewModel.chipSelectionValues[uiAction.identifier] = uiAction.chipSelectionItemUiModel
             viewModel.updateGlasgow()
         }
 

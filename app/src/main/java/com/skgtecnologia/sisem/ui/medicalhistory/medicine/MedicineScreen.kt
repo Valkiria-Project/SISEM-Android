@@ -106,7 +106,7 @@ fun handleAction(
         is GenericUiAction.TimePickerAction -> viewModel.timePickerValue.value = uiAction.value
 
         is GenericUiAction.ChipSelectionAction ->
-            viewModel.chipValues[uiAction.identifier] = uiAction.text
+            viewModel.chipValues[uiAction.identifier] = uiAction.chipSelectionItemUiModel
 
         is GenericUiAction.ButtonAction -> viewModel.saveMedicine()
 

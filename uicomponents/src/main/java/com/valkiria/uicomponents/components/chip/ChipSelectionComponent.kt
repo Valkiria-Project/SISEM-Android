@@ -20,7 +20,7 @@ import com.valkiria.uicomponents.components.label.TextStyle
 fun ChipSelectionComponent(
     uiModel: ChipSelectionUiModel,
     isTablet: Boolean = false,
-    onAction: (id: String, text: String, isSelection: Boolean) -> Unit
+    onAction: (id: String, chipSelectionItem: ChipSelectionItemUiModel, isSelection: Boolean) -> Unit
 ) {
     val selected = rememberSaveable { mutableStateOf("") }
 
@@ -53,7 +53,7 @@ fun ChipSelectionComponent(
                     modifier = Modifier.padding(horizontal = 8.dp),
                     onAction = { _, text, isSelection ->
                         selected.value = text
-                        onAction(uiModel.identifier, text, isSelection)
+                        onAction(uiModel.identifier, chipOption, isSelection)
                     }
                 )
             }

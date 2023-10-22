@@ -26,6 +26,8 @@ import com.skgtecnologia.sisem.ui.medicalhistory.medicine.QUANTITY_USED_KEY
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
 import com.valkiria.uicomponents.components.card.PillUiModel
+import com.valkiria.uicomponents.components.chip.ChipOptionUiModel
+import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
 import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 import com.valkiria.uicomponents.components.label.LabelUiModel
@@ -92,7 +94,7 @@ class MedicalHistoryViewModel @Inject constructor(
     var fieldsValues = mutableStateMapOf<String, InputUiModel>()
     var sliderValues = mutableStateMapOf<String, String>()
     var dropDownValues = mutableStateMapOf<String, DropDownInputUiModel>()
-    var chipSelectionValues = mutableStateMapOf<String, String>()
+    var chipSelectionValues = mutableStateMapOf<String, ChipSelectionItemUiModel>()
     var chipOptionValues = mutableStateMapOf<String, MutableList<String>>()
     var imageButtonSectionValues = mutableStateMapOf<String, String>()
     var vitalSignsValues = mutableStateMapOf<String, Map<String, String>>()
@@ -183,9 +185,9 @@ class MedicalHistoryViewModel @Inject constructor(
 
     @Suppress("MagicNumber", "ComplexMethod")
     fun updateGlasgow() {
-        val mro = chipSelectionValues[GLASGOW_MRO_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
-        val mrv = chipSelectionValues[GLASGOW_MRV_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
-        val mrm = chipSelectionValues[GLASGOW_MRM_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
+        val mro = chipSelectionValues[GLASGOW_MRO_KEY]?.name?.substring(0, 1)?.toIntOrNull() ?: 0
+        val mrv = chipSelectionValues[GLASGOW_MRV_KEY]?.name?.substring(0, 1)?.toIntOrNull() ?: 0
+        val mrm = chipSelectionValues[GLASGOW_MRM_KEY]?.name?.substring(0, 1)?.toIntOrNull() ?: 0
         val ecg = mro + mrv + mrm
 
         val tas = vitalSignsValues[DURING_VITAL_SIGNS]?.get(TAS_KEY)?.toIntOrNull() ?: 0
@@ -349,7 +351,7 @@ class MedicalHistoryViewModel @Inject constructor(
                 fieldsValue = fieldsValues.mapValues { it.value.updatedValue },
                 sliderValues = sliderValues,
                 dropDownValues = dropDownValues.mapValues { it.value.id },
-                chipSelectionValues = chipSelectionValues,
+                chipSelectionValues = chipSelectionValues.mapValues { it.value.id },
                 chipOptionsValues = chipOptionValues,
                 imageButtonSectionValues = imageButtonSectionValues,
                 vitalSigns = vitalSignsValues,

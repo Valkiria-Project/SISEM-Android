@@ -23,7 +23,7 @@ import timber.log.Timber
 @Composable
 fun ChipOptionsComponent(
     uiModel: ChipOptionsUiModel,
-    onAction: (id: String, text: String, isSelection: Boolean) -> Unit
+    onAction: (id: String, text: ChipOptionUiModel, isSelection: Boolean) -> Unit
 ) {
     Column(
         modifier = uiModel.modifier.fillMaxWidth(),
@@ -50,8 +50,8 @@ fun ChipOptionsComponent(
                     id = chipOption.id,
                     text = chipOption.name,
                     textStyle = TextStyle.BUTTON_1,
-                    onAction = { id, text, isSelection ->
-                        onAction(id, text, isSelection)
+                    onAction = { id, isSelection ->
+                        onAction(id, chipOption, isSelection)
                     }
                 )
             }

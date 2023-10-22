@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicineScreen
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
+import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
 import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,7 +37,7 @@ class MedicineViewModel @Inject constructor(
     var uiState by mutableStateOf(MedicineUiState())
         private set
 
-    var chipValues = mutableStateMapOf<String, String>()
+    var chipValues = mutableStateMapOf<String, ChipSelectionItemUiModel>()
     var fieldsValues = mutableStateMapOf<String, InputUiModel>()
     var dropDownValue = mutableStateOf(DropDownInputUiModel())
     var timePickerValue = mutableStateOf("")
@@ -96,10 +97,10 @@ class MedicineViewModel @Inject constructor(
         CODE_KEY to dropDownValue.value.name,
         DATE_MEDICINE_KEY to fieldsValues[DATE_MEDICINE_KEY]?.updatedValue.orEmpty(),
         APPLICATION_TIME_KEY to timePickerValue.value,
-        DOSE_UNIT_KEY to chipValues[DOSE_UNIT_KEY].orEmpty(),
+        DOSE_UNIT_KEY to chipValues[DOSE_UNIT_KEY]?.id.orEmpty(),
         APPLIED_DOSE_KEY to fieldsValues[APPLIED_DOSE_KEY]?.updatedValue.orEmpty(),
         QUANTITY_USED_KEY to fieldsValues[QUANTITY_USED_KEY]?.updatedValue.orEmpty(),
-        ADMINISTRATION_ROUTE_KEY to chipValues[ADMINISTRATION_ROUTE_KEY].orEmpty()
+        ADMINISTRATION_ROUTE_KEY to chipValues[ADMINISTRATION_ROUTE_KEY]?.id.orEmpty()
     )
 
     fun consumeInfoEvent() {
