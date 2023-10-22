@@ -3,31 +3,31 @@ package com.skgtecnologia.sisem.data.remote.model.components.signature
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.components.BodyRowResponse
-import com.skgtecnologia.sisem.data.remote.model.components.button.ButtonResponse
 import com.skgtecnologia.sisem.data.remote.model.components.label.TextResponse
 import com.skgtecnologia.sisem.data.remote.model.components.label.mapToUi
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.components.BodyRowType
-import com.valkiria.uicomponents.components.signature.SignatureUiModel
+import com.valkiria.uicomponents.components.signature.CrewMemberSignatureUiModel
 
 @JsonClass(generateAdapter = true)
-data class SignatureResponse(
+data class CrewMemberSignatureResponse(
     @Json(name = "identifier") val identifier: String?,
-    @Json(name = "label") val signatureLabel: TextResponse?,
-    @Json(name = "button") val signatureButton: ButtonResponse?,
+    @Json(name = "name") val name: TextResponse?,
+    @Json(name = "identification") val identification: TextResponse?,
+    @Json(name = "signature") val signature: String?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
-    override val type: BodyRowType = BodyRowType.SEGMENTED_SWITCH
+    override val type: BodyRowType = BodyRowType.CREW_MEMBER_SIGNATURE
 
-    override fun mapToUi(): SignatureUiModel = SignatureUiModel(
+    override fun mapToUi(): CrewMemberSignatureUiModel = CrewMemberSignatureUiModel(
         identifier = identifier ?: error("Signature identifier cannot be null"),
-        signatureLabel = signatureLabel?.mapToUi()
-            ?: error("Signature signatureLabel cannot be null"),
-        signatureButton = signatureButton?.mapToUi()
-            ?: error("Signature signatureButton cannot be null"),
+        name = name?.mapToUi() ?: error("Signature name cannot be null"),
+        identification = identification?.mapToUi()
+            ?: error("Signature identification cannot be null"),
+        signature = signature ?: error("Signature signature cannot be null"),
         modifier = modifier ?: Modifier
     )
 }

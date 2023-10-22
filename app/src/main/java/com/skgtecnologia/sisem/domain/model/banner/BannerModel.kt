@@ -69,7 +69,7 @@ class ErrorModelFactory @Inject constructor(
             is SocketTimeoutException -> BannerModel(
                 icon = stringProvider.getString(R.string.error_default_icon),
                 title = stringProvider.getString(R.string.error_server_title),
-                description = ""
+                description = stringProvider.getString(R.string.error_server_description)
             )
 
             else -> BannerModel(

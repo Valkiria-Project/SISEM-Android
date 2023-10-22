@@ -72,6 +72,8 @@ dependencies {
     // Maps
     implementation(libs.mapbox.android)
 
+    implementation(libs.signature)
+
     // Unit Testing
     testImplementation(libs.junit)
 

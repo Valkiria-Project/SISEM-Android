@@ -9,6 +9,8 @@
     <string name="error_forbidden_title">Autorización denegada</string>
     <string name="error_general_title">Ha ocurrido un error</string>
     <string name="error_server_title">Error en servidor</string>
+    <string name="error_server_description">Sucedió algo inesperado, por favor intenta de
+        nuevo</string>
     <string name="error_default_icon">ic_alert</string>
 
     <!-- Field validations -->

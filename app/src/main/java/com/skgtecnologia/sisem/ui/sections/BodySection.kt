@@ -76,6 +76,8 @@ import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
+import com.valkiria.uicomponents.components.signature.CrewMemberSignatureUiModel
+import com.valkiria.uicomponents.components.signature.SignatureComponent
 import com.valkiria.uicomponents.components.signature.SignatureUiModel
 import com.valkiria.uicomponents.components.slider.SliderComponent
 import com.valkiria.uicomponents.components.slider.SliderUiModel
@@ -160,6 +162,10 @@ private fun LazyListScope.handleBodyRows(
                         )
                     )
                 }
+            }
+
+            is CrewMemberSignatureUiModel -> item(key = model.identifier) {
+                // FIXME: Finish this
             }
 
             is DropDownUiModel -> item(key = model.identifier) {
@@ -289,7 +295,9 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is SignatureUiModel -> item(key = model.identifier) {
-                // TODO: Finish this
+                SignatureComponent(uiModel = model) {
+                    // FIXME: Handle signature
+                }
             }
 
             is SliderUiModel -> item(key = model.identifier) {

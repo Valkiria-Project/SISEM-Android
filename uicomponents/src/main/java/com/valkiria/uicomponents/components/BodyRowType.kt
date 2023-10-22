@@ -5,6 +5,7 @@ enum class BodyRowType {
     CHIP,
     CHIP_OPTIONS,
     CHIP_SELECTION,
+    CREW_MEMBER_SIGNATURE,
     DROP_DOWN,
     HUMAN_BODY,
     IMAGE_BUTTON,
