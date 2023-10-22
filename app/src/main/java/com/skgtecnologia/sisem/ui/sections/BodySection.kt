@@ -42,14 +42,11 @@ import com.valkiria.uicomponents.action.NewsUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.button.ButtonComponent
-import com.valkiria.uicomponents.components.button.ButtonSize
-import com.valkiria.uicomponents.components.button.ButtonStyle
 import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.button.ImageButtonComponent
 import com.valkiria.uicomponents.components.button.ImageButtonSectionComponent
 import com.valkiria.uicomponents.components.button.ImageButtonSectionUiModel
 import com.valkiria.uicomponents.components.button.ImageButtonUiModel
-import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.components.card.InfoCardComponent
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
 import com.valkiria.uicomponents.components.chip.ChipComponent
@@ -74,9 +71,6 @@ import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckCompone
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.LabelUiModel
-import com.valkiria.uicomponents.components.label.TextStyle
-import com.valkiria.uicomponents.components.label.TextStyle.HEADLINE_5
-import com.valkiria.uicomponents.components.label.TextUiModel
 import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
