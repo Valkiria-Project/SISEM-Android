@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,6 +21,8 @@ import com.valkiria.uicomponents.components.label.toTextStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.mocks.getLoginUserTextFieldUiModel
+
+private const val CONTAINER_COLOR = 0xFF3F4145
 
 @Composable
 fun FilledTextFieldView(
@@ -66,7 +69,13 @@ fun FilledTextFieldView(
         isError = text.toFailedValidation(uiModel.validations, validateFields) != null,
         keyboardOptions = uiModel.keyboardOptions,
         singleLine = uiModel.singleLine,
-        minLines = uiModel.minLines
+        minLines = uiModel.minLines,
+        colors = TextFieldDefaults.colors(
+            disabledContainerColor = Color(CONTAINER_COLOR),
+            errorContainerColor = Color(CONTAINER_COLOR),
+            focusedContainerColor = Color(CONTAINER_COLOR),
+            unfocusedContainerColor = Color(CONTAINER_COLOR)
+        )
     )
 }
 
