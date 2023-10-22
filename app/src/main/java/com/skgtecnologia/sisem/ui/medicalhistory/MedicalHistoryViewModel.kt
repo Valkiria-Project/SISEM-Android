@@ -30,6 +30,7 @@ import com.valkiria.uicomponents.components.label.ListTextUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextUiModel
 import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
+import com.valkiria.uicomponents.components.signature.SignatureUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -130,7 +131,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
         val list = values.map { "${it.key} ${it.value}" }
 
-        val updateBody = uiState.screenModel?.body?.map { bodyRowModel ->
+        val updatedBody = uiState.screenModel?.body?.map { bodyRowModel ->
             if (bodyRowModel is InfoCardUiModel && bodyRowModel.identifier == temporalInfoCard) {
                 bodyRowModel.copy(
                     pill = PillUiModel(
@@ -155,7 +156,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(
-                body = updateBody
+                body = updatedBody
             )
         )
     }
@@ -241,25 +242,23 @@ class MedicalHistoryViewModel @Inject constructor(
 
     fun updateMedicineInfoCard(medicine: Map<String, String>) {
         medicineValues.add(medicine)
-        val updateBody = uiState.screenModel?.body?.map { bodyRowModel ->
-            if (bodyRowModel is MedsSelectorUiModel &&
-                bodyRowModel.identifier == temporalMedsSelector
-            ) {
+        val updatedBody = uiState.screenModel?.body?.map {
+            if (it is MedsSelectorUiModel && it.identifier == temporalMedsSelector) {
                 val medicines = buildList {
-                    addAll(bodyRowModel.medicines)
+                    addAll(it.medicines)
                     add(buildMedicine(medicine))
                 }
-                bodyRowModel.copy(
+                it.copy(
                     medicines = medicines
                 )
             } else {
-                bodyRowModel
+                it
             }
         }.orEmpty()
 
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(
-                body = updateBody
+                body = updatedBody
             )
         )
     }
@@ -306,27 +305,23 @@ class MedicalHistoryViewModel @Inject constructor(
 
     fun updateSignature(signature: String) {
         signatureValues[temporalSignature] = signature
-//        val updateBody = uiState.screenModel?.body?.map { bodyRowModel ->
-//            if (bodyRowModel is MedsSelectorUiModel &&
-//                bodyRowModel.identifier == temporalMedsSelector
-//            ) {
-//                val medicines = buildList {
-//                    addAll(bodyRowModel.medicines)
-//                    add(buildMedicine(medicine))
-//                }
-//                bodyRowModel.copy(
-//                    medicines = medicines
-//                )
-//            } else {
-//                bodyRowModel
-//            }
-//        }.orEmpty()
-//
-//        uiState = uiState.copy(
-//            screenModel = uiState.screenModel?.copy(
-//                body = updateBody
-//            )
-//        )
+        val updatedBody = uiState.screenModel?.body?.map {
+            if (it is SignatureUiModel && it.identifier == temporalSignature) {
+                val temporalSignatureModel = it.copy(
+                    signature = signature
+                )
+
+                temporalSignatureModel
+            } else {
+                it
+            }
+        }.orEmpty()
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
     }
 
     fun handleShownError() {

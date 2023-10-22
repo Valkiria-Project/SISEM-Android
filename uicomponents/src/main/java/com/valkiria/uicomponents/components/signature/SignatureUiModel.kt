@@ -10,6 +10,7 @@ data class SignatureUiModel(
     val identifier: String,
     val signatureLabel: TextUiModel,
     val signatureButton: ButtonUiModel,
+    val signature: String? = null,
     val modifier: Modifier
 ) : BodyRowModel {
 
