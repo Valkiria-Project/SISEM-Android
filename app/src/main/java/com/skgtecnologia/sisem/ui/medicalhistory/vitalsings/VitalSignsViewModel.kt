@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetVitalSignsScreen
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
-import com.skgtecnologia.sisem.ui.navigation.model.VitalSignsNavigationModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel

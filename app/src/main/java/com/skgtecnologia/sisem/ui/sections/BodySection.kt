@@ -25,7 +25,7 @@ import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
 import com.skgtecnologia.sisem.ui.dropdown.DropDownComponent
 import com.skgtecnologia.sisem.ui.humanbody.HumanBodyComponent
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.MedsSelectorComponent
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedsSelectorComponent
 import com.valkiria.uicomponents.action.AddReportUiAction
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.ConfirmPasswordInput
@@ -76,6 +76,9 @@ import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
+import com.valkiria.uicomponents.components.signature.CrewMemberSignatureComponent
+import com.valkiria.uicomponents.components.signature.CrewMemberSignatureUiModel
+import com.valkiria.uicomponents.components.signature.SignatureComponent
 import com.valkiria.uicomponents.components.signature.SignatureUiModel
 import com.valkiria.uicomponents.components.slider.SliderComponent
 import com.valkiria.uicomponents.components.slider.SliderUiModel
@@ -162,6 +165,10 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
+            is CrewMemberSignatureUiModel -> item(key = model.identifier) {
+                CrewMemberSignatureComponent(uiModel = model)
+            }
+
             is DropDownUiModel -> item(key = model.identifier) {
                 DropDownComponent(model, validateFields) { dropDownInputUiModel ->
                     onAction(
@@ -182,14 +189,14 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is ImageButtonUiModel -> item(key = model.identifier) {
-                ImageButtonComponent(model) { identifier ->
-                    onAction(GenericUiAction.ButtonAction(identifier = identifier))
+                ImageButtonComponent(model) { id ->
+                    onAction(GenericUiAction.ButtonAction(identifier = id))
                 }
             }
 
             is ImageButtonSectionUiModel -> item(key = model.identifier) {
-                ImageButtonSectionComponent(model) { identifier ->
-                    onAction(GenericUiAction.ButtonAction(identifier = identifier))
+                ImageButtonSectionComponent(model) { id ->
+                    onAction(GenericUiAction.ButtonAction(identifier = id))
                     // FIXME: "Do we use this action?"
                 }
             }
@@ -289,7 +296,9 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is SignatureUiModel -> item(key = model.identifier) {
-                // FIXME: Finish this
+                SignatureComponent(uiModel = model) { id ->
+                    onAction(GenericUiAction.SignatureAction(identifier = id))
+                }
             }
 
             is SliderUiModel -> item(key = model.identifier) {

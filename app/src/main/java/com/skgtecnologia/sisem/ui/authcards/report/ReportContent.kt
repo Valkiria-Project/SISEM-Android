@@ -25,10 +25,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import com.skgtecnologia.sisem.ui.commons.extensions.decodeAsBase64Bitmap
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.bricks.banner.report.ReportDetailUiModel
 import com.valkiria.uicomponents.components.label.toTextStyle
+import com.valkiria.uicomponents.extensions.decodeAsBase64Bitmap
 
 @androidx.compose.foundation.ExperimentalFoundationApi
 @Composable

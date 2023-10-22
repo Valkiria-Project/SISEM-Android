@@ -14,15 +14,14 @@ import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryScreen
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SendMedicalHistory
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.ADMINISTRATION_ROUTE_KEY
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.APPLICATION_TIME_KEY
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.APPLIED_DOSE_KEY
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.CODE_KEY
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.DATE_MEDICINE_KEY
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.DOSE_UNIT_KEY
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.GENERIC_NAME_KEY
-import com.skgtecnologia.sisem.ui.medicalhistory.medsselector.QUANTITY_USED_KEY
-import com.skgtecnologia.sisem.ui.navigation.model.MedicalHistoryNavigationModel
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.ADMINISTRATION_ROUTE_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.APPLICATION_TIME_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.APPLIED_DOSE_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.CODE_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.DATE_MEDICINE_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.DOSE_UNIT_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.GENERIC_NAME_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.QUANTITY_USED_KEY
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
 import com.valkiria.uicomponents.components.card.PillUiModel
@@ -31,15 +30,16 @@ import com.valkiria.uicomponents.components.label.ListTextUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextUiModel
 import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
+import com.valkiria.uicomponents.components.signature.SignatureUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 private const val DATE_FORMAT = "HH:mm"
 private const val SAVE_COLOR = "#3cf2dd"
@@ -59,7 +59,7 @@ private const val CODE = "Código"
 private const val QUANTITY_USED = "Cantidad utilizada"
 private const val ADMINISTRATION_ROUTE = "Via de administración"
 
-@Suppress("UnusedPrivateMember")
+@Suppress("TooManyFunctions", "UnusedPrivateMember")
 @HiltViewModel
 class MedicalHistoryViewModel @Inject constructor(
     private val getMedicalHistoryScreen: GetMedicalHistoryScreen,
@@ -77,12 +77,15 @@ class MedicalHistoryViewModel @Inject constructor(
         DURING_VITAL_SIGNS,
         END_VITAL_SIGNS
     )
-    private var temporalInfoCard by mutableStateOf("")
-    private var temporalMedsSelector by mutableStateOf("")
-    private var vitalSignsValues = mutableStateMapOf<String, Map<String, String>>()
-    private var medicineValues = mutableListOf<Map<String, String>>()
 
-    var chipValues = mutableStateMapOf<String, String>()
+    var temporalInfoCard by mutableStateOf("")
+    var temporalMedsSelector by mutableStateOf("")
+    var temporalSignature by mutableStateOf("")
+    var chipSelectionValues = mutableStateMapOf<String, String>()
+    var chipOptionValues = mutableStateMapOf<String, String>()
+    var medicineValues = mutableListOf<Map<String, String>>()
+    var vitalSignsValues = mutableStateMapOf<String, Map<String, String>>()
+    var signatureValues = mutableStateMapOf<String, String>()
 
     init {
         uiState = uiState.copy(isLoading = true)
@@ -128,7 +131,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
         val list = values.map { "${it.key} ${it.value}" }
 
-        val updateBody = uiState.screenModel?.body?.map { bodyRowModel ->
+        val updatedBody = uiState.screenModel?.body?.map { bodyRowModel ->
             if (bodyRowModel is InfoCardUiModel && bodyRowModel.identifier == temporalInfoCard) {
                 bodyRowModel.copy(
                     pill = PillUiModel(
@@ -153,7 +156,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(
-                body = updateBody
+                body = updatedBody
             )
         )
     }
@@ -169,9 +172,9 @@ class MedicalHistoryViewModel @Inject constructor(
 
     @Suppress("MagicNumber", "ComplexMethod")
     fun updateGlasgow() {
-        val mro = chipValues[GLASGOW_MRO_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
-        val mrv = chipValues[GLASGOW_MRV_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
-        val mrm = chipValues[GLASGOW_MRM_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
+        val mro = chipSelectionValues[GLASGOW_MRO_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
+        val mrv = chipSelectionValues[GLASGOW_MRV_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
+        val mrm = chipSelectionValues[GLASGOW_MRM_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
         val ecg = mro + mrv + mrm
 
         val tas = vitalSignsValues[DURING_VITAL_SIGNS]?.get(TAS_KEY)?.toIntOrNull() ?: 0
@@ -230,25 +233,23 @@ class MedicalHistoryViewModel @Inject constructor(
 
     fun updateMedicineInfoCard(medicine: Map<String, String>) {
         medicineValues.add(medicine)
-        val updateBody = uiState.screenModel?.body?.map { bodyRowModel ->
-            if (bodyRowModel is MedsSelectorUiModel &&
-                bodyRowModel.identifier == temporalMedsSelector
-            ) {
+        val updatedBody = uiState.screenModel?.body?.map {
+            if (it is MedsSelectorUiModel && it.identifier == temporalMedsSelector) {
                 val medicines = buildList {
-                    addAll(bodyRowModel.medicines)
+                    addAll(it.medicines)
                     add(buildMedicine(medicine))
                 }
-                bodyRowModel.copy(
+                it.copy(
                     medicines = medicines
                 )
             } else {
-                bodyRowModel
+                it
             }
         }.orEmpty()
 
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(
-                body = updateBody
+                body = updatedBody
             )
         )
     }
@@ -290,6 +291,36 @@ class MedicalHistoryViewModel @Inject constructor(
             "$CODE ${medicine[CODE_KEY]}",
             "$QUANTITY_USED ${medicine[QUANTITY_USED_KEY]} $presentation",
             "$ADMINISTRATION_ROUTE ${medicine[ADMINISTRATION_ROUTE_KEY]}"
+        )
+    }
+
+    fun showSignaturePad(identifier: String) {
+        temporalSignature = identifier
+        uiState = uiState.copy(
+            navigationModel = MedicalHistoryNavigationModel(
+                isSignatureEvent = true
+            )
+        )
+    }
+
+    fun updateSignature(signature: String) {
+        signatureValues[temporalSignature] = signature
+        val updatedBody = uiState.screenModel?.body?.map {
+            if (it is SignatureUiModel && it.identifier == temporalSignature) {
+                val temporalSignatureModel = it.copy(
+                    signature = signature
+                )
+
+                temporalSignatureModel
+            } else {
+                it
+            }
+        }.orEmpty()
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
         )
     }
 

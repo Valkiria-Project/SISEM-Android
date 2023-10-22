@@ -14,7 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.model.toLegalContentModel
 import com.skgtecnologia.sisem.ui.login.legal.LegalContent
-import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
+import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.LoginUiAction
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword

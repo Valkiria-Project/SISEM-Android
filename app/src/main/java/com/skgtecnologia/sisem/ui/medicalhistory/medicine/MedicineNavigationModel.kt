@@ -1,4 +1,6 @@
-package com.skgtecnologia.sisem.ui.navigation.model
+package com.skgtecnologia.sisem.ui.medicalhistory.medicine
+
+import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 
 data class MedicineNavigationModel(
     val goBack: Boolean = false,

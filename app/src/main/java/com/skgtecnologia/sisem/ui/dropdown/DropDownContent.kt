@@ -163,7 +163,7 @@ fun DropDownContent(
                 .fillMaxWidth()
         ) {
             Text(
-                text = stringResource(R.string.wounds_save_cta),
+                text = stringResource(R.string.save_cta),
                 style = TextStyle.HEADLINE_3.toTextStyle()
             )
         }

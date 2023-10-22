@@ -147,7 +147,9 @@ dependencies {
     implementation(libs.accompanist.permissions)
     implementation(libs.accompanist.placeholder.material)
     implementation(libs.coil.compose)
-    implementation(libs.compressor)
+
+    // Signature
+    implementation(libs.signature)
 
     // Location
     implementation(libs.play.services.location)

@@ -1,8 +1,10 @@
-package com.skgtecnologia.sisem.ui.navigation.model
+package com.skgtecnologia.sisem.ui.report
 
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
+import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 
 data class ReportNavigationModel(
+    val isFromPreOperational: Boolean = true,
     val goBackFromReport: Boolean = false,
     val goBackFromImages: Boolean = false,
     val showCamera: Boolean = false,

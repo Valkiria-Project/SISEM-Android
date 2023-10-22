@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.medicalhistory.medsselector
+package com.skgtecnologia.sisem.ui.medicalhistory.medicine
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicineScreen
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
-import com.skgtecnologia.sisem.ui.navigation.model.MedicineNavigationModel
 import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel

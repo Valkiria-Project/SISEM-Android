@@ -1,7 +1,6 @@
-package com.skgtecnologia.sisem.ui.medicalhistory.medsselector
+package com.skgtecnologia.sisem.ui.medicalhistory.medicine
 
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
-import com.skgtecnologia.sisem.ui.navigation.model.MedicineNavigationModel
 import com.valkiria.uicomponents.bricks.banner.BannerUiModel
 
 data class MedicineUiState(

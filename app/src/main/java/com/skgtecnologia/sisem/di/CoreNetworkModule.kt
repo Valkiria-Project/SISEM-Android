@@ -24,6 +24,7 @@ import com.skgtecnologia.sisem.data.remote.model.components.label.LabelResponse
 import com.skgtecnologia.sisem.data.remote.model.components.medsselector.MedsSelectorResponse
 import com.skgtecnologia.sisem.data.remote.model.components.richlabel.RichLabelResponse
 import com.skgtecnologia.sisem.data.remote.model.components.segmentedswitch.SegmentedSwitchResponse
+import com.skgtecnologia.sisem.data.remote.model.components.signature.CrewMemberSignatureResponse
 import com.skgtecnologia.sisem.data.remote.model.components.signature.SignatureResponse
 import com.skgtecnologia.sisem.data.remote.model.components.slider.SliderResponse
 import com.skgtecnologia.sisem.data.remote.model.components.stepper.StepperResponse
@@ -106,6 +107,9 @@ object CoreNetworkModule {
         ).withSubtype(
             ChipSelectionResponse::class.java,
             BodyRowType.CHIP_SELECTION.name
+        ).withSubtype(
+            CrewMemberSignatureResponse::class.java,
+            BodyRowType.CREW_MEMBER_SIGNATURE.name
         ).withSubtype(
             DetailedInfoListResponse::class.java,
             BodyRowType.DETAILED_INFO_LIST.name

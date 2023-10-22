@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.ui.medicalhistory.vitalsings
 
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
-import com.skgtecnologia.sisem.ui.navigation.model.VitalSignsNavigationModel
 import com.valkiria.uicomponents.bricks.banner.BannerUiModel
 
 data class VitalSignsUiState(
