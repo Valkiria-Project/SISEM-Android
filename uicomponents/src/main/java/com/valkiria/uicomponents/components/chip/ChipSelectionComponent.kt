@@ -11,8 +11,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.bricks.chip.FilterChipView
-import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
+import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 
 @Suppress("UnusedPrivateMember")
@@ -20,7 +20,7 @@ import com.valkiria.uicomponents.components.label.TextStyle
 fun ChipSelectionComponent(
     uiModel: ChipSelectionUiModel,
     isTablet: Boolean = false,
-    onAction: (id: String, chipSelectionItem: ChipSelectionItemUiModel, isSelection: Boolean) -> Unit
+    onAction: (id: String, selectionItem: ChipSelectionItemUiModel, isSelection: Boolean) -> Unit
 ) {
     val selected = rememberSaveable { mutableStateOf("") }
 

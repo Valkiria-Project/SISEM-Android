@@ -13,17 +13,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.bricks.chip.OptionChipView
-import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
-import com.valkiria.uicomponents.mocks.getPreOperationalChipOptionsUiModel
+import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.mocks.getPreOperationalChipOptionsUiModel
 import timber.log.Timber
 
 @Suppress("UnusedPrivateMember")
 @Composable
 fun ChipOptionsComponent(
     uiModel: ChipOptionsUiModel,
-    onAction: (id: String, text: ChipOptionUiModel, isSelection: Boolean) -> Unit
+    onAction: (id: String, option: ChipOptionUiModel, isSelection: Boolean) -> Unit
 ) {
     Column(
         modifier = uiModel.modifier.fillMaxWidth(),
