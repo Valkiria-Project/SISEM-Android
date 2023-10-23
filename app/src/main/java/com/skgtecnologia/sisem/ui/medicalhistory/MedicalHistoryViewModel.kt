@@ -26,7 +26,6 @@ import com.skgtecnologia.sisem.ui.medicalhistory.medicine.QUANTITY_USED_KEY
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
 import com.valkiria.uicomponents.components.card.PillUiModel
-import com.valkiria.uicomponents.components.chip.ChipOptionUiModel
 import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
 import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
@@ -43,6 +42,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID
@@ -60,11 +60,16 @@ private const val GLASGOW_TOTAL_KEY = "GLASGOW_TOTAL_VALUE"
 private const val GLASGOW_RTS_KEY = "GLASGOW_RTS"
 private const val TAS_KEY = "TAS"
 private const val FC_KEY = "FC"
+private const val FUR_KEY = "KEY_GYNECOBSTETRICS_FUR"
+private const val PREGNANT_FUR_KEY = "PREGNANT_FUR"
+private const val PREGNANT_WEEKS_KEY = "PREGNANT_WEEKS"
 
 private const val APPLIED_DOSES = "Dosis aplicada"
 private const val CODE = "Código"
 private const val QUANTITY_USED = "Cantidad utilizada"
 private const val ADMINISTRATION_ROUTE = "Via de administración"
+
+private const val WEEK = 7
 
 @Suppress("TooManyFunctions", "UnusedPrivateMember")
 @HiltViewModel
@@ -108,7 +113,7 @@ class MedicalHistoryViewModel @Inject constructor(
             getMedicalHistoryScreen.invoke(
                 serial = androidIdProvider.getAndroidId(),
                 incidentCode = "101",
-                patientId = "13"
+                patientId = "14"
             ).onSuccess {
                 withContext(Dispatchers.Main) {
                     uiState = uiState.copy(
@@ -335,6 +340,44 @@ class MedicalHistoryViewModel @Inject constructor(
                 body = updatedBody
             )
         )
+    }
+
+    fun updateFurAndGestationWeeks() {
+        val updatedBody = uiState.screenModel?.body?.map {
+            when {
+                (it is LabelUiModel && it.identifier == PREGNANT_FUR_KEY) -> {
+                    val temporalFurModel = it.copy(
+                        text = fieldsValues[FUR_KEY]?.updatedValue.orEmpty()
+                    )
+
+                    temporalFurModel
+                }
+
+                (it is LabelUiModel && it.identifier == PREGNANT_WEEKS_KEY) -> {
+                    val gestationWeeks = calculateGestationWeeks()
+
+                    val temporalWeeksModel = it.copy(
+                        text = gestationWeeks
+                    )
+
+                    temporalWeeksModel
+                }
+
+                else -> it
+            }
+        }.orEmpty()
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
+    private fun calculateGestationWeeks(): String {
+        val fur = LocalDate.parse(fieldsValues[FUR_KEY]?.updatedValue.orEmpty())
+        val now = LocalDate.now()
+        return ((now.toEpochDay() - fur.toEpochDay()) / WEEK).toString()
     }
 
     fun sendMedicalHistory() {

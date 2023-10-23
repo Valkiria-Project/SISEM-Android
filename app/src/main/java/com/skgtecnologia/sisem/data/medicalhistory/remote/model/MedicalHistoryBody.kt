@@ -15,5 +15,5 @@ data class MedicalHistoryBody(
     @Json(name = "chip_option_values") val chipOptionsValues: Map<String, List<String>>,
     @Json(name = "image_button_section_values") val imageButtonSectionValues: Map<String, String>,
     @Json(name = "vital_signs") val vitalSigns: Map<String, Map<String, String>>,
-    @Json(name = "info_card_button_values") val infoCardButtonValues: List<Map<String,String>>
+    @Json(name = "info_card_button_values") val infoCardButtonValues: List<Map<String, String>>
 )

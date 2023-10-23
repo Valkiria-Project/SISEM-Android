@@ -117,7 +117,8 @@ fun DropDownComponent(
                     )
                 ),
                 validateFields
-            ) != null
+            ) != null,
+            maxLines = 1
         )
     }
 

@@ -86,6 +86,7 @@ fun MedicalHistoryScreen(
     OnLoadingHandler(uiState.isLoading, modifier)
 }
 
+@Suppress("ComplexMethod")
 fun handleAction(
     uiAction: UiAction,
     viewModel: MedicalHistoryViewModel
@@ -94,16 +95,18 @@ fun handleAction(
         is GenericUiAction.ChipOptionAction -> {
             val chipOption = viewModel.chipOptionValues[uiAction.identifier]
 
-            if (chipOption != null) {
-                if (chipOption.contains(uiAction.chipOptionUiModel.id)) {
+            when {
+                chipOption != null && chipOption.contains(uiAction.chipOptionUiModel.id) -> {
                     chipOption.remove(uiAction.chipOptionUiModel.id)
 
                     if (chipOption.isEmpty()) viewModel.chipOptionValues.remove(uiAction.identifier)
-                } else {
+                }
+
+                chipOption != null && chipOption.contains(uiAction.chipOptionUiModel.id).not() -> {
                     chipOption.add(uiAction.chipOptionUiModel.id)
                 }
-            } else {
-                viewModel.chipOptionValues[uiAction.identifier] =
+
+                else -> viewModel.chipOptionValues[uiAction.identifier] =
                     mutableListOf(uiAction.chipOptionUiModel.id)
             }
         }
@@ -136,12 +139,14 @@ fun handleAction(
 
         is GenericUiAction.InfoCardAction -> viewModel.showVitalSignsForm(uiAction.identifier)
 
-        is GenericUiAction.InputAction ->
+        is GenericUiAction.InputAction -> {
             viewModel.fieldsValues[uiAction.identifier] = InputUiModel(
                 uiAction.identifier,
                 uiAction.updatedValue,
                 uiAction.fieldValidated
             )
+            viewModel.updateFurAndGestationWeeks()
+        }
 
         is GenericUiAction.MedsSelectorAction ->
             viewModel.showMedicineForm(uiAction.identifier)

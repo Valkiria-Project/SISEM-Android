@@ -27,6 +27,6 @@ interface MedicalHistoryRepository {
         chipOptionsValues: Map<String, List<String>>,
         imageButtonSectionValues: Map<String, String>,
         vitalSigns: Map<String, Map<String, String>>,
-        infoCardButtonValues: List<Map<String,String>>
+        infoCardButtonValues: List<Map<String, String>>
     )
 }
