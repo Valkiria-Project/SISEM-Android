@@ -109,7 +109,10 @@ fun handleAction(
 
         is GenericUiAction.ChipSelectionAction -> {
             viewModel.chipSelectionValues[uiAction.identifier] = uiAction.chipSelectionItemUiModel
-            viewModel.updateGlasgow()
+
+            if (viewModel.glasgowIdentifier.contains(uiAction.identifier)) {
+                viewModel.updateGlasgow()
+            }
         }
 
         is GenericUiAction.DropDownAction ->
@@ -141,7 +144,10 @@ fun handleAction(
                 uiAction.updatedValue,
                 uiAction.fieldValidated
             )
-            viewModel.updateFurAndGestationWeeks()
+
+            if (uiAction.identifier == FUR_KEY) {
+                viewModel.updateFurAndGestationWeeks()
+            }
         }
 
         is GenericUiAction.MedsSelectorAction ->

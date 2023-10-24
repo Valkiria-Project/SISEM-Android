@@ -48,6 +48,8 @@ import java.time.format.DateTimeFormatter
 import java.util.UUID
 import javax.inject.Inject
 
+const val FUR_KEY = "KEY_GYNECOBSTETRICS_FUR"
+
 private const val DATE_FORMAT = "HH:mm"
 private const val SAVE_COLOR = "#3cf2dd"
 private const val INITIAL_VITAL_SIGNS = "INITIAL_VITAL_SIGNS"
@@ -60,7 +62,6 @@ private const val GLASGOW_TOTAL_KEY = "GLASGOW_TOTAL_VALUE"
 private const val GLASGOW_RTS_KEY = "GLASGOW_RTS"
 private const val TAS_KEY = "TAS"
 private const val FC_KEY = "FC"
-private const val FUR_KEY = "KEY_GYNECOBSTETRICS_FUR"
 private const val PREGNANT_FUR_KEY = "PREGNANT_FUR"
 private const val PREGNANT_WEEKS_KEY = "PREGNANT_WEEKS"
 
@@ -88,6 +89,12 @@ class MedicalHistoryViewModel @Inject constructor(
         INITIAL_VITAL_SIGNS,
         DURING_VITAL_SIGNS,
         END_VITAL_SIGNS
+    )
+
+    val glasgowIdentifier = listOf(
+        GLASGOW_MRO_KEY,
+        GLASGOW_MRV_KEY,
+        GLASGOW_MRM_KEY
     )
 
     var temporalInfoCard by mutableStateOf("")
@@ -145,7 +152,10 @@ class MedicalHistoryViewModel @Inject constructor(
 
     fun updateVitalSignsInfoCard(values: Map<String, String>) {
         vitalSignsValues[temporalInfoCard] = values
-        updateGlasgow()
+
+        if (temporalInfoCard == INITIAL_VITAL_SIGNS) {
+            updateGlasgow()
+        }
 
         val list = values.map { "${it.key} ${it.value}" }
 
@@ -195,8 +205,8 @@ class MedicalHistoryViewModel @Inject constructor(
         val mrm = chipSelectionValues[GLASGOW_MRM_KEY]?.name?.substring(0, 1)?.toIntOrNull() ?: 0
         val ecg = mro + mrv + mrm
 
-        val tas = vitalSignsValues[DURING_VITAL_SIGNS]?.get(TAS_KEY)?.toIntOrNull() ?: 0
-        val fc = vitalSignsValues[DURING_VITAL_SIGNS]?.get(FC_KEY)?.toIntOrNull() ?: 0
+        val tas = vitalSignsValues[INITIAL_VITAL_SIGNS]?.get(TAS_KEY)?.toIntOrNull() ?: 0
+        val fc = vitalSignsValues[INITIAL_VITAL_SIGNS]?.get(FC_KEY)?.toIntOrNull() ?: 0
 
         val ecgScore = when (ecg) {
             in 13..15 -> 4
