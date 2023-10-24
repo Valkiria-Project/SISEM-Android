@@ -68,7 +68,7 @@ fun MedicalHistoryScreen(
     OnLoadingHandler(uiState.isLoading, modifier)
 }
 
-@Suppress("ComplexMethod")
+@Suppress("ComplexMethod", "LongMethod")
 fun handleAction(
     uiAction: UiAction,
     viewModel: MedicalHistoryViewModel

@@ -149,6 +149,7 @@ class MedicalHistoryViewModel @Inject constructor(
         }
     }
 
+    @Suppress("ComplexMethod")
     private fun ScreenModel.getFormInitialValues() {
         this.body.forEach { bodyRowModel ->
             when (bodyRowModel) {
@@ -169,7 +170,6 @@ class MedicalHistoryViewModel @Inject constructor(
                         chipSelectionValues[bodyRowModel.identifier] = it
                     }
                 }
-
 
                 is DropDownUiModel -> bodyRowModel.selected?.let {
                     bodyRowModel.items.find {
@@ -196,7 +196,6 @@ class MedicalHistoryViewModel @Inject constructor(
 
                 is TextFieldUiModel ->
                     fieldsValues[bodyRowModel.identifier] = InputUiModel(bodyRowModel.identifier)
-
 
                 else -> Timber.d("no-op")
             }
