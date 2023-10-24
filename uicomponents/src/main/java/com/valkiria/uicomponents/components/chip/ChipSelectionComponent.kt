@@ -15,11 +15,9 @@ import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 
-@Suppress("UnusedPrivateMember")
 @Composable
 fun ChipSelectionComponent(
     uiModel: ChipSelectionUiModel,
-    isTablet: Boolean = false,
     onAction: (id: String, selectionItem: ChipSelectionItemUiModel, isSelection: Boolean) -> Unit
 ) {
     val selected = rememberSaveable { mutableStateOf("") }
@@ -33,7 +31,8 @@ fun ChipSelectionComponent(
                 uiModel = LabelUiModel(
                     identifier = uiModel.identifier,
                     text = uiModel.title.text,
-                    textStyle = uiModel.title.textStyle
+                    textStyle = uiModel.title.textStyle,
+                    arrangement = Arrangement.Start
                 )
             )
         }
@@ -50,7 +49,6 @@ fun ChipSelectionComponent(
                     text = chipOption.name,
                     isSelected = (chipOption.name == selected.value),
                     textStyle = TextStyle.BUTTON_1,
-                    modifier = Modifier.padding(horizontal = 8.dp),
                     onAction = { _, text, isSelection ->
                         selected.value = text
                         onAction(uiModel.identifier, chipOption, isSelection)

@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -85,6 +84,8 @@ import com.valkiria.uicomponents.components.signature.SignatureComponent
 import com.valkiria.uicomponents.components.signature.SignatureUiModel
 import com.valkiria.uicomponents.components.slider.SliderComponent
 import com.valkiria.uicomponents.components.slider.SliderUiModel
+import com.valkiria.uicomponents.components.stepper.StepperComponent
+import com.valkiria.uicomponents.components.stepper.StepperUiModel
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsUiModel
 import com.valkiria.uicomponents.components.textfield.PasswordTextFieldComponent
@@ -101,7 +102,6 @@ import kotlinx.coroutines.launch
 fun BodySection(
     body: List<BodyRowModel>?,
     modifier: Modifier = Modifier,
-    stickyFooterContent: (@Composable ColumnScope.() -> Unit)? = null,
     validateFields: Boolean = false,
     onAction: (actionInput: UiAction) -> Unit
 ) {
@@ -110,7 +110,8 @@ fun BodySection(
 
     if (body?.isNotEmpty() == true) {
         Box(modifier = modifier.fillMaxSize()) {
-            val updatedModifier = if (stickyFooterContent != null) {
+            val stickyFooter = getStickyFooter(body)
+            val updatedModifier = if (stickyFooter != null) {
                 modifier.then(Modifier.padding(bottom = 60.dp))
             } else {
                 modifier
@@ -132,18 +133,41 @@ fun BodySection(
                 )
             }
 
-            stickyFooterContent?.let {
+            stickyFooter?.let { model ->
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.BottomCenter)
                 ) {
-                    stickyFooterContent()
+                    StepperComponent(uiModel = model) { selectedIndex ->
+                        coroutineScope.launch {
+                            val selected = model.options[selectedIndex.toString()]
+
+                            val contentHeader = body.indexOfFirst {
+                                it is HeaderUiModel && it.title.text == selected
+                            }
+
+                            if (contentHeader >= 0) {
+                                listState.animateScrollToItem(
+                                    index = contentHeader,
+                                    scrollOffset = -100
+                                )
+                            }
+                        }
+
+                        if (selectedIndex == null) {
+                            onAction(GenericUiAction.StepperAction(identifier = model.identifier))
+                        }
+                    }
                 }
             }
         }
     }
 }
+
+private fun getStickyFooter(body: List<BodyRowModel>): StepperUiModel? = body
+    .filterIsInstance<StepperUiModel>()
+    .firstOrNull()
 
 @Suppress("ComplexMethod", "LongMethod", "LongParameterList")
 private fun LazyListScope.handleBodyRows(
@@ -213,7 +237,6 @@ private fun LazyListScope.handleBodyRows(
             is ImageButtonSectionUiModel -> item(key = model.identifier) {
                 ImageButtonSectionComponent(model) { id ->
                     onAction(GenericUiAction.ImageButtonAction(identifier = id))
-                    // FIXME: "Do we use this action?"
                 }
             }
 

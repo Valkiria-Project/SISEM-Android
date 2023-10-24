@@ -19,7 +19,6 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.mocks.getPreOperationalChipOptionsUiModel
 import timber.log.Timber
 
-@Suppress("UnusedPrivateMember")
 @Composable
 fun ChipOptionsComponent(
     uiModel: ChipOptionsUiModel,
@@ -34,7 +33,8 @@ fun ChipOptionsComponent(
                 uiModel = LabelUiModel(
                     identifier = uiModel.identifier,
                     text = uiModel.title.text,
-                    textStyle = uiModel.title.textStyle
+                    textStyle = uiModel.title.textStyle,
+                    arrangement = Arrangement.Start
                 )
             )
         }

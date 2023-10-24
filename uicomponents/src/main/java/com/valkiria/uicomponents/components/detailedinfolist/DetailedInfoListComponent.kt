@@ -38,6 +38,7 @@ fun DetailedInfoListComponent(
                     style = uiModel.labelTextStyle.toTextStyle()
                 )
                 Row(
+                    modifier = Modifier.padding(top = 2.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     val iconResourceId = LocalContext.current.getResourceIdByName(

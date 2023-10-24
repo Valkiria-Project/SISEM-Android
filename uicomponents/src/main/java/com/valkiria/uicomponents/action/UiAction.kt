@@ -82,6 +82,10 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
         val value: Int
     ) : GenericUiAction(identifier)
 
+    data class StepperAction(
+        override val identifier: String
+    ) : GenericUiAction(identifier)
+
     data class TimePickerAction(
         override val identifier: String,
         val value: String

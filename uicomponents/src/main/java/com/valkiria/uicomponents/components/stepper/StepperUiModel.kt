@@ -8,6 +8,7 @@ import com.valkiria.uicomponents.components.BodyRowType
 data class StepperUiModel(
     val identifier: String,
     val options: Map<String, String>,
+    val selected: String = "0",
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier
 ) : BodyRowModel {

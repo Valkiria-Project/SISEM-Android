@@ -7,12 +7,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.GenericUiAction
+import com.valkiria.uicomponents.action.GenericUiAction.StepperAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
-import com.valkiria.uicomponents.components.stepper.StepperComponent
-import com.valkiria.uicomponents.components.stepper.StepperUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -57,20 +56,7 @@ fun MedicalHistoryScreen(
     }
 
     BodySection(
-        body = uiState.screenModel?.body,
-        stickyFooterContent = {
-            val stepperUiModel = uiState.screenModel?.body
-                ?.filterIsInstance<StepperUiModel>()
-                ?.firstOrNull()
-
-            stepperUiModel?.let {
-                StepperComponent(it) {
-                    Timber.d("Stepper action")
-                    // FIXME: Hardcode for now Api call
-                    viewModel.sendMedicalHistory()
-                }
-            }
-        }
+        body = uiState.screenModel?.body
     ) { uiAction ->
         handleAction(uiAction, viewModel)
     }
@@ -160,6 +146,8 @@ fun handleAction(
 
         is GenericUiAction.SliderAction ->
             viewModel.sliderValues[uiAction.identifier] = uiAction.value.toString()
+
+        is StepperAction -> viewModel.sendMedicalHistory()
 
         else -> Timber.d("no-op")
     }

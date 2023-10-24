@@ -23,6 +23,7 @@ import com.skgtecnologia.sisem.ui.medicalhistory.medicine.DATE_MEDICINE_KEY
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.DOSE_UNIT_KEY
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.GENERIC_NAME_KEY
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.QUANTITY_USED_KEY
+import com.valkiria.uicomponents.action.GenericUiAction.SegmentedSwitchAction
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
 import com.valkiria.uicomponents.components.card.PillUiModel
@@ -37,16 +38,16 @@ import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
 import com.valkiria.uicomponents.components.signature.SignatureUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import timber.log.Timber
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 const val FUR_KEY = "KEY_GYNECOBSTETRICS_FUR"
 
@@ -72,11 +73,11 @@ private const val ADMINISTRATION_ROUTE = "Via de administración"
 
 private const val WEEK = 7
 
-@Suppress("TooManyFunctions", "UnusedPrivateMember")
+@Suppress("TooManyFunctions")
 @HiltViewModel
 class MedicalHistoryViewModel @Inject constructor(
     private val getMedicalHistoryScreen: GetMedicalHistoryScreen,
-    private val sendMedicalHistory: SendMedicalHistory, // FIXME: UnusedPrivateMember
+    private val sendMedicalHistory: SendMedicalHistory,
     androidIdProvider: AndroidIdProvider
 ) : ViewModel() {
 
