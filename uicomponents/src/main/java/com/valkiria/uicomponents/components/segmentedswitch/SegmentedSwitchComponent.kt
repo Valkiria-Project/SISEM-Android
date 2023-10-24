@@ -16,7 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,7 +35,7 @@ fun SegmentedSwitchComponent(
     onAction: (id: String, status: Boolean) -> Unit
 ) {
     val items = uiModel.options.map { it.text }
-    var selectedIndex by remember(uiModel.selected) {
+    var selectedIndex by rememberSaveable(uiModel.selected) {
         mutableIntStateOf(if (uiModel.selected) 0 else 1)
     }
 

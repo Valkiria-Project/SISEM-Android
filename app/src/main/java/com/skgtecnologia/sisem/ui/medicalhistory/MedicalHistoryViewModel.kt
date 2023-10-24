@@ -15,6 +15,7 @@ import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryScreen
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SendMedicalHistory
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
+import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.ADMINISTRATION_ROUTE_KEY
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.APPLICATION_TIME_KEY
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.APPLIED_DOSE_KEY
@@ -23,20 +24,26 @@ import com.skgtecnologia.sisem.ui.medicalhistory.medicine.DATE_MEDICINE_KEY
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.DOSE_UNIT_KEY
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.GENERIC_NAME_KEY
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.QUANTITY_USED_KEY
-import com.valkiria.uicomponents.action.GenericUiAction.SegmentedSwitchAction
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
+import com.valkiria.uicomponents.components.button.ImageButtonSectionUiModel
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
 import com.valkiria.uicomponents.components.card.PillUiModel
+import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
 import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
+import com.valkiria.uicomponents.components.chip.ChipSelectionUiModel
 import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
+import com.valkiria.uicomponents.components.dropdown.DropDownUiModel
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.ListTextUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextUiModel
 import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
+import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import com.valkiria.uicomponents.components.signature.SignatureUiModel
+import com.valkiria.uicomponents.components.slider.SliderUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
+import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -122,11 +129,13 @@ class MedicalHistoryViewModel @Inject constructor(
                 serial = androidIdProvider.getAndroidId(),
                 incidentCode = "101",
                 patientId = "14"
-            ).onSuccess {
+            ).onSuccess { medicalHistoryScreenModel ->
+                medicalHistoryScreenModel.getFormInitialValues()
+
                 withContext(Dispatchers.Main) {
                     uiState = uiState.copy(
                         isLoading = false,
-                        screenModel = it
+                        screenModel = medicalHistoryScreenModel
                     )
                 }
             }.onFailure { throwable ->
@@ -136,6 +145,60 @@ class MedicalHistoryViewModel @Inject constructor(
                         infoEvent = throwable.mapToUi()
                     )
                 }
+            }
+        }
+    }
+
+    private fun ScreenModel.getFormInitialValues() {
+        this.body.forEach { bodyRowModel ->
+            when (bodyRowModel) {
+                is ChipOptionsUiModel -> {
+                    val selectedOptions = bodyRowModel.items
+                        .filter { it.selected }
+                        .map { it.id }
+
+                    if (selectedOptions.isEmpty().not()) {
+                        chipOptionValues[bodyRowModel.identifier] = selectedOptions.toMutableList()
+                    }
+                }
+
+                is ChipSelectionUiModel -> bodyRowModel.selected?.let {
+                    bodyRowModel.items.find {
+                        it.id == bodyRowModel.selected
+                    }?.also {
+                        chipSelectionValues[bodyRowModel.identifier] = it
+                    }
+                }
+
+
+                is DropDownUiModel -> bodyRowModel.selected?.let {
+                    bodyRowModel.items.find {
+                        it.id == bodyRowModel.selected
+                    }?.also {
+                        dropDownValues[bodyRowModel.identifier] = DropDownInputUiModel(
+                            bodyRowModel.identifier,
+                            it.id,
+                            it.name
+                        )
+                    }
+                }
+
+                is ImageButtonSectionUiModel -> {
+                    Timber.d("No selected property for this one") // FIXME: Backend
+                }
+
+                is SegmentedSwitchUiModel ->
+                    segmentedValues[bodyRowModel.identifier] = bodyRowModel.selected
+
+                is SliderUiModel -> {
+                    sliderValues[bodyRowModel.identifier] = bodyRowModel.selected.toString()
+                }
+
+                is TextFieldUiModel ->
+                    fieldsValues[bodyRowModel.identifier] = InputUiModel(bodyRowModel.identifier)
+
+
+                else -> Timber.d("no-op")
             }
         }
     }
