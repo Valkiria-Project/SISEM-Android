@@ -30,7 +30,6 @@ fun MedicalHistoryScreen(
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState.navigationModel) {
-        Timber.d("MedicalHistoryScreen: LaunchedEffect uiState pass")
         launch {
             uiState.navigationModel?.let {
                 onNavigation(uiState.navigationModel)
@@ -40,21 +39,18 @@ fun MedicalHistoryScreen(
     }
 
     LaunchedEffect(vitalSigns) {
-        Timber.d("MedicalHistoryScreen: LaunchedEffect vitalSigns pass")
         launch {
             vitalSigns?.let { viewModel.updateVitalSignsInfoCard(vitalSigns) }
         }
     }
 
     LaunchedEffect(medicine) {
-        Timber.d("MedicalHistoryScreen: LaunchedEffect medicine pass")
         launch {
             medicine?.let { viewModel.updateMedicineInfoCard(medicine) }
         }
     }
 
     LaunchedEffect(signature) {
-        Timber.d("MedicalHistoryScreen: LaunchedEffect medicine pass")
         launch {
             signature?.let { viewModel.updateSignature(signature) }
         }
