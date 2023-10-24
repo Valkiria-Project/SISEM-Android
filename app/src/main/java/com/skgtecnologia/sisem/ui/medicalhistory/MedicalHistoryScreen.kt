@@ -136,8 +136,7 @@ fun handleAction(
             }
         }
 
-        is GenericUiAction.MedsSelectorAction ->
-            viewModel.showMedicineForm(uiAction.identifier)
+        is GenericUiAction.MedsSelectorAction -> viewModel.showMedicineForm(uiAction.identifier)
 
         is GenericUiAction.SegmentedSwitchAction ->
             viewModel.segmentedValues[uiAction.identifier] = uiAction.status

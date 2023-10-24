@@ -27,7 +27,7 @@ import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.login.model.mapToLoginModel
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
-import com.skgtecnologia.sisem.ui.dropdown.DropDownComponent
+import com.valkiria.uicomponents.components.dropdown.DropDownComponent
 import com.skgtecnologia.sisem.ui.humanbody.HumanBodyComponent
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedsSelectorComponent
 import com.valkiria.uicomponents.action.AddReportUiAction
@@ -37,6 +37,7 @@ import com.valkiria.uicomponents.action.ChangePasswordUiAction.NewPasswordInput
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.OldPasswordInput
 import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.GenericUiAction
+import com.valkiria.uicomponents.action.GenericUiAction.DropDownAction
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
 import com.valkiria.uicomponents.action.LoginUiAction.Login
 import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
@@ -218,7 +219,7 @@ private fun LazyListScope.handleBodyRows(
             is DropDownUiModel -> item(key = model.identifier) {
                 DropDownComponent(model, validateFields) { dropDownInputUiModel ->
                     onAction(
-                        GenericUiAction.DropDownAction(
+                        DropDownAction(
                             identifier = dropDownInputUiModel.identifier,
                             id = dropDownInputUiModel.id,
                             name = dropDownInputUiModel.name,
