@@ -1,15 +1,21 @@
 <resources>
     <!-- CTA's -->
     <string name="cancel_cta">CANCELAR</string>
+    <string name="erase_cta">BORRAR</string>
     <string name="save_cta">GUARDAR</string>
     <string name="continue_cta">CONTINUAR</string>
+
+    <!-- Icons -->
+    <string name="alert_icon">ic_alert</string>
+    <string name="back_icon">ic_back</string>
 
     <!-- Error dialog -->
     <string name="error_connectivity_title">Revise su conexión a Internet</string>
     <string name="error_forbidden_title">Autorización denegada</string>
     <string name="error_general_title">Ha ocurrido un error</string>
     <string name="error_server_title">Error en servidor</string>
-    <string name="error_default_icon">ic_alert</string>
+    <string name="error_server_description">Sucedió algo inesperado, por favor intenta de
+        nuevo</string>
 
     <!-- Field validations -->
     <string name="field_empty_validation_message">El campo no debe estar vacío</string>
@@ -118,12 +124,10 @@
     <!-- Finding form dialog -->
     <string name="finding_input_label">Respuesta al hallazgo</string>
     <string name="finding_input_hint">Escribe tu comentario…</string>
-    <string name="finding_input_save_cta">Guardar</string>
 
     <!-- Findings screen -->
     <string name="findings_title">Registrar hallazgo</string>
     <string name="findings_subtitle">Registre los hallazgos encontrados durante el preoperacional.</string>
-    <string name="findings_left_icon">ic_back</string>
     <string name="findings_topic_label">Asunto</string>
     <string name="findings_description_label">Descripción</string>
     <string name="findings_add_files_label">Adjuntar archivos</string>
@@ -137,7 +141,6 @@
     <!-- Images confirmation screen -->
     <string name="images_confirmation_title">Fotos seleccionadas</string>
     <string name="images_confirmation_subtitle">Visualice las imágenes seleccionadas previamente, en caso de querer eliminarlas.</string>
-    <string name="images_confirmation_left_icon">ic_back</string>
     <string name="images_confirmation_delete_image_cta">Eliminar</string>
     <string name="images_confirmation_confirm_images_cta">Adjuntar</string>
 
@@ -163,34 +166,9 @@
     <string name="drawer_signature_and_fingerprint">Registrar firma y huella</string>
 
     <!-- Wounds dialog -->
-    <string name="wounds_title">Lista de heridas</string>
-    <string name="wounds_subtitle">Seleccione que tipo de heridas tiene el paciente en la zona indicada previamente.</string>
-    <string name="wounds_left_icon">ic_message</string>
-
-    <string-array name="wounds_list">
-        <item>Herida permanente</item>
-        <item>Herida cortante</item>
-        <item>Fractura expuesta</item>
-        <item>Fractura cerrada</item>
-        <item>Cuerpo extraño</item>
-        <item>Hemorragia</item>
-        <item>Mordedora</item>
-        <item>Picadura</item>
-        <item>Excoriación</item>
-        <item>Deformidad o masa</item>
-        <item>Hematoma</item>
-        <item>Luxación o esguince</item>
-        <item>Eritema o inflamación</item>
-        <item>Quemadura</item>
-    </string-array>
-
     <string name="wounds_burn_description">¿Que tipo de quemadura presenta el paciente?</string>
 
-    <string-array name="wounds_burn_grade_list">
-        <item>Q1</item>
-        <item>Q2</item>
-        <item>Q3</item>
-    </string-array>
-
-    <string name="wounds_save_cta">Guardar</string>
+    <!-- SignaturePad screen -->
+    <string name="signature_pad_title">Firmar</string>
+    <string name="signature_pad_subtitle">Firma del responsable</string>
 </resources>

@@ -22,7 +22,7 @@ import com.skgtecnologia.sisem.domain.model.label.addFilesHint
 import com.skgtecnologia.sisem.domain.report.model.AddFindingIdentifier
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
 import com.skgtecnologia.sisem.ui.media.MediaActions
-import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
+import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
@@ -35,9 +35,9 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
+import kotlin.random.Random
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import kotlin.random.Random
 
 private const val DESCRIPTION_INPUT_MIN_LINES = 3
 
@@ -80,7 +80,7 @@ fun AddFindingScreen(
             headerUiModel = addFindingHeader(
                 titleText = stringResource(id = R.string.findings_title),
                 subtitleText = stringResource(id = R.string.findings_subtitle),
-                leftIcon = stringResource(id = R.string.findings_left_icon)
+                leftIcon = stringResource(id = R.string.back_icon)
             )
         ) { uiAction ->
             if (uiAction is HeaderUiAction.GoBack) {
@@ -111,7 +111,7 @@ fun AddFindingScreen(
             )
         )
 
-        MediaActions(viewModel)
+        MediaActions(viewModel, true)
 
         Spacer(modifier = Modifier.weight(1f))
 

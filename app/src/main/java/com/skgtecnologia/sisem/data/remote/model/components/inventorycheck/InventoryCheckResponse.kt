@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.components.BodyRowResponse
 import com.skgtecnologia.sisem.data.remote.model.components.label.TextResponse
-import com.skgtecnologia.sisem.data.remote.model.components.label.mapToUI
+import com.skgtecnologia.sisem.data.remote.model.components.label.mapToUi
 import com.skgtecnologia.sisem.data.remote.model.components.textfield.ValidationResponse
 import com.skgtecnologia.sisem.data.remote.model.components.textfield.mapToUi
 import com.squareup.moshi.Json
@@ -27,9 +27,9 @@ data class InventoryCheckResponse(
 
     override fun mapToUi(): InventoryCheckUiModel = InventoryCheckUiModel(
         identifier = identifier ?: error("InventoryCheck identifier cannot be null"),
-        registered = registered?.mapToUI()
+        registered = registered?.mapToUi()
             ?: error("InventoryCheck registered cannot be null"),
-        received = received?.mapToUI() ?: error("InventoryCheck received cannot be null"),
+        received = received?.mapToUi() ?: error("InventoryCheck received cannot be null"),
         items = items?.map { it.mapToUi() } ?: error("InventoryCheck items cannot be null"),
         validations = validations?.map { it.mapToUi() }
             ?: error("InventoryCheck validations cannot be null"),

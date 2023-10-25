@@ -2,7 +2,11 @@ package com.skgtecnologia.sisem.ui.sections
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -23,6 +27,9 @@ import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.login.model.mapToLoginModel
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
+import com.skgtecnologia.sisem.ui.dropdown.DropDownComponent
+import com.skgtecnologia.sisem.ui.humanbody.HumanBodyComponent
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedsSelectorComponent
 import com.valkiria.uicomponents.action.AddReportUiAction
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.ConfirmPasswordInput
@@ -40,6 +47,8 @@ import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.button.ButtonUiModel
+import com.valkiria.uicomponents.components.button.ImageButtonSectionComponent
+import com.valkiria.uicomponents.components.button.ImageButtonSectionUiModel
 import com.valkiria.uicomponents.components.card.InfoCardComponent
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
 import com.valkiria.uicomponents.components.chip.ChipComponent
@@ -52,28 +61,39 @@ import com.valkiria.uicomponents.components.chip.FiltersComponent
 import com.valkiria.uicomponents.components.chip.FiltersUiModel
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListComponent
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListUiModel
+import com.valkiria.uicomponents.components.dropdown.DropDownUiModel
 import com.valkiria.uicomponents.components.finding.FindingComponent
 import com.valkiria.uicomponents.components.finding.FindingUiModel
 import com.valkiria.uicomponents.components.fingerprint.FingerprintUiModel
 import com.valkiria.uicomponents.components.footer.FooterBodyUiModel
 import com.valkiria.uicomponents.components.footer.mapToSection
 import com.valkiria.uicomponents.components.header.HeaderUiModel
+import com.valkiria.uicomponents.components.humanbody.HumanBodyUiModel
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckComponent
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.LabelUiModel
+import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
+import com.valkiria.uicomponents.components.signature.CrewMemberSignatureComponent
+import com.valkiria.uicomponents.components.signature.CrewMemberSignatureUiModel
+import com.valkiria.uicomponents.components.signature.SignatureComponent
+import com.valkiria.uicomponents.components.signature.SignatureUiModel
 import com.valkiria.uicomponents.components.slider.SliderComponent
 import com.valkiria.uicomponents.components.slider.SliderUiModel
+import com.valkiria.uicomponents.components.stepper.StepperComponent
+import com.valkiria.uicomponents.components.stepper.StepperUiModel
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsUiModel
 import com.valkiria.uicomponents.components.textfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.textfield.PasswordTextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.components.timepicker.TimePickerComponent
+import com.valkiria.uicomponents.components.timepicker.TimePickerUiModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -89,23 +109,65 @@ fun BodySection(
     val coroutineScope = rememberCoroutineScope()
 
     if (body?.isNotEmpty() == true) {
-        LazyColumn(
-            modifier = modifier,
-            state = listState,
-            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Top),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            handleBodyRows(
-                body = body,
-                listState = listState,
-                coroutineScope = coroutineScope,
-                validateFields = validateFields,
-                onAction = onAction
-            )
+        Box(modifier = modifier.fillMaxSize()) {
+            val stickyFooter = getStickyFooter(body)
+            val updatedModifier = if (stickyFooter != null) {
+                modifier.then(Modifier.padding(bottom = 60.dp))
+            } else {
+                modifier
+            }
+
+            LazyColumn(
+                modifier = updatedModifier,
+                state = listState,
+                contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Top),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                handleBodyRows(
+                    body = body,
+                    listState = listState,
+                    coroutineScope = coroutineScope,
+                    validateFields = validateFields,
+                    onAction = onAction
+                )
+            }
+
+            stickyFooter?.let { model ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter)
+                ) {
+                    StepperComponent(uiModel = model) { selectedIndex ->
+                        coroutineScope.launch {
+                            val selected = model.options[selectedIndex.toString()]
+
+                            val contentHeader = body.indexOfFirst {
+                                it is HeaderUiModel && it.title.text == selected
+                            }
+
+                            if (contentHeader >= 0) {
+                                listState.animateScrollToItem(
+                                    index = contentHeader,
+                                    scrollOffset = -100
+                                )
+                            }
+                        }
+
+                        if (selectedIndex == null) {
+                            onAction(GenericUiAction.StepperAction(identifier = model.identifier))
+                        }
+                    }
+                }
+            }
         }
     }
 }
+
+private fun getStickyFooter(body: List<BodyRowModel>): StepperUiModel? = body
+    .filterIsInstance<StepperUiModel>()
+    .firstOrNull()
 
 @Suppress("ComplexMethod", "LongMethod", "LongParameterList")
 private fun LazyListScope.handleBodyRows(
@@ -126,11 +188,11 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is ChipOptionsUiModel -> item(key = model.identifier) {
-                ChipOptionsComponent(uiModel = model) { id, text, isSelection ->
+                ChipOptionsComponent(uiModel = model) { id, chipOptionItem, isSelection ->
                     onAction(
                         GenericUiAction.ChipOptionAction(
                             identifier = id,
-                            text = text,
+                            chipOptionUiModel = chipOptionItem,
                             status = isSelection
                         )
                     )
@@ -138,14 +200,43 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is ChipSelectionUiModel -> item(key = model.identifier) {
-                ChipSelectionComponent(uiModel = model) { id, text, isSelection ->
+                ChipSelectionComponent(uiModel = model) { id, chipSelectionItem, isSelection ->
                     onAction(
                         GenericUiAction.ChipSelectionAction(
                             identifier = id,
-                            text = text,
+                            chipSelectionItemUiModel = chipSelectionItem,
                             status = isSelection
                         )
                     )
+                }
+            }
+
+            is CrewMemberSignatureUiModel -> item(key = model.identifier) {
+                CrewMemberSignatureComponent(uiModel = model)
+            }
+
+            is DropDownUiModel -> item(key = model.identifier) {
+                DropDownComponent(model, validateFields) { dropDownInputUiModel ->
+                    onAction(
+                        GenericUiAction.DropDownAction(
+                            identifier = dropDownInputUiModel.identifier,
+                            id = dropDownInputUiModel.id,
+                            name = dropDownInputUiModel.name,
+                            fieldValidated = dropDownInputUiModel.fieldValidated
+                        )
+                    )
+                }
+            }
+
+            is HumanBodyUiModel -> item(key = model.identifier) {
+                HumanBodyComponent(model) { values ->
+                    onAction(GenericUiAction.HumanBodyAction(model.identifier, values))
+                }
+            }
+
+            is ImageButtonSectionUiModel -> item(key = model.identifier) {
+                ImageButtonSectionComponent(model) { id ->
+                    onAction(GenericUiAction.ImageButtonAction(identifier = id))
                 }
             }
 
@@ -169,6 +260,8 @@ private fun LazyListScope.handleBodyRows(
                         }
                     }
                 }
+
+                // FIXME: Send data to Stepper or create shared fun
             }
 
             is FindingUiModel -> item(key = model.identifier) {
@@ -216,20 +309,9 @@ private fun LazyListScope.handleBodyRows(
                 LabelComponent(uiModel = model)
             }
 
-            is SegmentedSwitchUiModel -> item(key = model.identifier) {
-                SegmentedSwitchComponent(uiModel = model) { id, status ->
-                    onAction(
-                        GenericUiAction.SegmentedSwitchAction(
-                            identifier = id,
-                            status = status
-                        )
-                    )
-                }
-            }
-
-            is SliderUiModel -> item(key = model.identifier) {
-                SliderComponent(uiModel = model) { id, value ->
-                    onAction(GenericUiAction.SliderAction(identifier = id, value = value))
+            is MedsSelectorUiModel -> item(key = model.identifier) {
+                MedsSelectorComponent(uiModel = model) { id ->
+                    onAction(GenericUiAction.MedsSelectorAction(identifier = id))
                 }
             }
 
@@ -241,6 +323,29 @@ private fun LazyListScope.handleBodyRows(
                 RichLabelComponent(uiModel = model)
             }
 
+            is SegmentedSwitchUiModel -> item(key = model.identifier) {
+                SegmentedSwitchComponent(uiModel = model) { id, status ->
+                    onAction(
+                        GenericUiAction.SegmentedSwitchAction(
+                            identifier = id,
+                            status = status
+                        )
+                    )
+                }
+            }
+
+            is SignatureUiModel -> item(key = model.identifier) {
+                SignatureComponent(uiModel = model) { id ->
+                    onAction(GenericUiAction.SignatureAction(identifier = id))
+                }
+            }
+
+            is SliderUiModel -> item(key = model.identifier) {
+                SliderComponent(uiModel = model) { id, value ->
+                    onAction(GenericUiAction.SliderAction(identifier = id, value = value))
+                }
+            }
+
             is TermsAndConditionsUiModel -> item(key = model.identifier) {
                 TermsAndConditionsComponent(uiModel = model.mapToLoginModel()) { link ->
                     onAction(TermsAndConditions(link = link))
@@ -249,6 +354,12 @@ private fun LazyListScope.handleBodyRows(
 
             is TextFieldUiModel -> item(key = model.identifier) {
                 HandleTextFieldRows(model, validateFields, onAction)
+            }
+
+            is TimePickerUiModel -> item(key = model.identifier) {
+                TimePickerComponent(uiModel = model) { id, time ->
+                    onAction(GenericUiAction.TimePickerAction(identifier = id, value = time))
+                }
             }
         }
     }
@@ -317,7 +428,7 @@ private fun HandleInfoCardRows(
         AuthCardsIdentifier.CREW_MEMBER_CARD_DOCTOR.name -> {
             InfoCardComponent(
                 uiModel = model,
-                onAction = { onAction(AuthCardsUiAction.AuthCard) },
+                onAction = { onAction(GenericUiAction.InfoCardAction(it)) },
                 onNewsAction = { onAction(AuthCardsUiAction.AuthCardNews(it)) },
                 onFindingsAction = { onAction(AuthCardsUiAction.AuthCardFindings(it)) }
             )
@@ -325,7 +436,7 @@ private fun HandleInfoCardRows(
 
         else -> InfoCardComponent(
             uiModel = model,
-            onAction = { onAction(AuthCardsUiAction.AuthCard) }
+            onAction = { onAction(GenericUiAction.InfoCardAction(it)) }
         )
     }
 }

@@ -29,10 +29,10 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.header.imagesConfirmationHeader
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
 import com.skgtecnologia.sisem.ui.authcards.report.PagerIndicator
-import com.skgtecnologia.sisem.ui.commons.extensions.decodeAsBitmap
-import com.skgtecnologia.sisem.ui.commons.extensions.storeUriAsFileToCache
+import com.valkiria.uicomponents.extensions.decodeAsBitmap
+import com.valkiria.uicomponents.extensions.storeUriAsFileToCache
 import com.skgtecnologia.sisem.ui.navigation.REPORT
-import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
+import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
@@ -106,7 +106,7 @@ fun ImagesConfirmationScreen(
             headerUiModel = imagesConfirmationHeader(
                 titleText = stringResource(id = R.string.images_confirmation_title),
                 subtitleText = stringResource(R.string.images_confirmation_subtitle),
-                leftIcon = stringResource(R.string.images_confirmation_left_icon)
+                leftIcon = stringResource(R.string.back_icon)
             )
         ) { uiAction ->
             if (uiAction is HeaderUiAction.GoBack) {

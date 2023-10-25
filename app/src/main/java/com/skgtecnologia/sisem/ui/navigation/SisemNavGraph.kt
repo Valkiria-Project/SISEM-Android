@@ -26,9 +26,15 @@ import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.map.MapScreen
 import com.skgtecnologia.sisem.ui.media.CameraScreen
 import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
+import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryScreen
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineScreen
+import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadScreen
+import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsScreen
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
-import com.skgtecnologia.sisem.ui.navigation.model.StartupNavigationModel
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
 import com.skgtecnologia.sisem.ui.report.AddFindingScreen
 import com.skgtecnologia.sisem.ui.report.AddReportRoleScreen
@@ -178,8 +184,25 @@ private fun NavGraphBuilder.mainGraph(
 
         composable(
             route = MainNavigationRoute.IncidentScreen.route
-        ) {
+        ) { navBackStackEntry ->
             // FIXME: Finish this work
+            val vitalSigns =
+                navBackStackEntry.savedStateHandle.get<Map<String, String>>(VITAL_SIGNS)
+            navBackStackEntry.savedStateHandle.remove<Map<String, String>>(VITAL_SIGNS)
+
+            val medicine = navBackStackEntry.savedStateHandle.get<Map<String, String>>(MEDICINE)
+            navBackStackEntry.savedStateHandle.remove<Map<String, String>>(MEDICINE)
+
+            val signature = navBackStackEntry.savedStateHandle.get<String>(SIGNATURE)
+            navBackStackEntry.savedStateHandle.remove<String>(SIGNATURE)
+
+            MedicalHistoryScreen(
+                vitalSigns = vitalSigns,
+                medicine = medicine,
+                signature = signature
+            ) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
         }
 
         composable(
@@ -234,6 +257,31 @@ private fun NavGraphBuilder.mainGraph(
             route = MainNavigationRoute.SignatureAndFingerprint.route
         ) {
             // FIXME: Finish this work
+        }
+
+        composable(
+            route = MainNavigationRoute.VitalSignsScreen.route
+        ) {
+            VitalSignsScreen { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = MainNavigationRoute.MedicineScreen.route
+        ) {
+            MedicineScreen { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = MainNavigationRoute.SignaturePadScreen.route
+        ) {
+            // FIXME: Finish this work
+            SignaturePadScreen { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
         }
     }
 }

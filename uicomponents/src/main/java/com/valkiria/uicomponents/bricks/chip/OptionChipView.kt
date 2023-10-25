@@ -23,7 +23,7 @@ fun OptionChipView(
     text: String,
     textStyle: TextStyle,
     modifier: Modifier = Modifier,
-    onAction: (id: String, text: String, isSelection: Boolean) -> Unit
+    onAction: (id: String, isSelection: Boolean) -> Unit
 ) {
     var selected by rememberSaveable { mutableStateOf(false) }
 
@@ -31,7 +31,7 @@ fun OptionChipView(
         selected = selected,
         onClick = {
             selected = !selected
-            onAction(id, text, selected)
+            onAction(id, selected)
         },
         label = {
             Text(

@@ -11,16 +11,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.bricks.chip.FilterChipView
-import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
+import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 
-@Suppress("UnusedPrivateMember")
 @Composable
 fun ChipSelectionComponent(
     uiModel: ChipSelectionUiModel,
-    isTablet: Boolean = false,
-    onAction: (id: String, text: String, isSelection: Boolean) -> Unit
+    onAction: (id: String, selectionItem: ChipSelectionItemUiModel, isSelection: Boolean) -> Unit
 ) {
     val selected = rememberSaveable { mutableStateOf("") }
 
@@ -33,7 +31,8 @@ fun ChipSelectionComponent(
                 uiModel = LabelUiModel(
                     identifier = uiModel.identifier,
                     text = uiModel.title.text,
-                    textStyle = uiModel.title.textStyle
+                    textStyle = uiModel.title.textStyle,
+                    arrangement = Arrangement.Start
                 )
             )
         }
@@ -44,16 +43,15 @@ fun ChipSelectionComponent(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            uiModel.items.forEach { chipOption ->
+            uiModel.items.forEach { chipSelection ->
                 FilterChipView(
                     id = "",
-                    text = chipOption.name,
-                    isSelected = (chipOption.name == selected.value),
+                    text = chipSelection.name,
+                    isSelected = (chipSelection.name == selected.value),
                     textStyle = TextStyle.BUTTON_1,
-                    modifier = Modifier.padding(horizontal = 8.dp),
                     onAction = { _, text, isSelection ->
                         selected.value = text
-                        onAction(uiModel.identifier, text, isSelection)
+                        onAction(uiModel.identifier, chipSelection, isSelection)
                     }
                 )
             }

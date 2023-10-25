@@ -2,11 +2,13 @@ package com.skgtecnologia.sisem.ui.humanbody
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,37 +24,54 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.humanbody.area.BASE_HEIGHT
 import com.skgtecnologia.sisem.ui.humanbody.area.BASE_WIDTH
 import com.valkiria.uicomponents.R
+import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
+import com.valkiria.uicomponents.components.humanbody.HumanBodyUiModel
+import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.label.toTextStyle
 
 @Composable
 fun HumanBodyComponent(
-    onAction: (id: String, wounds: Map<String, List<String>>) -> Unit
+    uiModel: HumanBodyUiModel,
+    onAction: (HumanBodyUi) -> Unit
 ) {
     val viewModel = hiltViewModel<HumanBodyViewModel>()
     val width = LocalContext.current.display?.width ?: BASE_WIDTH
     val height = LocalContext.current.display?.height ?: BASE_HEIGHT
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = uiModel.modifier.fillMaxSize()) {
         var isFront by rememberSaveable { mutableStateOf(true) }
 
         if (isFront) {
-            HumanBodyFrontComponent(viewModel, width, height) { identifier, wounds ->
-                onAction(identifier, wounds)
+            HumanBodyFrontComponent(uiModel, viewModel, width, height) { humanBodyUi ->
+                onAction(humanBodyUi)
             }
         } else {
-            HumanBodyBackComponent(viewModel, width, height) { identifier, wounds ->
-                onAction(identifier, wounds)
+            HumanBodyBackComponent(uiModel, viewModel, width, height) { humanBodyUi ->
+                onAction(humanBodyUi)
             }
         }
 
-        Icon(
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_flip),
-            contentDescription = null,
+        Column(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(32.dp)
-                .clickable { isFront = !isFront }
-                .size(32.dp),
-            tint = MaterialTheme.colorScheme.primary
-        )
+                .padding(36.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_rotate),
+                contentDescription = null,
+                modifier = Modifier
+                    .clickable { isFront = !isFront }
+                    .size(32.dp),
+                tint = MaterialTheme.colorScheme.primary
+            )
+
+            Text(
+                modifier = Modifier
+                    .padding(top = 4.dp),
+                text = LocalContext.current.getString(R.string.human_body_label),
+                style = TextStyle.HEADLINE_4.toTextStyle()
+            )
+        }
     }
 }

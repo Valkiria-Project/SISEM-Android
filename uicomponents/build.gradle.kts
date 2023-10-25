@@ -68,6 +68,7 @@ dependencies {
     implementation(libs.accompanist.placeholder.material)
     implementation(libs.coil.compose)
     implementation(libs.compose.html)
+    implementation(libs.compressor)
 
     // Maps
     implementation(libs.mapbox.android)
