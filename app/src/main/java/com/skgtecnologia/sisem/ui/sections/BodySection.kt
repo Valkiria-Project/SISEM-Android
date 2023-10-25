@@ -37,7 +37,6 @@ import com.valkiria.uicomponents.action.ChangePasswordUiAction.NewPasswordInput
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.OldPasswordInput
 import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.GenericUiAction
-import com.valkiria.uicomponents.action.GenericUiAction.DropDownAction
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
 import com.valkiria.uicomponents.action.LoginUiAction.Login
 import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
@@ -189,11 +188,11 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is ChipOptionsUiModel -> item(key = model.identifier) {
-                ChipOptionsComponent(uiModel = model) { id, chipSelectionItem, isSelection ->
+                ChipOptionsComponent(uiModel = model) { id, chipOptionItem, isSelection ->
                     onAction(
                         GenericUiAction.ChipOptionAction(
                             identifier = id,
-                            chipOptionUiModel = chipSelectionItem,
+                            chipOptionUiModel = chipOptionItem,
                             status = isSelection
                         )
                     )
@@ -219,7 +218,7 @@ private fun LazyListScope.handleBodyRows(
             is DropDownUiModel -> item(key = model.identifier) {
                 DropDownComponent(model, validateFields) { dropDownInputUiModel ->
                     onAction(
-                        DropDownAction(
+                        GenericUiAction.DropDownAction(
                             identifier = dropDownInputUiModel.identifier,
                             id = dropDownInputUiModel.id,
                             name = dropDownInputUiModel.name,
