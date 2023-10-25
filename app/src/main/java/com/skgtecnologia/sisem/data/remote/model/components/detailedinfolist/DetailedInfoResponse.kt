@@ -13,6 +13,6 @@ data class DetailedInfoResponse(
 
 fun DetailedInfoResponse.mapToUi(): DetailedInfoUiModel = DetailedInfoUiModel(
     label = label ?: error("Detailed info label cannot be null"),
-    icon = icon ?: error("Detailed info icon cannot be null"),
+    icon = icon,
     text = text ?: error("Detailed info text cannot be null")
 )

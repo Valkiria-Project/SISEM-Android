@@ -41,9 +41,11 @@ fun DetailedInfoListComponent(
                     modifier = Modifier.padding(top = 2.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    val iconResourceId = LocalContext.current.getResourceIdByName(
-                        detailedInfoUiModel.icon, DefType.DRAWABLE
-                    )
+                    val iconResourceId = detailedInfoUiModel.icon?.let {
+                        LocalContext.current.getResourceIdByName(
+                            it, DefType.DRAWABLE
+                        )
+                    }
 
                     iconResourceId?.let {
                         Icon(
