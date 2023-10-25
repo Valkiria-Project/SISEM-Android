@@ -51,8 +51,8 @@ fun WoundsContent(
                 arrangement = Arrangement.Center,
                 modifier = Modifier
             )
-        ) { _, text, isSelected ->
-            viewModel.updateWoundsList(text, isSelected)
+        ) { _, chipOptionUiModel, isSelected ->
+            viewModel.updateWoundsList(chipOptionUiModel.name, isSelected)
         }
 
         if (uiState.onBurnSelected) {
@@ -69,8 +69,8 @@ fun WoundsContent(
                     arrangement = Arrangement.Center,
                     modifier = Modifier.padding(top = 16.dp)
                 )
-            ) { _, text, _ ->
-                viewModel.updateBurnList(text)
+            ) { _, chipSelectionItemUiModel, _ ->
+                viewModel.updateBurnList(chipSelectionItemUiModel.name)
             }
         }
 

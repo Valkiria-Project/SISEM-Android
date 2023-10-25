@@ -16,7 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,10 +24,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.valkiria.uicomponents.mocks.getDeviceAuthSegmentedSwitchUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.toTextStyle
-import timber.log.Timber
+import com.valkiria.uicomponents.mocks.getDeviceAuthSegmentedSwitchUiModel
 
 @Suppress("LongMethod", "MagicNumber", "UnusedPrivateMember")
 @Composable
@@ -35,16 +34,9 @@ fun SegmentedSwitchComponent(
     uiModel: SegmentedSwitchUiModel,
     onAction: (id: String, status: Boolean) -> Unit
 ) {
-    Timber.d("Segmented: SegmentedSwitchComponent pass")
-    if (uiModel.identifier == "14") {
-        Timber.d("Segmented: id ${uiModel.identifier} and selected ${uiModel.selected}")
-    }
     val items = uiModel.options.map { it.text }
-    var selectedIndex by remember(uiModel.selected) {
+    var selectedIndex by rememberSaveable(uiModel.selected) {
         mutableIntStateOf(if (uiModel.selected) 0 else 1)
-    }
-    if (uiModel.identifier == "14") {
-        Timber.d("Segmented: id ${uiModel.identifier} and selectedIndex $selectedIndex")
     }
 
     Row(

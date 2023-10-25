@@ -3,8 +3,8 @@ package com.skgtecnologia.sisem.ui.dropdown
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Icon
@@ -83,7 +83,8 @@ fun DropDownComponent(
                 .onFocusChanged {
                     showDialog = it.isFocused
                 }
-                .widthIn(max = 320.dp),
+                .fillMaxWidth()
+                .imePadding(),
             label = { Text(text = uiModel.label) },
             trailingIcon = {
                 Icon(
@@ -117,7 +118,8 @@ fun DropDownComponent(
                     )
                 ),
                 validateFields
-            ) != null
+            ) != null,
+            maxLines = 1
         )
     }
 

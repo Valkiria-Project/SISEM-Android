@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material3.DatePicker
@@ -29,7 +28,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.mocks.getPreOpDriverAuxGuardianTextFieldUiModel
@@ -79,7 +77,7 @@ fun DatePickerTextFieldView(
                 .onFocusChanged {
                     showDialog = it.isFocused
                 }
-                .widthIn(max = 320.dp),
+                .fillMaxWidth(),
             label = { uiModel.placeholder?.let { Text(it) } },
             trailingIcon = {
                 Icon(Icons.Filled.Event, contentDescription = "Select date")

@@ -43,7 +43,7 @@ fun SignatureComponent(
     } else {
         Image(
             bitmap = uiModel.signature
-                .substringAfter(",", uiModel.signature).decodeAsBase64Bitmap()
+                .decodeAsBase64Bitmap()
                 .asImageBitmap(), // FIXME: Temporal hack
             contentDescription = uiModel.signature,
             contentScale = ContentScale.Crop,

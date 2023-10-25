@@ -2,6 +2,9 @@ package com.valkiria.uicomponents.action
 
 import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
+import com.valkiria.uicomponents.components.chip.ChipOptionUiModel
+import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
+import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 
 const val DISMISS_IDENTIFIER = "dismiss"
 
@@ -12,13 +15,13 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
 
     data class ChipOptionAction(
         override val identifier: String,
-        val text: String,
+        val chipOptionUiModel: ChipOptionUiModel,
         val status: Boolean
     ) : GenericUiAction(identifier)
 
     data class ChipSelectionAction(
         override val identifier: String,
-        val text: String,
+        val chipSelectionItemUiModel: ChipSelectionItemUiModel,
         val status: Boolean
     ) : GenericUiAction(identifier)
 
@@ -38,7 +41,11 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
 
     data class HumanBodyAction(
         override val identifier: String,
-        val values: Map<String, List<String>>
+        val values: HumanBodyUi
+    ) : GenericUiAction(identifier)
+
+    data class ImageButtonAction(
+        override val identifier: String
     ) : GenericUiAction(identifier)
 
     data class InfoCardAction(
@@ -73,6 +80,10 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
     data class SliderAction(
         override val identifier: String,
         val value: Int
+    ) : GenericUiAction(identifier)
+
+    data class StepperAction(
+        override val identifier: String
     ) : GenericUiAction(identifier)
 
     data class TimePickerAction(

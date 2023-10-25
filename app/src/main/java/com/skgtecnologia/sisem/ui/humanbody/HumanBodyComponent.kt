@@ -16,13 +16,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.humanbody.area.BASE_HEIGHT
 import com.skgtecnologia.sisem.ui.humanbody.area.BASE_WIDTH
 import com.valkiria.uicomponents.R
+import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.toTextStyle
@@ -30,7 +32,7 @@ import com.valkiria.uicomponents.components.label.toTextStyle
 @Composable
 fun HumanBodyComponent(
     uiModel: HumanBodyUiModel,
-    onAction: (id: String, wounds: Map<String, List<String>>) -> Unit
+    onAction: (HumanBodyUi) -> Unit
 ) {
     val viewModel = hiltViewModel<HumanBodyViewModel>()
     val width = LocalContext.current.display?.width ?: BASE_WIDTH
@@ -40,12 +42,12 @@ fun HumanBodyComponent(
         var isFront by rememberSaveable { mutableStateOf(true) }
 
         if (isFront) {
-            HumanBodyFrontComponent(uiModel, viewModel, width, height) { identifier, wounds ->
-                onAction(identifier, wounds)
+            HumanBodyFrontComponent(uiModel, viewModel, width, height) { humanBodyUi ->
+                onAction(humanBodyUi)
             }
         } else {
-            HumanBodyBackComponent(uiModel, viewModel, width, height) { identifier, wounds ->
-                onAction(identifier, wounds)
+            HumanBodyBackComponent(uiModel, viewModel, width, height) { humanBodyUi ->
+                onAction(humanBodyUi)
             }
         }
 
@@ -56,7 +58,7 @@ fun HumanBodyComponent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_rotate),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_rotate),
                 contentDescription = null,
                 modifier = Modifier
                     .clickable { isFront = !isFront }

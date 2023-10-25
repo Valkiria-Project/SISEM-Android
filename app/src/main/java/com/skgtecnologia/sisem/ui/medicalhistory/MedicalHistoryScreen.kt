@@ -7,9 +7,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.GenericUiAction
+import com.valkiria.uicomponents.action.GenericUiAction.StepperAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
+import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
+import com.valkiria.uicomponents.components.textfield.InputUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -26,7 +29,6 @@ fun MedicalHistoryScreen(
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState.navigationModel) {
-        Timber.d("MedicalHistoryScreen: LaunchedEffect uiState pass")
         launch {
             uiState.navigationModel?.let {
                 onNavigation(uiState.navigationModel)
@@ -36,69 +38,115 @@ fun MedicalHistoryScreen(
     }
 
     LaunchedEffect(vitalSigns) {
-        Timber.d("MedicalHistoryScreen: LaunchedEffect vitalSigns pass")
         launch {
             vitalSigns?.let { viewModel.updateVitalSignsInfoCard(vitalSigns) }
         }
     }
 
     LaunchedEffect(medicine) {
-        Timber.d("MedicalHistoryScreen: LaunchedEffect medicine pass")
         launch {
             medicine?.let { viewModel.updateMedicineInfoCard(medicine) }
         }
     }
 
     LaunchedEffect(signature) {
-        Timber.d("MedicalHistoryScreen: LaunchedEffect medicine pass")
         launch {
             signature?.let { viewModel.updateSignature(signature) }
         }
     }
 
-    BodySection(body = uiState.screenModel?.body) { uiAction ->
+    BodySection(
+        body = uiState.screenModel?.body
+    ) { uiAction ->
         handleAction(uiAction, viewModel)
     }
 
-    OnBannerHandler(uiModel = uiState.errorModel) {
+    OnBannerHandler(uiModel = uiState.infoEvent) {
         viewModel.handleShownError()
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)
 }
 
+@Suppress("ComplexMethod", "LongMethod")
 fun handleAction(
     uiAction: UiAction,
     viewModel: MedicalHistoryViewModel
 ) {
     when (uiAction) {
-        is GenericUiAction.ButtonAction -> {}
-        // crear modelo para ImageButtonSection
+        is GenericUiAction.ChipOptionAction -> {
+            val chipOption = viewModel.chipOptionValues[uiAction.identifier]
 
-        is GenericUiAction.ChipOptionAction -> {}
-        // Lateralidad - dificultad paciente
+            when {
+                chipOption != null && chipOption.contains(uiAction.chipOptionUiModel.id) -> {
+                    chipOption.remove(uiAction.chipOptionUiModel.id)
 
-        is GenericUiAction.ChipSelectionAction -> {
-            viewModel.chipSelectionValues[uiAction.identifier] = uiAction.text
-            viewModel.updateGlasgow()
+                    if (chipOption.isEmpty()) viewModel.chipOptionValues.remove(uiAction.identifier)
+                }
+
+                chipOption != null && chipOption.contains(uiAction.chipOptionUiModel.id).not() -> {
+                    chipOption.add(uiAction.chipOptionUiModel.id)
+                }
+
+                else -> viewModel.chipOptionValues[uiAction.identifier] =
+                    mutableListOf(uiAction.chipOptionUiModel.id)
+            }
         }
 
-        is GenericUiAction.DropDownAction -> {}
+        is GenericUiAction.ChipSelectionAction -> {
+            viewModel.chipSelectionValues[uiAction.identifier] = uiAction.chipSelectionItemUiModel
 
-        is GenericUiAction.HumanBodyAction -> {}
+            if (viewModel.glasgowIdentifier.contains(uiAction.identifier)) {
+                viewModel.updateGlasgow()
+            }
+        }
+
+        is GenericUiAction.DropDownAction ->
+            viewModel.dropDownValues[uiAction.identifier] = DropDownInputUiModel(
+                uiAction.identifier,
+                uiAction.id,
+                uiAction.name,
+                uiAction.fieldValidated
+            )
+
+        is GenericUiAction.HumanBodyAction -> {
+            val humanBody = viewModel.humanBodyUiValues.find { it.area == uiAction.values.area }
+
+            if (humanBody != null) {
+                viewModel.humanBodyUiValues.remove(humanBody)
+            } else {
+                viewModel.humanBodyUiValues.add(uiAction.values)
+            }
+        }
+
+        is GenericUiAction.ImageButtonAction ->
+            viewModel.imageButtonSectionValues[uiAction.identifier] = uiAction.identifier
 
         is GenericUiAction.InfoCardAction -> viewModel.showVitalSignsForm(uiAction.identifier)
 
-        is GenericUiAction.InputAction -> {}
+        is GenericUiAction.InputAction -> {
+            viewModel.fieldsValues[uiAction.identifier] = InputUiModel(
+                uiAction.identifier,
+                uiAction.updatedValue,
+                uiAction.fieldValidated
+            )
 
-        is GenericUiAction.MedsSelectorAction ->
-            viewModel.showMedicineForm(uiAction.identifier)
+            if (uiAction.identifier == FUR_KEY) {
+                viewModel.updateFurAndGestationWeeks()
+            }
+        }
 
-        is GenericUiAction.SegmentedSwitchAction -> {}
+        is GenericUiAction.MedsSelectorAction -> viewModel.showMedicineForm(uiAction.identifier)
+
+        is GenericUiAction.SegmentedSwitchAction ->
+            viewModel.segmentedValues[uiAction.identifier] = uiAction.status
 
         is GenericUiAction.SignatureAction -> viewModel.showSignaturePad(uiAction.identifier)
 
-        is GenericUiAction.SliderAction -> {}
+        is GenericUiAction.SliderAction ->
+            viewModel.sliderValues[uiAction.identifier] = uiAction.value.toString()
+
+        is StepperAction -> viewModel.sendMedicalHistory()
 
         else -> Timber.d("no-op")
     }

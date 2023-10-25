@@ -103,21 +103,18 @@ class PreOperationalViewModel @Inject constructor(
     private fun ScreenModel.getFormInitialValues() {
         this.body.forEach { bodyRowModel ->
             when (bodyRowModel) {
-                is FindingUiModel -> {
-                    Timber.d("it's a FindingModel with id ${bodyRowModel.identifier}")
-                    val model = bodyRowModel.segmentedSwitchUiModel
-                    findingValues[model.identifier] = model.selected
-                }
-
                 is ChipOptionsUiModel -> {
-                    Timber.d("it's a ChipOptionsModel with id ${bodyRowModel.identifier}")
                     bodyRowModel.items.forEach { optionUiModel ->
                         findingValues[optionUiModel.id] = optionUiModel.selected
                     }
                 }
 
+                is FindingUiModel -> {
+                    val model = bodyRowModel.segmentedSwitchUiModel
+                    findingValues[model.identifier] = model.selected
+                }
+
                 is InventoryCheckUiModel -> {
-                    Timber.d("it's a InventoryCheckModel with id ${bodyRowModel.identifier}")
                     bodyRowModel.items.forEach { checkItemUiModel ->
                         inventoryValues[checkItemUiModel.name.identifier] =
                             InputUiModel(bodyRowModel.identifier)
@@ -125,7 +122,6 @@ class PreOperationalViewModel @Inject constructor(
                 }
 
                 is TextFieldUiModel -> {
-                    Timber.d("it's a TextFieldModel with id ${bodyRowModel.identifier}")
                     fieldsValues[bodyRowModel.identifier] = InputUiModel(bodyRowModel.identifier)
                 }
 

@@ -147,13 +147,13 @@ private fun handleAction(
     onNavigation: (route: AuthNavigationRoute) -> Unit
 ) {
     when (uiAction) {
-        is GenericUiAction.InfoCardAction -> onNavigation(AuthNavigationRoute.LoginScreen)
-
         is AuthCardsUiAction.AuthCardNews ->
             viewModel.showReportBottomSheet(uiAction.reportUiDetail)
 
         is AuthCardsUiAction.AuthCardFindings ->
             viewModel.showFindingsBottomSheet(uiAction.chipSectionUiModel)
+
+        is GenericUiAction.InfoCardAction -> onNavigation(AuthNavigationRoute.LoginScreen)
 
         else -> Timber.d("no-op")
     }

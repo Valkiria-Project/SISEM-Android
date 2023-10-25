@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.ui.medicalhistory
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -14,6 +15,7 @@ import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryScreen
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SendMedicalHistory
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
+import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.ADMINISTRATION_ROUTE_KEY
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.APPLICATION_TIME_KEY
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.APPLIED_DOSE_KEY
@@ -23,15 +25,27 @@ import com.skgtecnologia.sisem.ui.medicalhistory.medicine.DOSE_UNIT_KEY
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.GENERIC_NAME_KEY
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.QUANTITY_USED_KEY
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
+import com.valkiria.uicomponents.components.button.ImageButtonSectionUiModel
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
 import com.valkiria.uicomponents.components.card.PillUiModel
+import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
+import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
+import com.valkiria.uicomponents.components.chip.ChipSelectionUiModel
+import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
+import com.valkiria.uicomponents.components.dropdown.DropDownUiModel
+import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.ListTextUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextUiModel
 import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
+import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import com.valkiria.uicomponents.components.signature.SignatureUiModel
+import com.valkiria.uicomponents.components.slider.SliderUiModel
+import com.valkiria.uicomponents.components.textfield.InputUiModel
+import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID
@@ -40,6 +54,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
+
+const val FUR_KEY = "KEY_GYNECOBSTETRICS_FUR"
 
 private const val DATE_FORMAT = "HH:mm"
 private const val SAVE_COLOR = "#3cf2dd"
@@ -53,17 +70,21 @@ private const val GLASGOW_TOTAL_KEY = "GLASGOW_TOTAL_VALUE"
 private const val GLASGOW_RTS_KEY = "GLASGOW_RTS"
 private const val TAS_KEY = "TAS"
 private const val FC_KEY = "FC"
+private const val PREGNANT_FUR_KEY = "PREGNANT_FUR"
+private const val PREGNANT_WEEKS_KEY = "PREGNANT_WEEKS"
 
 private const val APPLIED_DOSES = "Dosis aplicada"
 private const val CODE = "Código"
 private const val QUANTITY_USED = "Cantidad utilizada"
 private const val ADMINISTRATION_ROUTE = "Via de administración"
 
-@Suppress("TooManyFunctions", "UnusedPrivateMember")
+private const val WEEK = 7
+
+@Suppress("TooManyFunctions")
 @HiltViewModel
 class MedicalHistoryViewModel @Inject constructor(
     private val getMedicalHistoryScreen: GetMedicalHistoryScreen,
-    private val sendMedicalHistory: SendMedicalHistory, // FIXME: UnusedPrivateMember
+    private val sendMedicalHistory: SendMedicalHistory,
     androidIdProvider: AndroidIdProvider
 ) : ViewModel() {
 
@@ -78,14 +99,26 @@ class MedicalHistoryViewModel @Inject constructor(
         END_VITAL_SIGNS
     )
 
+    val glasgowIdentifier = listOf(
+        GLASGOW_MRO_KEY,
+        GLASGOW_MRV_KEY,
+        GLASGOW_MRM_KEY
+    )
+
     var temporalInfoCard by mutableStateOf("")
     var temporalMedsSelector by mutableStateOf("")
     var temporalSignature by mutableStateOf("")
-    var chipSelectionValues = mutableStateMapOf<String, String>()
-    var chipOptionValues = mutableStateMapOf<String, String>()
-    var medicineValues = mutableListOf<Map<String, String>>()
-    var vitalSignsValues = mutableStateMapOf<String, Map<String, String>>()
+    var humanBodyUiValues = mutableStateListOf<HumanBodyUi>()
+    var segmentedValues = mutableStateMapOf<String, Boolean>()
     var signatureValues = mutableStateMapOf<String, String>()
+    var fieldsValues = mutableStateMapOf<String, InputUiModel>()
+    var sliderValues = mutableStateMapOf<String, String>()
+    var dropDownValues = mutableStateMapOf<String, DropDownInputUiModel>()
+    var chipSelectionValues = mutableStateMapOf<String, ChipSelectionItemUiModel>()
+    var chipOptionValues = mutableStateMapOf<String, MutableList<String>>()
+    var imageButtonSectionValues = mutableStateMapOf<String, String>()
+    var vitalSignsValues = mutableStateMapOf<String, Map<String, String>>()
+    var medicineValues = mutableListOf<Map<String, String>>()
 
     init {
         uiState = uiState.copy(isLoading = true)
@@ -95,21 +128,76 @@ class MedicalHistoryViewModel @Inject constructor(
             getMedicalHistoryScreen.invoke(
                 serial = androidIdProvider.getAndroidId(),
                 incidentCode = "101",
-                patientId = "13"
-            ).onSuccess {
+                patientId = "14"
+            ).onSuccess { medicalHistoryScreenModel ->
+                medicalHistoryScreenModel.getFormInitialValues()
+
                 withContext(Dispatchers.Main) {
                     uiState = uiState.copy(
                         isLoading = false,
-                        screenModel = it
+                        screenModel = medicalHistoryScreenModel
                     )
                 }
             }.onFailure { throwable ->
                 withContext(Dispatchers.Main) {
                     uiState = uiState.copy(
                         isLoading = false,
-                        errorModel = throwable.mapToUi()
+                        infoEvent = throwable.mapToUi()
                     )
                 }
+            }
+        }
+    }
+
+    @Suppress("ComplexMethod")
+    private fun ScreenModel.getFormInitialValues() {
+        this.body.forEach { bodyRowModel ->
+            when (bodyRowModel) {
+                is ChipOptionsUiModel -> {
+                    val selectedOptions = bodyRowModel.items
+                        .filter { it.selected }
+                        .map { it.id }
+
+                    if (selectedOptions.isEmpty().not()) {
+                        chipOptionValues[bodyRowModel.identifier] = selectedOptions.toMutableList()
+                    }
+                }
+
+                is ChipSelectionUiModel -> bodyRowModel.selected?.let {
+                    bodyRowModel.items.find {
+                        it.id == bodyRowModel.selected
+                    }?.also {
+                        chipSelectionValues[bodyRowModel.identifier] = it
+                    }
+                }
+
+                is DropDownUiModel -> bodyRowModel.selected?.let {
+                    bodyRowModel.items.find {
+                        it.id == bodyRowModel.selected
+                    }?.also {
+                        dropDownValues[bodyRowModel.identifier] = DropDownInputUiModel(
+                            bodyRowModel.identifier,
+                            it.id,
+                            it.name
+                        )
+                    }
+                }
+
+                is ImageButtonSectionUiModel -> {
+                    Timber.d("No selected property for this one") // FIXME: Backend
+                }
+
+                is SegmentedSwitchUiModel ->
+                    segmentedValues[bodyRowModel.identifier] = bodyRowModel.selected
+
+                is SliderUiModel -> {
+                    sliderValues[bodyRowModel.identifier] = bodyRowModel.selected.toString()
+                }
+
+                is TextFieldUiModel ->
+                    fieldsValues[bodyRowModel.identifier] = InputUiModel(bodyRowModel.identifier)
+
+                else -> Timber.d("no-op")
             }
         }
     }
@@ -127,7 +215,10 @@ class MedicalHistoryViewModel @Inject constructor(
 
     fun updateVitalSignsInfoCard(values: Map<String, String>) {
         vitalSignsValues[temporalInfoCard] = values
-        updateGlasgow()
+
+        if (temporalInfoCard == INITIAL_VITAL_SIGNS) {
+            updateGlasgow()
+        }
 
         val list = values.map { "${it.key} ${it.value}" }
 
@@ -172,13 +263,13 @@ class MedicalHistoryViewModel @Inject constructor(
 
     @Suppress("MagicNumber", "ComplexMethod")
     fun updateGlasgow() {
-        val mro = chipSelectionValues[GLASGOW_MRO_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
-        val mrv = chipSelectionValues[GLASGOW_MRV_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
-        val mrm = chipSelectionValues[GLASGOW_MRM_KEY]?.substring(0, 1)?.toIntOrNull() ?: 0
+        val mro = chipSelectionValues[GLASGOW_MRO_KEY]?.name?.substring(0, 1)?.toIntOrNull() ?: 0
+        val mrv = chipSelectionValues[GLASGOW_MRV_KEY]?.name?.substring(0, 1)?.toIntOrNull() ?: 0
+        val mrm = chipSelectionValues[GLASGOW_MRM_KEY]?.name?.substring(0, 1)?.toIntOrNull() ?: 0
         val ecg = mro + mrv + mrm
 
-        val tas = vitalSignsValues[DURING_VITAL_SIGNS]?.get(TAS_KEY)?.toIntOrNull() ?: 0
-        val fc = vitalSignsValues[DURING_VITAL_SIGNS]?.get(FC_KEY)?.toIntOrNull() ?: 0
+        val tas = vitalSignsValues[INITIAL_VITAL_SIGNS]?.get(TAS_KEY)?.toIntOrNull() ?: 0
+        val fc = vitalSignsValues[INITIAL_VITAL_SIGNS]?.get(FC_KEY)?.toIntOrNull() ?: 0
 
         val ecgScore = when (ecg) {
             in 13..15 -> 4
@@ -258,7 +349,7 @@ class MedicalHistoryViewModel @Inject constructor(
         identifier = UUID.randomUUID().toString(),
         icon = "ic_pill",
         title = TextUiModel(
-            text = medicine[GENERIC_NAME_KEY]?.split(" - ")?.firstOrNull().orEmpty(),
+            text = medicine[CODE_KEY]?.split(" - ")?.firstOrNull().orEmpty(),
             textStyle = TextStyle.HEADLINE_4
         ),
         pill = PillUiModel(
@@ -285,10 +376,10 @@ class MedicalHistoryViewModel @Inject constructor(
     )
 
     private fun buildSpecifications(medicine: Map<String, String>): List<String> {
-        val presentation = medicine[GENERIC_NAME_KEY]?.split(" - ")?.lastOrNull()
+        val presentation = medicine[CODE_KEY]?.split(" - ")?.lastOrNull()
         return listOf(
             "$APPLIED_DOSES ${medicine[APPLIED_DOSE_KEY]} ${medicine[DOSE_UNIT_KEY]}",
-            "$CODE ${medicine[CODE_KEY]}",
+            "$CODE ${medicine[GENERIC_NAME_KEY]}",
             "$QUANTITY_USED ${medicine[QUANTITY_USED_KEY]} $presentation",
             "$ADMINISTRATION_ROUTE ${medicine[ADMINISTRATION_ROUTE_KEY]}"
         )
@@ -324,9 +415,79 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
+    fun updateFurAndGestationWeeks() {
+        val updatedBody = uiState.screenModel?.body?.map {
+            when {
+                (it is LabelUiModel && it.identifier == PREGNANT_FUR_KEY) -> {
+                    val temporalFurModel = it.copy(
+                        text = fieldsValues[FUR_KEY]?.updatedValue.orEmpty()
+                    )
+
+                    temporalFurModel
+                }
+
+                (it is LabelUiModel && it.identifier == PREGNANT_WEEKS_KEY) -> {
+                    val gestationWeeks = calculateGestationWeeks()
+
+                    val temporalWeeksModel = it.copy(
+                        text = gestationWeeks
+                    )
+
+                    temporalWeeksModel
+                }
+
+                else -> it
+            }
+        }.orEmpty()
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
+    private fun calculateGestationWeeks(): String {
+        val fur = LocalDate.parse(fieldsValues[FUR_KEY]?.updatedValue.orEmpty())
+        val now = LocalDate.now()
+        return ((now.toEpochDay() - fur.toEpochDay()) / WEEK).toString()
+    }
+
+    fun sendMedicalHistory() {
+        uiState = uiState.copy(
+            isLoading = true
+        )
+
+        job?.cancel()
+        job = viewModelScope.launch(Dispatchers.IO) {
+            sendMedicalHistory.invoke(
+                humanBodyUiValues = humanBodyUiValues,
+                segmentedValues = segmentedValues,
+                signatureValues = signatureValues,
+                fieldsValue = fieldsValues.mapValues { it.value.updatedValue },
+                sliderValues = sliderValues,
+                dropDownValues = dropDownValues.mapValues { it.value.id },
+                chipSelectionValues = chipSelectionValues.mapValues { it.value.id },
+                chipOptionsValues = chipOptionValues,
+                imageButtonSectionValues = imageButtonSectionValues,
+                vitalSigns = vitalSignsValues,
+                infoCardButtonValues = medicineValues
+            ).onSuccess {
+                Timber.d("This is a success")
+            }.onFailure { throwable ->
+                Timber.wtf(throwable, "This is a failure")
+
+                uiState = uiState.copy(
+                    isLoading = false,
+                    infoEvent = throwable.mapToUi()
+                )
+            }
+        }
+    }
+
     fun handleShownError() {
         uiState = uiState.copy(
-            errorModel = null
+            infoEvent = null
         )
     }
 
