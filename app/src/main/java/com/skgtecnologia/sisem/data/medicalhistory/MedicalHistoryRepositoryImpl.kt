@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.data.medicalhistory
 
-import com.skgtecnologia.sisem.data.auth.cache.AuthCacheDataSource
 import com.skgtecnologia.sisem.data.medicalhistory.remote.MedicalHistoryRemoteDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.domain.medicalhistory.MedicalHistoryRepository
@@ -9,9 +8,7 @@ import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
-@Suppress("UnusedPrivateMember")
 class MedicalHistoryRepositoryImpl @Inject constructor(
-    private val authCacheDataSource: AuthCacheDataSource, // FIXME: UnusedPrivateMember
     private val medicalHistoryRemoteDataSource: MedicalHistoryRemoteDataSource,
     private val operationCacheDataSource: OperationCacheDataSource
 ) : MedicalHistoryRepository {
@@ -23,7 +20,8 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
     ): ScreenModel = medicalHistoryRemoteDataSource.getMedicalHistoryScreen(
         serial = serial,
         code = operationCacheDataSource.observeOperationConfig().first()?.vehicleCode.orEmpty(),
-        turnId = "1", // authCacheDataSource.observeAccessToken().first()?.turn?.id.orEmpty(),
+        // FIXME: authCacheDataSource.observeAccessToken().first()?.turn?.id.orEmpty(),
+        turnId = "1",
         incidentCode = incidentCode,
         patientId = patientId
     ).getOrThrow()
@@ -47,8 +45,10 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
         vitalSigns: Map<String, Map<String, String>>,
         infoCardButtonValues: List<Map<String, String>>
     ) = medicalHistoryRemoteDataSource.sendMedicalHistory(
-        idTurn = "1", // authCacheDataSource.observeAccessToken().first()?.turn?.id.orEmpty(),
-        idAph = "1", // FIXME: where is this value?
+        // FIXME: authCacheDataSource.observeAccessToken().first()?.turn?.id.orEmpty(),
+        idTurn = "1",
+        // FIXME: Complete with notification work
+        idAph = "1",
         humanBodyUiValues = humanBodyUiValues,
         segmentedValues = segmentedValues,
         signatureValues = signatureValues,
