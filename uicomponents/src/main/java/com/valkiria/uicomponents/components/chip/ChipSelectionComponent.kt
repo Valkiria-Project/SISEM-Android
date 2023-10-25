@@ -43,15 +43,15 @@ fun ChipSelectionComponent(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            uiModel.items.forEach { chipOption ->
+            uiModel.items.forEach { chipSelection ->
                 FilterChipView(
                     id = "",
-                    text = chipOption.name,
-                    isSelected = (chipOption.name == selected.value),
+                    text = chipSelection.name,
+                    isSelected = (chipSelection.name == selected.value),
                     textStyle = TextStyle.BUTTON_1,
                     onAction = { _, text, isSelection ->
                         selected.value = text
-                        onAction(uiModel.identifier, chipOption, isSelection)
+                        onAction(uiModel.identifier, chipSelection, isSelection)
                     }
                 )
             }
