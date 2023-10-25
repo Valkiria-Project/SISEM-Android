@@ -16,7 +16,6 @@ import com.valkiria.uicomponents.components.textfield.InputUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-@Suppress("UnusedPrivateMember")
 @Composable
 fun MedicalHistoryScreen(
     modifier: Modifier = Modifier,
