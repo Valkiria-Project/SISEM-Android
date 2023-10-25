@@ -17,7 +17,7 @@ interface MedicalHistoryRepository {
 
     @Suppress("LongParameterList")
     suspend fun sendMedicalHistory(
-        humanBodyUiValues: List<HumanBodyUi>,
+        humanBodyValues: List<HumanBodyUi>,
         segmentedValues: Map<String, Boolean>,
         signatureValues: Map<String, String>,
         fieldsValue: Map<String, String>,

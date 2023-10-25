@@ -45,16 +45,16 @@ import com.valkiria.uicomponents.components.slider.SliderUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.UUID
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.UUID
+import javax.inject.Inject
 
 const val FUR_KEY = "KEY_GYNECOBSTETRICS_FUR"
 
@@ -108,7 +108,7 @@ class MedicalHistoryViewModel @Inject constructor(
     var temporalInfoCard by mutableStateOf("")
     var temporalMedsSelector by mutableStateOf("")
     var temporalSignature by mutableStateOf("")
-    var humanBodyUiValues = mutableStateListOf<HumanBodyUi>()
+    var humanBodyValues = mutableStateListOf<HumanBodyUi>()
     var segmentedValues = mutableStateMapOf<String, Boolean>()
     var signatureValues = mutableStateMapOf<String, String>()
     var fieldsValues = mutableStateMapOf<String, InputUiModel>()
@@ -461,7 +461,7 @@ class MedicalHistoryViewModel @Inject constructor(
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
             sendMedicalHistory.invoke(
-                humanBodyUiValues = humanBodyUiValues,
+                humanBodyValues = humanBodyValues,
                 segmentedValues = segmentedValues,
                 signatureValues = signatureValues,
                 fieldsValue = fieldsValues.mapValues { it.value.updatedValue },

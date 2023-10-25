@@ -63,7 +63,7 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
     suspend fun sendMedicalHistory(
         idTurn: String,
         idAph: String,
-        humanBodyUiValues: List<HumanBodyUi>,
+        humanBodyValues: List<HumanBodyUi>,
         segmentedValues: Map<String, Boolean>,
         signatureValues: Map<String, String>,
         fieldsValue: Map<String, String>,
@@ -79,7 +79,7 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
             medicalHistoryBody = MedicalHistoryBody(
                 idTurn = idTurn,
                 idAph = idAph,
-                humanBodyValues = humanBodyUiValues.map { it.mapToBody() },
+                humanBodyValues = humanBodyValues.map { it.mapToBody() },
                 segmentedValues = segmentedValues,
                 signatureValues = signatureValues,
                 fieldsValue = fieldsValue,

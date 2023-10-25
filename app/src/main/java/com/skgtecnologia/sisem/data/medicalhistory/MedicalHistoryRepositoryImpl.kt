@@ -33,7 +33,7 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
         medicalHistoryRemoteDataSource.getMedicineScreen().getOrThrow()
 
     override suspend fun sendMedicalHistory(
-        humanBodyUiValues: List<HumanBodyUi>,
+        humanBodyValues: List<HumanBodyUi>,
         segmentedValues: Map<String, Boolean>,
         signatureValues: Map<String, String>,
         fieldsValue: Map<String, String>,
@@ -49,7 +49,7 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
         idTurn = "1",
         // FIXME: Complete with notification work
         idAph = "1",
-        humanBodyUiValues = humanBodyUiValues,
+        humanBodyValues = humanBodyValues,
         segmentedValues = segmentedValues,
         signatureValues = signatureValues,
         fieldsValue = fieldsValue,

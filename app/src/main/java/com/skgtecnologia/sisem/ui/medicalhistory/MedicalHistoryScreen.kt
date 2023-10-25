@@ -110,12 +110,12 @@ fun handleAction(
             )
 
         is GenericUiAction.HumanBodyAction -> {
-            val humanBody = viewModel.humanBodyUiValues.find { it.area == uiAction.values.area }
+            val humanBody = viewModel.humanBodyValues.find { it.area == uiAction.values.area }
 
             if (humanBody != null) {
-                viewModel.humanBodyUiValues.remove(humanBody)
+                viewModel.humanBodyValues.remove(humanBody)
             } else {
-                viewModel.humanBodyUiValues.add(uiAction.values)
+                viewModel.humanBodyValues.add(uiAction.values)
             }
         }
 
