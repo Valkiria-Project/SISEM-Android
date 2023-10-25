@@ -12,18 +12,35 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
+import com.skgtecnologia.sisem.domain.medicalhistory.model.ADMINISTRATION_ROUTE
+import com.skgtecnologia.sisem.domain.medicalhistory.model.ADMINISTRATION_ROUTE_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.APPLICATION_TIME_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.APPLIED_DOSES
+import com.skgtecnologia.sisem.domain.medicalhistory.model.APPLIED_DOSE_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.CODE
+import com.skgtecnologia.sisem.domain.medicalhistory.model.CODE_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.DATE_MEDICINE_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.DOSE_UNIT_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.DURING_VITAL_SIGNS
+import com.skgtecnologia.sisem.domain.medicalhistory.model.END_VITAL_SIGNS
+import com.skgtecnologia.sisem.domain.medicalhistory.model.FC_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.FUR_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.GENERIC_NAME_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.GLASGOW_MRM_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.GLASGOW_MRO_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.GLASGOW_MRV_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.GLASGOW_RTS_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.GLASGOW_TOTAL_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.INITIAL_VITAL_SIGNS
+import com.skgtecnologia.sisem.domain.medicalhistory.model.PREGNANT_FUR_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.PREGNANT_WEEKS_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.QUANTITY_USED
+import com.skgtecnologia.sisem.domain.medicalhistory.model.QUANTITY_USED_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.TAS_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryScreen
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SendMedicalHistory
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
-import com.skgtecnologia.sisem.ui.medicalhistory.medicine.ADMINISTRATION_ROUTE_KEY
-import com.skgtecnologia.sisem.ui.medicalhistory.medicine.APPLICATION_TIME_KEY
-import com.skgtecnologia.sisem.ui.medicalhistory.medicine.APPLIED_DOSE_KEY
-import com.skgtecnologia.sisem.ui.medicalhistory.medicine.CODE_KEY
-import com.skgtecnologia.sisem.ui.medicalhistory.medicine.DATE_MEDICINE_KEY
-import com.skgtecnologia.sisem.ui.medicalhistory.medicine.DOSE_UNIT_KEY
-import com.skgtecnologia.sisem.ui.medicalhistory.medicine.GENERIC_NAME_KEY
-import com.skgtecnologia.sisem.ui.medicalhistory.medicine.QUANTITY_USED_KEY
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.components.button.ImageButtonSectionUiModel
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
@@ -44,6 +61,8 @@ import com.valkiria.uicomponents.components.signature.SignatureUiModel
 import com.valkiria.uicomponents.components.slider.SliderUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.utlis.HOURS_MINUTES_24_HOURS_PATTERN
+import com.valkiria.uicomponents.utlis.WEEK_DAYS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -56,30 +75,9 @@ import java.time.format.DateTimeFormatter
 import java.util.UUID
 import javax.inject.Inject
 
-const val FUR_KEY = "KEY_GYNECOBSTETRICS_FUR"
+private const val SAVED_VITAL_SIGNS_COLOR = "#3cf2dd"
 
-private const val DATE_FORMAT = "HH:mm"
-private const val SAVE_COLOR = "#3cf2dd"
-private const val INITIAL_VITAL_SIGNS = "INITIAL_VITAL_SIGNS"
-private const val DURING_VITAL_SIGNS = "DURING_VITAL_SIGNS"
-private const val END_VITAL_SIGNS = "END_VITAL_SIGNS"
-private const val GLASGOW_MRO_KEY = "KEY_GLASGOW_SCALE_MRO"
-private const val GLASGOW_MRV_KEY = "KEY_GLASGOW_SCALE_MRV"
-private const val GLASGOW_MRM_KEY = "KEY_GLASGOW_SCALE_MRM"
-private const val GLASGOW_TOTAL_KEY = "GLASGOW_TOTAL_VALUE"
-private const val GLASGOW_RTS_KEY = "GLASGOW_RTS"
-private const val TAS_KEY = "TAS"
-private const val FC_KEY = "FC"
-private const val PREGNANT_FUR_KEY = "PREGNANT_FUR"
-private const val PREGNANT_WEEKS_KEY = "PREGNANT_WEEKS"
-
-private const val APPLIED_DOSES = "Dosis aplicada"
-private const val CODE = "Código"
-private const val QUANTITY_USED = "Cantidad utilizada"
-private const val ADMINISTRATION_ROUTE = "Via de administración"
-
-private const val WEEK = 7
-
+// FIXME: Split into use cases
 @Suppress("TooManyFunctions")
 @HiltViewModel
 class MedicalHistoryViewModel @Inject constructor(
@@ -228,11 +226,11 @@ class MedicalHistoryViewModel @Inject constructor(
                     pill = PillUiModel(
                         title = TextUiModel(
                             text = LocalDateTime.now().format(
-                                DateTimeFormatter.ofPattern(DATE_FORMAT)
+                                DateTimeFormatter.ofPattern(HOURS_MINUTES_24_HOURS_PATTERN)
                             ),
                             textStyle = TextStyle.BUTTON_1
                         ),
-                        color = SAVE_COLOR
+                        color = SAVED_VITAL_SIGNS_COLOR
                     ),
                     chipSection = bodyRowModel.chipSection?.listText?.copy(texts = list)?.let {
                         bodyRowModel.chipSection?.copy(
@@ -450,7 +448,7 @@ class MedicalHistoryViewModel @Inject constructor(
     private fun calculateGestationWeeks(): String {
         val fur = LocalDate.parse(fieldsValues[FUR_KEY]?.updatedValue.orEmpty())
         val now = LocalDate.now()
-        return ((now.toEpochDay() - fur.toEpochDay()) / WEEK).toString()
+        return ((now.toEpochDay() - fur.toEpochDay()) / WEEK_DAYS).toString()
     }
 
     fun sendMedicalHistory() {

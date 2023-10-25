@@ -8,7 +8,9 @@ import java.time.format.DateTimeFormatter
 
 const val AMERICA_BOGOTA_TIME_ZONE = "GMT-5"
 const val AMERICA_BOGOTA_ZONE = "America/Bogota"
-const val MINUTES_SECONDS_12_HOURS_PATTERN = "hh:mm"
+const val HOURS_MINUTES_12_HOURS_PATTERN = "hh:mm"
+const val HOURS_MINUTES_24_HOURS_PATTERN = "HH:mm"
+const val WEEK_DAYS = 7
 
 object TimeUtils {
 
@@ -18,7 +20,7 @@ object TimeUtils {
 
     fun getFormattedLocalTimeAsString(
         localTime: LocalTime = LocalTime.now(),
-        pattern: String = MINUTES_SECONDS_12_HOURS_PATTERN
+        pattern: String = HOURS_MINUTES_12_HOURS_PATTERN
     ): String = localTime.format(DateTimeFormatter.ofPattern(pattern))
 
     fun getLocalDateInMillis(selectedDate: LocalDate): Long {
