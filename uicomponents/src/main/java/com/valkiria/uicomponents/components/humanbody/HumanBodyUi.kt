@@ -5,3 +5,8 @@ data class HumanBodyUi(
     val area: String,
     val wounds: List<String>
 )
+
+enum class HumanBodyType {
+    BACK,
+    FRONT
+}

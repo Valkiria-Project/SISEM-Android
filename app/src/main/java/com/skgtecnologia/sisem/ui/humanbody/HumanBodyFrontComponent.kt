@@ -20,6 +20,7 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.ui.humanbody.area.FrontArea
 import com.skgtecnologia.sisem.ui.humanbody.wounds.WoundsContent
 import com.valkiria.uicomponents.bricks.bottomsheet.BottomSheetView
+import com.valkiria.uicomponents.components.humanbody.HumanBodyType
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUiModel
 import kotlinx.coroutines.launch
@@ -82,7 +83,7 @@ fun HumanBodyFrontComponent(
                         viewModel.saveFrontList(selectedFrontArea)
                         onAction(
                             HumanBodyUi(
-                                type = "FRONT",
+                                type = HumanBodyType.FRONT.name,
                                 area = selectedFrontArea.name,
                                 wounds = wounds
                             )

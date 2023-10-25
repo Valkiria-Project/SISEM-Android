@@ -20,6 +20,7 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.ui.humanbody.area.BackArea
 import com.skgtecnologia.sisem.ui.humanbody.wounds.WoundsContent
 import com.valkiria.uicomponents.bricks.bottomsheet.BottomSheetView
+import com.valkiria.uicomponents.components.humanbody.HumanBodyType
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUiModel
 import kotlinx.coroutines.launch
@@ -82,7 +83,7 @@ fun HumanBodyBackComponent(
                         viewModel.saveBackList(selectedBackArea)
                         onAction(
                             HumanBodyUi(
-                                type = "BACK",
+                                type = HumanBodyType.BACK.name,
                                 area = selectedBackArea.name,
                                 wounds = wounds
                             )
