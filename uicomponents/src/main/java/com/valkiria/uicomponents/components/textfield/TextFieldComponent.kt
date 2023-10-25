@@ -75,13 +75,12 @@ fun TextFieldComponent(
                 onAction(InputUiModel(id, updatedValue, fieldValidated))
             }
 
-            TextFieldStyle.OUTLINED ->
-                OutlinedTextFieldView(
-                    uiModel = uiModel,
-                    validateFields = validateFields
-                ) { id, updatedValue, fieldValidated ->
-                    onAction(InputUiModel(id, updatedValue, fieldValidated))
-                }
+            TextFieldStyle.OUTLINED -> OutlinedTextFieldView(
+                uiModel = uiModel,
+                validateFields = validateFields
+            ) { id, updatedValue, fieldValidated ->
+                onAction(InputUiModel(id, updatedValue, fieldValidated))
+            }
         }
     }
 }

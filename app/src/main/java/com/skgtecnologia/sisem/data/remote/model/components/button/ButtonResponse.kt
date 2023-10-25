@@ -15,6 +15,7 @@ import com.valkiria.uicomponents.components.button.OnClick
 @JsonClass(generateAdapter = true)
 data class ButtonResponse(
     @Json(name = "identifier") val identifier: String?,
+    @Json(name = "left_icon") val leftIcon: String?,
     @Json(name = "label") val label: String?,
     @Json(name = "style") val style: ButtonStyle?,
     @Json(name = "text_style") val textStyle: TextStyle?,
@@ -29,6 +30,7 @@ data class ButtonResponse(
     override fun mapToUi(): ButtonUiModel = ButtonUiModel(
         identifier = identifier ?: error("Button identifier cannot be null"),
         label = label ?: error("Button label cannot be null"),
+        leftIcon = leftIcon,
         style = style ?: error("Button style cannot be null"),
         textStyle = textStyle ?: error("Button textStyle cannot be null"),
         onClick = onClick ?: error("Button onClick cannot be null"),

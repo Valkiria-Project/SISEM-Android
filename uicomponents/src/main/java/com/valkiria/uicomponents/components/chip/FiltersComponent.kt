@@ -13,13 +13,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.bricks.chip.FilterChipView
-import com.valkiria.uicomponents.mocks.getPreOperationalFiltersUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.mocks.getPreOperationalFiltersUiModel
 import timber.log.Timber
 
 @Composable
@@ -35,7 +36,8 @@ fun FiltersComponent(
             .fillMaxWidth()
             .height(60.dp)
             .background(color = MaterialTheme.colorScheme.background),
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         uiModel.options.forEach { chipText ->
             FilterChipView(

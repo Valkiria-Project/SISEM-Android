@@ -14,6 +14,7 @@ fun getLoginForgotButtonUiModel(): ButtonUiModel {
     return ButtonUiModel(
         identifier = "forgot_password",
         label = "¿Olvidaste la contraseña?",
+        leftIcon = null,
         style = ButtonStyle.TRANSPARENT,
         textStyle = TextStyle.BUTTON_1,
         onClick = OnClick.FORGOT_PASSWORD,
@@ -32,6 +33,7 @@ fun getLoginButtonUiModel(): ButtonUiModel {
     return ButtonUiModel(
         identifier = "login",
         label = "INGRESAR",
+        leftIcon = "ic_body",
         style = ButtonStyle.LOUD,
         textStyle = TextStyle.HEADLINE_5,
         onClick = OnClick.LOGIN,

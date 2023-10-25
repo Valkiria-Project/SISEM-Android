@@ -20,16 +20,20 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.ui.humanbody.area.BackArea
 import com.skgtecnologia.sisem.ui.humanbody.wounds.WoundsContent
 import com.valkiria.uicomponents.bricks.bottomsheet.BottomSheetView
+import com.valkiria.uicomponents.components.humanbody.HumanBodyType
+import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
+import com.valkiria.uicomponents.components.humanbody.HumanBodyUiModel
 import kotlinx.coroutines.launch
 
 @Suppress("LongMethod")
 @androidx.compose.material3.ExperimentalMaterial3Api
 @Composable
 fun HumanBodyBackComponent(
+    uiModel: HumanBodyUiModel,
     viewModel: HumanBodyViewModel,
     width: Int,
     height: Int,
-    onAction: (id: String, wounds: Map<String, List<String>>) -> Unit
+    onAction: (humanBodyUi: HumanBodyUi) -> Unit
 ) {
     val uiState = viewModel.uiState
     val selectedBackAreas = uiState.selectedBackAreas
@@ -71,9 +75,19 @@ fun HumanBodyBackComponent(
         if (uiState.onSelectWound) {
             BottomSheetView(
                 content = {
-                    WoundsContent { wounds ->
+                    WoundsContent(
+                        header = uiModel.header,
+                        wounds = uiModel.wounds,
+                        burningLevel = uiModel.burningLevel
+                    ) { wounds ->
                         viewModel.saveBackList(selectedBackArea)
-                        onAction("identifier", mapOf(selectedBackArea.name to wounds))
+                        onAction(
+                            HumanBodyUi(
+                                type = HumanBodyType.BACK.name,
+                                area = selectedBackArea.name,
+                                wounds = wounds
+                            )
+                        )
                         selectedBackArea = BackArea.NONE
                         viewModel.handledOnWoundSelected()
                     }

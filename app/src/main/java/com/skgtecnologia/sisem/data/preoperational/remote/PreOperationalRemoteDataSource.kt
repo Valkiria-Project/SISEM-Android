@@ -105,8 +105,7 @@ class PreOperationalRemoteDataSource @Inject constructor(
             apiCall(errorModelFactory) {
                 preOperationalApi.sendFinding(
                     type = role.name.createRequestBody(),
-                    idPreoperational = novelty.idPreoperational.toString()
-                        .createRequestBody(),
+                    idPreoperational = novelty.idPreoperational.createRequestBody(),
                     idTurn = idTurn.createRequestBody(),
                     novelty = novelty.novelty.createRequestBody(),
                     images = novelty.images.map { imageModel ->

@@ -19,10 +19,10 @@ import com.valkiria.uicomponents.bricks.button.ImageButtonView
 import com.valkiria.uicomponents.components.label.TextStyle
 
 @Composable
-fun MediaActions(viewModel: ReportViewModel) {
+fun MediaActions(viewModel: ReportViewModel, isFromPreOperational: Boolean) {
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
-        onResult = { uris -> viewModel.updateSelectedImages(uris) }
+        onResult = { uris -> viewModel.updateSelectedImages(uris, isFromPreOperational) }
     )
 
     Row(
@@ -47,7 +47,7 @@ fun MediaActions(viewModel: ReportViewModel) {
                     .padding(8.dp)
             )
         ) {
-            viewModel.showCamera()
+            viewModel.showCamera(isFromPreOperational)
         }
 
         ImageButtonView(

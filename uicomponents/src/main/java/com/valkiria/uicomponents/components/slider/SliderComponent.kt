@@ -50,7 +50,7 @@ fun SliderComponent(
     ) {
         Slider(
             value = value,
-            steps = uiModel.max - uiModel.min,
+            steps = uiModel.max - uiModel.min - 1,
             valueRange = uiModel.min.toFloat()..uiModel.max.toFloat(),
             onValueChange = { value = it },
             onValueChangeFinished = {

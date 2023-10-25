@@ -1,0 +1,34 @@
+package com.skgtecnologia.sisem.data.remote.model.components.body
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.ui.Modifier
+import com.skgtecnologia.sisem.data.remote.model.components.BodyRowResponse
+import com.skgtecnologia.sisem.data.remote.model.components.header.HeaderResponse
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+import com.valkiria.uicomponents.components.BodyRowType
+import com.valkiria.uicomponents.components.humanbody.HumanBodyUiModel
+
+@JsonClass(generateAdapter = true)
+data class HumanBodyResponse(
+    @Json(name = "identifier") val identifier: String?,
+    @Json(name = "header") val header: HeaderResponse?,
+    @Json(name = "wounds") val wounds: List<String>?,
+    @Json(name = "burning_level") val burningLevel: List<String>?,
+    @Json(name = "section") val section: String?,
+    @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
+    @Json(name = "margins") val modifier: Modifier?
+) : BodyRowResponse {
+
+    override val type: BodyRowType = BodyRowType.HUMAN_BODY
+
+    override fun mapToUi(): HumanBodyUiModel = HumanBodyUiModel(
+        identifier = identifier ?: error("HumanBody identifier cannot be null"),
+        header = header?.mapToUi() ?: error("HumanBody header cannot be null"),
+        wounds = wounds ?: error("HumanBody wounds cannot be null"),
+        burningLevel = burningLevel ?: error("HumanBody burningLevel cannot be null"),
+        section = section,
+        arrangement = arrangement ?: Arrangement.Center,
+        modifier = modifier ?: Modifier
+    )
+}
