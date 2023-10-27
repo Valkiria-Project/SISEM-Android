@@ -147,6 +147,8 @@ private fun handleAction(
     onNavigation: (route: AuthNavigationRoute) -> Unit
 ) {
     when (uiAction) {
+        is AuthCardsUiAction.AuthCard -> onNavigation(AuthNavigationRoute.LoginScreen)
+
         is AuthCardsUiAction.AuthCardNews ->
             viewModel.showReportBottomSheet(uiAction.reportUiDetail)
 
