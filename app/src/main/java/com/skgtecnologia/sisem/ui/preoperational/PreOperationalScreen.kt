@@ -89,7 +89,7 @@ private fun handleBodyAction(
 
         is GenericUiAction.InputAction -> viewModel.updateTextField(uiAction)
 
-        is GenericUiAction.InventoryAction -> {
+        is GenericUiAction.InventoryAction -> { // FIXME: Do the same as InputAction
             viewModel.inventoryValues[uiAction.identifier] = InputUiModel(
                 uiAction.identifier,
                 uiAction.updatedValue,
