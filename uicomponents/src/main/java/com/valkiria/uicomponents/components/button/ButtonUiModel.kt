@@ -8,7 +8,7 @@ import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.label.TextStyle
 
 data class ButtonUiModel(
-    val identifier: String,
+    override val identifier: String,
     val label: String,
     val leftIcon: String? = null,
     val style: ButtonStyle,

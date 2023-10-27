@@ -7,7 +7,7 @@ import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 
 data class FindingUiModel(
-    val identifier: String,
+    override val identifier: String,
     val segmentedSwitchUiModel: SegmentedSwitchUiModel,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier

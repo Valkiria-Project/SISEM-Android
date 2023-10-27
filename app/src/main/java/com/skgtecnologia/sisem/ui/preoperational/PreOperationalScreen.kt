@@ -87,13 +87,7 @@ private fun handleBodyAction(
             }
         }
 
-        is GenericUiAction.InputAction -> {
-            viewModel.fieldsValues[uiAction.identifier] = InputUiModel(
-                uiAction.identifier,
-                uiAction.updatedValue,
-                uiAction.fieldValidated
-            )
-        }
+        is GenericUiAction.InputAction -> viewModel.updateTextField(uiAction)
 
         is GenericUiAction.InventoryAction -> {
             viewModel.inventoryValues[uiAction.identifier] = InputUiModel(

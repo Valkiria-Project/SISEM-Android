@@ -7,7 +7,7 @@ import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.header.HeaderUiModel
 
 data class HumanBodyUiModel(
-    val identifier: String,
+    override val identifier: String,
     val header: HeaderUiModel,
     val wounds: List<String>,
     val burningLevel: List<String>,

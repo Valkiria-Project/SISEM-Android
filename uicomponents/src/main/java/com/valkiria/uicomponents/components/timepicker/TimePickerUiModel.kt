@@ -7,7 +7,7 @@ import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.label.TextUiModel
 
 data class TimePickerUiModel(
-    val identifier: String,
+    override val identifier: String,
     val title: TextUiModel,
     val hour: TextUiModel,
     val minute: TextUiModel,

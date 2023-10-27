@@ -8,7 +8,7 @@ import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.label.TextStyle
 
 data class PasswordTextFieldUiModel(
-    val identifier: String,
+    override val identifier: String,
     val icon: String? = null,
     val placeholder: String? = null,
     val label: String? = null,

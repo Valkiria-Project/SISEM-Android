@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -20,7 +21,6 @@ import com.valkiria.uicomponents.components.label.toTextStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.mocks.getLoginUserTextFieldUiModel
-import timber.log.Timber
 
 @Composable
 fun OutlinedTextFieldView(
@@ -29,15 +29,16 @@ fun OutlinedTextFieldView(
     onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
 ) {
     var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-        mutableStateOf(TextFieldValue(""))
+        mutableStateOf(TextFieldValue(uiModel.value))
     }
+
+    val inputError = remember {  text.toFailedValidation(uiModel.validations, validateFields) }
 
     OutlinedTextField(
         value = text,
         onValueChange = { updatedValue ->
             if (updatedValue.text.length <= uiModel.charLimit) {
                 text = updatedValue
-                Timber.d("Validacion: $text")
                 onAction(
                     uiModel.identifier,
                     updatedValue.text,
@@ -57,15 +58,15 @@ fun OutlinedTextFieldView(
             }
         },
         supportingText = {
-            if (validateFields) {
+            if (inputError != null) {
                 Text(
-                    text = text.toFailedValidation(uiModel.validations)?.message.orEmpty(),
+                    text = inputError.message,
                     modifier = Modifier.fillMaxWidth(),
                     color = MaterialTheme.colorScheme.error
                 )
             }
         },
-        isError = text.toFailedValidation(uiModel.validations, validateFields) != null,
+        isError = inputError != null,
         keyboardOptions = uiModel.keyboardOptions,
         singleLine = uiModel.singleLine,
         minLines = uiModel.minLines

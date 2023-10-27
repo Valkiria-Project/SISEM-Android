@@ -17,13 +17,14 @@ import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
+import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
+import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
 import com.valkiria.uicomponents.components.finding.FindingUiModel
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -31,6 +32,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltViewModel
 class PreOperationalViewModel @Inject constructor(
@@ -47,7 +49,7 @@ class PreOperationalViewModel @Inject constructor(
         private set
 
     var temporalFinding by mutableStateOf("")
-    var fieldsValues = mutableStateMapOf<String, InputUiModel>()
+    private var fieldsValues = mutableStateMapOf<String, InputUiModel>()
     var findingValues = mutableStateMapOf<String, Boolean>()
     var inventoryValues = mutableStateMapOf<String, InputUiModel>()
     var novelties = mutableStateListOf<Novelty>()
@@ -128,6 +130,32 @@ class PreOperationalViewModel @Inject constructor(
                 else -> Timber.d("no-op")
             }
         }
+    }
+
+    fun updateTextField(inputAction: GenericUiAction.InputAction) {
+        fieldsValues[inputAction.identifier] = InputUiModel(
+            inputAction.identifier,
+            inputAction.updatedValue,
+            inputAction.fieldValidated
+        )
+
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = inputAction.identifier,
+            updater = { model ->
+                if (model is TextFieldUiModel) {
+                    model.copy(value = inputAction.updatedValue)
+                } else {
+                    model
+                }
+            }
+        )
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
     }
 
     fun showFindingForm() {
