@@ -16,7 +16,6 @@ import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
-import com.valkiria.uicomponents.components.textfield.InputUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -87,15 +86,9 @@ private fun handleBodyAction(
             }
         }
 
-        is GenericUiAction.InputAction -> viewModel.updateTextField(uiAction)
+        is GenericUiAction.InputAction -> viewModel.updateInputState(uiAction)
 
-        is GenericUiAction.InventoryAction -> { // FIXME: Do the same as InputAction
-            viewModel.inventoryValues[uiAction.identifier] = InputUiModel(
-                uiAction.identifier,
-                uiAction.updatedValue,
-                uiAction.fieldValidated
-            )
-        }
+        is GenericUiAction.InventoryAction ->  viewModel.updateInventoryState(uiAction)
 
         else -> Timber.d("no-op")
     }

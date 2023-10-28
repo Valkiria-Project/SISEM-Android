@@ -32,7 +32,9 @@ fun OutlinedTextFieldView(
         mutableStateOf(TextFieldValue(uiModel.value))
     }
 
-    val inputError = remember {  text.toFailedValidation(uiModel.validations, validateFields) }
+    val inputError = remember(text, validateFields) {
+        text.toFailedValidation(uiModel.validations, validateFields)
+    }
 
     OutlinedTextField(
         value = text,

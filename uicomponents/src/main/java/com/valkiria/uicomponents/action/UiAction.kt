@@ -60,6 +60,7 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
 
     data class InventoryAction(
         override val identifier: String,
+        val itemIdentifier: String,
         val updatedValue: String,
         val fieldValidated: Boolean
     ) : GenericUiAction(identifier)

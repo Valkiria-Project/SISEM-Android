@@ -132,7 +132,7 @@ class PreOperationalViewModel @Inject constructor(
         }
     }
 
-    fun updateTextField(inputAction: GenericUiAction.InputAction) {
+    fun updateInputState(inputAction: GenericUiAction.InputAction) {
         fieldsValues[inputAction.identifier] = InputUiModel(
             inputAction.identifier,
             inputAction.updatedValue,
@@ -145,6 +145,40 @@ class PreOperationalViewModel @Inject constructor(
             updater = { model ->
                 if (model is TextFieldUiModel) {
                     model.copy(value = inputAction.updatedValue)
+                } else {
+                    model
+                }
+            }
+        )
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
+    fun updateInventoryState(inventoryAction: GenericUiAction.InventoryAction) {
+        inventoryValues[inventoryAction.itemIdentifier] = InputUiModel(
+            inventoryAction.itemIdentifier,
+            inventoryAction.updatedValue,
+            inventoryAction.fieldValidated
+        )
+
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = inventoryAction.identifier,
+            updater = { model ->
+                if (model is InventoryCheckUiModel) {
+                    model.copy(
+                        items = model.items.map {
+                            if (it.name.identifier == inventoryAction.itemIdentifier) {
+                                it.copy(receivedValueText = inventoryAction.updatedValue)
+                            } else {
+                                it
+                            }
+                        }
+                    )
                 } else {
                     model
                 }
