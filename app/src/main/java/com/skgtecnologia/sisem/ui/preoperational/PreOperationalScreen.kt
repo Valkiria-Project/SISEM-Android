@@ -77,18 +77,11 @@ private fun handleBodyAction(
     when (uiAction) {
         is GenericUiAction.ButtonAction -> viewModel.savePreOperational()
 
-        is GenericUiAction.FindingAction -> {
-            viewModel.findingValues[uiAction.identifier] = uiAction.status
+        is GenericUiAction.FindingAction -> viewModel.handleFindingAction(uiAction)
 
-            if (uiAction.status.not()) {
-                viewModel.temporalFinding = uiAction.identifier
-                viewModel.showFindingForm()
-            }
-        }
+        is GenericUiAction.InputAction -> viewModel.handleInputAction(uiAction)
 
-        is GenericUiAction.InputAction -> viewModel.updateInputState(uiAction)
-
-        is GenericUiAction.InventoryAction ->  viewModel.updateInventoryState(uiAction)
+        is GenericUiAction.InventoryAction -> viewModel.handleInventoryAction(uiAction)
 
         else -> Timber.d("no-op")
     }

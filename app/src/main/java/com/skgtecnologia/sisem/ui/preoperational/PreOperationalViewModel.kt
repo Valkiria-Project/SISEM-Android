@@ -132,7 +132,40 @@ class PreOperationalViewModel @Inject constructor(
         }
     }
 
-    fun updateInputState(inputAction: GenericUiAction.InputAction) {
+    fun handleFindingAction(findingAction: GenericUiAction.FindingAction) {
+        findingValues[findingAction.identifier] = findingAction.status
+
+        if (findingAction.status.not()) {
+            temporalFinding = findingAction.identifier
+            showFindingForm()
+        }
+    }
+
+    private fun showFindingForm() {
+        val updatedBody = uiState.screenModel?.body?.map {
+            if (it is FindingUiModel && it.segmentedSwitchUiModel.identifier == temporalFinding) {
+                val temporalFindingModel = it.copy(
+                    segmentedSwitchUiModel = it.segmentedSwitchUiModel.copy(selected = false)
+                )
+
+                temporalFindingModel
+            } else {
+                it
+            }
+        }.orEmpty()
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            ),
+            navigationModel = PreOpNavigationModel(
+                isNewFindingEvent = true,
+                findingId = temporalFinding
+            )
+        )
+    }
+
+    fun handleInputAction(inputAction: GenericUiAction.InputAction) {
         fieldsValues[inputAction.identifier] = InputUiModel(
             inputAction.identifier,
             inputAction.updatedValue,
@@ -158,7 +191,7 @@ class PreOperationalViewModel @Inject constructor(
         )
     }
 
-    fun updateInventoryState(inventoryAction: GenericUiAction.InventoryAction) {
+    fun handleInventoryAction(inventoryAction: GenericUiAction.InventoryAction) {
         inventoryValues[inventoryAction.itemIdentifier] = InputUiModel(
             inventoryAction.itemIdentifier,
             inventoryAction.updatedValue,
@@ -188,30 +221,6 @@ class PreOperationalViewModel @Inject constructor(
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(
                 body = updatedBody
-            )
-        )
-    }
-
-    fun showFindingForm() {
-        val updatedBody = uiState.screenModel?.body?.map {
-            if (it is FindingUiModel && it.segmentedSwitchUiModel.identifier == temporalFinding) {
-                val temporalFindingModel = it.copy(
-                    segmentedSwitchUiModel = it.segmentedSwitchUiModel.copy(selected = false)
-                )
-
-                temporalFindingModel
-            } else {
-                it
-            }
-        }.orEmpty()
-
-        uiState = uiState.copy(
-            screenModel = uiState.screenModel?.copy(
-                body = updatedBody
-            ),
-            navigationModel = PreOpNavigationModel(
-                isNewFindingEvent = true,
-                findingId = temporalFinding
             )
         )
     }
