@@ -48,10 +48,10 @@ class PreOperationalViewModel @Inject constructor(
     var uiState by mutableStateOf(PreOperationalUiState())
         private set
 
-    var temporalFinding by mutableStateOf("")
+    private var temporalFinding by mutableStateOf("")
     private var fieldsValues = mutableStateMapOf<String, InputUiModel>()
-    var findingValues = mutableStateMapOf<String, Boolean>()
-    var inventoryValues = mutableStateMapOf<String, InputUiModel>()
+    private var findingValues = mutableStateMapOf<String, Boolean>()
+    private var inventoryValues = mutableStateMapOf<String, InputUiModel>()
     var novelties = mutableStateListOf<Novelty>()
 
     init {
