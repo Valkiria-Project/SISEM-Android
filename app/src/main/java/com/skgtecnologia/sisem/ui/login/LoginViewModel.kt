@@ -153,8 +153,6 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun resetForm() {
-        username = ""
-        isValidUsername = false
         password = ""
         isValidPassword = false
     }
