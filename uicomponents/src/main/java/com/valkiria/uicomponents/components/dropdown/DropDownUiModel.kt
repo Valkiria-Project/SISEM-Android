@@ -10,7 +10,7 @@ data class DropDownUiModel(
     override val identifier: String,
     val label: String,
     val items: List<DropDownItemUiModel>,
-    val selected: String?,
+    val selected: String = "",
     val header: HeaderUiModel,
     val section: String?,
     val arrangement: Arrangement.Horizontal,

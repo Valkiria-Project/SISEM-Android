@@ -172,16 +172,14 @@ class MedicalHistoryViewModel @Inject constructor(
                     }
                 }
 
-                is DropDownUiModel -> bodyRowModel.selected?.let {
-                    bodyRowModel.items.find {
-                        it.id == bodyRowModel.selected
-                    }?.also {
-                        dropDownValues[bodyRowModel.identifier] = DropDownInputUiModel(
-                            bodyRowModel.identifier,
-                            it.id,
-                            it.name
-                        )
-                    }
+                is DropDownUiModel -> bodyRowModel.items.find {
+                    it.id == bodyRowModel.selected
+                }?.also {
+                    dropDownValues[bodyRowModel.identifier] = DropDownInputUiModel(
+                        bodyRowModel.identifier,
+                        it.id,
+                        it.name
+                    )
                 }
 
                 is ImageButtonSectionUiModel -> {
@@ -347,7 +345,23 @@ class MedicalHistoryViewModel @Inject constructor(
             dropDownAction.fieldValidated
         )
 
-        // TODO: Persist here
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = dropDownAction.identifier,
+            updater = { model ->
+                if (model is DropDownUiModel) {
+                    model.copy(selected = dropDownAction.name)
+                } else {
+                    model
+                }
+            }
+        )
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
     }
 
     fun handleHumanBodyAction(humanBodyAction: GenericUiAction.HumanBodyAction) {
