@@ -20,7 +20,7 @@ fun ChipSelectionComponent(
     uiModel: ChipSelectionUiModel,
     onAction: (id: String, selectionItem: ChipSelectionItemUiModel, isSelection: Boolean) -> Unit
 ) {
-    val selected = rememberSaveable { mutableStateOf("") }
+    val selected = rememberSaveable { mutableStateOf(uiModel.selected) }
 
     Column(
         modifier = uiModel.modifier.fillMaxWidth(),

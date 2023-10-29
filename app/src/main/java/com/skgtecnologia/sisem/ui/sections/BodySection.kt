@@ -188,12 +188,11 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is ChipOptionsUiModel -> item(key = model.identifier) {
-                ChipOptionsComponent(uiModel = model) { id, chipOptionItem, isSelection ->
+                ChipOptionsComponent(uiModel = model) { id, chipOptionItem ->
                     onAction(
                         GenericUiAction.ChipOptionAction(
                             identifier = id,
-                            chipOptionUiModel = chipOptionItem,
-                            status = isSelection
+                            chipOptionUiModel = chipOptionItem
                         )
                     )
                 }

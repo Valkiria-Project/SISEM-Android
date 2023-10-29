@@ -15,8 +15,7 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
 
     data class ChipOptionAction(
         override val identifier: String,
-        val chipOptionUiModel: ChipOptionUiModel,
-        val status: Boolean
+        val chipOptionUiModel: ChipOptionUiModel
     ) : GenericUiAction(identifier)
 
     data class ChipSelectionAction(
