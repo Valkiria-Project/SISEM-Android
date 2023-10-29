@@ -189,9 +189,8 @@ class MedicalHistoryViewModel @Inject constructor(
                 is SegmentedSwitchUiModel ->
                     segmentedValues[bodyRowModel.identifier] = bodyRowModel.selected
 
-                is SliderUiModel -> {
+                is SliderUiModel ->
                     sliderValues[bodyRowModel.identifier] = bodyRowModel.selected.toString()
-                }
 
                 is TextFieldUiModel ->
                     fieldsValues[bodyRowModel.identifier] = InputUiModel(bodyRowModel.identifier)
@@ -372,14 +371,28 @@ class MedicalHistoryViewModel @Inject constructor(
         } else {
             humanBodyValues.add(humanBodyAction.values)
         }
-
-        // TODO: Persist here
     }
 
     fun handleImageButtonAction(imageButtonAction: GenericUiAction.ImageButtonAction) {
         imageButtonSectionValues[imageButtonAction.identifier] = imageButtonAction.identifier
 
-        // TODO: Persist here
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = imageButtonAction.identifier,
+            updater = { model ->
+                if (model is ImageButtonSectionUiModel) {
+                    model.copy(selected = imageButtonAction.identifier)
+                } else {
+                    model
+                }
+            }
+        )
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
     }
 
     fun showVitalSignsForm(identifier: String) {

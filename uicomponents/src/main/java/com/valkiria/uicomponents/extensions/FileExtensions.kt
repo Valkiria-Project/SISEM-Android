@@ -21,9 +21,9 @@ import java.io.FileOutputStream
 
 const val CONTENT_URI_SCHEME = "content"
 const val BITMAP_COMPRESS_QUALITY = 80
-const val ONE_MB_IN_DECIMAL = 1_000_00L
-const val ONE_MB_IN_BINARY = 1_048_576L
-const val FALLBACK_MB_FILE_SIZE = 2_097_152L
+const val ONE_MB_DECIMAL = 1_000_00L
+const val ONE_MB_BINARY = 1_048_576L
+const val FALLBACK_MB_BINARY_FILE_SIZE = 2_097_152L
 
 fun Bitmap.encodeAsBase64(): String {
     val output = ByteArrayOutputStream()
@@ -72,9 +72,9 @@ private fun getImageAllowedSize(maxFileSizeKb: String?): Long {
     val fileSize = maxFileSizeKb.orEmpty().toLongOrNull()
 
     return if (fileSize != null) {
-        ONE_MB_IN_BINARY.times(fileSize / ONE_MB_IN_DECIMAL)
+        ONE_MB_BINARY.times(fileSize / ONE_MB_DECIMAL)
     } else {
-        FALLBACK_MB_FILE_SIZE
+        FALLBACK_MB_BINARY_FILE_SIZE
     }
 }
 

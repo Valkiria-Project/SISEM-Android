@@ -31,7 +31,6 @@ import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
 import com.skgtecnologia.sisem.ui.authcards.report.PagerIndicator
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.navigation.REPORT
-import com.skgtecnologia.sisem.ui.report.ReportUiState
 import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
@@ -166,7 +165,7 @@ fun ImagesConfirmationScreen(
     }
 
     OnBannerHandler(uiState.confirmInfoModel) {
-        handleAction(it, from, context, viewModel, uiState, coroutineScope)
+        handleAction(it, from, context, viewModel, coroutineScope)
     }
 
     OnBannerHandler(uiState.successInfoModel) {
@@ -180,13 +179,11 @@ fun ImagesConfirmationScreen(
     OnLoadingHandler(uiState.isLoading, modifier)
 }
 
-@Suppress("LongParameterList")
 private fun handleAction(
     uiAction: UiAction,
     from: String,
     context: Context,
     viewModel: ReportViewModel,
-    uiState: ReportUiState,
     coroutineScope: CoroutineScope
 ) {
     (uiAction as? FooterUiAction)?.let {
@@ -197,10 +194,10 @@ private fun handleAction(
             ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name -> {
                 coroutineScope.launch {
 
-                    val images = uiState.selectedImageUris.map { uri ->
+                    val images = viewModel.uiState.selectedImageUris.map { uri ->
                         context.storeUriAsFileToCache(
                             uri,
-                            uiState.operationModel?.maxFileSizeKb
+                            viewModel.uiState.operationModel?.maxFileSizeKb
                         )
                     }
 

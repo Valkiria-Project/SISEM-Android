@@ -24,7 +24,7 @@ fun ImageButtonSectionComponent(
     uiModel: ImageButtonSectionUiModel,
     onAction: (id: String) -> Unit
 ) {
-    var selected by rememberSaveable { mutableStateOf("") }
+    var selected by rememberSaveable { mutableStateOf(uiModel.selected) }
 
     Column(
         modifier = uiModel.modifier.fillMaxWidth(),
