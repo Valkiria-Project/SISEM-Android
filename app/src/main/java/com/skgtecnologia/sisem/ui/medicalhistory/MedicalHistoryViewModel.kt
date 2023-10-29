@@ -404,7 +404,23 @@ class MedicalHistoryViewModel @Inject constructor(
             updateFurAndGestationWeeks()
         }
 
-        // TODO: Persist here
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = inputAction.identifier,
+            updater = { model ->
+                if (model is TextFieldUiModel) {
+                    model.copy(value = inputAction.updatedValue)
+                } else {
+                    model
+                }
+            }
+        )
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
     }
 
     private fun updateFurAndGestationWeeks() {
