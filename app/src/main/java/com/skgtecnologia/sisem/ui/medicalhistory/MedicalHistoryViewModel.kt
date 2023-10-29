@@ -464,7 +464,23 @@ class MedicalHistoryViewModel @Inject constructor(
     fun handleSliderAction(sliderAction: GenericUiAction.SliderAction) {
         sliderValues[sliderAction.identifier] = sliderAction.value.toString()
 
-        // TODO: Persist here
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = sliderAction.identifier,
+            updater = { model ->
+                if (model is SliderUiModel) {
+                    model.copy(selected = sliderAction.value)
+                } else {
+                    model
+                }
+            }
+        )
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
     }
 
     fun updateVitalSignsInfoCard(values: Map<String, String>) {
