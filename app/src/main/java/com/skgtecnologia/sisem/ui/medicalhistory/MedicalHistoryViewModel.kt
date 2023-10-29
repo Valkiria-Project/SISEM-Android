@@ -376,6 +376,7 @@ class MedicalHistoryViewModel @Inject constructor(
     fun handleImageButtonAction(imageButtonAction: GenericUiAction.ImageButtonAction) {
         imageButtonSectionValues[imageButtonAction.identifier] = imageButtonAction.itemIdentifier
 
+        // FIXME: Not working
         val updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
             identifier = imageButtonAction.identifier,
