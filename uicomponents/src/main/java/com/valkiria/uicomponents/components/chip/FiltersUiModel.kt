@@ -6,7 +6,7 @@ import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.label.TextStyle
 
 data class FiltersUiModel(
-    val identifier: String,
+    override val identifier: String,
     val options: List<String>,
     val textStyle: TextStyle,
     val modifier: Modifier = Modifier

@@ -8,7 +8,7 @@ import com.valkiria.uicomponents.components.BodyRowType
 private const val DEFAULT_TEXT_COLOR = "#FFFFFF"
 
 data class LabelUiModel(
-    val identifier: String,
+    override val identifier: String,
     val text: String,
     val textStyle: TextStyle,
     val textColor: String = DEFAULT_TEXT_COLOR,

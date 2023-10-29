@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.skgtecnologia.sisem.domain.medicalhistory.model.FUR_KEY
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.GenericUiAction
@@ -12,8 +11,6 @@ import com.valkiria.uicomponents.action.GenericUiAction.StepperAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
-import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
-import com.valkiria.uicomponents.components.textfield.InputUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -74,77 +71,27 @@ fun handleAction(
     viewModel: MedicalHistoryViewModel
 ) {
     when (uiAction) {
-        is GenericUiAction.ChipOptionAction -> {
-            val chipOption = viewModel.chipOptionValues[uiAction.identifier]
+        is GenericUiAction.ChipOptionAction -> viewModel.handleChipOptionAction(uiAction)
 
-            when {
-                chipOption != null && chipOption.contains(uiAction.chipOptionUiModel.id) -> {
-                    chipOption.remove(uiAction.chipOptionUiModel.id)
+        is GenericUiAction.ChipSelectionAction -> viewModel.handleChipSelectionAction(uiAction)
 
-                    if (chipOption.isEmpty()) viewModel.chipOptionValues.remove(uiAction.identifier)
-                }
+        is GenericUiAction.DropDownAction -> viewModel.handleDropDownAction(uiAction)
 
-                chipOption != null && chipOption.contains(uiAction.chipOptionUiModel.id).not() -> {
-                    chipOption.add(uiAction.chipOptionUiModel.id)
-                }
+        is GenericUiAction.HumanBodyAction -> viewModel.handleHumanBodyAction(uiAction)
 
-                else -> viewModel.chipOptionValues[uiAction.identifier] =
-                    mutableListOf(uiAction.chipOptionUiModel.id)
-            }
-        }
-
-        is GenericUiAction.ChipSelectionAction -> {
-            viewModel.chipSelectionValues[uiAction.identifier] = uiAction.chipSelectionItemUiModel
-
-            if (viewModel.glasgowIdentifier.contains(uiAction.identifier)) {
-                viewModel.updateGlasgow()
-            }
-        }
-
-        is GenericUiAction.DropDownAction ->
-            viewModel.dropDownValues[uiAction.identifier] = DropDownInputUiModel(
-                uiAction.identifier,
-                uiAction.id,
-                uiAction.name,
-                uiAction.fieldValidated
-            )
-
-        is GenericUiAction.HumanBodyAction -> {
-            val humanBody = viewModel.humanBodyValues.find { it.area == uiAction.values.area }
-
-            if (humanBody != null) {
-                viewModel.humanBodyValues.remove(humanBody)
-            } else {
-                viewModel.humanBodyValues.add(uiAction.values)
-            }
-        }
-
-        is GenericUiAction.ImageButtonAction ->
-            viewModel.imageButtonSectionValues[uiAction.identifier] = uiAction.identifier
+        is GenericUiAction.ImageButtonAction -> viewModel.handleImageButtonAction(uiAction)
 
         is GenericUiAction.InfoCardAction -> viewModel.showVitalSignsForm(uiAction.identifier)
 
-        is GenericUiAction.InputAction -> {
-            viewModel.fieldsValues[uiAction.identifier] = InputUiModel(
-                uiAction.identifier,
-                uiAction.updatedValue,
-                uiAction.fieldValidated
-            )
-
-            if (uiAction.identifier == FUR_KEY) {
-                viewModel.updateFurAndGestationWeeks()
-            }
-        }
+        is GenericUiAction.InputAction -> viewModel.handleInputAction(uiAction)
 
         is GenericUiAction.MedsSelectorAction -> viewModel.showMedicineForm(uiAction.identifier)
 
-        is GenericUiAction.SegmentedSwitchAction ->
-            viewModel.segmentedValues[uiAction.identifier] = uiAction.status
+        is GenericUiAction.SegmentedSwitchAction -> viewModel.handleSegmentedSwitchAction(uiAction)
 
         is GenericUiAction.SignatureAction -> viewModel.showSignaturePad(uiAction.identifier)
 
-        is GenericUiAction.SliderAction ->
-            viewModel.sliderValues[uiAction.identifier] = uiAction.value.toString()
+        is GenericUiAction.SliderAction -> viewModel.handleSliderAction(uiAction)
 
         is StepperAction -> viewModel.sendMedicalHistory()
 

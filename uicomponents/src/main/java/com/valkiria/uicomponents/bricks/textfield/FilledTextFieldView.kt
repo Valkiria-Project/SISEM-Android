@@ -11,6 +11,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -32,6 +33,10 @@ fun FilledTextFieldView(
 ) {
     var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(""))
+    }
+
+    val inputError = remember(text, validateFields) {
+        text.toFailedValidation(uiModel.validations, validateFields)
     }
 
     TextField(
@@ -58,15 +63,15 @@ fun FilledTextFieldView(
             }
         },
         supportingText = {
-            if (validateFields) {
+            if (inputError != null) {
                 Text(
-                    text = text.toFailedValidation(uiModel.validations)?.message.orEmpty(),
+                    text = inputError.message,
                     modifier = Modifier.fillMaxWidth(),
                     color = MaterialTheme.colorScheme.error
                 )
             }
         },
-        isError = text.toFailedValidation(uiModel.validations, validateFields) != null,
+        isError = inputError != null,
         keyboardOptions = uiModel.keyboardOptions,
         singleLine = uiModel.singleLine,
         minLines = uiModel.minLines,

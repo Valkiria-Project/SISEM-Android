@@ -8,7 +8,7 @@ import com.valkiria.uicomponents.components.label.TextUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 
 data class InventoryCheckUiModel(
-    val identifier: String,
+    override val identifier: String,
     val registered: TextUiModel,
     val received: TextUiModel,
     val items: List<InventoryCheckItemUiModel>,

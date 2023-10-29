@@ -22,7 +22,7 @@ import timber.log.Timber
 @Composable
 fun ChipOptionsComponent(
     uiModel: ChipOptionsUiModel,
-    onAction: (id: String, option: ChipOptionUiModel, isSelection: Boolean) -> Unit
+    onAction: (id: String, option: ChipOptionUiModel) -> Unit
 ) {
     Column(
         modifier = uiModel.modifier.fillMaxWidth(),
@@ -47,11 +47,12 @@ fun ChipOptionsComponent(
         ) {
             uiModel.items.forEach { chipOption ->
                 OptionChipView(
-                    id = chipOption.id,
                     text = chipOption.name,
+                    isSelected = chipOption.selected,
                     textStyle = TextStyle.BUTTON_1,
-                    onAction = { id, isSelection ->
-                        onAction(id, chipOption, isSelection)
+                    onAction = { isSelection ->
+                        val updatedChipOption = chipOption.copy(selected = isSelection)
+                        onAction(uiModel.identifier, updatedChipOption)
                     }
                 )
             }
@@ -69,8 +70,8 @@ fun ChipOptionsComponentPreview() {
     ) {
         ChipOptionsComponent(
             uiModel = getPreOperationalChipOptionsUiModel()
-        ) { _, selected, isSelection ->
-            Timber.d("Selected $selected and is $isSelection")
+        ) { _, chipOptionUiModel ->
+            Timber.d("Selected ${chipOptionUiModel.name} and is ${chipOptionUiModel.selected}")
         }
     }
 }

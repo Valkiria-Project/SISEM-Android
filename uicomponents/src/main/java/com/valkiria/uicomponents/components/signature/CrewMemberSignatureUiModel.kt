@@ -7,7 +7,7 @@ import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.label.TextUiModel
 
 data class CrewMemberSignatureUiModel(
-    val identifier: String,
+    override val identifier: String,
     val name: TextUiModel,
     val identification: TextUiModel,
     val signature: String,

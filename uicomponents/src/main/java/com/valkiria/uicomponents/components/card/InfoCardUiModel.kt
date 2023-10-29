@@ -2,14 +2,14 @@ package com.valkiria.uicomponents.components.card
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
+import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel
+import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.label.TextUiModel
-import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
-import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel
 
 data class InfoCardUiModel(
-    val identifier: String,
+    override val identifier: String,
     val icon: String,
     val title: TextUiModel,
     val pill: PillUiModel,

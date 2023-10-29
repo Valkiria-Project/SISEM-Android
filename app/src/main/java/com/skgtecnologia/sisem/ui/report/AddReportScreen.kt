@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.ui.report
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -33,8 +34,9 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
-import kotlin.random.Random
 import kotlinx.coroutines.launch
+import timber.log.Timber
+import kotlin.random.Random
 
 private const val DESCRIPTION_INPUT_MIN_LINES = 3
 
@@ -48,6 +50,11 @@ fun AddReportScreen(
     val addReportViewModel = hiltViewModel<AddReportViewModel>()
     val uiState = viewModel.uiState
     val addReportUiState = addReportViewModel.uiState
+
+    BackHandler {
+        Timber.d("Navigate back")
+        viewModel.navigateBackFromReport()
+    }
 
     LaunchedEffect(uiState) {
         launch {

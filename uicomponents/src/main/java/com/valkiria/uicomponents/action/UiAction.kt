@@ -15,8 +15,7 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
 
     data class ChipOptionAction(
         override val identifier: String,
-        val chipOptionUiModel: ChipOptionUiModel,
-        val status: Boolean
+        val chipOptionUiModel: ChipOptionUiModel
     ) : GenericUiAction(identifier)
 
     data class ChipSelectionAction(
@@ -45,7 +44,8 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
     ) : GenericUiAction(identifier)
 
     data class ImageButtonAction(
-        override val identifier: String
+        override val identifier: String,
+        val itemIdentifier: String
     ) : GenericUiAction(identifier)
 
     data class InfoCardAction(
@@ -60,6 +60,7 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
 
     data class InventoryAction(
         override val identifier: String,
+        val itemIdentifier: String,
         val updatedValue: String,
         val fieldValidated: Boolean
     ) : GenericUiAction(identifier)

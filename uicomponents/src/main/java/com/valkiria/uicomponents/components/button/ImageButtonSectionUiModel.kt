@@ -6,8 +6,9 @@ import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.BodyRowType
 
 data class ImageButtonSectionUiModel(
-    val identifier: String,
+    override val identifier: String,
     val options: List<ImageButtonOptionUiModel>,
+    val selected: String? = null,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier
 ) : BodyRowModel {

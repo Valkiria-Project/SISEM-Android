@@ -7,7 +7,7 @@ import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.label.TextUiModel
 
 data class HeaderUiModel(
-    val identifier: String,
+    override val identifier: String,
     val title: TextUiModel,
     val subtitle: TextUiModel? = null,
     val leftIcon: String? = null,

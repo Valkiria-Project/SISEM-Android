@@ -8,7 +8,7 @@ import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
 
 data class MedsSelectorUiModel(
-    val identifier: String,
+    override val identifier: String,
     val button: ButtonUiModel,
     val medicines: List<InfoCardUiModel>,
     val section: String?,

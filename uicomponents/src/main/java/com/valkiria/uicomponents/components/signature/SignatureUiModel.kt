@@ -7,7 +7,7 @@ import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.label.TextUiModel
 
 data class SignatureUiModel(
-    val identifier: String,
+    override val identifier: String,
     val signatureLabel: TextUiModel,
     val signatureButton: ButtonUiModel,
     val signature: String? = null,

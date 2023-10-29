@@ -17,13 +17,14 @@ import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
+import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
+import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
 import com.valkiria.uicomponents.components.finding.FindingUiModel
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -31,7 +32,9 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 @HiltViewModel
 class PreOperationalViewModel @Inject constructor(
     private val androidIdProvider: AndroidIdProvider,
@@ -46,10 +49,11 @@ class PreOperationalViewModel @Inject constructor(
     var uiState by mutableStateOf(PreOperationalUiState())
         private set
 
-    var temporalFinding by mutableStateOf("")
-    var fieldsValues = mutableStateMapOf<String, InputUiModel>()
-    var findingValues = mutableStateMapOf<String, Boolean>()
-    var inventoryValues = mutableStateMapOf<String, InputUiModel>()
+    private var temporalFinding by mutableStateOf("")
+
+    private var findingValues = mutableStateMapOf<String, Boolean>()
+    private var fieldsValues = mutableStateMapOf<String, InputUiModel>()
+    private var inventoryValues = mutableStateMapOf<String, InputUiModel>()
     var novelties = mutableStateListOf<Novelty>()
 
     init {
@@ -130,7 +134,16 @@ class PreOperationalViewModel @Inject constructor(
         }
     }
 
-    fun showFindingForm() {
+    fun handleFindingAction(findingAction: GenericUiAction.FindingAction) {
+        findingValues[findingAction.identifier] = findingAction.status
+
+        if (findingAction.status.not()) {
+            temporalFinding = findingAction.identifier
+            showFindingForm()
+        }
+    }
+
+    private fun showFindingForm() {
         val updatedBody = uiState.screenModel?.body?.map {
             if (it is FindingUiModel && it.segmentedSwitchUiModel.identifier == temporalFinding) {
                 val temporalFindingModel = it.copy(
@@ -150,6 +163,66 @@ class PreOperationalViewModel @Inject constructor(
             navigationModel = PreOpNavigationModel(
                 isNewFindingEvent = true,
                 findingId = temporalFinding
+            )
+        )
+    }
+
+    fun handleInputAction(inputAction: GenericUiAction.InputAction) {
+        fieldsValues[inputAction.identifier] = InputUiModel(
+            inputAction.identifier,
+            inputAction.updatedValue,
+            inputAction.fieldValidated
+        )
+
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = inputAction.identifier,
+            updater = { model ->
+                if (model is TextFieldUiModel) {
+                    model.copy(value = inputAction.updatedValue)
+                } else {
+                    model
+                }
+            }
+        )
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
+    fun handleInventoryAction(inventoryAction: GenericUiAction.InventoryAction) {
+        inventoryValues[inventoryAction.itemIdentifier] = InputUiModel(
+            inventoryAction.itemIdentifier,
+            inventoryAction.updatedValue,
+            inventoryAction.fieldValidated
+        )
+
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = inventoryAction.identifier,
+            updater = { model ->
+                if (model is InventoryCheckUiModel) {
+                    model.copy(
+                        items = model.items.map {
+                            if (it.name.identifier == inventoryAction.itemIdentifier) {
+                                it.copy(receivedValueText = inventoryAction.updatedValue)
+                            } else {
+                                it
+                            }
+                        }
+                    )
+                } else {
+                    model
+                }
+            }
+        )
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
             )
         )
     }

@@ -7,7 +7,7 @@ import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.label.TextStyle
 
 data class DetailedInfoListUiModel(
-    val identifier: String,
+    override val identifier: String,
     val details: List<DetailedInfoUiModel>,
     val labelTextStyle: TextStyle,
     val textTextStyle: TextStyle,

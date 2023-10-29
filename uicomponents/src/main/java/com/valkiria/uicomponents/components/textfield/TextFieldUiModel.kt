@@ -8,7 +8,7 @@ import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.label.TextStyle
 
 data class TextFieldUiModel(
-    val identifier: String,
+    override val identifier: String,
     val icon: String? = null,
     val placeholder: String? = null,
     val label: String? = null,
@@ -19,6 +19,7 @@ data class TextFieldUiModel(
     val validations: List<ValidationUiModel>,
     val singleLine: Boolean = true,
     val minLines: Int = 1,
+    val value: String = "",
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {

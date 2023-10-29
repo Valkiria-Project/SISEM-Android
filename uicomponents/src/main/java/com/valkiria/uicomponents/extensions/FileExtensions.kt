@@ -21,7 +21,9 @@ import java.io.FileOutputStream
 
 const val CONTENT_URI_SCHEME = "content"
 const val BITMAP_COMPRESS_QUALITY = 80
-const val MB_FILE_SIZE = 2_097_152L
+const val ONE_MB_DECIMAL = 1_000_00L
+const val ONE_MB_BINARY = 1_048_576L
+const val FALLBACK_MB_BINARY_FILE_SIZE = 2_097_152L
 
 fun Bitmap.encodeAsBase64(): String {
     val output = ByteArrayOutputStream()
@@ -41,7 +43,7 @@ fun Uri.decodeAsBitmap(contentResolver: ContentResolver): Bitmap {
     return ImageDecoder.decodeBitmap(source)
 }
 
-suspend fun Context.storeUriAsFileToCache(uri: Uri): File {
+suspend fun Context.storeUriAsFileToCache(uri: Uri, maxFileSizeKb: String?): File {
     val fileContents = try {
         contentResolver.openInputStream(uri)
     } catch (e: FileNotFoundException) {
@@ -62,7 +64,17 @@ suspend fun Context.storeUriAsFileToCache(uri: Uri): File {
     }
 
     return Compressor.compress(context = this, imageFile = file) {
-        size(MB_FILE_SIZE)
+        size(getImageAllowedSize(maxFileSizeKb))
+    }
+}
+
+private fun getImageAllowedSize(maxFileSizeKb: String?): Long {
+    val fileSize = maxFileSizeKb.orEmpty().toLongOrNull()
+
+    return if (fileSize != null) {
+        ONE_MB_BINARY.times(fileSize / ONE_MB_DECIMAL)
+    } else {
+        FALLBACK_MB_BINARY_FILE_SIZE
     }
 }
 

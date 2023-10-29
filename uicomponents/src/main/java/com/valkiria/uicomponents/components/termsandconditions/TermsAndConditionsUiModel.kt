@@ -6,7 +6,7 @@ import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.BodyRowType
 
 data class TermsAndConditionsUiModel(
-    val identifier: String?,
+    override val identifier: String = "T&C",
     val links: List<Link> = emptyList(),
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier

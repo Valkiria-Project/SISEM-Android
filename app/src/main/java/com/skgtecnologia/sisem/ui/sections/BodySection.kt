@@ -188,12 +188,11 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is ChipOptionsUiModel -> item(key = model.identifier) {
-                ChipOptionsComponent(uiModel = model) { id, chipOptionItem, isSelection ->
+                ChipOptionsComponent(uiModel = model) { id, chipOptionItem ->
                     onAction(
                         GenericUiAction.ChipOptionAction(
                             identifier = id,
-                            chipOptionUiModel = chipOptionItem,
-                            status = isSelection
+                            chipOptionUiModel = chipOptionItem
                         )
                     )
                 }
@@ -215,6 +214,10 @@ private fun LazyListScope.handleBodyRows(
                 CrewMemberSignatureComponent(uiModel = model)
             }
 
+            is DetailedInfoListUiModel -> item(key = model.identifier) {
+                DetailedInfoListComponent(uiModel = model)
+            }
+
             is DropDownUiModel -> item(key = model.identifier) {
                 DropDownComponent(model, validateFields) { dropDownInputUiModel ->
                     onAction(
@@ -226,26 +229,6 @@ private fun LazyListScope.handleBodyRows(
                         )
                     )
                 }
-            }
-
-            is HumanBodyUiModel -> item(key = model.identifier) {
-                HumanBodyComponent(model) { values ->
-                    onAction(GenericUiAction.HumanBodyAction(model.identifier, values))
-                }
-            }
-
-            is ImageButtonSectionUiModel -> item(key = model.identifier) {
-                ImageButtonSectionComponent(model) { id ->
-                    onAction(GenericUiAction.ImageButtonAction(identifier = id))
-                }
-            }
-
-            is InfoCardUiModel -> item(key = model.identifier) {
-                HandleInfoCardRows(model, onAction)
-            }
-
-            is DetailedInfoListUiModel -> item(key = model.identifier) {
-                DetailedInfoListComponent(uiModel = model)
             }
 
             is FiltersUiModel -> stickyHeader(key = model.identifier) {
@@ -290,6 +273,27 @@ private fun LazyListScope.handleBodyRows(
                 )
             }
 
+            is HumanBodyUiModel -> item(key = model.identifier) {
+                HumanBodyComponent(model) { values ->
+                    onAction(GenericUiAction.HumanBodyAction(model.identifier, values))
+                }
+            }
+
+            is ImageButtonSectionUiModel -> item(key = model.identifier) {
+                ImageButtonSectionComponent(model) { id, itemId ->
+                    onAction(
+                        GenericUiAction.ImageButtonAction(
+                            identifier = id,
+                            itemIdentifier = itemId
+                        )
+                    )
+                }
+            }
+
+            is InfoCardUiModel -> item(key = model.identifier) {
+                HandleInfoCardRows(model, onAction)
+            }
+
             is InventoryCheckUiModel -> item(key = model.identifier) {
                 InventoryCheckComponent(
                     uiModel = model,
@@ -297,7 +301,8 @@ private fun LazyListScope.handleBodyRows(
                 ) { inputUiModel ->
                     onAction(
                         GenericUiAction.InventoryAction(
-                            identifier = inputUiModel.identifier,
+                            identifier = model.identifier,
+                            itemIdentifier = inputUiModel.identifier,
                             updatedValue = inputUiModel.updatedValue,
                             fieldValidated = inputUiModel.fieldValidated
                         )

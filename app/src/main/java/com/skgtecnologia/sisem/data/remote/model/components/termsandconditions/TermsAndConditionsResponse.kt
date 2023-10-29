@@ -18,7 +18,6 @@ data class TermsAndConditionsResponse(
     override val type: BodyRowType = BodyRowType.TERMS_AND_CONDITIONS
 
     override fun mapToUi(): TermsAndConditionsUiModel = TermsAndConditionsUiModel(
-        identifier = identifier,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

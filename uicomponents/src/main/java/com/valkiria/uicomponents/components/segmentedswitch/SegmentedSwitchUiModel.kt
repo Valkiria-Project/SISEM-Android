@@ -7,7 +7,7 @@ import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.label.TextStyle
 
 data class SegmentedSwitchUiModel(
-    val identifier: String,
+    override val identifier: String,
     val text: String,
     val textStyle: TextStyle,
     val options: List<OptionUiModel>,

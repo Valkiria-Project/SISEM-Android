@@ -19,19 +19,19 @@ import com.valkiria.uicomponents.components.label.toTextStyle
 
 @Composable
 fun OptionChipView(
-    id: String,
     text: String,
+    isSelected: Boolean,
     textStyle: TextStyle,
     modifier: Modifier = Modifier,
-    onAction: (id: String, isSelection: Boolean) -> Unit
+    onAction: (isSelection: Boolean) -> Unit
 ) {
-    var selected by rememberSaveable { mutableStateOf(false) }
+    var selected by rememberSaveable { mutableStateOf(isSelected) }
 
     FilterChip(
         selected = selected,
         onClick = {
             selected = !selected
-            onAction(id, selected)
+            onAction(selected)
         },
         label = {
             Text(
