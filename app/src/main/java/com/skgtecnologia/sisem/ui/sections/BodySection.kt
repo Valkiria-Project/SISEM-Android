@@ -280,8 +280,13 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is ImageButtonSectionUiModel -> item(key = model.identifier) {
-                ImageButtonSectionComponent(model) { id ->
-                    onAction(GenericUiAction.ImageButtonAction(identifier = id))
+                ImageButtonSectionComponent(model) { id, itemId ->
+                    onAction(
+                        GenericUiAction.ImageButtonAction(
+                            identifier = id,
+                            itemIdentifier = itemId
+                        )
+                    )
                 }
             }
 

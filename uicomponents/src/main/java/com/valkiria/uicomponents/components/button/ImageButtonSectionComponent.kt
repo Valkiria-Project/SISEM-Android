@@ -22,7 +22,7 @@ import com.valkiria.uicomponents.components.label.toTextStyle
 @Composable
 fun ImageButtonSectionComponent(
     uiModel: ImageButtonSectionUiModel,
-    onAction: (id: String) -> Unit
+    onAction: (id: String, itemId: String) -> Unit
 ) {
     var selected by rememberSaveable { mutableStateOf(uiModel.selected) }
 
@@ -44,7 +44,7 @@ fun ImageButtonSectionComponent(
                 uiModel = option,
                 onAction = { id ->
                     selected = id
-                    onAction(id)
+                    onAction(uiModel.identifier, id)
                 }
             )
         }
@@ -62,7 +62,9 @@ private fun ImageButtonOptionView(
         verticalAlignment = Alignment.CenterVertically
     ) {
         uiModel.options.forEach { option ->
-            ImageButtonView(uiModel = option, onAction = onAction)
+            ImageButtonView(uiModel = option) { id ->
+                onAction(id)
+            }
         }
 
         Text(
@@ -101,5 +103,5 @@ fun ImageButtonSectionComponentPreview() {
         arrangement = Arrangement.Center,
         modifier = Modifier
     )
-    ImageButtonSectionComponent(uiModel = uiModel) { }
+    ImageButtonSectionComponent(uiModel = uiModel) { _, _ -> }
 }

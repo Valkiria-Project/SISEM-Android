@@ -44,7 +44,8 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
     ) : GenericUiAction(identifier)
 
     data class ImageButtonAction(
-        override val identifier: String
+        override val identifier: String,
+        val itemIdentifier: String
     ) : GenericUiAction(identifier)
 
     data class InfoCardAction(

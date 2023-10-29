@@ -374,14 +374,25 @@ class MedicalHistoryViewModel @Inject constructor(
     }
 
     fun handleImageButtonAction(imageButtonAction: GenericUiAction.ImageButtonAction) {
-        imageButtonSectionValues[imageButtonAction.identifier] = imageButtonAction.identifier
+        imageButtonSectionValues[imageButtonAction.identifier] = imageButtonAction.itemIdentifier
 
         val updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
             identifier = imageButtonAction.identifier,
             updater = { model ->
                 if (model is ImageButtonSectionUiModel) {
-                    model.copy(selected = imageButtonAction.identifier)
+                    model.copy(
+                        options = model.options.map {
+                            it.copy(
+                                options = it.options.map { imageButtonUiModel ->
+                                    imageButtonUiModel.copy(
+                                        selected = imageButtonUiModel.identifier ==
+                                            imageButtonAction.itemIdentifier
+                                    )
+                                }
+                            )
+                        }
+                    )
                 } else {
                     model
                 }
