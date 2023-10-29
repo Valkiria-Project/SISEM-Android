@@ -19,7 +19,6 @@ import com.valkiria.uicomponents.components.label.toTextStyle
 
 @Composable
 fun OptionChipView(
-    id: String,
     text: String,
     isSelected: Boolean,
     textStyle: TextStyle,

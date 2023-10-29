@@ -47,7 +47,6 @@ fun ChipOptionsComponent(
         ) {
             uiModel.items.forEach { chipOption ->
                 OptionChipView(
-                    id = chipOption.id,
                     text = chipOption.name,
                     isSelected = chipOption.selected,
                     textStyle = TextStyle.BUTTON_1,
