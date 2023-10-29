@@ -442,7 +442,23 @@ class MedicalHistoryViewModel @Inject constructor(
     fun handleSegmentedSwitchAction(segmentedSwitchAction: GenericUiAction.SegmentedSwitchAction) {
         segmentedValues[segmentedSwitchAction.identifier] = segmentedSwitchAction.status
 
-        // TODO: Persist here
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = segmentedSwitchAction.identifier,
+            updater = { model ->
+                if (model is SegmentedSwitchUiModel) {
+                    model.copy(selected = segmentedSwitchAction.status)
+                } else {
+                    model
+                }
+            }
+        )
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
     }
 
     fun handleSliderAction(sliderAction: GenericUiAction.SliderAction) {
