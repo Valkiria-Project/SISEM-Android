@@ -21,7 +21,7 @@ data class OperationEntity(
     @ColumnInfo(name = "status") val status: Boolean,
     @ColumnInfo(name = "vehicle_code") val vehicleCode: String?,
     @Embedded(prefix = "vehicle_config_") val vehicleConfig: VehicleConfigEntity?,
-    @ColumnInfo(name = "maxFileSizeKb") val maxFileSizeKb: String
+    @ColumnInfo(name = "max_file_sizeKb") val maxFileSizeKb: String
 )
 
 fun OperationEntity.mapToDomain(): OperationModel {
