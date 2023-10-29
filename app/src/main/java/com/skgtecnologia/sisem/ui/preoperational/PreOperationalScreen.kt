@@ -16,7 +16,6 @@ import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
-import com.valkiria.uicomponents.components.textfield.InputUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -78,30 +77,11 @@ private fun handleBodyAction(
     when (uiAction) {
         is GenericUiAction.ButtonAction -> viewModel.savePreOperational()
 
-        is GenericUiAction.FindingAction -> {
-            viewModel.findingValues[uiAction.identifier] = uiAction.status
+        is GenericUiAction.FindingAction -> viewModel.handleFindingAction(uiAction)
 
-            if (uiAction.status.not()) {
-                viewModel.temporalFinding = uiAction.identifier
-                viewModel.showFindingForm()
-            }
-        }
+        is GenericUiAction.InputAction -> viewModel.handleInputAction(uiAction)
 
-        is GenericUiAction.InputAction -> {
-            viewModel.fieldsValues[uiAction.identifier] = InputUiModel(
-                uiAction.identifier,
-                uiAction.updatedValue,
-                uiAction.fieldValidated
-            )
-        }
-
-        is GenericUiAction.InventoryAction -> {
-            viewModel.inventoryValues[uiAction.identifier] = InputUiModel(
-                uiAction.identifier,
-                uiAction.updatedValue,
-                uiAction.fieldValidated
-            )
-        }
+        is GenericUiAction.InventoryAction -> viewModel.handleInventoryAction(uiAction)
 
         else -> Timber.d("no-op")
     }

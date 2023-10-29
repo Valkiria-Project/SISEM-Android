@@ -41,6 +41,8 @@ import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryS
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SendMedicalHistory
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
+import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.components.button.ImageButtonSectionUiModel
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
@@ -106,17 +108,18 @@ class MedicalHistoryViewModel @Inject constructor(
     var temporalInfoCard by mutableStateOf("")
     var temporalMedsSelector by mutableStateOf("")
     var temporalSignature by mutableStateOf("")
-    var humanBodyValues = mutableStateListOf<HumanBodyUi>()
-    var segmentedValues = mutableStateMapOf<String, Boolean>()
-    var signatureValues = mutableStateMapOf<String, String>()
-    var fieldsValues = mutableStateMapOf<String, InputUiModel>()
-    var sliderValues = mutableStateMapOf<String, String>()
-    var dropDownValues = mutableStateMapOf<String, DropDownInputUiModel>()
-    var chipSelectionValues = mutableStateMapOf<String, ChipSelectionItemUiModel>()
-    var chipOptionValues = mutableStateMapOf<String, MutableList<String>>()
-    var imageButtonSectionValues = mutableStateMapOf<String, String>()
+
+    private var chipOptionValues = mutableStateMapOf<String, MutableList<String>>()
+    private var chipSelectionValues = mutableStateMapOf<String, ChipSelectionItemUiModel>()
+    private var dropDownValues = mutableStateMapOf<String, DropDownInputUiModel>()
+    private var fieldsValues = mutableStateMapOf<String, InputUiModel>()
+    private var humanBodyValues = mutableStateListOf<HumanBodyUi>()
+    private var imageButtonSectionValues = mutableStateMapOf<String, String>()
+    private var medicineValues = mutableListOf<Map<String, String>>()
+    private var segmentedValues = mutableStateMapOf<String, Boolean>()
+    private var signatureValues = mutableStateMapOf<String, String>()
+    private var sliderValues = mutableStateMapOf<String, String>()
     var vitalSignsValues = mutableStateMapOf<String, Map<String, String>>()
-    var medicineValues = mutableListOf<Map<String, String>>()
 
     init {
         uiState = uiState.copy(isLoading = true)
@@ -169,16 +172,14 @@ class MedicalHistoryViewModel @Inject constructor(
                     }
                 }
 
-                is DropDownUiModel -> bodyRowModel.selected?.let {
-                    bodyRowModel.items.find {
-                        it.id == bodyRowModel.selected
-                    }?.also {
-                        dropDownValues[bodyRowModel.identifier] = DropDownInputUiModel(
-                            bodyRowModel.identifier,
-                            it.id,
-                            it.name
-                        )
-                    }
+                is DropDownUiModel -> bodyRowModel.items.find {
+                    it.id == bodyRowModel.selected
+                }?.also {
+                    dropDownValues[bodyRowModel.identifier] = DropDownInputUiModel(
+                        bodyRowModel.identifier,
+                        it.id,
+                        it.name
+                    )
                 }
 
                 is ImageButtonSectionUiModel -> {
@@ -188,9 +189,8 @@ class MedicalHistoryViewModel @Inject constructor(
                 is SegmentedSwitchUiModel ->
                     segmentedValues[bodyRowModel.identifier] = bodyRowModel.selected
 
-                is SliderUiModel -> {
+                is SliderUiModel ->
                     sliderValues[bodyRowModel.identifier] = bodyRowModel.selected.toString()
-                }
 
                 is TextFieldUiModel ->
                     fieldsValues[bodyRowModel.identifier] = InputUiModel(bodyRowModel.identifier)
@@ -200,48 +200,46 @@ class MedicalHistoryViewModel @Inject constructor(
         }
     }
 
-    fun showVitalSignsForm(identifier: String) {
-        if (allowInfoCardIdentifiers.contains(identifier)) {
-            temporalInfoCard = identifier
-            uiState = uiState.copy(
-                navigationModel = MedicalHistoryNavigationModel(
-                    isInfoCardEvent = true
-                )
-            )
-        }
-    }
+    fun handleChipOptionAction(chipOptionAction: GenericUiAction.ChipOptionAction) {
+        var chipOption = chipOptionValues[chipOptionAction.identifier]
 
-    fun updateVitalSignsInfoCard(values: Map<String, String>) {
-        vitalSignsValues[temporalInfoCard] = values
+        when {
+            chipOption != null && chipOption.contains(chipOptionAction.chipOptionUiModel.id) ->
+                chipOption.remove(chipOptionAction.chipOptionUiModel.id)
 
-        if (temporalInfoCard == INITIAL_VITAL_SIGNS) {
-            updateGlasgow()
-        }
-
-        val list = values.map { "${it.key} ${it.value}" }
-
-        val updatedBody = uiState.screenModel?.body?.map { bodyRowModel ->
-            if (bodyRowModel is InfoCardUiModel && bodyRowModel.identifier == temporalInfoCard) {
-                bodyRowModel.copy(
-                    pill = PillUiModel(
-                        title = TextUiModel(
-                            text = LocalDateTime.now().format(
-                                DateTimeFormatter.ofPattern(HOURS_MINUTES_24_HOURS_PATTERN)
-                            ),
-                            textStyle = TextStyle.BUTTON_1
-                        ),
-                        color = SAVED_VITAL_SIGNS_COLOR
-                    ),
-                    chipSection = bodyRowModel.chipSection?.listText?.copy(texts = list)?.let {
-                        bodyRowModel.chipSection?.copy(
-                            listText = it
-                        )
-                    }
-                )
-            } else {
-                bodyRowModel
+            chipOption != null &&
+                chipOption.contains(chipOptionAction.chipOptionUiModel.id).not() -> {
+                chipOption.add(chipOptionAction.chipOptionUiModel.id)
             }
-        }.orEmpty()
+
+            else -> {
+                chipOption = mutableListOf(chipOptionAction.chipOptionUiModel.id)
+            }
+        }
+
+        chipOptionValues[chipOptionAction.identifier] = chipOption.toMutableList()
+
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = chipOptionAction.identifier,
+            updater = { model ->
+                if (model is ChipOptionsUiModel) {
+                    model.copy(
+                        items = model.items.map {
+                            if (it.id == chipOptionAction.chipOptionUiModel.id &&
+                                chipOption.contains(chipOptionAction.chipOptionUiModel.id)
+                            ) {
+                                it.copy(selected = chipOptionAction.chipOptionUiModel.selected)
+                            } else {
+                                it
+                            }
+                        }
+                    )
+                } else {
+                    model
+                }
+            }
+        )
 
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(
@@ -250,17 +248,35 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
-    fun showMedicineForm(identifier: String) {
-        temporalMedsSelector = identifier
+    fun handleChipSelectionAction(chipSelectionAction: GenericUiAction.ChipSelectionAction) {
+        chipSelectionValues[chipSelectionAction.identifier] =
+            chipSelectionAction.chipSelectionItemUiModel
+
+        if (glasgowIdentifier.contains(chipSelectionAction.identifier)) {
+            updateGlasgow()
+        }
+
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = chipSelectionAction.identifier,
+            updater = { model ->
+                if (model is ChipSelectionUiModel) {
+                    model.copy(selected = chipSelectionAction.chipSelectionItemUiModel.name)
+                } else {
+                    model
+                }
+            }
+        )
+
         uiState = uiState.copy(
-            navigationModel = MedicalHistoryNavigationModel(
-                isMedsSelectorEvent = true
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
             )
         )
     }
 
     @Suppress("MagicNumber", "ComplexMethod")
-    fun updateGlasgow() {
+    private fun updateGlasgow() {
         val mro = chipSelectionValues[GLASGOW_MRO_KEY]?.name?.substring(0, 1)?.toIntOrNull() ?: 0
         val mrv = chipSelectionValues[GLASGOW_MRV_KEY]?.name?.substring(0, 1)?.toIntOrNull() ?: 0
         val mrm = chipSelectionValues[GLASGOW_MRM_KEY]?.name?.substring(0, 1)?.toIntOrNull() ?: 0
@@ -316,6 +332,241 @@ class MedicalHistoryViewModel @Inject constructor(
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(
                 body = updateBody
+            )
+        )
+    }
+
+    fun handleDropDownAction(dropDownAction: GenericUiAction.DropDownAction) {
+        dropDownValues[dropDownAction.identifier] = DropDownInputUiModel(
+            dropDownAction.identifier,
+            dropDownAction.id,
+            dropDownAction.name,
+            dropDownAction.fieldValidated
+        )
+
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = dropDownAction.identifier,
+            updater = { model ->
+                if (model is DropDownUiModel) {
+                    model.copy(selected = dropDownAction.name)
+                } else {
+                    model
+                }
+            }
+        )
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
+    fun handleHumanBodyAction(humanBodyAction: GenericUiAction.HumanBodyAction) {
+        val humanBody = humanBodyValues.find { it.area == humanBodyAction.values.area }
+
+        if (humanBody != null) {
+            humanBodyValues.remove(humanBody)
+        } else {
+            humanBodyValues.add(humanBodyAction.values)
+        }
+    }
+
+    fun handleImageButtonAction(imageButtonAction: GenericUiAction.ImageButtonAction) {
+        imageButtonSectionValues[imageButtonAction.identifier] = imageButtonAction.itemIdentifier
+
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = imageButtonAction.identifier,
+            updater = { model ->
+                if (model is ImageButtonSectionUiModel) {
+                    model.copy(
+                        options = model.options.map {
+                            it.copy(
+                                options = it.options.map { imageButtonUiModel ->
+                                    imageButtonUiModel.copy(
+                                        selected = imageButtonUiModel.identifier ==
+                                            imageButtonAction.itemIdentifier
+                                    )
+                                }
+                            )
+                        }
+                    )
+                } else {
+                    model
+                }
+            }
+        )
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
+    fun showVitalSignsForm(identifier: String) {
+        if (allowInfoCardIdentifiers.contains(identifier)) {
+            temporalInfoCard = identifier
+            uiState = uiState.copy(
+                navigationModel = MedicalHistoryNavigationModel(
+                    isInfoCardEvent = true
+                )
+            )
+        }
+    }
+
+    fun handleInputAction(inputAction: GenericUiAction.InputAction) {
+        fieldsValues[inputAction.identifier] = InputUiModel(
+            inputAction.identifier,
+            inputAction.updatedValue,
+            inputAction.fieldValidated
+        )
+
+        if (inputAction.identifier == FUR_KEY) {
+            updateFurAndGestationWeeks()
+        }
+
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = inputAction.identifier,
+            updater = { model ->
+                if (model is TextFieldUiModel) {
+                    model.copy(value = inputAction.updatedValue)
+                } else {
+                    model
+                }
+            }
+        )
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
+    private fun updateFurAndGestationWeeks() {
+        val updatedBody = uiState.screenModel?.body?.map {
+            when {
+                (it is LabelUiModel && it.identifier == PREGNANT_FUR_KEY) -> {
+                    val temporalFurModel = it.copy(
+                        text = fieldsValues[FUR_KEY]?.updatedValue.orEmpty()
+                    )
+
+                    temporalFurModel
+                }
+
+                (it is LabelUiModel && it.identifier == PREGNANT_WEEKS_KEY) -> {
+                    val gestationWeeks = calculateGestationWeeks()
+
+                    val temporalWeeksModel = it.copy(
+                        text = gestationWeeks
+                    )
+
+                    temporalWeeksModel
+                }
+
+                else -> it
+            }
+        }.orEmpty()
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
+    fun handleSegmentedSwitchAction(segmentedSwitchAction: GenericUiAction.SegmentedSwitchAction) {
+        segmentedValues[segmentedSwitchAction.identifier] = segmentedSwitchAction.status
+
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = segmentedSwitchAction.identifier,
+            updater = { model ->
+                if (model is SegmentedSwitchUiModel) {
+                    model.copy(selected = segmentedSwitchAction.status)
+                } else {
+                    model
+                }
+            }
+        )
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
+    fun handleSliderAction(sliderAction: GenericUiAction.SliderAction) {
+        sliderValues[sliderAction.identifier] = sliderAction.value.toString()
+
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = sliderAction.identifier,
+            updater = { model ->
+                if (model is SliderUiModel) {
+                    model.copy(selected = sliderAction.value)
+                } else {
+                    model
+                }
+            }
+        )
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
+    fun updateVitalSignsInfoCard(values: Map<String, String>) {
+        vitalSignsValues[temporalInfoCard] = values
+
+        if (temporalInfoCard == INITIAL_VITAL_SIGNS) {
+            updateGlasgow()
+        }
+
+        val list = values.map { "${it.key} ${it.value}" }
+
+        val updatedBody = uiState.screenModel?.body?.map { bodyRowModel ->
+            if (bodyRowModel is InfoCardUiModel && bodyRowModel.identifier == temporalInfoCard) {
+                bodyRowModel.copy(
+                    pill = PillUiModel(
+                        title = TextUiModel(
+                            text = LocalDateTime.now().format(
+                                DateTimeFormatter.ofPattern(HOURS_MINUTES_24_HOURS_PATTERN)
+                            ),
+                            textStyle = TextStyle.BUTTON_1
+                        ),
+                        color = SAVED_VITAL_SIGNS_COLOR
+                    ),
+                    chipSection = bodyRowModel.chipSection?.listText?.copy(texts = list)?.let {
+                        bodyRowModel.chipSection?.copy(
+                            listText = it
+                        )
+                    }
+                )
+            } else {
+                bodyRowModel
+            }
+        }.orEmpty()
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
+    fun showMedicineForm(identifier: String) {
+        temporalMedsSelector = identifier
+        uiState = uiState.copy(
+            navigationModel = MedicalHistoryNavigationModel(
+                isMedsSelectorEvent = true
             )
         )
     }
@@ -403,38 +654,6 @@ class MedicalHistoryViewModel @Inject constructor(
                 temporalSignatureModel
             } else {
                 it
-            }
-        }.orEmpty()
-
-        uiState = uiState.copy(
-            screenModel = uiState.screenModel?.copy(
-                body = updatedBody
-            )
-        )
-    }
-
-    fun updateFurAndGestationWeeks() {
-        val updatedBody = uiState.screenModel?.body?.map {
-            when {
-                (it is LabelUiModel && it.identifier == PREGNANT_FUR_KEY) -> {
-                    val temporalFurModel = it.copy(
-                        text = fieldsValues[FUR_KEY]?.updatedValue.orEmpty()
-                    )
-
-                    temporalFurModel
-                }
-
-                (it is LabelUiModel && it.identifier == PREGNANT_WEEKS_KEY) -> {
-                    val gestationWeeks = calculateGestationWeeks()
-
-                    val temporalWeeksModel = it.copy(
-                        text = gestationWeeks
-                    )
-
-                    temporalWeeksModel
-                }
-
-                else -> it
             }
         }.orEmpty()
 

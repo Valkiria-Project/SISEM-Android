@@ -44,7 +44,7 @@ fun ImageButtonComponent(
 @Composable
 fun ImageButtonView(
     uiModel: ImageButtonUiModel,
-    onAction: (id: String) -> Unit,
+    onAction: (id: String) -> Unit
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.image, DefType.DRAWABLE

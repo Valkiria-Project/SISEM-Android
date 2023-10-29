@@ -48,6 +48,10 @@ fun DatePickerTextFieldView(
         mutableStateOf(TextFieldValue(""))
     }
 
+    val inputError = remember(text, validateFields) {
+        text.toFailedValidation(uiModel.validations, validateFields)
+    }
+
     var showDialog by remember { mutableStateOf(false) }
 
     var selectedDate by remember {
@@ -83,15 +87,15 @@ fun DatePickerTextFieldView(
                 Icon(Icons.Filled.Event, contentDescription = "Select date")
             },
             supportingText = {
-                if (validateFields) {
+                if (inputError != null) {
                     Text(
-                        text = text.toFailedValidation(uiModel.validations)?.message.orEmpty(),
+                        text = inputError.message,
                         modifier = Modifier.fillMaxWidth(),
                         color = MaterialTheme.colorScheme.error
                     )
                 }
             },
-            isError = text.toFailedValidation(uiModel.validations, validateFields) != null
+            isError = inputError != null
         )
     }
 

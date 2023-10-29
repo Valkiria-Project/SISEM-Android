@@ -15,5 +15,6 @@ data class OperationModel(
     val status: Boolean,
     val vehicleCode: String?,
     val vehicleConfig: VehicleConfigModel?,
-    val operationRole: OperationRole? = null
+    val operationRole: OperationRole? = null,
+    val maxFileSizeKb: String
 )

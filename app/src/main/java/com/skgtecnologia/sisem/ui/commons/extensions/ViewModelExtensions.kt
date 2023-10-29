@@ -6,6 +6,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
+import com.valkiria.uicomponents.components.BodyRowModel
 
 @Composable
 inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
@@ -17,4 +18,18 @@ inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
     }
 
     return hiltViewModel(parentEntry)
+}
+
+fun <T : BodyRowModel> updateBodyModel(
+    uiModels: List<T>?,
+    identifier: String,
+    updater: (T) -> T
+): List<T> {
+    return uiModels.orEmpty().map {
+        if (it.identifier == identifier) {
+            updater(it)
+        } else {
+            it
+        }
+    }
 }

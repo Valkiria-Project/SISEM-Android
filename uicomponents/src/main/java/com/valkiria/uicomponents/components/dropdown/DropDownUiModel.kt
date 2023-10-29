@@ -7,10 +7,10 @@ import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.header.HeaderUiModel
 
 data class DropDownUiModel(
-    val identifier: String,
+    override val identifier: String,
     val label: String,
     val items: List<DropDownItemUiModel>,
-    val selected: String?,
+    val selected: String = "",
     val header: HeaderUiModel,
     val section: String?,
     val arrangement: Arrangement.Horizontal,

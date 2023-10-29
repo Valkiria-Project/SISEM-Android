@@ -17,7 +17,8 @@ data class OperationResponse(
     @Json(name = "attentions_type") val attentionsType: String?,
     @Json(name = "status") val status: Boolean?,
     @Json(name = "vehicle_code") val vehicleCode: String?,
-    @Json(name = "vehicle_config") val vehicleConfig: VehicleConfigResponse?
+    @Json(name = "vehicle_config") val vehicleConfig: VehicleConfigResponse?,
+    @Json(name = "max_file_size_kb") val maxFileSizeKb: String?
 )
 
 fun OperationResponse.mapToDomain(): OperationModel = OperationModel(
@@ -36,5 +37,6 @@ fun OperationResponse.mapToDomain(): OperationModel = OperationModel(
     attentionsType = attentionsType ?: error("Config attentionsType cannot be null"),
     status = status ?: error("Config status cannot be null"),
     vehicleCode = vehicleCode,
-    vehicleConfig = vehicleConfig?.mapToDomain()
+    vehicleConfig = vehicleConfig?.mapToDomain(),
+    maxFileSizeKb = maxFileSizeKb ?: error("Config maxFileSizeKb cannot be null")
 )

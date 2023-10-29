@@ -52,7 +52,7 @@ fun DropDownComponent(
     var showDialog by remember { mutableStateOf(false) }
 
     var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-        mutableStateOf(TextFieldValue(""))
+        mutableStateOf(TextFieldValue(uiModel.selected))
     }
 
     val focusManager = LocalFocusManager.current

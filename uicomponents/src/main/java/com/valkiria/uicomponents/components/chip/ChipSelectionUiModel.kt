@@ -7,7 +7,7 @@ import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.label.TextUiModel
 
 data class ChipSelectionUiModel(
-    val identifier: String,
+    override val identifier: String,
     val title: TextUiModel?,
     val items: List<ChipSelectionItemUiModel>,
     val selected: String? = null,
