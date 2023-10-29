@@ -29,10 +29,9 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.header.imagesConfirmationHeader
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
 import com.skgtecnologia.sisem.ui.authcards.report.PagerIndicator
-import com.valkiria.uicomponents.extensions.decodeAsBitmap
-import com.valkiria.uicomponents.extensions.storeUriAsFileToCache
-import com.skgtecnologia.sisem.ui.navigation.REPORT
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
+import com.skgtecnologia.sisem.ui.navigation.REPORT
+import com.skgtecnologia.sisem.ui.report.ReportUiState
 import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
@@ -46,6 +45,8 @@ import com.valkiria.uicomponents.components.button.ButtonStyle
 import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.extensions.decodeAsBitmap
+import com.valkiria.uicomponents.extensions.storeUriAsFileToCache
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -165,7 +166,7 @@ fun ImagesConfirmationScreen(
     }
 
     OnBannerHandler(uiState.confirmInfoModel) {
-        handleAction(it, from, context, viewModel, coroutineScope)
+        handleAction(it, from, context, viewModel, uiState, coroutineScope)
     }
 
     OnBannerHandler(uiState.successInfoModel) {
@@ -179,11 +180,13 @@ fun ImagesConfirmationScreen(
     OnLoadingHandler(uiState.isLoading, modifier)
 }
 
+@Suppress("LongParameterList")
 private fun handleAction(
     uiAction: UiAction,
     from: String,
     context: Context,
     viewModel: ReportViewModel,
+    uiState: ReportUiState,
     coroutineScope: CoroutineScope
 ) {
     (uiAction as? FooterUiAction)?.let {
@@ -193,8 +196,12 @@ private fun handleAction(
 
             ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name -> {
                 coroutineScope.launch {
-                    val images = viewModel.uiState.selectedImageUris.map { uri ->
-                        context.storeUriAsFileToCache(uri)
+
+                    val images = uiState.selectedImageUris.map { uri ->
+                        context.storeUriAsFileToCache(
+                            uri,
+                            uiState.operationModel?.maxFileSizeKb
+                        )
                     }
 
                     if (from == REPORT) {

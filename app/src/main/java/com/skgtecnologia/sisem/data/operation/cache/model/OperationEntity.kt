@@ -20,7 +20,8 @@ data class OperationEntity(
     @ColumnInfo(name = "attentions_type") val attentionsType: String,
     @ColumnInfo(name = "status") val status: Boolean,
     @ColumnInfo(name = "vehicle_code") val vehicleCode: String?,
-    @Embedded(prefix = "vehicle_config_") val vehicleConfig: VehicleConfigEntity?
+    @Embedded(prefix = "vehicle_config_") val vehicleConfig: VehicleConfigEntity?,
+    @ColumnInfo(name = "maxFileSizeKb") val maxFileSizeKb: String
 )
 
 fun OperationEntity.mapToDomain(): OperationModel {
@@ -37,7 +38,8 @@ fun OperationEntity.mapToDomain(): OperationModel {
             attentionsType = attentionsType,
             status = status,
             vehicleCode = vehicleCode,
-            vehicleConfig = vehicleConfig?.mapToDomain()
+            vehicleConfig = vehicleConfig?.mapToDomain(),
+            maxFileSizeKb = maxFileSizeKb
         )
     }
 }
@@ -56,7 +58,8 @@ fun OperationModel.mapToCache(): OperationEntity {
             attentionsType = attentionsType,
             status = status,
             vehicleCode = vehicleCode,
-            vehicleConfig = vehicleConfig?.mapToCache()
+            vehicleConfig = vehicleConfig?.mapToCache(),
+            maxFileSizeKb = maxFileSizeKb
         )
     }
 }
