@@ -34,6 +34,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 @HiltViewModel
 class PreOperationalViewModel @Inject constructor(
     private val androidIdProvider: AndroidIdProvider,

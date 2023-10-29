@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 import com.valkiria.uicomponents.extensions.toFailedValidation
 
+@Suppress("LongParameterList")
 @Composable
 fun DigitsTextFieldView(
     identifier: String,
