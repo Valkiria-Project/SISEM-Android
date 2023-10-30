@@ -192,8 +192,10 @@ class MedicalHistoryViewModel @Inject constructor(
                 is SliderUiModel ->
                     sliderValues[bodyRowModel.identifier] = bodyRowModel.selected.toString()
 
-                is TextFieldUiModel ->
-                    fieldsValues[bodyRowModel.identifier] = InputUiModel(bodyRowModel.identifier)
+                is TextFieldUiModel -> fieldsValues[bodyRowModel.identifier] = InputUiModel(
+                    bodyRowModel.identifier,
+                    bodyRowModel.value
+                )
 
                 else -> Timber.d("no-op")
             }

@@ -121,12 +121,18 @@ class PreOperationalViewModel @Inject constructor(
                 is InventoryCheckUiModel -> {
                     bodyRowModel.items.forEach { checkItemUiModel ->
                         inventoryValues[checkItemUiModel.name.identifier] =
-                            InputUiModel(bodyRowModel.identifier)
+                            InputUiModel(
+                                bodyRowModel.identifier,
+                                bodyRowModel.received.text
+                            )
                     }
                 }
 
                 is TextFieldUiModel -> {
-                    fieldsValues[bodyRowModel.identifier] = InputUiModel(bodyRowModel.identifier)
+                    fieldsValues[bodyRowModel.identifier] = InputUiModel(
+                        bodyRowModel.identifier,
+                        bodyRowModel.value
+                    )
                 }
 
                 else -> Timber.d("no-op")
