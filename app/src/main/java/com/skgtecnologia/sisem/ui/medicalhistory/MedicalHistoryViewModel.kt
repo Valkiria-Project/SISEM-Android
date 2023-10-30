@@ -192,8 +192,10 @@ class MedicalHistoryViewModel @Inject constructor(
                 is SliderUiModel ->
                     sliderValues[bodyRowModel.identifier] = bodyRowModel.selected.toString()
 
-                is TextFieldUiModel ->
-                    fieldsValues[bodyRowModel.identifier] = InputUiModel(bodyRowModel.identifier)
+                is TextFieldUiModel -> fieldsValues[bodyRowModel.identifier] = InputUiModel(
+                    bodyRowModel.identifier,
+                    bodyRowModel.value
+                )
 
                 else -> Timber.d("no-op")
             }
@@ -376,7 +378,6 @@ class MedicalHistoryViewModel @Inject constructor(
     fun handleImageButtonAction(imageButtonAction: GenericUiAction.ImageButtonAction) {
         imageButtonSectionValues[imageButtonAction.identifier] = imageButtonAction.itemIdentifier
 
-        // FIXME: Not working
         val updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
             identifier = imageButtonAction.identifier,
