@@ -19,6 +19,7 @@ import com.valkiria.uicomponents.bricks.button.ImageButtonUiModel
 import com.valkiria.uicomponents.bricks.button.ImageButtonView
 import com.valkiria.uicomponents.components.label.TextStyle
 
+@Suppress("LongMethod")
 @Composable
 fun MediaActions(
     hasFileAction: Boolean = false,

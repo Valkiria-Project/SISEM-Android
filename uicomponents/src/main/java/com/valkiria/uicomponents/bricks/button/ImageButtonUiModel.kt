@@ -7,6 +7,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.components.label.TextStyle
 
+@Suppress("LongParameterList")
 class ImageButtonUiModel(
     val identifier: String,
     @DrawableRes val iconResId: Int,
