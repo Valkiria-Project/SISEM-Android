@@ -105,6 +105,8 @@ fun InfoCardComponent(
                         )
                     }
 
+                    val endDp = if (uiModel.reportsDetail == null) 40.dp else 0.dp
+
                     Column(
                         modifier = Modifier
                             .constrainAs(text) {
@@ -114,7 +116,7 @@ fun InfoCardComponent(
                                 end.linkTo(badged.start)
                                 width = Dimension.preferredWrapContent
                             }
-                            .padding(start = 12.dp)
+                            .padding(start = 12.dp, end = endDp)
                     ) {
                         Text(
                             text = uiModel.title.text,
@@ -278,7 +280,7 @@ fun InfoCardComponentPreview() {
             ),
             pill = PillUiModel(
                 title = TextUiModel(
-                    text = "Anterior: RODOLFO BARRIOS GOMEZ",
+                    text = "Anterior: RODOLFO EDINSON BARRIOS GOMEZ",
                     textStyle = TextStyle.HEADLINE_7
                 ),
                 color = "#FF0000"
