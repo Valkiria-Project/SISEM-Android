@@ -30,6 +30,11 @@ fun MediaActions(
         onResult = { uris -> onMediaAction(MediaAction.Gallery(uris)) }
     )
 
+    val multipleFilePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenMultipleDocuments(),
+        onResult = { uris -> onMediaAction(MediaAction.File(uris)) }
+    )
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -92,11 +97,8 @@ fun MediaActions(
                         .padding(8.dp)
                 )
             ) {
-                multiplePhotoPickerLauncher.launch(
-                    PickVisualMediaRequest(
-                        ActivityResultContracts.PickVisualMedia.ImageOnly
-                    )
-                )
+                val mimeTypes = arrayOf("*/*")
+                multipleFilePickerLauncher.launch(mimeTypes)
             }
         }
     }
