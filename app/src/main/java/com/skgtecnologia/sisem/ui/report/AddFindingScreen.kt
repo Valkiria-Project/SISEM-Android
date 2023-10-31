@@ -22,6 +22,7 @@ import com.skgtecnologia.sisem.domain.model.header.addFindingHeader
 import com.skgtecnologia.sisem.domain.model.label.addFilesHint
 import com.skgtecnologia.sisem.domain.report.model.AddFindingIdentifier
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
+import com.skgtecnologia.sisem.ui.media.MediaAction
 import com.skgtecnologia.sisem.ui.media.MediaActions
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.FooterSection
@@ -117,7 +118,16 @@ fun AddFindingScreen(
             )
         )
 
-        MediaActions(viewModel, true)
+        MediaActions { mediaAction ->
+            when (mediaAction) {
+                MediaAction.Camera -> viewModel.showCamera(isFromPreOperational = true)
+                is MediaAction.File -> Timber.d("no-op")
+                is MediaAction.Gallery -> viewModel.updateSelectedImages(
+                    selectedImages = mediaAction.uris,
+                    isFromPreOperational = true
+                )
+            }
+        }
 
         Spacer(modifier = Modifier.weight(1f))
 

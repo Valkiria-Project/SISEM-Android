@@ -20,6 +20,7 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.label.addFilesHint
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
+import com.skgtecnologia.sisem.ui.media.MediaAction
 import com.skgtecnologia.sisem.ui.media.MediaActions
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.FooterSection
@@ -109,7 +110,16 @@ fun AddReportScreen(
                 )
             )
 
-            MediaActions(viewModel, false)
+            MediaActions { mediaAction ->
+                when (mediaAction) {
+                    MediaAction.Camera -> viewModel.showCamera(isFromPreOperational = false)
+                    is MediaAction.File -> Timber.d("no-op")
+                    is MediaAction.Gallery -> viewModel.updateSelectedImages(
+                        selectedImages = mediaAction.uris,
+                        isFromPreOperational = false
+                    )
+                }
+            }
 
             Spacer(modifier = Modifier.weight(1f))
         }
