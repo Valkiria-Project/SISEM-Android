@@ -101,7 +101,7 @@ class VitalSignsViewModel @Inject constructor(
         val tad = fieldsValues[TAD_KEY]?.updatedValue?.toFloatOrNull() ?: 0f
 
         val tam = tas + ((tas - tad) / MM_HG)
-        val roundTam = (tam * 100).roundToInt() / 10f
+        val roundTam = (tam * 100).roundToInt() / 100f
 
         fieldsValues[TAM_KEY] = InputUiModel(
             identifier = TAM_KEY,
