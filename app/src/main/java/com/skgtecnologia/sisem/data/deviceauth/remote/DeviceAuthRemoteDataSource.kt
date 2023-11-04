@@ -8,17 +8,15 @@ import com.skgtecnologia.sisem.data.remote.model.screen.Params
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
 import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
 import com.skgtecnologia.sisem.domain.deviceauth.model.AssociateDeviceModel
-import com.skgtecnologia.sisem.domain.model.banner.ErrorModelFactory
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import javax.inject.Inject
 
 class DeviceAuthRemoteDataSource @Inject constructor(
-    private val deviceAuthApi: DeviceAuthApi,
-    private val errorModelFactory: ErrorModelFactory
+    private val deviceAuthApi: DeviceAuthApi
 ) {
 
     suspend fun getDeviceAuthScreen(serial: String): Result<ScreenModel> =
-        apiCall(errorModelFactory) {
+        apiCall {
             deviceAuthApi.getDeviceAuthScreen(
                 screenBody = ScreenBody(
                     params = Params(serial = serial)
@@ -32,7 +30,7 @@ class DeviceAuthRemoteDataSource @Inject constructor(
         serial: String,
         code: String,
         disassociateDevice: Boolean
-    ): Result<AssociateDeviceModel> = apiCall(errorModelFactory) {
+    ): Result<AssociateDeviceModel> = apiCall {
         deviceAuthApi.associateDevice(
             associateDeviceBody = AssociateDeviceBody(
                 serial = serial,
@@ -42,5 +40,7 @@ class DeviceAuthRemoteDataSource @Inject constructor(
         )
     }.mapResult {
         it.mapToDomain()
+
+        // FIXME: If Success disassociateDevice true Unsubscribe, false Subscribe
     }
 }

@@ -10,8 +10,7 @@ import com.skgtecnologia.sisem.domain.auth.model.RefreshTokenModel
 import javax.inject.Inject
 
 class AuthRemoteDataSource @Inject constructor(
-    private val authApi: AuthApi,
-    private val errorModelFactory: ErrorModelFactory
+    private val authApi: AuthApi
 ) {
 
     suspend fun authenticate(
@@ -20,7 +19,7 @@ class AuthRemoteDataSource @Inject constructor(
         code: String,
         turnId: String
     ): Result<AccessTokenModel> =
-        apiCall(errorModelFactory) {
+        apiCall {
             authApi.authenticate(
                 authenticateBody = AuthenticateBody(
                     username = username,
@@ -34,13 +33,13 @@ class AuthRemoteDataSource @Inject constructor(
         }
 
     suspend fun refreshToken(refreshToken: String): Result<RefreshTokenModel> =
-        apiCall(errorModelFactory) {
+        apiCall {
             authApi.refresh(refreshBody = RefreshBody(refreshToken = refreshToken))
         }.mapResult {
             it.mapToDomain()
         }
 
-    suspend fun logout(username: String): Result<String> = apiCall(errorModelFactory) {
+    suspend fun logout(username: String): Result<String> = apiCall {
         authApi.logout(username = username)
     }.mapResult {
         it.message

@@ -36,7 +36,7 @@ suspend fun <T> apiCall(api: suspend () -> Response<T>) =
             response.errorBody()?.also {
                 failure = ErrorModelFactory.getErrorModel(response)
             }
-            failure
+            throw failure
         }
     }.recoverResult {
         if (it is BannerModel) {

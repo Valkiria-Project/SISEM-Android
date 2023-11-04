@@ -10,19 +10,17 @@ import com.skgtecnologia.sisem.data.remote.model.screen.Params
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
 import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
 import com.skgtecnologia.sisem.di.operation.OperationRole
-import com.skgtecnologia.sisem.domain.model.banner.ErrorModelFactory
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
+import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import okhttp3.MultipartBody
-import javax.inject.Inject
 
 private const val FINDING_FILE_NAME = "images"
 
 class PreOperationalRemoteDataSource @Inject constructor(
-    private val errorModelFactory: ErrorModelFactory,
     private val preOperationalApi: PreOperationalApi
 ) {
 
@@ -32,7 +30,7 @@ class PreOperationalRemoteDataSource @Inject constructor(
         vehicleCode: String?,
         idTurn: String
     ): Result<ScreenModel> =
-        apiCall(errorModelFactory) {
+        apiCall {
             val screenBody = ScreenBody(
                 params = Params(
                     serial = androidId,
@@ -69,7 +67,7 @@ class PreOperationalRemoteDataSource @Inject constructor(
         inventoryValues: Map<String, Int>,
         fieldsValues: Map<String, String>,
         novelties: List<Novelty>
-    ): Result<Unit> = apiCall(errorModelFactory) {
+    ): Result<Unit> = apiCall {
         preOperationalApi.sendPreOperational(
             savePreOperationalBody = SavePreOperationalBody(
                 type = role.name,
@@ -102,7 +100,7 @@ class PreOperationalRemoteDataSource @Inject constructor(
         idTurn: String
     ) {
         if (novelty.images.isNotEmpty()) {
-            apiCall(errorModelFactory) {
+            apiCall {
                 preOperationalApi.sendFinding(
                     type = role.name.createRequestBody(),
                     idPreoperational = novelty.idPreoperational.createRequestBody(),
