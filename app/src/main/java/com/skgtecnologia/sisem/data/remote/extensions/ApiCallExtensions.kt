@@ -3,9 +3,8 @@ package com.skgtecnologia.sisem.data.remote.extensions
 import com.skgtecnologia.sisem.commons.extensions.recoverResult
 import com.skgtecnologia.sisem.commons.extensions.resultOf
 import com.skgtecnologia.sisem.data.remote.model.bricks.banner.BannerResponse
-import com.skgtecnologia.sisem.data.remote.model.bricks.banner.mapToDomain
+import com.skgtecnologia.sisem.data.remote.model.error.ErrorModelFactory
 import com.skgtecnologia.sisem.domain.model.banner.BannerModel
-import com.skgtecnologia.sisem.domain.model.banner.ErrorModelFactory
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +19,7 @@ private val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception
 
 private val coroutineContext = Dispatchers.IO + coroutineExceptionHandler
 
-suspend fun <T> apiCall(errorModelFactory: ErrorModelFactory, api: suspend () -> Response<T>) =
+suspend fun <T> apiCall(api: suspend () -> Response<T>) =
     resultOf {
         val response: Response<T> = withContext(coroutineContext) {
             api()
@@ -33,15 +32,18 @@ suspend fun <T> apiCall(errorModelFactory: ErrorModelFactory, api: suspend () ->
         } else {
             Timber.wtf("The retrieved response is not successful and/or body is empty")
 
-            response.errorBody().toError()?.mapToDomain()?.let {
-                throw it
-            } ?: error("Response is not successful and/or body is empty")
+            var failure = ErrorModelFactory.genericError()
+            response.errorBody()?.also {
+                failure = ErrorModelFactory.getErrorModel(response)
+            }
+            failure
         }
     }.recoverResult {
         if (it is BannerModel) {
             throw it
         } else {
-            throw errorModelFactory.getErrorModel(it)
+//            throw ErrorModelFactory.getErrorModel(response)
+            throw it
         }
     }
 
