@@ -2,17 +2,17 @@ package com.skgtecnologia.sisem.domain.model.banner
 
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.resources.StringProvider
+import com.skgtecnologia.sisem.data.remote.extensions.HTTP_FORBIDDEN_STATUS_CODE
+import com.skgtecnologia.sisem.data.remote.extensions.HTTP_UNAUTHORIZED_STATUS_CODE
 import com.valkiria.uicomponents.bricks.banner.BannerUiModel
 import com.valkiria.uicomponents.bricks.banner.DEFAULT_ICON_COLOR
 import com.valkiria.uicomponents.components.footer.FooterUiModel
-import retrofit2.HttpException
-import timber.log.Timber
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.inject.Inject
-
-private const val FORBIDDEN_HTTP_STATUS_CODE = 403
+import retrofit2.HttpException
+import timber.log.Timber
 
 data class BannerModel(
     val icon: String,
@@ -51,11 +51,15 @@ class ErrorModelFactory @Inject constructor(
             )
 
             is HttpException -> {
-                if (error.code() == FORBIDDEN_HTTP_STATUS_CODE) {
+                if (error.code() == HTTP_FORBIDDEN_STATUS_CODE ||
+                    error.code() == HTTP_UNAUTHORIZED_STATUS_CODE
+                ) {
                     BannerModel(
                         icon = stringProvider.getString(R.string.alert_icon),
-                        title = stringProvider.getString(R.string.error_forbidden_title),
-                        description = ""
+                        title = stringProvider.getString(R.string.error_unauthorized_title),
+                        description = stringProvider.getString(
+                            R.string.error_unauthorized_description
+                        )
                     )
                 } else {
                     BannerModel(

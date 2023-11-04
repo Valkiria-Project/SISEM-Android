@@ -7,9 +7,9 @@ import kotlinx.coroutines.launch
 
 internal object UnauthorizedEventHandler {
 
-    fun publishUnauthorizedEvent(cvvRequestModelEvent: String) {
+    fun publishUnauthorizedEvent() {
         CoroutineScope(Dispatchers.IO).launch {
-            EventBus.publish(cvvRequestModelEvent)
+            EventBus.publish(AppEvent.UNAUTHORIZED_SESSION)
         }
     }
 
