@@ -4,19 +4,26 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.bricks.button.ImageButtonUiModel
 import com.valkiria.uicomponents.bricks.button.ImageButtonView
+import com.valkiria.uicomponents.components.label.LabelComponent
+import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.media.MediaAction.Camera
 import com.valkiria.uicomponents.components.media.MediaAction.File
@@ -38,60 +45,30 @@ fun MediaActionsComponent(
         onResult = { uris -> onMediaAction(File(uris)) }
     )
 
-    Row(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
                 start = 20.dp,
                 end = 20.dp,
             ),
-        horizontalArrangement = Arrangement.Start
+        horizontalAlignment = Alignment.Start
     ) {
-        ImageButtonView(
-            uiModel = ImageButtonUiModel(
-                identifier = "CAMERA",
-                iconResId = R.drawable.ic_camera,
-                label = stringResource(
-                    id = R.string.media_action_take_picture_label
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    start = 20.dp,
+                    end = 20.dp,
                 ),
-                textStyle = TextStyle.HEADLINE_6,
-                size = 81.dp,
-                alignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .padding(8.dp)
-            )
+            horizontalArrangement = Arrangement.Start
         ) {
-            onMediaAction(Camera)
-        }
-
-        ImageButtonView(
-            uiModel = ImageButtonUiModel(
-                identifier = "GALLERY",
-                iconResId = R.drawable.ic_image,
-                label = stringResource(
-                    id = R.string.media_action_select_pictures
-                ),
-                textStyle = TextStyle.HEADLINE_6,
-                size = 81.dp,
-                alignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .padding(8.dp)
-            )
-        ) {
-            multiplePhotoPickerLauncher.launch(
-                PickVisualMediaRequest(
-                    ActivityResultContracts.PickVisualMedia.ImageOnly
-                )
-            )
-        }
-
-        if (uiModel.hasFileAction) {
             ImageButtonView(
                 uiModel = ImageButtonUiModel(
-                    identifier = "FILE",
-                    iconResId = R.drawable.ic_file,
+                    identifier = "CAMERA",
+                    iconResId = R.drawable.ic_camera,
                     label = stringResource(
-                        id = R.string.media_action_select_files
+                        id = R.string.media_action_take_picture_label
                     ),
                     textStyle = TextStyle.HEADLINE_6,
                     size = 81.dp,
@@ -100,11 +77,74 @@ fun MediaActionsComponent(
                         .padding(8.dp)
                 )
             ) {
-                val mimeTypes = arrayOf("*/*")
-                multipleFilePickerLauncher.launch(mimeTypes)
+                onMediaAction(Camera)
             }
 
-            // FIXME: Add logic to add list of added files with title
+            ImageButtonView(
+                uiModel = ImageButtonUiModel(
+                    identifier = "GALLERY",
+                    iconResId = R.drawable.ic_image,
+                    label = stringResource(
+                        id = R.string.media_action_select_pictures
+                    ),
+                    textStyle = TextStyle.HEADLINE_6,
+                    size = 81.dp,
+                    alignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .padding(8.dp)
+                )
+            ) {
+                multiplePhotoPickerLauncher.launch(
+                    PickVisualMediaRequest(
+                        ActivityResultContracts.PickVisualMedia.ImageOnly
+                    )
+                )
+            }
+
+            if (uiModel.hasFileAction) {
+                ImageButtonView(
+                    uiModel = ImageButtonUiModel(
+                        identifier = "FILE",
+                        iconResId = R.drawable.ic_file,
+                        label = stringResource(
+                            id = R.string.media_action_select_files
+                        ),
+                        textStyle = TextStyle.HEADLINE_6,
+                        size = 81.dp,
+                        alignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .padding(8.dp)
+                    )
+                ) {
+                    val mimeTypes = arrayOf("*/*")
+                    multipleFilePickerLauncher.launch(mimeTypes)
+                }
+
+                // FIXME: Add logic to add list of added files with title
+            }
+        }
+
+        if (uiModel.hasFileAction) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 20.dp,
+                        end = 20.dp,
+                    ),
+                horizontalArrangement = Arrangement.Start
+            ) {
+                LabelComponent(
+                    uiModel = LabelUiModel(
+                        identifier = "MEDIA_ACTIONS",
+                        text = "Archivos adjuntos",
+                        textStyle = TextStyle.HEADLINE_2,
+                        arrangement = Arrangement.Start,
+                        modifier = Modifier
+                            .padding(14.dp)
+                    )
+                )
+            }
         }
     }
 }
@@ -118,5 +158,12 @@ sealed class MediaAction {
 @Preview
 @Composable
 fun MediaActionsPreview() {
-    MediaActionsComponent(uiModel = MediaActionsUiModel(hasFileAction = true)) { _ -> }
+    Column {
+        MediaActionsComponent(uiModel = MediaActionsUiModel(hasFileAction = true)) { _ -> }
+        Spacer(modifier = Modifier
+            .fillMaxWidth()
+            .height(2.dp)
+            .background(color = Color.White))
+        MediaActionsComponent(uiModel = MediaActionsUiModel(hasFileAction = false)) { _ -> }
+    }
 }
