@@ -2,15 +2,17 @@ package com.skgtecnologia.sisem.data.remote.extensions
 
 import com.skgtecnologia.sisem.commons.extensions.recoverResult
 import com.skgtecnologia.sisem.commons.extensions.resultOf
-import com.skgtecnologia.sisem.data.remote.model.bricks.banner.BannerResponse
-import com.skgtecnologia.sisem.data.remote.model.bricks.banner.mapToDomain
-import com.skgtecnologia.sisem.domain.model.banner.BannerModel
-import com.skgtecnologia.sisem.domain.model.banner.ErrorModelFactory
+import com.skgtecnologia.sisem.data.remote.model.error.ErrorResponse
+import com.skgtecnologia.sisem.data.remote.model.error.mapToDomain
 import com.squareup.moshi.Moshi
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
+import retrofit2.HttpException
 import retrofit2.Response
 import timber.log.Timber
 
@@ -20,7 +22,7 @@ private val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception
 
 private val coroutineContext = Dispatchers.IO + coroutineExceptionHandler
 
-suspend fun <T> apiCall(errorModelFactory: ErrorModelFactory, api: suspend () -> Response<T>) =
+suspend fun <T> apiCall(api: suspend () -> Response<T>) =
     resultOf {
         val response: Response<T> = withContext(coroutineContext) {
             api()
@@ -33,29 +35,51 @@ suspend fun <T> apiCall(errorModelFactory: ErrorModelFactory, api: suspend () ->
         } else {
             Timber.wtf("The retrieved response is not successful and/or body is empty")
 
-            response.errorBody().toError()?.mapToDomain()?.let {
-                throw it
-            } ?: error("Response is not successful and/or body is empty")
+            throw response.errorBody()!!.toError(response.code()).mapToDomain()
         }
     }.recoverResult {
-        if (it is BannerModel) {
-            throw it
-        } else {
-            throw errorModelFactory.getErrorModel(it)
+        throw when (it) {
+            is HttpException -> handleHttpException(it.code()).mapToDomain()
+            is ConnectException, is UnknownHostException -> ErrorResponse(
+                icon = "ic_alert",
+                title = "Conectividad",
+                description = "Revise su conexión a Internet"
+            ).mapToDomain()
+
+            is SocketTimeoutException -> ErrorResponse(
+                icon = "ic_alert",
+                title = "Servicio no disponible",
+                description = "Sucedió algo inesperado, por favor intenta de nuevo"
+            ).mapToDomain()
+
+            else -> it
         }
     }
 
-private val errorAdapter = Moshi.Builder()
+private val errorResponseAdapter = Moshi.Builder()
     .build()
-    .adapter(BannerResponse::class.java)
+    .adapter(ErrorResponse::class.java)
 
 @Suppress("SwallowedException", "TooGenericExceptionCaught")
-private fun ResponseBody?.toError(): BannerResponse? = if (this != null) {
-    try {
-        errorAdapter.fromJson(string())
-    } catch (exception: Exception) {
-        null
+private fun ResponseBody.toError(code: Int): ErrorResponse = try {
+    errorResponseAdapter.fromJson(string())!!
+} catch (exception: Exception) {
+    Timber.d("status: $code")
+    handleHttpException(code)
+}
+
+private fun handleHttpException(code: Int): ErrorResponse {
+    return if (code == HTTP_FORBIDDEN_STATUS_CODE || code == HTTP_UNAUTHORIZED_STATUS_CODE) {
+        ErrorResponse(
+            icon = "ic_alert",
+            title = "Autenticación",
+            description = "Se requiere re-autenticación"
+        )
+    } else {
+        ErrorResponse(
+            icon = "ic_alert",
+            title = "Ha ocurrido un error",
+            description = ""
+        )
     }
-} else {
-    null
 }

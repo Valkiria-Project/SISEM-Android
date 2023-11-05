@@ -10,13 +10,13 @@
     <string name="back_icon">ic_back</string>
 
     <!-- Error dialog -->
-    <string name="error_connectivity_title">Revise su conexión a Internet</string>
+    <string name="error_connectivity_title">Conectividad</string>
+    <string name="error_connectivity_description">Revise su conexión a Internet</string>
     <string name="error_unauthorized_title">Autenticación</string>
     <string name="error_unauthorized_description">Se requiere re-autenticación</string>
     <string name="error_general_title">Ha ocurrido un error</string>
-    <string name="error_server_title">Error en servidor</string>
-    <string name="error_server_description">Sucedió algo inesperado, por favor intenta de
-        nuevo</string>
+    <string name="error_server_title">Servicio no disponible</string>
+    <string name="error_server_description">Sucedió algo inesperado, por favor intenta de nuevo</string>
 
     <!-- Field validations -->
     <string name="field_empty_validation_message">El campo no debe estar vacío</string>
