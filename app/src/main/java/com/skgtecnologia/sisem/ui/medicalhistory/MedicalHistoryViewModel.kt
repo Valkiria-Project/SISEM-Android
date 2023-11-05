@@ -746,6 +746,16 @@ class MedicalHistoryViewModel @Inject constructor(
         }
     }
 
+    fun showCamera() {
+        // FIXME: SMA-161
+//        uiState = uiState.copy(
+//            navigationModel = ReportNavigationModel(
+//                isFromPreOperational = isFromPreOperational,
+//                showCamera = true
+//            )
+//        )
+    }
+
     fun handleShownError() {
         uiState = uiState.copy(
             infoEvent = null

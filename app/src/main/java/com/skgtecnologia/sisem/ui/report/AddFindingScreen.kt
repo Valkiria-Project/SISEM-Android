@@ -121,7 +121,7 @@ fun AddFindingScreen(
             )
         )
 
-        MediaActionsComponent(uiModel = MediaActionsUiModel()) { mediaAction ->
+        MediaActionsComponent(uiModel = MediaActionsUiModel()) { _, mediaAction ->
             when (mediaAction) {
                 Camera -> viewModel.showCamera(isFromPreOperational = true)
                 is File -> Timber.d("no-op")

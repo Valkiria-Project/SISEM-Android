@@ -64,7 +64,7 @@ fun AddReportScreen(
         launch {
             when {
                 uiState.navigationModel != null && uiState.cancelInfoModel == null &&
-                    uiState.confirmInfoModel == null && uiState.successInfoModel == null -> {
+                        uiState.confirmInfoModel == null && uiState.successInfoModel == null -> {
                     onNavigation(uiState.navigationModel)
                     viewModel.consumeNavigationEvent()
                 }
@@ -113,7 +113,7 @@ fun AddReportScreen(
                 )
             )
 
-            MediaActionsComponent(uiModel = MediaActionsUiModel()) { mediaAction ->
+            MediaActionsComponent(uiModel = MediaActionsUiModel()) { _, mediaAction ->
                 when (mediaAction) {
                     Camera -> viewModel.showCamera(isFromPreOperational = false)
                     is File -> Timber.d("no-op")

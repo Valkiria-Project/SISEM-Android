@@ -33,16 +33,16 @@ import com.valkiria.uicomponents.components.media.MediaAction.Gallery
 @Composable
 fun MediaActionsComponent(
     uiModel: MediaActionsUiModel,
-    onMediaAction: (mediaAction: MediaAction) -> Unit
+    onMediaAction: (id: String, mediaAction: MediaAction) -> Unit
 ) {
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
-        onResult = { uris -> onMediaAction(Gallery(uris)) }
+        onResult = { uris -> onMediaAction(uiModel.identifier, Gallery(uris)) }
     )
 
     val multipleFilePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenMultipleDocuments(),
-        onResult = { uris -> onMediaAction(File(uris)) }
+        onResult = { uris -> onMediaAction(uiModel.identifier, File(uris)) }
     )
 
     Column(
@@ -77,7 +77,7 @@ fun MediaActionsComponent(
                         .padding(8.dp)
                 )
             ) {
-                onMediaAction(Camera)
+                onMediaAction(uiModel.identifier, Camera)
             }
 
             ImageButtonView(
@@ -159,11 +159,13 @@ sealed class MediaAction {
 @Composable
 fun MediaActionsPreview() {
     Column {
-        MediaActionsComponent(uiModel = MediaActionsUiModel(hasFileAction = true)) { _ -> }
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .height(2.dp)
-            .background(color = Color.White))
-        MediaActionsComponent(uiModel = MediaActionsUiModel(hasFileAction = false)) { _ -> }
+        MediaActionsComponent(uiModel = MediaActionsUiModel(hasFileAction = true)) { _, _ -> }
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(2.dp)
+                .background(color = Color.White)
+        )
+        MediaActionsComponent(uiModel = MediaActionsUiModel(hasFileAction = false)) { _, _ -> }
     }
 }
