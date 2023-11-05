@@ -319,6 +319,7 @@ private fun LazyListScope.handleBodyRows(
 
             is MediaActionsUiModel -> item(key = model.identifier) {
                 MediaActionsComponent(uiModel = model) { mediaAction ->
+                    // FIXME: Add logic to pass this event to Screen
                     Timber.d("MediaAction is $mediaAction")
                 }
             }

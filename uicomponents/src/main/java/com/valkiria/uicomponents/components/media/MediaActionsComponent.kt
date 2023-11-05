@@ -103,6 +103,8 @@ fun MediaActionsComponent(
                 val mimeTypes = arrayOf("*/*")
                 multipleFilePickerLauncher.launch(mimeTypes)
             }
+
+            // FIXME: Add logic to add list of added files with title
         }
     }
 }
@@ -116,5 +118,5 @@ sealed class MediaAction {
 @Preview
 @Composable
 fun MediaActionsPreview() {
-    MediaActionsComponent(uiModel = MediaActionsUiModel()) { _ -> }
+    MediaActionsComponent(uiModel = MediaActionsUiModel(hasFileAction = true)) { _ -> }
 }
