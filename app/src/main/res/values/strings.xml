@@ -134,11 +134,6 @@
     <string name="findings_add_files_label">Adjuntar archivos</string>
     <string name="findings_selected_files_label">Imágenes seleccionadas: %1$s</string>
 
-    <!-- Media actions -->
-    <string name="media_action_take_picture_label">Cámara</string>
-    <string name="media_action_select_pictures">Imagen</string>
-    <string name="media_action_select_files">Archivo</string>
-
     <!-- Camera screen -->
     <string name="camera_take_picture">Tomar foto</string>
 

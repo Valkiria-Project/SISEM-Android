@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.media
+package com.valkiria.uicomponents.components.media
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -18,21 +18,24 @@ import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.bricks.button.ImageButtonUiModel
 import com.valkiria.uicomponents.bricks.button.ImageButtonView
 import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.media.MediaAction.Camera
+import com.valkiria.uicomponents.components.media.MediaAction.File
+import com.valkiria.uicomponents.components.media.MediaAction.Gallery
 
 @Suppress("LongMethod")
 @Composable
-fun MediaActions(
-    hasFileAction: Boolean = false,
+fun MediaActionsComponent(
+    uiModel: MediaActionsUiModel,
     onMediaAction: (mediaAction: MediaAction) -> Unit
 ) {
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
-        onResult = { uris -> onMediaAction(MediaAction.Gallery(uris)) }
+        onResult = { uris -> onMediaAction(Gallery(uris)) }
     )
 
     val multipleFilePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenMultipleDocuments(),
-        onResult = { uris -> onMediaAction(MediaAction.File(uris)) }
+        onResult = { uris -> onMediaAction(File(uris)) }
     )
 
     Row(
@@ -49,7 +52,7 @@ fun MediaActions(
                 identifier = "CAMERA",
                 iconResId = R.drawable.ic_camera,
                 label = stringResource(
-                    id = com.skgtecnologia.sisem.R.string.media_action_take_picture_label
+                    id = R.string.media_action_take_picture_label
                 ),
                 textStyle = TextStyle.HEADLINE_6,
                 size = 81.dp,
@@ -58,7 +61,7 @@ fun MediaActions(
                     .padding(8.dp)
             )
         ) {
-            onMediaAction(MediaAction.Camera)
+            onMediaAction(Camera)
         }
 
         ImageButtonView(
@@ -66,7 +69,7 @@ fun MediaActions(
                 identifier = "GALLERY",
                 iconResId = R.drawable.ic_image,
                 label = stringResource(
-                    id = com.skgtecnologia.sisem.R.string.media_action_select_pictures
+                    id = R.string.media_action_select_pictures
                 ),
                 textStyle = TextStyle.HEADLINE_6,
                 size = 81.dp,
@@ -82,13 +85,13 @@ fun MediaActions(
             )
         }
 
-        if (hasFileAction) {
+        if (uiModel.hasFileAction) {
             ImageButtonView(
                 uiModel = ImageButtonUiModel(
                     identifier = "FILE",
                     iconResId = R.drawable.ic_file,
                     label = stringResource(
-                        id = com.skgtecnologia.sisem.R.string.media_action_select_files
+                        id = R.string.media_action_select_files
                     ),
                     textStyle = TextStyle.HEADLINE_6,
                     size = 81.dp,
@@ -113,5 +116,5 @@ sealed class MediaAction {
 @Preview
 @Composable
 fun MediaActionsPreview() {
-    MediaActions(hasFileAction = true) { _ -> }
+    MediaActionsComponent(uiModel = MediaActionsUiModel()) { _ -> }
 }

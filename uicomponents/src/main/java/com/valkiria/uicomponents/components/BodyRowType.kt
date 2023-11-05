@@ -20,6 +20,7 @@ enum class BodyRowType {
     HEADER,
     INVENTORY_CHECK,
     LABEL,
+    MEDIA_ACTIONS,
     PASSWORD_TEXT_FIELD,
     RICH_LABEL,
     SEGMENTED_SWITCH,

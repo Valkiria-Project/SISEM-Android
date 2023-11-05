@@ -60,6 +60,7 @@ import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.ListTextUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextUiModel
+import com.valkiria.uicomponents.components.media.MediaActionsUiModel
 import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import com.valkiria.uicomponents.components.signature.SignatureUiModel
@@ -141,10 +142,17 @@ class MedicalHistoryViewModel @Inject constructor(
             ).onSuccess { medicalHistoryScreenModel ->
                 medicalHistoryScreenModel.getFormInitialValues()
 
+                val updatedScreenModel = medicalHistoryScreenModel.copy(
+                    body = buildList {
+                        addAll(medicalHistoryScreenModel.body)
+                        add(MediaActionsUiModel(hasFileAction = true))
+                    }
+                )
+
                 withContext(Dispatchers.Main) {
                     uiState = uiState.copy(
                         isLoading = false,
-                        screenModel = medicalHistoryScreenModel
+                        screenModel = updatedScreenModel
                     )
                 }
             }.onFailure { throwable ->
@@ -214,8 +222,6 @@ class MedicalHistoryViewModel @Inject constructor(
                         it.startsWith(FC_KEY)
                     }?.substringAfter(FC_KEY)?.trim()?.toInt() ?: 0
                 }
-
-                else -> Timber.d("no-op")
             }
         }
     }

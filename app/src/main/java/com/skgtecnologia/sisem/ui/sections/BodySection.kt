@@ -73,6 +73,8 @@ import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckCompone
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.LabelUiModel
+import com.valkiria.uicomponents.components.media.MediaActionsComponent
+import com.valkiria.uicomponents.components.media.MediaActionsUiModel
 import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
@@ -96,6 +98,7 @@ import com.valkiria.uicomponents.components.timepicker.TimePickerComponent
 import com.valkiria.uicomponents.components.timepicker.TimePickerUiModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Suppress("ComplexMethod", "LongMethod")
 @Composable
@@ -312,6 +315,12 @@ private fun LazyListScope.handleBodyRows(
 
             is LabelUiModel -> item(key = model.identifier) {
                 LabelComponent(uiModel = model)
+            }
+
+            is MediaActionsUiModel -> item(key = model.identifier) {
+                MediaActionsComponent(uiModel = model) { mediaAction ->
+                    Timber.d("MediaAction is $mediaAction")
+                }
             }
 
             is MedsSelectorUiModel -> item(key = model.identifier) {
