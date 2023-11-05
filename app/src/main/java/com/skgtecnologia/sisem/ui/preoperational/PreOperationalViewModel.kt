@@ -25,6 +25,7 @@ import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -32,7 +33,6 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 @HiltViewModel
@@ -134,8 +134,6 @@ class PreOperationalViewModel @Inject constructor(
                         bodyRowModel.value
                     )
                 }
-
-                else -> Timber.d("no-op")
             }
         }
     }

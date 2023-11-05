@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.skgtecnologia.sisem.ui.commons.extensions.handleEvent
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.GenericUiAction
@@ -58,7 +59,8 @@ fun MedicalHistoryScreen(
         handleAction(uiAction, viewModel)
     }
 
-    OnBannerHandler(uiModel = uiState.infoEvent) {
+    OnBannerHandler(uiModel = uiState.infoEvent) { uiAction ->
+        uiAction.handleEvent()
         viewModel.handleShownError()
     }
 

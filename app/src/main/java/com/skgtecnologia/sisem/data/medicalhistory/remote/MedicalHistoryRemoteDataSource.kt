@@ -7,14 +7,12 @@ import com.skgtecnologia.sisem.data.remote.extensions.apiCall
 import com.skgtecnologia.sisem.data.remote.model.screen.Params
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
 import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
-import com.skgtecnologia.sisem.domain.model.banner.ErrorModelFactory
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 import javax.inject.Inject
 
 class MedicalHistoryRemoteDataSource @Inject constructor(
-    private val medicalHistoryApi: MedicalHistoryApi,
-    private val errorModelFactory: ErrorModelFactory
+    private val medicalHistoryApi: MedicalHistoryApi
 ) {
 
     suspend fun getMedicalHistoryScreen(
@@ -23,7 +21,7 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
         turnId: String,
         incidentCode: String,
         patientId: String
-    ): Result<ScreenModel> = apiCall(errorModelFactory) {
+    ): Result<ScreenModel> = apiCall {
         medicalHistoryApi.getMedicalHistoryScreen(
             screenBody = ScreenBody(
                 params = Params(
@@ -39,7 +37,7 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
         it.mapToDomain()
     }
 
-    suspend fun getVitalSignsScreen(): Result<ScreenModel> = apiCall(errorModelFactory) {
+    suspend fun getVitalSignsScreen(): Result<ScreenModel> = apiCall {
         medicalHistoryApi.getVitalSignsScreen(
             screenBody = ScreenBody(
                 params = Params()
@@ -49,7 +47,7 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
         it.mapToDomain()
     }
 
-    suspend fun getMedicineScreen(): Result<ScreenModel> = apiCall(errorModelFactory) {
+    suspend fun getMedicineScreen(): Result<ScreenModel> = apiCall {
         medicalHistoryApi.getMedicineScreen(
             screenBody = ScreenBody(
                 params = Params()
@@ -74,7 +72,7 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
         imageButtonSectionValues: Map<String, String>,
         vitalSigns: Map<String, Map<String, String>>,
         infoCardButtonValues: List<Map<String, String>>
-    ): Result<Unit> = apiCall(errorModelFactory) {
+    ): Result<Unit> = apiCall {
         medicalHistoryApi.sendMedicalHistory(
             medicalHistoryBody = MedicalHistoryBody(
                 idTurn = idTurn,

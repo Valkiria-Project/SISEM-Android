@@ -60,6 +60,7 @@ import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.ListTextUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextUiModel
+import com.valkiria.uicomponents.components.media.MediaActionsUiModel
 import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import com.valkiria.uicomponents.components.signature.SignatureUiModel
@@ -69,16 +70,16 @@ import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.utlis.HOURS_MINUTES_24_HOURS_PATTERN
 import com.valkiria.uicomponents.utlis.WEEK_DAYS
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import timber.log.Timber
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 private const val SAVED_VITAL_SIGNS_COLOR = "#3cf2dd"
 private const val TEMPERATURE_SYMBOL = "°C"
@@ -141,10 +142,18 @@ class MedicalHistoryViewModel @Inject constructor(
             ).onSuccess { medicalHistoryScreenModel ->
                 medicalHistoryScreenModel.getFormInitialValues()
 
+                // FIXME: Add MediaActionsUiModel in the correct position
+                val updatedScreenModel = medicalHistoryScreenModel.copy(
+                    body = buildList {
+                        addAll(medicalHistoryScreenModel.body)
+                        add(MediaActionsUiModel(hasFileAction = true))
+                    }
+                )
+
                 withContext(Dispatchers.Main) {
                     uiState = uiState.copy(
                         isLoading = false,
-                        screenModel = medicalHistoryScreenModel
+                        screenModel = updatedScreenModel
                     )
                 }
             }.onFailure { throwable ->
@@ -214,8 +223,6 @@ class MedicalHistoryViewModel @Inject constructor(
                         it.startsWith(FC_KEY)
                     }?.substringAfter(FC_KEY)?.trim()?.toInt() ?: 0
                 }
-
-                else -> Timber.d("no-op")
             }
         }
     }

@@ -16,6 +16,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.skgtecnologia.sisem.commons.communication.AppEvent
+import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.ui.authcards.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
@@ -50,6 +52,16 @@ fun SisemNavGraph(
         val modifier = Modifier.padding(paddingValues)
         val navController = rememberNavController()
         val context = LocalContext.current
+
+        UnauthorizedEventHandler.subscribeUnauthorizedEvent { appEvent ->
+            if (appEvent == AppEvent.UNAUTHORIZED_SESSION) {
+                navController.navigate(AuthNavigationRoute.LoginScreen.route) {
+                    popUpTo(NavigationGraph.Main.route) {
+                        inclusive = true
+                    }
+                }
+            }
+        }
 
         NavHost(
             navController = navController,
@@ -185,7 +197,6 @@ private fun NavGraphBuilder.mainGraph(
         composable(
             route = MainNavigationRoute.IncidentScreen.route
         ) { navBackStackEntry ->
-            // FIXME: Finish this work
             val vitalSigns =
                 navBackStackEntry.savedStateHandle.get<Map<String, String>>(VITAL_SIGNS)
             navBackStackEntry.savedStateHandle.remove<Map<String, String>>(VITAL_SIGNS)

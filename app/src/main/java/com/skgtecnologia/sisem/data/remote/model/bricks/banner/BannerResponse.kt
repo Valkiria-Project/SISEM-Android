@@ -13,8 +13,8 @@ data class BannerResponse(
 )
 
 fun BannerResponse.mapToDomain() = BannerModel(
-    icon = icon ?: error("Error icon cannot be null"),
+    icon = icon ?: error("Banner icon cannot be null"),
     iconColor = DEFAULT_ICON_COLOR,
-    title = title ?: error("Error title cannot be null"),
-    description = description ?: error("Error description cannot be null")
+    title = title ?: error("Banner title cannot be null"),
+    description = description ?: error("Banner description cannot be null")
 )

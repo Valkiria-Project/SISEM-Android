@@ -6,7 +6,12 @@
 
     <string name="human_body_label">Rotar</string>
 
+    <!-- Media actions -->
+    <string name="media_action_take_picture_label">Cámara</string>
+    <string name="media_action_select_pictures">Imagen</string>
+    <string name="media_action_select_files">Archivo</string>
+
     <!-- Time picker -->
-    <string name="time_picker_hour">Hora</string>
-    <string name="time_picker_minutes">Minutos</string>
+    <string name="time_box_hour">Hora</string>
+    <string name="time_box_minutes">Minutos</string>
 </resources>
