@@ -14,6 +14,7 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ADMINISTRATION_ROUTE
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ADMINISTRATION_ROUTE_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.ALIVE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.APPLICATION_TIME_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.APPLIED_DOSES
 import com.skgtecnologia.sisem.domain.medicalhistory.model.APPLIED_DOSE_KEY
@@ -31,12 +32,14 @@ import com.skgtecnologia.sisem.domain.medicalhistory.model.GLASGOW_MRO_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.GLASGOW_MRV_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.GLASGOW_RTS_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.GLASGOW_TOTAL_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.GLUCOMETRY_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.INITIAL_VITAL_SIGNS
 import com.skgtecnologia.sisem.domain.medicalhistory.model.PREGNANT_FUR_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.PREGNANT_WEEKS_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.QUANTITY_USED
 import com.skgtecnologia.sisem.domain.medicalhistory.model.QUANTITY_USED_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.TAS_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.TEMPERATURE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryScreen
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SendMedicalHistory
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
@@ -78,6 +81,8 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 private const val SAVED_VITAL_SIGNS_COLOR = "#3cf2dd"
+private const val TEMPERATURE_SYMBOL = "°C"
+private const val GLUCOMETRY_SYMBOL = "mg/dL"
 
 // FIXME: Split into use cases
 @Suppress("TooManyFunctions")
@@ -92,6 +97,9 @@ class MedicalHistoryViewModel @Inject constructor(
 
     var uiState by mutableStateOf(MedicalHistoryUiState())
         private set
+
+    private var initialVitalSignsTas: Int = 0
+    private var initialVitalSignsFc: Int = 0
 
     private val allowInfoCardIdentifiers = listOf(
         INITIAL_VITAL_SIGNS,
@@ -197,6 +205,16 @@ class MedicalHistoryViewModel @Inject constructor(
                     bodyRowModel.value
                 )
 
+                is InfoCardUiModel -> if (bodyRowModel.identifier == INITIAL_VITAL_SIGNS) {
+                    initialVitalSignsTas = bodyRowModel.chipSection?.listText?.texts?.find {
+                        it.startsWith(TAS_KEY)
+                    }?.substringAfter(TAS_KEY)?.trim()?.toInt() ?: 0
+
+                    initialVitalSignsFc = bodyRowModel.chipSection?.listText?.texts?.find {
+                        it.startsWith(FC_KEY)
+                    }?.substringAfter(FC_KEY)?.trim()?.toInt() ?: 0
+                }
+
                 else -> Timber.d("no-op")
             }
         }
@@ -284,8 +302,19 @@ class MedicalHistoryViewModel @Inject constructor(
         val mrm = chipSelectionValues[GLASGOW_MRM_KEY]?.name?.substring(0, 1)?.toIntOrNull() ?: 0
         val ecg = mro + mrv + mrm
 
-        val tas = vitalSignsValues[INITIAL_VITAL_SIGNS]?.get(TAS_KEY)?.toIntOrNull() ?: 0
-        val fc = vitalSignsValues[INITIAL_VITAL_SIGNS]?.get(FC_KEY)?.toIntOrNull() ?: 0
+        initialVitalSignsTas =
+            if (vitalSignsValues[INITIAL_VITAL_SIGNS]?.get(TAS_KEY)?.isNotEmpty() == true) {
+                vitalSignsValues[INITIAL_VITAL_SIGNS]?.get(TAS_KEY)?.toIntOrNull() ?: 0
+            } else {
+                initialVitalSignsTas
+            }
+
+        initialVitalSignsFc =
+            if (vitalSignsValues[INITIAL_VITAL_SIGNS]?.get(FC_KEY)?.isNotEmpty() == true) {
+                vitalSignsValues[INITIAL_VITAL_SIGNS]?.get(FC_KEY)?.toIntOrNull() ?: 0
+            } else {
+                initialVitalSignsFc
+            }
 
         val ecgScore = when (ecg) {
             in 13..15 -> 4
@@ -296,18 +325,18 @@ class MedicalHistoryViewModel @Inject constructor(
         }
 
         val tasScore = when {
-            tas > 89 -> 4
-            tas in 76..89 -> 3
-            tas in 50..75 -> 2
-            tas in 1..49 -> 1
+            initialVitalSignsTas > 89 -> 4
+            initialVitalSignsTas in 76..89 -> 3
+            initialVitalSignsTas in 50..75 -> 2
+            initialVitalSignsTas in 1..49 -> 1
             else -> 0
         }
 
         val fcScore = when {
-            fc > 29 -> 4
-            fc in 10..29 -> 3
-            fc in 6..9 -> 2
-            fc in 1..5 -> 1
+            initialVitalSignsFc > 29 -> 4
+            initialVitalSignsFc in 10..29 -> 3
+            initialVitalSignsFc in 6..9 -> 2
+            initialVitalSignsFc in 1..5 -> 1
             else -> 0
         }
 
@@ -409,7 +438,7 @@ class MedicalHistoryViewModel @Inject constructor(
     }
 
     fun showVitalSignsForm(identifier: String) {
-        if (allowInfoCardIdentifiers.contains(identifier)) {
+        if (allowInfoCardIdentifiers.contains(identifier) && segmentedValues[ALIVE_KEY] == true) {
             temporalInfoCard = identifier
             uiState = uiState.copy(
                 navigationModel = MedicalHistoryNavigationModel(
@@ -532,7 +561,13 @@ class MedicalHistoryViewModel @Inject constructor(
             updateGlasgow()
         }
 
-        val list = values.map { "${it.key} ${it.value}" }
+        val list = values.map {
+            when (it.key) {
+                TEMPERATURE_KEY -> "${it.key} ${it.value} $TEMPERATURE_SYMBOL"
+                GLUCOMETRY_KEY -> "${it.key} ${it.value} $GLUCOMETRY_SYMBOL"
+                else -> "${it.key} ${it.value}"
+            }
+        }
 
         val updatedBody = uiState.screenModel?.body?.map { bodyRowModel ->
             if (bodyRowModel is InfoCardUiModel && bodyRowModel.identifier == temporalInfoCard) {

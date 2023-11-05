@@ -4,6 +4,7 @@ package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.navigation.NavHostController
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthNavigationModel
+import com.skgtecnologia.sisem.ui.forgotpassword.ForgotPasswordNavigationModel
 import com.skgtecnologia.sisem.ui.login.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineNavigationModel
@@ -48,6 +49,7 @@ fun navigateToNextStep(
     is DeviceAuthNavigationModel ->
         deviceAuthToNextStep(navController, navigationModel, onNavigationFallback)
 
+    is ForgotPasswordNavigationModel -> forgotPasswordToNextStep(navController, navigationModel)
     is LoginNavigationModel -> loginToNextStep(navController, navigationModel)
     is MedicalHistoryNavigationModel -> medicalHistoryToNextStep(navController, navigationModel)
     is MedicineNavigationModel -> medicineToNextStep(navController, navigationModel)
@@ -99,6 +101,15 @@ private fun deviceAuthToNextStep(
                 onNavigationFallback()
             }
         }
+    }
+}
+
+fun forgotPasswordToNextStep(
+    navController: NavHostController,
+    model: ForgotPasswordNavigationModel
+) {
+    when {
+        model.isCancel || model.isSuccess -> navController.popBackStack()
     }
 }
 

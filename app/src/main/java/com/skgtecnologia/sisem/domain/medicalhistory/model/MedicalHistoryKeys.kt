@@ -12,10 +12,14 @@ const val GLASGOW_RTS_KEY = "GLASGOW_RTS"
 
 const val TAS_KEY = "TAS"
 const val FC_KEY = "FC"
+const val TEMPERATURE_KEY = "Temperatura"
+const val GLUCOMETRY_KEY = "Glucometria"
 
 const val FUR_KEY = "KEY_GYNECOBSTETRICS_FUR"
 const val PREGNANT_FUR_KEY = "PREGNANT_FUR"
 const val PREGNANT_WEEKS_KEY = "PREGNANT_WEEKS"
+
+const val ALIVE_KEY = "KEY_ALIVE"
 
 // FIXME: Move this to String resources
 const val APPLIED_DOSES = "Dosis aplicada"
