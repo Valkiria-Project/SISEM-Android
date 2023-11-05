@@ -142,6 +142,7 @@ class MedicalHistoryViewModel @Inject constructor(
             ).onSuccess { medicalHistoryScreenModel ->
                 medicalHistoryScreenModel.getFormInitialValues()
 
+                // FIXME: Add MediaActionsUiModel in the correct position
                 val updatedScreenModel = medicalHistoryScreenModel.copy(
                     body = buildList {
                         addAll(medicalHistoryScreenModel.body)
