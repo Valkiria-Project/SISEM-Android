@@ -295,3 +295,11 @@ fun reportSentBanner(): BannerModel = BannerModel(
     title = "Novedad guardada",
     description = "La novedad ha sido almacenada con éxito."
 )
+
+fun sendEmailSuccessBanner(): BannerModel = BannerModel(
+    icon = "ic_email",
+    iconColor = "#42A4FA",
+    title = "Correo enviado",
+    description = "Se ha enviado un enlace de recuperación " +
+        "de contraseña al correo electrónico diligenciado"
+)
