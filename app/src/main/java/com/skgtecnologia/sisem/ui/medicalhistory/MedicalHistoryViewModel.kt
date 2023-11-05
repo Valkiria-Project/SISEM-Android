@@ -66,16 +66,16 @@ import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.utlis.HOURS_MINUTES_24_HOURS_PATTERN
 import com.valkiria.uicomponents.utlis.WEEK_DAYS
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import timber.log.Timber
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 private const val SAVED_VITAL_SIGNS_COLOR = "#3cf2dd"
 
@@ -99,15 +99,15 @@ class MedicalHistoryViewModel @Inject constructor(
         END_VITAL_SIGNS
     )
 
-    val glasgowIdentifier = listOf(
+    private val glasgowIdentifier = listOf(
         GLASGOW_MRO_KEY,
         GLASGOW_MRV_KEY,
         GLASGOW_MRM_KEY
     )
 
-    var temporalInfoCard by mutableStateOf("")
-    var temporalMedsSelector by mutableStateOf("")
-    var temporalSignature by mutableStateOf("")
+    private var temporalInfoCard by mutableStateOf("")
+    private var temporalMedsSelector by mutableStateOf("")
+    private var temporalSignature by mutableStateOf("")
 
     private var chipOptionValues = mutableStateMapOf<String, MutableList<String>>()
     private var chipSelectionValues = mutableStateMapOf<String, ChipSelectionItemUiModel>()
@@ -119,7 +119,7 @@ class MedicalHistoryViewModel @Inject constructor(
     private var segmentedValues = mutableStateMapOf<String, Boolean>()
     private var signatureValues = mutableStateMapOf<String, String>()
     private var sliderValues = mutableStateMapOf<String, String>()
-    var vitalSignsValues = mutableStateMapOf<String, Map<String, String>>()
+    private var vitalSignsValues = mutableStateMapOf<String, Map<String, String>>()
 
     init {
         uiState = uiState.copy(isLoading = true)

@@ -15,16 +15,15 @@ class DeviceAuthRemoteDataSource @Inject constructor(
     private val deviceAuthApi: DeviceAuthApi
 ) {
 
-    suspend fun getDeviceAuthScreen(serial: String): Result<ScreenModel> =
-        apiCall {
-            deviceAuthApi.getDeviceAuthScreen(
-                screenBody = ScreenBody(
-                    params = Params(serial = serial)
-                )
+    suspend fun getDeviceAuthScreen(serial: String): Result<ScreenModel> = apiCall {
+        deviceAuthApi.getDeviceAuthScreen(
+            screenBody = ScreenBody(
+                params = Params(serial = serial)
             )
-        }.mapResult {
-            it.mapToDomain()
-        }
+        )
+    }.mapResult {
+        it.mapToDomain()
+    }
 
     suspend fun associateDevice(
         serial: String,

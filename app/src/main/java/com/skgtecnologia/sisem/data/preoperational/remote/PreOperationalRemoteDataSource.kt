@@ -29,35 +29,34 @@ class PreOperationalRemoteDataSource @Inject constructor(
         androidId: String,
         vehicleCode: String?,
         idTurn: String
-    ): Result<ScreenModel> =
-        apiCall {
-            val screenBody = ScreenBody(
-                params = Params(
-                    serial = androidId,
-                    code = vehicleCode,
-                    turnId = idTurn
-                )
+    ): Result<ScreenModel> = apiCall {
+        val screenBody = ScreenBody(
+            params = Params(
+                serial = androidId,
+                code = vehicleCode,
+                turnId = idTurn
+            )
+        )
+
+        when (role) {
+            OperationRole.AUXILIARY_AND_OR_TAPH -> preOperationalApi.getAuxPreOperationalScreen(
+                screenBody = screenBody
             )
 
-            when (role) {
-                OperationRole.AUXILIARY_AND_OR_TAPH -> preOperationalApi.getAuxPreOperationalScreen(
-                    screenBody = screenBody
-                )
+            OperationRole.DRIVER -> preOperationalApi.getDriverPreOperationalScreen(
+                screenBody = screenBody
+            )
 
-                OperationRole.DRIVER -> preOperationalApi.getDriverPreOperationalScreen(
-                    screenBody = screenBody
-                )
+            OperationRole.MEDIC_APH -> preOperationalApi.getDoctorPreOperationalScreen(
+                screenBody = screenBody
+            )
 
-                OperationRole.MEDIC_APH -> preOperationalApi.getDoctorPreOperationalScreen(
-                    screenBody = screenBody
-                )
-
-                OperationRole.LEAD_APH ->
-                    throw IllegalArgumentException("Lead APH role not supported")
-            }
-        }.mapResult {
-            it.mapToDomain()
+            OperationRole.LEAD_APH ->
+                throw IllegalArgumentException("Lead APH role not supported")
         }
+    }.mapResult {
+        it.mapToDomain()
+    }
 
     @Suppress("LongParameterList")
     suspend fun sendPreOperational(

@@ -17,14 +17,13 @@ class ReportRemoteDataSource @Inject constructor(
     private val reportApi: ReportApi
 ) {
 
-    suspend fun getAddReportRoleScreen(serial: String): Result<ScreenModel> =
-        apiCall {
-            reportApi.getAddReportRoleScreen(
-                screenBody = ScreenBody(params = Params(serial = serial))
-            )
-        }.mapResult {
-            it.mapToDomain()
-        }
+    suspend fun getAddReportRoleScreen(serial: String): Result<ScreenModel> = apiCall {
+        reportApi.getAddReportRoleScreen(
+            screenBody = ScreenBody(params = Params(serial = serial))
+        )
+    }.mapResult {
+        it.mapToDomain()
+    }
 
     suspend fun getAddReportScreen(): Result<ScreenModel> = apiCall {
         reportApi.getAddReportEntryScreen(screenBody = ScreenBody(params = Params()))

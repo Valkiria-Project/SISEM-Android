@@ -18,26 +18,24 @@ class AuthRemoteDataSource @Inject constructor(
         password: String,
         code: String,
         turnId: String
-    ): Result<AccessTokenModel> =
-        apiCall {
-            authApi.authenticate(
-                authenticateBody = AuthenticateBody(
-                    username = username,
-                    password = password,
-                    code = code,
-                    idTurn = turnId
-                )
+    ): Result<AccessTokenModel> = apiCall {
+        authApi.authenticate(
+            authenticateBody = AuthenticateBody(
+                username = username,
+                password = password,
+                code = code,
+                idTurn = turnId
             )
-        }.mapResult {
-            it.mapToDomain()
-        }
+        )
+    }.mapResult {
+        it.mapToDomain()
+    }
 
-    suspend fun refreshToken(refreshToken: String): Result<RefreshTokenModel> =
-        apiCall {
-            authApi.refresh(refreshBody = RefreshBody(refreshToken = refreshToken))
-        }.mapResult {
-            it.mapToDomain()
-        }
+    suspend fun refreshToken(refreshToken: String): Result<RefreshTokenModel> = apiCall {
+        authApi.refresh(refreshBody = RefreshBody(refreshToken = refreshToken))
+    }.mapResult {
+        it.mapToDomain()
+    }
 
     suspend fun logout(username: String): Result<String> = apiCall {
         authApi.logout(username = username)

@@ -1,10 +1,21 @@
 package com.skgtecnologia.sisem.data.remote.extensions
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.commons.extensions.recoverResult
 import com.skgtecnologia.sisem.commons.extensions.resultOf
 import com.skgtecnologia.sisem.data.remote.model.error.ErrorResponse
 import com.skgtecnologia.sisem.data.remote.model.error.mapToDomain
+import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.squareup.moshi.Moshi
+import com.valkiria.uicomponents.components.button.ButtonSize
+import com.valkiria.uicomponents.components.button.ButtonStyle
+import com.valkiria.uicomponents.components.button.ButtonUiModel
+import com.valkiria.uicomponents.components.button.OnClick
+import com.valkiria.uicomponents.components.footer.FooterUiModel
+import com.valkiria.uicomponents.components.label.TextStyle
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -74,7 +85,25 @@ private fun handleHttpException(code: Int): ErrorResponse {
             icon = "ic_alert",
             title = "Autenticación",
             description = "Se requiere re-autenticación"
-        )
+        ).apply {
+            footerModel = FooterUiModel(
+                leftButton = ButtonUiModel(
+                    identifier = LoginIdentifier.LOGIN_RE_AUTH_BANNER.name,
+                    label = "Re Autenticar",
+                    style = ButtonStyle.LOUD,
+                    textStyle = TextStyle.HEADLINE_5,
+                    onClick = OnClick.DISMISS,
+                    size = ButtonSize.DEFAULT,
+                    arrangement = Arrangement.Start,
+                    modifier = Modifier.padding(
+                        start = 0.dp,
+                        top = 20.dp,
+                        end = 0.dp,
+                        bottom = 0.dp
+                    )
+                )
+            )
+        }
     } else {
         ErrorResponse(
             icon = "ic_alert",

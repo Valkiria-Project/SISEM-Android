@@ -1,4 +1,5 @@
 @file:Suppress("TooManyFunctions")
+
 package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.navigation.NavHostController
@@ -43,20 +44,19 @@ fun navigateToNextStep(
     navController: NavHostController,
     navigationModel: NavigationModel?,
     onNavigationFallback: () -> Unit = {}
-) =
-    when (navigationModel) {
-        is DeviceAuthNavigationModel ->
-            deviceAuthToNextStep(navController, navigationModel, onNavigationFallback)
+) = when (navigationModel) {
+    is DeviceAuthNavigationModel ->
+        deviceAuthToNextStep(navController, navigationModel, onNavigationFallback)
 
-        is LoginNavigationModel -> loginToNextStep(navController, navigationModel)
-        is MedicalHistoryNavigationModel -> medicalHistoryToNextStep(navController, navigationModel)
-        is MedicineNavigationModel -> medicineToNextStep(navController, navigationModel)
-        is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
-        is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
-        is SignaturePadNavigationModel -> signaturePadToNextStep(navController, navigationModel)
-        is VitalSignsNavigationModel -> vitalSignsToNextStep(navController, navigationModel)
-        else -> {}
-    }
+    is LoginNavigationModel -> loginToNextStep(navController, navigationModel)
+    is MedicalHistoryNavigationModel -> medicalHistoryToNextStep(navController, navigationModel)
+    is MedicineNavigationModel -> medicineToNextStep(navController, navigationModel)
+    is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
+    is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
+    is SignaturePadNavigationModel -> signaturePadToNextStep(navController, navigationModel)
+    is VitalSignsNavigationModel -> vitalSignsToNextStep(navController, navigationModel)
+    else -> {}
+}
 
 private fun deviceAuthToNextStep(
     navController: NavHostController,

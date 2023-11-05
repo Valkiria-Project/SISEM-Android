@@ -13,10 +13,10 @@ internal object UnauthorizedEventHandler {
         }
     }
 
-    suspend fun subscribeUnauthorizedEvent(onEvent: (AppEvent) -> Unit) {
+    fun subscribeUnauthorizedEvent(onEvent: (AppEvent) -> Unit) {
         CoroutineScope(Dispatchers.Main + SupervisorJob()).launch {
-            EventBus.subscribe<AppEvent> { cvvRequestModelEvent ->
-                onEvent(cvvRequestModelEvent)
+            EventBus.subscribe<AppEvent> { appEvent ->
+                onEvent(appEvent)
             }
         }
     }
