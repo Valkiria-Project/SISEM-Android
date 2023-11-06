@@ -101,7 +101,7 @@ fun MediaActionsComponent(
                 )
             }
 
-            if (uiModel.hasFileAction) {
+            if (uiModel.withinForm) {
                 ImageButtonView(
                     uiModel = ImageButtonUiModel(
                         identifier = "FILE",
@@ -124,7 +124,7 @@ fun MediaActionsComponent(
             }
         }
 
-        if (uiModel.hasFileAction) {
+        if (uiModel.withinForm) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -159,13 +159,13 @@ sealed class MediaAction {
 @Composable
 fun MediaActionsPreview() {
     Column {
-        MediaActionsComponent(uiModel = MediaActionsUiModel(hasFileAction = true)) { _, _ -> }
+        MediaActionsComponent(uiModel = MediaActionsUiModel(withinForm = true)) { _, _ -> }
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(2.dp)
                 .background(color = Color.White)
         )
-        MediaActionsComponent(uiModel = MediaActionsUiModel(hasFileAction = false)) { _, _ -> }
+        MediaActionsComponent(uiModel = MediaActionsUiModel(withinForm = false)) { _, _ -> }
     }
 }
