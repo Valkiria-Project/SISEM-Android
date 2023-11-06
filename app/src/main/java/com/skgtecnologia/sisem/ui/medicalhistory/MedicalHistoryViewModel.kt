@@ -65,7 +65,6 @@ import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.ListTextUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextUiModel
-import com.valkiria.uicomponents.components.media.MediaActionsUiModel
 import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import com.valkiria.uicomponents.components.signature.SignatureUiModel
@@ -148,18 +147,10 @@ class MedicalHistoryViewModel @Inject constructor(
             ).onSuccess { medicalHistoryScreenModel ->
                 medicalHistoryScreenModel.getFormInitialValues()
 
-                // FIXME: Add MediaActionsUiModel in the correct position
-                val updatedScreenModel = medicalHistoryScreenModel.copy(
-                    body = buildList {
-                        addAll(medicalHistoryScreenModel.body)
-                        add(MediaActionsUiModel(withinForm = true))
-                    }
-                )
-
                 withContext(Dispatchers.Main) {
                     uiState = uiState.copy(
                         isLoading = false,
-                        screenModel = updatedScreenModel
+                        screenModel = medicalHistoryScreenModel
                     )
                 }
             }.onFailure { throwable ->
