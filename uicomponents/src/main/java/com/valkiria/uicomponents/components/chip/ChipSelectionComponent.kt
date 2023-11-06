@@ -18,7 +18,12 @@ import com.valkiria.uicomponents.components.label.TextStyle
 @Composable
 fun ChipSelectionComponent(
     uiModel: ChipSelectionUiModel,
-    onAction: (id: String, selectionItem: ChipSelectionItemUiModel, isSelection: Boolean) -> Unit
+    onAction: (
+        id: String,
+        selectionItem: ChipSelectionItemUiModel,
+        isSelection: Boolean,
+        viewsVisibility: Map<String, Boolean>
+    ) -> Unit
 ) {
     val selected = rememberSaveable { mutableStateOf(uiModel.selected) }
 
@@ -51,7 +56,16 @@ fun ChipSelectionComponent(
                     textStyle = TextStyle.BUTTON_1,
                     onAction = { _, text, isSelection ->
                         selected.value = text
-                        onAction(uiModel.identifier, chipSelection, isSelection)
+
+                        val viewsVisibility = mutableMapOf<String, Boolean>()
+                        uiModel.selectionVisibility?.forEach {
+                            viewsVisibility[it.key] = it.value.equals(
+                                text,
+                                ignoreCase = true
+                            ) && chipSelection.name == text
+                        }
+
+                        onAction(uiModel.identifier, chipSelection, isSelection, viewsVisibility)
                     }
                 )
             }

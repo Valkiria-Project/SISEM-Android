@@ -29,6 +29,7 @@ data class ChipSelectionResponse(
         title = title?.mapToUi(),
         items = items?.map { it.mapToUi() } ?: error("ChipSelection items cannot be null"),
         selected = selected,
+        selectionVisibility = selectionVisibility,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

@@ -283,7 +283,7 @@ class MedicalHistoryViewModel @Inject constructor(
             updateGlasgow()
         }
 
-        val updatedBody = updateBodyModel(
+        var updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
             identifier = chipSelectionAction.identifier,
             updater = { model ->
@@ -294,6 +294,28 @@ class MedicalHistoryViewModel @Inject constructor(
                 }
             }
         )
+
+        chipSelectionAction.viewsVisibility.forEach {
+            updateBodyModel(
+                uiModels = updatedBody,
+                identifier = it.key
+            ) { model ->
+                when {
+                    model is ChipOptionsUiModel && it.value -> model.copy(visibility = it.value)
+
+                    model is ChipOptionsUiModel && it.value.not() -> {
+                        chipOptionValues.remove(it.key)
+                        model.copy(
+                            items = model.items.map { item -> item.copy(selected = false) },
+                            visibility = it.value
+                        )
+                    }
+
+                    else -> model
+                }
+            }.also { body -> updatedBody = body }
+        }
+
 
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(
