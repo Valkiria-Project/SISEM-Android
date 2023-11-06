@@ -228,7 +228,7 @@ class MedicalHistoryViewModel @Inject constructor(
                 chipOption.remove(chipOptionAction.chipOptionUiModel.id)
 
             chipOption != null &&
-                    chipOption.contains(chipOptionAction.chipOptionUiModel.id).not() -> {
+                chipOption.contains(chipOptionAction.chipOptionUiModel.id).not() -> {
                 chipOption.add(chipOptionAction.chipOptionUiModel.id)
             }
 
@@ -418,7 +418,7 @@ class MedicalHistoryViewModel @Inject constructor(
                                 options = it.options.map { imageButtonUiModel ->
                                     imageButtonUiModel.copy(
                                         selected = imageButtonUiModel.identifier ==
-                                                imageButtonAction.itemIdentifier
+                                            imageButtonAction.itemIdentifier
                                     )
                                 }
                             )
