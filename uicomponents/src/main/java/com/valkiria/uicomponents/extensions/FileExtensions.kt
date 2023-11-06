@@ -33,7 +33,6 @@ fun Bitmap.encodeAsBase64(): String {
 }
 
 fun String.decodeAsBase64Bitmap(): Bitmap {
-    // FIXME: Temporal hack substringAfter
     val bytes = Base64.decode(this.substringAfter(","), Base64.DEFAULT)
     return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
 }

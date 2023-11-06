@@ -74,7 +74,7 @@ fun CameraScreen(
         Timber.d("Show Camera")
         CameraPreview(viewModel, modifier)
     } else if (cameraPermission.shouldShowRationale) {
-        Timber.d("Show rationale") // FIXME: Handle this scenario
+        Timber.d("Show rationale")
     }
 }
 
@@ -134,8 +134,6 @@ private fun CameraPreview(
                             if (savedUri != null) {
                                 viewModel.onPhotoTaken(savedUri)
                             }
-                            // FIXME: Add this
-//                          setGalleryThumbnail(savedUri.toString())
                         }
                     }
                 )

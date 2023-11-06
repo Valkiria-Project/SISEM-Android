@@ -73,7 +73,6 @@ private fun deviceAuthToNextStep(
                 }
             }
 
-        // FIXME: revisit this logic, back is navigated to DeviceAuthScreen
         model.isCrewList && model.from == "" ->
             navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
                 popUpTo(AuthNavigationRoute.DeviceAuthScreen.route) {
@@ -161,7 +160,7 @@ private fun medicalHistoryToNextStep(
         model.isSignatureEvent ->
             navController.navigate(MainNavigationRoute.SignaturePadScreen.route)
 
-        model.showCamera -> navController.navigate(ReportNavigationRoute.ReportCameraScreen.route)
+        model.showCamera -> navController.navigate(MainNavigationRoute.CameraScreen.route)
         model.photoTaken -> navController.popBackStack()
     }
 }

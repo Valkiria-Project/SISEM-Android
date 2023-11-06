@@ -200,10 +200,6 @@ class MedicalHistoryViewModel @Inject constructor(
                     )
                 }
 
-                is ImageButtonSectionUiModel -> {
-                    Timber.d("No selected property for this one") // FIXME: Backend
-                }
-
                 is SegmentedSwitchUiModel ->
                     segmentedValues[bodyRowModel.identifier] = bodyRowModel.selected
 

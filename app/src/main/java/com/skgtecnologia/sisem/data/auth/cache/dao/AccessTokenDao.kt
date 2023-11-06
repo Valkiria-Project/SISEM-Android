@@ -29,7 +29,7 @@ interface AccessTokenDao {
     suspend fun updatePreOperationalStatus(role: String)
 
     @Query("DELETE FROM access_token")
-    suspend fun deleteAccessToken() // FIXME: review this method
+    suspend fun deleteAccessToken()
 
     @Query("DELETE FROM access_token WHERE user_name = :username")
     suspend fun deleteAccessTokenByUsername(username: String)
