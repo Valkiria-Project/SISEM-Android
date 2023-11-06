@@ -16,6 +16,7 @@ import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
 import com.skgtecnologia.sisem.ui.preoperational.PreOpNavigationModel
+import com.skgtecnologia.sisem.ui.preoperational.PreOpViewNavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
 
 const val APP_STARTED = "app_started"
@@ -54,6 +55,7 @@ fun navigateToNextStep(
     is MedicalHistoryNavigationModel -> medicalHistoryToNextStep(navController, navigationModel)
     is MedicineNavigationModel -> medicineToNextStep(navController, navigationModel)
     is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
+    is PreOpViewNavigationModel -> preOpViewToNextStep(navController, navigationModel)
     is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
     is SignaturePadNavigationModel -> signaturePadToNextStep(navController, navigationModel)
     is VitalSignsNavigationModel -> vitalSignsToNextStep(navController, navigationModel)
@@ -205,6 +207,22 @@ private fun preOpToNextStep(
     else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
         popUpTo(AuthNavigationRoute.PreOperationalScreen.route) {
             inclusive = true
+        }
+    }
+}
+
+fun preOpViewToNextStep(
+    navController: NavHostController,
+    model: PreOpViewNavigationModel
+) {
+    when {
+        model.back -> navController.popBackStack()
+
+        model.role != null -> {
+            navController.navigate(
+                MainNavigationRoute.PreOperationalByRoleScreen.route +
+                    "?${NavigationArgument.ROLE}=${model.role.name}"
+            )
         }
     }
 }

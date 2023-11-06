@@ -117,4 +117,56 @@ class PreOperationalRemoteDataSource @Inject constructor(
             }
         }
     }
+
+    suspend fun getPreOperationalScreenView(
+        androidId: String,
+        vehicleCode: String?,
+        idTurn: String
+    ): Result<ScreenModel> = apiCall {
+        val screenBody = ScreenBody(
+            params = Params(
+                serial = androidId,
+                code = vehicleCode,
+                turnId = idTurn
+            )
+        )
+
+        preOperationalApi.getPreOperationalScreenView(screenBody = screenBody)
+    }.mapResult {
+        it.mapToDomain()
+    }
+
+    suspend fun getPreOperationalByRoleScreenView(
+        role: OperationRole,
+        androidId: String,
+        vehicleCode: String?,
+        idTurn: String
+    ): Result<ScreenModel> = apiCall {
+        val screenBody = ScreenBody(
+            params = Params(
+                serial = androidId,
+                code = vehicleCode,
+                turnId = idTurn
+            )
+        )
+
+        when (role) {
+            OperationRole.AUXILIARY_AND_OR_TAPH -> preOperationalApi.getAuxPreOperationalScreenView(
+                screenBody = screenBody
+            )
+
+            OperationRole.DRIVER -> preOperationalApi.getDriverPreOperationalScreenView(
+                screenBody = screenBody
+            )
+
+            OperationRole.MEDIC_APH -> preOperationalApi.getDoctorPreOperationalScreenView(
+                screenBody = screenBody
+            )
+
+            OperationRole.LEAD_APH ->
+                throw IllegalArgumentException("Lead APH role not supported")
+        }
+    }.mapResult {
+        it.mapToDomain()
+    }
 }

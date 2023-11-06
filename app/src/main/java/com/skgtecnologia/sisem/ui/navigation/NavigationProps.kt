@@ -32,6 +32,8 @@ sealed class MainNavigationRoute(override val route: String) : NavigationRoute(r
     data object VitalSignsScreen : MainNavigationRoute("vital_signs_screen")
     data object MedicineScreen : MainNavigationRoute("medicine_screen")
     data object SignaturePadScreen : MainNavigationRoute("signature_pad_screen")
+
+    data object PreOperationalByRoleScreen : MainNavigationRoute("pre_operational_by_role_screen")
 }
 
 sealed class ReportNavigationRoute(override val route: String) : NavigationRoute(route) {
@@ -48,6 +50,7 @@ object NavigationArgument {
     const val MEDICINE = "medicine"
     const val NOVELTY = "novelty"
     const val REVERT_FINDING = "revert_finding"
+    const val ROLE = "role"
     const val SIGNATURE = "signature"
     const val VITAL_SIGNS = "vital_signs"
 }

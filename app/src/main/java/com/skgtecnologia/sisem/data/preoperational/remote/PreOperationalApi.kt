@@ -42,4 +42,24 @@ interface PreOperationalApi {
         @Part("novelty") novelty: RequestBody,
         @Part images: List<MultipartBody.Part>
     ): Response<Unit>
+
+    @POST("screen/crewListView")
+    suspend fun getPreOperationalScreenView(
+        @Body screenBody: ScreenBody
+    ): Response<ScreenResponse>
+
+    @POST("screen/pre-operational-assistant-view")
+    suspend fun getAuxPreOperationalScreenView(
+        @Body screenBody: ScreenBody
+    ): Response<ScreenResponse>
+
+    @POST("screen/pre-operational-doctor-view")
+    suspend fun getDoctorPreOperationalScreenView(
+        @Body screenBody: ScreenBody
+    ): Response<ScreenResponse>
+
+    @POST("screen/pre-operational-driver-view")
+    suspend fun getDriverPreOperationalScreenView(
+        @Body screenBody: ScreenBody
+    ): Response<ScreenResponse>
 }

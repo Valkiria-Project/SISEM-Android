@@ -8,6 +8,13 @@ interface PreOperationalRepository {
 
     suspend fun getPreOperationalScreen(androidId: String): ScreenModel
 
+    suspend fun getPreOperationalScreenView(androidId: String): ScreenModel
+
+    suspend fun getPreOperationalByRoleScreenView(
+        androidId: String,
+        role: OperationRole
+    ): ScreenModel
+
     suspend fun getRole(): OperationRole
 
     suspend fun sendPreOperational(

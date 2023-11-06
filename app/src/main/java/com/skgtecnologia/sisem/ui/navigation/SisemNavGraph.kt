@@ -18,6 +18,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.skgtecnologia.sisem.commons.communication.AppEvent
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
+import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.ui.authcards.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
@@ -35,9 +36,12 @@ import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsScreen
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ROLE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
+import com.skgtecnologia.sisem.ui.preoperational.PreOperationalByRoleScreen
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
+import com.skgtecnologia.sisem.ui.preoperational.PreOperationalViewScreen
 import com.skgtecnologia.sisem.ui.report.AddFindingScreen
 import com.skgtecnologia.sisem.ui.report.AddReportRoleScreen
 import com.skgtecnologia.sisem.ui.report.AddReportScreen
@@ -255,7 +259,9 @@ private fun NavGraphBuilder.mainGraph(
         composable(
             route = MainNavigationRoute.PreoperationalMainScreen.route
         ) {
-            // FIXME: Finish this work
+            PreOperationalViewScreen { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
         }
 
         composable(
@@ -293,6 +299,15 @@ private fun NavGraphBuilder.mainGraph(
             SignaturePadScreen { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
+        }
+
+        composable(
+            route = MainNavigationRoute.PreOperationalByRoleScreen.route +
+                "?$ROLE={$ROLE}",
+            arguments = listOf(navArgument(ROLE) { type = NavType.StringType })
+        ) {
+            val role = it.arguments?.getString(ROLE)
+            PreOperationalByRoleScreen(role = OperationRole.getRoleByName(role.orEmpty()))
         }
     }
 }
