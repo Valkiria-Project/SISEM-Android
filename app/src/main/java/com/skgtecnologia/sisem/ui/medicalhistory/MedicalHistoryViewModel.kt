@@ -87,7 +87,7 @@ private const val TEMPERATURE_SYMBOL = "°C"
 private const val GLUCOMETRY_SYMBOL = "mg/dL"
 
 // FIXME: Split into use cases
-@Suppress("TooManyFunctions")
+@Suppress("LargeClass", "TooManyFunctions")
 @HiltViewModel
 class MedicalHistoryViewModel @Inject constructor(
     private val getMedicalHistoryScreen: GetMedicalHistoryScreen,
@@ -236,7 +236,7 @@ class MedicalHistoryViewModel @Inject constructor(
                 chipOption.remove(chipOptionAction.chipOptionUiModel.id)
 
             chipOption != null &&
-                    chipOption.contains(chipOptionAction.chipOptionUiModel.id).not() -> {
+                chipOption.contains(chipOptionAction.chipOptionUiModel.id).not() -> {
                 chipOption.add(chipOptionAction.chipOptionUiModel.id)
             }
 
@@ -426,7 +426,7 @@ class MedicalHistoryViewModel @Inject constructor(
                                 options = it.options.map { imageButtonUiModel ->
                                     imageButtonUiModel.copy(
                                         selected = imageButtonUiModel.identifier ==
-                                                imageButtonAction.itemIdentifier
+                                            imageButtonAction.itemIdentifier
                                     )
                                 }
                             )
