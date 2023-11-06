@@ -33,6 +33,7 @@ import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsScreen
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.PHOTO_TAKEN
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
@@ -209,11 +210,15 @@ private fun NavGraphBuilder.mainGraph(
             val signature = navBackStackEntry.savedStateHandle.get<String>(SIGNATURE)
             navBackStackEntry.savedStateHandle.remove<String>(SIGNATURE)
 
+            val photoTaken = navBackStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN)
+            navBackStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)
+
             MedicalHistoryScreen(
                 modifier = modifier,
                 vitalSigns = vitalSigns,
                 medicine = medicine,
-                signature = signature
+                signature = signature,
+                photoTaken = photoTaken
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }

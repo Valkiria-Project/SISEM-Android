@@ -12,6 +12,7 @@ import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadNaviga
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.PHOTO_TAKEN
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
@@ -161,7 +162,13 @@ private fun medicalHistoryToNextStep(
             navController.navigate(MainNavigationRoute.SignaturePadScreen.route)
 
         model.showCamera -> navController.navigate(MainNavigationRoute.CameraScreen.route)
-        model.photoTaken -> navController.popBackStack()
+        model.photoTaken -> with(navController) {
+            popBackStack()
+
+            currentBackStackEntry
+                ?.savedStateHandle
+                ?.set(PHOTO_TAKEN, true)
+        }
     }
 }
 

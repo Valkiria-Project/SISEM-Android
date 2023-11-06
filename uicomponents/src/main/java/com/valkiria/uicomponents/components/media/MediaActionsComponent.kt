@@ -119,8 +119,6 @@ fun MediaActionsComponent(
                     val mimeTypes = arrayOf("*/*")
                     multipleFilePickerLauncher.launch(mimeTypes)
                 }
-
-                // FIXME: Add logic to add list of added files with title
             }
         }
 
@@ -144,6 +142,33 @@ fun MediaActionsComponent(
                             .padding(14.dp)
                     )
                 )
+            }
+
+            val selectedMedia = uiModel.selectedMediaUris
+
+            if (selectedMedia.isNotEmpty()) {
+                selectedMedia.forEach { uri ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = 20.dp,
+                                end = 20.dp,
+                            ),
+                        horizontalArrangement = Arrangement.Start
+                    ) {
+                        LabelComponent(
+                            uiModel = LabelUiModel(
+                                identifier = "MEDIA_ACTIONS",
+                                text = "$uri",
+                                textStyle = TextStyle.HEADLINE_2,
+                                arrangement = Arrangement.Start,
+                                modifier = Modifier
+                                    .padding(14.dp)
+                            )
+                        )
+                    }
+                }
             }
         }
     }

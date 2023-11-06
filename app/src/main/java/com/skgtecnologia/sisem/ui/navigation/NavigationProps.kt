@@ -48,6 +48,7 @@ object NavigationArgument {
     const val FROM = "from"
     const val MEDICINE = "medicine"
     const val NOVELTY = "novelty"
+    const val PHOTO_TAKEN = "photo_taken"
     const val REVERT_FINDING = "revert_finding"
     const val SIGNATURE = "signature"
     const val VITAL_SIGNS = "vital_signs"

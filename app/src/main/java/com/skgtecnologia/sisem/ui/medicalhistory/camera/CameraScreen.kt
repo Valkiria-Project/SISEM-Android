@@ -51,7 +51,7 @@ import timber.log.Timber
 fun CameraScreen(
     modifier: Modifier = Modifier,
     viewModel: MedicalHistoryViewModel,
-    onNavigation: (reportNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (medicalHistoryNavigationModel: NavigationModel?) -> Unit
 ) {
     val uiState = viewModel.uiState
 

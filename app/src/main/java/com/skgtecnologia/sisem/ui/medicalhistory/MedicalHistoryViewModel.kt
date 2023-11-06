@@ -65,6 +65,7 @@ import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.ListTextUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextUiModel
+import com.valkiria.uicomponents.components.media.MediaActionsUiModel
 import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import com.valkiria.uicomponents.components.signature.SignatureUiModel
@@ -748,15 +749,30 @@ class MedicalHistoryViewModel @Inject constructor(
     }
 
     fun onPhotoTaken(savedUri: Uri) {
-        val updatedSelectedImages = buildList {
+        val selectedMedia = buildList {
             addAll(uiState.selectedMediaUris)
             add(savedUri)
         }
-
         uiState = uiState.copy(
-            selectedMediaUris = updatedSelectedImages,
+            selectedMediaUris = selectedMedia,
             navigationModel = MedicalHistoryNavigationModel(
                 photoTaken = true
+            )
+        )
+    }
+
+    fun updateMediaActions() {
+        val updatedBody = uiState.screenModel?.body?.map { model ->
+            if (model is MediaActionsUiModel) {
+                model.copy(selectedMediaUris = listOf(Uri.parse("123")))
+            } else {
+                model
+            }
+        }.orEmpty()
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
             )
         )
     }

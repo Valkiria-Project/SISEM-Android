@@ -17,12 +17,14 @@ import com.valkiria.uicomponents.components.media.MediaAction.Gallery
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+@Suppress("LongParameterList")
 @Composable
 fun MedicalHistoryScreen(
     modifier: Modifier = Modifier,
     vitalSigns: Map<String, String>?,
     medicine: Map<String, String>?,
     signature: String?,
+    photoTaken: Boolean?,
     onNavigation: (medicalHistoryNavigationModel: NavigationModel?) -> Unit
 ) {
     val viewModel = hiltViewModel<MedicalHistoryViewModel>()
@@ -52,6 +54,12 @@ fun MedicalHistoryScreen(
     LaunchedEffect(signature) {
         launch {
             signature?.let { viewModel.updateSignature(signature) }
+        }
+    }
+
+    LaunchedEffect(photoTaken) {
+        launch {
+            photoTaken?.let { viewModel.updateMediaActions() }
         }
     }
 
