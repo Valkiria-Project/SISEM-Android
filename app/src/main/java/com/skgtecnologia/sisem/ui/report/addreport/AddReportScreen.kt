@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.report
+package com.skgtecnologia.sisem.ui.report.addreport
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +21,7 @@ import com.skgtecnologia.sisem.domain.model.label.addFilesHint
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
+import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
@@ -64,7 +65,7 @@ fun AddReportScreen(
         launch {
             when {
                 uiState.navigationModel != null && uiState.cancelInfoModel == null &&
-                        uiState.confirmInfoModel == null && uiState.successInfoModel == null -> {
+                    uiState.confirmInfoModel == null && uiState.successInfoModel == null -> {
                     onNavigation(uiState.navigationModel)
                     viewModel.consumeNavigationEvent()
                 }

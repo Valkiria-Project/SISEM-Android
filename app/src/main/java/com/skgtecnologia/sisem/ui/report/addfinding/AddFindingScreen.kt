@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.report
+package com.skgtecnologia.sisem.ui.report.addfinding
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +23,7 @@ import com.skgtecnologia.sisem.domain.model.label.addFilesHint
 import com.skgtecnologia.sisem.domain.report.model.AddFindingIdentifier
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
+import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction

@@ -160,6 +160,9 @@ private fun medicalHistoryToNextStep(
 
         model.isSignatureEvent ->
             navController.navigate(MainNavigationRoute.SignaturePadScreen.route)
+
+        model.showCamera -> navController.navigate(ReportNavigationRoute.ReportCameraScreen.route)
+        model.photoTaken -> navController.popBackStack()
     }
 }
 
@@ -223,7 +226,7 @@ private fun reportToNextStep(
         }
 
         model.goBackFromImages -> navController.popBackStack()
-        model.showCamera -> navController.navigate(ReportNavigationRoute.CameraScreen.route)
+        model.showCamera -> navController.navigate(ReportNavigationRoute.ReportCameraScreen.route)
         model.photoTaken -> navController.popBackStack()
         model.closeFinding && model.imagesSize > 0 -> navController.navigate(
             "${ReportNavigationRoute.ImagesConfirmationScreen.route}/$FINDING"

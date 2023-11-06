@@ -64,7 +64,7 @@ fun MedicalHistoryScreen(
 
     OnBannerHandler(uiModel = uiState.infoEvent) { uiAction ->
         uiAction.handleEvent()
-        viewModel.handleShownError()
+        viewModel.consumeShownError()
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)

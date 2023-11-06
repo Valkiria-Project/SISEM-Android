@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.ui.medicalhistory
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.getValue
@@ -235,7 +236,7 @@ class MedicalHistoryViewModel @Inject constructor(
                 chipOption.remove(chipOptionAction.chipOptionUiModel.id)
 
             chipOption != null &&
-                chipOption.contains(chipOptionAction.chipOptionUiModel.id).not() -> {
+                    chipOption.contains(chipOptionAction.chipOptionUiModel.id).not() -> {
                 chipOption.add(chipOptionAction.chipOptionUiModel.id)
             }
 
@@ -425,7 +426,7 @@ class MedicalHistoryViewModel @Inject constructor(
                                 options = it.options.map { imageButtonUiModel ->
                                     imageButtonUiModel.copy(
                                         selected = imageButtonUiModel.identifier ==
-                                            imageButtonAction.itemIdentifier
+                                                imageButtonAction.itemIdentifier
                                     )
                                 }
                             )
@@ -747,16 +748,28 @@ class MedicalHistoryViewModel @Inject constructor(
     }
 
     fun showCamera() {
-        // FIXME: SMA-161
-//        uiState = uiState.copy(
-//            navigationModel = ReportNavigationModel(
-//                isFromPreOperational = isFromPreOperational,
-//                showCamera = true
-//            )
-//        )
+        uiState = uiState.copy(
+            navigationModel = MedicalHistoryNavigationModel(
+                showCamera = true
+            )
+        )
     }
 
-    fun handleShownError() {
+    fun onPhotoTaken(savedUri: Uri) {
+        val updatedSelectedImages = buildList {
+            addAll(uiState.selectedMediaUris)
+            add(savedUri)
+        }
+
+        uiState = uiState.copy(
+            selectedMediaUris = updatedSelectedImages,
+            navigationModel = MedicalHistoryNavigationModel(
+                photoTaken = true
+            )
+        )
+    }
+
+    fun consumeShownError() {
         uiState = uiState.copy(
             infoEvent = null
         )

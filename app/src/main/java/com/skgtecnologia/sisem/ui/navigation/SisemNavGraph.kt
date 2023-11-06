@@ -26,9 +26,8 @@ import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
 import com.skgtecnologia.sisem.ui.forgotpassword.ForgotPasswordScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.map.MapScreen
-import com.skgtecnologia.sisem.ui.media.CameraScreen
-import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryScreen
+import com.skgtecnologia.sisem.ui.medicalhistory.camera.CameraScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsScreen
@@ -38,9 +37,11 @@ import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
-import com.skgtecnologia.sisem.ui.report.AddFindingScreen
-import com.skgtecnologia.sisem.ui.report.AddReportRoleScreen
-import com.skgtecnologia.sisem.ui.report.AddReportScreen
+import com.skgtecnologia.sisem.ui.report.addfinding.AddFindingScreen
+import com.skgtecnologia.sisem.ui.report.addreport.AddReportRoleScreen
+import com.skgtecnologia.sisem.ui.report.addreport.AddReportScreen
+import com.skgtecnologia.sisem.ui.report.media.ImagesConfirmationScreen
+import com.skgtecnologia.sisem.ui.report.media.ReportCameraScreen
 
 @Composable
 fun SisemNavGraph(
@@ -168,7 +169,7 @@ private fun NavGraphBuilder.authGraph(
     }
 }
 
-@Suppress("UnusedPrivateMember", "LongMethod")
+@Suppress("LongMethod")
 private fun NavGraphBuilder.mainGraph(
     navController: NavHostController,
     modifier: Modifier
@@ -181,6 +182,7 @@ private fun NavGraphBuilder.mainGraph(
             route = MainNavigationRoute.MainScreen.route
         ) {
             MapScreen(
+                modifier = modifier,
                 onAction = { menuNavigationRoute ->
                     navController.navigate(menuNavigationRoute.route)
                 },
@@ -208,6 +210,7 @@ private fun NavGraphBuilder.mainGraph(
             navBackStackEntry.savedStateHandle.remove<String>(SIGNATURE)
 
             MedicalHistoryScreen(
+                modifier = modifier,
                 vitalSigns = vitalSigns,
                 medicine = medicine,
                 signature = signature
@@ -273,7 +276,7 @@ private fun NavGraphBuilder.mainGraph(
         composable(
             route = MainNavigationRoute.VitalSignsScreen.route
         ) {
-            VitalSignsScreen { navigationModel ->
+            VitalSignsScreen(modifier = modifier) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
         }
@@ -281,7 +284,7 @@ private fun NavGraphBuilder.mainGraph(
         composable(
             route = MainNavigationRoute.MedicineScreen.route
         ) {
-            MedicineScreen { navigationModel ->
+            MedicineScreen(modifier = modifier) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
         }
@@ -289,15 +292,25 @@ private fun NavGraphBuilder.mainGraph(
         composable(
             route = MainNavigationRoute.SignaturePadScreen.route
         ) {
-            // FIXME: Finish this work
-            SignaturePadScreen { navigationModel ->
+            SignaturePadScreen(modifier = modifier) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = MainNavigationRoute.CameraScreen.route
+        ) { backStackEntry ->
+            CameraScreen(
+                modifier = modifier,
+                viewModel = backStackEntry.sharedViewModel(navController = navController)
+            ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
         }
     }
 }
 
-@Suppress("UnusedPrivateMember", "LongMethod")
+@Suppress("LongMethod")
 private fun NavGraphBuilder.reportGraph(
     navController: NavHostController,
     modifier: Modifier
@@ -324,9 +337,10 @@ private fun NavGraphBuilder.reportGraph(
         }
 
         composable(
-            route = ReportNavigationRoute.CameraScreen.route
+            route = ReportNavigationRoute.ReportCameraScreen.route
         ) { backStackEntry ->
-            CameraScreen(
+            ReportCameraScreen(
+                modifier = modifier,
                 viewModel = backStackEntry.sharedViewModel(navController = navController)
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)

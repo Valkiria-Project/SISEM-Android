@@ -18,6 +18,7 @@ sealed class AuthNavigationRoute(override val route: String) : NavigationRoute(r
 }
 
 sealed class MainNavigationRoute(override val route: String) : NavigationRoute(route) {
+    data object CameraScreen : MainNavigationRoute("camera_screen")
     data object CertificationsScreen : MainNavigationRoute("menu_certifications_screen")
     data object DeviceAuthScreen : MainNavigationRoute("menu_device_auth_screen")
     data object DrivingGuideScreen : MainNavigationRoute("menu_driving_guide_screen")
@@ -25,17 +26,17 @@ sealed class MainNavigationRoute(override val route: String) : NavigationRoute(r
     data object IncidentScreen : MainNavigationRoute("menu_incident_screen")
     data object InventoryScreen : MainNavigationRoute("menu_inventory_screen")
     data object MainScreen : MainNavigationRoute("main_screen")
+    data object MedicineScreen : MainNavigationRoute("medicine_screen")
     data object NotificationsScreen : MainNavigationRoute("menu_notifications_screen")
     data object PreoperationalMainScreen : MainNavigationRoute("menu_preoperational_menu_screen")
     data object ShiftScreen : MainNavigationRoute("menu_shift_screen")
     data object SignatureAndFingerprint : MainNavigationRoute("menu_signature_and_fingerprint")
-    data object VitalSignsScreen : MainNavigationRoute("vital_signs_screen")
-    data object MedicineScreen : MainNavigationRoute("medicine_screen")
     data object SignaturePadScreen : MainNavigationRoute("signature_pad_screen")
+    data object VitalSignsScreen : MainNavigationRoute("vital_signs_screen")
 }
 
 sealed class ReportNavigationRoute(override val route: String) : NavigationRoute(route) {
-    data object CameraScreen : ReportNavigationRoute("camera_screen")
+    data object ReportCameraScreen : ReportNavigationRoute("report_camera_screen")
     data object AddFindingScreen : ReportNavigationRoute("add_finding_screen")
     data object ImagesConfirmationScreen : ReportNavigationRoute("images_confirmation_screen")
     data object AddReportRoleScreen : ReportNavigationRoute("add_report_role_screen")
