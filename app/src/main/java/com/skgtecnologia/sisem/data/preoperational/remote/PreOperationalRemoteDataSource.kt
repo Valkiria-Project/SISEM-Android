@@ -131,7 +131,7 @@ class PreOperationalRemoteDataSource @Inject constructor(
             )
         )
 
-        preOperationalApi.getPreOperationalScreenView(screenBody = screenBody)
+        preOperationalApi.getAuthCardViewScreen(screenBody = screenBody)
     }.mapResult {
         it.mapToDomain()
     }

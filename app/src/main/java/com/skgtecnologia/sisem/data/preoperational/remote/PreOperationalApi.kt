@@ -44,7 +44,7 @@ interface PreOperationalApi {
     ): Response<Unit>
 
     @POST("screen/crewListView")
-    suspend fun getPreOperationalScreenView(
+    suspend fun getAuthCardViewScreen(
         @Body screenBody: ScreenBody
     ): Response<ScreenResponse>
 
