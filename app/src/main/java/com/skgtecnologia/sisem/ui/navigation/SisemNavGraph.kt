@@ -307,8 +307,8 @@ private fun NavGraphBuilder.mainGraph(
             route = MainNavigationRoute.CameraScreen.route
         ) { navBackStackEntry ->
             CameraScreen(
-                modifier = modifier,
-                viewModel = navBackStackEntry.sharedViewModel(navController = navController)
+                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
+                modifier = modifier
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }

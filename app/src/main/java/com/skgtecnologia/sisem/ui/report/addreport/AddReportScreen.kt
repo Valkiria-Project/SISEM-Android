@@ -32,7 +32,7 @@ import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.media.MediaAction.Camera
-import com.valkiria.uicomponents.components.media.MediaAction.File
+import com.valkiria.uicomponents.components.media.MediaAction.MediaFile
 import com.valkiria.uicomponents.components.media.MediaAction.Gallery
 import com.valkiria.uicomponents.components.media.MediaActionsComponent
 import com.valkiria.uicomponents.components.media.MediaActionsUiModel
@@ -117,7 +117,7 @@ fun AddReportScreen(
             MediaActionsComponent(uiModel = MediaActionsUiModel()) { _, mediaAction ->
                 when (mediaAction) {
                     Camera -> viewModel.showCamera(isFromPreOperational = false)
-                    is File -> Timber.d("no-op")
+                    is MediaFile -> Timber.d("no-op")
                     is Gallery -> viewModel.updateSelectedImages(
                         selectedImages = mediaAction.uris,
                         isFromPreOperational = false

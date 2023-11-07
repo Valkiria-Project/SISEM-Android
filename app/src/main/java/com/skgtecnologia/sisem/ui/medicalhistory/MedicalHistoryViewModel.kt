@@ -762,10 +762,16 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
-    fun updateMediaActions() {
+    fun updateMediaActions(selectedMedia: List<Uri>? = null) {
+        val updatedSelectedMedia = buildList {
+            addAll(uiState.selectedMediaUris)
+
+            if (selectedMedia?.isNotEmpty() == true) addAll(selectedMedia)
+        }
+
         val updatedBody = uiState.screenModel?.body?.map { model ->
             if (model is MediaActionsUiModel) {
-                model.copy(selectedMediaUris = uiState.selectedMediaUris)
+                model.copy(selectedMediaUris = updatedSelectedMedia)
             } else {
                 model
             }

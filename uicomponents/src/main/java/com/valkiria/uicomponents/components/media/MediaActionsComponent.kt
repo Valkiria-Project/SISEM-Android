@@ -14,6 +14,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,9 +32,10 @@ import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.media.MediaAction.Camera
-import com.valkiria.uicomponents.components.media.MediaAction.File
 import com.valkiria.uicomponents.components.media.MediaAction.Gallery
+import com.valkiria.uicomponents.components.media.MediaAction.MediaFile
 import com.valkiria.uicomponents.extensions.storeUriAsFileToCache
+import java.io.File
 
 @Suppress("LongMethod")
 @Composable
@@ -38,6 +43,7 @@ fun MediaActionsComponent(
     uiModel: MediaActionsUiModel,
     onMediaAction: (id: String, mediaAction: MediaAction) -> Unit
 ) {
+    var selectedMedia by remember { mutableStateOf(listOf<File>()) }
     val context = LocalContext.current
 
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
@@ -45,14 +51,14 @@ fun MediaActionsComponent(
         onResult = { uris -> onMediaAction(uiModel.identifier, Gallery(uris)) }
     )
 
-    val multipleFilePickerLauncher = rememberLauncherForActivityResult(
+    val multipleMediaFilePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenMultipleDocuments(),
-        onResult = { uris -> onMediaAction(uiModel.identifier, File(uris)) }
+        onResult = { uris -> onMediaAction(uiModel.identifier, MediaFile(uris)) }
     )
 
     LaunchedEffect(uiModel.selectedMediaUris) {
         if (uiModel.selectedMediaUris.isNotEmpty()) {
-            uiModel.selectedMediaFiles = uiModel.selectedMediaUris.map { uri ->
+            selectedMedia = uiModel.selectedMediaUris.map { uri ->
                 context.storeUriAsFileToCache(
                     uri
                 )
@@ -132,7 +138,7 @@ fun MediaActionsComponent(
                     )
                 ) {
                     val mimeTypes = arrayOf("*/*")
-                    multipleFilePickerLauncher.launch(mimeTypes)
+                    multipleMediaFilePickerLauncher.launch(mimeTypes)
                 }
             }
         }
@@ -159,8 +165,8 @@ fun MediaActionsComponent(
                 )
             }
 
-            if (uiModel.selectedMediaFiles?.isNotEmpty() == true) {
-                uiModel.selectedMediaFiles?.forEach { media ->
+            if (selectedMedia.isNotEmpty()) {
+                selectedMedia.forEach { media ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -189,7 +195,7 @@ fun MediaActionsComponent(
 
 sealed class MediaAction {
     data object Camera : MediaAction()
-    data class File(val uris: List<Uri>) : MediaAction()
+    data class MediaFile(val uris: List<Uri>) : MediaAction()
     data class Gallery(val uris: List<Uri>) : MediaAction()
 }
 

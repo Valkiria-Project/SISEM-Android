@@ -29,7 +29,7 @@ class AuthRepositoryImpl @Inject constructor(
             password = password,
             code = code,
             turnId = turnId.orEmpty()
-        ).onSuccess { accessTokenModel ->
+        ).mapResult { accessTokenModel ->
             if (accessTokenModel.isAdmin) {
                 getAllAccessTokens().forEach { accessToken ->
                     logout(accessToken.username)
@@ -59,6 +59,7 @@ class AuthRepositoryImpl @Inject constructor(
                 accessTokenModel
             }
             authCacheDataSource.storeAccessToken(accessToken)
+            accessToken
         }.getOrThrow()
     }
 

@@ -49,8 +49,8 @@ import timber.log.Timber
 
 @Composable
 fun CameraScreen(
-    modifier: Modifier = Modifier,
     viewModel: MedicalHistoryViewModel,
+    modifier: Modifier = Modifier,
     onNavigation: (medicalHistoryNavigationModel: NavigationModel?) -> Unit
 ) {
     val uiState = viewModel.uiState

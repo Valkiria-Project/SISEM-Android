@@ -11,8 +11,8 @@ import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.media.MediaAction.Camera
-import com.valkiria.uicomponents.components.media.MediaAction.File
 import com.valkiria.uicomponents.components.media.MediaAction.Gallery
+import com.valkiria.uicomponents.components.media.MediaAction.MediaFile
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -97,8 +97,12 @@ fun handleAction(
 
         is GenericUiAction.MediaItemAction -> when (uiAction.mediaAction) {
             Camera -> viewModel.showCamera()
-            is File -> TODO() // FIXME: SMA-161
-            is Gallery -> TODO() // FIXME: SMA-161
+            is MediaFile -> viewModel.updateMediaActions(
+                selectedMedia = (uiAction.mediaAction as MediaFile).uris,
+            )
+            is Gallery -> viewModel.updateMediaActions(
+                selectedMedia = (uiAction.mediaAction as Gallery).uris,
+            )
         }
 
         is GenericUiAction.MedsSelectorAction -> viewModel.showMedicineForm(uiAction.identifier)
