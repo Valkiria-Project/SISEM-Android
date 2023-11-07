@@ -749,12 +749,13 @@ class MedicalHistoryViewModel @Inject constructor(
     }
 
     fun onPhotoTaken(savedUri: Uri) {
-        val selectedMedia = buildList {
+        val updatedSelectedMedia = buildList {
             addAll(uiState.selectedMediaUris)
             add(savedUri)
         }
+
         uiState = uiState.copy(
-            selectedMediaUris = selectedMedia,
+            selectedMediaUris = updatedSelectedMedia,
             navigationModel = MedicalHistoryNavigationModel(
                 photoTaken = true
             )
@@ -764,7 +765,7 @@ class MedicalHistoryViewModel @Inject constructor(
     fun updateMediaActions() {
         val updatedBody = uiState.screenModel?.body?.map { model ->
             if (model is MediaActionsUiModel) {
-                model.copy(selectedMediaUris = listOf(Uri.parse("123")))
+                model.copy(selectedMediaUris = uiState.selectedMediaUris)
             } else {
                 model
             }

@@ -214,6 +214,7 @@ private fun NavGraphBuilder.mainGraph(
             navBackStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)
 
             MedicalHistoryScreen(
+                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
                 modifier = modifier,
                 vitalSigns = vitalSigns,
                 medicine = medicine,
@@ -304,10 +305,10 @@ private fun NavGraphBuilder.mainGraph(
 
         composable(
             route = MainNavigationRoute.CameraScreen.route
-        ) { backStackEntry ->
+        ) { navBackStackEntry ->
             CameraScreen(
                 modifier = modifier,
-                viewModel = backStackEntry.sharedViewModel(navController = navController)
+                viewModel = navBackStackEntry.sharedViewModel(navController = navController)
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
@@ -330,10 +331,10 @@ private fun NavGraphBuilder.reportGraph(
             arguments = listOf(
                 navArgument(NavigationArgument.FINDING_ID) { type = NavType.StringType }
             )
-        ) { backStackEntry ->
+        ) { navBackStackEntry ->
             AddFindingScreen(
-                viewModel = backStackEntry.sharedViewModel(navController = navController),
-                findingId = backStackEntry.arguments?.getString(NavigationArgument.FINDING_ID)
+                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
+                findingId = navBackStackEntry.arguments?.getString(NavigationArgument.FINDING_ID)
                     .orEmpty(),
                 modifier = modifier
             ) { navigationModel ->
@@ -343,10 +344,10 @@ private fun NavGraphBuilder.reportGraph(
 
         composable(
             route = ReportNavigationRoute.ReportCameraScreen.route
-        ) { backStackEntry ->
+        ) { navBackStackEntry ->
             ReportCameraScreen(
                 modifier = modifier,
-                viewModel = backStackEntry.sharedViewModel(navController = navController)
+                viewModel = navBackStackEntry.sharedViewModel(navController = navController)
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
@@ -356,10 +357,10 @@ private fun NavGraphBuilder.reportGraph(
             route = ReportNavigationRoute.ImagesConfirmationScreen.route +
                 "/{${NavigationArgument.FROM}}",
             arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
-        ) { backStackEntry ->
+        ) { navBackStackEntry ->
             ImagesConfirmationScreen(
-                viewModel = backStackEntry.sharedViewModel(navController = navController),
-                from = backStackEntry.arguments?.getString(NavigationArgument.FROM).orEmpty(),
+                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
+                from = navBackStackEntry.arguments?.getString(NavigationArgument.FROM).orEmpty(),
                 modifier = modifier
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
@@ -386,9 +387,9 @@ private fun NavGraphBuilder.reportGraph(
 
         composable(
             route = ReportNavigationRoute.AddReportScreen.route,
-        ) { backStackEntry ->
+        ) { navBackStackEntry ->
             AddReportScreen(
-                viewModel = backStackEntry.sharedViewModel(navController = navController),
+                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
                 onNavigation = { navigationModel ->
                     navigateToNextStep(navController, navigationModel)
                 }

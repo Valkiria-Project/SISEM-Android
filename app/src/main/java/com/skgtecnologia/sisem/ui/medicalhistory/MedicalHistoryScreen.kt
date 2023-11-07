@@ -3,7 +3,6 @@ package com.skgtecnologia.sisem.ui.medicalhistory
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.GenericUiAction
@@ -20,6 +19,7 @@ import timber.log.Timber
 @Suppress("LongParameterList")
 @Composable
 fun MedicalHistoryScreen(
+    viewModel: MedicalHistoryViewModel,
     modifier: Modifier = Modifier,
     vitalSigns: Map<String, String>?,
     medicine: Map<String, String>?,
@@ -27,7 +27,6 @@ fun MedicalHistoryScreen(
     photoTaken: Boolean?,
     onNavigation: (medicalHistoryNavigationModel: NavigationModel?) -> Unit
 ) {
-    val viewModel = hiltViewModel<MedicalHistoryViewModel>()
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState.navigationModel) {

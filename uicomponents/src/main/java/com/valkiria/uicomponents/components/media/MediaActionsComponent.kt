@@ -13,9 +13,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,6 +30,7 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.media.MediaAction.Camera
 import com.valkiria.uicomponents.components.media.MediaAction.File
 import com.valkiria.uicomponents.components.media.MediaAction.Gallery
+import com.valkiria.uicomponents.extensions.storeUriAsFileToCache
 
 @Suppress("LongMethod")
 @Composable
@@ -35,6 +38,8 @@ fun MediaActionsComponent(
     uiModel: MediaActionsUiModel,
     onMediaAction: (id: String, mediaAction: MediaAction) -> Unit
 ) {
+    val context = LocalContext.current
+
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
         onResult = { uris -> onMediaAction(uiModel.identifier, Gallery(uris)) }
@@ -44,6 +49,16 @@ fun MediaActionsComponent(
         contract = ActivityResultContracts.OpenMultipleDocuments(),
         onResult = { uris -> onMediaAction(uiModel.identifier, File(uris)) }
     )
+
+    LaunchedEffect(uiModel.selectedMediaUris) {
+        if (uiModel.selectedMediaUris.isNotEmpty()) {
+            uiModel.selectedMediaFiles = uiModel.selectedMediaUris.map { uri ->
+                context.storeUriAsFileToCache(
+                    uri
+                )
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -144,10 +159,8 @@ fun MediaActionsComponent(
                 )
             }
 
-            val selectedMedia = uiModel.selectedMediaUris
-
-            if (selectedMedia.isNotEmpty()) {
-                selectedMedia.forEach { uri ->
+            if (uiModel.selectedMediaFiles?.isNotEmpty() == true) {
+                uiModel.selectedMediaFiles?.forEach { media ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -159,8 +172,8 @@ fun MediaActionsComponent(
                     ) {
                         LabelComponent(
                             uiModel = LabelUiModel(
-                                identifier = "MEDIA_ACTIONS",
-                                text = "$uri",
+                                identifier = media.absolutePath,
+                                text = media.name,
                                 textStyle = TextStyle.HEADLINE_2,
                                 arrangement = Arrangement.Start,
                                 modifier = Modifier
