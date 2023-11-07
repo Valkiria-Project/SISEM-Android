@@ -21,12 +21,12 @@ import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.domain.report.usecases.SendReport
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.io.File
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
-import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 @HiltViewModel
@@ -332,12 +332,9 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    fun consumeNavigationEvent() {
+    fun consumeShownConfirm() {
         uiState = uiState.copy(
-            validateFields = false,
-            cancelInfoModel = null,
-            confirmInfoModel = null,
-            navigationModel = null
+            confirmInfoModel = null
         )
     }
 
@@ -347,9 +344,12 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    fun consumeShownConfirm() {
+    fun consumeNavigationEvent() {
         uiState = uiState.copy(
-            confirmInfoModel = null
+            validateFields = false,
+            cancelInfoModel = null,
+            confirmInfoModel = null,
+            navigationModel = null
         )
     }
 }

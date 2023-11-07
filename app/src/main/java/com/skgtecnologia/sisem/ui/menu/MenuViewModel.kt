@@ -11,12 +11,12 @@ import com.skgtecnologia.sisem.domain.auth.usecases.Logout
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
 
 @HiltViewModel
 class MenuViewModel @Inject constructor(
@@ -44,7 +44,7 @@ class MenuViewModel @Inject constructor(
 
                     uiState = uiState.copy(
                         isLoading = false,
-                        errorModel = throwable.mapToUi() // FIXME - this shouldn't happen
+                        errorModel = throwable.mapToUi()
                     )
                 }
         }
@@ -90,7 +90,7 @@ class MenuViewModel @Inject constructor(
 
                 uiState = uiState.copy(
                     isLoading = false,
-                    errorModel = throwable.mapToUi() // FIXME - this shouldn't happen
+                    errorModel = throwable.mapToUi()
                 )
             }
     }

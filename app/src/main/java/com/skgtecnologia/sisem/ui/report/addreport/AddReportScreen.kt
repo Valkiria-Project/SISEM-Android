@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.report
+package com.skgtecnologia.sisem.ui.report.addreport
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +21,7 @@ import com.skgtecnologia.sisem.domain.model.label.addFilesHint
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
+import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
@@ -31,7 +32,7 @@ import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.media.MediaAction.Camera
-import com.valkiria.uicomponents.components.media.MediaAction.File
+import com.valkiria.uicomponents.components.media.MediaAction.MediaFile
 import com.valkiria.uicomponents.components.media.MediaAction.Gallery
 import com.valkiria.uicomponents.components.media.MediaActionsComponent
 import com.valkiria.uicomponents.components.media.MediaActionsUiModel
@@ -113,10 +114,10 @@ fun AddReportScreen(
                 )
             )
 
-            MediaActionsComponent(uiModel = MediaActionsUiModel()) { mediaAction ->
+            MediaActionsComponent(uiModel = MediaActionsUiModel()) { _, mediaAction ->
                 when (mediaAction) {
                     Camera -> viewModel.showCamera(isFromPreOperational = false)
-                    is File -> Timber.d("no-op")
+                    is MediaFile -> Timber.d("no-op")
                     is Gallery -> viewModel.updateSelectedImages(
                         selectedImages = mediaAction.uris,
                         isFromPreOperational = false

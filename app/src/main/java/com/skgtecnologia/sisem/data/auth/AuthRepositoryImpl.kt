@@ -8,10 +8,10 @@ import com.skgtecnologia.sisem.data.auth.remote.AuthRemoteDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import timber.log.Timber
-import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val authCacheDataSource: AuthCacheDataSource,
@@ -21,18 +21,15 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun authenticate(username: String, password: String): AccessTokenModel {
         val code = operationCacheDataSource.observeOperationConfig().first()?.vehicleCode.orEmpty()
-        val turnId = authCacheDataSource.observeAccessToken()
-            .first()
-            ?.turn
-            ?.id
-            ?.toString()
+        val turn = authCacheDataSource.observeAccessToken().first() ?.turn
+        val turnId = turn?.id?.toString()
 
         return authRemoteDataSource.authenticate(
             username = username,
             password = password,
             code = code,
             turnId = turnId.orEmpty()
-        ).onSuccess { accessTokenModel ->
+        ).mapResult { accessTokenModel ->
             if (accessTokenModel.isAdmin) {
                 getAllAccessTokens().forEach { accessToken ->
                     logout(accessToken.username)
@@ -51,7 +48,18 @@ class AuthRepositoryImpl @Inject constructor(
                 }
             }
 
-            authCacheDataSource.storeAccessToken(accessTokenModel)
+            val returnedTurnId = accessTokenModel.turn?.id.toString()
+            val accessToken = if (turnId == returnedTurnId && turn.isComplete) {
+                accessTokenModel.copy(
+                    preoperational = accessTokenModel.preoperational?.copy(
+                        status = false
+                    )
+                )
+            } else {
+                accessTokenModel
+            }
+            authCacheDataSource.storeAccessToken(accessToken)
+            accessToken
         }.getOrThrow()
     }
 
@@ -91,6 +99,24 @@ class AuthRepositoryImpl @Inject constructor(
                     )
                 }
             }.getOrThrow()
+
+    override suspend fun logoutCurrentUser(): String {
+        val username = authCacheDataSource.observeAccessToken().first()?.username.orEmpty()
+
+        return authRemoteDataSource.logout(username)
+            .onSuccess {
+                authCacheDataSource.deleteAccessTokenByUsername(username = username)
+                authCacheDataSource.observeAccessToken().first()?.let { accessToken ->
+                    authCacheDataSource.storeAccessToken(
+                        accessToken.copy(
+                            turn = accessToken.turn?.copy(
+                                isComplete = true
+                            )
+                        )
+                    )
+                }
+            }.getOrThrow()
+    }
 
     override suspend fun deleteAccessToken() = authCacheDataSource.deleteAccessToken()
 

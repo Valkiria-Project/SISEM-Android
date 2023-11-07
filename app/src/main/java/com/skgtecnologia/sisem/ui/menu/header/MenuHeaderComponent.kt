@@ -36,7 +36,7 @@ import com.valkiria.uicomponents.components.label.toTextStyle
 @Composable
 fun MenuHeaderComponent(
     modifier: Modifier,
-    vehicleConfig: VehicleConfigModel?, // FIXME: nullable ?
+    vehicleConfig: VehicleConfigModel?,
     menuItemsPersonal: List<CrewMemberMenuItemModel>,
     onLogout: (CrewMemberMenuItemModel) -> Unit
 ) {
