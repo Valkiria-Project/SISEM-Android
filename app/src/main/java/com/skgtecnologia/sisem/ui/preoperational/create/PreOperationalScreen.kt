@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.preoperational
+package com.skgtecnologia.sisem.ui.preoperational.create
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding

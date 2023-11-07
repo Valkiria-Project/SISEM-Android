@@ -1,5 +1,6 @@
 package com.valkiria.uicomponents.action
 
+import com.valkiria.uicomponents.bricks.banner.finding.FindingsDetailUiModel
 import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.components.chip.ChipOptionUiModel
@@ -35,7 +36,8 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
 
     data class FindingAction(
         override val identifier: String,
-        val status: Boolean
+        val status: Boolean,
+        val findingDetail: FindingsDetailUiModel?
     ) : GenericUiAction(identifier)
 
     data class HumanBodyAction(

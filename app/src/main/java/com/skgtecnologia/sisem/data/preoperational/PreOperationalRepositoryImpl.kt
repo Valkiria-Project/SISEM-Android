@@ -28,10 +28,10 @@ class PreOperationalRepositoryImpl @Inject constructor(
         ).getOrThrow()
     }
 
-    override suspend fun getPreOperationalScreenView(androidId: String): ScreenModel {
+    override suspend fun getAuthCardViewScreen(androidId: String): ScreenModel {
         val accessToken = checkNotNull(authCacheDataSource.observeAccessToken())
 
-        return preOperationalRemoteDataSource.getPreOperationalScreenView(
+        return preOperationalRemoteDataSource.getAuthCardViewScreen(
             androidId = androidId,
             vehicleCode = operationCacheDataSource.observeOperationConfig()
                 .first()?.vehicleCode.orEmpty(),
@@ -39,13 +39,13 @@ class PreOperationalRepositoryImpl @Inject constructor(
         ).getOrThrow()
     }
 
-    override suspend fun getPreOperationalByRoleScreenView(
+    override suspend fun getPreOperationalViewScreen(
         androidId: String,
         role: OperationRole
     ): ScreenModel {
         val accessToken = checkNotNull(authCacheDataSource.observeAccessToken())
 
-        return preOperationalRemoteDataSource.getPreOperationalByRoleScreenView(
+        return preOperationalRemoteDataSource.getPreOperationalScreenView(
             role = role,
             androidId = androidId,
             vehicleCode = operationCacheDataSource.observeOperationConfig()

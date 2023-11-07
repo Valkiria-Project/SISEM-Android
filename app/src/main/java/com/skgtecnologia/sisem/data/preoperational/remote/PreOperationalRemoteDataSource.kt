@@ -118,7 +118,7 @@ class PreOperationalRemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun getPreOperationalScreenView(
+    suspend fun getAuthCardViewScreen(
         androidId: String,
         vehicleCode: String?,
         idTurn: String
@@ -136,7 +136,7 @@ class PreOperationalRemoteDataSource @Inject constructor(
         it.mapToDomain()
     }
 
-    suspend fun getPreOperationalByRoleScreenView(
+    suspend fun getPreOperationalScreenView(
         role: OperationRole,
         androidId: String,
         vehicleCode: String?,

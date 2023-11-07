@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.preoperational
+package com.skgtecnologia.sisem.ui.authcards.view
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,7 +9,7 @@ import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalViewIdentifier
-import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreenView
+import com.skgtecnologia.sisem.domain.preoperational.usecases.GetAuthCardViewScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -19,14 +19,14 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class PreOperationalViewViewModel @Inject constructor(
+class AuthCardViewViewModel @Inject constructor(
     private val androidIdProvider: AndroidIdProvider,
-    private val getPreOperationalScreenView: GetPreOperationalScreenView
+    private val getAuthCardViewScreen: GetAuthCardViewScreen
 ) : ViewModel() {
 
     private var job: Job? = null
 
-    var uiState by mutableStateOf(PreoperationalViewUiState())
+    var uiState by mutableStateOf(AuthCardViewUiState())
         private set
 
     init {
@@ -34,7 +34,7 @@ class PreOperationalViewViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            getPreOperationalScreenView.invoke(androidIdProvider.getAndroidId())
+            getAuthCardViewScreen.invoke(androidIdProvider.getAndroidId())
                 .onSuccess { preOperationalScreenModel ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
@@ -57,14 +57,14 @@ class PreOperationalViewViewModel @Inject constructor(
 
     fun goBack() {
         uiState = uiState.copy(
-            navigationModel = PreOpViewNavigationModel(back = true)
+            navigationModel = AuthCardViewNavigationModel(back = true)
         )
     }
 
     fun navigate(identifier: String) {
         runCatching {
             uiState = uiState.copy(
-                navigationModel = PreOpViewNavigationModel(role = identifier.identifierToRole())
+                navigationModel = AuthCardViewNavigationModel(role = identifier.identifierToRole())
             )
         }.onFailure {
             uiState = uiState.copy(

@@ -15,8 +15,10 @@ import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
-import com.skgtecnologia.sisem.ui.preoperational.PreOpNavigationModel
-import com.skgtecnologia.sisem.ui.preoperational.PreOpViewNavigationModel
+import com.skgtecnologia.sisem.ui.preoperational.view.PreOpViewNavigationModel
+import com.skgtecnologia.sisem.ui.preoperational.create.PreOpNavigationModel
+import com.skgtecnologia.sisem.ui.authcards.view.AuthCardViewNavigationModel
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ROLE
 import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
 
 const val APP_STARTED = "app_started"
@@ -47,6 +49,7 @@ fun navigateToNextStep(
     navigationModel: NavigationModel?,
     onNavigationFallback: () -> Unit = {}
 ) = when (navigationModel) {
+    is AuthCardViewNavigationModel -> authCardViewNextStep(navController, navigationModel)
     is DeviceAuthNavigationModel ->
         deviceAuthToNextStep(navController, navigationModel, onNavigationFallback)
 
@@ -54,12 +57,27 @@ fun navigateToNextStep(
     is LoginNavigationModel -> loginToNextStep(navController, navigationModel)
     is MedicalHistoryNavigationModel -> medicalHistoryToNextStep(navController, navigationModel)
     is MedicineNavigationModel -> medicineToNextStep(navController, navigationModel)
-    is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
     is PreOpViewNavigationModel -> preOpViewToNextStep(navController, navigationModel)
+    is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
     is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
     is SignaturePadNavigationModel -> signaturePadToNextStep(navController, navigationModel)
     is VitalSignsNavigationModel -> vitalSignsToNextStep(navController, navigationModel)
     else -> {}
+}
+
+fun authCardViewNextStep(
+    navController: NavHostController,
+    model: AuthCardViewNavigationModel
+) {
+    when {
+        model.back -> navController.popBackStack()
+
+        model.role != null -> {
+            navController.navigate(
+                MainNavigationRoute.PreOperationalByRoleScreen.route + "?$ROLE=${model.role.name}"
+            )
+        }
+    }
 }
 
 private fun deviceAuthToNextStep(
@@ -188,6 +206,15 @@ private fun medicineToNextStep(
     }
 }
 
+fun preOpViewToNextStep(
+    navController: NavHostController,
+    model: PreOpViewNavigationModel
+) {
+    when {
+        model.back -> navController.popBackStack()
+    }
+}
+
 private fun preOpToNextStep(
     navController: NavHostController,
     model: PreOpNavigationModel
@@ -207,22 +234,6 @@ private fun preOpToNextStep(
     else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
         popUpTo(AuthNavigationRoute.PreOperationalScreen.route) {
             inclusive = true
-        }
-    }
-}
-
-fun preOpViewToNextStep(
-    navController: NavHostController,
-    model: PreOpViewNavigationModel
-) {
-    when {
-        model.back -> navController.popBackStack()
-
-        model.role != null -> {
-            navController.navigate(
-                MainNavigationRoute.PreOperationalByRoleScreen.route +
-                    "?${NavigationArgument.ROLE}=${model.role.name}"
-            )
         }
     }
 }
