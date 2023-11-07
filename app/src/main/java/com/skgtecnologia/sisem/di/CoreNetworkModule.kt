@@ -21,6 +21,7 @@ import com.skgtecnologia.sisem.data.remote.model.components.fingerprint.Fingerpr
 import com.skgtecnologia.sisem.data.remote.model.components.header.HeaderResponse
 import com.skgtecnologia.sisem.data.remote.model.components.inventorycheck.InventoryCheckResponse
 import com.skgtecnologia.sisem.data.remote.model.components.label.LabelResponse
+import com.skgtecnologia.sisem.data.remote.model.components.media.MediaActionsResponse
 import com.skgtecnologia.sisem.data.remote.model.components.medsselector.MedsSelectorResponse
 import com.skgtecnologia.sisem.data.remote.model.components.richlabel.RichLabelResponse
 import com.skgtecnologia.sisem.data.remote.model.components.segmentedswitch.SegmentedSwitchResponse
@@ -47,8 +48,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Singleton
+import okhttp3.logging.HttpLoggingInterceptor
 
 const val CLIENT_TIMEOUT_DEFAULTS = 15_000L
 
@@ -149,6 +150,9 @@ object CoreNetworkModule {
         ).withSubtype(
             LabelResponse::class.java,
             BodyRowType.LABEL.name
+        ).withSubtype(
+            MediaActionsResponse::class.java,
+            BodyRowType.MEDIA_ACTIONS.name
         ).withSubtype(
             PasswordTextFieldResponse::class.java,
             BodyRowType.PASSWORD_TEXT_FIELD.name
