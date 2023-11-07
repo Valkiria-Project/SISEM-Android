@@ -5,13 +5,13 @@ import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
+import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.File
 
 class MediaStoreUtils(private val context: Context) {
 
-    val mediaStoreCollection: Uri? =
+    private val mediaStoreCollection: Uri? =
         MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
 
     private suspend fun getMediaStoreImageCursor(mediaStoreCollection: Uri): Cursor? {

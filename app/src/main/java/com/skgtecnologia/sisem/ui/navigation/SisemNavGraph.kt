@@ -16,6 +16,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.skgtecnologia.sisem.commons.communication.AppEvent
+import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.ui.authcards.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
@@ -24,21 +26,23 @@ import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
 import com.skgtecnologia.sisem.ui.forgotpassword.ForgotPasswordScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.map.MapScreen
-import com.skgtecnologia.sisem.ui.media.CameraScreen
-import com.skgtecnologia.sisem.ui.media.ImagesConfirmationScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryScreen
+import com.skgtecnologia.sisem.ui.medicalhistory.camera.CameraScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsScreen
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.PHOTO_TAKEN
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
 import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
-import com.skgtecnologia.sisem.ui.report.AddFindingScreen
-import com.skgtecnologia.sisem.ui.report.AddReportRoleScreen
-import com.skgtecnologia.sisem.ui.report.AddReportScreen
+import com.skgtecnologia.sisem.ui.report.addfinding.AddFindingScreen
+import com.skgtecnologia.sisem.ui.report.addreport.AddReportRoleScreen
+import com.skgtecnologia.sisem.ui.report.addreport.AddReportScreen
+import com.skgtecnologia.sisem.ui.report.media.ImagesConfirmationScreen
+import com.skgtecnologia.sisem.ui.report.media.ReportCameraScreen
 
 @Composable
 fun SisemNavGraph(
@@ -50,6 +54,16 @@ fun SisemNavGraph(
         val modifier = Modifier.padding(paddingValues)
         val navController = rememberNavController()
         val context = LocalContext.current
+
+        UnauthorizedEventHandler.subscribeUnauthorizedEvent { appEvent ->
+            if (appEvent == AppEvent.UNAUTHORIZED_SESSION) {
+                navController.navigate(AuthNavigationRoute.LoginScreen.route) {
+                    popUpTo(NavigationGraph.Main.route) {
+                        inclusive = true
+                    }
+                }
+            }
+        }
 
         NavHost(
             navController = navController,
@@ -156,7 +170,7 @@ private fun NavGraphBuilder.authGraph(
     }
 }
 
-@Suppress("UnusedPrivateMember", "LongMethod")
+@Suppress("LongMethod")
 private fun NavGraphBuilder.mainGraph(
     navController: NavHostController,
     modifier: Modifier
@@ -169,6 +183,7 @@ private fun NavGraphBuilder.mainGraph(
             route = MainNavigationRoute.MainScreen.route
         ) {
             MapScreen(
+                modifier = modifier,
                 onAction = { menuNavigationRoute ->
                     navController.navigate(menuNavigationRoute.route)
                 },
@@ -185,7 +200,6 @@ private fun NavGraphBuilder.mainGraph(
         composable(
             route = MainNavigationRoute.IncidentScreen.route
         ) { navBackStackEntry ->
-            // FIXME: Finish this work
             val vitalSigns =
                 navBackStackEntry.savedStateHandle.get<Map<String, String>>(VITAL_SIGNS)
             navBackStackEntry.savedStateHandle.remove<Map<String, String>>(VITAL_SIGNS)
@@ -196,10 +210,16 @@ private fun NavGraphBuilder.mainGraph(
             val signature = navBackStackEntry.savedStateHandle.get<String>(SIGNATURE)
             navBackStackEntry.savedStateHandle.remove<String>(SIGNATURE)
 
+            val photoTaken = navBackStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN)
+            navBackStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)
+
             MedicalHistoryScreen(
+                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
+                modifier = modifier,
                 vitalSigns = vitalSigns,
                 medicine = medicine,
-                signature = signature
+                signature = signature,
+                photoTaken = photoTaken
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
@@ -262,7 +282,7 @@ private fun NavGraphBuilder.mainGraph(
         composable(
             route = MainNavigationRoute.VitalSignsScreen.route
         ) {
-            VitalSignsScreen { navigationModel ->
+            VitalSignsScreen(modifier = modifier) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
         }
@@ -270,7 +290,7 @@ private fun NavGraphBuilder.mainGraph(
         composable(
             route = MainNavigationRoute.MedicineScreen.route
         ) {
-            MedicineScreen { navigationModel ->
+            MedicineScreen(modifier = modifier) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
         }
@@ -278,15 +298,25 @@ private fun NavGraphBuilder.mainGraph(
         composable(
             route = MainNavigationRoute.SignaturePadScreen.route
         ) {
-            // FIXME: Finish this work
-            SignaturePadScreen { navigationModel ->
+            SignaturePadScreen(modifier = modifier) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = MainNavigationRoute.CameraScreen.route
+        ) { navBackStackEntry ->
+            CameraScreen(
+                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
+                modifier = modifier
+            ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
         }
     }
 }
 
-@Suppress("UnusedPrivateMember", "LongMethod")
+@Suppress("LongMethod")
 private fun NavGraphBuilder.reportGraph(
     navController: NavHostController,
     modifier: Modifier
@@ -301,10 +331,10 @@ private fun NavGraphBuilder.reportGraph(
             arguments = listOf(
                 navArgument(NavigationArgument.FINDING_ID) { type = NavType.StringType }
             )
-        ) { backStackEntry ->
+        ) { navBackStackEntry ->
             AddFindingScreen(
-                viewModel = backStackEntry.sharedViewModel(navController = navController),
-                findingId = backStackEntry.arguments?.getString(NavigationArgument.FINDING_ID)
+                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
+                findingId = navBackStackEntry.arguments?.getString(NavigationArgument.FINDING_ID)
                     .orEmpty(),
                 modifier = modifier
             ) { navigationModel ->
@@ -313,10 +343,11 @@ private fun NavGraphBuilder.reportGraph(
         }
 
         composable(
-            route = ReportNavigationRoute.CameraScreen.route
-        ) { backStackEntry ->
-            CameraScreen(
-                viewModel = backStackEntry.sharedViewModel(navController = navController)
+            route = ReportNavigationRoute.ReportCameraScreen.route
+        ) { navBackStackEntry ->
+            ReportCameraScreen(
+                modifier = modifier,
+                viewModel = navBackStackEntry.sharedViewModel(navController = navController)
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
@@ -326,10 +357,10 @@ private fun NavGraphBuilder.reportGraph(
             route = ReportNavigationRoute.ImagesConfirmationScreen.route +
                 "/{${NavigationArgument.FROM}}",
             arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
-        ) { backStackEntry ->
+        ) { navBackStackEntry ->
             ImagesConfirmationScreen(
-                viewModel = backStackEntry.sharedViewModel(navController = navController),
-                from = backStackEntry.arguments?.getString(NavigationArgument.FROM).orEmpty(),
+                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
+                from = navBackStackEntry.arguments?.getString(NavigationArgument.FROM).orEmpty(),
                 modifier = modifier
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
@@ -356,9 +387,9 @@ private fun NavGraphBuilder.reportGraph(
 
         composable(
             route = ReportNavigationRoute.AddReportScreen.route,
-        ) { backStackEntry ->
+        ) { navBackStackEntry ->
             AddReportScreen(
-                viewModel = backStackEntry.sharedViewModel(navController = navController),
+                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
                 onNavigation = { navigationModel ->
                     navigateToNextStep(navController, navigationModel)
                 }

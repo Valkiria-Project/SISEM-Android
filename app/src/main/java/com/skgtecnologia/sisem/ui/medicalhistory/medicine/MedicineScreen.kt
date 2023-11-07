@@ -110,8 +110,6 @@ fun handleAction(
 
         is GenericUiAction.ButtonAction -> viewModel.saveMedicine()
 
-        else -> {
-            Timber.d("no-op")
-        }
+        else -> Timber.d("no-op")
     }
 }

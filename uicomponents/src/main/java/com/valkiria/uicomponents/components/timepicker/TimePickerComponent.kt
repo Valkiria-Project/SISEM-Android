@@ -49,7 +49,7 @@ fun TimePickerComponent(
                 horizontalArrangement = Arrangement.Center
             ) {
                 TimeBox(
-                    label = stringResource(id = R.string.time_picker_hour),
+                    label = stringResource(id = R.string.time_box_hour),
                     value = uiModel.hour
                 )
 
@@ -61,7 +61,7 @@ fun TimePickerComponent(
                 )
 
                 TimeBox(
-                    label = stringResource(id = R.string.time_picker_minutes),
+                    label = stringResource(id = R.string.time_box_minutes),
                     value = uiModel.minute
                 )
             }

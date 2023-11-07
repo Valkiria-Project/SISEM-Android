@@ -1,8 +1,10 @@
 @file:Suppress("TooManyFunctions")
+
 package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.navigation.NavHostController
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthNavigationModel
+import com.skgtecnologia.sisem.ui.forgotpassword.ForgotPasswordNavigationModel
 import com.skgtecnologia.sisem.ui.login.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineNavigationModel
@@ -10,6 +12,7 @@ import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadNaviga
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.PHOTO_TAKEN
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
@@ -43,20 +46,20 @@ fun navigateToNextStep(
     navController: NavHostController,
     navigationModel: NavigationModel?,
     onNavigationFallback: () -> Unit = {}
-) =
-    when (navigationModel) {
-        is DeviceAuthNavigationModel ->
-            deviceAuthToNextStep(navController, navigationModel, onNavigationFallback)
+) = when (navigationModel) {
+    is DeviceAuthNavigationModel ->
+        deviceAuthToNextStep(navController, navigationModel, onNavigationFallback)
 
-        is LoginNavigationModel -> loginToNextStep(navController, navigationModel)
-        is MedicalHistoryNavigationModel -> medicalHistoryToNextStep(navController, navigationModel)
-        is MedicineNavigationModel -> medicineToNextStep(navController, navigationModel)
-        is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
-        is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
-        is SignaturePadNavigationModel -> signaturePadToNextStep(navController, navigationModel)
-        is VitalSignsNavigationModel -> vitalSignsToNextStep(navController, navigationModel)
-        else -> {}
-    }
+    is ForgotPasswordNavigationModel -> forgotPasswordToNextStep(navController, navigationModel)
+    is LoginNavigationModel -> loginToNextStep(navController, navigationModel)
+    is MedicalHistoryNavigationModel -> medicalHistoryToNextStep(navController, navigationModel)
+    is MedicineNavigationModel -> medicineToNextStep(navController, navigationModel)
+    is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
+    is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
+    is SignaturePadNavigationModel -> signaturePadToNextStep(navController, navigationModel)
+    is VitalSignsNavigationModel -> vitalSignsToNextStep(navController, navigationModel)
+    else -> {}
+}
 
 private fun deviceAuthToNextStep(
     navController: NavHostController,
@@ -71,7 +74,6 @@ private fun deviceAuthToNextStep(
                 }
             }
 
-        // FIXME: revisit this logic, back is navigated to DeviceAuthScreen
         model.isCrewList && model.from == "" ->
             navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
                 popUpTo(AuthNavigationRoute.DeviceAuthScreen.route) {
@@ -99,6 +101,15 @@ private fun deviceAuthToNextStep(
                 onNavigationFallback()
             }
         }
+    }
+}
+
+fun forgotPasswordToNextStep(
+    navController: NavHostController,
+    model: ForgotPasswordNavigationModel
+) {
+    when {
+        model.isCancel || model.isSuccess -> navController.popBackStack()
     }
 }
 
@@ -149,6 +160,15 @@ private fun medicalHistoryToNextStep(
 
         model.isSignatureEvent ->
             navController.navigate(MainNavigationRoute.SignaturePadScreen.route)
+
+        model.showCamera -> navController.navigate(MainNavigationRoute.CameraScreen.route)
+        model.photoTaken -> with(navController) {
+            popBackStack()
+
+            currentBackStackEntry
+                ?.savedStateHandle
+                ?.set(PHOTO_TAKEN, true)
+        }
     }
 }
 
@@ -212,7 +232,7 @@ private fun reportToNextStep(
         }
 
         model.goBackFromImages -> navController.popBackStack()
-        model.showCamera -> navController.navigate(ReportNavigationRoute.CameraScreen.route)
+        model.showCamera -> navController.navigate(ReportNavigationRoute.ReportCameraScreen.route)
         model.photoTaken -> navController.popBackStack()
         model.closeFinding && model.imagesSize > 0 -> navController.navigate(
             "${ReportNavigationRoute.ImagesConfirmationScreen.route}/$FINDING"

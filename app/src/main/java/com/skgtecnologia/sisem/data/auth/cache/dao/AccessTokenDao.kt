@@ -22,14 +22,14 @@ interface AccessTokenDao {
     @Query(
         """
             UPDATE access_token
-            SET pre_operational_status = false
+            SET pre_operational_status = :status
             WHERE role = :role
              """
     )
-    suspend fun updatePreOperationalStatus(role: String)
+    suspend fun updatePreOperationalStatus(role: String, status: Boolean)
 
     @Query("DELETE FROM access_token")
-    suspend fun deleteAccessToken() // FIXME: review this method
+    suspend fun deleteAccessToken()
 
     @Query("DELETE FROM access_token WHERE user_name = :username")
     suspend fun deleteAccessTokenByUsername(username: String)

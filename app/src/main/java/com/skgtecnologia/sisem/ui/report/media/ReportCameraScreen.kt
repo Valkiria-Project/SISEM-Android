@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.media
+package com.skgtecnologia.sisem.ui.report.media
 
 import android.Manifest
 import android.content.Context
@@ -41,15 +41,16 @@ import com.skgtecnologia.sisem.ui.commons.utils.CameraUtils
 import com.skgtecnologia.sisem.ui.commons.utils.MediaStoreUtils
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportViewModel
-import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.concurrent.Executors
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @com.google.accompanist.permissions.ExperimentalPermissionsApi
 @Composable
-fun CameraScreen(
+fun ReportCameraScreen(
+    modifier: Modifier = Modifier,
     viewModel: ReportViewModel,
     onNavigation: (reportNavigationModel: NavigationModel?) -> Unit
 ) {
@@ -72,15 +73,16 @@ fun CameraScreen(
 
     if (cameraPermission.isGranted) {
         Timber.d("Show Camera")
-        CameraPreview(viewModel)
+        CameraPreview(viewModel, modifier)
     } else if (cameraPermission.shouldShowRationale) {
-        Timber.d("Show rationale") // FIXME: Handle this scenario
+        Timber.d("Show rationale")
     }
 }
 
 @Composable
 private fun CameraPreview(
-    viewModel: ReportViewModel
+    viewModel: ReportViewModel,
+    modifier: Modifier
 ) {
     val context = LocalContext.current
     val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
@@ -105,8 +107,8 @@ private fun CameraPreview(
         preview.setSurfaceProvider(previewView.surfaceProvider)
     }
 
-    Box(contentAlignment = Alignment.BottomCenter, modifier = Modifier.fillMaxSize()) {
-        AndroidView({ previewView }, modifier = Modifier.fillMaxSize())
+    Box(contentAlignment = Alignment.BottomCenter, modifier = modifier.fillMaxSize()) {
+        AndroidView({ previewView }, modifier = modifier.fillMaxSize())
 
         IconButton(
             modifier = Modifier
@@ -133,8 +135,6 @@ private fun CameraPreview(
                             if (savedUri != null) {
                                 viewModel.onPhotoTaken(savedUri)
                             }
-                            // FIXME: Add this
-//                          setGalleryThumbnail(savedUri.toString())
                         }
                     }
                 )

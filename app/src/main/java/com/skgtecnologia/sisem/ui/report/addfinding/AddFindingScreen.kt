@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.report
+package com.skgtecnologia.sisem.ui.report.addfinding
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
@@ -22,8 +22,8 @@ import com.skgtecnologia.sisem.domain.model.header.addFindingHeader
 import com.skgtecnologia.sisem.domain.model.label.addFilesHint
 import com.skgtecnologia.sisem.domain.report.model.AddFindingIdentifier
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
-import com.skgtecnologia.sisem.ui.media.MediaActions
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
+import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
@@ -33,12 +33,17 @@ import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.media.MediaAction.Camera
+import com.valkiria.uicomponents.components.media.MediaAction.MediaFile
+import com.valkiria.uicomponents.components.media.MediaAction.Gallery
+import com.valkiria.uicomponents.components.media.MediaActionsComponent
+import com.valkiria.uicomponents.components.media.MediaActionsUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
+import kotlin.random.Random
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import kotlin.random.Random
 
 private const val DESCRIPTION_INPUT_MIN_LINES = 3
 
@@ -117,7 +122,16 @@ fun AddFindingScreen(
             )
         )
 
-        MediaActions(viewModel, true)
+        MediaActionsComponent(uiModel = MediaActionsUiModel()) { _, mediaAction ->
+            when (mediaAction) {
+                Camera -> viewModel.showCamera(isFromPreOperational = true)
+                is MediaFile -> Timber.d("no-op")
+                is Gallery -> viewModel.updateSelectedImages(
+                    selectedImages = mediaAction.uris,
+                    isFromPreOperational = true
+                )
+            }
+        }
 
         Spacer(modifier = Modifier.weight(1f))
 
