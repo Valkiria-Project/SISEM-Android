@@ -75,7 +75,7 @@ fun authCardViewNextStep(
 
         model.role != null -> {
             navController.navigate(
-                MainNavigationRoute.PreOperationalByRoleScreen.route + "?$ROLE=${model.role.name}"
+                MainNavigationRoute.PreOperationalViewScreen.route + "?$ROLE=${model.role.name}"
             )
         }
     }
