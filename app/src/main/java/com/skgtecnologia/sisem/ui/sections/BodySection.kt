@@ -99,7 +99,6 @@ import com.valkiria.uicomponents.components.timepicker.TimePickerComponent
 import com.valkiria.uicomponents.components.timepicker.TimePickerUiModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @Suppress("ComplexMethod", "LongMethod")
 @Composable
@@ -327,9 +326,13 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is MediaActionsUiModel -> item(key = model.identifier) {
-                MediaActionsComponent(uiModel = model) { mediaAction ->
-                    // FIXME: Add logic to pass this event to Screen
-                    Timber.d("MediaAction is $mediaAction")
+                MediaActionsComponent(uiModel = model) { id, mediaAction ->
+                    onAction(
+                        GenericUiAction.MediaItemAction(
+                            identifier = id,
+                            mediaAction = mediaAction
+                        )
+                    )
                 }
             }
 

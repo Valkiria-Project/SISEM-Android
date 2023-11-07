@@ -15,12 +15,12 @@ import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.ui.navigation.LOGIN
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
 
 @HiltViewModel
 class DeviceAuthViewModel @Inject constructor(
@@ -38,7 +38,7 @@ class DeviceAuthViewModel @Inject constructor(
     var from: String by mutableStateOf("")
     private var isAssociateDevice: Boolean by mutableStateOf(false)
 
-    var vehicleCode by mutableStateOf("") // FIXME
+    var vehicleCode by mutableStateOf("")
     var isValidVehicleCode by mutableStateOf(false)
     var disassociateDeviceState by mutableStateOf(false)
 
@@ -107,7 +107,7 @@ class DeviceAuthViewModel @Inject constructor(
     private suspend fun handleOnSuccess() {
         if (disassociateDeviceState) {
             withContext(Dispatchers.Main) {
-                onDeviceAuthHandled() // FIXME: maintains the previous state, we must clean
+                onDeviceAuthHandled()
                 uiState = uiState.copy(
                     isLoading = false,
                     disassociateInfoModel = disassociateDeviceBanner().mapToUi()

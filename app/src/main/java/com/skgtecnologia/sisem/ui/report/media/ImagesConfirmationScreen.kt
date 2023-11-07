@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.media
+package com.skgtecnologia.sisem.ui.report.media
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -46,10 +46,10 @@ import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.extensions.decodeAsBitmap
 import com.valkiria.uicomponents.extensions.storeUriAsFileToCache
+import kotlin.random.Random
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import kotlin.random.Random
 
 @Suppress("LongMethod", "MagicNumber")
 @androidx.compose.foundation.ExperimentalFoundationApi

@@ -6,6 +6,7 @@ import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.components.chip.ChipOptionUiModel
 import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
+import com.valkiria.uicomponents.components.media.MediaAction
 
 const val DISMISS_IDENTIFIER = "dismiss"
 
@@ -65,6 +66,11 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
         val itemIdentifier: String,
         val updatedValue: String,
         val fieldValidated: Boolean
+    ) : GenericUiAction(identifier)
+
+    data class MediaItemAction(
+        override val identifier: String,
+        val mediaAction: MediaAction
     ) : GenericUiAction(identifier)
 
     data class MedsSelectorAction(

@@ -12,6 +12,7 @@ import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadNaviga
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.PHOTO_TAKEN
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
@@ -93,7 +94,6 @@ private fun deviceAuthToNextStep(
                 }
             }
 
-        // FIXME: revisit this logic, back is navigated to DeviceAuthScreen
         model.isCrewList && model.from == "" ->
             navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
                 popUpTo(AuthNavigationRoute.DeviceAuthScreen.route) {
@@ -180,6 +180,15 @@ private fun medicalHistoryToNextStep(
 
         model.isSignatureEvent ->
             navController.navigate(MainNavigationRoute.SignaturePadScreen.route)
+
+        model.showCamera -> navController.navigate(MainNavigationRoute.CameraScreen.route)
+        model.photoTaken -> with(navController) {
+            popBackStack()
+
+            currentBackStackEntry
+                ?.savedStateHandle
+                ?.set(PHOTO_TAKEN, true)
+        }
     }
 }
 
@@ -252,7 +261,7 @@ private fun reportToNextStep(
         }
 
         model.goBackFromImages -> navController.popBackStack()
-        model.showCamera -> navController.navigate(ReportNavigationRoute.CameraScreen.route)
+        model.showCamera -> navController.navigate(ReportNavigationRoute.ReportCameraScreen.route)
         model.photoTaken -> navController.popBackStack()
         model.closeFinding && model.imagesSize > 0 -> navController.navigate(
             "${ReportNavigationRoute.ImagesConfirmationScreen.route}/$FINDING"

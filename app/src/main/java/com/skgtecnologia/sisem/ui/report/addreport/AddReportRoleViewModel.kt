@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.report
+package com.skgtecnologia.sisem.ui.report.addreport
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

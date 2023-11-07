@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.ui.medicalhistory
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.getValue
@@ -11,7 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
+import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ADMINISTRATION_ROUTE
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ADMINISTRATION_ROUTE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ALIVE_KEY
@@ -44,8 +47,10 @@ import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryS
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SendMedicalHistory
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
 import com.valkiria.uicomponents.action.GenericUiAction
+import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.components.button.ImageButtonSectionUiModel
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
@@ -86,10 +91,11 @@ private const val TEMPERATURE_SYMBOL = "°C"
 private const val GLUCOMETRY_SYMBOL = "mg/dL"
 
 // FIXME: Split into use cases
-@Suppress("TooManyFunctions")
+@Suppress("LargeClass", "TooManyFunctions")
 @HiltViewModel
 class MedicalHistoryViewModel @Inject constructor(
     private val getMedicalHistoryScreen: GetMedicalHistoryScreen,
+    private val logoutCurrentUser: LogoutCurrentUser,
     private val sendMedicalHistory: SendMedicalHistory,
     androidIdProvider: AndroidIdProvider
 ) : ViewModel() {
@@ -142,18 +148,10 @@ class MedicalHistoryViewModel @Inject constructor(
             ).onSuccess { medicalHistoryScreenModel ->
                 medicalHistoryScreenModel.getFormInitialValues()
 
-                // FIXME: Add MediaActionsUiModel in the correct position
-                val updatedScreenModel = medicalHistoryScreenModel.copy(
-                    body = buildList {
-                        addAll(medicalHistoryScreenModel.body)
-                        add(MediaActionsUiModel(hasFileAction = true))
-                    }
-                )
-
                 withContext(Dispatchers.Main) {
                     uiState = uiState.copy(
                         isLoading = false,
-                        screenModel = updatedScreenModel
+                        screenModel = medicalHistoryScreenModel
                     )
                 }
             }.onFailure { throwable ->
@@ -197,10 +195,6 @@ class MedicalHistoryViewModel @Inject constructor(
                         it.id,
                         it.name
                     )
-                }
-
-                is ImageButtonSectionUiModel -> {
-                    Timber.d("No selected property for this one") // FIXME: Backend
                 }
 
                 is SegmentedSwitchUiModel ->
@@ -746,7 +740,65 @@ class MedicalHistoryViewModel @Inject constructor(
         }
     }
 
-    fun handleShownError() {
+    fun showCamera() {
+        uiState = uiState.copy(
+            navigationModel = MedicalHistoryNavigationModel(
+                showCamera = true
+            )
+        )
+    }
+
+    fun onPhotoTaken(savedUri: Uri) {
+        val updatedSelectedMedia = buildList {
+            addAll(uiState.selectedMediaUris)
+            add(savedUri)
+        }
+
+        uiState = uiState.copy(
+            selectedMediaUris = updatedSelectedMedia,
+            navigationModel = MedicalHistoryNavigationModel(
+                photoTaken = true
+            )
+        )
+    }
+
+    fun updateMediaActions(selectedMedia: List<Uri>? = null) {
+        val updatedSelectedMedia = buildList {
+            addAll(uiState.selectedMediaUris)
+
+            if (selectedMedia?.isNotEmpty() == true) addAll(selectedMedia)
+        }
+
+        val updatedBody = uiState.screenModel?.body?.map { model ->
+            if (model is MediaActionsUiModel) {
+                model.copy(selectedMediaUris = updatedSelectedMedia)
+            } else {
+                model
+            }
+        }.orEmpty()
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
+    fun handleEvent(uiAction: UiAction) {
+        consumeShownError()
+
+        uiAction.handleAuthorizationErrorEvent {
+            job?.cancel()
+            job = viewModelScope.launch(Dispatchers.IO) {
+                logoutCurrentUser.invoke()
+                    .onSuccess {
+                        UnauthorizedEventHandler.publishUnauthorizedEvent()
+                    }
+            }
+        }
+    }
+
+    private fun consumeShownError() {
         uiState = uiState.copy(
             infoEvent = null
         )
