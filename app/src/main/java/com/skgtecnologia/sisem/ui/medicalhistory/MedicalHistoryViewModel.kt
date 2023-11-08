@@ -229,7 +229,7 @@ class MedicalHistoryViewModel @Inject constructor(
                 chipOption.remove(chipOptionAction.chipOptionUiModel.id)
 
             chipOption != null &&
-                    chipOption.contains(chipOptionAction.chipOptionUiModel.id).not() -> {
+                chipOption.contains(chipOptionAction.chipOptionUiModel.id).not() -> {
                 chipOption.add(chipOptionAction.chipOptionUiModel.id)
             }
 
