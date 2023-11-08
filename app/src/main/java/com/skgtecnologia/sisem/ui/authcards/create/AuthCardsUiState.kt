@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.authcards
+package com.skgtecnologia.sisem.ui.authcards.create
 
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel

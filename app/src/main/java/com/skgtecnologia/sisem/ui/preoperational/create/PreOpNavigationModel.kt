@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.preoperational
+package com.skgtecnologia.sisem.ui.preoperational.create
 
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 
