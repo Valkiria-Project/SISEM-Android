@@ -176,6 +176,8 @@ private fun medicalHistoryToNextStep(
     model: MedicalHistoryNavigationModel
 ) {
     when {
+        model.back -> navController.popBackStack()
+
         model.isInfoCardEvent -> navController.navigate(MainNavigationRoute.VitalSignsScreen.route)
 
         model.isMedsSelectorEvent ->

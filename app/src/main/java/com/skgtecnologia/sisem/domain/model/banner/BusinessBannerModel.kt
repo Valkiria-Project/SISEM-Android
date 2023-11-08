@@ -305,7 +305,7 @@ fun sendEmailSuccessBanner(): BannerModel = BannerModel(
 )
 
 fun stretcherRetentionSuccess(): BannerModel = BannerModel(
-    icon = "ic_alert",
+    icon = "ic_stretcher",
     iconColor = "#42A4FA",
     title = "Retención de camilla",
     description = "Se ha enviado la retención de camilla exitosamente."

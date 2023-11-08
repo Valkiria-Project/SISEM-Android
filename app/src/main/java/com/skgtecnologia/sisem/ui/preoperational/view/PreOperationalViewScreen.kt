@@ -60,7 +60,7 @@ fun PreOperationalViewScreen(
     }
 
     OnBannerHandler(uiModel = uiState.errorModel) {
-        viewModel.handleShownError()
+        viewModel.handleEvent(it)
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)

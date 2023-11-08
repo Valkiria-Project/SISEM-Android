@@ -43,7 +43,7 @@ fun StretcherRetentionScreen(
     ConstraintLayout(
         modifier = modifier.fillMaxSize()
     ) {
-        val (header, body, footer) = createRefs()
+        val (header, body) = createRefs()
 
         uiState.screenModel?.header?.let {
             HeaderSection(
@@ -65,7 +65,7 @@ fun StretcherRetentionScreen(
             modifier = modifier
                 .constrainAs(body) {
                     top.linkTo(header.bottom)
-                    bottom.linkTo(footer.top)
+                    bottom.linkTo(parent.bottom)
                     height = Dimension.fillToConstraints
                 }
                 .padding(top = 20.dp),

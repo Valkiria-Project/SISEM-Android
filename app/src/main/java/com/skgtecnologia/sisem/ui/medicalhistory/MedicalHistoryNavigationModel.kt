@@ -7,5 +7,6 @@ data class MedicalHistoryNavigationModel(
     val isMedsSelectorEvent: Boolean = false,
     val isSignatureEvent: Boolean = false,
     val showCamera: Boolean = false,
-    val photoTaken: Boolean = false
+    val photoTaken: Boolean = false,
+    val back: Boolean = false
 ) : NavigationModel

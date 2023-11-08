@@ -117,7 +117,7 @@ class StretcherRetentionViewModel @Inject constructor(
     fun navigateBack() {
         uiState = uiState.copy(
             successEvent = null,
-            navigationModel = StretcherRetentionNavigationModel(back = false)
+            navigationModel = StretcherRetentionNavigationModel(back = true)
         )
     }
 
