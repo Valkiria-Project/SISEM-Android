@@ -119,7 +119,7 @@ fun DatePickerTextFieldView(
 
                         onAction(
                             uiModel.identifier,
-                            selectedDate.toString(),
+                            text.text,
                             text.toFailedValidation(uiModel.validations, true) == null
                         )
                     }
