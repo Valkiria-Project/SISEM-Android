@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.authcards
+package com.skgtecnologia.sisem.ui.authcards.create
 
 import android.Manifest
 import android.os.Build
@@ -15,8 +15,8 @@ import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
-import com.skgtecnologia.sisem.ui.authcards.report.FindingsContent
-import com.skgtecnologia.sisem.ui.authcards.report.ReportDetailContent
+import com.skgtecnologia.sisem.ui.authcards.create.report.FindingsContent
+import com.skgtecnologia.sisem.ui.authcards.create.report.ReportDetailContent
 import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection

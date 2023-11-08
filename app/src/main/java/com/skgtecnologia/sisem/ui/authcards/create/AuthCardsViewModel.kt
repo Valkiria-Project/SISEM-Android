@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.authcards
+package com.skgtecnologia.sisem.ui.authcards.create
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
