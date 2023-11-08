@@ -28,6 +28,7 @@ sealed class MainNavigationRoute(override val route: String) : NavigationRoute(r
     data object MainScreen : MainNavigationRoute("main_screen")
     data object MedicineScreen : MainNavigationRoute("medicine_screen")
     data object NotificationsScreen : MainNavigationRoute("menu_notifications_screen")
+    data object PreOperationalViewScreen : MainNavigationRoute("pre_operational_view_screen")
     data object PreoperationalMainScreen : MainNavigationRoute("menu_preoperational_menu_screen")
     data object ShiftScreen : MainNavigationRoute("menu_shift_screen")
     data object SignatureAndFingerprint : MainNavigationRoute("menu_signature_and_fingerprint")
@@ -51,6 +52,7 @@ object NavigationArgument {
     const val NOVELTY = "novelty"
     const val PHOTO_TAKEN = "photo_taken"
     const val REVERT_FINDING = "revert_finding"
+    const val ROLE = "role"
     const val SIGNATURE = "signature"
     const val VITAL_SIGNS = "vital_signs"
 }

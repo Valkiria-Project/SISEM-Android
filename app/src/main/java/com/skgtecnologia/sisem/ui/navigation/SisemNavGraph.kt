@@ -19,7 +19,8 @@ import androidx.navigation.navigation
 import com.skgtecnologia.sisem.commons.communication.AppEvent
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
-import com.skgtecnologia.sisem.ui.authcards.AuthCardsScreen
+import com.skgtecnologia.sisem.ui.authcards.create.AuthCardsScreen
+import com.skgtecnologia.sisem.ui.authcards.view.AuthCardViewScreen
 import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.sharedViewModel
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
@@ -35,14 +36,17 @@ import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.PHOTO_TAKEN
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ROLE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
-import com.skgtecnologia.sisem.ui.preoperational.PreOperationalScreen
+import com.skgtecnologia.sisem.ui.preoperational.create.PreOperationalScreen
+import com.skgtecnologia.sisem.ui.preoperational.view.PreOperationalViewScreen
 import com.skgtecnologia.sisem.ui.report.addfinding.AddFindingScreen
 import com.skgtecnologia.sisem.ui.report.addreport.AddReportRoleScreen
 import com.skgtecnologia.sisem.ui.report.addreport.AddReportScreen
 import com.skgtecnologia.sisem.ui.report.media.ImagesConfirmationScreen
 import com.skgtecnologia.sisem.ui.report.media.ReportCameraScreen
+import com.skgtecnologia.sisem.ui.stretcherretention.StretcherRetentionScreen
 import com.skgtecnologia.sisem.ui.stretcherretention.StretcherRetentionScreen
 
 @Composable
@@ -265,7 +269,9 @@ private fun NavGraphBuilder.mainGraph(
         composable(
             route = MainNavigationRoute.PreoperationalMainScreen.route
         ) {
-            // FIXME: Finish this work
+            AuthCardViewScreen { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
         }
 
         composable(
@@ -322,6 +328,16 @@ private fun NavGraphBuilder.mainGraph(
                 modifier = modifier
             ) {
                 navigateToNextStep(navController, it)
+            }
+        }
+
+        composable(
+            route = MainNavigationRoute.PreOperationalViewScreen.route +
+                "?$ROLE={$ROLE}",
+            arguments = listOf(navArgument(ROLE) { type = NavType.StringType })
+        ) {
+            PreOperationalViewScreen { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
             }
         }
     }

@@ -37,6 +37,7 @@ import com.valkiria.uicomponents.action.ChangePasswordUiAction.NewPasswordInput
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.OldPasswordInput
 import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.GenericUiAction
+import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
 import com.valkiria.uicomponents.action.LoginUiAction.Login
 import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
@@ -250,8 +251,14 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is FindingUiModel -> item(key = model.identifier) {
-                FindingComponent(uiModel = model) { id, status ->
-                    onAction(GenericUiAction.FindingAction(identifier = id, status = status))
+                FindingComponent(uiModel = model) { id, status, findingDetail ->
+                    onAction(
+                        GenericUiAction.FindingAction(
+                            identifier = id,
+                            status = status,
+                            findingDetail = findingDetail
+                        )
+                    )
                 }
             }
 
@@ -272,7 +279,9 @@ private fun LazyListScope.handleBodyRows(
             is HeaderUiModel -> item(key = model.identifier) {
                 HeaderSection(
                     headerUiModel = model
-                )
+                ) {
+                    onAction(HeaderUiAction.GoBack)
+                }
             }
 
             is HumanBodyUiModel -> item(key = model.identifier) {
