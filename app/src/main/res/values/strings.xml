@@ -163,6 +163,7 @@
     <string name="drawer_hceud">HCEUD</string>
     <string name="drawer_device_auth">Asociar dispositivo al vehículo</string>
     <string name="drawer_signature_and_fingerprint">Registrar firma y huella</string>
+    <string name="drawer_stretcher_retention">Registra retención de camilla</string>
 
     <!-- Wounds dialog -->
     <string name="wounds_burn_description">¿Que tipo de quemadura presenta el paciente?</string>

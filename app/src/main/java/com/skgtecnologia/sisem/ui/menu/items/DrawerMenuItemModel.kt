@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.ui.menu.items
 import android.content.Context
 import androidx.annotation.DrawableRes
 import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.StretcherRetentionScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.CertificationsScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.DeviceAuthScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.DrivingGuideScreen
@@ -76,6 +77,11 @@ private fun getDrawerItems(context: Context) = listOf(
         HCEUDCScreen,
         context.getString(R.string.drawer_hceud),
         drawable.ic_hceud
+    ),
+    DrawerMenuItemModel(
+        StretcherRetentionScreen,
+        context.getString(R.string.drawer_stretcher_retention),
+        drawable.ic_stretcher
     )
 )
 

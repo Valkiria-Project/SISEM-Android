@@ -46,6 +46,7 @@ import com.skgtecnologia.sisem.ui.report.addreport.AddReportRoleScreen
 import com.skgtecnologia.sisem.ui.report.addreport.AddReportScreen
 import com.skgtecnologia.sisem.ui.report.media.ImagesConfirmationScreen
 import com.skgtecnologia.sisem.ui.report.media.ReportCameraScreen
+import com.skgtecnologia.sisem.ui.stretcherretention.StretcherRetentionScreen
 
 @Composable
 fun SisemNavGraph(
@@ -316,6 +317,16 @@ private fun NavGraphBuilder.mainGraph(
                 modifier = modifier
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = MainNavigationRoute.StretcherRetentionScreen.route
+        ) {
+            StretcherRetentionScreen(
+                modifier = modifier
+            ) {
+                navigateToNextStep(navController, it)
             }
         }
 

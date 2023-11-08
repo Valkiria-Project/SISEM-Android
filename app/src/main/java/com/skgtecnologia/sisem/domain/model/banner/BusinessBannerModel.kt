@@ -303,3 +303,10 @@ fun sendEmailSuccessBanner(): BannerModel = BannerModel(
     description = "Se ha enviado un enlace de recuperación " +
         "de contraseña al correo electrónico diligenciado"
 )
+
+fun stretcherRetentionSuccess(): BannerModel = BannerModel(
+    icon = "ic_stretcher",
+    iconColor = "#42A4FA",
+    title = "Retención de camilla",
+    description = "Se ha enviado la retención de camilla exitosamente."
+)

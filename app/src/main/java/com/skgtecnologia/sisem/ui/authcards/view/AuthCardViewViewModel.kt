@@ -5,11 +5,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.di.operation.OperationRole
+import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalViewIdentifier
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetAuthCardViewScreen
+import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
+import com.valkiria.uicomponents.action.UiAction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -21,6 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthCardViewViewModel @Inject constructor(
     private val androidIdProvider: AndroidIdProvider,
+    private val logoutCurrentUser: LogoutCurrentUser,
     private val getAuthCardViewScreen: GetAuthCardViewScreen
 ) : ViewModel() {
 
@@ -95,7 +100,21 @@ class AuthCardViewViewModel @Inject constructor(
         )
     }
 
-    fun handleShownError() {
+    fun handleEvent(uiAction: UiAction) {
+        consumeShownError()
+
+        uiAction.handleAuthorizationErrorEvent {
+            job?.cancel()
+            job = viewModelScope.launch(Dispatchers.IO) {
+                logoutCurrentUser.invoke()
+                    .onSuccess {
+                        UnauthorizedEventHandler.publishUnauthorizedEvent()
+                    }
+            }
+        }
+    }
+
+    private fun consumeShownError() {
         uiState = uiState.copy(
             errorModel = null
         )

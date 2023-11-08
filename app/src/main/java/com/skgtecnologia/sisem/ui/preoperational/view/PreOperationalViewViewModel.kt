@@ -6,11 +6,15 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.di.operation.OperationRole
+import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreenView
+import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ROLE
+import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.finding.FindingsDetailUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +28,7 @@ import javax.inject.Inject
 class PreOperationalViewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val androidIdProvider: AndroidIdProvider,
+    private val logoutCurrentUser: LogoutCurrentUser,
     private val getPreOperationalScreenView: GetPreOperationalScreenView
 ) : ViewModel() {
 
@@ -79,7 +84,21 @@ class PreOperationalViewViewModel @Inject constructor(
         )
     }
 
-    fun handleShownError() {
+    fun handleEvent(uiAction: UiAction) {
+        consumeShownError()
+
+        uiAction.handleAuthorizationErrorEvent {
+            job?.cancel()
+            job = viewModelScope.launch(Dispatchers.IO) {
+                logoutCurrentUser.invoke()
+                    .onSuccess {
+                        UnauthorizedEventHandler.publishUnauthorizedEvent()
+                    }
+            }
+        }
+    }
+
+    private fun consumeShownError() {
         uiState = uiState.copy(
             errorModel = null
         )
