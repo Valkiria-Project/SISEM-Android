@@ -815,4 +815,10 @@ class MedicalHistoryViewModel @Inject constructor(
             isLoading = false
         )
     }
+
+    fun goBack() {
+        uiState = uiState.copy(
+            navigationModel = MedicalHistoryNavigationModel(back = true)
+        )
+    }
 }
