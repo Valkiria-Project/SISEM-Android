@@ -4,7 +4,9 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +16,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -39,6 +43,8 @@ import com.valkiria.uicomponents.components.media.MediaAction.MediaFile
 import com.valkiria.uicomponents.extensions.storeUriAsFileToCache
 import java.io.File
 import kotlinx.coroutines.launch
+
+private const val ROUNDED_CORNER_SHAPE_PERCENTAGE = 90
 
 @Suppress("LongMethod")
 @Composable
@@ -156,7 +162,7 @@ fun MediaActionsComponent(
             }
         }
 
-        if (uiModel.withinForm) {
+        if (uiModel.withinForm && selectedMedia.isNotEmpty()) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -184,8 +190,7 @@ fun MediaActionsComponent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                start = 20.dp,
-                                end = 20.dp,
+                                start = 20.dp
                             ),
                         horizontalArrangement = Arrangement.Start
                     ) {
@@ -193,10 +198,15 @@ fun MediaActionsComponent(
                             uiModel = LabelUiModel(
                                 identifier = media.absolutePath,
                                 text = media.name,
-                                textStyle = TextStyle.HEADLINE_2,
+                                textStyle = TextStyle.HEADLINE_6,
                                 arrangement = Arrangement.Start,
                                 modifier = Modifier
                                     .padding(14.dp)
+                                    .border(
+                                        BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
+                                        RoundedCornerShape(ROUNDED_CORNER_SHAPE_PERCENTAGE)
+                                    )
+                                    .padding(horizontal = 20.dp, vertical = 4.dp)
                             )
                         )
                     }
@@ -217,7 +227,13 @@ sealed class MediaAction {
 fun MediaActionsPreview() {
     Column {
         MediaActionsComponent(
-            uiModel = MediaActionsUiModel(withinForm = true),
+            uiModel = MediaActionsUiModel(
+                withinForm = true,
+                selectedMediaUris = listOf(
+                    Uri.parse("10.jpg"),
+                    Uri.parse("20.jpg")
+                )
+            ),
             listState = rememberLazyListState(),
             mediaActionsIndex = 1
         ) { _, _ -> }
