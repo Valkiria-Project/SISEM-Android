@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.preoperational
+package com.skgtecnologia.sisem.ui.preoperational.create
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -115,7 +115,7 @@ class PreOperationalViewModel @Inject constructor(
 
                 is FindingUiModel -> {
                     val model = bodyRowModel.segmentedSwitchUiModel
-                    findingValues[model.identifier] = model.selected
+                    findingValues[model?.identifier.orEmpty()] = model?.selected ?: false
                 }
 
                 is InventoryCheckUiModel -> {
@@ -149,9 +149,9 @@ class PreOperationalViewModel @Inject constructor(
 
     private fun showFindingForm() {
         val updatedBody = uiState.screenModel?.body?.map {
-            if (it is FindingUiModel && it.segmentedSwitchUiModel.identifier == temporalFinding) {
+            if (it is FindingUiModel && it.segmentedSwitchUiModel?.identifier == temporalFinding) {
                 val temporalFindingModel = it.copy(
-                    segmentedSwitchUiModel = it.segmentedSwitchUiModel.copy(selected = false)
+                    segmentedSwitchUiModel = it.segmentedSwitchUiModel?.copy(selected = false)
                 )
 
                 temporalFindingModel
@@ -233,11 +233,11 @@ class PreOperationalViewModel @Inject constructor(
 
     fun revertFinding() {
         val updatedBody = uiState.screenModel?.body?.map {
-            if (it is FindingUiModel && it.segmentedSwitchUiModel.identifier == temporalFinding) {
+            if (it is FindingUiModel && it.segmentedSwitchUiModel?.identifier == temporalFinding) {
                 findingValues[temporalFinding] = true
                 temporalFinding = ""
                 val temporalFindingModel = it.copy(
-                    segmentedSwitchUiModel = it.segmentedSwitchUiModel.copy(selected = true)
+                    segmentedSwitchUiModel = it.segmentedSwitchUiModel?.copy(selected = true)
                 )
                 temporalFindingModel
             } else {

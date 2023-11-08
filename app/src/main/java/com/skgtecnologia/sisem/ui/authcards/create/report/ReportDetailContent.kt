@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.authcards.report
+package com.skgtecnologia.sisem.ui.authcards.create.report
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

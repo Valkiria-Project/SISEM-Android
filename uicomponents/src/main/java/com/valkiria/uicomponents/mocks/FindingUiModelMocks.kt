@@ -10,6 +10,9 @@ fun getPreOperationalOilFindingUiModel(): FindingUiModel {
     return FindingUiModel(
         identifier = "PRE_OP_OIL",
         segmentedSwitchUiModel = getPreOperationalOilSegmentedSwitchUiModel(),
+        segmentedValueUiModel = null,
+        readOnly = false,
+        findingDetail = null,
         arrangement = Arrangement.Center,
         modifier = Modifier.padding(
             start = 52.dp,
