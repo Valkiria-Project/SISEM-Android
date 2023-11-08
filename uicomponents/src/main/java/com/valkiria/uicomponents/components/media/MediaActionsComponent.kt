@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -42,6 +44,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun MediaActionsComponent(
     uiModel: MediaActionsUiModel,
+    listState: LazyListState = rememberLazyListState(),
+    mediaActionsIndex: Int = 0,
     onMediaAction: (id: String, mediaAction: MediaAction) -> Unit
 ) {
     var selectedMedia by remember { mutableStateOf(listOf<File>()) }
@@ -67,6 +71,12 @@ fun MediaActionsComponent(
                 }
             }
         }
+    }
+
+    LaunchedEffect(selectedMedia) {
+        listState.animateScrollToItem(
+            index = mediaActionsIndex + 1
+        )
     }
 
     Column(
@@ -206,13 +216,21 @@ sealed class MediaAction {
 @Composable
 fun MediaActionsPreview() {
     Column {
-        MediaActionsComponent(uiModel = MediaActionsUiModel(withinForm = true)) { _, _ -> }
+        MediaActionsComponent(
+            uiModel = MediaActionsUiModel(withinForm = true),
+            listState = rememberLazyListState(),
+            mediaActionsIndex = 1
+        ) { _, _ -> }
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(2.dp)
                 .background(color = Color.White)
         )
-        MediaActionsComponent(uiModel = MediaActionsUiModel(withinForm = false)) { _, _ -> }
+        MediaActionsComponent(
+            uiModel = MediaActionsUiModel(withinForm = false),
+            listState = rememberLazyListState(),
+            mediaActionsIndex = 1
+        ) { _, _ -> }
     }
 }
