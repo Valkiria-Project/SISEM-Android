@@ -73,6 +73,7 @@ import com.valkiria.uicomponents.components.slider.SliderUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.utlis.HOURS_MINUTES_24_HOURS_PATTERN
+import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDate
 import com.valkiria.uicomponents.utlis.WEEK_DAYS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
@@ -703,7 +704,7 @@ class MedicalHistoryViewModel @Inject constructor(
     }
 
     private fun calculateGestationWeeks(): String {
-        val fur = LocalDate.parse(fieldsValues[FUR_KEY]?.updatedValue.orEmpty())
+        val fur = getLocalDate(fieldsValues[FUR_KEY]?.updatedValue.orEmpty())
         val now = LocalDate.now()
         return ((now.toEpochDay() - fur.toEpochDay()) / WEEK_DAYS).toString()
     }

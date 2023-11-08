@@ -32,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
+import com.valkiria.uicomponents.R.string
 import com.valkiria.uicomponents.bricks.button.ImageButtonUiModel
 import com.valkiria.uicomponents.bricks.button.ImageButtonView
 import com.valkiria.uicomponents.components.label.LabelComponent
@@ -175,7 +176,7 @@ fun MediaActionsComponent(
                 LabelComponent(
                     uiModel = LabelUiModel(
                         identifier = "MEDIA_ACTIONS",
-                        text = "Archivos adjuntos",
+                        text = stringResource(string.media_action_attached_files),
                         textStyle = TextStyle.HEADLINE_2,
                         arrangement = Arrangement.Start,
                         modifier = Modifier
@@ -199,6 +200,7 @@ fun MediaActionsComponent(
                                 identifier = media.absolutePath,
                                 text = media.name,
                                 textStyle = TextStyle.HEADLINE_6,
+                                rightIcon = stringResource(string.trash_icon),
                                 arrangement = Arrangement.Start,
                                 modifier = Modifier
                                     .padding(14.dp)
