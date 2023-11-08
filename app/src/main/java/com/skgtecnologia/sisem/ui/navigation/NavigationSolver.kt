@@ -18,6 +18,7 @@ import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
 import com.skgtecnologia.sisem.ui.preoperational.PreOpNavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
+import com.skgtecnologia.sisem.ui.stretcherretention.StretcherRetentionNavigationModel
 
 const val APP_STARTED = "app_started"
 const val FINDING = "finding"
@@ -57,6 +58,8 @@ fun navigateToNextStep(
     is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
     is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
     is SignaturePadNavigationModel -> signaturePadToNextStep(navController, navigationModel)
+    is StretcherRetentionNavigationModel ->
+        stretcherRetentionToNextStep(navController, navigationModel)
     is VitalSignsNavigationModel -> vitalSignsToNextStep(navController, navigationModel)
     else -> {}
 }
@@ -276,6 +279,15 @@ private fun signaturePadToNextStep(
                 ?.savedStateHandle
                 ?.set(SIGNATURE, model.signature)
         }
+    }
+}
+
+fun stretcherRetentionToNextStep(
+    navController: NavHostController,
+    model: StretcherRetentionNavigationModel
+) {
+    when {
+        model.back -> navController.popBackStack()
     }
 }
 
