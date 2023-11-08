@@ -13,6 +13,9 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -326,7 +329,15 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is MediaActionsUiModel -> item(key = model.identifier) {
-                MediaActionsComponent(uiModel = model) { id, mediaAction ->
+                val mediaActionsIndex by remember {
+                    mutableIntStateOf(body.indexOfFirst { it is MediaActionsUiModel })
+                }
+
+                MediaActionsComponent(
+                    uiModel = model,
+                    listState = listState,
+                    mediaActionsIndex = mediaActionsIndex
+                ) { id, mediaAction ->
                     onAction(
                         GenericUiAction.MediaItemAction(
                             identifier = id,

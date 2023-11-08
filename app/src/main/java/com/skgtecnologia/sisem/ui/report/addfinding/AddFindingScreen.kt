@@ -34,8 +34,8 @@ import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.media.MediaAction.Camera
-import com.valkiria.uicomponents.components.media.MediaAction.MediaFile
 import com.valkiria.uicomponents.components.media.MediaAction.Gallery
+import com.valkiria.uicomponents.components.media.MediaAction.MediaFile
 import com.valkiria.uicomponents.components.media.MediaActionsComponent
 import com.valkiria.uicomponents.components.media.MediaActionsUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent

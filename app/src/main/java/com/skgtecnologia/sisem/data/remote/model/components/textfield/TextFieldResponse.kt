@@ -22,8 +22,11 @@ data class TextFieldResponse(
     @Json(name = "text_style") val textStyle: TextStyle?,
     @Json(name = "style") val style: TextFieldStyle?,
     @Json(name = "char_limit") val charLimit: Int?,
+    @Json(name = "enabled") val enabled: Boolean?,
     @Json(name = "validations") val validations: List<ValidationResponse>?,
     @Json(name = "real_time_validation") val realTimeValidation: Boolean?,
+    @Json(name = "max_date") val maxDate: String?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val margins: Modifier?
 ) : BodyRowResponse {
@@ -39,8 +42,12 @@ data class TextFieldResponse(
         textStyle = textStyle ?: error("TextField textStyle cannot be null"),
         style = style ?: error("TextField style cannot be null"),
         charLimit = charLimit ?: 600,
+        enabled = enabled ?: true,
         validations = validations?.map { it.mapToUi() }
             ?: error("TextField validations cannot be null"),
+        realTimeValidation = realTimeValidation ?: false,
+        maxDate = maxDate,
+        required = required ?: true,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = margins ?: Modifier
     )
