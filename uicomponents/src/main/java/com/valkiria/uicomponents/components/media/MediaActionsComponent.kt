@@ -4,7 +4,9 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +14,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
+import com.valkiria.uicomponents.R.string
 import com.valkiria.uicomponents.bricks.button.ImageButtonUiModel
 import com.valkiria.uicomponents.bricks.button.ImageButtonView
 import com.valkiria.uicomponents.components.label.LabelComponent
@@ -36,11 +43,16 @@ import com.valkiria.uicomponents.components.media.MediaAction.Gallery
 import com.valkiria.uicomponents.components.media.MediaAction.MediaFile
 import com.valkiria.uicomponents.extensions.storeUriAsFileToCache
 import java.io.File
+import kotlinx.coroutines.launch
+
+private const val ROUNDED_CORNER_SHAPE_PERCENTAGE = 90
 
 @Suppress("LongMethod")
 @Composable
 fun MediaActionsComponent(
     uiModel: MediaActionsUiModel,
+    listState: LazyListState = rememberLazyListState(),
+    mediaActionsIndex: Int = 0,
     onMediaAction: (id: String, mediaAction: MediaAction) -> Unit
 ) {
     var selectedMedia by remember { mutableStateOf(listOf<File>()) }
@@ -57,13 +69,21 @@ fun MediaActionsComponent(
     )
 
     LaunchedEffect(uiModel.selectedMediaUris) {
-        if (uiModel.selectedMediaUris.isNotEmpty()) {
-            selectedMedia = uiModel.selectedMediaUris.map { uri ->
-                context.storeUriAsFileToCache(
-                    uri
-                )
+        launch {
+            if (uiModel.selectedMediaUris.isNotEmpty()) {
+                selectedMedia = uiModel.selectedMediaUris.map { uri ->
+                    context.storeUriAsFileToCache(
+                        uri
+                    )
+                }
             }
         }
+    }
+
+    LaunchedEffect(selectedMedia) {
+        listState.animateScrollToItem(
+            index = mediaActionsIndex + 1
+        )
     }
 
     Column(
@@ -143,7 +163,7 @@ fun MediaActionsComponent(
             }
         }
 
-        if (uiModel.withinForm) {
+        if (uiModel.withinForm && selectedMedia.isNotEmpty()) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -156,7 +176,7 @@ fun MediaActionsComponent(
                 LabelComponent(
                     uiModel = LabelUiModel(
                         identifier = "MEDIA_ACTIONS",
-                        text = "Archivos adjuntos",
+                        text = stringResource(string.media_action_attached_files),
                         textStyle = TextStyle.HEADLINE_2,
                         arrangement = Arrangement.Start,
                         modifier = Modifier
@@ -171,8 +191,7 @@ fun MediaActionsComponent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                start = 20.dp,
-                                end = 20.dp,
+                                start = 20.dp
                             ),
                         horizontalArrangement = Arrangement.Start
                     ) {
@@ -180,10 +199,16 @@ fun MediaActionsComponent(
                             uiModel = LabelUiModel(
                                 identifier = media.absolutePath,
                                 text = media.name,
-                                textStyle = TextStyle.HEADLINE_2,
+                                textStyle = TextStyle.HEADLINE_6,
+                                rightIcon = stringResource(string.trash_icon),
                                 arrangement = Arrangement.Start,
                                 modifier = Modifier
                                     .padding(14.dp)
+                                    .border(
+                                        BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
+                                        RoundedCornerShape(ROUNDED_CORNER_SHAPE_PERCENTAGE)
+                                    )
+                                    .padding(horizontal = 20.dp, vertical = 4.dp)
                             )
                         )
                     }
@@ -203,13 +228,27 @@ sealed class MediaAction {
 @Composable
 fun MediaActionsPreview() {
     Column {
-        MediaActionsComponent(uiModel = MediaActionsUiModel(withinForm = true)) { _, _ -> }
+        MediaActionsComponent(
+            uiModel = MediaActionsUiModel(
+                withinForm = true,
+                selectedMediaUris = listOf(
+                    Uri.parse("10.jpg"),
+                    Uri.parse("20.jpg")
+                )
+            ),
+            listState = rememberLazyListState(),
+            mediaActionsIndex = 1
+        ) { _, _ -> }
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(2.dp)
                 .background(color = Color.White)
         )
-        MediaActionsComponent(uiModel = MediaActionsUiModel(withinForm = false)) { _, _ -> }
+        MediaActionsComponent(
+            uiModel = MediaActionsUiModel(withinForm = false),
+            listState = rememberLazyListState(),
+            mediaActionsIndex = 1
+        ) { _, _ -> }
     }
 }

@@ -22,7 +22,7 @@ import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.mocks.getPreOpDriverAuxGuardianTextFieldUiModel
 import com.valkiria.uicomponents.utlis.TimeUtils.getFormattedLocalTimeAsString
-import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDateFromInstant
+import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDate
 import java.time.Instant
 
 @Suppress("UnusedPrivateMember")
@@ -33,7 +33,7 @@ fun FixedDateTextFieldView(
     onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
 ) {
     val startLabel = buildString {
-        val today = getLocalDateFromInstant(Instant.now())
+        val today = getLocalDate(Instant.now())
         val dayOfMonth = today.dayOfMonth.toString().padStart(2, '0')
         val month = today.monthValue.toString().padStart(2, '0')
         val year = today.year.toString()

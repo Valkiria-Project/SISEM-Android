@@ -4,14 +4,21 @@
     <string name="network_error_message">Please check your network connection</string>
     <string name="network_error_cta">Try again</string>
 
+    <!-- Icons -->
+    <string name="trash_icon">ic_trash</string>
+
+    <!-- Human Body -->
     <string name="human_body_label">Rotar</string>
 
     <!-- Media actions -->
     <string name="media_action_take_picture_label">Cámara</string>
     <string name="media_action_select_pictures">Imagen</string>
     <string name="media_action_select_files">Archivo</string>
+    <string name="media_action_attached_files">Archivos adjuntos</string>
 
-    <!-- Time picker -->
+    <!-- Date / Time picker -->
+    <string name="date_picker_select">Seleccionar</string>
+    <string name="date_picker_cancel">Cancelar</string>
     <string name="time_box_hour">Hora</string>
     <string name="time_box_minutes">Minutos</string>
 </resources>

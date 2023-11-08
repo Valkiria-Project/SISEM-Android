@@ -26,15 +26,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import com.valkiria.uicomponents.R.string
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.mocks.getPreOpDriverAuxGuardianTextFieldUiModel
-import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDateFromInstant
+import com.valkiria.uicomponents.utlis.TimeUtils.getEpochMillis
+import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDate
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDateInMillis
 import java.time.Instant
 import java.time.LocalDate
+
+private const val DATE_TIME_DELIMITER = "T"
 
 @Suppress("LongMethod")
 @androidx.compose.material3.ExperimentalMaterial3Api
@@ -84,7 +89,10 @@ fun DatePickerTextFieldView(
                 .fillMaxWidth(),
             label = { uiModel.placeholder?.let { Text(it) } },
             trailingIcon = {
-                Icon(Icons.Filled.Event, contentDescription = "Select date")
+                Icon(
+                    Icons.Filled.Event,
+                    contentDescription = stringResource(string.date_picker_select)
+                )
             },
             supportingText = {
                 if (inputError != null) {
@@ -112,19 +120,19 @@ fun DatePickerTextFieldView(
                 TextButton(
                     onClick = {
                         val instant = Instant.ofEpochMilli(pickerState.selectedDateMillis!!)
-                        selectedDate = getLocalDateFromInstant(instant).plusDays(1L)
+                        selectedDate = getLocalDate(instant).plusDays(1L)
                         text = TextFieldValue(getLabelDate())
                         showDialog = false
                         focusManager.clearFocus()
 
                         onAction(
                             uiModel.identifier,
-                            selectedDate.toString(),
+                            text.text,
                             text.toFailedValidation(uiModel.validations, true) == null
                         )
                     }
                 ) {
-                    Text("Select")
+                    Text(stringResource(string.date_picker_select))
                 }
             },
             dismissButton = {
@@ -134,11 +142,21 @@ fun DatePickerTextFieldView(
                         focusManager.clearFocus()
                     }
                 ) {
-                    Text("Cancel")
+                    Text(stringResource(string.date_picker_cancel))
                 }
             },
         ) {
-            DatePicker(state = pickerState)
+            DatePicker(
+                state = pickerState,
+                dateValidator = { timestamp ->
+                    if (uiModel.maxDate != null) {
+                        val maxDate = uiModel.maxDate.substringBefore(DATE_TIME_DELIMITER)
+                        timestamp < getEpochMillis(maxDate)
+                    } else {
+                        true
+                    }
+                }
+            )
         }
     }
 }
