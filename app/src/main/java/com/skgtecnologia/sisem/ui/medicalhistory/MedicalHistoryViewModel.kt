@@ -229,7 +229,7 @@ class MedicalHistoryViewModel @Inject constructor(
                 chipOption.remove(chipOptionAction.chipOptionUiModel.id)
 
             chipOption != null &&
-                chipOption.contains(chipOptionAction.chipOptionUiModel.id).not() -> {
+                    chipOption.contains(chipOptionAction.chipOptionUiModel.id).not() -> {
                 chipOption.add(chipOptionAction.chipOptionUiModel.id)
             }
 
@@ -778,6 +778,11 @@ class MedicalHistoryViewModel @Inject constructor(
         }.orEmpty()
 
         uiState = uiState.copy(
+            selectedMediaUris = if (selectedMedia == null) {
+                uiState.selectedMediaUris
+            } else {
+                updatedSelectedMedia
+            },
             screenModel = uiState.screenModel?.copy(
                 body = updatedBody
             )

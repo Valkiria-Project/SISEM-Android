@@ -36,6 +36,7 @@ import com.valkiria.uicomponents.components.media.MediaAction.Gallery
 import com.valkiria.uicomponents.components.media.MediaAction.MediaFile
 import com.valkiria.uicomponents.extensions.storeUriAsFileToCache
 import java.io.File
+import kotlinx.coroutines.launch
 
 @Suppress("LongMethod")
 @Composable
@@ -57,11 +58,13 @@ fun MediaActionsComponent(
     )
 
     LaunchedEffect(uiModel.selectedMediaUris) {
-        if (uiModel.selectedMediaUris.isNotEmpty()) {
-            selectedMedia = uiModel.selectedMediaUris.map { uri ->
-                context.storeUriAsFileToCache(
-                    uri
-                )
+        launch {
+            if (uiModel.selectedMediaUris.isNotEmpty()) {
+                selectedMedia = uiModel.selectedMediaUris.map { uri ->
+                    context.storeUriAsFileToCache(
+                        uri
+                    )
+                }
             }
         }
     }
