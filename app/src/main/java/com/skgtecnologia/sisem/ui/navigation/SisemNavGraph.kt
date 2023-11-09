@@ -25,6 +25,8 @@ import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.sharedViewModel
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
 import com.skgtecnologia.sisem.ui.forgotpassword.ForgotPasswordScreen
+import com.skgtecnologia.sisem.ui.inventory.InventoryScreen
+import com.skgtecnologia.sisem.ui.inventory.view.InventoryViewScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.map.MapScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryScreen
@@ -32,6 +34,7 @@ import com.skgtecnologia.sisem.ui.medicalhistory.camera.CameraScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsScreen
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.INVENTORY_TYPE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.PHOTO_TAKEN
@@ -232,7 +235,23 @@ private fun NavGraphBuilder.mainGraph(
         composable(
             route = MainNavigationRoute.InventoryScreen.route
         ) {
-            // FIXME: Finish this work
+            InventoryScreen(
+                modifier = modifier
+            ) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = MainNavigationRoute.InventoryViewScreen.route +
+                "?$INVENTORY_TYPE={$INVENTORY_TYPE}",
+            arguments = listOf(navArgument(INVENTORY_TYPE) { type = NavType.StringType })
+        ) {
+            InventoryViewScreen(
+                modifier = modifier
+            ) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
         }
 
         composable(

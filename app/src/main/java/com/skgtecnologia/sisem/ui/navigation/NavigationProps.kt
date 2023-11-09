@@ -25,6 +25,7 @@ sealed class MainNavigationRoute(override val route: String) : NavigationRoute(r
     data object HCEUDCScreen : MainNavigationRoute("menu_hce_udc_screen")
     data object IncidentScreen : MainNavigationRoute("menu_incident_screen")
     data object InventoryScreen : MainNavigationRoute("menu_inventory_screen")
+    data object InventoryViewScreen : MainNavigationRoute("menu_inventory_view_screen")
     data object MainScreen : MainNavigationRoute("main_screen")
     data object MedicineScreen : MainNavigationRoute("medicine_screen")
     data object NotificationsScreen : MainNavigationRoute("menu_notifications_screen")
@@ -48,6 +49,7 @@ sealed class ReportNavigationRoute(override val route: String) : NavigationRoute
 object NavigationArgument {
     const val FINDING_ID = "finding_id"
     const val FROM = "from"
+    const val INVENTORY_TYPE = "inventory_type"
     const val MEDICINE = "medicine"
     const val NOVELTY = "novelty"
     const val PHOTO_TAKEN = "photo_taken"
