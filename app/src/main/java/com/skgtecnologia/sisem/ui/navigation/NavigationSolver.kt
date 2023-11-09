@@ -3,23 +3,26 @@
 package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.navigation.NavHostController
+import com.skgtecnologia.sisem.ui.authcards.view.AuthCardViewNavigationModel
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthNavigationModel
 import com.skgtecnologia.sisem.ui.forgotpassword.ForgotPasswordNavigationModel
+import com.skgtecnologia.sisem.ui.inventory.InventoryNavigationModel
+import com.skgtecnologia.sisem.ui.inventory.view.InventoryViewNavigationModel
 import com.skgtecnologia.sisem.ui.login.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsNavigationModel
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.INVENTORY_TYPE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.PHOTO_TAKEN
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ROLE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
-import com.skgtecnologia.sisem.ui.preoperational.view.PreOpViewNavigationModel
 import com.skgtecnologia.sisem.ui.preoperational.create.PreOpNavigationModel
-import com.skgtecnologia.sisem.ui.authcards.view.AuthCardViewNavigationModel
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ROLE
+import com.skgtecnologia.sisem.ui.preoperational.view.PreOpViewNavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.stretcherretention.StretcherRetentionNavigationModel
 
@@ -46,6 +49,7 @@ fun getAuthStartDestination(model: StartupNavigationModel?): String = when {
     else -> AuthNavigationRoute.AuthCardsScreen.route
 }
 
+@Suppress("ComplexMethod")
 fun navigateToNextStep(
     navController: NavHostController,
     navigationModel: NavigationModel?,
@@ -56,6 +60,8 @@ fun navigateToNextStep(
         deviceAuthToNextStep(navController, navigationModel, onNavigationFallback)
 
     is ForgotPasswordNavigationModel -> forgotPasswordToNextStep(navController, navigationModel)
+    is InventoryNavigationModel -> inventoryToNextStep(navController, navigationModel)
+    is InventoryViewNavigationModel -> inventoryViewToNextStep(navController, navigationModel)
     is LoginNavigationModel -> loginToNextStep(navController, navigationModel)
     is MedicalHistoryNavigationModel -> medicalHistoryToNextStep(navController, navigationModel)
     is MedicineNavigationModel -> medicineToNextStep(navController, navigationModel)
@@ -133,6 +139,27 @@ fun forgotPasswordToNextStep(
 ) {
     when {
         model.isCancel || model.isSuccess -> navController.popBackStack()
+    }
+}
+
+fun inventoryToNextStep(
+    navController: NavHostController,
+    model: InventoryNavigationModel
+) {
+    when {
+        model.back -> navController.popBackStack()
+        model.identifier != null -> navController.navigate(
+            MainNavigationRoute.InventoryViewScreen.route + "?$INVENTORY_TYPE=${model.identifier}"
+        )
+    }
+}
+
+fun inventoryViewToNextStep(
+    navController: NavHostController,
+    model: InventoryViewNavigationModel
+) {
+    when {
+        model.back -> navController.popBackStack()
     }
 }
 

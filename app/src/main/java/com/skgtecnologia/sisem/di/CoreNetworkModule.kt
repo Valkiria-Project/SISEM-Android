@@ -10,6 +10,7 @@ import com.skgtecnologia.sisem.data.remote.model.components.button.ButtonRespons
 import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonResponse
 import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonSectionResponse
 import com.skgtecnologia.sisem.data.remote.model.components.card.InfoCardResponse
+import com.skgtecnologia.sisem.data.remote.model.components.card.SimpleCardResponse
 import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipOptionsResponse
 import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipResponse
 import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipSelectionResponse
@@ -20,6 +21,7 @@ import com.skgtecnologia.sisem.data.remote.model.components.finding.FindingRespo
 import com.skgtecnologia.sisem.data.remote.model.components.fingerprint.FingerprintResponse
 import com.skgtecnologia.sisem.data.remote.model.components.header.HeaderResponse
 import com.skgtecnologia.sisem.data.remote.model.components.inventorycheck.InventoryCheckResponse
+import com.skgtecnologia.sisem.data.remote.model.components.inventorysearch.InventorySearchResponse
 import com.skgtecnologia.sisem.data.remote.model.components.label.LabelResponse
 import com.skgtecnologia.sisem.data.remote.model.components.media.MediaActionsResponse
 import com.skgtecnologia.sisem.data.remote.model.components.medsselector.MedsSelectorResponse
@@ -142,6 +144,9 @@ object CoreNetworkModule {
             InfoCardResponse::class.java,
             BodyRowType.INFO_CARD.name
         ).withSubtype(
+            InventorySearchResponse::class.java,
+            BodyRowType.INVENTORY_SEARCH.name
+        ).withSubtype(
             MedsSelectorResponse::class.java,
             BodyRowType.INFO_CARD_BUTTON.name
         ).withSubtype(
@@ -165,6 +170,9 @@ object CoreNetworkModule {
         ).withSubtype(
             SignatureResponse::class.java,
             BodyRowType.SIGNATURE.name
+        ).withSubtype(
+            SimpleCardResponse::class.java,
+            BodyRowType.SIMPLE_CARD.name
         ).withSubtype(
             SliderResponse::class.java,
             BodyRowType.SLIDER.name
