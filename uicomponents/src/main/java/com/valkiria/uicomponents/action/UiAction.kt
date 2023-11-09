@@ -86,6 +86,10 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
         override val identifier: String
     ) : GenericUiAction(identifier)
 
+    data class SimpleCardAction(
+        override val identifier: String
+    ) : GenericUiAction(identifier)
+
     data class SliderAction(
         override val identifier: String,
         val value: Int

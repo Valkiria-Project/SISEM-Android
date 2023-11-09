@@ -55,6 +55,8 @@ import com.valkiria.uicomponents.components.button.ImageButtonSectionComponent
 import com.valkiria.uicomponents.components.button.ImageButtonSectionUiModel
 import com.valkiria.uicomponents.components.card.InfoCardComponent
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
+import com.valkiria.uicomponents.components.card.SimpleCardComponent
+import com.valkiria.uicomponents.components.card.SimpleCardUiModel
 import com.valkiria.uicomponents.components.chip.ChipComponent
 import com.valkiria.uicomponents.components.chip.ChipOptionsComponent
 import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
@@ -75,6 +77,8 @@ import com.valkiria.uicomponents.components.header.HeaderUiModel
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUiModel
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckComponent
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
+import com.valkiria.uicomponents.components.inventorysearch.InventorySearchComponent
+import com.valkiria.uicomponents.components.inventorysearch.InventorySearchUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.media.MediaActionsComponent
@@ -324,6 +328,10 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
+            is InventorySearchUiModel -> item(key = model.identifier) {
+                InventorySearchComponent(uiModel = model)
+            }
+
             is LabelUiModel -> item(key = model.identifier) {
                 LabelComponent(uiModel = model)
             }
@@ -375,6 +383,12 @@ private fun LazyListScope.handleBodyRows(
             is SignatureUiModel -> item(key = model.identifier) {
                 SignatureComponent(uiModel = model) { id ->
                     onAction(GenericUiAction.SignatureAction(identifier = id))
+                }
+            }
+
+            is SimpleCardUiModel -> item(key = model.identifier) {
+                SimpleCardComponent(uiModel = model) { identifier ->
+                    onAction(GenericUiAction.SimpleCardAction(identifier = identifier))
                 }
             }
 
