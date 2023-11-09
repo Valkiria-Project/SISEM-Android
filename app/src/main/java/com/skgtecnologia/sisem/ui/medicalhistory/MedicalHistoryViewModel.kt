@@ -46,6 +46,7 @@ import com.skgtecnologia.sisem.domain.medicalhistory.model.TEMPERATURE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryScreen
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SendMedicalHistory
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
+import com.skgtecnologia.sisem.domain.model.banner.medicalHistorySuccess
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
@@ -159,7 +160,7 @@ class MedicalHistoryViewModel @Inject constructor(
                 withContext(Dispatchers.Main) {
                     uiState = uiState.copy(
                         isLoading = false,
-                        infoEvent = throwable.mapToUi()
+                        errorEvent = throwable.mapToUi()
                     )
                 }
             }
@@ -729,14 +730,20 @@ class MedicalHistoryViewModel @Inject constructor(
                 vitalSigns = vitalSignsValues,
                 infoCardButtonValues = medicineValues
             ).onSuccess {
-                Timber.d("This is a success")
+                withContext(Dispatchers.Main) {
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        infoEvent = medicalHistorySuccess().mapToUi()
+                    )
+                }
             }.onFailure { throwable ->
                 Timber.wtf(throwable, "This is a failure")
-
-                uiState = uiState.copy(
-                    isLoading = false,
-                    infoEvent = throwable.mapToUi()
-                )
+                withContext(Dispatchers.Main) {
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        errorEvent = throwable.mapToUi()
+                    )
+                }
             }
         }
     }
@@ -806,7 +813,14 @@ class MedicalHistoryViewModel @Inject constructor(
 
     private fun consumeShownError() {
         uiState = uiState.copy(
-            infoEvent = null
+            errorEvent = null
+        )
+    }
+
+    fun consumeShownInfoEvent() {
+        uiState = uiState.copy(
+            infoEvent = null,
+            navigationModel = MedicalHistoryNavigationModel(back = true)
         )
     }
 

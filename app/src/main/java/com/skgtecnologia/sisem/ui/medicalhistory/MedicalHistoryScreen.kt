@@ -69,7 +69,11 @@ fun MedicalHistoryScreen(
         handleAction(uiAction, viewModel)
     }
 
-    OnBannerHandler(uiModel = uiState.infoEvent) { uiAction ->
+    OnBannerHandler(uiModel = uiState.infoEvent) {
+        viewModel.consumeShownInfoEvent()
+    }
+
+    OnBannerHandler(uiModel = uiState.errorEvent) { uiAction ->
         viewModel.handleEvent(uiAction)
     }
 

@@ -9,5 +9,6 @@ data class MedicalHistoryUiState(
     val selectedMediaUris: List<Uri> = listOf(),
     val isLoading: Boolean = false,
     val infoEvent: BannerUiModel? = null,
+    val errorEvent: BannerUiModel? = null,
     val navigationModel: MedicalHistoryNavigationModel? = null
 )
