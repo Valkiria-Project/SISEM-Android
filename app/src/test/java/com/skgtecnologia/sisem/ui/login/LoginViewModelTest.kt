@@ -166,7 +166,6 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-
         loginViewModel = LoginViewModel(getLoginScreen, login, androidIdProvider)
         loginViewModel.consumeNavigationEvent()
 
