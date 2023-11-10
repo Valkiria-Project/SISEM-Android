@@ -12,12 +12,15 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import java.time.LocalDateTime
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.time.LocalDateTime
+
+private const val ANDROID_ID = "123"
+private const val SERVER_ERROR_TITLE = "Error en servidor"
 
 class LoginViewModelTest {
 
@@ -33,32 +36,30 @@ class LoginViewModelTest {
     @MockK
     private lateinit var androidIdProvider: AndroidIdProvider
 
-    private val screenModel = ScreenModel(body = emptyList())
-
     private lateinit var loginViewModel: LoginViewModel
 
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        every { androidIdProvider.getAndroidId() } returns "123"
-        coEvery { getLoginScreen.invoke(any()) } returns Result.success(
-            screenModel
-        )
-        loginViewModel = LoginViewModel(getLoginScreen, login, androidIdProvider)
+
+        every { androidIdProvider.getAndroidId() } returns ANDROID_ID
     }
 
     @Test
     fun `when getLoginScreen is success`() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(
+            emptyScreenModel
+        )
+
         loginViewModel = LoginViewModel(getLoginScreen, login, androidIdProvider)
         val uiState = loginViewModel.uiState
 
-        Assert.assertEquals(screenModel, uiState.screenModel)
+        Assert.assertEquals(emptyScreenModel, uiState.screenModel)
         Assert.assertEquals(null, uiState.errorModel)
     }
 
     @Test
     fun `when getLoginScreen fails`() = runTest {
-        val errorTitle = "Error en servidor"
         coEvery { getLoginScreen.invoke(any()) } returns Result.failure(
             IllegalStateException()
         )
@@ -67,25 +68,42 @@ class LoginViewModelTest {
         val uiState = loginViewModel.uiState
 
         Assert.assertEquals(null, uiState.screenModel)
-        Assert.assertEquals(errorTitle, uiState.errorModel?.title)
+        Assert.assertEquals(SERVER_ERROR_TITLE, uiState.errorModel?.title)
     }
 
     @Test
-    fun `when call forgotPassword navigationModel should be forgotPassword true`() = runTest {
+    fun `when call forgotPassword navigationModel should have forgotPassword true`() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(
+            emptyScreenModel
+        )
+
+        loginViewModel = LoginViewModel(getLoginScreen, login, androidIdProvider)
         loginViewModel.forgotPassword()
 
         Assert.assertEquals(true, loginViewModel.uiState.navigationModel?.forgotPassword)
     }
 
     @Test
-    fun `when call login and validations are false don't should be authenticate`() = runTest {
+    fun `when call login and validations fail`() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(
+            emptyScreenModel
+        )
+
+        loginViewModel = LoginViewModel(getLoginScreen, login, androidIdProvider)
         loginViewModel.login()
 
+        Assert.assertEquals(true, loginViewModel.uiState.validateFields)
         Assert.assertEquals(false, loginViewModel.uiState.isLoading)
     }
 
     @Test
-    fun `when call login and validations are true should be authenticate with warning`() = runTest {
+    fun `when call login and validations succeed authenticate with warning`() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(
+            emptyScreenModel
+        )
+
+        loginViewModel = LoginViewModel(getLoginScreen, login, androidIdProvider)
+
         loginViewModel.isValidUsername = true
         loginViewModel.isValidPassword = true
         val accessTokenModel = createAccessToken(
@@ -100,11 +118,18 @@ class LoginViewModelTest {
 
         loginViewModel.login()
 
+        Assert.assertEquals(true, loginViewModel.uiState.validateFields)
         Assert.assertEquals(true, loginViewModel.uiState.navigationModel?.isWarning)
+        Assert.assertEquals(false, loginViewModel.uiState.isLoading)
     }
 
     @Test
-    fun `when call login and validations are true authenticate without warning`() = runTest {
+    fun `when call login and validations succeed authenticate without warning`() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(
+            emptyScreenModel
+        )
+
+        loginViewModel = LoginViewModel(getLoginScreen, login, androidIdProvider)
         loginViewModel.isValidUsername = true
         loginViewModel.isValidPassword = true
         val accessTokenModel = createAccessToken(null)
@@ -113,25 +138,37 @@ class LoginViewModelTest {
 
         loginViewModel.login()
 
+        Assert.assertEquals(true, loginViewModel.uiState.validateFields)
         Assert.assertEquals(false, loginViewModel.uiState.navigationModel?.isWarning)
+        Assert.assertEquals(true, loginViewModel.uiState.isLoading)
     }
 
     @Test
-    fun `when call login and validations are true authenticate fails`() = runTest {
+    fun `when call login and validations succeed authenticate  with error`() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(
+            emptyScreenModel
+        )
+
+        loginViewModel = LoginViewModel(getLoginScreen, login, androidIdProvider)
         loginViewModel.isValidUsername = true
         loginViewModel.isValidPassword = true
-        val errorTitle = "Error en servidor"
 
         coEvery { login.invoke(any(), any()) } returns Result.failure(IllegalStateException())
 
         loginViewModel.login()
 
-        Assert.assertEquals(errorTitle, loginViewModel.uiState.errorModel?.title)
+        Assert.assertEquals(SERVER_ERROR_TITLE, loginViewModel.uiState.errorModel?.title)
     }
 
     @Test
-    fun `when call onNavigationHandled clear data`() = runTest {
-        loginViewModel.onNavigationHandled()
+    fun `when call consumeNavigationEvent clear data`() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(
+            emptyScreenModel
+        )
+
+
+        loginViewModel = LoginViewModel(getLoginScreen, login, androidIdProvider)
+        loginViewModel.consumeNavigationEvent()
 
         Assert.assertEquals(false, loginViewModel.uiState.validateFields)
         Assert.assertEquals(null, loginViewModel.uiState.navigationModel)
@@ -141,7 +178,12 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `when call showLoginLink should be get loginLink`() = runTest {
+    fun `when call showLoginLink uiState should have onLoginLink`() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(
+            emptyScreenModel
+        )
+
+        loginViewModel = LoginViewModel(getLoginScreen, login, androidIdProvider)
         val loginLink = LoginLink.TERMS_AND_CONDITIONS
         loginViewModel.showLoginLink(loginLink)
 
@@ -149,25 +191,42 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `when call handleShownLoginLink should be clear onLoginLink`() = runTest {
-        loginViewModel.handleShownLoginLink()
+    fun `when call consumeLoginLinkEvent uiState should have onLoginLink clear `() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(
+            emptyScreenModel
+        )
+
+        loginViewModel = LoginViewModel(getLoginScreen, login, androidIdProvider)
+        loginViewModel.consumeLoginLinkEvent()
 
         Assert.assertEquals(null, loginViewModel.uiState.onLoginLink)
     }
 
     @Test
-    fun `when call handleShownError should be clear errorModel`() = runTest {
-        loginViewModel.handleShownError()
+    fun `when call consumeErrorEvent uiState should have errorModel clear`() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(
+            emptyScreenModel
+        )
+
+        loginViewModel = LoginViewModel(getLoginScreen, login, androidIdProvider)
+        loginViewModel.consumeErrorEvent()
 
         Assert.assertEquals(null, loginViewModel.uiState.errorModel)
     }
 
     @Test
-    fun `when call handleShownWarning should be clear warning`() = runTest {
-        loginViewModel.handleShownWarning()
+    fun `when call consumeWarningEvent uiState should have warning clear`() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(
+            emptyScreenModel
+        )
+
+        loginViewModel = LoginViewModel(getLoginScreen, login, androidIdProvider)
+        loginViewModel.consumeWarningEvent()
 
         Assert.assertEquals(null, loginViewModel.uiState.warning)
     }
+
+    private val emptyScreenModel = ScreenModel(body = emptyList())
 
     private fun createAccessToken(warning: BannerModel?) = AccessTokenModel(
         userId = 1,

@@ -14,12 +14,12 @@ import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.chip.ChipUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
@@ -142,7 +142,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun onNavigationHandled() {
+    fun consumeNavigationEvent() {
         uiState = uiState.copy(
             validateFields = false,
             navigationModel = null,
@@ -163,19 +163,19 @@ class LoginViewModel @Inject constructor(
         )
     }
 
-    fun handleShownLoginLink() {
+    fun consumeLoginLinkEvent() {
         uiState = uiState.copy(
             onLoginLink = null
         )
     }
 
-    fun handleShownError() {
+    fun consumeErrorEvent() {
         uiState = uiState.copy(
             errorModel = null
         )
     }
 
-    fun handleShownWarning() {
+    fun consumeWarningEvent() {
         uiState = uiState.copy(
             warning = null
         )
