@@ -126,8 +126,6 @@ class AuthCardViewViewModelTest {
 
     @Test
     fun `when navigate is called with unknown identifier failure and error model is not null`() = runTest {
-        val unknownIdentifier = "other"
-        val errorMessage = "Identifier $unknownIdentifier not supported"
         coEvery { getAuthCardViewScreen.invoke(any()) } returns Result.success(screenModel)
 
         viewModel =
@@ -136,7 +134,7 @@ class AuthCardViewViewModelTest {
         viewModel.navigate("other")
 
         Assert.assertNotNull(viewModel.uiState.errorModel)
-        Assert.assertEquals(errorMessage, viewModel.uiState.errorModel?.title)
+        Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.errorModel?.title)
     }
 
     @Test
