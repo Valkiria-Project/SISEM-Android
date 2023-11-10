@@ -38,7 +38,7 @@ class AuthCardViewViewModel @Inject constructor(
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch{
             getAuthCardViewScreen.invoke(androidIdProvider.getAndroidId())
                 .onSuccess { preOperationalScreenModel ->
                     withContext(Dispatchers.Main) {
@@ -105,7 +105,7 @@ class AuthCardViewViewModel @Inject constructor(
 
         uiAction.handleAuthorizationErrorEvent {
             job?.cancel()
-            job = viewModelScope.launch(Dispatchers.IO) {
+            job = viewModelScope.launch {
                 logoutCurrentUser.invoke()
                     .onSuccess {
                         UnauthorizedEventHandler.publishUnauthorizedEvent()
