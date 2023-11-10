@@ -42,4 +42,17 @@ class SplashViewModelTest {
         assertEquals(startupNavigationModel.isAdmin, stateStartupNavigationModel?.isAdmin)
         assertEquals(startupNavigationModel.vehicleCode, stateStartupNavigationModel?.vehicleCode)
     }
+
+    @Test
+    fun `when getStartupState fails`() = runTest {
+        val startupNavigationModel = StartupNavigationModel()
+
+        coEvery { getStartupState.invoke() } returns Result.failure(IllegalStateException())
+
+        splashViewModel = SplashViewModel(getStartupState)
+        val stateStartupNavigationModel = splashViewModel.uiState.value.startupNavigationModel
+
+        assertEquals(startupNavigationModel.isAdmin, stateStartupNavigationModel?.isAdmin)
+        assertEquals(startupNavigationModel.vehicleCode, stateStartupNavigationModel?.vehicleCode)
+    }
 }
