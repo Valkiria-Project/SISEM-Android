@@ -3,7 +3,7 @@ package com.valkiria.uicomponents.components.banner
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.android.ide.common.rendering.api.SessionParams.RenderingMode.V_SCROLL
-import com.valkiria.uicomponents.bricks.banner.BannerComponentPreview
+import com.valkiria.uicomponents.bricks.banner.BannerViewPreview
 import org.junit.Rule
 import org.junit.Test
 
@@ -19,7 +19,7 @@ class BannerComponentPaparazziTest {
     @Test
     fun snapBannerComponent() {
         paparazziRule.snapshot {
-            BannerComponentPreview()
+            BannerViewPreview()
         }
     }
 }
