@@ -7,6 +7,8 @@ fun getAssignedIncidentNotificationUiModel(): NotificationUiModel {
         icon = "ic_assigned_incident",
         iconColor = "#3CF2DD",
         title = "Incidente Asignado",
-        description = "CRU-12345678-22"
+        description = "CRU-12345678-22",
+        location = "Kra 45 #43-21",
+        time = "11 Min"
     )
 }

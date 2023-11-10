@@ -27,6 +27,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.mocks.getAssignedIncidentNotificationUiModel
 import com.valkiria.uicomponents.utlis.DefType
@@ -106,6 +107,43 @@ internal fun NotificationView(
                         modifier = Modifier.padding(start = 48.dp),
                         color = Color.White,
                         style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+
+                Row(
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_location),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(start = 48.dp)
+                            .size(32.dp),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+
+                    Text(
+                        text = uiModel.location,
+                        modifier = Modifier.padding(start = 4.dp),
+                        color = Color.White,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_clock_timer),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(start = 4.dp)
+                            .size(32.dp),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+
+                    Text(
+                        text = uiModel.time,
+                        modifier = Modifier.padding(start = 4.dp),
+                        color = Color.White,
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
             }
