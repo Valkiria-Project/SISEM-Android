@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
@@ -40,6 +41,8 @@ fun IncidentContent() {
         IncidentPart3()
 
         IncidentPart4()
+
+        TransmilenioLane()
 
         IncidentPart5()
     }
@@ -204,6 +207,119 @@ private fun IncidentPart4Item() {
             color = Color.White,
             style = TextStyle.HEADLINE_6.toTextStyle()
         )
+    }
+}
+
+@Composable
+private fun TransmilenioLane() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp)
+            .clip(
+                shape = RoundedCornerShape(
+                    topStart = 20.dp,
+                    topEnd = 20.dp,
+                    bottomEnd = 20.dp,
+                    bottomStart = 20.dp
+                )
+            )
+            .background(MaterialTheme.colorScheme.background.copy(alpha = 0.8f))
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .padding(end = 6.dp)
+                        .size(20.dp),
+                    painter = painterResource(id = R.drawable.ic_road),
+                    tint = MaterialTheme.colorScheme.primary,
+                    contentDescription = null
+                )
+
+                Text(
+                    text = "Carril de transmilenio",
+                    color = Color.White,
+                    style = TextStyle.HEADLINE_4.toTextStyle()
+                )
+            }
+
+            Row(
+                modifier = Modifier
+                    .padding(top = 10.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    modifier = Modifier.padding(start = 26.dp, end = 6.dp),
+                    text = "No 987798",
+                    color = Color.White,
+                    style = TextStyle.HEADLINE_6.toTextStyle()
+                )
+
+                Text(
+                    text = "|",
+                    style = TextStyle.HEADLINE_4.toTextStyle(),
+                    color = Color.White,
+                )
+
+                Text(
+                    modifier = Modifier.padding(start = 2.dp),
+                    text = "No hay respuesta",
+                    color = Color.White,
+                    style = TextStyle.HEADLINE_6.toTextStyle(),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
+                )
+            }
+
+            Text(
+                modifier = Modifier.padding(start = 26.dp),
+                text = "Autoriza: Juan Correa algo",
+                color = Color.White,
+                style = TextStyle.HEADLINE_6.toTextStyle(),
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1
+            )
+
+            Row(
+                modifier = Modifier
+                    .padding(top = 10.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(start = 26.dp, end = 2.dp)
+                        .fillMaxWidth(0.60f),
+                    text = "Trayecto Perdomo a Reicaurte",
+                    color = Color.White,
+                    style = TextStyle.HEADLINE_6.toTextStyle()
+                )
+
+                Text(
+                    text = "|",
+                    style = TextStyle.HEADLINE_3.toTextStyle(),
+                    color = Color.White,
+                )
+
+                Text(
+                    modifier = Modifier.padding(start = 2.dp),
+                    text = "Autorizado",
+                    color = Color(parseColor("#3CF2DD")),
+                    style = TextStyle.HEADLINE_6.toTextStyle(),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
+                )
+            }
+        }
     }
 }
 
