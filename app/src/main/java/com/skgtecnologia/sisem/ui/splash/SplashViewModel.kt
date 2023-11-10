@@ -26,7 +26,7 @@ class SplashViewModel @Inject constructor(
 
     init {
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             getStartupState.invoke()
                 .onSuccess { navigationModel ->
                     withContext(Dispatchers.Main) {
