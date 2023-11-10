@@ -7,6 +7,7 @@ import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.GenericUiAction.StepperAction
+import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
@@ -68,7 +69,11 @@ fun MedicalHistoryScreen(
         handleAction(uiAction, viewModel)
     }
 
-    OnBannerHandler(uiModel = uiState.infoEvent) { uiAction ->
+    OnBannerHandler(uiModel = uiState.infoEvent) {
+        viewModel.consumeShownInfoEvent()
+    }
+
+    OnBannerHandler(uiModel = uiState.errorEvent) { uiAction ->
         viewModel.handleEvent(uiAction)
     }
 
@@ -86,6 +91,8 @@ fun handleAction(
         is GenericUiAction.ChipSelectionAction -> viewModel.handleChipSelectionAction(uiAction)
 
         is GenericUiAction.DropDownAction -> viewModel.handleDropDownAction(uiAction)
+
+        is HeaderUiAction.GoBack -> viewModel.goBack()
 
         is GenericUiAction.HumanBodyAction -> viewModel.handleHumanBodyAction(uiAction)
 

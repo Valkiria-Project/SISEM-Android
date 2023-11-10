@@ -3,21 +3,28 @@
 package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.navigation.NavHostController
+import com.skgtecnologia.sisem.ui.authcards.view.AuthCardViewNavigationModel
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthNavigationModel
 import com.skgtecnologia.sisem.ui.forgotpassword.ForgotPasswordNavigationModel
+import com.skgtecnologia.sisem.ui.inventory.InventoryNavigationModel
+import com.skgtecnologia.sisem.ui.inventory.view.InventoryViewNavigationModel
 import com.skgtecnologia.sisem.ui.login.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsNavigationModel
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.INVENTORY_TYPE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.PHOTO_TAKEN
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ROLE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
-import com.skgtecnologia.sisem.ui.preoperational.PreOpNavigationModel
+import com.skgtecnologia.sisem.ui.preoperational.create.PreOpNavigationModel
+import com.skgtecnologia.sisem.ui.preoperational.view.PreOpViewNavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
+import com.skgtecnologia.sisem.ui.stretcherretention.StretcherRetentionNavigationModel
 
 const val APP_STARTED = "app_started"
 const val FINDING = "finding"
@@ -42,23 +49,45 @@ fun getAuthStartDestination(model: StartupNavigationModel?): String = when {
     else -> AuthNavigationRoute.AuthCardsScreen.route
 }
 
+@Suppress("ComplexMethod")
 fun navigateToNextStep(
     navController: NavHostController,
     navigationModel: NavigationModel?,
     onNavigationFallback: () -> Unit = {}
 ) = when (navigationModel) {
+    is AuthCardViewNavigationModel -> authCardViewNextStep(navController, navigationModel)
     is DeviceAuthNavigationModel ->
         deviceAuthToNextStep(navController, navigationModel, onNavigationFallback)
 
     is ForgotPasswordNavigationModel -> forgotPasswordToNextStep(navController, navigationModel)
+    is InventoryNavigationModel -> inventoryToNextStep(navController, navigationModel)
+    is InventoryViewNavigationModel -> inventoryViewToNextStep(navController, navigationModel)
     is LoginNavigationModel -> loginToNextStep(navController, navigationModel)
     is MedicalHistoryNavigationModel -> medicalHistoryToNextStep(navController, navigationModel)
     is MedicineNavigationModel -> medicineToNextStep(navController, navigationModel)
+    is PreOpViewNavigationModel -> preOpViewToNextStep(navController, navigationModel)
     is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
     is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
     is SignaturePadNavigationModel -> signaturePadToNextStep(navController, navigationModel)
+    is StretcherRetentionNavigationModel ->
+        stretcherRetentionToNextStep(navController, navigationModel)
     is VitalSignsNavigationModel -> vitalSignsToNextStep(navController, navigationModel)
     else -> {}
+}
+
+fun authCardViewNextStep(
+    navController: NavHostController,
+    model: AuthCardViewNavigationModel
+) {
+    when {
+        model.back -> navController.popBackStack()
+
+        model.role != null -> {
+            navController.navigate(
+                MainNavigationRoute.PreOperationalViewScreen.route + "?$ROLE=${model.role.name}"
+            )
+        }
+    }
 }
 
 private fun deviceAuthToNextStep(
@@ -113,6 +142,27 @@ fun forgotPasswordToNextStep(
     }
 }
 
+fun inventoryToNextStep(
+    navController: NavHostController,
+    model: InventoryNavigationModel
+) {
+    when {
+        model.back -> navController.popBackStack()
+        model.identifier != null -> navController.navigate(
+            MainNavigationRoute.InventoryViewScreen.route + "?$INVENTORY_TYPE=${model.identifier}"
+        )
+    }
+}
+
+fun inventoryViewToNextStep(
+    navController: NavHostController,
+    model: InventoryViewNavigationModel
+) {
+    when {
+        model.back -> navController.popBackStack()
+    }
+}
+
 private fun loginToNextStep(
     navController: NavHostController,
     model: LoginNavigationModel
@@ -153,6 +203,8 @@ private fun medicalHistoryToNextStep(
     model: MedicalHistoryNavigationModel
 ) {
     when {
+        model.back -> navController.popBackStack()
+
         model.isInfoCardEvent -> navController.navigate(MainNavigationRoute.VitalSignsScreen.route)
 
         model.isMedsSelectorEvent ->
@@ -192,6 +244,15 @@ private fun medicineToNextStep(
                 ?.savedStateHandle
                 ?.set(MEDICINE, model.values)
         }
+    }
+}
+
+fun preOpViewToNextStep(
+    navController: NavHostController,
+    model: PreOpViewNavigationModel
+) {
+    when {
+        model.back -> navController.popBackStack()
     }
 }
 
@@ -276,6 +337,15 @@ private fun signaturePadToNextStep(
                 ?.savedStateHandle
                 ?.set(SIGNATURE, model.signature)
         }
+    }
+}
+
+fun stretcherRetentionToNextStep(
+    navController: NavHostController,
+    model: StretcherRetentionNavigationModel
+) {
+    when {
+        model.back -> navController.popBackStack()
     }
 }
 

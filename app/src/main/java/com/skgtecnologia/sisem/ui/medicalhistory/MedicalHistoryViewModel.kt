@@ -46,6 +46,7 @@ import com.skgtecnologia.sisem.domain.medicalhistory.model.TEMPERATURE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryScreen
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SendMedicalHistory
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
+import com.skgtecnologia.sisem.domain.model.banner.medicalHistorySuccess
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
@@ -73,6 +74,7 @@ import com.valkiria.uicomponents.components.slider.SliderUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.utlis.HOURS_MINUTES_24_HOURS_PATTERN
+import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDate
 import com.valkiria.uicomponents.utlis.WEEK_DAYS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
@@ -158,7 +160,7 @@ class MedicalHistoryViewModel @Inject constructor(
                 withContext(Dispatchers.Main) {
                     uiState = uiState.copy(
                         isLoading = false,
-                        infoEvent = throwable.mapToUi()
+                        errorEvent = throwable.mapToUi()
                     )
                 }
             }
@@ -703,7 +705,7 @@ class MedicalHistoryViewModel @Inject constructor(
     }
 
     private fun calculateGestationWeeks(): String {
-        val fur = LocalDate.parse(fieldsValues[FUR_KEY]?.updatedValue.orEmpty())
+        val fur = getLocalDate(fieldsValues[FUR_KEY]?.updatedValue.orEmpty())
         val now = LocalDate.now()
         return ((now.toEpochDay() - fur.toEpochDay()) / WEEK_DAYS).toString()
     }
@@ -728,14 +730,20 @@ class MedicalHistoryViewModel @Inject constructor(
                 vitalSigns = vitalSignsValues,
                 infoCardButtonValues = medicineValues
             ).onSuccess {
-                Timber.d("This is a success")
+                withContext(Dispatchers.Main) {
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        infoEvent = medicalHistorySuccess().mapToUi()
+                    )
+                }
             }.onFailure { throwable ->
                 Timber.wtf(throwable, "This is a failure")
-
-                uiState = uiState.copy(
-                    isLoading = false,
-                    infoEvent = throwable.mapToUi()
-                )
+                withContext(Dispatchers.Main) {
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        errorEvent = throwable.mapToUi()
+                    )
+                }
             }
         }
     }
@@ -778,6 +786,11 @@ class MedicalHistoryViewModel @Inject constructor(
         }.orEmpty()
 
         uiState = uiState.copy(
+            selectedMediaUris = if (selectedMedia == null) {
+                uiState.selectedMediaUris
+            } else {
+                updatedSelectedMedia
+            },
             screenModel = uiState.screenModel?.copy(
                 body = updatedBody
             )
@@ -800,7 +813,14 @@ class MedicalHistoryViewModel @Inject constructor(
 
     private fun consumeShownError() {
         uiState = uiState.copy(
-            infoEvent = null
+            errorEvent = null
+        )
+    }
+
+    fun consumeShownInfoEvent() {
+        uiState = uiState.copy(
+            infoEvent = null,
+            navigationModel = MedicalHistoryNavigationModel(back = true)
         )
     }
 
@@ -808,6 +828,12 @@ class MedicalHistoryViewModel @Inject constructor(
         uiState = uiState.copy(
             navigationModel = null,
             isLoading = false
+        )
+    }
+
+    fun goBack() {
+        uiState = uiState.copy(
+            navigationModel = MedicalHistoryNavigationModel(back = true)
         )
     }
 }
