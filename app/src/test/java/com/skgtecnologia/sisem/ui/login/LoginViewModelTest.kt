@@ -1,13 +1,15 @@
 package com.skgtecnologia.sisem.ui.login
 
+import com.skgtecnologia.sisem.commons.ANDROID_ID
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
+import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
+import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.auth.usecases.Login
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.model.banner.BannerModel
-import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
@@ -18,9 +20,6 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-
-private const val ANDROID_ID = "123"
-private const val SERVER_ERROR_TITLE = "Error en servidor"
 
 class LoginViewModelTest {
 
@@ -224,8 +223,6 @@ class LoginViewModelTest {
 
         Assert.assertEquals(null, loginViewModel.uiState.warning)
     }
-
-    private val emptyScreenModel = ScreenModel(body = emptyList())
 
     private fun createAccessToken(warning: BannerModel?) = AccessTokenModel(
         userId = 1,
