@@ -38,7 +38,7 @@ fun DeviceAuthScreen(
         launch {
             when {
                 uiState.navigationModel != null -> {
-                    viewModel.onDeviceAuthHandled()
+                    viewModel.consumeNavigationEvent()
                     onNavigation(uiState.navigationModel)
                 }
             }
