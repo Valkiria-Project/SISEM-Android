@@ -9,15 +9,15 @@ import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.authcards.usecases.GetAuthCardsScreen
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.operation.usecases.GetOperationConfig
-import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel
+import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
 
 @HiltViewModel
 class AuthCardsViewModel @Inject constructor(
@@ -77,7 +77,7 @@ class AuthCardsViewModel @Inject constructor(
         )
     }
 
-    fun handleShownReportBottomSheet() {
+    fun consumeReportBottomSheetEvent() {
         uiState = uiState.copy(
             reportDetail = null
         )
@@ -89,13 +89,13 @@ class AuthCardsViewModel @Inject constructor(
         )
     }
 
-    fun handleShownFindingsBottomSheet() {
+    fun consumeFindingsBottomSheetEvent() {
         uiState = uiState.copy(
             chipSection = null
         )
     }
 
-    fun handleShownError() {
+    fun consumeErrorEvent() {
         uiState = uiState.copy(
             errorModel = null
         )

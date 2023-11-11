@@ -1,9 +1,11 @@
 package com.skgtecnologia.sisem.ui.authcards.create
 
+import com.skgtecnologia.sisem.commons.ANDROID_ID
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
+import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
+import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.authcards.usecases.GetAuthCardsScreen
-import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.operation.usecases.GetOperationConfig
 import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
@@ -17,9 +19,6 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-
-private const val ANDROID_ID = "123"
-private const val SERVER_ERROR_TITLE = "Error en servidor"
 
 class AuthCardsViewModelTest {
 
@@ -35,8 +34,6 @@ class AuthCardsViewModelTest {
     @MockK
     private lateinit var getOperationConfig: GetOperationConfig
 
-    private val screenModel = ScreenModel(body = emptyList())
-
     private lateinit var authCardsViewModel: AuthCardsViewModel
 
     @Before
@@ -47,100 +44,121 @@ class AuthCardsViewModelTest {
     }
 
     @Test
-    fun `when init view model operation config is success`() = runTest {
-        coEvery { getOperationConfig.invoke(any()) } returns Result.success(mockk())
-        coEvery { getAuthCardsScreen.invoke(any()) } returns Result.success(screenModel)
+    fun `when call init and operation config is success`() = runTest {
+        coEvery { getOperationConfig.invoke(ANDROID_ID) } returns Result.success(mockk())
+        coEvery { getAuthCardsScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
 
-        authCardsViewModel =
-            AuthCardsViewModel(androidIdProvider, getAuthCardsScreen, getOperationConfig)
+        authCardsViewModel = AuthCardsViewModel(
+            androidIdProvider,
+            getAuthCardsScreen,
+            getOperationConfig
+        )
 
-        Assert.assertEquals(screenModel, authCardsViewModel.uiState.screenModel)
+        Assert.assertEquals(emptyScreenModel, authCardsViewModel.uiState.screenModel)
     }
 
     @Test
-    fun `when init view model operation config fails`() = runTest {
+    fun `when call init and operation config fails`() = runTest {
         coEvery { getOperationConfig.invoke(any()) } returns Result.failure(IllegalStateException())
 
-        authCardsViewModel =
-            AuthCardsViewModel(androidIdProvider, getAuthCardsScreen, getOperationConfig)
+        authCardsViewModel = AuthCardsViewModel(
+            androidIdProvider,
+            getAuthCardsScreen,
+            getOperationConfig
+        )
 
         Assert.assertEquals(SERVER_ERROR_TITLE, authCardsViewModel.uiState.errorModel?.title)
     }
 
     @Test
-    fun `when init view model getAuthCardsScreen fails`() = runTest {
+    fun `when call init and getAuthCardsScreen fails`() = runTest {
         coEvery { getOperationConfig.invoke(any()) } returns Result.success(mockk())
         coEvery { getAuthCardsScreen.invoke(any()) } returns Result.failure(IllegalStateException())
 
-        authCardsViewModel =
-            AuthCardsViewModel(androidIdProvider, getAuthCardsScreen, getOperationConfig)
+        authCardsViewModel = AuthCardsViewModel(
+            androidIdProvider,
+            getAuthCardsScreen,
+            getOperationConfig
+        )
 
         Assert.assertEquals(SERVER_ERROR_TITLE, authCardsViewModel.uiState.errorModel?.title)
     }
 
     @Test
-    fun `when call showReportBottomSheet get reportDetail`() = runTest {
+    fun `when call showReportBottomSheet uiState should have reportDetail`() = runTest {
         coEvery { getOperationConfig.invoke(any()) } returns Result.success(mockk())
-        coEvery { getAuthCardsScreen.invoke(any()) } returns Result.success(screenModel)
+        coEvery { getAuthCardsScreen.invoke(any()) } returns Result.success(emptyScreenModel)
         val reportDetail = mockk<ReportsDetailUiModel>()
 
-        authCardsViewModel =
-            AuthCardsViewModel(androidIdProvider, getAuthCardsScreen, getOperationConfig)
-
+        authCardsViewModel = AuthCardsViewModel(
+            androidIdProvider,
+            getAuthCardsScreen,
+            getOperationConfig
+        )
         authCardsViewModel.showReportBottomSheet(reportDetail)
 
         Assert.assertEquals(reportDetail, authCardsViewModel.uiState.reportDetail)
     }
 
     @Test
-    fun `when call handleShownReportBottomSheet clear reportDetail`() = runTest {
-        coEvery { getOperationConfig.invoke(any()) } returns Result.success(mockk())
-        coEvery { getAuthCardsScreen.invoke(any()) } returns Result.success(screenModel)
+    fun `when call consumeReportBottomSheetEvent uiState should have reportDetail clear`() =
+        runTest {
+            coEvery { getOperationConfig.invoke(any()) } returns Result.success(mockk())
+            coEvery { getAuthCardsScreen.invoke(any()) } returns Result.success(emptyScreenModel)
 
-        authCardsViewModel =
-            AuthCardsViewModel(androidIdProvider, getAuthCardsScreen, getOperationConfig)
+            authCardsViewModel = AuthCardsViewModel(
+                androidIdProvider,
+                getAuthCardsScreen,
+                getOperationConfig
+            )
+            authCardsViewModel.consumeReportBottomSheetEvent()
 
-        authCardsViewModel.handleShownReportBottomSheet()
-
-        Assert.assertEquals(null, authCardsViewModel.uiState.reportDetail)
-    }
+            Assert.assertEquals(null, authCardsViewModel.uiState.reportDetail)
+        }
 
     @Test
-    fun `when call showFindingsBottomSheet get chipSection`() = runTest {
+    fun `when call showFindingsBottomSheet uiState should have chipSection`() = runTest {
         coEvery { getOperationConfig.invoke(any()) } returns Result.success(mockk())
-        coEvery { getAuthCardsScreen.invoke(any()) } returns Result.success(screenModel)
+        coEvery { getAuthCardsScreen.invoke(any()) } returns Result.success(emptyScreenModel)
         val chipSection = mockk<ChipSectionUiModel>()
 
-        authCardsViewModel =
-            AuthCardsViewModel(androidIdProvider, getAuthCardsScreen, getOperationConfig)
-
+        authCardsViewModel = AuthCardsViewModel(
+            androidIdProvider,
+            getAuthCardsScreen,
+            getOperationConfig
+        )
         authCardsViewModel.showFindingsBottomSheet(chipSection)
 
         Assert.assertEquals(chipSection, authCardsViewModel.uiState.chipSection)
     }
 
     @Test
-    fun `when call handleShownFindingsBottomSheet clear chipSection`() = runTest {
-        coEvery { getOperationConfig.invoke(any()) } returns Result.success(mockk())
-        coEvery { getAuthCardsScreen.invoke(any()) } returns Result.success(screenModel)
+    fun `when call consumeFindingsBottomSheetEvent uiState should have chipSection clear`() =
+        runTest {
+            coEvery { getOperationConfig.invoke(any()) } returns Result.success(mockk())
+            coEvery { getAuthCardsScreen.invoke(any()) } returns Result.success(emptyScreenModel)
 
-        authCardsViewModel =
-            AuthCardsViewModel(androidIdProvider, getAuthCardsScreen, getOperationConfig)
+            authCardsViewModel = AuthCardsViewModel(
+                androidIdProvider,
+                getAuthCardsScreen,
+                getOperationConfig
+            )
+            authCardsViewModel.consumeFindingsBottomSheetEvent()
 
-        authCardsViewModel.handleShownFindingsBottomSheet()
-
-        Assert.assertEquals(null, authCardsViewModel.uiState.chipSection)
-    }
+            Assert.assertEquals(null, authCardsViewModel.uiState.chipSection)
+        }
 
     @Test
-    fun `when call handleShownError clear reportDetail`() = runTest {
+    fun `when call consumeErrorEvent uiState should have errorModel clear`() = runTest {
         coEvery { getOperationConfig.invoke(any()) } returns Result.success(mockk())
-        coEvery { getAuthCardsScreen.invoke(any()) } returns Result.success(screenModel)
+        coEvery { getAuthCardsScreen.invoke(any()) } returns Result.success(emptyScreenModel)
 
-        authCardsViewModel =
-            AuthCardsViewModel(androidIdProvider, getAuthCardsScreen, getOperationConfig)
-
-        authCardsViewModel.handleShownError()
+        authCardsViewModel = AuthCardsViewModel(
+            androidIdProvider,
+            getAuthCardsScreen,
+            getOperationConfig
+        )
+        authCardsViewModel.consumeErrorEvent()
 
         Assert.assertEquals(null, authCardsViewModel.uiState.errorModel)
     }
