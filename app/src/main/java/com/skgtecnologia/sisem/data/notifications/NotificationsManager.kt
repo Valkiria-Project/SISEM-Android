@@ -2,8 +2,9 @@ package com.skgtecnologia.sisem.data.notifications
 
 import android.content.Context
 import com.skgtecnologia.sisem.data.notifications.model.NotificationData
+import javax.inject.Inject
 
-class NotificationsManager(private val context: Context) {
+class NotificationsManager @Inject constructor(private val context: Context) {
 
     fun buildNotificationData(notificationDataMap: Map<String, String>): NotificationData {
 //        lateinit var pendingIntent: PendingIntent
