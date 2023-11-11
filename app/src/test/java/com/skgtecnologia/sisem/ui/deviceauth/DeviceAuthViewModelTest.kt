@@ -225,7 +225,6 @@ class DeviceAuthViewModelTest {
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.isCrewList)
     }
 
-
     @Test
     fun `when handleShownError is called clear errorModel`() = runTest {
         coEvery { getDeviceAuthScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
