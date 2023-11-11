@@ -15,12 +15,12 @@ import com.skgtecnologia.sisem.domain.preoperational.usecases.GetAuthCardViewScr
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.valkiria.uicomponents.action.UiAction
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
 
 @HiltViewModel
 class AuthCardViewViewModel @Inject constructor(
@@ -38,7 +38,7 @@ class AuthCardViewViewModel @Inject constructor(
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             getAuthCardViewScreen.invoke(androidIdProvider.getAndroidId())
                 .onSuccess { preOperationalScreenModel ->
                     withContext(Dispatchers.Main) {
@@ -93,7 +93,7 @@ class AuthCardViewViewModel @Inject constructor(
         }
     }
 
-    fun onNavigationHandled() {
+    fun consumeNavigationEvent() {
         uiState = uiState.copy(
             navigationModel = null,
             isLoading = false
@@ -105,7 +105,7 @@ class AuthCardViewViewModel @Inject constructor(
 
         uiAction.handleAuthorizationErrorEvent {
             job?.cancel()
-            job = viewModelScope.launch(Dispatchers.IO) {
+            job = viewModelScope.launch {
                 logoutCurrentUser.invoke()
                     .onSuccess {
                         UnauthorizedEventHandler.publishUnauthorizedEvent()
