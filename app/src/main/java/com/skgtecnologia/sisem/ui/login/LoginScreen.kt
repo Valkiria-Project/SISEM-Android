@@ -45,7 +45,7 @@ fun LoginScreen(
         launch {
             when {
                 uiState.navigationModel != null && uiState.warning == null -> {
-                    viewModel.onNavigationHandled()
+                    viewModel.consumeNavigationEvent()
                     onNavigation(uiState.navigationModel)
                 }
             }
@@ -84,18 +84,18 @@ fun LoginScreen(
             sheetState = sheetState,
             scope = scope
         ) {
-            viewModel.handleShownLoginLink()
+            viewModel.consumeLoginLinkEvent()
         }
     }
 
     OnBannerHandler(uiState.warning) {
-        viewModel.onNavigationHandled()
-        viewModel.handleShownWarning()
+        viewModel.consumeNavigationEvent()
+        viewModel.consumeWarningEvent()
         onNavigation(uiState.navigationModel)
     }
 
     OnBannerHandler(uiState.errorModel) {
-        viewModel.handleShownError()
+        viewModel.consumeErrorEvent()
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)
