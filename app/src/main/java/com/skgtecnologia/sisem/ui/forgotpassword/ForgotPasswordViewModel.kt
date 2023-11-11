@@ -35,7 +35,7 @@ class ForgotPasswordViewModel @Inject constructor(
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             getForgotPasswordScreen.invoke()
                 .onSuccess { forgotPasswordScreenModel ->
                     withContext(Dispatchers.Main) {
@@ -68,7 +68,7 @@ class ForgotPasswordViewModel @Inject constructor(
             )
 
             job?.cancel()
-            job = viewModelScope.launch(Dispatchers.IO) {
+            job = viewModelScope.launch {
                 sendEmail.invoke(emailValue.value.updatedValue)
                     .onSuccess {
                         withContext(Dispatchers.Main) {
@@ -91,7 +91,7 @@ class ForgotPasswordViewModel @Inject constructor(
         }
     }
 
-    fun onNavigationHandled() {
+    fun consumeNavigationEvent() {
         uiState = uiState.copy(
             validateFields = false,
             navigationModel = null,
