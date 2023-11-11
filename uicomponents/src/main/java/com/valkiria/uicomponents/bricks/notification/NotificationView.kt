@@ -28,16 +28,16 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
-import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.mocks.getAssignedIncidentNotificationUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import timber.log.Timber
 
+@Suppress("LongMethod", "MagicNumber")
 @Composable
 internal fun NotificationView(
     uiModel: NotificationUiModel,
-    onAction: (actionInput: UiAction) -> Unit
+    onAction: (id: String) -> Unit
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon, DefType.DRAWABLE
@@ -49,7 +49,7 @@ internal fun NotificationView(
             .background(MaterialTheme.colorScheme.onBackground)
             .clickable(
                 enabled = false,
-                onClick = {}
+                onClick = { onAction(uiModel.identifier) }
             ),
         verticalArrangement = Arrangement.Top
     ) {
@@ -156,6 +156,6 @@ internal fun NotificationView(
 fun NotificationViewPreview() {
     NotificationView(
         uiModel = getAssignedIncidentNotificationUiModel(),
-        onAction = { Timber.d("Closed") }
+        onAction = { identifier -> Timber.d("Closed $identifier") }
     )
 }

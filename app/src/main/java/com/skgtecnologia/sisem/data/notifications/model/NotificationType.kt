@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.data.notifications.model;
+package com.skgtecnologia.sisem.data.notifications.model
 
 enum class NotificationType(val title: String) {
     INCIDENT_ASSIGNED("Incidente Asignado");

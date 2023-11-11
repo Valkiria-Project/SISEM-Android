@@ -1,70 +1,49 @@
 package com.skgtecnologia.sisem.data.notifications
 
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import com.skgtecnologia.sisem.data.notifications.model.IncidentAssignedNotification
+import com.skgtecnologia.sisem.data.notifications.model.NOTIFICATION_TYPE_KEY
 import com.skgtecnologia.sisem.data.notifications.model.NotificationData
+import com.skgtecnologia.sisem.data.notifications.model.NotificationType
+import com.skgtecnologia.sisem.ui.MainActivity
 import javax.inject.Inject
+import timber.log.Timber
 
 class NotificationsManager @Inject constructor(private val context: Context) {
 
     fun buildNotificationData(notificationDataMap: Map<String, String>): NotificationData {
-//        lateinit var pendingIntent: PendingIntent
-//        var deepLink: String? = null
-//
-//        val notificationType = extraData.getOrDefault(
-//            NotificationsConstants.PAYLOAD_NOTIFICATION_TYPE,
-//            NotificationsConstants.NOTIFICATION_TYPE_DEFAULT
-//        )
-//
-//        when (notificationType) {
-//            NotificationsConstants.NOTIFICATION_TYPE_DEFAULT -> {
-//                val intent = Intent(context, AuthActivity::class.java)
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//
-//                pendingIntent = PendingIntent.getActivity(
-//                    context,
-//                    0,
-//                    intent,
-//                    PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
-//                )
-//            }
-//            NotificationsConstants.NOTIFICATION_TYPE_MESSAGE -> {
-//                val intent = Intent(context, AuthActivity::class.java)
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//
-//                pendingIntent = PendingIntent.getActivity(
-//                    context,
-//                    0,
-//                    intent,
-//                    PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
-//                )
-//            }
-//            NotificationsConstants.NOTIFICATION_TYPE_REQUEST_CLARIFICATION -> {
-//                val ticketNumber = extraData.getOrDefault(NotificationsConstants.PAYLOAD_TICKET_NUMBER, "")
-//                val ticketType = when (extraData[NotificationsConstants.PAYLOAD_TICKET_TYPE]) {
-//                    NotificationsConstants.TICKET_TYPE_NATIONAL -> NavigationConstants.DEEPLINK_ARG_NATIONAL
-//                    else -> NavigationConstants.DEEPLINK_ARG_TRANSPORT
-//                }
-//
-//                deepLink = NavigationConstants.DEEPLINK_VALUE_TICKET_CLARIFICATION
-//                    .replace("{ticketType}", ticketType)
-//                    .replace("{ticketNumber}", ticketNumber)
-//                pendingIntent = TaskStackBuilder.create(context.applicationContext).run {
-//                    addNextIntentWithParentStack(
-//                        Intent(
-//                            Intent.ACTION_VIEW,
-//                            deepLink.toUri()
-//                        )
-//                    )
-//                    getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
-//                }
-//            }
-//        }
-        return NotificationData(mapOf()).also {
+        lateinit var pendingIntent: PendingIntent
+
+        val notificationType = NotificationType.from(
+            notificationDataMap[NOTIFICATION_TYPE_KEY].orEmpty()
+        )
+
+        when (notificationType) {
+            NotificationType.INCIDENT_ASSIGNED -> {
+                val intent = Intent(context, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
+                pendingIntent = PendingIntent.getActivity(
+                    context,
+                    0,
+                    intent,
+                    PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+                )
+            }
+
+            else -> Timber.d("no-op")
+        }
+
+        return IncidentAssignedNotification(data = notificationDataMap).also {
             handleNotification(it)
         }
     }
 
-    fun handleNotification(notificationData: NotificationData) {
+    private fun handleNotification(notificationData: NotificationData) {
+        Timber.d("handleNotification with ${notificationData.notificationType.title}")
+
 //        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 //        val notificationBuilder = NotificationCompat.Builder(context, NotificationsConstants.CHANNEL_ID)
 //            .setSmallIcon(R.mipmap.ic_launcher)

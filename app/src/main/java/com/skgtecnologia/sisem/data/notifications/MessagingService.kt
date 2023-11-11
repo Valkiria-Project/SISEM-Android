@@ -41,6 +41,7 @@ class MessagingService : FirebaseMessagingService() {
     }
 
     private fun storeNotification(notificationData: NotificationData) {
+        Timber.d("storeNotification with ${notificationData.notificationType.title}")
         serviceScope.launch {
 //            storeNotification.invoke(
 //                Notification(
