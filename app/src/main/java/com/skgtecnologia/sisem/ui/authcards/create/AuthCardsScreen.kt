@@ -103,7 +103,7 @@ fun AuthCardsScreen(
                 sheetState = sheetState,
                 scope = scope
             ) {
-                viewModel.handleShownReportBottomSheet()
+                viewModel.consumeReportBottomSheetEvent()
             }
         }
 
@@ -117,13 +117,13 @@ fun AuthCardsScreen(
                 sheetState = sheetState,
                 scope = scope
             ) {
-                viewModel.handleShownFindingsBottomSheet()
+                viewModel.consumeFindingsBottomSheetEvent()
             }
         }
     }
 
     OnBannerHandler(uiModel = uiState.errorModel) {
-        viewModel.handleShownError()
+        viewModel.consumeErrorEvent()
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)
