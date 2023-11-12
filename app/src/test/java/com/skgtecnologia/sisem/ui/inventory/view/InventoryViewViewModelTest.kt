@@ -28,8 +28,9 @@ class InventoryViewViewModelTest {
     @MockK
     lateinit var logoutCurrentUser: LogoutCurrentUser
 
-    private val savedStateHandle =
-        SavedStateHandle(mapOf(INVENTORY_TYPE to InventoryType.MEDICINE.type))
+    private val savedStateHandle = SavedStateHandle(
+        mapOf(INVENTORY_TYPE to InventoryType.MEDICINE.type)
+    )
 
     private lateinit var viewModel: InventoryViewViewModel
 

@@ -82,7 +82,6 @@ class InventoryViewModelTest {
             logoutCurrentUser = logoutCurrentUser,
             androidIdProvider = androidIdProvider
         )
-
         viewModel.navigate(identifier)
 
         Assert.assertEquals(identifier, viewModel.uiState.navigationModel?.identifier)
@@ -99,7 +98,6 @@ class InventoryViewModelTest {
             logoutCurrentUser = logoutCurrentUser,
             androidIdProvider = androidIdProvider
         )
-
         viewModel.goBack()
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.back)
