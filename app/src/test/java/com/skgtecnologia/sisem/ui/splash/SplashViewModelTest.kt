@@ -47,7 +47,7 @@ class SplashViewModelTest {
     fun `when getStartupState fails`() = runTest {
         val startupNavigationModel = StartupNavigationModel()
 
-        coEvery { getStartupState.invoke() } returns Result.failure(IllegalStateException())
+        coEvery { getStartupState.invoke() } returns Result.failure(Throwable())
 
         splashViewModel = SplashViewModel(getStartupState)
         val stateStartupNavigationModel = splashViewModel.uiState.value.startupNavigationModel

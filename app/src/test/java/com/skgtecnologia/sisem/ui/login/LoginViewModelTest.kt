@@ -60,7 +60,7 @@ class LoginViewModelTest {
     @Test
     fun `when getLoginScreen fails`() = runTest {
         coEvery { getLoginScreen.invoke(any()) } returns Result.failure(
-            IllegalStateException()
+            Throwable()
         )
 
         loginViewModel = LoginViewModel(getLoginScreen, login, androidIdProvider)
@@ -152,7 +152,7 @@ class LoginViewModelTest {
         loginViewModel.isValidUsername = true
         loginViewModel.isValidPassword = true
 
-        coEvery { login.invoke(any(), any()) } returns Result.failure(IllegalStateException())
+        coEvery { login.invoke(any(), any()) } returns Result.failure(Throwable())
 
         loginViewModel.login()
 

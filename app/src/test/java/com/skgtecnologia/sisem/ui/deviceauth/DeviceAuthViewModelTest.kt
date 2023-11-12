@@ -44,19 +44,6 @@ class DeviceAuthViewModelTest {
     @MockK
     private lateinit var deleteAccessToken: DeleteAccessToken
 
-    private val screenModel = ScreenModel(
-        body = listOf(
-            SegmentedSwitchUiModel(
-                identifier = "title",
-                text = "description",
-                textStyle = TextStyle.BODY_1,
-                options = emptyList(),
-                arrangement = Arrangement.Center,
-                modifier = Modifier
-            )
-        )
-    )
-
     private lateinit var viewModel: DeviceAuthViewModel
 
     @Before
@@ -68,7 +55,7 @@ class DeviceAuthViewModelTest {
 
     @Test
     fun `when getDeviceAuthScreen is success`() = runTest {
-        coEvery { getDeviceAuthScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
+        coEvery { getDeviceAuthScreen.invoke(ANDROID_ID) } returns Result.success(screenModel)
 
         viewModel = DeviceAuthViewModel(
             androidIdProvider,
@@ -77,7 +64,7 @@ class DeviceAuthViewModelTest {
             deleteAccessToken
         )
 
-        Assert.assertEquals(emptyScreenModel, viewModel.uiState.screenModel)
+        Assert.assertEquals(screenModel, viewModel.uiState.screenModel)
     }
 
     @Test
@@ -95,7 +82,7 @@ class DeviceAuthViewModelTest {
     }
 
     @Test
-    fun `when isAssociateDevice is true and isValidVehicleCode is false`() = runTest {
+    fun `when isAssociateDevice and isValidVehicleCode is false`() = runTest {
         coEvery { getDeviceAuthScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
 
         viewModel = DeviceAuthViewModel(
@@ -240,4 +227,17 @@ class DeviceAuthViewModelTest {
 
         Assert.assertEquals(null, viewModel.uiState.errorModel)
     }
+
+    private val screenModel = ScreenModel(
+        body = listOf(
+            SegmentedSwitchUiModel(
+                identifier = "title",
+                text = "description",
+                textStyle = TextStyle.BODY_1,
+                options = emptyList(),
+                arrangement = Arrangement.Center,
+                modifier = Modifier
+            )
+        )
+    )
 }
