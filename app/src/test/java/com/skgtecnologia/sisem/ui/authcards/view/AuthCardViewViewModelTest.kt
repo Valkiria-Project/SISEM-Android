@@ -7,8 +7,10 @@ import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
+import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalViewIdentifier
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetAuthCardViewScreen
+import com.valkiria.uicomponents.action.FooterUiAction.FooterButton
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
@@ -58,7 +60,7 @@ class AuthCardViewViewModelTest {
     @Test
     fun `when call init and getAuthCardViewScreen fails`() = runTest {
         coEvery { getAuthCardViewScreen.invoke(any()) } returns Result.failure(
-            IllegalStateException()
+            Throwable()
         )
 
         viewModel = AuthCardViewViewModel(
@@ -154,7 +156,7 @@ class AuthCardViewViewModelTest {
     }
 
     @Test
-    fun `when call onNavigationHandled uiState should have navigationModel clear`() = runTest {
+    fun `when call consumeNavigationEvent uiState should have navigationModel clear`() = runTest {
         coEvery { getAuthCardViewScreen.invoke(any()) } returns Result.success(emptyScreenModel)
 
         viewModel = AuthCardViewViewModel(
@@ -166,5 +168,21 @@ class AuthCardViewViewModelTest {
 
         Assert.assertEquals(null, viewModel.uiState.navigationModel)
         Assert.assertEquals(false, viewModel.uiState.isLoading)
+    }
+
+    @Test
+    fun `when call handleEvent uiState should have errorModel clear`() = runTest {
+        val uiAction = FooterButton(LoginIdentifier.LOGIN_RE_AUTH_BANNER.name)
+        coEvery { getAuthCardViewScreen.invoke(any()) } returns Result.success(emptyScreenModel)
+        coEvery { logoutCurrentUser.invoke() } returns Result.success("")
+
+        viewModel = AuthCardViewViewModel(
+            androidIdProvider,
+            logoutCurrentUser,
+            getAuthCardViewScreen
+        )
+        viewModel.handleEvent(uiAction)
+
+        Assert.assertEquals(null, viewModel.uiState.errorModel)
     }
 }

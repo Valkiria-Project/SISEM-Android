@@ -59,7 +59,7 @@ class AuthCardsViewModelTest {
 
     @Test
     fun `when call init and operation config fails`() = runTest {
-        coEvery { getOperationConfig.invoke(any()) } returns Result.failure(IllegalStateException())
+        coEvery { getOperationConfig.invoke(any()) } returns Result.failure(Throwable())
 
         authCardsViewModel = AuthCardsViewModel(
             androidIdProvider,
@@ -73,7 +73,7 @@ class AuthCardsViewModelTest {
     @Test
     fun `when call init and getAuthCardsScreen fails`() = runTest {
         coEvery { getOperationConfig.invoke(any()) } returns Result.success(mockk())
-        coEvery { getAuthCardsScreen.invoke(any()) } returns Result.failure(IllegalStateException())
+        coEvery { getAuthCardsScreen.invoke(any()) } returns Result.failure(Throwable())
 
         authCardsViewModel = AuthCardsViewModel(
             androidIdProvider,

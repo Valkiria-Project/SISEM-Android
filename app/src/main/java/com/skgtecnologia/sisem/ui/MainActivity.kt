@@ -15,6 +15,7 @@ const val STARTUP_NAVIGATION_MODEL = "STARTUP_NAVIGATION_MODEL"
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
