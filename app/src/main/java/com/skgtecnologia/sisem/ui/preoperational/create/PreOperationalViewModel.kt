@@ -60,7 +60,7 @@ class PreOperationalViewModel @Inject constructor(
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             val operationConfig = async {
                 observeOperationConfig.invoke()
                     .onSuccess { operationModel ->
@@ -71,10 +71,12 @@ class PreOperationalViewModel @Inject constructor(
                         }
                     }
                     .onFailure { throwable ->
-                        uiState = uiState.copy(
-                            isLoading = false,
-                            infoEvent = throwable.mapToUi()
-                        )
+                        withContext(Dispatchers.Main) {
+                            uiState = uiState.copy(
+                                isLoading = false,
+                                infoEvent = throwable.mapToUi()
+                            )
+                        }
                     }
             }
 
@@ -92,11 +94,12 @@ class PreOperationalViewModel @Inject constructor(
                     }
                     .onFailure { throwable ->
                         Timber.wtf(throwable, "This is a failure")
-
-                        uiState = uiState.copy(
-                            isLoading = false,
-                            infoEvent = throwable.mapToUi()
-                        )
+                        withContext(Dispatchers.Main) {
+                            uiState = uiState.copy(
+                                isLoading = false,
+                                infoEvent = throwable.mapToUi()
+                            )
+                        }
                     }
             }
 
@@ -290,7 +293,7 @@ class PreOperationalViewModel @Inject constructor(
         )
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             sendPreOperational.invoke(
                 findingValues.toMap(),
                 inventoryValues.mapValues { it.value.updatedValue.toInt() },

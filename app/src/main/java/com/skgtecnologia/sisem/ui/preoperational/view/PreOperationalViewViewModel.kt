@@ -46,7 +46,7 @@ class PreOperationalViewViewModel @Inject constructor(
             uiState = uiState.copy(isLoading = true)
 
             job?.cancel()
-            job = viewModelScope.launch(Dispatchers.IO) {
+            job = viewModelScope.launch {
                 getPreOperationalScreenView.invoke(androidIdProvider.getAndroidId(), role)
                     .onSuccess { preOperationalScreenModel ->
                         withContext(Dispatchers.Main) {
@@ -77,7 +77,7 @@ class PreOperationalViewViewModel @Inject constructor(
         )
     }
 
-    fun onNavigationHandled() {
+    fun consumeNavigationEvent() {
         uiState = uiState.copy(
             navigationModel = null,
             isLoading = false
