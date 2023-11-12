@@ -142,7 +142,7 @@ internal fun BannerView(
 
 @Preview(showBackground = true)
 @Composable
-fun BannerComponentPreview() {
+fun BannerViewPreview() {
     BannerView(
         uiModel = getLoginBlockedErrorUiModel(),
         onAction = { Timber.d("Closed") }
