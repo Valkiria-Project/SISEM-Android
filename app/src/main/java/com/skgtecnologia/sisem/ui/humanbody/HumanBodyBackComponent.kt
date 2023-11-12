@@ -89,13 +89,13 @@ fun HumanBodyBackComponent(
                             )
                         )
                         selectedBackArea = BackArea.NONE
-                        viewModel.handledOnWoundSelected()
+                        viewModel.consumeWoundSelectedEvent()
                     }
                 },
                 sheetState = sheetState,
                 scope = scope,
             ) {
-                viewModel.handledOnWoundSelected()
+                viewModel.consumeWoundSelectedEvent()
             }
         }
 
