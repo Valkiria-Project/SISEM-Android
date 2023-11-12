@@ -36,7 +36,7 @@ fun ForgotPasswordScreen(
         launch {
             when {
                 uiState.navigationModel != null -> {
-                    viewModel.onNavigationHandled()
+                    viewModel.consumeNavigationEvent()
                     onNavigation(uiState.navigationModel)
                 }
             }
@@ -86,11 +86,11 @@ fun ForgotPasswordScreen(
     }
 
     OnBannerHandler(uiModel = uiState.successBanner) {
-        viewModel.handleShownSuccess()
+        viewModel.consumeSuccessEvent()
     }
 
     OnBannerHandler(uiModel = uiState.errorModel) {
-        viewModel.handleShownError()
+        viewModel.consumeErrorEvent()
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)
