@@ -27,7 +27,7 @@ fun InventoryViewScreen(
         launch {
             when {
                 uiState.navigationModel != null -> {
-                    viewModel.onNavigationHandled()
+                    viewModel.consumeNavigationEvent()
                     onNavigation(uiState.navigationModel)
                 }
             }
