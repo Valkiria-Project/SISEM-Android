@@ -45,7 +45,7 @@ class NotificationsManager @Inject constructor(private val context: Context) {
 
     private fun sendNotification(notificationData: NotificationData) {
         Timber.d("sendNotification with ${notificationData.notificationType.title}")
-
+        // FIXME: Finish Notifications work
         NotificationEventHandler.publishNotificationEvent(notificationData.notificationType.title)
 
 //        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)

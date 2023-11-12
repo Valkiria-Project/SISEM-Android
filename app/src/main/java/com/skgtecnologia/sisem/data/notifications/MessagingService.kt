@@ -42,6 +42,7 @@ class MessagingService : FirebaseMessagingService() {
 
     private fun storeNotification(notificationData: NotificationData) {
         Timber.d("storeNotification with ${notificationData.notificationType.title}")
+        // FIXME: Finish Notifications work
         serviceScope.launch {
 //            storeNotification.invoke(
 //                Notification(
