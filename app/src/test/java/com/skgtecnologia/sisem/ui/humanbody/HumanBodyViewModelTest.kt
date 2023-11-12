@@ -91,8 +91,8 @@ class HumanBodyViewModelTest {
     }
 
     @Test
-    fun `handledOnWoundSelected should be false onSelectWound`() {
-        viewModel.handledOnWoundSelected()
+    fun `consumeWoundSelectedEvent should be false onSelectWound`() {
+        viewModel.consumeWoundSelectedEvent()
 
         Assert.assertEquals(false, viewModel.uiState.onSelectWound)
     }
