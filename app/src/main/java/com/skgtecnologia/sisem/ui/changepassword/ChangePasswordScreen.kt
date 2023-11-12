@@ -35,7 +35,7 @@ fun ChangePasswordScreen(
         launch {
             when {
                 uiState.onCancel -> {
-                    viewModel.onCancelHandled()
+                    viewModel.consumeCancelEvent()
                     onCancel()
                 }
             }
@@ -85,12 +85,12 @@ fun ChangePasswordScreen(
     }
 
     OnBannerHandler(uiModel = uiState.successInfoModel) {
-        viewModel.onChangePasswordHandled()
+        viewModel.consumeChangePasswordEvent()
         onNavigation(uiState.loginNavigationModel)
     }
 
     OnBannerHandler(uiModel = uiState.errorModel) {
-        viewModel.handleShownError()
+        viewModel.consumeErrorEvent()
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)

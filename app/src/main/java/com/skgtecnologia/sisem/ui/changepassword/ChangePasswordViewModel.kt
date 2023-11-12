@@ -14,11 +14,12 @@ import com.skgtecnologia.sisem.domain.model.banner.changePasswordNoMatchBanner
 import com.skgtecnologia.sisem.domain.model.banner.changePasswordSuccessBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
 
 @HiltViewModel
 class ChangePasswordViewModel @Inject constructor(
@@ -43,21 +44,24 @@ class ChangePasswordViewModel @Inject constructor(
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             getChangePasswordScreen.invoke()
                 .onSuccess {
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        screenModel = it
-                    )
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            screenModel = it
+                        )
+                    }
                 }
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
-
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        errorModel = throwable.mapToUi()
-                    )
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            errorModel = throwable.mapToUi()
+                        )
+                    }
                 }
         }
     }
@@ -95,7 +99,7 @@ class ChangePasswordViewModel @Inject constructor(
         )
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             changePassword.invoke(oldPassword = oldPassword, newPassword = newPassword)
                 .onSuccess {
                     getLoginNavigationModel()
@@ -103,10 +107,12 @@ class ChangePasswordViewModel @Inject constructor(
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
 
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        errorModel = throwable.mapToUi()
-                    )
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            errorModel = throwable.mapToUi()
+                        )
+                    }
                 }
         }
     }
@@ -114,23 +120,27 @@ class ChangePasswordViewModel @Inject constructor(
     private suspend fun getLoginNavigationModel() {
         getLoginNavigationModel.invoke()
             .onSuccess { loginNavigationModel ->
-                uiState = uiState.copy(
-                    successInfoModel = changePasswordSuccessBanner().mapToUi(),
-                    loginNavigationModel = loginNavigationModel,
-                    isLoading = false
-                )
+                withContext(Dispatchers.Main) {
+                    uiState = uiState.copy(
+                        successInfoModel = changePasswordSuccessBanner().mapToUi(),
+                        loginNavigationModel = loginNavigationModel,
+                        isLoading = false
+                    )
+                }
             }
             .onFailure { throwable ->
                 Timber.wtf(throwable, "This is a failure")
 
-                uiState = uiState.copy(
-                    isLoading = false,
-                    errorModel = throwable.mapToUi()
-                )
+                withContext(Dispatchers.Main) {
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        errorModel = throwable.mapToUi()
+                    )
+                }
             }
     }
 
-    fun onChangePasswordHandled() {
+    fun consumeChangePasswordEvent() {
         uiState = uiState.copy(
             validateFields = false,
             successInfoModel = null,
@@ -148,7 +158,7 @@ class ChangePasswordViewModel @Inject constructor(
         isValidConfirmedNewPassword = false
     }
 
-    fun handleShownError() {
+    fun consumeErrorEvent() {
         uiState = uiState.copy(
             errorModel = null
         )
@@ -160,26 +170,30 @@ class ChangePasswordViewModel @Inject constructor(
         )
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             onCancel()
                 .onSuccess {
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        onCancel = true
-                    )
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            onCancel = true
+                        )
+                    }
                 }
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
 
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        errorModel = throwable.mapToUi()
-                    )
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            errorModel = throwable.mapToUi()
+                        )
+                    }
                 }
         }
     }
 
-    fun onCancelHandled() {
+    fun consumeCancelEvent() {
         uiState = uiState.copy(
             onCancel = false
         )
