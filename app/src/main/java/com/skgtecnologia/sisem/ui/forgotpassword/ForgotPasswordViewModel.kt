@@ -11,12 +11,12 @@ import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.banner.sendEmailSuccessBanner
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
 
 @HiltViewModel
 class ForgotPasswordViewModel @Inject constructor(
@@ -91,6 +91,14 @@ class ForgotPasswordViewModel @Inject constructor(
         }
     }
 
+    fun cancel() {
+        uiState = uiState.copy(
+            navigationModel = ForgotPasswordNavigationModel(
+                isCancel = true
+            )
+        )
+    }
+
     fun consumeNavigationEvent() {
         uiState = uiState.copy(
             validateFields = false,
@@ -100,25 +108,17 @@ class ForgotPasswordViewModel @Inject constructor(
         )
     }
 
-    fun handleShownError() {
+    fun consumeErrorEvent() {
         uiState = uiState.copy(
             errorModel = null
         )
     }
 
-    fun handleShownSuccess() {
+    fun consumeSuccessEvent() {
         uiState = uiState.copy(
             successBanner = null,
             navigationModel = ForgotPasswordNavigationModel(
                 isSuccess = true
-            )
-        )
-    }
-
-    fun cancel() {
-        uiState = uiState.copy(
-            navigationModel = ForgotPasswordNavigationModel(
-                isCancel = true
             )
         )
     }

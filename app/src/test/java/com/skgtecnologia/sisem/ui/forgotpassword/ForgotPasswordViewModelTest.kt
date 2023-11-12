@@ -90,7 +90,6 @@ class ForgotPasswordViewModelTest {
         coEvery { getForgotPasswordScreen.invoke() } returns Result.success(emptyScreenModel)
 
         viewModel = ForgotPasswordViewModel(getForgotPasswordScreen, sendEmail)
-
         viewModel.consumeNavigationEvent()
 
         Assert.assertEquals(null, viewModel.uiState.successBanner)
@@ -104,19 +103,17 @@ class ForgotPasswordViewModelTest {
         coEvery { getForgotPasswordScreen.invoke() } returns Result.success(emptyScreenModel)
 
         viewModel = ForgotPasswordViewModel(getForgotPasswordScreen, sendEmail)
-
-        viewModel.handleShownError()
+        viewModel.consumeErrorEvent()
 
         Assert.assertEquals(null, viewModel.uiState.errorModel)
     }
 
     @Test
-    fun `when handleShownSuccess is called clear successBanner`() = runTest {
+    fun `when consumeSuccessEvent is called clear successBanner`() = runTest {
         coEvery { getForgotPasswordScreen.invoke() } returns Result.success(emptyScreenModel)
 
         viewModel = ForgotPasswordViewModel(getForgotPasswordScreen, sendEmail)
-
-        viewModel.handleShownSuccess()
+        viewModel.consumeSuccessEvent()
 
         Assert.assertEquals(null, viewModel.uiState.successBanner)
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.isSuccess)
@@ -127,7 +124,6 @@ class ForgotPasswordViewModelTest {
         coEvery { getForgotPasswordScreen.invoke() } returns Result.success(emptyScreenModel)
 
         viewModel = ForgotPasswordViewModel(getForgotPasswordScreen, sendEmail)
-
         viewModel.cancel()
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.isCancel)
