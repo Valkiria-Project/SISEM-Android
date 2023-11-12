@@ -35,7 +35,7 @@ import timber.log.Timber
 
 @Suppress("LongMethod", "MagicNumber")
 @Composable
-internal fun NotificationView(
+fun NotificationView(
     uiModel: NotificationUiModel,
     onAction: (id: String) -> Unit
 ) {
@@ -68,7 +68,7 @@ internal fun NotificationView(
                 .background(color = Color.Black)
                 .border(
                     BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
-                    RoundedCornerShape(20)
+                    RoundedCornerShape(14)
                 ),
             contentAlignment = Alignment.TopCenter
         ) {

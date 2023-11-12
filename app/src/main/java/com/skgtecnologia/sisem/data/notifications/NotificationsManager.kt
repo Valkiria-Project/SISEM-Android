@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.data.notifications
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.data.notifications.model.IncidentAssignedNotification
 import com.skgtecnologia.sisem.data.notifications.model.NOTIFICATION_TYPE_KEY
 import com.skgtecnologia.sisem.data.notifications.model.NotificationData
@@ -20,6 +21,7 @@ class NotificationsManager @Inject constructor(private val context: Context) {
             notificationDataMap[NOTIFICATION_TYPE_KEY].orEmpty()
         )
 
+        Timber.d("notificationType ${notificationType?.title}")
         when (notificationType) {
             NotificationType.INCIDENT_ASSIGNED -> {
                 val intent = Intent(context, MainActivity::class.java)
@@ -37,12 +39,14 @@ class NotificationsManager @Inject constructor(private val context: Context) {
         }
 
         return IncidentAssignedNotification(data = notificationDataMap).also {
-            handleNotification(it)
+            sendNotification(it)
         }
     }
 
-    private fun handleNotification(notificationData: NotificationData) {
-        Timber.d("handleNotification with ${notificationData.notificationType.title}")
+    private fun sendNotification(notificationData: NotificationData) {
+        Timber.d("sendNotification with ${notificationData.notificationType.title}")
+
+        NotificationEventHandler.publishNotificationEvent(notificationData.notificationType.title)
 
 //        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 //        val notificationBuilder = NotificationCompat.Builder(context, NotificationsConstants.CHANNEL_ID)

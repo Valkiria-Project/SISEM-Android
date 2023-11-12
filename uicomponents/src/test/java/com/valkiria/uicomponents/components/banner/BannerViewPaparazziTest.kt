@@ -7,7 +7,7 @@ import com.valkiria.uicomponents.bricks.banner.BannerViewPreview
 import org.junit.Rule
 import org.junit.Test
 
-class BannerComponentPaparazziTest {
+class BannerViewPaparazziTest {
 
     @get:Rule
     val paparazziRule: Paparazzi = Paparazzi(
@@ -17,7 +17,7 @@ class BannerComponentPaparazziTest {
     )
 
     @Test
-    fun snapBannerComponent() {
+    fun snapBannerView() {
         paparazziRule.snapshot {
             BannerViewPreview()
         }
