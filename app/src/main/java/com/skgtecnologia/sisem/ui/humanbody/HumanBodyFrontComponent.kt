@@ -89,13 +89,13 @@ fun HumanBodyFrontComponent(
                             )
                         )
                         selectedFrontArea = FrontArea.NONE
-                        viewModel.handledOnWoundSelected()
+                        viewModel.consumeWoundSelectedEvent()
                     }
                 },
                 sheetState = sheetState,
                 scope = scope,
             ) {
-                viewModel.handledOnWoundSelected()
+                viewModel.consumeWoundSelectedEvent()
             }
         }
 

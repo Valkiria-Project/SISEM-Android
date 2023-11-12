@@ -41,7 +41,7 @@ class HumanBodyViewModel @Inject constructor() : ViewModel() {
         uiState = uiState.copy(selectedFrontAreas = frontAreas)
     }
 
-    fun handledOnWoundSelected() {
+    fun consumeWoundSelectedEvent() {
         uiState = uiState.copy(onSelectWound = false)
     }
 
