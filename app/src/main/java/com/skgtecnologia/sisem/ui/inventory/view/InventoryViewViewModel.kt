@@ -43,7 +43,7 @@ class InventoryViewViewModel @Inject constructor(
             uiState = uiState.copy(isLoading = true)
 
             job?.cancel()
-            job = viewModelScope.launch(Dispatchers.IO) {
+            job = viewModelScope.launch {
                 getInventoryViewScreen.invoke(
                     inventoryType = inventoryType
                 ).onSuccess { inventoryScreenModel ->
@@ -74,7 +74,7 @@ class InventoryViewViewModel @Inject constructor(
         )
     }
 
-    fun onNavigationHandled() {
+    fun consumeNavigationEvent() {
         uiState = uiState.copy(
             navigationModel = null,
             isLoading = false
@@ -86,7 +86,7 @@ class InventoryViewViewModel @Inject constructor(
 
         uiAction.handleAuthorizationErrorEvent {
             job?.cancel()
-            job = viewModelScope.launch(Dispatchers.IO) {
+            job = viewModelScope.launch {
                 logoutCurrentUser.invoke()
                     .onSuccess {
                         UnauthorizedEventHandler.publishUnauthorizedEvent()
