@@ -213,7 +213,7 @@ class DeviceAuthViewModelTest {
     }
 
     @Test
-    fun `when handleShownError is called clear errorModel`() = runTest {
+    fun `when consumeErrorEvent is called clear errorModel`() = runTest {
         coEvery { getDeviceAuthScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
 
         viewModel = DeviceAuthViewModel(
@@ -223,7 +223,7 @@ class DeviceAuthViewModelTest {
             deleteAccessToken
         )
 
-        viewModel.handleShownError()
+        viewModel.consumeErrorEvent()
 
         Assert.assertEquals(null, viewModel.uiState.errorModel)
     }

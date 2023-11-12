@@ -95,7 +95,7 @@ fun DeviceAuthScreen(
     }
 
     OnBannerHandler(uiModel = uiState.errorModel) {
-        viewModel.handleShownError()
+        viewModel.consumeErrorEvent()
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)

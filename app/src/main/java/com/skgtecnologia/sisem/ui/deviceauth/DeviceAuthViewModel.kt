@@ -181,7 +181,7 @@ class DeviceAuthViewModel @Inject constructor(
         disassociateDeviceState = false
     }
 
-    fun handleShownError() {
+    fun consumeErrorEvent() {
         uiState = uiState.copy(
             errorModel = null
         )
