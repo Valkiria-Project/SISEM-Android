@@ -38,7 +38,7 @@ fun DeviceAuthScreen(
         launch {
             when {
                 uiState.navigationModel != null -> {
-                    viewModel.onDeviceAuthHandled()
+                    viewModel.consumeNavigationEvent()
                     onNavigation(uiState.navigationModel)
                 }
             }
@@ -95,7 +95,7 @@ fun DeviceAuthScreen(
     }
 
     OnBannerHandler(uiModel = uiState.errorModel) {
-        viewModel.handleShownError()
+        viewModel.consumeErrorEvent()
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)

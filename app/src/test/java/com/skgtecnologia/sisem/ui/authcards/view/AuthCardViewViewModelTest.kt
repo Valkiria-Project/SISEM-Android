@@ -60,7 +60,7 @@ class AuthCardViewViewModelTest {
     @Test
     fun `when call init and getAuthCardViewScreen fails`() = runTest {
         coEvery { getAuthCardViewScreen.invoke(any()) } returns Result.failure(
-            IllegalStateException()
+            Throwable()
         )
 
         viewModel = AuthCardViewViewModel(
