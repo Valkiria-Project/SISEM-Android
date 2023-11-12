@@ -77,6 +77,10 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
         override val identifier: String
     ) : GenericUiAction(identifier)
 
+    data class NotificationAction(
+        override val identifier: String
+    ) : GenericUiAction(identifier)
+
     data class SegmentedSwitchAction(
         override val identifier: String,
         val status: Boolean
