@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.domain.auth.usecases
 
+import com.skgtecnologia.sisem.commons.USERNAME
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import io.mockk.MockKAnnotations
@@ -31,7 +32,7 @@ class DeleteAccessTokenTest {
     @Test
     fun `when getAllAccessTokens and logout are success`() = runTest {
         val accessTokens = mockk<AccessTokenModel> {
-            coEvery { username } returns "username"
+            coEvery { username } returns USERNAME
         }
         coEvery { authRepository.getAllAccessTokens() } returns listOf(accessTokens)
         coEvery { logout.invoke(any()) } returns Result.success("")
@@ -45,7 +46,7 @@ class DeleteAccessTokenTest {
     @Test
     fun `when getAllAccessTokens is success and logout is failure`() = runTest {
         val accessTokens = mockk<AccessTokenModel> {
-            coEvery { username } returns "username"
+            coEvery { username } returns USERNAME
         }
         coEvery { authRepository.getAllAccessTokens() } returns listOf(accessTokens)
         coEvery { logout.invoke(any()) } returns Result.failure(Exception())
@@ -59,7 +60,7 @@ class DeleteAccessTokenTest {
     @Test
     fun `when getAllAccessTokens is failure and logout is success`() = runTest {
         val accessTokens = mockk<AccessTokenModel> {
-            coEvery { username } returns "username"
+            coEvery { username } returns USERNAME
         }
         coEvery { authRepository.getAllAccessTokens() } returns listOf(accessTokens)
         coEvery { logout.invoke(any()) } returns Result.success("")

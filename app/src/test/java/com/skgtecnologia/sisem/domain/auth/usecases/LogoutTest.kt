@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.domain.auth.usecases
 
+import com.skgtecnologia.sisem.commons.USERNAME
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -8,8 +9,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-
-private const val USERNAME = "username"
 
 class LogoutTest {
 
