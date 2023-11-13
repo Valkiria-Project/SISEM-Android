@@ -65,7 +65,7 @@ class ReportViewModel @Inject constructor(
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             observeOperationConfig.invoke()
                 .onSuccess { operationModel ->
                     withContext(Dispatchers.Main) {
@@ -228,7 +228,7 @@ class ReportViewModel @Inject constructor(
     fun confirmReportImages(images: List<File>) {
         uiState = uiState.copy(isLoading = true)
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             sendReport.invoke(
                 topic = topic,
                 description = description,
