@@ -29,7 +29,7 @@ class AddReportViewModel @Inject constructor(
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             getAddReportScreen.invoke()
                 .onSuccess { addReportScreenModel ->
                     withContext(Dispatchers.Main) {
@@ -50,7 +50,7 @@ class AddReportViewModel @Inject constructor(
         }
     }
 
-    fun handleShownError() {
+    fun consumeErrorEvent() {
         uiState = uiState.copy(
             errorModel = null
         )

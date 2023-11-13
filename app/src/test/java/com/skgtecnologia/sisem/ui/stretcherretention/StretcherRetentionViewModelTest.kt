@@ -9,6 +9,7 @@ import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
+import com.skgtecnologia.sisem.commons.uiAction
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.stretcherretention.usecases.GetStretcherRetentionScreen
@@ -118,6 +119,25 @@ class StretcherRetentionViewModelTest {
         Assert.assertEquals(false, viewModel.uiState.isLoading)
         Assert.assertEquals(false, viewModel.uiState.validateFields)
         Assert.assertEquals(null, viewModel.uiState.navigationModel)
+    }
+
+    @Test
+    fun `when handleEvent is called clear uiState`() = runTest {
+        coEvery { getStretcherRetentionScreen.invoke(any(), any(), any()) } returns Result.success(
+            emptyScreenModel
+        )
+        coEvery { logoutCurrentUser.invoke() } returns Result.success("")
+
+        viewModel = StretcherRetentionViewModel(
+            androidIdProvider,
+            logoutCurrentUser,
+            getStretcherRetentionScreen,
+            saveStretcherRetention
+        )
+
+        viewModel.handleEvent(uiAction)
+
+        Assert.assertEquals(null, viewModel.uiState.infoEvent)
     }
 
     @Test

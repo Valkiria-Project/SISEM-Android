@@ -142,7 +142,7 @@ class MedicalHistoryViewModel @Inject constructor(
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             getMedicalHistoryScreen.invoke(
                 serial = androidIdProvider.getAndroidId(),
                 incidentCode = "101",
@@ -716,7 +716,7 @@ class MedicalHistoryViewModel @Inject constructor(
         )
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             sendMedicalHistory.invoke(
                 humanBodyValues = humanBodyValues,
                 segmentedValues = segmentedValues,
@@ -802,7 +802,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
         uiAction.handleAuthorizationErrorEvent {
             job?.cancel()
-            job = viewModelScope.launch(Dispatchers.IO) {
+            job = viewModelScope.launch {
                 logoutCurrentUser.invoke()
                     .onSuccess {
                         UnauthorizedEventHandler.publishUnauthorizedEvent()

@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.emptyScreenModel
+import com.skgtecnologia.sisem.commons.uiAction
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.inventory.model.InventoryType
 import com.skgtecnologia.sisem.domain.inventory.usecases.GetInventoryViewScreen
@@ -106,5 +107,20 @@ class InventoryViewViewModelTest {
         viewModel.consumeNavigationEvent()
 
         Assert.assertEquals(null, viewModel.uiState.navigationModel)
+    }
+
+    @Test
+    fun `when call handleEvent uiState should have errorModel clear`() = runTest {
+        coEvery { getInventoryViewScreen.invoke(any()) } returns Result.success(emptyScreenModel)
+        coEvery { logoutCurrentUser.invoke() } returns Result.success("")
+
+        viewModel = InventoryViewViewModel(
+            savedStateHandle = savedStateHandle,
+            getInventoryViewScreen = getInventoryViewScreen,
+            logoutCurrentUser = logoutCurrentUser
+        )
+        viewModel.handleEvent(uiAction)
+
+        Assert.assertEquals(null, viewModel.uiState.errorModel)
     }
 }

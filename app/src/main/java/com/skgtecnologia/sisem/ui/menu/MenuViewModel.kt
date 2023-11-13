@@ -34,7 +34,7 @@ class MenuViewModel @Inject constructor(
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             getAllAccessTokens.invoke()
                 .onSuccess { accessTokenModel ->
                     retrieveOperationConfig(accessTokenModel)
@@ -42,10 +42,12 @@ class MenuViewModel @Inject constructor(
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
 
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        errorModel = throwable.mapToUi()
-                    )
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            errorModel = throwable.mapToUi()
+                        )
+                    }
                 }
         }
     }
@@ -54,7 +56,7 @@ class MenuViewModel @Inject constructor(
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             logout.invoke(username = username)
                 .onSuccess {
                     withContext(Dispatchers.Main) {
@@ -67,10 +69,12 @@ class MenuViewModel @Inject constructor(
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
 
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        errorModel = throwable.mapToUi()
-                    )
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            errorModel = throwable.mapToUi()
+                        )
+                    }
                 }
         }
     }
@@ -88,14 +92,16 @@ class MenuViewModel @Inject constructor(
             }.onFailure { throwable ->
                 Timber.wtf(throwable, "This is a failure")
 
-                uiState = uiState.copy(
-                    isLoading = false,
-                    errorModel = throwable.mapToUi()
-                )
+                withContext(Dispatchers.Main) {
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        errorModel = throwable.mapToUi()
+                    )
+                }
             }
     }
 
-    fun handleShownError() {
+    fun consumeErrorEvent() {
         uiState = uiState.copy(
             errorModel = null
         )
