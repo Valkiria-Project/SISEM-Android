@@ -8,10 +8,8 @@ import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.commons.uiAction
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
-import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalViewIdentifier
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetAuthCardViewScreen
-import com.valkiria.uicomponents.action.FooterUiAction.FooterButton
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every

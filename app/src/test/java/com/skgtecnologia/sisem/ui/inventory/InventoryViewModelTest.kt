@@ -8,9 +8,6 @@ import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.commons.uiAction
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.inventory.usecases.GetInventoryInitialScreen
-import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
-import com.skgtecnologia.sisem.ui.authcards.view.AuthCardViewViewModel
-import com.valkiria.uicomponents.action.FooterUiAction
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
