@@ -57,6 +57,7 @@ import org.junit.Test
 private const val IDENTIFIER = "identifier"
 private const val MEDICAL_APH_BANNER_TITLE = "Registro APH"
 
+@Suppress("LargeClass")
 class MedicalHistoryViewModelTest {
 
     @get:Rule
