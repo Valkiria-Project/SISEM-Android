@@ -40,7 +40,7 @@ class VitalSignsViewModel @Inject constructor(
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             getVitalSignsScreen.invoke()
                 .onSuccess {
                     withContext(Dispatchers.Main) {
