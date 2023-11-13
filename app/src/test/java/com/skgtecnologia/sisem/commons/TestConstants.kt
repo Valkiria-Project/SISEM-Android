@@ -21,6 +21,7 @@ const val USERNAME = "username"
 const val PASSWORD = "password"
 const val SERIAL = "serial"
 const val CODE = "123"
+const val EMAIL = "email"
 
 val emptyScreenModel = ScreenModel(body = emptyList())
 
