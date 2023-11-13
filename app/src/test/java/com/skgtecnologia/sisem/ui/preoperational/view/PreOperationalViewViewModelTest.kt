@@ -6,11 +6,11 @@ import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
+import com.skgtecnologia.sisem.commons.uiAction
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreenView
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ROLE
-import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.bricks.banner.finding.FindingsDetailUiModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -166,12 +166,12 @@ class PreOperationalViewViewModelTest {
         Assert.assertEquals(findingDetail, viewModel.uiState.findingDetail)
     }
 
-    // creat test para el metodo handleEvent
     @Test
     fun `when handleEvent is called`() = runTest {
         coEvery { getPreOperationalScreenView.invoke(any(), any()) } returns Result.success(
             emptyScreenModel
         )
+        coEvery { logoutCurrentUser.invoke() } returns Result.success("")
 
         viewModel = PreOperationalViewViewModel(
             savedStateHandle,
@@ -180,7 +180,7 @@ class PreOperationalViewViewModelTest {
             getPreOperationalScreenView
         )
 
-        viewModel.handleEvent(GenericUiAction.DismissAction)
+        viewModel.handleEvent(uiAction)
 
         Assert.assertEquals(null, viewModel.uiState.errorModel)
     }
