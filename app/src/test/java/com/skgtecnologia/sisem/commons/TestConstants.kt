@@ -3,7 +3,9 @@ package com.skgtecnologia.sisem.commons
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
+import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.components.chip.ChipOptionUiModel
 import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
 import com.valkiria.uicomponents.components.finding.FindingUiModel
@@ -18,6 +20,7 @@ import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 const val ANDROID_ID = "123"
 const val SERVER_ERROR_TITLE = "Error en servidor"
 
+val uiAction = FooterUiAction.FooterButton(LoginIdentifier.LOGIN_RE_AUTH_BANNER.name)
 val emptyScreenModel = ScreenModel(body = emptyList())
 
 val chipOptionsUiModelMock = ChipOptionsUiModel(

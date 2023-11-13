@@ -5,6 +5,7 @@ import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
+import com.skgtecnologia.sisem.commons.uiAction
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
@@ -172,7 +173,6 @@ class AuthCardViewViewModelTest {
 
     @Test
     fun `when call handleEvent uiState should have errorModel clear`() = runTest {
-        val uiAction = FooterButton(LoginIdentifier.LOGIN_RE_AUTH_BANNER.name)
         coEvery { getAuthCardViewScreen.invoke(any()) } returns Result.success(emptyScreenModel)
         coEvery { logoutCurrentUser.invoke() } returns Result.success("")
 
