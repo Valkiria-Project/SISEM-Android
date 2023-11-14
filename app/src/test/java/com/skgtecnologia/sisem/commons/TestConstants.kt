@@ -22,6 +22,8 @@ const val PASSWORD = "password"
 const val SERIAL = "serial"
 const val CODE = "123"
 const val EMAIL = "email"
+const val PATIENT_ID = "patientId"
+const val INCIDENT_CODE = "incidentCode"
 
 val emptyScreenModel = ScreenModel(body = emptyList())
 
