@@ -68,7 +68,9 @@ class ReportRemoteDataSourceTest {
             body = listOf(imageButtonSectionResponseMock),
             footer = footerResponseMock
         )
-        coEvery { reportApi.getAddReportEntryScreen(any()) } returns Response.success(screenResponse)
+        coEvery {
+            reportApi.getAddReportEntryScreen(any())
+        } returns Response.success(screenResponse)
 
         val result = reportRemoteDataSource.getAddReportScreen()
 
