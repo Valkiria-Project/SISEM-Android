@@ -3,6 +3,10 @@ package com.skgtecnologia.sisem.commons
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
+import com.skgtecnologia.sisem.data.remote.model.components.button.ButtonResponse
+import com.skgtecnologia.sisem.data.remote.model.components.footer.FooterResponse
+import com.skgtecnologia.sisem.data.remote.model.components.header.HeaderResponse
+import com.skgtecnologia.sisem.data.remote.model.components.label.TextResponse
 import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.valkiria.uicomponents.action.FooterUiAction
@@ -48,6 +52,8 @@ const val PATIENT_ID = "patientId"
 const val INCIDENT_CODE = "incidentCode"
 const val TOPIC = "topic"
 const val DESCRIPTION = "description"
+const val TURN_ID = "turn_id"
+const val ID_APH = "id_aph"
 
 val uiAction = FooterUiAction.FooterButton(LoginIdentifier.LOGIN_RE_AUTH_BANNER.name)
 val emptyScreenModel = ScreenModel(body = emptyList())
@@ -299,4 +305,57 @@ val richLabelUiModelMock = RichLabelUiModel(
     textStyle = TextStyle.BODY_1,
     arrangement = Arrangement.Start,
     modifier = Modifier
+)
+
+val headerResponseMock = HeaderResponse(
+    identifier = "identifier",
+    title = TextResponse(
+        text = "text",
+        textStyle = TextStyle.BODY_1
+    ),
+    subtitle = TextResponse(
+        text = "text",
+        textStyle = TextStyle.BODY_1
+    ),
+    leftIcon = "ic_algo",
+    rightIcon = "ic_algo",
+    badgeCount = "badgeCount",
+    modifier = Modifier
+)
+
+val buttonResponseMock = ButtonResponse(
+    identifier = "identifier",
+    leftIcon = "ic_algo",
+    label = "text",
+    textStyle = TextStyle.BODY_1,
+    style = ButtonStyle.LOUD,
+    onClick = OnClick.SAVE,
+    size = ButtonSize.DEFAULT,
+    arrangement = Arrangement.Start,
+    modifier = Modifier
+)
+
+val footerResponseMock = FooterResponse(
+    leftButton = ButtonResponse(
+        identifier = "identifier",
+        leftIcon = "ic_algo",
+        label = "text",
+        textStyle = TextStyle.BODY_1,
+        style = ButtonStyle.LOUD,
+        onClick = OnClick.SAVE,
+        size = ButtonSize.DEFAULT,
+        arrangement = Arrangement.Start,
+        modifier = Modifier
+    ),
+    rightButton = ButtonResponse(
+        identifier = "identifier",
+        leftIcon = "ic_algo",
+        label = "text",
+        textStyle = TextStyle.BODY_1,
+        style = ButtonStyle.LOUD,
+        onClick = OnClick.SAVE,
+        size = ButtonSize.DEFAULT,
+        arrangement = Arrangement.Start,
+        modifier = Modifier
+    )
 )
