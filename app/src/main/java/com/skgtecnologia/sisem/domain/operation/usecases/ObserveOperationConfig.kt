@@ -6,9 +6,9 @@ import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.skgtecnologia.sisem.domain.operation.OperationRepository
+import javax.inject.Inject
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import javax.inject.Inject
 
 class ObserveOperationConfig @Inject constructor(
     private val authRepository: AuthRepository,

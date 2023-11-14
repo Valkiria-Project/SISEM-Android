@@ -39,7 +39,7 @@ class MedicineViewModel @Inject constructor(
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             getMedicineScreen.invoke()
                 .onSuccess {
                     withContext(Dispatchers.Main) {
