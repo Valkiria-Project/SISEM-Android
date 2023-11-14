@@ -4,11 +4,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.components.button.ButtonResponse
+import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonOptionResponse
+import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonResponse
+import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonSectionResponse
 import com.skgtecnologia.sisem.data.remote.model.components.footer.FooterResponse
 import com.skgtecnologia.sisem.data.remote.model.components.header.HeaderResponse
 import com.skgtecnologia.sisem.data.remote.model.components.label.TextResponse
 import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.components.button.ButtonSize
 import com.valkiria.uicomponents.components.button.ButtonStyle
@@ -40,6 +44,7 @@ import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiMod
 import com.valkiria.uicomponents.components.signature.SignatureUiModel
 import com.valkiria.uicomponents.components.slider.SliderUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
+import java.io.File
 
 const val ANDROID_ID = "123"
 const val SERVER_ERROR_TITLE = "Error en servidor"
@@ -57,6 +62,10 @@ const val ID_APH = "id_aph"
 
 val uiAction = FooterUiAction.FooterButton(LoginIdentifier.LOGIN_RE_AUTH_BANNER.name)
 val emptyScreenModel = ScreenModel(body = emptyList())
+val imageModelMock = ImageModel(
+    fileName = "fileName",
+    file = File("file")
+)
 
 val chipOptionsUiModelMock = ChipOptionsUiModel(
     identifier = "identifier",
@@ -331,6 +340,47 @@ val buttonResponseMock = ButtonResponse(
     style = ButtonStyle.LOUD,
     onClick = OnClick.SAVE,
     size = ButtonSize.DEFAULT,
+    arrangement = Arrangement.Start,
+    modifier = Modifier
+)
+
+val imageButtonResponseMock = ImageButtonResponse(
+    identifier = "identifier",
+    title = TextResponse(
+        text = "text",
+        textStyle = TextStyle.BODY_1
+    ),
+    image = "image",
+    selected = false,
+    arrangement = Arrangement.Start,
+    modifier = Modifier
+)
+
+val imageButtonSectionResponseMock = ImageButtonSectionResponse(
+    identifier = "identifier",
+    options = listOf(
+        ImageButtonOptionResponse(
+            identifier = "identifier",
+            title = TextResponse(
+                text = "text",
+                textStyle = TextStyle.BODY_1
+            ),
+            options = listOf(
+                ImageButtonResponse(
+                    identifier = "identifier",
+                    title = TextResponse(
+                        text = "text",
+                        textStyle = TextStyle.BODY_1
+                    ),
+                    image = "image",
+                    selected = false,
+                    arrangement = Arrangement.Start,
+                    modifier = Modifier
+                )
+            ),
+            modifier = Modifier
+        )
+    ),
     arrangement = Arrangement.Start,
     modifier = Modifier
 )
