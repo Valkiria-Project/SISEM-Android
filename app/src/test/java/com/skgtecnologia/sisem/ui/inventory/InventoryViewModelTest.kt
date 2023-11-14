@@ -5,6 +5,7 @@ import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
+import com.skgtecnologia.sisem.commons.uiAction
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.inventory.usecases.GetInventoryInitialScreen
 import io.mockk.MockKAnnotations
@@ -119,5 +120,20 @@ class InventoryViewModelTest {
 
         Assert.assertEquals(null, viewModel.uiState.navigationModel)
         Assert.assertEquals(false, viewModel.uiState.isLoading)
+    }
+
+    @Test
+    fun `when call handleEvent uiState should have errorModel clear`() = runTest {
+        coEvery { getInventoryInitialScreen.invoke(any()) } returns Result.success(emptyScreenModel)
+        coEvery { logoutCurrentUser.invoke() } returns Result.success("")
+
+        viewModel = InventoryViewModel(
+            getInventoryInitialScreen = getInventoryInitialScreen,
+            logoutCurrentUser = logoutCurrentUser,
+            androidIdProvider = androidIdProvider
+        )
+        viewModel.handleEvent(uiAction)
+
+        Assert.assertEquals(null, viewModel.uiState.errorModel)
     }
 }
