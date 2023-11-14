@@ -106,7 +106,9 @@ class GetStartupStateTest {
             val operationConfig = mockk<OperationModel> {
                 every { vehicleCode } returns CODE
             }
-            coEvery { authRepository.observeCurrentAccessToken() } returns flow { throw Exception() }
+            coEvery { authRepository.observeCurrentAccessToken() } returns flow {
+                throw IllegalStateException()
+            }
             coEvery { observeOperationConfig() } returns Result.success(operationConfig)
 
             val result = getStartupState()
@@ -116,8 +118,10 @@ class GetStartupStateTest {
 
     @Test
     fun `when observeCurrentAccessToken and observeOperationConfig are failure`() = runTest {
-        coEvery { authRepository.observeCurrentAccessToken() } returns flow { throw Exception() }
-        coEvery { observeOperationConfig() } returns Result.failure(Exception())
+        coEvery { authRepository.observeCurrentAccessToken() } returns flow {
+            throw IllegalStateException()
+        }
+        coEvery { observeOperationConfig() } returns Result.failure(IllegalStateException())
 
         val result = getStartupState()
 
