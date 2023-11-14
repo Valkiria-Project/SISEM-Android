@@ -4,8 +4,6 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import com.skgtecnologia.sisem.domain.medicalhistory.model.APPLICATION_TIME_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.CODE_KEY
-import com.skgtecnologia.sisem.domain.medicalhistory.model.DATE_MEDICINE_KEY
-import com.skgtecnologia.sisem.domain.medicalhistory.model.DOSE_UNIT_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.GENERIC_NAME_KEY
 import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
 import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
