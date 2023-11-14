@@ -3,15 +3,28 @@ package com.skgtecnologia.sisem.commons
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
+import com.skgtecnologia.sisem.data.remote.model.bricks.banner.report.ReportDetailResponse
+import com.skgtecnologia.sisem.data.remote.model.bricks.banner.report.ReportsDetailResponse
+import com.skgtecnologia.sisem.data.remote.model.bricks.chip.ChipSectionResponse
+import com.skgtecnologia.sisem.data.remote.model.components.body.HumanBodyResponse
 import com.skgtecnologia.sisem.data.remote.model.components.button.ButtonResponse
 import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonOptionResponse
 import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonResponse
 import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonSectionResponse
+import com.skgtecnologia.sisem.data.remote.model.components.card.InfoCardResponse
+import com.skgtecnologia.sisem.data.remote.model.components.card.PillResponse
+import com.skgtecnologia.sisem.data.remote.model.components.card.SimpleCardResponse
+import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipOptionResponse
+import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipOptionsResponse
+import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipSelectionItemResponse
+import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipSelectionResponse
 import com.skgtecnologia.sisem.data.remote.model.components.footer.FooterResponse
 import com.skgtecnologia.sisem.data.remote.model.components.header.HeaderResponse
+import com.skgtecnologia.sisem.data.remote.model.components.label.ListTextResponse
 import com.skgtecnologia.sisem.data.remote.model.components.label.TextResponse
 import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.components.button.ButtonSize
@@ -57,7 +70,7 @@ const val PATIENT_ID = "patientId"
 const val INCIDENT_CODE = "incidentCode"
 const val TOPIC = "topic"
 const val DESCRIPTION = "description"
-const val TURN_ID = "turn_id"
+const val TURN_ID = "1"
 const val ID_APH = "id_aph"
 
 val uiAction = FooterUiAction.FooterButton(LoginIdentifier.LOGIN_RE_AUTH_BANNER.name)
@@ -65,6 +78,11 @@ val emptyScreenModel = ScreenModel(body = emptyList())
 val imageModelMock = ImageModel(
     fileName = "fileName",
     file = File("file")
+)
+val noveltyMock = Novelty(
+    idPreoperational = "1",
+    novelty = "novelty",
+    images = listOf(imageModelMock)
 )
 
 val chipOptionsUiModelMock = ChipOptionsUiModel(
@@ -344,6 +362,50 @@ val buttonResponseMock = ButtonResponse(
     modifier = Modifier
 )
 
+val chipOptionsResponseMock = ChipOptionsResponse(
+    identifier = "identifier",
+    title = TextResponse(
+        text = "text",
+        textStyle = TextStyle.BODY_1
+    ),
+    items = listOf(
+        ChipOptionResponse(
+            id = "id",
+            name = "name",
+            selected = false
+        )
+    ),
+    arrangement = Arrangement.Start,
+    modifier = Modifier
+)
+
+val chipSelectionResponseMock = ChipSelectionResponse(
+    identifier = "identifier",
+    title = TextResponse(
+        text = "text",
+        textStyle = TextStyle.BODY_1
+    ),
+    items = listOf(
+        ChipSelectionItemResponse(
+            id = "id",
+            name = "name"
+        )
+    ),
+    selected = "selected",
+    arrangement = Arrangement.Start,
+    modifier = Modifier
+)
+
+val humanBodyResponseMock = HumanBodyResponse(
+    identifier = "identifier",
+    header = headerResponseMock,
+    wounds = listOf("wounds"),
+    burningLevel = listOf("burningLevel"),
+    section = "",
+    arrangement = Arrangement.Start,
+    modifier = Modifier
+)
+
 val imageButtonResponseMock = ImageButtonResponse(
     identifier = "identifier",
     title = TextResponse(
@@ -352,6 +414,59 @@ val imageButtonResponseMock = ImageButtonResponse(
     ),
     image = "image",
     selected = false,
+    arrangement = Arrangement.Start,
+    modifier = Modifier
+)
+
+val infoCardResponseMock = InfoCardResponse(
+    identifier = "identifier",
+    icon = "icon",
+    title = TextResponse(
+        text = "text",
+        textStyle = TextStyle.BODY_1
+    ),
+    pill = PillResponse(
+        title = TextResponse(
+            text = "text",
+            textStyle = TextStyle.BODY_1
+        ),
+        color = "color"
+    ),
+    date = TextResponse(
+        text = "text",
+        textStyle = TextStyle.BODY_1
+    ),
+    chipSection = ChipSectionResponse(
+        title = TextResponse(
+            text = "text",
+            textStyle = TextStyle.BODY_1
+        ),
+        listText = ListTextResponse(
+            texts = listOf("texts"),
+            textStyle = TextStyle.BODY_1
+        )
+    ),
+    reportsDetail = ReportsDetailResponse(
+        header = headerResponseMock,
+        details = listOf(
+            ReportDetailResponse(
+                images = listOf("images"),
+                title = TextResponse(
+                    text = "text",
+                    textStyle = TextStyle.BODY_1
+                ),
+                subtitle = TextResponse(
+                    text = "text",
+                    textStyle = TextStyle.BODY_1
+                ),
+                description = TextResponse(
+                    text = "text",
+                    textStyle = TextStyle.BODY_1
+                ),
+                modifier = Modifier
+            )
+        )
+    ),
     arrangement = Arrangement.Start,
     modifier = Modifier
 )
@@ -381,6 +496,17 @@ val imageButtonSectionResponseMock = ImageButtonSectionResponse(
             modifier = Modifier
         )
     ),
+    arrangement = Arrangement.Start,
+    modifier = Modifier
+)
+
+val simpleCardResponseMock = SimpleCardResponse(
+    identifier = "identifier",
+    title = TextResponse(
+        text = "text",
+        textStyle = TextStyle.BODY_1
+    ),
+    icon = "icon",
     arrangement = Arrangement.Start,
     modifier = Modifier
 )
