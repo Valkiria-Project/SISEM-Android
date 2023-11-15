@@ -33,15 +33,9 @@ fun MedsSelectorComponent(
         horizontalArrangement = uiModel.arrangement
     ) {
         Column {
-            uiModel.medicines
-                .sortedWith(
-                    compareByDescending<InfoCardUiModel> {
-                        it.date?.text
-                    }.thenByDescending { it.title.text }
-                )
-                .forEach { medicine ->
-                    InfoCardComponent(uiModel = medicine, onAction = {})
-                }
+            uiModel.medicines.forEach { medicine ->
+                InfoCardComponent(uiModel = medicine, onAction = {})
+            }
 
             ButtonComponent(
                 uiModel = uiModel.button,

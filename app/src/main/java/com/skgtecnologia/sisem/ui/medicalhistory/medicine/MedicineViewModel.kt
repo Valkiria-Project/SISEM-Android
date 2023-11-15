@@ -74,9 +74,9 @@ class MedicineViewModel @Inject constructor(
         val isValidDropDown = dropDownValue.value.fieldValidated
 
         // FIXME: 2021-10-14 Validate chip values ???
-        // val areValidChip = chipValues.size == 2
+        val areValidChip = chipValues.size == 2
 
-        if (areValidFields && isValidDropDown) {
+        if (areValidFields && isValidDropDown && areValidChip) {
             uiState = uiState.copy(
                 navigationModel = MedicineNavigationModel(
                     values = buildMedicineInformation.invoke(
