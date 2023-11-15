@@ -122,6 +122,8 @@ fun AddReportScreen(
                         selectedImages = mediaAction.uris,
                         isFromPreOperational = false
                     )
+
+                    null -> Timber.d("no-op")
                 }
             }
 

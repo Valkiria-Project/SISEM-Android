@@ -130,6 +130,8 @@ fun AddFindingScreen(
                     selectedImages = mediaAction.uris,
                     isFromPreOperational = true
                 )
+
+                null -> Timber.d("no-op")
             }
         }
 

@@ -110,6 +110,11 @@ fun handleAction(
             is Gallery -> viewModel.updateMediaActions(
                 selectedMedia = (uiAction.mediaAction as Gallery).uris,
             )
+
+            null -> {
+                Timber.d("no-op")
+                // FIXME: Remove image with id
+            }
         }
 
         is GenericUiAction.MedsSelectorAction -> viewModel.showMedicineForm(uiAction.identifier)

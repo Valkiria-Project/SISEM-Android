@@ -70,13 +70,14 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
 
     data class MediaItemAction(
         override val identifier: String,
-        val mediaAction: MediaAction
+        val mediaAction: MediaAction?
     ) : GenericUiAction(identifier)
 
     data class MedsSelectorAction(
         override val identifier: String
     ) : GenericUiAction(identifier)
 
+    // FIXME: Finish this
     data class NotificationAction(
         override val identifier: String
     ) : GenericUiAction(identifier)

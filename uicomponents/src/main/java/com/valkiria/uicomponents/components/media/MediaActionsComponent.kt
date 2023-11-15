@@ -53,19 +53,19 @@ fun MediaActionsComponent(
     uiModel: MediaActionsUiModel,
     listState: LazyListState = rememberLazyListState(),
     mediaActionsIndex: Int = 0,
-    onMediaAction: (id: String, mediaAction: MediaAction) -> Unit
+    onAction: (id: String, mediaAction: MediaAction?) -> Unit
 ) {
     var selectedMedia by remember { mutableStateOf(listOf<File>()) }
     val context = LocalContext.current
 
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
-        onResult = { uris -> onMediaAction(uiModel.identifier, Gallery(uris)) }
+        onResult = { uris -> onAction(uiModel.identifier, Gallery(uris)) }
     )
 
     val multipleMediaFilePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenMultipleDocuments(),
-        onResult = { uris -> onMediaAction(uiModel.identifier, MediaFile(uris)) }
+        onResult = { uris -> onAction(uiModel.identifier, MediaFile(uris)) }
     )
 
     LaunchedEffect(uiModel.selectedMediaUris) {
@@ -118,7 +118,7 @@ fun MediaActionsComponent(
                         .padding(8.dp)
                 )
             ) {
-                onMediaAction(uiModel.identifier, Camera)
+                onAction(uiModel.identifier, Camera)
             }
 
             ImageButtonView(
@@ -210,7 +210,9 @@ fun MediaActionsComponent(
                                     )
                                     .padding(horizontal = 20.dp, vertical = 4.dp)
                             )
-                        )
+                        ) { id ->
+                            onAction(id, null)
+                        }
                     }
                 }
             }

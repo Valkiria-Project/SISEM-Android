@@ -30,7 +30,8 @@ import timber.log.Timber
 @Composable
 fun LabelComponent(
     uiModel: LabelUiModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onAction: (id: String) -> Unit = {}
 ) {
     Row(
         modifier = uiModel.modifier
@@ -55,8 +56,11 @@ fun LabelComponent(
                 imageVector = ImageVector.vectorResource(id = rightIconResourceId),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(24.dp)
-                    .clickable { Timber.d("Clicked on ${uiModel.text}") },
+                    .size(42.dp)
+                    .clickable {
+                        Timber.d("Clicked on ${uiModel.text}")
+                        onAction(uiModel.identifier)
+                    },
                 tint = MaterialTheme.colorScheme.primary
             )
         }
