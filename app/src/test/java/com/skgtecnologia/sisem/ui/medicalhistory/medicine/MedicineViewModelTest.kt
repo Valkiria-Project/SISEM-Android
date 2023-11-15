@@ -5,6 +5,7 @@ import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.BuildMedicineInformation
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicineScreen
+import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
 import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import io.mockk.MockKAnnotations
@@ -56,6 +57,7 @@ class MedicineViewModelTest {
     @Test
     fun `when saveMedicine is called`() = runTest {
         val identifier = "identifier"
+        val identifier2 = "identifier2"
         val values = emptyMap<String, String>()
         coEvery { getMedicineScreen.invoke() } returns Result.success(emptyScreenModel)
         every { buildMedicineInformation.invoke(any(), any(), any(), any()) } returns values
@@ -71,6 +73,14 @@ class MedicineViewModelTest {
             id = identifier,
             name = identifier,
             fieldValidated = true
+        )
+        viewModel.chipValues[identifier] = ChipSelectionItemUiModel(
+            id = identifier,
+            name = identifier,
+        )
+        viewModel.chipValues[identifier2] = ChipSelectionItemUiModel(
+            id = identifier2,
+            name = identifier2,
         )
         viewModel.saveMedicine()
 
