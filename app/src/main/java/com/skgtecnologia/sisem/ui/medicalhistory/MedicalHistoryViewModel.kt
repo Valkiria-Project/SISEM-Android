@@ -613,17 +613,20 @@ class MedicalHistoryViewModel @Inject constructor(
 
     fun updateMedicineInfoCard(medicine: Map<String, String>) {
         medicineValues.add(medicine)
-        val updatedBody = uiState.screenModel?.body?.map {
-            if (it is MedsSelectorUiModel && it.identifier == temporalMedsSelector) {
+        val updatedBody = uiState.screenModel?.body?.map { bodyRow ->
+            if (bodyRow is MedsSelectorUiModel && bodyRow.identifier == temporalMedsSelector) {
                 val medicines = buildList {
-                    addAll(it.medicines)
+                    addAll(bodyRow.medicines)
                     add(buildMedicine(medicine))
-                }
-                it.copy(
+                }.sortedWith(
+                    compareByDescending<InfoCardUiModel> { it.date?.text }
+                        .thenByDescending { it.title.text }
+                )
+                bodyRow.copy(
                     medicines = medicines
                 )
             } else {
-                it
+                bodyRow
             }
         }.orEmpty()
 
