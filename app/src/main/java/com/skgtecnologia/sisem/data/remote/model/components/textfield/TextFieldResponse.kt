@@ -26,6 +26,7 @@ data class TextFieldResponse(
     @Json(name = "validations") val validations: List<ValidationResponse>?,
     @Json(name = "real_time_validation") val realTimeValidation: Boolean?,
     @Json(name = "max_date") val maxDate: String?,
+    @Json(name = "min_date") val minDate: String?,
     @Json(name = "required") val required: Boolean?,
     @Json(name = "text") val text: String?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,

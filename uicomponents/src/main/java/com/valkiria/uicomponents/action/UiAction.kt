@@ -78,6 +78,7 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
         override val identifier: String
     ) : GenericUiAction(identifier)
 
+    // FIXME: Finish this
     data class NotificationAction(
         override val identifier: String
     ) : GenericUiAction(identifier)
