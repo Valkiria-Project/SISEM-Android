@@ -822,6 +822,31 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
+    fun removeMediaActionsImage(selectedMedia: Uri) {
+        val updatedSelectedMedia = buildList {
+            addAll(uiState.selectedMediaUris)
+
+            removeIf { uri ->
+                selectedMedia.toString() == uri.toString()
+            }
+        }
+
+        val updatedBody = uiState.screenModel?.body?.map { model ->
+            if (model is MediaActionsUiModel) {
+                model.copy(selectedMediaUris = updatedSelectedMedia)
+            } else {
+                model
+            }
+        }.orEmpty()
+
+        uiState = uiState.copy(
+            selectedMediaUris = updatedSelectedMedia,
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
     fun handleEvent(uiAction: UiAction) {
         consumeShownError()
 
