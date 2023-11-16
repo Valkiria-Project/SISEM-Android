@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.bricks.chip.FilterChipView
@@ -21,9 +20,14 @@ import com.valkiria.uicomponents.extensions.toFailedValidation
 fun ChipSelectionComponent(
     uiModel: ChipSelectionUiModel,
     validateFields: Boolean = false,
-    onAction: (id: String, selectionItem: ChipSelectionItemUiModel, isSelection: Boolean) -> Unit
+    onAction: (
+        id: String,
+        selectionItem: ChipSelectionItemUiModel,
+        isSelection: Boolean,
+        viewsVisibility: Map<String, Boolean>
+    ) -> Unit
 ) {
-    val selected = rememberSaveable { mutableStateOf(uiModel.selected) }
+    val selected = remember { mutableStateOf(uiModel.selected) }
 
     val isError = remember(selected.value, validateFields) {
         selected.value.toFailedValidation(validateFields)
@@ -52,14 +56,23 @@ fun ChipSelectionComponent(
         ) {
             uiModel.items.forEach { chipSelection ->
                 FilterChipView(
-                    id = "",
+                    id = chipSelection.id,
                     text = chipSelection.name,
                     isSelected = (chipSelection.name == selected.value),
                     textStyle = TextStyle.BUTTON_1,
                     isError = isError,
-                    onAction = { _, text, isSelection ->
+                    onAction = { id, text, isSelection ->
                         selected.value = text
-                        onAction(uiModel.identifier, chipSelection, isSelection)
+
+                        val viewsVisibility = mutableMapOf<String, Boolean>()
+                        uiModel.selectionVisibility?.forEach {
+                            viewsVisibility[it.key] = it.value.equals(
+                                id,
+                                ignoreCase = true
+                            )
+                        }
+
+                        onAction(uiModel.identifier, chipSelection, isSelection, viewsVisibility)
                     }
                 )
             }

@@ -29,7 +29,7 @@ fun OutlinedTextFieldView(
     onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
 ) {
     var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-        mutableStateOf(TextFieldValue(uiModel.value))
+        mutableStateOf(TextFieldValue(uiModel.text))
     }
 
     val inputError = remember(text, validateFields) {

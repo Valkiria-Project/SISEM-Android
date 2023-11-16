@@ -208,7 +208,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
                 is TextFieldUiModel -> fieldsValues[bodyRowModel.identifier] = InputUiModel(
                     bodyRowModel.identifier,
-                    bodyRowModel.value
+                    bodyRowModel.text
                 )
 
                 is InfoCardUiModel -> if (bodyRowModel.identifier == INITIAL_VITAL_SIGNS) {
@@ -280,7 +280,7 @@ class MedicalHistoryViewModel @Inject constructor(
             updateGlasgow()
         }
 
-        val updatedBody = updateBodyModel(
+        var updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
             identifier = chipSelectionAction.identifier,
             updater = { model ->
@@ -291,6 +291,28 @@ class MedicalHistoryViewModel @Inject constructor(
                 }
             }
         )
+
+        chipSelectionAction.viewsVisibility.forEach { viewsVisibility ->
+            updateBodyModel(
+                uiModels = updatedBody,
+                identifier = viewsVisibility.key
+            ) { model ->
+                when {
+                    model is ChipOptionsUiModel && viewsVisibility.value ->
+                        model.copy(visibility = viewsVisibility.value)
+
+                    model is ChipOptionsUiModel && viewsVisibility.value.not() -> {
+                        chipOptionValues.remove(viewsVisibility.key)
+                        model.copy(
+                            items = model.items.map { item -> item.copy(selected = false) },
+                            visibility = viewsVisibility.value
+                        )
+                    }
+
+                    else -> model
+                }
+            }.also { body -> updatedBody = body }
+        }
 
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(
@@ -468,7 +490,7 @@ class MedicalHistoryViewModel @Inject constructor(
             identifier = inputAction.identifier,
             updater = { model ->
                 if (model is TextFieldUiModel) {
-                    model.copy(value = inputAction.updatedValue)
+                    model.copy(text = inputAction.updatedValue)
                 } else {
                     model
                 }
