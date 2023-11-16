@@ -12,14 +12,15 @@ import android.provider.OpenableColumns
 import android.util.Base64
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.size
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 const val CONTENT_URI_SCHEME = "content"
+const val SLASH_DELIMITER = "/"
 const val BITMAP_COMPRESS_QUALITY = 80
 const val ONE_MB_DECIMAL = 1_000_00L
 const val ONE_MB_BINARY = 1_048_576L
@@ -87,4 +88,8 @@ private fun ContentResolver.getFileName(fileUri: Uri): String {
             returnCursor.close()
         }
     }
+}
+
+fun String.getFilenameSegment(): String {
+    return this.substringAfterLast(SLASH_DELIMITER)
 }

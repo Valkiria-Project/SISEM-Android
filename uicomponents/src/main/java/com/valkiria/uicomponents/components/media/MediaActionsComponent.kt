@@ -42,8 +42,8 @@ import com.valkiria.uicomponents.components.media.MediaAction.Camera
 import com.valkiria.uicomponents.components.media.MediaAction.Gallery
 import com.valkiria.uicomponents.components.media.MediaAction.MediaFile
 import com.valkiria.uicomponents.extensions.storeUriAsFileToCache
-import java.io.File
 import kotlinx.coroutines.launch
+import java.io.File
 
 private const val ROUNDED_CORNER_SHAPE_PERCENTAGE = 90
 
@@ -53,7 +53,7 @@ fun MediaActionsComponent(
     uiModel: MediaActionsUiModel,
     listState: LazyListState = rememberLazyListState(),
     mediaActionsIndex: Int = 0,
-    onAction: (id: String, mediaAction: MediaAction?) -> Unit
+    onAction: (id: String, mediaAction: MediaAction) -> Unit
 ) {
     var selectedMedia by remember { mutableStateOf(listOf<File>()) }
     val context = LocalContext.current
@@ -109,7 +109,7 @@ fun MediaActionsComponent(
                     identifier = "CAMERA",
                     iconResId = R.drawable.ic_camera,
                     label = stringResource(
-                        id = R.string.media_action_take_picture_label
+                        id = string.media_action_take_picture_label
                     ),
                     textStyle = TextStyle.HEADLINE_6,
                     size = 81.dp,
@@ -126,7 +126,7 @@ fun MediaActionsComponent(
                     identifier = "GALLERY",
                     iconResId = R.drawable.ic_image,
                     label = stringResource(
-                        id = R.string.media_action_select_pictures
+                        id = string.media_action_select_pictures
                     ),
                     textStyle = TextStyle.HEADLINE_6,
                     size = 81.dp,
@@ -148,7 +148,7 @@ fun MediaActionsComponent(
                         identifier = "FILE",
                         iconResId = R.drawable.ic_file,
                         label = stringResource(
-                            id = R.string.media_action_select_files
+                            id = string.media_action_select_files
                         ),
                         textStyle = TextStyle.HEADLINE_6,
                         size = 81.dp,
@@ -211,7 +211,7 @@ fun MediaActionsComponent(
                                     .padding(horizontal = 20.dp, vertical = 4.dp)
                             )
                         ) { id ->
-                            onAction(id, null)
+                            onAction(id, MediaAction.RemoveFile)
                         }
                     }
                 }
@@ -222,8 +222,9 @@ fun MediaActionsComponent(
 
 sealed class MediaAction {
     data object Camera : MediaAction()
-    data class MediaFile(val uris: List<Uri>) : MediaAction()
     data class Gallery(val uris: List<Uri>) : MediaAction()
+    data class MediaFile(val uris: List<Uri>) : MediaAction()
+    data object RemoveFile : MediaAction()
 }
 
 @Preview

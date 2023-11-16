@@ -73,20 +73,21 @@ import com.valkiria.uicomponents.components.signature.SignatureUiModel
 import com.valkiria.uicomponents.components.slider.SliderUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.extensions.getFilenameSegment
 import com.valkiria.uicomponents.utlis.HOURS_MINUTES_24_HOURS_PATTERN
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDate
 import com.valkiria.uicomponents.utlis.WEEK_DAYS
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.UUID
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.UUID
+import javax.inject.Inject
 
 private const val SAVED_VITAL_SIGNS_COLOR = "#3cf2dd"
 private const val TEMPERATURE_SYMBOL = "°C"
@@ -794,6 +795,31 @@ class MedicalHistoryViewModel @Inject constructor(
             } else {
                 updatedSelectedMedia
             },
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
+    fun removeMediaActionsImage(selectedMedia: String) {
+        val updatedSelectedMedia = buildList {
+            addAll(uiState.selectedMediaUris)
+
+            removeIf { uri ->
+                selectedMedia.getFilenameSegment().contains(uri.toString().getFilenameSegment())
+            }
+        }
+
+        val updatedBody = uiState.screenModel?.body?.map { model ->
+            if (model is MediaActionsUiModel) {
+                model.copy(selectedMediaUris = updatedSelectedMedia)
+            } else {
+                model
+            }
+        }.orEmpty()
+
+        uiState = uiState.copy(
+            selectedMediaUris = updatedSelectedMedia,
             screenModel = uiState.screenModel?.copy(
                 body = updatedBody
             )

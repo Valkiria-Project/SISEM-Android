@@ -11,6 +11,7 @@ import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
+import com.valkiria.uicomponents.components.media.MediaAction
 import com.valkiria.uicomponents.components.media.MediaAction.Camera
 import com.valkiria.uicomponents.components.media.MediaAction.Gallery
 import com.valkiria.uicomponents.components.media.MediaAction.MediaFile
@@ -25,7 +26,7 @@ fun MedicalHistoryScreen(
     vitalSigns: Map<String, String>?,
     medicine: Map<String, String>?,
     signature: String?,
-    photoTaken: Boolean?,
+    photoTaken: Boolean = false,
     onNavigation: (medicalHistoryNavigationModel: NavigationModel?) -> Unit
 ) {
     val uiState = viewModel.uiState
@@ -59,7 +60,7 @@ fun MedicalHistoryScreen(
 
     LaunchedEffect(photoTaken) {
         launch {
-            photoTaken?.let { viewModel.updateMediaActions() }
+            photoTaken.let { viewModel.updateMediaActions() }
         }
     }
 
@@ -111,10 +112,7 @@ fun handleAction(
                 selectedMedia = (uiAction.mediaAction as Gallery).uris,
             )
 
-            null -> {
-                Timber.d("no-op")
-                // FIXME: Remove image with id
-            }
+            MediaAction.RemoveFile -> viewModel.removeMediaActionsImage(uiAction.identifier)
         }
 
         is GenericUiAction.MedsSelectorAction -> viewModel.showMedicineForm(uiAction.identifier)
