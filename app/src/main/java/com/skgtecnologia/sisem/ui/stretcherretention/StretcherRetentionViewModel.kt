@@ -80,7 +80,7 @@ class StretcherRetentionViewModel @Inject constructor(
             when (bodyRowModel) {
                 is TextFieldUiModel -> fieldsValues[bodyRowModel.identifier] = InputUiModel(
                     bodyRowModel.identifier,
-                    bodyRowModel.value
+                    bodyRowModel.text
                 )
             }
         }

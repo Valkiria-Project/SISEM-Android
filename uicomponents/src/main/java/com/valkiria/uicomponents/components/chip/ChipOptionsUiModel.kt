@@ -10,6 +10,8 @@ data class ChipOptionsUiModel(
     override val identifier: String,
     val title: TextUiModel? = null,
     val items: List<ChipOptionUiModel>,
+    val required: Boolean,
+    val visibility: Boolean,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {
