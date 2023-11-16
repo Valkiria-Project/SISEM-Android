@@ -7,8 +7,8 @@ import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.preoperational.PreOperationalRepository
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
 
 class PreOperationalRepositoryImpl @Inject constructor(
     private val authCacheDataSource: AuthCacheDataSource,
@@ -21,6 +21,32 @@ class PreOperationalRepositoryImpl @Inject constructor(
 
         return preOperationalRemoteDataSource.getPreOperationalScreen(
             role = checkNotNull(OperationRole.getRoleByName(accessToken.first()?.role.orEmpty())),
+            androidId = androidId,
+            vehicleCode = operationCacheDataSource.observeOperationConfig()
+                .first()?.vehicleCode.orEmpty(),
+            idTurn = accessToken.first()?.turn?.id?.toString().orEmpty()
+        ).getOrThrow()
+    }
+
+    override suspend fun getAuthCardViewScreen(androidId: String): ScreenModel {
+        val accessToken = checkNotNull(authCacheDataSource.observeAccessToken())
+
+        return preOperationalRemoteDataSource.getAuthCardViewScreen(
+            androidId = androidId,
+            vehicleCode = operationCacheDataSource.observeOperationConfig()
+                .first()?.vehicleCode.orEmpty(),
+            idTurn = accessToken.first()?.turn?.id?.toString().orEmpty()
+        ).getOrThrow()
+    }
+
+    override suspend fun getPreOperationalViewScreen(
+        androidId: String,
+        role: OperationRole
+    ): ScreenModel {
+        val accessToken = checkNotNull(authCacheDataSource.observeAccessToken())
+
+        return preOperationalRemoteDataSource.getPreOperationalScreenView(
+            role = role,
             androidId = androidId,
             vehicleCode = operationCacheDataSource.observeOperationConfig()
                 .first()?.vehicleCode.orEmpty(),
@@ -52,7 +78,7 @@ class PreOperationalRepositoryImpl @Inject constructor(
             fieldsValues = fieldsValues,
             novelties = novelties
         ).onSuccess {
-            authCacheDataSource.updatePreOperationalStatus(accessToken.role)
+            authCacheDataSource.updatePreOperationalStatus(accessToken.role, false)
             preOperationalRemoteDataSource.sendFindings(
                 role = role,
                 idTurn = idTurn,

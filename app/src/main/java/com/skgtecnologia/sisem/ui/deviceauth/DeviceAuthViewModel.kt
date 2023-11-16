@@ -15,12 +15,12 @@ import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.ui.navigation.LOGIN
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
 
 @HiltViewModel
 class DeviceAuthViewModel @Inject constructor(
@@ -38,7 +38,7 @@ class DeviceAuthViewModel @Inject constructor(
     var from: String by mutableStateOf("")
     private var isAssociateDevice: Boolean by mutableStateOf(false)
 
-    var vehicleCode by mutableStateOf("") // FIXME
+    var vehicleCode by mutableStateOf("")
     var isValidVehicleCode by mutableStateOf(false)
     var disassociateDeviceState by mutableStateOf(false)
 
@@ -46,7 +46,7 @@ class DeviceAuthViewModel @Inject constructor(
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             getDeviceAuthScreen.invoke(androidIdProvider.getAndroidId())
                 .onSuccess { deviceAuthScreenModel ->
                     withContext(Dispatchers.Main) {
@@ -60,10 +60,12 @@ class DeviceAuthViewModel @Inject constructor(
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
 
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        errorModel = throwable.mapToUi()
-                    )
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            errorModel = throwable.mapToUi()
+                        )
+                    }
                 }
         }
     }
@@ -86,7 +88,7 @@ class DeviceAuthViewModel @Inject constructor(
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             associateDevice.invoke(
                 androidIdProvider.getAndroidId(),
                 vehicleCode,
@@ -96,10 +98,12 @@ class DeviceAuthViewModel @Inject constructor(
             }.onFailure { throwable ->
                 Timber.wtf(throwable, "This is a failure")
 
-                uiState = uiState.copy(
-                    isLoading = false,
-                    errorModel = throwable.mapToUi()
-                )
+                withContext(Dispatchers.Main) {
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        errorModel = throwable.mapToUi()
+                    )
+                }
             }
         }
     }
@@ -107,7 +111,7 @@ class DeviceAuthViewModel @Inject constructor(
     private suspend fun handleOnSuccess() {
         if (disassociateDeviceState) {
             withContext(Dispatchers.Main) {
-                onDeviceAuthHandled() // FIXME: maintains the previous state, we must clean
+                consumeNavigationEvent()
                 uiState = uiState.copy(
                     isLoading = false,
                     disassociateInfoModel = disassociateDeviceBanner().mapToUi()
@@ -134,7 +138,7 @@ class DeviceAuthViewModel @Inject constructor(
             uiState = uiState.copy(isLoading = true)
 
             job?.cancel()
-            job = viewModelScope.launch(Dispatchers.IO) {
+            job = viewModelScope.launch {
                 deleteAccessToken.invoke().onSuccess {
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
@@ -156,12 +160,12 @@ class DeviceAuthViewModel @Inject constructor(
 
     fun cancelBanner() {
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             resetAppState()
         }
     }
 
-    fun onDeviceAuthHandled() {
+    fun consumeNavigationEvent() {
         uiState = uiState.copy(
             validateFields = false,
             navigationModel = null,
@@ -177,7 +181,7 @@ class DeviceAuthViewModel @Inject constructor(
         disassociateDeviceState = false
     }
 
-    fun handleShownError() {
+    fun consumeErrorEvent() {
         uiState = uiState.copy(
             errorModel = null
         )

@@ -1,10 +1,12 @@
 package com.valkiria.uicomponents.action
 
+import com.valkiria.uicomponents.bricks.banner.finding.FindingsDetailUiModel
 import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.components.chip.ChipOptionUiModel
 import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
+import com.valkiria.uicomponents.components.media.MediaAction
 
 const val DISMISS_IDENTIFIER = "dismiss"
 
@@ -36,7 +38,8 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
 
     data class FindingAction(
         override val identifier: String,
-        val status: Boolean
+        val status: Boolean,
+        val findingDetail: FindingsDetailUiModel?
     ) : GenericUiAction(identifier)
 
     data class HumanBodyAction(
@@ -66,7 +69,16 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
         val fieldValidated: Boolean
     ) : GenericUiAction(identifier)
 
+    data class MediaItemAction(
+        override val identifier: String,
+        val mediaAction: MediaAction
+    ) : GenericUiAction(identifier)
+
     data class MedsSelectorAction(
+        override val identifier: String
+    ) : GenericUiAction(identifier)
+
+    data class NotificationAction(
         override val identifier: String
     ) : GenericUiAction(identifier)
 
@@ -76,6 +88,10 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
     ) : GenericUiAction(identifier)
 
     data class SignatureAction(
+        override val identifier: String
+    ) : GenericUiAction(identifier)
+
+    data class SimpleCardAction(
         override val identifier: String
     ) : GenericUiAction(identifier)
 

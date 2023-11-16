@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.ui.medicalhistory
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.getValue
@@ -11,7 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
+import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ADMINISTRATION_ROUTE
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ADMINISTRATION_ROUTE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ALIVE_KEY
@@ -43,9 +46,12 @@ import com.skgtecnologia.sisem.domain.medicalhistory.model.TEMPERATURE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryScreen
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SendMedicalHistory
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
+import com.skgtecnologia.sisem.domain.model.banner.medicalHistorySuccess
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
 import com.valkiria.uicomponents.action.GenericUiAction
+import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.components.button.ImageButtonSectionUiModel
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
@@ -68,6 +74,7 @@ import com.valkiria.uicomponents.components.slider.SliderUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.utlis.HOURS_MINUTES_24_HOURS_PATTERN
+import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDate
 import com.valkiria.uicomponents.utlis.WEEK_DAYS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
@@ -86,10 +93,11 @@ private const val TEMPERATURE_SYMBOL = "°C"
 private const val GLUCOMETRY_SYMBOL = "mg/dL"
 
 // FIXME: Split into use cases
-@Suppress("TooManyFunctions")
+@Suppress("LargeClass", "TooManyFunctions")
 @HiltViewModel
 class MedicalHistoryViewModel @Inject constructor(
     private val getMedicalHistoryScreen: GetMedicalHistoryScreen,
+    private val logoutCurrentUser: LogoutCurrentUser,
     private val sendMedicalHistory: SendMedicalHistory,
     androidIdProvider: AndroidIdProvider
 ) : ViewModel() {
@@ -134,7 +142,7 @@ class MedicalHistoryViewModel @Inject constructor(
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             getMedicalHistoryScreen.invoke(
                 serial = androidIdProvider.getAndroidId(),
                 incidentCode = "101",
@@ -142,25 +150,17 @@ class MedicalHistoryViewModel @Inject constructor(
             ).onSuccess { medicalHistoryScreenModel ->
                 medicalHistoryScreenModel.getFormInitialValues()
 
-                // FIXME: Add MediaActionsUiModel in the correct position
-                val updatedScreenModel = medicalHistoryScreenModel.copy(
-                    body = buildList {
-                        addAll(medicalHistoryScreenModel.body)
-                        add(MediaActionsUiModel(hasFileAction = true))
-                    }
-                )
-
                 withContext(Dispatchers.Main) {
                     uiState = uiState.copy(
                         isLoading = false,
-                        screenModel = updatedScreenModel
+                        screenModel = medicalHistoryScreenModel
                     )
                 }
             }.onFailure { throwable ->
                 withContext(Dispatchers.Main) {
                     uiState = uiState.copy(
                         isLoading = false,
-                        infoEvent = throwable.mapToUi()
+                        errorEvent = throwable.mapToUi()
                     )
                 }
             }
@@ -197,10 +197,6 @@ class MedicalHistoryViewModel @Inject constructor(
                         it.id,
                         it.name
                     )
-                }
-
-                is ImageButtonSectionUiModel -> {
-                    Timber.d("No selected property for this one") // FIXME: Backend
                 }
 
                 is SegmentedSwitchUiModel ->
@@ -639,17 +635,20 @@ class MedicalHistoryViewModel @Inject constructor(
 
     fun updateMedicineInfoCard(medicine: Map<String, String>) {
         medicineValues.add(medicine)
-        val updatedBody = uiState.screenModel?.body?.map {
-            if (it is MedsSelectorUiModel && it.identifier == temporalMedsSelector) {
+        val updatedBody = uiState.screenModel?.body?.map { bodyRow ->
+            if (bodyRow is MedsSelectorUiModel && bodyRow.identifier == temporalMedsSelector) {
                 val medicines = buildList {
-                    addAll(it.medicines)
+                    addAll(bodyRow.medicines)
                     add(buildMedicine(medicine))
-                }
-                it.copy(
+                }.sortedWith(
+                    compareByDescending<InfoCardUiModel> { it.date?.text }
+                        .thenByDescending { it.title.text }
+                )
+                bodyRow.copy(
                     medicines = medicines
                 )
             } else {
-                it
+                bodyRow
             }
         }.orEmpty()
 
@@ -731,7 +730,7 @@ class MedicalHistoryViewModel @Inject constructor(
     }
 
     private fun calculateGestationWeeks(): String {
-        val fur = LocalDate.parse(fieldsValues[FUR_KEY]?.updatedValue.orEmpty())
+        val fur = getLocalDate(fieldsValues[FUR_KEY]?.updatedValue.orEmpty())
         val now = LocalDate.now()
         return ((now.toEpochDay() - fur.toEpochDay()) / WEEK_DAYS).toString()
     }
@@ -742,7 +741,7 @@ class MedicalHistoryViewModel @Inject constructor(
         )
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             sendMedicalHistory.invoke(
                 humanBodyValues = humanBodyValues,
                 segmentedValues = segmentedValues,
@@ -756,21 +755,97 @@ class MedicalHistoryViewModel @Inject constructor(
                 vitalSigns = vitalSignsValues,
                 infoCardButtonValues = medicineValues
             ).onSuccess {
-                Timber.d("This is a success")
+                withContext(Dispatchers.Main) {
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        infoEvent = medicalHistorySuccess().mapToUi()
+                    )
+                }
             }.onFailure { throwable ->
                 Timber.wtf(throwable, "This is a failure")
-
-                uiState = uiState.copy(
-                    isLoading = false,
-                    infoEvent = throwable.mapToUi()
-                )
+                withContext(Dispatchers.Main) {
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        errorEvent = throwable.mapToUi()
+                    )
+                }
             }
         }
     }
 
-    fun handleShownError() {
+    fun showCamera() {
         uiState = uiState.copy(
-            infoEvent = null
+            navigationModel = MedicalHistoryNavigationModel(
+                showCamera = true
+            )
+        )
+    }
+
+    fun onPhotoTaken(savedUri: Uri) {
+        val updatedSelectedMedia = buildList {
+            addAll(uiState.selectedMediaUris)
+            add(savedUri)
+        }
+
+        uiState = uiState.copy(
+            selectedMediaUris = updatedSelectedMedia,
+            navigationModel = MedicalHistoryNavigationModel(
+                photoTaken = true
+            )
+        )
+    }
+
+    fun updateMediaActions(selectedMedia: List<Uri>? = null) {
+        val updatedSelectedMedia = buildList {
+            addAll(uiState.selectedMediaUris)
+
+            if (selectedMedia?.isNotEmpty() == true) addAll(selectedMedia)
+        }
+
+        val updatedBody = uiState.screenModel?.body?.map { model ->
+            if (model is MediaActionsUiModel) {
+                model.copy(selectedMediaUris = updatedSelectedMedia)
+            } else {
+                model
+            }
+        }.orEmpty()
+
+        uiState = uiState.copy(
+            selectedMediaUris = if (selectedMedia == null) {
+                uiState.selectedMediaUris
+            } else {
+                updatedSelectedMedia
+            },
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
+    fun handleEvent(uiAction: UiAction) {
+        consumeShownError()
+
+        uiAction.handleAuthorizationErrorEvent {
+            job?.cancel()
+            job = viewModelScope.launch {
+                logoutCurrentUser.invoke()
+                    .onSuccess {
+                        UnauthorizedEventHandler.publishUnauthorizedEvent()
+                    }
+            }
+        }
+    }
+
+    private fun consumeShownError() {
+        uiState = uiState.copy(
+            errorEvent = null
+        )
+    }
+
+    fun consumeShownInfoEvent() {
+        uiState = uiState.copy(
+            infoEvent = null,
+            navigationModel = MedicalHistoryNavigationModel(back = true)
         )
     }
 
@@ -778,6 +853,12 @@ class MedicalHistoryViewModel @Inject constructor(
         uiState = uiState.copy(
             navigationModel = null,
             isLoading = false
+        )
+    }
+
+    fun goBack() {
+        uiState = uiState.copy(
+            navigationModel = MedicalHistoryNavigationModel(back = true)
         )
     }
 }

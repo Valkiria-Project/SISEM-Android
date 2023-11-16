@@ -17,12 +17,12 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 private const val MM_HG = 3
 private const val TAS_KEY = "TAS"
 private const val TAD_KEY = "TAD"
 private const val TAM_KEY = "TAM"
+private const val TWO_DECIMAL_FORMAT = "%.2f"
 
 @HiltViewModel
 class VitalSignsViewModel @Inject constructor(
@@ -40,7 +40,7 @@ class VitalSignsViewModel @Inject constructor(
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             getVitalSignsScreen.invoke()
                 .onSuccess {
                     withContext(Dispatchers.Main) {
@@ -100,12 +100,11 @@ class VitalSignsViewModel @Inject constructor(
         val tas = fieldsValues[TAS_KEY]?.updatedValue?.toFloatOrNull() ?: 0f
         val tad = fieldsValues[TAD_KEY]?.updatedValue?.toFloatOrNull() ?: 0f
 
-        val tam = tas + ((tas - tad) / MM_HG)
-        val roundTam = (tam * 100).roundToInt() / 100f
+        val tam = tad + ((tas - tad) / MM_HG)
 
         fieldsValues[TAM_KEY] = InputUiModel(
             identifier = TAM_KEY,
-            updatedValue = roundTam.toString(),
+            updatedValue = String.format(TWO_DECIMAL_FORMAT, tam),
             fieldValidated = true
         )
     }

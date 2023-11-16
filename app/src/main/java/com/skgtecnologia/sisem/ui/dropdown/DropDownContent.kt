@@ -107,7 +107,7 @@ fun DropDownContent(
             ) {
                 items(
                     itemList.filter {
-                        it.name.startsWith(text, true)
+                        it.name.contains(text, true)
                     }
                 ) {
                     Text(

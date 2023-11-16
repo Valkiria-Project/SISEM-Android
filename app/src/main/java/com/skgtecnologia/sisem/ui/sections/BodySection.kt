@@ -13,6 +13,9 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +40,7 @@ import com.valkiria.uicomponents.action.ChangePasswordUiAction.NewPasswordInput
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.OldPasswordInput
 import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.GenericUiAction
+import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
 import com.valkiria.uicomponents.action.LoginUiAction.Login
 import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
@@ -51,6 +55,8 @@ import com.valkiria.uicomponents.components.button.ImageButtonSectionComponent
 import com.valkiria.uicomponents.components.button.ImageButtonSectionUiModel
 import com.valkiria.uicomponents.components.card.InfoCardComponent
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
+import com.valkiria.uicomponents.components.card.SimpleCardComponent
+import com.valkiria.uicomponents.components.card.SimpleCardUiModel
 import com.valkiria.uicomponents.components.chip.ChipComponent
 import com.valkiria.uicomponents.components.chip.ChipOptionsComponent
 import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
@@ -71,6 +77,8 @@ import com.valkiria.uicomponents.components.header.HeaderUiModel
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUiModel
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckComponent
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
+import com.valkiria.uicomponents.components.inventorysearch.InventorySearchComponent
+import com.valkiria.uicomponents.components.inventorysearch.InventorySearchUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.media.MediaActionsComponent
@@ -98,7 +106,6 @@ import com.valkiria.uicomponents.components.timepicker.TimePickerComponent
 import com.valkiria.uicomponents.components.timepicker.TimePickerUiModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @Suppress("ComplexMethod", "LongMethod")
 @Composable
@@ -204,7 +211,10 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is ChipSelectionUiModel -> item(key = model.identifier) {
-                ChipSelectionComponent(uiModel = model) { id, chipSelectionItem, isSelection, viewsVisibility ->
+                ChipSelectionComponent(
+                    uiModel = model,
+                    validateFields = validateFields
+                ) { id, chipSelectionItem, isSelection, viewsVisibility ->
                     onAction(
                         GenericUiAction.ChipSelectionAction(
                             identifier = id,
@@ -254,8 +264,14 @@ private fun LazyListScope.handleBodyRows(
             }
 
             is FindingUiModel -> item(key = model.identifier) {
-                FindingComponent(uiModel = model) { id, status ->
-                    onAction(GenericUiAction.FindingAction(identifier = id, status = status))
+                FindingComponent(uiModel = model) { id, status, findingDetail ->
+                    onAction(
+                        GenericUiAction.FindingAction(
+                            identifier = id,
+                            status = status,
+                            findingDetail = findingDetail
+                        )
+                    )
                 }
             }
 
@@ -276,7 +292,9 @@ private fun LazyListScope.handleBodyRows(
             is HeaderUiModel -> item(key = model.identifier) {
                 HeaderSection(
                     headerUiModel = model
-                )
+                ) {
+                    onAction(HeaderUiAction.GoBack)
+                }
             }
 
             is HumanBodyUiModel -> item(key = model.identifier) {
@@ -316,14 +334,30 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
+            is InventorySearchUiModel -> item(key = model.identifier) {
+                InventorySearchComponent(uiModel = model)
+            }
+
             is LabelUiModel -> item(key = model.identifier) {
                 LabelComponent(uiModel = model)
             }
 
             is MediaActionsUiModel -> item(key = model.identifier) {
-                MediaActionsComponent(uiModel = model) { mediaAction ->
-                    // FIXME: Add logic to pass this event to Screen
-                    Timber.d("MediaAction is $mediaAction")
+                val mediaActionsIndex by remember {
+                    mutableIntStateOf(body.indexOfFirst { it is MediaActionsUiModel })
+                }
+
+                MediaActionsComponent(
+                    uiModel = model,
+                    listState = listState,
+                    mediaActionsIndex = mediaActionsIndex
+                ) { id, mediaAction ->
+                    onAction(
+                        GenericUiAction.MediaItemAction(
+                            identifier = id,
+                            mediaAction = mediaAction
+                        )
+                    )
                 }
             }
 
@@ -355,6 +389,12 @@ private fun LazyListScope.handleBodyRows(
             is SignatureUiModel -> item(key = model.identifier) {
                 SignatureComponent(uiModel = model) { id ->
                     onAction(GenericUiAction.SignatureAction(identifier = id))
+                }
+            }
+
+            is SimpleCardUiModel -> item(key = model.identifier) {
+                SimpleCardComponent(uiModel = model) { identifier ->
+                    onAction(GenericUiAction.SimpleCardAction(identifier = identifier))
                 }
             }
 
