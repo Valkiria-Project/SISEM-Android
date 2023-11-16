@@ -94,6 +94,8 @@ val chipOptionsUiModelMock = ChipOptionsUiModel(
             selected = true
         )
     ),
+    required = true,
+    visibility = true,
     arrangement = Arrangement.Start,
     modifier = Modifier
 )
@@ -111,6 +113,7 @@ val chipSelectionUiModelMock = ChipSelectionUiModel(
         )
     ),
     selected = "identifier",
+    selectionVisibility = mapOf(),
     arrangement = Arrangement.Start,
     modifier = Modifier
 )
@@ -375,6 +378,8 @@ val chipOptionsResponseMock = ChipOptionsResponse(
             selected = false
         )
     ),
+    required = true,
+    visibility = true,
     arrangement = Arrangement.Start,
     modifier = Modifier
 )
@@ -392,6 +397,7 @@ val chipSelectionResponseMock = ChipSelectionResponse(
         )
     ),
     selected = "selected",
+    selectionVisibility = mapOf(),
     arrangement = Arrangement.Start,
     modifier = Modifier
 )
