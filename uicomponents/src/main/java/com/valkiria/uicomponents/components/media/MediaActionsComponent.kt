@@ -46,6 +46,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 private const val ROUNDED_CORNER_SHAPE_PERCENTAGE = 90
+private const val THIRTY_MB_DECIMAL_STRING = "30_000_00"
 
 @Suppress("LongMethod")
 @Composable
@@ -72,7 +73,7 @@ fun MediaActionsComponent(
         launch {
             if (uiModel.selectedMediaUris.isNotEmpty()) {
                 selectedMedia = uiModel.selectedMediaUris.associateWith { uri ->
-                    context.storeUriAsFileToCache(uri)
+                    context.storeUriAsFileToCache(uri, THIRTY_MB_DECIMAL_STRING)
                 }
             }
         }

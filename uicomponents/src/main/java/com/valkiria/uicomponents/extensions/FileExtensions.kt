@@ -20,7 +20,6 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 
 const val CONTENT_URI_SCHEME = "content"
-const val SLASH_DELIMITER = "/"
 const val BITMAP_COMPRESS_QUALITY = 80
 const val ONE_MB_DECIMAL = 1_000_00L
 const val ONE_MB_BINARY = 1_048_576L
