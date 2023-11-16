@@ -21,6 +21,7 @@ fun FilterChipView(
     isSelected: Boolean,
     textStyle: TextStyle,
     modifier: Modifier = Modifier,
+    isError: Boolean = false,
     onAction: (id: String, text: String, isSelection: Boolean) -> Unit
 ) {
     FilterChip(
@@ -43,6 +44,13 @@ fun FilterChipView(
         shape = RoundedCornerShape(20.dp),
         colors = FilterChipDefaults.filterChipColors(
             selectedContainerColor = MaterialTheme.colorScheme.primary
-        )
+        ),
+        border = if (isError) {
+            FilterChipDefaults.filterChipBorder(
+                borderColor = MaterialTheme.colorScheme.error
+            )
+        } else {
+            FilterChipDefaults.filterChipBorder()
+        }
     )
 }
