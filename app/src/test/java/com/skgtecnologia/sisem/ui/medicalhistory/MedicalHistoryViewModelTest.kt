@@ -260,7 +260,8 @@ class MedicalHistoryViewModelTest {
             GenericUiAction.ChipSelectionAction(
                 IDENTIFIER,
                 chipSelectionItemUiModel,
-                true
+                true,
+                mapOf()
             )
         )
 
@@ -294,7 +295,8 @@ class MedicalHistoryViewModelTest {
             GenericUiAction.ChipSelectionAction(
                 identifier,
                 chipSelectionItemUiModel,
-                true
+                true,
+                mapOf()
             )
         )
 
@@ -343,7 +345,8 @@ class MedicalHistoryViewModelTest {
             GenericUiAction.ChipSelectionAction(
                 identifier,
                 chipSelectionItemUiModel,
-                true
+                true,
+                mapOf()
             )
         )
 

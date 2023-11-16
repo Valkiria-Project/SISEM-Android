@@ -60,6 +60,8 @@ fun getPreOperationalChipOptionsUiModel(): ChipOptionsUiModel {
                 selected = false
             )
         ),
+        required = false,
+        visibility = true,
         arrangement = Arrangement.Center
     )
 }

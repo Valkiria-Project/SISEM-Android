@@ -134,7 +134,7 @@ class PreOperationalViewModel @Inject constructor(
                 is TextFieldUiModel -> {
                     fieldsValues[bodyRowModel.identifier] = InputUiModel(
                         bodyRowModel.identifier,
-                        bodyRowModel.value
+                        bodyRowModel.text
                     )
                 }
             }
@@ -186,7 +186,7 @@ class PreOperationalViewModel @Inject constructor(
             identifier = inputAction.identifier,
             updater = { model ->
                 if (model is TextFieldUiModel) {
-                    model.copy(value = inputAction.updatedValue)
+                    model.copy(text = inputAction.updatedValue)
                 } else {
                     model
                 }
