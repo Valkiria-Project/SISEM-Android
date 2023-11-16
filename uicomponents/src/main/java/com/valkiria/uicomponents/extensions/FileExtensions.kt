@@ -89,7 +89,3 @@ private fun ContentResolver.getFileName(fileUri: Uri): String {
         }
     }
 }
-
-fun String.getFilenameSegment(): String {
-    return this.substringAfterLast(SLASH_DELIMITER)
-}

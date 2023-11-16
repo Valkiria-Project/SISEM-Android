@@ -55,7 +55,7 @@ fun MediaActionsComponent(
     mediaActionsIndex: Int = 0,
     onAction: (id: String, mediaAction: MediaAction) -> Unit
 ) {
-    var selectedMedia by remember { mutableStateOf(listOf<File>()) }
+    var selectedMedia by remember { mutableStateOf(mapOf<Uri, File>()) }
     val context = LocalContext.current
 
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
@@ -71,10 +71,8 @@ fun MediaActionsComponent(
     LaunchedEffect(uiModel.selectedMediaUris) {
         launch {
             if (uiModel.selectedMediaUris.isNotEmpty()) {
-                selectedMedia = uiModel.selectedMediaUris.map { uri ->
-                    context.storeUriAsFileToCache(
-                        uri
-                    )
+                selectedMedia = uiModel.selectedMediaUris.associateWith { uri ->
+                    context.storeUriAsFileToCache(uri)
                 }
             }
         }
@@ -197,8 +195,8 @@ fun MediaActionsComponent(
                     ) {
                         LabelComponent(
                             uiModel = LabelUiModel(
-                                identifier = media.absolutePath,
-                                text = media.name,
+                                identifier = media.component2().absolutePath,
+                                text = media.component2().name,
                                 textStyle = TextStyle.HEADLINE_6,
                                 rightIcon = stringResource(string.trash_icon),
                                 arrangement = Arrangement.Start,
@@ -211,7 +209,7 @@ fun MediaActionsComponent(
                                     .padding(horizontal = 20.dp, vertical = 4.dp)
                             )
                         ) { id ->
-                            onAction(id, MediaAction.RemoveFile)
+                            onAction(id, MediaAction.RemoveFile(media.component1()))
                         }
                     }
                 }
@@ -224,7 +222,7 @@ sealed class MediaAction {
     data object Camera : MediaAction()
     data class Gallery(val uris: List<Uri>) : MediaAction()
     data class MediaFile(val uris: List<Uri>) : MediaAction()
-    data object RemoveFile : MediaAction()
+    data class RemoveFile(val uri: Uri) : MediaAction()
 }
 
 @Preview

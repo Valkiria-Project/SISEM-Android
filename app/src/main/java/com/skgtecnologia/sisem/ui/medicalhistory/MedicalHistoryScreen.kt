@@ -108,11 +108,14 @@ fun handleAction(
             is MediaFile -> viewModel.updateMediaActions(
                 selectedMedia = (uiAction.mediaAction as MediaFile).uris,
             )
+
             is Gallery -> viewModel.updateMediaActions(
                 selectedMedia = (uiAction.mediaAction as Gallery).uris,
             )
 
-            MediaAction.RemoveFile -> viewModel.removeMediaActionsImage(uiAction.identifier)
+            is MediaAction.RemoveFile -> viewModel.removeMediaActionsImage(
+                (uiAction.mediaAction as MediaAction.RemoveFile).uri
+            )
         }
 
         is GenericUiAction.MedsSelectorAction -> viewModel.showMedicineForm(uiAction.identifier)

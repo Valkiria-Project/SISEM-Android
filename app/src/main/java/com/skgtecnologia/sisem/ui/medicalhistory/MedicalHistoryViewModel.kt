@@ -73,7 +73,6 @@ import com.valkiria.uicomponents.components.signature.SignatureUiModel
 import com.valkiria.uicomponents.components.slider.SliderUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
-import com.valkiria.uicomponents.extensions.getFilenameSegment
 import com.valkiria.uicomponents.utlis.HOURS_MINUTES_24_HOURS_PATTERN
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDate
 import com.valkiria.uicomponents.utlis.WEEK_DAYS
@@ -823,12 +822,12 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
-    fun removeMediaActionsImage(selectedMedia: String) {
+    fun removeMediaActionsImage(selectedMedia: Uri) {
         val updatedSelectedMedia = buildList {
             addAll(uiState.selectedMediaUris)
 
             removeIf { uri ->
-                selectedMedia.getFilenameSegment().contains(uri.toString().getFilenameSegment())
+                selectedMedia.toString() == uri.toString()
             }
         }
 

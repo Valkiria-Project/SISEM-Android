@@ -132,7 +132,7 @@ fun AddFindingScreen(
                     isFromPreOperational = true
                 )
 
-                MediaAction.RemoveFile -> Timber.d("no-op")
+                is MediaAction.RemoveFile -> Timber.d("no-op")
             }
         }
 

@@ -124,7 +124,7 @@ fun AddReportScreen(
                         isFromPreOperational = false
                     )
 
-                    MediaAction.RemoveFile -> Timber.d("no-op")
+                    is MediaAction.RemoveFile -> Timber.d("no-op")
                 }
             }
 
