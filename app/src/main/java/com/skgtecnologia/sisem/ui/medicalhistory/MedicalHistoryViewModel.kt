@@ -77,16 +77,16 @@ import com.valkiria.uicomponents.utlis.HOURS_MINUTES_24_HOURS_PATTERN
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDate
 import com.valkiria.uicomponents.utlis.WEEK_DAYS
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.UUID
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.UUID
+import javax.inject.Inject
 
 private const val SAVED_VITAL_SIGNS_COLOR = "#3cf2dd"
 private const val TEMPERATURE_SYMBOL = "°C"
@@ -207,7 +207,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
                 is TextFieldUiModel -> fieldsValues[bodyRowModel.identifier] = InputUiModel(
                     bodyRowModel.identifier,
-                    bodyRowModel.value
+                    bodyRowModel.text
                 )
 
                 is InfoCardUiModel -> if (bodyRowModel.identifier == INITIAL_VITAL_SIGNS) {
@@ -291,19 +291,20 @@ class MedicalHistoryViewModel @Inject constructor(
             }
         )
 
-        chipSelectionAction.viewsVisibility.forEach {
+        chipSelectionAction.viewsVisibility.forEach { viewsVisibility ->
             updateBodyModel(
                 uiModels = updatedBody,
-                identifier = it.key
+                identifier = viewsVisibility.key
             ) { model ->
                 when {
-                    model is ChipOptionsUiModel && it.value -> model.copy(visibility = it.value)
+                    model is ChipOptionsUiModel && viewsVisibility.value ->
+                        model.copy(visibility = viewsVisibility.value)
 
-                    model is ChipOptionsUiModel && it.value.not() -> {
-                        chipOptionValues.remove(it.key)
+                    model is ChipOptionsUiModel && viewsVisibility.value.not() -> {
+                        chipOptionValues.remove(viewsVisibility.key)
                         model.copy(
                             items = model.items.map { item -> item.copy(selected = false) },
-                            visibility = it.value
+                            visibility = viewsVisibility.value
                         )
                     }
 
@@ -311,7 +312,6 @@ class MedicalHistoryViewModel @Inject constructor(
                 }
             }.also { body -> updatedBody = body }
         }
-
 
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(
@@ -489,7 +489,7 @@ class MedicalHistoryViewModel @Inject constructor(
             identifier = inputAction.identifier,
             updater = { model ->
                 if (model is TextFieldUiModel) {
-                    model.copy(value = inputAction.updatedValue)
+                    model.copy(text = inputAction.updatedValue)
                 } else {
                     model
                 }
