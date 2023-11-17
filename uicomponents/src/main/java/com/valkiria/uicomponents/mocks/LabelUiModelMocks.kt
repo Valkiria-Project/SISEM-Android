@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package com.valkiria.uicomponents.mocks
 
 import androidx.compose.foundation.BorderStroke

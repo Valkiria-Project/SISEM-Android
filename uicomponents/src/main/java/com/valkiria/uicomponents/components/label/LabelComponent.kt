@@ -4,7 +4,6 @@ import android.graphics.Color.parseColor
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -42,7 +41,9 @@ fun LabelComponent(
     ) {
         Text(
             text = uiModel.text,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 12.dp),
             color = Color(parseColor(uiModel.textColor)),
             style = uiModel.textStyle.toTextStyle()
         )
@@ -56,7 +57,7 @@ fun LabelComponent(
                 imageVector = ImageVector.vectorResource(id = rightIconResourceId),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(42.dp)
+                    .size(32.dp)
                     .clickable {
                         Timber.d("Clicked on ${uiModel.text}")
                         onAction(uiModel.identifier)

@@ -77,16 +77,16 @@ import com.valkiria.uicomponents.utlis.HOURS_MINUTES_24_HOURS_PATTERN
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDate
 import com.valkiria.uicomponents.utlis.WEEK_DAYS
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.UUID
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.UUID
+import javax.inject.Inject
 
 private const val SAVED_VITAL_SIGNS_COLOR = "#3cf2dd"
 private const val TEMPERATURE_SYMBOL = "°C"
@@ -207,7 +207,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
                 is TextFieldUiModel -> fieldsValues[bodyRowModel.identifier] = InputUiModel(
                     bodyRowModel.identifier,
-                    bodyRowModel.value
+                    bodyRowModel.text
                 )
 
                 is InfoCardUiModel -> if (bodyRowModel.identifier == INITIAL_VITAL_SIGNS) {
@@ -279,7 +279,7 @@ class MedicalHistoryViewModel @Inject constructor(
             updateGlasgow()
         }
 
-        val updatedBody = updateBodyModel(
+        var updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
             identifier = chipSelectionAction.identifier,
             updater = { model ->
@@ -290,6 +290,28 @@ class MedicalHistoryViewModel @Inject constructor(
                 }
             }
         )
+
+        chipSelectionAction.viewsVisibility.forEach { viewsVisibility ->
+            updateBodyModel(
+                uiModels = updatedBody,
+                identifier = viewsVisibility.key
+            ) { model ->
+                when {
+                    model is ChipOptionsUiModel && viewsVisibility.value ->
+                        model.copy(visibility = viewsVisibility.value)
+
+                    model is ChipOptionsUiModel && viewsVisibility.value.not() -> {
+                        chipOptionValues.remove(viewsVisibility.key)
+                        model.copy(
+                            items = model.items.map { item -> item.copy(selected = false) },
+                            visibility = viewsVisibility.value
+                        )
+                    }
+
+                    else -> model
+                }
+            }.also { body -> updatedBody = body }
+        }
 
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(
@@ -467,7 +489,7 @@ class MedicalHistoryViewModel @Inject constructor(
             identifier = inputAction.identifier,
             updater = { model ->
                 if (model is TextFieldUiModel) {
-                    model.copy(value = inputAction.updatedValue)
+                    model.copy(text = inputAction.updatedValue)
                 } else {
                     model
                 }
@@ -794,6 +816,31 @@ class MedicalHistoryViewModel @Inject constructor(
             } else {
                 updatedSelectedMedia
             },
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
+    fun removeMediaActionsImage(selectedMedia: Uri) {
+        val updatedSelectedMedia = buildList {
+            addAll(uiState.selectedMediaUris)
+
+            removeIf { uri ->
+                selectedMedia.toString() == uri.toString()
+            }
+        }
+
+        val updatedBody = uiState.screenModel?.body?.map { model ->
+            if (model is MediaActionsUiModel) {
+                model.copy(selectedMediaUris = updatedSelectedMedia)
+            } else {
+                model
+            }
+        }.orEmpty()
+
+        uiState = uiState.copy(
+            selectedMediaUris = updatedSelectedMedia,
             screenModel = uiState.screenModel?.copy(
                 body = updatedBody
             )

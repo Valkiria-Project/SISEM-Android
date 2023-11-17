@@ -31,17 +31,18 @@ import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.media.MediaAction
 import com.valkiria.uicomponents.components.media.MediaAction.Camera
-import com.valkiria.uicomponents.components.media.MediaAction.MediaFile
 import com.valkiria.uicomponents.components.media.MediaAction.Gallery
+import com.valkiria.uicomponents.components.media.MediaAction.MediaFile
 import com.valkiria.uicomponents.components.media.MediaActionsComponent
 import com.valkiria.uicomponents.components.media.MediaActionsUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
-import kotlin.random.Random
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.random.Random
 
 private const val DESCRIPTION_INPUT_MIN_LINES = 3
 
@@ -123,7 +124,7 @@ fun AddReportScreen(
                         isFromPreOperational = false
                     )
 
-                    null -> Timber.d("no-op")
+                    is MediaAction.RemoveFile -> Timber.d("no-op")
                 }
             }
 

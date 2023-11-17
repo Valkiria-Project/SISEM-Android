@@ -26,7 +26,9 @@ data class TextFieldResponse(
     @Json(name = "validations") val validations: List<ValidationResponse>?,
     @Json(name = "real_time_validation") val realTimeValidation: Boolean?,
     @Json(name = "max_date") val maxDate: String?,
+    @Json(name = "min_date") val minDate: String?,
     @Json(name = "required") val required: Boolean?,
+    @Json(name = "text") val text: String?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val margins: Modifier?
 ) : BodyRowResponse {
@@ -48,6 +50,7 @@ data class TextFieldResponse(
         realTimeValidation = realTimeValidation ?: false,
         maxDate = maxDate,
         required = required ?: true,
+        text = text ?: "",
         arrangement = arrangement ?: Arrangement.Center,
         modifier = margins ?: Modifier
     )
