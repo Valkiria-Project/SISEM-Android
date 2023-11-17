@@ -34,6 +34,7 @@ import com.skgtecnologia.sisem.ui.medicalhistory.camera.CameraScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsScreen
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.DOCUMENT
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.INVENTORY_TYPE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
@@ -49,6 +50,8 @@ import com.skgtecnologia.sisem.ui.report.addreport.AddReportRoleScreen
 import com.skgtecnologia.sisem.ui.report.addreport.AddReportScreen
 import com.skgtecnologia.sisem.ui.report.media.ImagesConfirmationScreen
 import com.skgtecnologia.sisem.ui.report.media.ReportCameraScreen
+import com.skgtecnologia.sisem.ui.signature.init.InitSignatureScreen
+import com.skgtecnologia.sisem.ui.signature.view.SignatureScreen
 import com.skgtecnologia.sisem.ui.stretcherretention.StretcherRetentionScreen
 
 @Composable
@@ -299,9 +302,27 @@ private fun NavGraphBuilder.mainGraph(
         }
 
         composable(
-            route = MainNavigationRoute.SignatureAndFingerprint.route
+            route = MainNavigationRoute.InitSignatureScreen.route
         ) {
-            // FIXME: Finish this work
+            InitSignatureScreen(modifier = modifier) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = MainNavigationRoute.SignatureScreen.route +
+                    "?$DOCUMENT={$DOCUMENT}",
+            arguments = listOf(navArgument(DOCUMENT) { type = NavType.StringType })
+        ) { navBackStackEntry ->
+            val signature = navBackStackEntry.savedStateHandle.get<String>(SIGNATURE)
+            navBackStackEntry.savedStateHandle.remove<String>(SIGNATURE)
+
+            SignatureScreen(
+                modifier = modifier,
+                signature = signature
+            ) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
         }
 
         composable(

@@ -32,7 +32,8 @@ sealed class MainNavigationRoute(override val route: String) : NavigationRoute(r
     data object PreOperationalViewScreen : MainNavigationRoute("pre_operational_view_screen")
     data object PreoperationalMainScreen : MainNavigationRoute("menu_preoperational_menu_screen")
     data object ShiftScreen : MainNavigationRoute("menu_shift_screen")
-    data object SignatureAndFingerprint : MainNavigationRoute("menu_signature_and_fingerprint")
+    data object InitSignatureScreen : MainNavigationRoute("menu_init_signature_screen")
+    data object SignatureScreen : MainNavigationRoute("signature_screen")
     data object StretcherRetentionScreen : MainNavigationRoute("stretcher_retention_screen")
     data object SignaturePadScreen : MainNavigationRoute("signature_pad_screen")
     data object VitalSignsScreen : MainNavigationRoute("vital_signs_screen")
@@ -47,6 +48,7 @@ sealed class ReportNavigationRoute(override val route: String) : NavigationRoute
 }
 
 object NavigationArgument {
+    const val DOCUMENT = "document"
     const val FINDING_ID = "finding_id"
     const val FROM = "from"
     const val INVENTORY_TYPE = "inventory_type"
