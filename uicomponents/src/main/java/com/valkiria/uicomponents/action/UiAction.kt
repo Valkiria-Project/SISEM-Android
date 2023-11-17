@@ -71,7 +71,7 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
 
     data class MediaItemAction(
         override val identifier: String,
-        val mediaAction: MediaAction?
+        val mediaAction: MediaAction
     ) : GenericUiAction(identifier)
 
     data class MedsSelectorAction(
