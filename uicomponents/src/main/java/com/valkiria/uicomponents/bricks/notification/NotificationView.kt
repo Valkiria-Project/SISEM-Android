@@ -168,7 +168,9 @@ fun NotificationView(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_location),
+                                    imageVector = ImageVector.vectorResource(
+                                        id = R.drawable.ic_location
+                                    ),
                                     contentDescription = null,
                                     modifier = Modifier
                                         .padding(start = 48.dp)
@@ -184,7 +186,9 @@ fun NotificationView(
                                 )
 
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_clock_timer),
+                                    imageVector = ImageVector.vectorResource(
+                                        id = R.drawable.ic_clock_timer
+                                    ),
                                     contentDescription = null,
                                     modifier = Modifier
                                         .padding(start = 4.dp)

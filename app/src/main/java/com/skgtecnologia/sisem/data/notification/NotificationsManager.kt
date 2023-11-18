@@ -47,7 +47,6 @@ class NotificationsManager @Inject constructor(private val context: Context) {
         val notificationBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle(notificationData.notificationType.title)
-//            .setContentText(notificationData.body)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setSound(defaultSoundUri)

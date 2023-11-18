@@ -8,7 +8,7 @@ import timber.log.Timber
 @Composable
 fun OnNotificationHandler(
     hasNotification: Boolean,
-    onAction: (action: NotificationAction) -> Unit = {}
+    onAction: (action: NotificationAction) -> Unit
 ) {
     if (hasNotification) {
         NotificationView(uiModel = getAssignedIncidentNotificationUiModel()) {
