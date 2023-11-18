@@ -9,6 +9,8 @@ import com.skgtecnologia.sisem.commons.findingUiModelMock
 import com.skgtecnologia.sisem.commons.inventoryCheckUiModelMock
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.commons.textFieldUiModelMock
+import com.skgtecnologia.sisem.commons.uiAction
+import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.skgtecnologia.sisem.domain.authcards.model.VehicleConfigModel
 import com.skgtecnologia.sisem.domain.changepassword.usecases.GetLoginNavigationModel
@@ -47,6 +49,9 @@ class PreOperationalViewModelTest {
     private lateinit var getPreOperationalScreen: GetPreOperationalScreen
 
     @MockK
+    private lateinit var logoutCurrentUser: LogoutCurrentUser
+
+    @MockK
     private lateinit var observeOperationConfig: ObserveOperationConfig
 
     @MockK
@@ -79,6 +84,7 @@ class PreOperationalViewModelTest {
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
+            logoutCurrentUser,
             observeOperationConfig,
             sendPreOperational
         )
@@ -98,6 +104,7 @@ class PreOperationalViewModelTest {
                 androidIdProvider,
                 getLoginNavigationModel,
                 getPreOperationalScreen,
+                logoutCurrentUser,
                 observeOperationConfig,
                 sendPreOperational
             )
@@ -119,6 +126,7 @@ class PreOperationalViewModelTest {
                 androidIdProvider,
                 getLoginNavigationModel,
                 getPreOperationalScreen,
+                logoutCurrentUser,
                 observeOperationConfig,
                 sendPreOperational
             )
@@ -137,6 +145,7 @@ class PreOperationalViewModelTest {
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
+            logoutCurrentUser,
             observeOperationConfig,
             sendPreOperational
         )
@@ -163,6 +172,7 @@ class PreOperationalViewModelTest {
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
+            logoutCurrentUser,
             observeOperationConfig,
             sendPreOperational
         )
@@ -196,6 +206,7 @@ class PreOperationalViewModelTest {
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
+            logoutCurrentUser,
             observeOperationConfig,
             sendPreOperational
         )
@@ -227,6 +238,7 @@ class PreOperationalViewModelTest {
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
+            logoutCurrentUser,
             observeOperationConfig,
             sendPreOperational
         )
@@ -260,6 +272,7 @@ class PreOperationalViewModelTest {
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
+            logoutCurrentUser,
             observeOperationConfig,
             sendPreOperational
         )
@@ -292,6 +305,7 @@ class PreOperationalViewModelTest {
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
+            logoutCurrentUser,
             observeOperationConfig,
             sendPreOperational
         )
@@ -317,6 +331,7 @@ class PreOperationalViewModelTest {
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
+            logoutCurrentUser,
             observeOperationConfig,
             sendPreOperational
         )
@@ -343,6 +358,7 @@ class PreOperationalViewModelTest {
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
+            logoutCurrentUser,
             observeOperationConfig,
             sendPreOperational
         )
@@ -366,6 +382,7 @@ class PreOperationalViewModelTest {
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
+            logoutCurrentUser,
             observeOperationConfig,
             sendPreOperational
         )
@@ -388,6 +405,7 @@ class PreOperationalViewModelTest {
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
+            logoutCurrentUser,
             observeOperationConfig,
             sendPreOperational
         )
@@ -407,6 +425,7 @@ class PreOperationalViewModelTest {
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
+            logoutCurrentUser,
             observeOperationConfig,
             sendPreOperational
         )
@@ -421,16 +440,17 @@ class PreOperationalViewModelTest {
         val operationModel = mockk<OperationModel>()
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
         coEvery { getPreOperationalScreen.invoke(any()) } returns Result.success(emptyScreenModel)
+        coEvery { logoutCurrentUser.invoke() } returns Result.success("")
 
         viewModel = PreOperationalViewModel(
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
+            logoutCurrentUser,
             observeOperationConfig,
             sendPreOperational
         )
-
-        viewModel.consumeInfoEvent()
+        viewModel.handleEvent(uiAction)
 
         Assert.assertEquals(null, viewModel.uiState.infoEvent)
     }
