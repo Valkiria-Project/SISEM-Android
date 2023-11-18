@@ -6,7 +6,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -15,6 +19,7 @@ import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
+import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.ui.authcards.create.report.FindingsContent
 import com.skgtecnologia.sisem.ui.authcards.create.report.ReportDetailContent
 import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
@@ -26,11 +31,10 @@ import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.bottomsheet.BottomSheetView
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
+import com.valkiria.uicomponents.bricks.notification.OnNotificationHandler
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-@Suppress("LongMethod")
-@androidx.compose.material3.ExperimentalMaterial3Api
 @Composable
 fun AuthCardsScreen(
     modifier: Modifier = Modifier,
@@ -38,6 +42,12 @@ fun AuthCardsScreen(
 ) {
     val viewModel = hiltViewModel<AuthCardsViewModel>()
     val uiState = viewModel.uiState
+
+    var hasNotification by remember { mutableStateOf(false) }
+
+    NotificationEventHandler.subscribeNotificationEvent {
+        hasNotification = true
+    }
 
     val notificationsPermissionState: PermissionState? =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -48,9 +58,6 @@ fun AuthCardsScreen(
 
     val fineLocationPermissionState: PermissionState =
         rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
-
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val scope = rememberCoroutineScope()
 
     LaunchedEffect(notificationsPermissionState?.status) {
         if (notificationsPermissionState?.status?.isGranted == false &&
@@ -67,57 +74,15 @@ fun AuthCardsScreen(
     }
 
     if (arePermissionsGranted(notificationsPermissionState, fineLocationPermissionState)) {
-        ConstraintLayout(
-            modifier = modifier.fillMaxSize()
-        ) {
-            val (header, body) = createRefs()
+        AuthCardsScreenRender(viewModel, modifier, onNavigation)
+    }
 
-            uiState.screenModel?.header?.let {
-                HeaderSection(
-                    headerUiModel = it,
-                    modifier = modifier.constrainAs(header) {
-                        top.linkTo(parent.top)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
-                )
-            }
-
-            BodySection(
-                body = uiState.screenModel?.body,
-                modifier = modifier.constrainAs(body) {
-                    top.linkTo(header.bottom)
-                    bottom.linkTo(parent.bottom)
-                    height = Dimension.fillToConstraints
-                }
-            ) { uiAction ->
-                handleAction(uiAction, viewModel, onNavigation)
-            }
-        }
-
-        uiState.reportDetail?.let {
-            scope.launch { sheetState.show() }
-
-            BottomSheetView(
-                content = { ReportDetailContent(model = uiState.reportDetail) },
-                sheetState = sheetState,
-                scope = scope
-            ) {
-                viewModel.consumeReportBottomSheetEvent()
-            }
-        }
-
-        uiState.chipSection?.let {
-            scope.launch { sheetState.show() }
-
-            BottomSheetView(
-                content = {
-                    FindingsContent(chipSection = uiState.chipSection)
-                },
-                sheetState = sheetState,
-                scope = scope
-            ) {
-                viewModel.consumeFindingsBottomSheetEvent()
+    if (arePermissionsGranted(notificationsPermissionState, fineLocationPermissionState)) {
+        OnNotificationHandler(hasNotification) {
+            hasNotification = false
+            if (it.isDismiss.not()) {
+                // FIXME: Navigate to MapScreen if is type INCIDENT_ASSIGNED
+                Timber.d("Navigate to MapScreen")
             }
         }
     }
@@ -127,6 +92,72 @@ fun AuthCardsScreen(
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)
+}
+
+@Composable
+private fun AuthCardsScreenRender(
+    viewModel: AuthCardsViewModel,
+    modifier: Modifier,
+    onNavigation: (route: AuthNavigationRoute) -> Unit
+) {
+    val uiState = viewModel.uiState
+
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val scope = rememberCoroutineScope()
+
+    ConstraintLayout(
+        modifier = modifier.fillMaxSize()
+    ) {
+        val (header, body) = createRefs()
+
+        uiState.screenModel?.header?.let {
+            HeaderSection(
+                headerUiModel = it,
+                modifier = modifier.constrainAs(header) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+            )
+        }
+
+        BodySection(
+            body = uiState.screenModel?.body,
+            modifier = modifier.constrainAs(body) {
+                top.linkTo(header.bottom)
+                bottom.linkTo(parent.bottom)
+                height = Dimension.fillToConstraints
+            }
+        ) { uiAction ->
+            handleAction(uiAction, viewModel, onNavigation)
+        }
+    }
+
+    uiState.reportDetail?.let {
+        scope.launch { sheetState.show() }
+
+        BottomSheetView(
+            content = { ReportDetailContent(model = uiState.reportDetail) },
+            sheetState = sheetState,
+            scope = scope
+        ) {
+            viewModel.consumeReportBottomSheetEvent()
+        }
+    }
+
+    uiState.chipSection?.let {
+        scope.launch { sheetState.show() }
+
+        BottomSheetView(
+            content = {
+                FindingsContent(chipSection = uiState.chipSection)
+            },
+            sheetState = sheetState,
+            scope = scope
+        ) {
+            viewModel.consumeFindingsBottomSheetEvent()
+        }
+    }
 }
 
 private fun arePermissionsGranted(

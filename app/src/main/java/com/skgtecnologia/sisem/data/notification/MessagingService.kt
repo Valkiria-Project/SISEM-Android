@@ -1,8 +1,9 @@
-package com.skgtecnologia.sisem.data.notifications
+package com.skgtecnologia.sisem.data.notification
 
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.skgtecnologia.sisem.data.notifications.model.NotificationData
+import com.skgtecnologia.sisem.domain.notification.model.NotificationData
+import com.skgtecnologia.sisem.domain.notification.usecases.StoreNotification
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
@@ -13,6 +14,9 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class MessagingService : FirebaseMessagingService() {
+
+    @Inject
+    lateinit var storeNotification: StoreNotification
 
     @Inject
     lateinit var notificationsManager: NotificationsManager
@@ -35,22 +39,15 @@ class MessagingService : FirebaseMessagingService() {
     private fun handlePushNotification(remoteMessage: RemoteMessage) {
         Timber.d("Message data payload: ${remoteMessage.data}")
 
-        notificationsManager.buildNotificationData(remoteMessage.data).also {
+        notificationsManager.buildNotificationData(remoteMessage.data)?.also {
             storeNotification(it)
         }
     }
 
     private fun storeNotification(notificationData: NotificationData) {
         Timber.d("storeNotification with ${notificationData.notificationType.title}")
-        // FIXME: Finish Notifications work
         serviceScope.launch {
-//            storeNotification.invoke(
-//                Notification(
-//                    title = notificationData.title.orEmpty(),
-//                    body = notificationData.body.orEmpty(),
-//                    deepLink = notificationData.deepLink
-//                )
-//            )
+            storeNotification.invoke(notificationData)
         }
     }
 

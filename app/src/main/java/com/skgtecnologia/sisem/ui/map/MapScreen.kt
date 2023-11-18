@@ -27,8 +27,9 @@ fun MapScreen(
     onAction: (NavigationRoute) -> Unit,
     onLogout: () -> Unit
 ) {
-    val viewModel = hiltViewModel<MapViewModel>()
     val context = LocalContext.current
+    val viewModel = hiltViewModel<MapViewModel>()
+
     val drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
     var hasNotification by remember { mutableStateOf(false) }
@@ -59,6 +60,8 @@ fun MapScreen(
             drawerState = drawerState,
             hasNotification = hasNotification,
             modifier = modifier.fillMaxSize()
-        )
+        ) {
+            hasNotification = false
+        }
     }
 }

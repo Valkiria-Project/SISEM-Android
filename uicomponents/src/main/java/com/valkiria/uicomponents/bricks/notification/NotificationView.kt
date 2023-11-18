@@ -1,6 +1,9 @@
 package com.valkiria.uicomponents.bricks.notification
 
 import android.graphics.Color.parseColor
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,10 +17,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DismissValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,17 +39,39 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
+import com.valkiria.uicomponents.action.GenericUiAction.NotificationAction
 import com.valkiria.uicomponents.mocks.getAssignedIncidentNotificationUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
+import kotlinx.coroutines.delay
 import timber.log.Timber
+
+val DismissThreshold = 150.dp
 
 @Suppress("LongMethod", "MagicNumber")
 @Composable
 fun NotificationView(
     uiModel: NotificationUiModel,
-    onAction: (id: String) -> Unit
+    onAction: (notificationAction: NotificationAction) -> Unit
 ) {
+    var show by remember { mutableStateOf(true) }
+    val dismissState = rememberDismissState(
+        confirmValueChange = {
+            if (it == DismissValue.DismissedToStart || it == DismissValue.DismissedToEnd) {
+                show = false
+                true
+            } else false
+        }, positionalThreshold = { DismissThreshold.toPx() }
+    )
+
+    LaunchedEffect(show) {
+        if (!show) {
+            Timber.d("Notification handled")
+            delay(800)
+            onAction(NotificationAction(identifier = uiModel.identifier, isDismiss = true))
+        }
+    }
+
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon, DefType.DRAWABLE
     )
@@ -46,107 +79,130 @@ fun NotificationView(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.onBackground)
+            .background(Color.Transparent)
             .clickable(
                 enabled = false,
-                onClick = { onAction(uiModel.identifier) }
+                onClick = { Timber.d("no-op") }
             ),
         verticalArrangement = Arrangement.Top
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp)
-                .clip(
-                    shape = RoundedCornerShape(
-                        topStart = 20.dp,
-                        topEnd = 20.dp,
-                        bottomEnd = 20.dp,
-                        bottomStart = 20.dp
-                    )
-                )
-                .background(color = Color.Black)
-                .border(
-                    BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
-                    RoundedCornerShape(14)
-                ),
-            contentAlignment = Alignment.TopCenter
+        AnimatedVisibility(
+            show, exit = fadeOut(spring())
         ) {
-            Column(
-                modifier = Modifier.padding(vertical = 12.dp)
-            ) {
-                Row(
-                    modifier = Modifier.padding(horizontal = 20.dp),
-                    horizontalArrangement = Arrangement.SpaceAround,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    iconResourceId?.let {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = it),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .padding(end = 16.dp)
-                                .size(32.dp),
-                            tint = Color(parseColor(uiModel.iconColor))
-                        )
+            SwipeToDismiss(
+                state = dismissState,
+                modifier = Modifier,
+                background = {
+                    Color.Transparent
+                },
+                dismissContent = {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp)
+                            .clip(
+                                shape = RoundedCornerShape(
+                                    topStart = 20.dp,
+                                    topEnd = 20.dp,
+                                    bottomEnd = 20.dp,
+                                    bottomStart = 20.dp
+                                )
+                            )
+                            .background(color = Color.Black)
+                            .border(
+                                BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
+                                RoundedCornerShape(14)
+                            )
+                            .clickable(
+                                onClick = {
+                                    onAction(
+                                        NotificationAction(
+                                            identifier = uiModel.identifier,
+                                            isDismiss = false
+                                        )
+                                    )
+                                }
+                            ),
+                        contentAlignment = Alignment.TopCenter
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(vertical = 12.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 20.dp),
+                                horizontalArrangement = Arrangement.SpaceAround,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                iconResourceId?.let {
+                                    Icon(
+                                        imageVector = ImageVector.vectorResource(id = it),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .padding(end = 16.dp)
+                                            .size(32.dp),
+                                        tint = Color(parseColor(uiModel.iconColor))
+                                    )
+                                }
+                                Text(
+                                    text = uiModel.title,
+                                    modifier = Modifier.weight(1f),
+                                    color = Color.White,
+                                    style = MaterialTheme.typography.headlineMedium
+                                )
+                            }
+
+                            Row(
+                                modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = uiModel.description,
+                                    modifier = Modifier.padding(start = 48.dp),
+                                    color = Color.White,
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                            }
+
+                            Row(
+                                modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_location),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .padding(start = 48.dp)
+                                        .size(32.dp),
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+
+                                Text(
+                                    text = uiModel.location,
+                                    modifier = Modifier.padding(start = 4.dp),
+                                    color = Color.White,
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_clock_timer),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .padding(start = 4.dp)
+                                        .size(32.dp),
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+
+                                Text(
+                                    text = uiModel.time,
+                                    modifier = Modifier.padding(start = 4.dp),
+                                    color = Color.White,
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
+                        }
                     }
-                    Text(
-                        text = uiModel.title,
-                        modifier = Modifier.weight(1f),
-                        color = Color.White,
-                        style = MaterialTheme.typography.headlineMedium
-                    )
                 }
-
-                Row(
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = uiModel.description,
-                        modifier = Modifier.padding(start = 48.dp),
-                        color = Color.White,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_location),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .padding(start = 48.dp)
-                            .size(32.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-
-                    Text(
-                        text = uiModel.location,
-                        modifier = Modifier.padding(start = 4.dp),
-                        color = Color.White,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_clock_timer),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .padding(start = 4.dp)
-                            .size(32.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-
-                    Text(
-                        text = uiModel.time,
-                        modifier = Modifier.padding(start = 4.dp),
-                        color = Color.White,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            }
+            )
         }
     }
 }
