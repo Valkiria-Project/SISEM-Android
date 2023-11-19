@@ -10,6 +10,8 @@ data class MediaActionsUiModel(
     override val identifier: String = "MEDIA_ACTIONS",
     val withinForm: Boolean = false,
     val selectedMediaUris: List<Uri> = listOf(),
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {
 

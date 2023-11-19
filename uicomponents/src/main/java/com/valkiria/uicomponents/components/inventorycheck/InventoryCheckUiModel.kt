@@ -13,6 +13,8 @@ data class InventoryCheckUiModel(
     val received: TextUiModel,
     val items: List<InventoryCheckItemUiModel>,
     val validations: List<ValidationUiModel>,
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {

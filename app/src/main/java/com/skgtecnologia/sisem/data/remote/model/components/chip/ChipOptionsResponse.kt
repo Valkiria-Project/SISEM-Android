@@ -28,7 +28,7 @@ data class ChipOptionsResponse(
         title = title?.mapToUi(),
         items = items?.map { it.mapToUi() } ?: error("ChipOptions items cannot be null"),
         required = required ?: false,
-        visibility = visibility ?: false,
+        visibility = visibility ?: true,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

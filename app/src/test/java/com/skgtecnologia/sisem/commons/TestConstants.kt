@@ -350,6 +350,8 @@ val headerResponseMock = HeaderResponse(
     leftIcon = "ic_algo",
     rightIcon = "ic_algo",
     badgeCount = "badgeCount",
+    visibility = true,
+    required = false,
     modifier = Modifier
 )
 
@@ -361,6 +363,8 @@ val buttonResponseMock = ButtonResponse(
     style = ButtonStyle.LOUD,
     onClick = OnClick.SAVE,
     size = ButtonSize.DEFAULT,
+    visibility = true,
+    required = false,
     arrangement = Arrangement.Start,
     modifier = Modifier
 )
@@ -398,6 +402,8 @@ val chipSelectionResponseMock = ChipSelectionResponse(
     ),
     selected = "selected",
     selectionVisibility = mapOf(),
+    visibility = true,
+    required = false,
     arrangement = Arrangement.Start,
     modifier = Modifier
 )
@@ -408,6 +414,8 @@ val humanBodyResponseMock = HumanBodyResponse(
     wounds = listOf("wounds"),
     burningLevel = listOf("burningLevel"),
     section = "",
+    visibility = true,
+    required = false,
     arrangement = Arrangement.Start,
     modifier = Modifier
 )
@@ -420,6 +428,8 @@ val imageButtonResponseMock = ImageButtonResponse(
     ),
     image = "image",
     selected = false,
+    visibility = true,
+    required = false,
     arrangement = Arrangement.Start,
     modifier = Modifier
 )
@@ -473,6 +483,8 @@ val infoCardResponseMock = InfoCardResponse(
             )
         )
     ),
+    visibility = true,
+    required = false,
     arrangement = Arrangement.Start,
     modifier = Modifier
 )
@@ -495,6 +507,8 @@ val imageButtonSectionResponseMock = ImageButtonSectionResponse(
                     ),
                     image = "image",
                     selected = false,
+                    visibility = true,
+                    required = false,
                     arrangement = Arrangement.Start,
                     modifier = Modifier
                 )
@@ -502,6 +516,8 @@ val imageButtonSectionResponseMock = ImageButtonSectionResponse(
             modifier = Modifier
         )
     ),
+    visibility = true,
+    required = false,
     arrangement = Arrangement.Start,
     modifier = Modifier
 )
@@ -513,6 +529,8 @@ val simpleCardResponseMock = SimpleCardResponse(
         textStyle = TextStyle.BODY_1
     ),
     icon = "icon",
+    visibility = true,
+    required = false,
     arrangement = Arrangement.Start,
     modifier = Modifier
 )
@@ -526,6 +544,8 @@ val footerResponseMock = FooterResponse(
         style = ButtonStyle.LOUD,
         onClick = OnClick.SAVE,
         size = ButtonSize.DEFAULT,
+        visibility = true,
+        required = false,
         arrangement = Arrangement.Start,
         modifier = Modifier
     ),
@@ -537,6 +557,8 @@ val footerResponseMock = FooterResponse(
         style = ButtonStyle.LOUD,
         onClick = OnClick.SAVE,
         size = ButtonSize.DEFAULT,
+        visibility = true,
+        required = false,
         arrangement = Arrangement.Start,
         modifier = Modifier
     )

@@ -12,6 +12,8 @@ data class ChipUiModel(
     val text: String,
     val textStyle: TextStyle,
     val style: ChipStyle,
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {
