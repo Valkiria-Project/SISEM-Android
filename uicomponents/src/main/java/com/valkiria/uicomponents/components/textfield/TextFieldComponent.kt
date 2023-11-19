@@ -56,28 +56,28 @@ fun TextFieldComponent(
         when (uiModel.style) {
             TextFieldStyle.DATE_PICKER -> DatePickerTextFieldView(
                 uiModel = uiModel,
-                validateFields = validateFields
+                validateFields = validateFields || uiModel.realTimeValidation
             ) { id, updatedValue, fieldValidated ->
                 onAction(InputUiModel(id, updatedValue, fieldValidated))
             }
 
             TextFieldStyle.FILLED -> FilledTextFieldView(
                 uiModel = uiModel,
-                validateFields = validateFields
+                validateFields = validateFields || uiModel.realTimeValidation
             ) { id, updatedValue, fieldValidated ->
                 onAction(InputUiModel(id, updatedValue, fieldValidated))
             }
 
             TextFieldStyle.FIXED_DATE -> FixedDateTextFieldView(
                 uiModel = uiModel,
-                validateFields = validateFields
+                validateFields = validateFields || uiModel.realTimeValidation
             ) { id, updatedValue, fieldValidated ->
                 onAction(InputUiModel(id, updatedValue, fieldValidated))
             }
 
             TextFieldStyle.OUTLINED -> OutlinedTextFieldView(
                 uiModel = uiModel,
-                validateFields = validateFields
+                validateFields = validateFields || uiModel.realTimeValidation
             ) { id, updatedValue, fieldValidated ->
                 onAction(InputUiModel(id, updatedValue, fieldValidated))
             }

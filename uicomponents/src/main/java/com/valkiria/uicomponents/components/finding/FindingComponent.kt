@@ -28,7 +28,7 @@ fun FindingComponent(
         }
     } else {
         uiModel.segmentedSwitchUiModel?.let {
-            SegmentedSwitchComponent(uiModel = it) { id, status ->
+            SegmentedSwitchComponent(uiModel = it) { id, status, _ ->
                 onAction(id, status, null)
             }
         }

@@ -15,6 +15,8 @@ data class SimpleCardResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "icon") val icon: String?,
     @Json(name = "title") val title: TextResponse?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
@@ -25,6 +27,8 @@ data class SimpleCardResponse(
         identifier = identifier ?: error("SimpleCard identifier cannot be null"),
         icon = icon ?: error("SimpleCard icon cannot be null"),
         title = title?.mapToUi() ?: error("SimpleCard title cannot be null"),
+        visibility = visibility ?: true,
+        required = required ?: false,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

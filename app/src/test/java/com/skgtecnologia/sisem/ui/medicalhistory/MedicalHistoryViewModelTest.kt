@@ -524,7 +524,8 @@ class MedicalHistoryViewModelTest {
         viewModel.handleSegmentedSwitchAction(
             GenericUiAction.SegmentedSwitchAction(
                 identifier = IDENTIFIER,
-                status = true
+                status = true,
+                viewsVisibility = mapOf()
             )
         )
 

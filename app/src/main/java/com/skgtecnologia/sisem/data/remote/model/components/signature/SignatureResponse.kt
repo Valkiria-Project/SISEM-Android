@@ -16,6 +16,8 @@ data class SignatureResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "label") val signatureLabel: TextResponse?,
     @Json(name = "button") val signatureButton: ButtonResponse?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
@@ -28,6 +30,8 @@ data class SignatureResponse(
             ?: error("Signature signatureLabel cannot be null"),
         signatureButton = signatureButton?.mapToUi()
             ?: error("Signature signatureButton cannot be null"),
+        visibility = visibility ?: true,
+        required = required ?: false,
         modifier = modifier ?: Modifier
     )
 }
