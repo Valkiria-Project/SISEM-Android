@@ -23,7 +23,8 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
     data class ChipSelectionAction(
         override val identifier: String,
         val chipSelectionItemUiModel: ChipSelectionItemUiModel,
-        val status: Boolean
+        val status: Boolean,
+        val viewsVisibility: Map<String, Boolean>
     ) : GenericUiAction(identifier)
 
     data object DismissAction : GenericUiAction(identifier = DISMISS_IDENTIFIER)
@@ -77,9 +78,15 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
         override val identifier: String
     ) : GenericUiAction(identifier)
 
+    data class NotificationAction(
+        override val identifier: String,
+        val isDismiss: Boolean
+    ) : GenericUiAction(identifier)
+
     data class SegmentedSwitchAction(
         override val identifier: String,
-        val status: Boolean
+        val status: Boolean,
+        val viewsVisibility: Map<String, Boolean>
     ) : GenericUiAction(identifier)
 
     data class SignatureAction(

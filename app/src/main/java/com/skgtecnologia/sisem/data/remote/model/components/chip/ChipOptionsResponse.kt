@@ -15,6 +15,8 @@ data class ChipOptionsResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "title") val title: TextResponse?,
     @Json(name = "items") val items: List<ChipOptionResponse>?,
+    @Json(name = "required") val required: Boolean?,
+    @Json(name = "visibility") val visibility: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
@@ -25,6 +27,8 @@ data class ChipOptionsResponse(
         identifier = identifier ?: error("ChipOptions identifier cannot be null"),
         title = title?.mapToUi(),
         items = items?.map { it.mapToUi() } ?: error("ChipOptions items cannot be null"),
+        required = required ?: false,
+        visibility = visibility ?: true,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

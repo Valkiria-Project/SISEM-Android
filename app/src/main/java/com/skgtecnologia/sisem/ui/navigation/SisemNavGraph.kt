@@ -183,11 +183,11 @@ private fun NavGraphBuilder.mainGraph(
     modifier: Modifier
 ) {
     navigation(
-        startDestination = MainNavigationRoute.MainScreen.route,
+        startDestination = MainNavigationRoute.MapScreen.route,
         route = NavigationGraph.Main.route
     ) {
         composable(
-            route = MainNavigationRoute.MainScreen.route
+            route = MainNavigationRoute.MapScreen.route
         ) {
             MapScreen(
                 modifier = modifier,
@@ -226,7 +226,7 @@ private fun NavGraphBuilder.mainGraph(
                 vitalSigns = vitalSigns,
                 medicine = medicine,
                 signature = signature,
-                photoTaken = photoTaken
+                photoTaken = photoTaken == true
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }

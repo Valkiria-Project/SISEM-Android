@@ -11,6 +11,9 @@ data class ChipSelectionUiModel(
     val title: TextUiModel?,
     val items: List<ChipSelectionItemUiModel>,
     val selected: String? = null,
+    val selectionVisibility: Map<String, String>?,
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier
 ) : BodyRowModel {

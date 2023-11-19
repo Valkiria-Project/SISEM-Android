@@ -7,7 +7,7 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -28,7 +28,7 @@ class SplashViewModelTest {
     }
 
     @Test
-    fun `when StartupNavigationModel is Admin and has vehicleCode`() = runTest {
+    fun `when StartupNavigationModel isAdmin and has vehicleCode`() = runTest {
         val startupNavigationModel = StartupNavigationModel(
             isAdmin = true,
             vehicleCode = "123"
@@ -37,14 +37,22 @@ class SplashViewModelTest {
         coEvery { getStartupState.invoke() } returns Result.success(startupNavigationModel)
 
         splashViewModel = SplashViewModel(getStartupState)
+        val stateStartupNavigationModel = splashViewModel.uiState.value.startupNavigationModel
 
-        Assert.assertEquals(
-            startupNavigationModel.isAdmin,
-            splashViewModel.uiState.value.startupNavigationModel?.isAdmin
-        )
-        Assert.assertEquals(
-            startupNavigationModel.vehicleCode,
-            splashViewModel.uiState.value.startupNavigationModel?.vehicleCode
-        )
+        assertEquals(startupNavigationModel.isAdmin, stateStartupNavigationModel?.isAdmin)
+        assertEquals(startupNavigationModel.vehicleCode, stateStartupNavigationModel?.vehicleCode)
+    }
+
+    @Test
+    fun `when getStartupState fails`() = runTest {
+        val startupNavigationModel = StartupNavigationModel()
+
+        coEvery { getStartupState.invoke() } returns Result.failure(Throwable())
+
+        splashViewModel = SplashViewModel(getStartupState)
+        val stateStartupNavigationModel = splashViewModel.uiState.value.startupNavigationModel
+
+        assertEquals(startupNavigationModel.isAdmin, stateStartupNavigationModel?.isAdmin)
+        assertEquals(startupNavigationModel.vehicleCode, stateStartupNavigationModel?.vehicleCode)
     }
 }

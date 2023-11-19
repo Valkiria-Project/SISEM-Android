@@ -19,6 +19,8 @@ data class InventoryCheckResponse(
     @Json(name = "received") val received: TextResponse?,
     @Json(name = "items") val items: List<InventoryCheckItemResponse>?,
     @Json(name = "validations") val validations: List<ValidationResponse>?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
@@ -33,6 +35,8 @@ data class InventoryCheckResponse(
         items = items?.map { it.mapToUi() } ?: error("InventoryCheck items cannot be null"),
         validations = validations?.map { it.mapToUi() }
             ?: error("InventoryCheck validations cannot be null"),
+        visibility = visibility ?: true,
+        required = required ?: false,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

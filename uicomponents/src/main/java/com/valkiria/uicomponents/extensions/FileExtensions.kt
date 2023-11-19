@@ -12,12 +12,12 @@ import android.provider.OpenableColumns
 import android.util.Base64
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.size
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 const val CONTENT_URI_SCHEME = "content"
 const val BITMAP_COMPRESS_QUALITY = 80

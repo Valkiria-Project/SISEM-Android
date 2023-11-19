@@ -20,10 +20,11 @@ data class TextFieldUiModel(
     val validations: List<ValidationUiModel>,
     val realTimeValidation: Boolean = false,
     val maxDate: String? = null,
+    val visibility: Boolean = true,
     val required: Boolean = true,
     val singleLine: Boolean = true,
     val minLines: Int = 1,
-    val value: String = "",
+    val text: String = "",
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {

@@ -15,6 +15,13 @@ class CacheConverters {
                 Types.newParameterizedType(List::class.java, String::class.java)
             )
 
+    private val mapOfStringAdapter: JsonAdapter<Map<String, String>> =
+        Moshi.Builder()
+            .build()
+            .adapter(
+                Types.newParameterizedType(Map::class.java, String::class.java, String::class.java)
+            )
+
     @TypeConverter
     fun stringToList(value: String?): List<String>? {
         return if (value != null) listOfStringAdapter.fromJson(value) else null
@@ -23,6 +30,16 @@ class CacheConverters {
     @TypeConverter
     fun listToString(list: List<String>?): String? {
         return listOfStringAdapter.toJson(list)
+    }
+
+    @TypeConverter
+    fun stringToMap(value: String?): Map<String, String>? {
+        return if (value != null) mapOfStringAdapter.fromJson(value) else null
+    }
+
+    @TypeConverter
+    fun mapToString(list: Map<String, String>?): String? {
+        return mapOfStringAdapter.toJson(list)
     }
 
     @TypeConverter

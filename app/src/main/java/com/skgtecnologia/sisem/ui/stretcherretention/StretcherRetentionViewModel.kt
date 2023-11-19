@@ -47,7 +47,7 @@ class StretcherRetentionViewModel @Inject constructor(
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             getStretcherRetentionScreen.invoke(
                 serial = androidIdProvider.getAndroidId(),
                 incidentCode = "101", // FIXME: review
@@ -80,13 +80,13 @@ class StretcherRetentionViewModel @Inject constructor(
             when (bodyRowModel) {
                 is TextFieldUiModel -> fieldsValues[bodyRowModel.identifier] = InputUiModel(
                     bodyRowModel.identifier,
-                    bodyRowModel.value
+                    bodyRowModel.text
                 )
             }
         }
     }
 
-    fun onNavigationHandled() {
+    fun consumeNavigationEvent() {
         uiState = uiState.copy(
             isLoading = false,
             validateFields = false,
@@ -99,7 +99,7 @@ class StretcherRetentionViewModel @Inject constructor(
 
         uiAction.handleAuthorizationErrorEvent {
             job?.cancel()
-            job = viewModelScope.launch(Dispatchers.IO) {
+            job = viewModelScope.launch {
                 logoutCurrentUser.invoke()
                     .onSuccess {
                         UnauthorizedEventHandler.publishUnauthorizedEvent()
@@ -132,7 +132,7 @@ class StretcherRetentionViewModel @Inject constructor(
             )
 
             job?.cancel()
-            job = viewModelScope.launch(Dispatchers.IO) {
+            job = viewModelScope.launch {
                 saveStretcherRetention.invoke(
                     fieldsValue = fieldsValues.mapValues { it.value.updatedValue },
                     chipSelectionValues = chipSelectionValues.mapValues { it.value.id }

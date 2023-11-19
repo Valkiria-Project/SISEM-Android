@@ -16,6 +16,8 @@ data class TimePickerResponse(
     @Json(name = "title") val title: TextResponse?,
     @Json(name = "hour") val hour: TextResponse?,
     @Json(name = "minute") val minute: TextResponse?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
@@ -27,6 +29,8 @@ data class TimePickerResponse(
         title = title?.mapToUi() ?: error("TimePicker title cannot be null"),
         hour = hour?.mapToUi() ?: error("TimePicker hour cannot be null"),
         minute = minute?.mapToUi() ?: error("TimePicker minute cannot be null"),
+        visibility = visibility ?: true,
+        required = required ?: false,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

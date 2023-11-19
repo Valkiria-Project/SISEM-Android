@@ -17,8 +17,8 @@ android {
         applicationId = "com.skgtecnologia.sisem"
         minSdk = 30
         targetSdk = 34
-        versionCode = 11
-        versionName = "0.7.0"
+        versionCode = 14
+        versionName = "0.9.0"
         setProperty("archivesBaseName", "$applicationId-v$versionName($versionCode)")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -67,7 +67,8 @@ android {
             "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi",
             "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
             "-opt-in=com.google.accompanist.permissions.ExperimentalPermissionsApi",
-            "-opt-in=kotlin.contracts.ExperimentalContracts"
+            "-opt-in=kotlin.contracts.ExperimentalContracts",
+            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
         )
     }
     packaging {

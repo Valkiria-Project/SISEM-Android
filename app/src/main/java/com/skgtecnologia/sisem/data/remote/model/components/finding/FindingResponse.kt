@@ -20,6 +20,8 @@ data class FindingResponse(
     @Json(name = "segmented_value") val segmentedValue: SegmentedValueResponse?,
     @Json(name = "finding_detail") val findingDetail: FindingsDetailResponse?,
     @Json(name = "read_only") val readOnly: Boolean?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
@@ -32,6 +34,8 @@ data class FindingResponse(
         segmentedValueUiModel = segmentedValue?.mapToUi(),
         readOnly = readOnly ?: false,
         findingDetail = findingDetail?.mapToUi(),
+        visibility = visibility ?: true,
+        required = required ?: false,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

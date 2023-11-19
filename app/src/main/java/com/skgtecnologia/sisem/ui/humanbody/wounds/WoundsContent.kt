@@ -49,6 +49,8 @@ fun WoundsContent(
                     ChipOptionUiModel(id = index.toString(), name = text, selected = false)
                 },
                 arrangement = Arrangement.Center,
+                required = false,
+                visibility = true,
                 modifier = Modifier
             )
         ) { _, chipOptionUiModel ->
@@ -66,10 +68,11 @@ fun WoundsContent(
                     items = burningLevel.mapIndexed { index, text ->
                         ChipSelectionItemUiModel(id = index.toString(), name = text)
                     },
+                    selectionVisibility = null,
                     arrangement = Arrangement.Center,
                     modifier = Modifier.padding(top = 16.dp)
                 )
-            ) { _, chipSelectionItemUiModel, _ ->
+            ) { _, chipSelectionItemUiModel, _, _ ->
                 viewModel.updateBurnList(chipSelectionItemUiModel.name)
             }
         }

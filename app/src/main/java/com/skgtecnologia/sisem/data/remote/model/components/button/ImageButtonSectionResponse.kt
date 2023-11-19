@@ -12,6 +12,8 @@ import com.valkiria.uicomponents.components.button.ImageButtonSectionUiModel
 data class ImageButtonSectionResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "options") val options: List<ImageButtonOptionResponse>?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
@@ -22,6 +24,8 @@ data class ImageButtonSectionResponse(
         identifier = identifier ?: error("ImageButtonSection identifier cannot be null"),
         options = options?.map { it.mapToUi() }
             ?: error("ImageButtonSection options cannot be null"),
+        visibility = visibility ?: true,
+        required = required ?: false,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )
