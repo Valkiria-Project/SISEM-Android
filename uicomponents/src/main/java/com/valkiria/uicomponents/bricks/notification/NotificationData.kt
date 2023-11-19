@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.domain.notification.model
+package com.valkiria.uicomponents.bricks.notification
 
 import timber.log.Timber
 
@@ -52,6 +52,8 @@ fun getNotificationDataByType(notificationDataMap: Map<String, String>): Notific
 fun getNotificationRawDataByType(notificationData: NotificationData): Map<String, String> {
     return when (notificationData) {
         is IncidentAssignedNotification -> mapOf(
+            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
+            INCIDENT_NUMBER to notificationData.incidentNumber,
             INCIDENT_NUMBER to notificationData.incidentNumber,
             INCIDENT_TYPE to notificationData.incidentType,
             INCIDENT_PRIORITY to notificationData.incidentPriority,
@@ -62,6 +64,7 @@ fun getNotificationRawDataByType(notificationData: NotificationData): Map<String
         )
 
         is TransmilenioAuthorizationNotification -> mapOf(
+            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
             AUTHORIZATION_NUMBER to notificationData.authorizationNumber,
             AUTHORIZES to notificationData.authorizes
         )

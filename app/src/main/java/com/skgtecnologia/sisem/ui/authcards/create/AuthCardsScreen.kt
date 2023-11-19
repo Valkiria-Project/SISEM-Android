@@ -31,6 +31,7 @@ import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.bottomsheet.BottomSheetView
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
+import com.valkiria.uicomponents.bricks.notification.NotificationData
 import com.valkiria.uicomponents.bricks.notification.OnNotificationHandler
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -43,10 +44,9 @@ fun AuthCardsScreen(
     val viewModel = hiltViewModel<AuthCardsViewModel>()
     val uiState = viewModel.uiState
 
-    var hasNotification by remember { mutableStateOf(false) }
-
+    var notificationData by remember { mutableStateOf<NotificationData?>(null) }
     NotificationEventHandler.subscribeNotificationEvent {
-        hasNotification = true
+        notificationData = it
     }
 
     val notificationsPermissionState: PermissionState? =
@@ -78,8 +78,8 @@ fun AuthCardsScreen(
     }
 
     if (arePermissionsGranted(notificationsPermissionState, fineLocationPermissionState)) {
-        OnNotificationHandler(hasNotification) {
-            hasNotification = false
+        OnNotificationHandler(notificationData) {
+            notificationData = null
             if (it.isDismiss.not()) {
                 // FIXME: Navigate to MapScreen if is type INCIDENT_ASSIGNED
                 Timber.d("Navigate to MapScreen")
@@ -168,7 +168,7 @@ private fun arePermissionsGranted(
         true
     } else {
         notificationsPermissionState.status.isGranted &&
-            fineLocationPermissionState.status.isGranted
+                fineLocationPermissionState.status.isGranted
     }
 }
 

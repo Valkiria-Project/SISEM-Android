@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.domain.notification.usecases
 
 import com.skgtecnologia.sisem.commons.extensions.resultOf
-import com.skgtecnologia.sisem.domain.notification.model.NotificationData
+import com.valkiria.uicomponents.bricks.notification.NotificationData
 import com.skgtecnologia.sisem.domain.notification.repository.NotificationRepository
 import javax.inject.Inject
 

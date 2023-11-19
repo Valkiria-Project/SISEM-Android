@@ -35,6 +35,7 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.action.GenericUiAction.NotificationAction
+import com.valkiria.uicomponents.bricks.notification.NotificationData
 import com.valkiria.uicomponents.bricks.notification.OnNotificationHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -45,7 +46,7 @@ import timber.log.Timber
 fun MapView(
     coordinates: Pair<Double, Double>,
     drawerState: DrawerState,
-    hasNotification: Boolean,
+    notificationData: NotificationData?,
     modifier: Modifier = Modifier,
     onAction: (notificationAction: NotificationAction) -> Unit
 ) {
@@ -109,7 +110,7 @@ fun MapView(
             )
         }
 
-        OnNotificationHandler(hasNotification) {
+        OnNotificationHandler(notificationData) {
             onAction(it)
             if (it.isDismiss.not()) {
                 // FIXME: Navigate to MapScreen if is type INCIDENT_ASSIGNED

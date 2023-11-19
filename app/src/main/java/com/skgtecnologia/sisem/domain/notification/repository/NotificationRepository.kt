@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.domain.notification.repository
 
-import com.skgtecnologia.sisem.domain.notification.model.NotificationData
+import com.valkiria.uicomponents.bricks.notification.NotificationData
 
 interface NotificationRepository {
 

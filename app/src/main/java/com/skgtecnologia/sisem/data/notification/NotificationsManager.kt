@@ -9,9 +9,9 @@ import android.media.RingtoneManager
 import androidx.core.app.NotificationCompat
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
-import com.skgtecnologia.sisem.domain.notification.model.NotificationData
-import com.skgtecnologia.sisem.domain.notification.model.getNotificationDataByType
 import com.skgtecnologia.sisem.ui.MainActivity
+import com.valkiria.uicomponents.bricks.notification.NotificationData
+import com.valkiria.uicomponents.bricks.notification.getNotificationDataByType
 import java.time.Instant
 import javax.inject.Inject
 import timber.log.Timber
@@ -41,7 +41,7 @@ class NotificationsManager @Inject constructor(private val context: Context) {
 
     private fun sendNotification(notificationData: NotificationData, pendingIntent: PendingIntent) {
         Timber.d("sendNotification with ${notificationData.notificationType.title}")
-        NotificationEventHandler.publishNotificationEvent(notificationData.notificationType.title)
+        NotificationEventHandler.publishNotificationEvent(notificationData)
 
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(context, CHANNEL_ID)

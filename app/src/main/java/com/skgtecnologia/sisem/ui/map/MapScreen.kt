@@ -18,6 +18,7 @@ import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.NavigationRoute
 import com.valkiria.uicomponents.bricks.map.MapView
+import com.valkiria.uicomponents.bricks.notification.NotificationData
 import timber.log.Timber
 
 @Suppress("MagicNumber")
@@ -32,10 +33,9 @@ fun MapScreen(
 
     val drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
-    var hasNotification by remember { mutableStateOf(false) }
-
+    var notificationData by remember { mutableStateOf<NotificationData?>(null) }
     NotificationEventHandler.subscribeNotificationEvent {
-        hasNotification = true
+        notificationData = it
     }
 
     BackHandler {
@@ -58,10 +58,10 @@ fun MapScreen(
         MapView(
             coordinates = viewModel.uiState.location,
             drawerState = drawerState,
-            hasNotification = hasNotification,
+            notificationData = notificationData,
             modifier = modifier.fillMaxSize()
         ) {
-            hasNotification = false
+            notificationData = null
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.domain.notification.model
+package com.valkiria.uicomponents.bricks.notification
 
 enum class NotificationType(val title: String) {
     INCIDENT_ASSIGNED("Incidente Asignado"),

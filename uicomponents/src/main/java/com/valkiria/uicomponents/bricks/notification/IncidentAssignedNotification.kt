@@ -1,6 +1,6 @@
-package com.skgtecnologia.sisem.domain.notification.model
+package com.valkiria.uicomponents.bricks.notification
 
-import com.skgtecnologia.sisem.domain.notification.model.NotificationType.INCIDENT_ASSIGNED
+import com.valkiria.uicomponents.bricks.notification.NotificationType.INCIDENT_ASSIGNED
 
 data class IncidentAssignedNotification(
     override val notificationType: NotificationType = INCIDENT_ASSIGNED,

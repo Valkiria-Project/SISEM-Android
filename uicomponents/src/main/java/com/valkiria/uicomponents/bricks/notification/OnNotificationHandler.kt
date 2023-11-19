@@ -7,10 +7,10 @@ import timber.log.Timber
 
 @Composable
 fun OnNotificationHandler(
-    hasNotification: Boolean,
+    notificationData: NotificationData?,
     onAction: (action: NotificationAction) -> Unit
 ) {
-    if (hasNotification) {
+    notificationData?.let {
         NotificationView(uiModel = getAssignedIncidentNotificationUiModel()) {
             Timber.d("Notification action $it")
             onAction(it)
