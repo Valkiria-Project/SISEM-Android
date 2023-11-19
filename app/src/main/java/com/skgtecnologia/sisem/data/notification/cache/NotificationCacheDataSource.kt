@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.data.notification.cache
 
 import com.skgtecnologia.sisem.data.notification.cache.dao.NotificationDao
 import com.skgtecnologia.sisem.data.notification.cache.model.mapToCache
-import com.valkiria.uicomponents.bricks.notification.NotificationData
+import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import javax.inject.Inject
 
 class NotificationCacheDataSource @Inject constructor(

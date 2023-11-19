@@ -21,8 +21,8 @@ import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
-import com.valkiria.uicomponents.bricks.notification.NotificationData
 import com.valkiria.uicomponents.bricks.notification.OnNotificationHandler
+import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import kotlinx.coroutines.launch
 import timber.log.Timber
 

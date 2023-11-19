@@ -2,8 +2,8 @@ package com.skgtecnologia.sisem.data.notification
 
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.valkiria.uicomponents.bricks.notification.NotificationData
 import com.skgtecnologia.sisem.domain.notification.usecases.StoreNotification
+import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope

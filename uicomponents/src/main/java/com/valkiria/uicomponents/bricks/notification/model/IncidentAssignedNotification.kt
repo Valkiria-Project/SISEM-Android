@@ -1,6 +1,6 @@
-package com.valkiria.uicomponents.bricks.notification
+package com.valkiria.uicomponents.bricks.notification.model
 
-import com.valkiria.uicomponents.bricks.notification.NotificationType.INCIDENT_ASSIGNED
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.INCIDENT_ASSIGNED
 
 data class IncidentAssignedNotification(
     override val notificationType: NotificationType = INCIDENT_ASSIGNED,

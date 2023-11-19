@@ -38,17 +38,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.R
+import com.valkiria.uicomponents.R.drawable
 import com.valkiria.uicomponents.action.GenericUiAction.NotificationAction
-import com.valkiria.uicomponents.mocks.getAssignedIncidentNotificationUiModel
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.INCIDENT_ASSIGNED
+import com.valkiria.uicomponents.mocks.getTransmilenioAuthNotificationUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import kotlinx.coroutines.delay
 import timber.log.Timber
 
 val DismissThreshold = 150.dp
+const val DISMISS_DELAY = 800L
+const val ROUNDED_CORNER_SHAPE_PERCENT = 14
 
-@Suppress("LongMethod", "MagicNumber")
 @Composable
 fun NotificationView(
     uiModel: NotificationUiModel,
@@ -67,7 +69,7 @@ fun NotificationView(
     LaunchedEffect(show) {
         if (!show) {
             Timber.d("Notification handled")
-            delay(800)
+            delay(DISMISS_DELAY)
             onAction(NotificationAction(identifier = uiModel.identifier, isDismiss = true))
         }
     }
@@ -96,117 +98,145 @@ fun NotificationView(
                     Color.Transparent
                 },
                 dismissContent = {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(12.dp)
-                            .clip(
-                                shape = RoundedCornerShape(
-                                    topStart = 20.dp,
-                                    topEnd = 20.dp,
-                                    bottomEnd = 20.dp,
-                                    bottomStart = 20.dp
-                                )
-                            )
-                            .background(color = Color.Black)
-                            .border(
-                                BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
-                                RoundedCornerShape(14)
-                            )
-                            .clickable(
-                                onClick = {
-                                    onAction(
-                                        NotificationAction(
-                                            identifier = uiModel.identifier,
-                                            isDismiss = false
-                                        )
-                                    )
-                                }
-                            ),
-                        contentAlignment = Alignment.TopCenter
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(vertical = 12.dp)
-                        ) {
-                            Row(
-                                modifier = Modifier.padding(horizontal = 20.dp),
-                                horizontalArrangement = Arrangement.SpaceAround,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                iconResourceId?.let {
-                                    Icon(
-                                        imageVector = ImageVector.vectorResource(id = it),
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .padding(end = 16.dp)
-                                            .size(32.dp),
-                                        tint = Color(parseColor(uiModel.iconColor))
-                                    )
-                                }
-                                Text(
-                                    text = uiModel.title,
-                                    modifier = Modifier.weight(1f),
-                                    color = Color.White,
-                                    style = MaterialTheme.typography.headlineMedium
-                                )
-                            }
-
-                            Row(
-                                modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    text = uiModel.description,
-                                    modifier = Modifier.padding(start = 48.dp),
-                                    color = Color.White,
-                                    style = MaterialTheme.typography.bodyLarge
-                                )
-                            }
-
-                            Row(
-                                modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(
-                                    imageVector = ImageVector.vectorResource(
-                                        id = R.drawable.ic_location
-                                    ),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .padding(start = 48.dp)
-                                        .size(32.dp),
-                                    tint = MaterialTheme.colorScheme.primary
-                                )
-
-                                Text(
-                                    text = uiModel.location,
-                                    modifier = Modifier.padding(start = 4.dp),
-                                    color = Color.White,
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-
-                                Icon(
-                                    imageVector = ImageVector.vectorResource(
-                                        id = R.drawable.ic_clock_timer
-                                    ),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .padding(start = 4.dp)
-                                        .size(32.dp),
-                                    tint = MaterialTheme.colorScheme.primary
-                                )
-
-                                Text(
-                                    text = uiModel.time,
-                                    modifier = Modifier.padding(start = 4.dp),
-                                    color = Color.White,
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            }
-                        }
-                    }
+                    NotificationViewRender(uiModel, iconResourceId, onAction)
                 }
             )
+        }
+    }
+}
+
+@Suppress("LongMethod")
+@Composable
+private fun NotificationViewRender(
+    uiModel: NotificationUiModel,
+    iconResourceId: Int?,
+    onAction: (notificationAction: NotificationAction) -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(12.dp)
+            .clip(
+                shape = RoundedCornerShape(
+                    topStart = 20.dp,
+                    topEnd = 20.dp,
+                    bottomEnd = 20.dp,
+                    bottomStart = 20.dp
+                )
+            )
+            .background(color = Color.Black)
+            .border(
+                BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
+                RoundedCornerShape(ROUNDED_CORNER_SHAPE_PERCENT)
+            )
+            .clickable(
+                onClick = {
+                    onAction(
+                        NotificationAction(
+                            identifier = uiModel.identifier,
+                            isDismiss = false
+                        )
+                    )
+                }
+            ),
+        contentAlignment = Alignment.TopCenter
+    ) {
+        Column(
+            modifier = Modifier.padding(vertical = 12.dp)
+        ) {
+            Row(
+                modifier = Modifier.padding(horizontal = 20.dp),
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                iconResourceId?.let {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = it),
+                        contentDescription = null,
+                        modifier = if (uiModel.title == INCIDENT_ASSIGNED.title) {
+                            Modifier
+                                .padding(end = 16.dp)
+                                .size(32.dp)
+                        } else {
+                            Modifier
+                                .padding(end = 16.dp)
+                                .size(24.dp)
+                        },
+                        tint = Color(parseColor(uiModel.iconColor))
+                    )
+                }
+                Text(
+                    text = uiModel.title,
+                    modifier = Modifier.weight(1f),
+                    color = Color.White,
+                    style = MaterialTheme.typography.headlineMedium
+                )
+            }
+
+            uiModel.description?.let {
+                Row(
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = uiModel.description,
+                        modifier = Modifier.padding(start = 48.dp),
+                        color = Color.White,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+            }
+
+            uiModel.contentLeft?.let {
+                Row(
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (uiModel.title == INCIDENT_ASSIGNED.title) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(
+                                id = drawable.ic_location
+                            ),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(start = 48.dp)
+                                .size(32.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+
+                    Text(
+                        text = uiModel.contentLeft,
+                        modifier = if (uiModel.title == INCIDENT_ASSIGNED.title) {
+                            Modifier.padding(start = 4.dp)
+                        } else {
+                            Modifier.padding(start = 48.dp)
+                        },
+                        color = Color.White,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+
+                    if (uiModel.title == INCIDENT_ASSIGNED.title && uiModel.contentRight != null) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(
+                                id = drawable.ic_clock_timer
+                            ),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(start = 4.dp)
+                                .size(32.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+
+                        Text(
+                            text = uiModel.contentRight,
+                            modifier = Modifier.padding(start = 4.dp),
+                            color = Color.White,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -215,7 +245,7 @@ fun NotificationView(
 @Composable
 fun NotificationViewPreview() {
     NotificationView(
-        uiModel = getAssignedIncidentNotificationUiModel(),
+        uiModel = getTransmilenioAuthNotificationUiModel(),
         onAction = { identifier -> Timber.d("Closed $identifier") }
     )
 }

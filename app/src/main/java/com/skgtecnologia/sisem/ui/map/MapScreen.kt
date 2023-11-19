@@ -18,7 +18,7 @@ import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.NavigationRoute
 import com.valkiria.uicomponents.bricks.map.MapView
-import com.valkiria.uicomponents.bricks.notification.NotificationData
+import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import timber.log.Timber
 
 @Suppress("MagicNumber")

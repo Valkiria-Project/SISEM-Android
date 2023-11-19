@@ -1,5 +1,9 @@
-package com.valkiria.uicomponents.bricks.notification
+package com.valkiria.uicomponents.bricks.notification.model
 
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.INCIDENT_ASSIGNED
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.NO_PRE_OPERATIONAL_GENERATED_CRUE
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_AUTHORIZATION
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_DENIED
 import timber.log.Timber
 
 // NOTIFICATION_TYPE
@@ -29,7 +33,7 @@ fun getNotificationDataByType(notificationDataMap: Map<String, String>): Notific
     Timber.d("notificationType ${notificationType?.title}")
 
     return when (notificationType) {
-        NotificationType.INCIDENT_ASSIGNED -> IncidentAssignedNotification(
+        INCIDENT_ASSIGNED -> IncidentAssignedNotification(
             incidentNumber = notificationDataMap[INCIDENT_NUMBER].orEmpty(),
             incidentType = notificationDataMap[INCIDENT_TYPE].orEmpty(),
             incidentPriority = notificationDataMap[INCIDENT_PRIORITY].orEmpty(),
@@ -39,11 +43,14 @@ fun getNotificationDataByType(notificationDataMap: Map<String, String>): Notific
             geolocation = notificationDataMap[GEOLOCATION].orEmpty()
         )
 
-
-        NotificationType.TRANSMILENIO_AUTHORIZATION -> TransmilenioAuthorizationNotification(
+        TRANSMILENIO_AUTHORIZATION -> TransmilenioAuthorizationNotification(
             authorizationNumber = notificationDataMap[AUTHORIZATION_NUMBER].orEmpty(),
             authorizes = notificationDataMap[AUTHORIZES].orEmpty()
         )
+
+        TRANSMILENIO_DENIED -> TransmilenioDeniedNotification()
+
+        NO_PRE_OPERATIONAL_GENERATED_CRUE -> NoPreOperationalGeneratedCrueNotification()
 
         else -> null
     }
@@ -67,6 +74,14 @@ fun getNotificationRawDataByType(notificationData: NotificationData): Map<String
             NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
             AUTHORIZATION_NUMBER to notificationData.authorizationNumber,
             AUTHORIZES to notificationData.authorizes
+        )
+
+        is TransmilenioDeniedNotification -> mapOf(
+            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name
+        )
+
+        is NoPreOperationalGeneratedCrueNotification -> mapOf(
+            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name
         )
     }
 }

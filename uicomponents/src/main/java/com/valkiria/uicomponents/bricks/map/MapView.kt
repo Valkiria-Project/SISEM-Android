@@ -35,8 +35,8 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.action.GenericUiAction.NotificationAction
-import com.valkiria.uicomponents.bricks.notification.NotificationData
 import com.valkiria.uicomponents.bricks.notification.OnNotificationHandler
+import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber

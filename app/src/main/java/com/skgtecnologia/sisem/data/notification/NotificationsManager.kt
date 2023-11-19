@@ -10,8 +10,8 @@ import androidx.core.app.NotificationCompat
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.ui.MainActivity
-import com.valkiria.uicomponents.bricks.notification.NotificationData
-import com.valkiria.uicomponents.bricks.notification.getNotificationDataByType
+import com.valkiria.uicomponents.bricks.notification.model.NotificationData
+import com.valkiria.uicomponents.bricks.notification.model.getNotificationDataByType
 import java.time.Instant
 import javax.inject.Inject
 import timber.log.Timber

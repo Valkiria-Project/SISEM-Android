@@ -4,10 +4,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.valkiria.uicomponents.bricks.notification.NotificationData
-import com.valkiria.uicomponents.bricks.notification.NotificationType
-import com.valkiria.uicomponents.bricks.notification.getNotificationDataByType
-import com.valkiria.uicomponents.bricks.notification.getNotificationRawDataByType
+import com.valkiria.uicomponents.bricks.notification.model.NotificationData
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType
+import com.valkiria.uicomponents.bricks.notification.model.getNotificationDataByType
+import com.valkiria.uicomponents.bricks.notification.model.getNotificationRawDataByType
 
 @Entity(
     tableName = "notification",
