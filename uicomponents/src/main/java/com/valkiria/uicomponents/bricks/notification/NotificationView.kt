@@ -31,7 +31,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -49,7 +48,6 @@ import timber.log.Timber
 
 val DismissThreshold = 150.dp
 const val DISMISS_DELAY = 800L
-const val ROUNDED_CORNER_SHAPE_PERCENT = 14
 
 @Composable
 fun NotificationView(
@@ -116,18 +114,10 @@ private fun NotificationViewRender(
         modifier = Modifier
             .fillMaxWidth()
             .padding(12.dp)
-            .clip(
-                shape = RoundedCornerShape(
-                    topStart = 20.dp,
-                    topEnd = 20.dp,
-                    bottomEnd = 20.dp,
-                    bottomStart = 20.dp
-                )
-            )
-            .background(color = Color.Black)
+            .background(color = Color.Black, shape = RoundedCornerShape(20.dp))
             .border(
                 BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
-                RoundedCornerShape(ROUNDED_CORNER_SHAPE_PERCENT)
+                RoundedCornerShape(20.dp)
             )
             .clickable(
                 onClick = {
@@ -248,8 +238,10 @@ private fun NotificationViewRender(
 @Preview(showBackground = true)
 @Composable
 fun NotificationViewPreview() {
-    NotificationView(
-        uiModel = getTransmilenioAuthNotificationUiModel(),
-        onAction = { identifier -> Timber.d("Closed $identifier") }
-    )
+    Column(modifier = Modifier.background(Color.White)) {
+        NotificationView(
+            uiModel = getTransmilenioAuthNotificationUiModel(),
+            onAction = { identifier -> Timber.d("Closed $identifier") }
+        )
+    }
 }
