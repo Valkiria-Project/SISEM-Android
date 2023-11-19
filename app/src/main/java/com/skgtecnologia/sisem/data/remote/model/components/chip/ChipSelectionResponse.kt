@@ -17,6 +17,8 @@ data class ChipSelectionResponse(
     @Json(name = "items") val items: List<ChipSelectionItemResponse>?,
     @Json(name = "selected") val selected: String?,
     @Json(name = "selection_visibility") val selectionVisibility: Map<String, String>?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
@@ -29,6 +31,8 @@ data class ChipSelectionResponse(
         items = items?.map { it.mapToUi() } ?: error("ChipSelection items cannot be null"),
         selected = selected,
         selectionVisibility = selectionVisibility,
+        visibility = visibility ?: true,
+        required = required ?: false,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

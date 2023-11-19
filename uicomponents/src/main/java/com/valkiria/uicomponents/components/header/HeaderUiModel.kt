@@ -13,6 +13,8 @@ data class HeaderUiModel(
     val leftIcon: String? = null,
     val rightIcon: String? = null,
     val badgeCount: String? = null,
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val arrangement: Arrangement.Horizontal = Arrangement.Center,
     val modifier: Modifier
 ) : BodyRowModel {

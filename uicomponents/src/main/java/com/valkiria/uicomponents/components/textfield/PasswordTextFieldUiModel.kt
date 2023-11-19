@@ -15,6 +15,8 @@ data class PasswordTextFieldUiModel(
     val keyboardOptions: KeyboardOptions,
     val textStyle: TextStyle,
     val validations: List<ValidationUiModel>,
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {

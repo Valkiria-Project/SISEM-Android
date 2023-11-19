@@ -16,6 +16,8 @@ data class CrewMemberSignatureResponse(
     @Json(name = "name") val name: TextResponse?,
     @Json(name = "identification") val identification: TextResponse?,
     @Json(name = "signature") val signature: String?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
@@ -28,6 +30,8 @@ data class CrewMemberSignatureResponse(
         identification = identification?.mapToUi()
             ?: error("Signature identification cannot be null"),
         signature = signature ?: error("Signature signature cannot be null"),
+        visibility = visibility ?: true,
+        required = required ?: false,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

@@ -16,6 +16,8 @@ data class ImageButtonResponse(
     @Json(name = "title") val title: TextResponse?,
     @Json(name = "image") val image: String?,
     @Json(name = "selected") val selected: Boolean?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
@@ -27,6 +29,8 @@ data class ImageButtonResponse(
         title = title?.mapToUi(),
         image = image ?: error("ImageButton image cannot be null"),
         selected = selected ?: false,
+        visibility = visibility ?: true,
+        required = required ?: false,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )
