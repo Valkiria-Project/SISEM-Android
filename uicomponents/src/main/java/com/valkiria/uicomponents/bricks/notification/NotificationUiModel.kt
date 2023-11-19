@@ -1,9 +1,11 @@
 package com.valkiria.uicomponents.bricks.notification
 
 import com.valkiria.uicomponents.bricks.notification.model.IncidentAssignedNotification
+import com.valkiria.uicomponents.bricks.notification.model.IpsPatientTransferredNotification
 import com.valkiria.uicomponents.bricks.notification.model.NoPreOperationalGeneratedCrueNotification
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.INCIDENT_ASSIGNED
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.IPS_PATIENT_TRANSFERRED
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.NO_PRE_OPERATIONAL_GENERATED_CRUE
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.SUPPORT_REQUEST_ON_THE_WAY
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_AUTHORIZATION
@@ -60,6 +62,14 @@ fun NotificationData.mapToUi(): NotificationUiModel {
             iconColor = SUPPORT_REQUEST_ON_THE_WAY.iconColor,
             title = SUPPORT_REQUEST_ON_THE_WAY.title,
             description = this.resourceTypeCode
+        )
+
+        is IpsPatientTransferredNotification -> NotificationUiModel(
+            icon = IPS_PATIENT_TRANSFERRED.icon,
+            iconColor = IPS_PATIENT_TRANSFERRED.iconColor,
+            title = IPS_PATIENT_TRANSFERRED.title,
+            description = this.headquartersName,
+            contentLeft = this.headquartersAddress
         )
     }
 }

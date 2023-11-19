@@ -35,9 +35,9 @@ enum class NotificationType(
         iconColor = "#42A4FA"
     ),
     IPS_PATIENT_TRANSFERRED(
-        title = "No se ha generado preoperacional para reportar al CRUE",
-        icon = "ic_check",
-        iconColor = "#F55757"
+        title = "Paciente traslado a IPS",
+        icon = "ic_user_2",
+        iconColor = "#42A4FA"
     ),
     STRETCHER_RETENTION_ENABLE(
         title = "No se ha generado preoperacional para reportar al CRUE",

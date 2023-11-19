@@ -1,6 +1,7 @@
 package com.valkiria.uicomponents.bricks.notification.model
 
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.INCIDENT_ASSIGNED
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.IPS_PATIENT_TRANSFERRED
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.NO_PRE_OPERATIONAL_GENERATED_CRUE
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.SUPPORT_REQUEST_ON_THE_WAY
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_AUTHORIZATION
@@ -25,6 +26,11 @@ private const val AUTHORIZES = "authorizes"
 
 // SUPPORT_REQUEST_ON_THE_WAY
 private const val RESOURCE_TYPE_AND_CODE = "resource_type_and_code"
+
+// IPS_PATIENT_TRANSFERRED
+private const val HEADQUARTERS_NAME = "headquarters_name"
+private const val HEADQUARTERS_ADDRESS = "headquarters_address"
+
 
 sealed interface NotificationData {
     val notificationType: NotificationType
@@ -58,6 +64,11 @@ fun getNotificationDataByType(notificationDataMap: Map<String, String>): Notific
 
         SUPPORT_REQUEST_ON_THE_WAY -> SupportRequestNotification(
             resourceTypeCode = notificationDataMap[RESOURCE_TYPE_AND_CODE].orEmpty()
+        )
+
+        IPS_PATIENT_TRANSFERRED -> IpsPatientTransferredNotification(
+            headquartersName = notificationDataMap[HEADQUARTERS_NAME].orEmpty(),
+            headquartersAddress = notificationDataMap[HEADQUARTERS_ADDRESS].orEmpty()
         )
 
         else -> null
@@ -95,6 +106,12 @@ fun getNotificationRawDataByType(notificationData: NotificationData): Map<String
         is SupportRequestNotification -> mapOf(
             NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
             RESOURCE_TYPE_AND_CODE to notificationData.resourceTypeCode
+        )
+
+        is IpsPatientTransferredNotification -> mapOf(
+            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
+            HEADQUARTERS_NAME to notificationData.headquartersName,
+            HEADQUARTERS_ADDRESS to notificationData.headquartersAddress
         )
     }
 }
