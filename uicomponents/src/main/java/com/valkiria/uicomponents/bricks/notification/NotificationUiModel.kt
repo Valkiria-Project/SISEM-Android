@@ -7,9 +7,11 @@ import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.INCIDENT_ASSIGNED
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.IPS_PATIENT_TRANSFERRED
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.NO_PRE_OPERATIONAL_GENERATED_CRUE
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.STRETCHER_RETENTION_ENABLE
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.SUPPORT_REQUEST_ON_THE_WAY
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_AUTHORIZATION
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_DENIED
+import com.valkiria.uicomponents.bricks.notification.model.StretcherRetentionEnableNotification
 import com.valkiria.uicomponents.bricks.notification.model.SupportRequestNotification
 import com.valkiria.uicomponents.bricks.notification.model.TransmilenioAuthorizationNotification
 import com.valkiria.uicomponents.bricks.notification.model.TransmilenioDeniedNotification
@@ -70,6 +72,12 @@ fun NotificationData.mapToUi(): NotificationUiModel {
             title = IPS_PATIENT_TRANSFERRED.title,
             description = this.headquartersName,
             contentLeft = this.headquartersAddress
+        )
+
+        is StretcherRetentionEnableNotification -> NotificationUiModel(
+            icon = STRETCHER_RETENTION_ENABLE.icon,
+            iconColor = STRETCHER_RETENTION_ENABLE.iconColor,
+            title = STRETCHER_RETENTION_ENABLE.title
         )
     }
 }

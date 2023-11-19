@@ -40,14 +40,14 @@ enum class NotificationType(
         iconColor = "#42A4FA"
     ),
     STRETCHER_RETENTION_ENABLE(
-        title = "No se ha generado preoperacional para reportar al CRUE",
-        icon = "ic_check",
-        iconColor = "#F55757"
+        title = "Retención de camilla habilitada",
+        icon = "ic_stretcher",
+        iconColor = "#42A4FA"
     ),
     CLOSING_OF_APH(
         title = "No se ha generado preoperacional para reportar al CRUE",
         icon = "ic_check",
-        iconColor = "#F55757"
+        iconColor = "#42A4FA"
     );
 
     companion object {

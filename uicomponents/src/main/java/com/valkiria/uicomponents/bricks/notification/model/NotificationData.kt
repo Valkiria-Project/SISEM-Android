@@ -3,6 +3,7 @@ package com.valkiria.uicomponents.bricks.notification.model
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.INCIDENT_ASSIGNED
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.IPS_PATIENT_TRANSFERRED
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.NO_PRE_OPERATIONAL_GENERATED_CRUE
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.STRETCHER_RETENTION_ENABLE
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.SUPPORT_REQUEST_ON_THE_WAY
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_AUTHORIZATION
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_DENIED
@@ -71,6 +72,8 @@ fun getNotificationDataByType(notificationDataMap: Map<String, String>): Notific
             headquartersAddress = notificationDataMap[HEADQUARTERS_ADDRESS].orEmpty()
         )
 
+        STRETCHER_RETENTION_ENABLE -> StretcherRetentionEnableNotification()
+
         else -> null
     }
 }
@@ -112,6 +115,10 @@ fun getNotificationRawDataByType(notificationData: NotificationData): Map<String
             NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
             HEADQUARTERS_NAME to notificationData.headquartersName,
             HEADQUARTERS_ADDRESS to notificationData.headquartersAddress
+        )
+
+        is StretcherRetentionEnableNotification -> mapOf(
+            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name
         )
     }
 }
