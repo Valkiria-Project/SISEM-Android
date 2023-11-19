@@ -141,6 +141,7 @@ private fun IncidentPart3() {
     }
 }
 
+@Suppress("MagicNumber")
 @Composable
 private fun IncidentPart4() {
     Column(
@@ -179,7 +180,7 @@ private fun IncidentPart4() {
             )
         }
 
-        for (i in 0..3) {
+        repeat (3) {
             IncidentPart4Item()
         }
     }
@@ -210,6 +211,7 @@ private fun IncidentPart4Item() {
     }
 }
 
+@Suppress("LongMethod", "MagicNumber")
 @Composable
 private fun TransmilenioLane() {
     Box(

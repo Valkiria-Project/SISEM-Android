@@ -25,6 +25,7 @@ import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.toTextStyle
 
+@Suppress("LongMethod")
 @Composable
 fun NotificationContent() {
     val shape = RoundedCornerShape(
