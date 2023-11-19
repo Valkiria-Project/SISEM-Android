@@ -340,7 +340,9 @@ private fun IncidentPart5_1() {
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
-        Button(onClick = { /*TODO*/ }) {
+        Button(
+            onClick = { /*TODO*/ }
+        ) {
             Icon(
                 modifier = Modifier.padding(end = 6.dp),
                 painter = painterResource(id = R.drawable.ic_hceud),
@@ -353,7 +355,9 @@ private fun IncidentPart5_1() {
             )
         }
 
-        Button(onClick = { /*TODO*/ }) {
+        Button(
+            onClick = { /*TODO*/ }
+        ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_email),
                 contentDescription = null

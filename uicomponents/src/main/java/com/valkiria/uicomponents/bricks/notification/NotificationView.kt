@@ -213,7 +213,7 @@ private fun NotificationViewRender(
                     if (uiModel.title == INCIDENT_ASSIGNED.title && uiModel.contentRight != null) {
                         Icon(
                             imageVector = ImageVector.vectorResource(
-                                id = drawable.ic_clock_timer
+                                id = drawable.ic_chronometer
                             ),
                             contentDescription = null,
                             modifier = Modifier
