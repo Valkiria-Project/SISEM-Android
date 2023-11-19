@@ -14,6 +14,10 @@ private const val ADDRESS = "address"
 private const val HOUR = "hour"
 private const val GEOLOCATION = "geolocation"
 
+// TRANSMILENIO_AUTHORIZATION
+private const val AUTHORIZATION_NUMBER = "authorization_number"
+private const val AUTHORIZES = "authorizes"
+
 sealed interface NotificationData {
     val notificationType: NotificationType
 }
@@ -25,17 +29,21 @@ fun getNotificationDataByType(notificationDataMap: Map<String, String>): Notific
     Timber.d("notificationType ${notificationType?.title}")
 
     return when (notificationType) {
-        NotificationType.INCIDENT_ASSIGNED -> {
-            IncidentAssignedNotification(
-                incidentNumber = notificationDataMap[INCIDENT_NUMBER].orEmpty(),
-                incidentType = notificationDataMap[INCIDENT_TYPE].orEmpty(),
-                incidentPriority = notificationDataMap[INCIDENT_PRIORITY].orEmpty(),
-                incidentDate = notificationDataMap[INCIDENT_DATE].orEmpty(),
-                address = notificationDataMap[ADDRESS].orEmpty(),
-                hour = notificationDataMap[HOUR].orEmpty(),
-                geolocation = notificationDataMap[GEOLOCATION].orEmpty()
-            )
-        }
+        NotificationType.INCIDENT_ASSIGNED -> IncidentAssignedNotification(
+            incidentNumber = notificationDataMap[INCIDENT_NUMBER].orEmpty(),
+            incidentType = notificationDataMap[INCIDENT_TYPE].orEmpty(),
+            incidentPriority = notificationDataMap[INCIDENT_PRIORITY].orEmpty(),
+            incidentDate = notificationDataMap[INCIDENT_DATE].orEmpty(),
+            address = notificationDataMap[ADDRESS].orEmpty(),
+            hour = notificationDataMap[HOUR].orEmpty(),
+            geolocation = notificationDataMap[GEOLOCATION].orEmpty()
+        )
+
+
+        NotificationType.TRANSMILENIO_AUTHORIZATION -> TransmilenioAuthorizationNotification(
+            authorizationNumber = notificationDataMap[AUTHORIZATION_NUMBER].orEmpty(),
+            authorizes = notificationDataMap[AUTHORIZES].orEmpty()
+        )
 
         else -> null
     }
@@ -43,16 +51,19 @@ fun getNotificationDataByType(notificationDataMap: Map<String, String>): Notific
 
 fun getNotificationRawDataByType(notificationData: NotificationData): Map<String, String> {
     return when (notificationData) {
-        is IncidentAssignedNotification -> {
-            mapOf(
-                INCIDENT_NUMBER to notificationData.incidentNumber,
-                INCIDENT_TYPE to notificationData.incidentType,
-                INCIDENT_PRIORITY to notificationData.incidentPriority,
-                INCIDENT_DATE to notificationData.incidentDate,
-                ADDRESS to notificationData.address,
-                HOUR to notificationData.hour,
-                GEOLOCATION to notificationData.geolocation
-            )
-        }
+        is IncidentAssignedNotification -> mapOf(
+            INCIDENT_NUMBER to notificationData.incidentNumber,
+            INCIDENT_TYPE to notificationData.incidentType,
+            INCIDENT_PRIORITY to notificationData.incidentPriority,
+            INCIDENT_DATE to notificationData.incidentDate,
+            ADDRESS to notificationData.address,
+            HOUR to notificationData.hour,
+            GEOLOCATION to notificationData.geolocation
+        )
+
+        is TransmilenioAuthorizationNotification -> mapOf(
+            AUTHORIZATION_NUMBER to notificationData.authorizationNumber,
+            AUTHORIZES to notificationData.authorizes
+        )
     }
 }
