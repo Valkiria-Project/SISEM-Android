@@ -16,6 +16,9 @@ data class SegmentedSwitchResponse(
     @Json(name = "text_style") val textStyle: TextStyle?,
     @Json(name = "options") val options: List<OptionResponse>?,
     @Json(name = "selected") val selected: Boolean?,
+    @Json(name = "selection_visibility") val selectionVisibility: Map<String, String>?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
@@ -27,6 +30,10 @@ data class SegmentedSwitchResponse(
         text = text ?: error("SegmentedSwitch text cannot be null"),
         textStyle = textStyle ?: error("SegmentedSwitch textStyle cannot be null"),
         options = options?.map { it.mapToUi() } ?: error("SegmentedSwitch options cannot be null"),
+        selected = selected ?: true,
+        selectionVisibility = selectionVisibility,
+        visibility = visibility ?: true,
+        required = required ?: false,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

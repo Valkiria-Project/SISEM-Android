@@ -15,6 +15,8 @@ data class DetailedInfoListResponse(
     @Json(name = "details") val details: List<DetailedInfoResponse>?,
     @Json(name = "label_text_style") val labelTextStyle: TextStyle?,
     @Json(name = "text_text_style") val textTextStyle: TextStyle?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
@@ -29,6 +31,8 @@ data class DetailedInfoListResponse(
             ?: error("Detailed info list labelTextStyle cannot be null"),
         textTextStyle = textTextStyle
             ?: error("Detailed info list textTextStyle cannot be null"),
+        visibility = visibility ?: true,
+        required = required ?: false,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

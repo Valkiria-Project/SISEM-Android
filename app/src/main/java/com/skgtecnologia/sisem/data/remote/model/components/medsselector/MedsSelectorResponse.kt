@@ -17,6 +17,8 @@ data class MedsSelectorResponse(
     @Json(name = "button") val button: ButtonResponse?,
     @Json(name = "medicines") val medicines: List<InfoCardResponse>?,
     @Json(name = "section") val section: String?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
@@ -28,6 +30,8 @@ data class MedsSelectorResponse(
         button = button?.mapToUi() ?: error("MedsSelector button cannot be null"),
         medicines = medicines?.map { it.mapToUi() } ?: emptyList(),
         section = section,
+        visibility = visibility ?: true,
+        required = required ?: false,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

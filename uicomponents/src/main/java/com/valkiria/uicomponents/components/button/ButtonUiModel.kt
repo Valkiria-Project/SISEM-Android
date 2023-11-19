@@ -16,6 +16,8 @@ data class ButtonUiModel(
     val overrideColor: Color? = null,
     val onClick: OnClick,
     val size: ButtonSize,
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier
 ) : BodyRowModel {

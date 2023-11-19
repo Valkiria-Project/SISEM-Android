@@ -12,6 +12,9 @@ data class SegmentedSwitchUiModel(
     val textStyle: TextStyle,
     val options: List<OptionUiModel>,
     val selected: Boolean = true,
+    val selectionVisibility: Map<String, String>? = null,
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {

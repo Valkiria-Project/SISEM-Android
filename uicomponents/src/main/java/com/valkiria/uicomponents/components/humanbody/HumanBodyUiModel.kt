@@ -11,6 +11,8 @@ data class HumanBodyUiModel(
     val header: HeaderUiModel,
     val wounds: List<String>,
     val burningLevel: List<String>,
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val section: String?,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier

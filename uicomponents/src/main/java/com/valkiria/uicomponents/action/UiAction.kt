@@ -85,7 +85,8 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
 
     data class SegmentedSwitchAction(
         override val identifier: String,
-        val status: Boolean
+        val status: Boolean,
+        val viewsVisibility: Map<String, Boolean>
     ) : GenericUiAction(identifier)
 
     data class SignatureAction(

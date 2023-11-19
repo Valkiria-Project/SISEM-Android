@@ -10,6 +10,8 @@ data class RichLabelUiModel(
     override val identifier: String,
     val text: String,
     val textStyle: TextStyle,
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {

@@ -17,6 +17,8 @@ data class ChipResponse(
     @Json(name = "text") val text: String?,
     @Json(name = "text_style") val textStyle: TextStyle?,
     @Json(name = "style") val style: ChipStyle?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
@@ -29,6 +31,8 @@ data class ChipResponse(
         text = text ?: error("Chip text cannot be null"),
         textStyle = textStyle ?: error("Chip textStyle cannot be null"),
         style = style ?: error("Chip style cannot be null"),
+        visibility = visibility ?: true,
+        required = required ?: false,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

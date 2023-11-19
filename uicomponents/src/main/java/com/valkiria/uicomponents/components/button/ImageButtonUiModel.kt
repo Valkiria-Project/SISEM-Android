@@ -11,6 +11,8 @@ data class ImageButtonUiModel(
     val title: TextUiModel?,
     val image: String,
     val selected: Boolean,
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier
 ) : BodyRowModel {

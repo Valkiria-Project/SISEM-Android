@@ -9,6 +9,8 @@ data class ImageButtonSectionUiModel(
     override val identifier: String,
     val options: List<ImageButtonOptionUiModel>,
     val selected: String? = null,
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier
 ) : BodyRowModel {

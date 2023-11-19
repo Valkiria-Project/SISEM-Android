@@ -10,6 +10,8 @@ data class SimpleCardUiModel(
     override val identifier: String,
     val icon: String,
     val title: TextUiModel,
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier
 ) : BodyRowModel {
