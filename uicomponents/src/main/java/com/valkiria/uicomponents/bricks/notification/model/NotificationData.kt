@@ -1,5 +1,6 @@
 package com.valkiria.uicomponents.bricks.notification.model
 
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.CLOSING_OF_APH
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.INCIDENT_ASSIGNED
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.IPS_PATIENT_TRANSFERRED
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.NO_PRE_OPERATIONAL_GENERATED_CRUE
@@ -32,6 +33,9 @@ private const val RESOURCE_TYPE_AND_CODE = "resource_type_and_code"
 private const val HEADQUARTERS_NAME = "headquarters_name"
 private const val HEADQUARTERS_ADDRESS = "headquarters_address"
 
+// CLOSING_OF_APH
+private const val CONSECUTIVE_NUMBER = "consecutive_number"
+private const val UPDATE_TIME_OBSERVATIONS = "update_time_observations_and_attachments"
 
 sealed interface NotificationData {
     val notificationType: NotificationType
@@ -73,6 +77,12 @@ fun getNotificationDataByType(notificationDataMap: Map<String, String>): Notific
         )
 
         STRETCHER_RETENTION_ENABLE -> StretcherRetentionEnableNotification()
+
+        CLOSING_OF_APH -> ClosingAPHNotification(
+            consecutiveNumber = notificationDataMap[CONSECUTIVE_NUMBER].orEmpty(),
+            updateTimeObservationsAttachments = notificationDataMap[UPDATE_TIME_OBSERVATIONS]
+                .orEmpty()
+        )
 
         else -> null
     }
@@ -119,6 +129,12 @@ fun getNotificationRawDataByType(notificationData: NotificationData): Map<String
 
         is StretcherRetentionEnableNotification -> mapOf(
             NOTIFICATION_TYPE_KEY to notificationData.notificationType.name
+        )
+
+        is ClosingAPHNotification -> mapOf(
+            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
+            CONSECUTIVE_NUMBER to notificationData.consecutiveNumber,
+            UPDATE_TIME_OBSERVATIONS to notificationData.updateTimeObservationsAttachments
         )
     }
 }

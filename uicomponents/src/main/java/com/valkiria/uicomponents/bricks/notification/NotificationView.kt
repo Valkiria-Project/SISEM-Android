@@ -180,7 +180,11 @@ private fun NotificationViewRender(
                 ) {
                     Text(
                         text = uiModel.description,
-                        modifier = Modifier.padding(start = 48.dp),
+                        modifier = if (uiModel.title == INCIDENT_ASSIGNED.title) {
+                            Modifier.padding(start = 48.dp)
+                        } else {
+                            Modifier.padding(start = 42.dp)
+                        },
                         color = Color.White,
                         style = MaterialTheme.typography.bodyLarge
                     )
@@ -210,7 +214,7 @@ private fun NotificationViewRender(
                         modifier = if (uiModel.title == INCIDENT_ASSIGNED.title) {
                             Modifier.padding(start = 4.dp)
                         } else {
-                            Modifier.padding(start = 48.dp)
+                            Modifier.padding(start = 42.dp)
                         },
                         color = Color.White,
                         style = MaterialTheme.typography.bodyMedium

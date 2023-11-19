@@ -1,9 +1,11 @@
 package com.valkiria.uicomponents.bricks.notification
 
+import com.valkiria.uicomponents.bricks.notification.model.ClosingAPHNotification
 import com.valkiria.uicomponents.bricks.notification.model.IncidentAssignedNotification
 import com.valkiria.uicomponents.bricks.notification.model.IpsPatientTransferredNotification
 import com.valkiria.uicomponents.bricks.notification.model.NoPreOperationalGeneratedCrueNotification
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.CLOSING_OF_APH
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.INCIDENT_ASSIGNED
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.IPS_PATIENT_TRANSFERRED
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.NO_PRE_OPERATIONAL_GENERATED_CRUE
@@ -78,6 +80,13 @@ fun NotificationData.mapToUi(): NotificationUiModel {
             icon = STRETCHER_RETENTION_ENABLE.icon,
             iconColor = STRETCHER_RETENTION_ENABLE.iconColor,
             title = STRETCHER_RETENTION_ENABLE.title
+        )
+
+        is ClosingAPHNotification -> NotificationUiModel(
+            icon = CLOSING_OF_APH.icon,
+            iconColor = CLOSING_OF_APH.iconColor,
+            title = CLOSING_OF_APH.title.plus(this.consecutiveNumber),
+            description = this.updateTimeObservationsAttachments
         )
     }
 }

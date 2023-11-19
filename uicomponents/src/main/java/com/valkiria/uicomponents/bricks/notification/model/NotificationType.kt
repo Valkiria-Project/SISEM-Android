@@ -45,8 +45,8 @@ enum class NotificationType(
         iconColor = "#42A4FA"
     ),
     CLOSING_OF_APH(
-        title = "No se ha generado preoperacional para reportar al CRUE",
-        icon = "ic_check",
+        title = "Cierre del registro APH ",
+        icon = "ic_hceud",
         iconColor = "#42A4FA"
     );
 
