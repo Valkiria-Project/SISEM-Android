@@ -2,6 +2,7 @@ package com.valkiria.uicomponents.bricks.notification.model
 
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.INCIDENT_ASSIGNED
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.NO_PRE_OPERATIONAL_GENERATED_CRUE
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.SUPPORT_REQUEST_ON_THE_WAY
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_AUTHORIZATION
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_DENIED
 import timber.log.Timber
@@ -21,6 +22,9 @@ private const val GEOLOCATION = "geolocation"
 // TRANSMILENIO_AUTHORIZATION
 private const val AUTHORIZATION_NUMBER = "authorization_number"
 private const val AUTHORIZES = "authorizes"
+
+// SUPPORT_REQUEST_ON_THE_WAY
+private const val RESOURCE_TYPE_AND_CODE = "resource_type_and_code"
 
 sealed interface NotificationData {
     val notificationType: NotificationType
@@ -52,6 +56,10 @@ fun getNotificationDataByType(notificationDataMap: Map<String, String>): Notific
 
         NO_PRE_OPERATIONAL_GENERATED_CRUE -> NoPreOperationalGeneratedCrueNotification()
 
+        SUPPORT_REQUEST_ON_THE_WAY -> SupportRequestNotification(
+            resourceTypeCode = notificationDataMap[RESOURCE_TYPE_AND_CODE].orEmpty()
+        )
+
         else -> null
     }
 }
@@ -82,6 +90,11 @@ fun getNotificationRawDataByType(notificationData: NotificationData): Map<String
 
         is NoPreOperationalGeneratedCrueNotification -> mapOf(
             NOTIFICATION_TYPE_KEY to notificationData.notificationType.name
+        )
+
+        is SupportRequestNotification -> mapOf(
+            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
+            RESOURCE_TYPE_AND_CODE to notificationData.resourceTypeCode
         )
     }
 }

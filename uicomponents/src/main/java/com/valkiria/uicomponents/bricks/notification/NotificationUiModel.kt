@@ -5,8 +5,10 @@ import com.valkiria.uicomponents.bricks.notification.model.NoPreOperationalGener
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.INCIDENT_ASSIGNED
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.NO_PRE_OPERATIONAL_GENERATED_CRUE
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.SUPPORT_REQUEST_ON_THE_WAY
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_AUTHORIZATION
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_DENIED
+import com.valkiria.uicomponents.bricks.notification.model.SupportRequestNotification
 import com.valkiria.uicomponents.bricks.notification.model.TransmilenioAuthorizationNotification
 import com.valkiria.uicomponents.bricks.notification.model.TransmilenioDeniedNotification
 import java.util.UUID
@@ -51,6 +53,13 @@ fun NotificationData.mapToUi(): NotificationUiModel {
             icon = NO_PRE_OPERATIONAL_GENERATED_CRUE.icon,
             iconColor = NO_PRE_OPERATIONAL_GENERATED_CRUE.iconColor,
             title = NO_PRE_OPERATIONAL_GENERATED_CRUE.title
+        )
+
+        is SupportRequestNotification -> NotificationUiModel(
+            icon = SUPPORT_REQUEST_ON_THE_WAY.icon,
+            iconColor = SUPPORT_REQUEST_ON_THE_WAY.iconColor,
+            title = SUPPORT_REQUEST_ON_THE_WAY.title,
+            description = this.resourceTypeCode
         )
     }
 }

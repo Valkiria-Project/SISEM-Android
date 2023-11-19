@@ -28,6 +28,26 @@ enum class NotificationType(
         title = "No se ha generado preoperacional para reportar al CRUE",
         icon = "ic_check",
         iconColor = "#F55757"
+    ),
+    SUPPORT_REQUEST_ON_THE_WAY(
+        title = "Solicitud de apoyo en camino",
+        icon = "ic_ambulance",
+        iconColor = "#42A4FA"
+    ),
+    IPS_PATIENT_TRANSFERRED(
+        title = "No se ha generado preoperacional para reportar al CRUE",
+        icon = "ic_check",
+        iconColor = "#F55757"
+    ),
+    STRETCHER_RETENTION_ENABLE(
+        title = "No se ha generado preoperacional para reportar al CRUE",
+        icon = "ic_check",
+        iconColor = "#F55757"
+    ),
+    CLOSING_OF_APH(
+        title = "No se ha generado preoperacional para reportar al CRUE",
+        icon = "ic_check",
+        iconColor = "#F55757"
     );
 
     companion object {
