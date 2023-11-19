@@ -180,7 +180,7 @@ private fun IncidentPart4() {
             )
         }
 
-        repeat (3) {
+        repeat(3) {
             IncidentPart4Item()
         }
     }
