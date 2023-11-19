@@ -3,8 +3,9 @@ package com.skgtecnologia.sisem.di
 import android.content.Context
 import androidx.room.Room
 import com.skgtecnologia.sisem.data.auth.cache.dao.AccessTokenDao
-import com.skgtecnologia.sisem.data.operation.cache.dao.OperationDao
 import com.skgtecnologia.sisem.data.cache.SisemDatabase
+import com.skgtecnologia.sisem.data.notification.cache.dao.NotificationDao
+import com.skgtecnologia.sisem.data.operation.cache.dao.OperationDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,6 +28,11 @@ object CoreDatabaseModule {
     @Provides
     fun provideAccessTokenDao(sisemDatabase: SisemDatabase): AccessTokenDao {
         return sisemDatabase.accessTokenDao()
+    }
+
+    @Provides
+    fun provideNotificationDao(sisemDatabase: SisemDatabase): NotificationDao {
+        return sisemDatabase.notificationDao()
     }
 
     @Provides

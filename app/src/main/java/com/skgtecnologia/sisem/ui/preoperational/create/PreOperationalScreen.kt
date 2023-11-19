@@ -4,9 +4,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
@@ -16,10 +21,11 @@ import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
+import com.valkiria.uicomponents.bricks.notification.OnNotificationHandler
+import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-@Suppress("LongMethod")
 @Composable
 fun PreOperationalScreen(
     modifier: Modifier = Modifier,
@@ -29,6 +35,11 @@ fun PreOperationalScreen(
 ) {
     val viewModel = hiltViewModel<PreOperationalViewModel>()
     val uiState = viewModel.uiState
+
+    var notificationData by remember { mutableStateOf<NotificationData?>(null) }
+    NotificationEventHandler.subscribeNotificationEvent {
+        notificationData = it
+    }
 
     LaunchedEffect(uiState.navigationModel) {
         Timber.d("PreOperationalScreen: LaunchedEffect navigationModel pass")
@@ -52,6 +63,31 @@ fun PreOperationalScreen(
         }
     }
 
+    PreOperationalScreenRender(viewModel, modifier)
+
+    OnNotificationHandler(notificationData) {
+        notificationData = null
+        if (it.isDismiss.not()) {
+            // FIXME: Navigate to MapScreen if is type INCIDENT_ASSIGNED
+            Timber.d("Navigate to MapScreen")
+        }
+    }
+
+    OnBannerHandler(uiModel = uiState.infoEvent) { uiAction ->
+        handleFooterAction(uiAction, viewModel)
+        viewModel.handleEvent(uiAction)
+    }
+
+    OnLoadingHandler(uiState.isLoading, modifier)
+}
+
+@Composable
+private fun PreOperationalScreenRender(
+    viewModel: PreOperationalViewModel,
+    modifier: Modifier
+) {
+    val uiState = viewModel.uiState
+
     BodySection(
         body = uiState.screenModel?.body,
         modifier = modifier
@@ -61,13 +97,6 @@ fun PreOperationalScreen(
     ) { uiAction ->
         handleBodyAction(uiAction, viewModel)
     }
-
-    OnBannerHandler(uiModel = uiState.infoEvent) { uiAction ->
-        handleFooterAction(uiAction, viewModel)
-        viewModel.consumeInfoEvent()
-    }
-
-    OnLoadingHandler(uiState.isLoading, modifier)
 }
 
 private fun handleBodyAction(
