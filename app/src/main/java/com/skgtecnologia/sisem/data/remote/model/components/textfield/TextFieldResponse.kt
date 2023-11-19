@@ -30,6 +30,8 @@ data class TextFieldResponse(
     @Json(name = "visibility") val visibility: Boolean?,
     @Json(name = "required") val required: Boolean?,
     @Json(name = "text") val text: String?,
+    @Json(name = "min_lines") val minLines: Int?,
+    @Json(name = "single_line") val singleLine: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val margins: Modifier?
 ) : BodyRowResponse {
@@ -53,6 +55,8 @@ data class TextFieldResponse(
         visibility = visibility ?: true,
         required = required ?: true,
         text = text ?: "",
+        minLines = minLines ?: 1,
+        singleLine = singleLine ?: true,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = margins ?: Modifier
     )
