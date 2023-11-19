@@ -60,7 +60,9 @@ fun MedicalHistoryScreen(
 
     LaunchedEffect(photoTaken) {
         launch {
-            photoTaken.let { viewModel.updateMediaActions() }
+            if (photoTaken) {
+                viewModel.updateMediaActions()
+            }
         }
     }
 
