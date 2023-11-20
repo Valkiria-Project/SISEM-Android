@@ -12,3 +12,5 @@ data class IncidentAssignedNotification(
     val hour: String,
     val geolocation: String
 ) : NotificationData
+
+fun String.toIncidentNumber(): String = substringAfter("-").substringBefore("-")
