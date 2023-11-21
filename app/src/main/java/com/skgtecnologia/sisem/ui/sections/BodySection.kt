@@ -672,7 +672,8 @@ private fun HandleTextFieldRows(
                 GenericUiAction.InputAction(
                     identifier = inputUiModel.identifier,
                     updatedValue = inputUiModel.updatedValue,
-                    fieldValidated = inputUiModel.fieldValidated
+                    fieldValidated = inputUiModel.fieldValidated,
+                    required = inputUiModel.required
                 )
             )
         }

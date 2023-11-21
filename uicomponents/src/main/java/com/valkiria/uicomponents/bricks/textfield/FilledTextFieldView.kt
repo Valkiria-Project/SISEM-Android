@@ -29,10 +29,10 @@ private const val CONTAINER_COLOR = 0xFF3F4145
 fun FilledTextFieldView(
     uiModel: TextFieldUiModel,
     validateFields: Boolean,
-    onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
+    onAction: (id: String, updatedValue: String, fieldValidated: Boolean, required: Boolean) -> Unit
 ) {
     var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-        mutableStateOf(TextFieldValue(""))
+        mutableStateOf(TextFieldValue(uiModel.text))
     }
 
     val inputError = remember(text, validateFields) {
@@ -47,7 +47,8 @@ fun FilledTextFieldView(
                 onAction(
                     uiModel.identifier,
                     updatedValue.text,
-                    text.toFailedValidation(uiModel.validations, true) == null
+                    text.toFailedValidation(uiModel.validations, true) == null,
+                    uiModel.required
                 )
             }
         },
@@ -92,7 +93,7 @@ fun FilledTextFieldViewPreview() {
     ) {
         FilledTextFieldView(
             uiModel = getLoginUserTextFieldUiModel(),
-            onAction = { _, _, _ -> },
+            onAction = { _, _, _, _ -> },
             validateFields = true
         )
     }

@@ -47,7 +47,7 @@ private const val DATE_TIME_DELIMITER = "T"
 fun DatePickerTextFieldView(
     uiModel: TextFieldUiModel,
     validateFields: Boolean,
-    onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
+    onAction: (id: String, updatedValue: String, fieldValidated: Boolean, required: Boolean) -> Unit
 ) {
     var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(""))
@@ -128,7 +128,8 @@ fun DatePickerTextFieldView(
                         onAction(
                             uiModel.identifier,
                             text.text,
-                            text.toFailedValidation(uiModel.validations, true) == null
+                            text.toFailedValidation(uiModel.validations, true) == null,
+                            uiModel.required
                         )
                     }
                 ) {
@@ -151,7 +152,13 @@ fun DatePickerTextFieldView(
                 dateValidator = { timestamp ->
                     if (uiModel.maxDate != null) {
                         val maxDate = uiModel.maxDate.substringBefore(DATE_TIME_DELIMITER)
-                        timestamp < getEpochMillis(maxDate)
+
+                        if (uiModel.minDate == null) {
+                            timestamp < getEpochMillis(maxDate)
+                        } else {
+                            val minDate = uiModel.minDate.substringBefore(DATE_TIME_DELIMITER)
+                            timestamp in getEpochMillis(minDate)..getEpochMillis(maxDate)
+                        }
                     } else {
                         true
                     }
@@ -169,7 +176,7 @@ fun DatePickerTextFieldViewPreview() {
     ) {
         DatePickerTextFieldView(
             uiModel = getPreOpDriverAuxGuardianTextFieldUiModel(),
-            onAction = { _, _, _ -> },
+            onAction = { _, _, _, _ -> },
             validateFields = true
         )
     }

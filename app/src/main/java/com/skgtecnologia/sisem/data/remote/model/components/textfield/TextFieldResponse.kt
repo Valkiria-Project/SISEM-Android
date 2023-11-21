@@ -52,6 +52,7 @@ data class TextFieldResponse(
             ?: error("TextField validations cannot be null"),
         realTimeValidation = realTimeValidation ?: false,
         maxDate = maxDate,
+        minDate = minDate,
         visibility = visibility ?: true,
         required = required ?: true,
         text = text ?: "",

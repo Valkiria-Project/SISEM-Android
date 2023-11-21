@@ -26,7 +26,7 @@ import com.valkiria.uicomponents.mocks.getLoginUserTextFieldUiModel
 fun OutlinedTextFieldView(
     uiModel: TextFieldUiModel,
     validateFields: Boolean,
-    onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
+    onAction: (id: String, updatedValue: String, fieldValidated: Boolean, required: Boolean) -> Unit
 ) {
     var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(uiModel.text))
@@ -44,7 +44,8 @@ fun OutlinedTextFieldView(
                 onAction(
                     uiModel.identifier,
                     updatedValue.text,
-                    text.toFailedValidation(uiModel.validations, true) == null
+                    text.toFailedValidation(uiModel.validations, true) == null,
+                    uiModel.required
                 )
             }
         },
@@ -83,7 +84,7 @@ fun OutlinedTextFieldViewPreview() {
     ) {
         OutlinedTextFieldView(
             uiModel = getLoginUserTextFieldUiModel(),
-            onAction = { _, _, _ -> },
+            onAction = { _, _, _, _ -> },
             validateFields = true
         )
     }

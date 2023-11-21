@@ -496,7 +496,8 @@ class MedicalHistoryViewModelTest {
             GenericUiAction.InputAction(
                 identifier = identifier,
                 updatedValue = "13/11/2023",
-                fieldValidated = false
+                fieldValidated = false,
+                required = false
             )
         )
 
