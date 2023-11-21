@@ -11,7 +11,6 @@ import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import com.valkiria.uicomponents.bricks.notification.model.toIncidentNumber
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
-import timber.log.Timber
 
 class NotificationRepositoryImpl @Inject constructor(
     private val authCacheDataSource: AuthCacheDataSource,
@@ -38,8 +37,7 @@ class NotificationRepositoryImpl @Inject constructor(
                     ?.vehicleCode
                     .orEmpty()
             ).onSuccess {
-                val storedIncidentValue = incidentCacheDataSource.storeIncident(it)
-                Timber.d("Incident stored with result $storedIncidentValue")
+                incidentCacheDataSource.storeIncident(it)
             }
         }
     }
