@@ -53,36 +53,48 @@ fun TextFieldComponent(
             )
         }
 
+        val shouldValidateFields = shouldValidateFields(
+            validateFields, uiModel.realTimeValidation, uiModel.text
+        )
+
         when (uiModel.style) {
             TextFieldStyle.DATE_PICKER -> DatePickerTextFieldView(
                 uiModel = uiModel,
-                validateFields = validateFields || uiModel.realTimeValidation
+                validateFields = shouldValidateFields
             ) { id, updatedValue, fieldValidated ->
                 onAction(InputUiModel(id, updatedValue, fieldValidated))
             }
 
             TextFieldStyle.FILLED -> FilledTextFieldView(
                 uiModel = uiModel,
-                validateFields = validateFields || uiModel.realTimeValidation
+                validateFields = shouldValidateFields
             ) { id, updatedValue, fieldValidated ->
                 onAction(InputUiModel(id, updatedValue, fieldValidated))
             }
 
             TextFieldStyle.FIXED_DATE -> FixedDateTextFieldView(
                 uiModel = uiModel,
-                validateFields = validateFields || uiModel.realTimeValidation
+                validateFields = shouldValidateFields
             ) { id, updatedValue, fieldValidated ->
                 onAction(InputUiModel(id, updatedValue, fieldValidated))
             }
 
             TextFieldStyle.OUTLINED -> OutlinedTextFieldView(
                 uiModel = uiModel,
-                validateFields = validateFields || uiModel.realTimeValidation
+                validateFields = shouldValidateFields
             ) { id, updatedValue, fieldValidated ->
                 onAction(InputUiModel(id, updatedValue, fieldValidated))
             }
         }
     }
+}
+
+private fun shouldValidateFields(
+    validateFields: Boolean,
+    realTimeValidation: Boolean,
+    text: String
+): Boolean {
+    return validateFields || (realTimeValidation && text.isNotEmpty())
 }
 
 @Preview(showBackground = true)
