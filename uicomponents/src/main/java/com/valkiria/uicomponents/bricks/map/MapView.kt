@@ -44,7 +44,7 @@ import com.valkiria.uicomponents.components.incident.model.IncidentUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-@Suppress("LongMethod", "MagicNumber")
+@Suppress("LongMethod", "LongParameterList", "MagicNumber")
 @Composable
 fun MapView(
     coordinates: Pair<Double, Double>,
