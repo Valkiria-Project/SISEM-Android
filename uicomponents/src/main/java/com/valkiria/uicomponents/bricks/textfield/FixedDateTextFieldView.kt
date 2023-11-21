@@ -30,7 +30,7 @@ import java.time.Instant
 fun FixedDateTextFieldView(
     uiModel: TextFieldUiModel,
     validateFields: Boolean,
-    onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
+    onAction: (id: String, updatedValue: String, fieldValidated: Boolean, required: Boolean) -> Unit
 ) {
     val startLabel = buildString {
         val today = getLocalDate(Instant.now())
@@ -49,7 +49,8 @@ fun FixedDateTextFieldView(
     onAction(
         uiModel.identifier,
         date.text,
-        true
+        true,
+        uiModel.required
     )
 
     OutlinedTextField(
@@ -91,7 +92,7 @@ fun FixedDateTextFieldViewPreview() {
     ) {
         FixedDateTextFieldView(
             uiModel = getPreOpDriverAuxGuardianTextFieldUiModel(),
-            onAction = { _, _, _ -> },
+            onAction = { _, _, _, _ -> },
             validateFields = true
         )
     }

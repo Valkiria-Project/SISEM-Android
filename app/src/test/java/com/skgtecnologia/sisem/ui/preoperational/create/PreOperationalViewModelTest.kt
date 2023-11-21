@@ -215,7 +215,8 @@ class PreOperationalViewModelTest {
             GenericUiAction.InputAction(
                 identifier = identifier,
                 updatedValue = "updatedValue",
-                fieldValidated = false
+                fieldValidated = false,
+                required = false
             )
         )
 
