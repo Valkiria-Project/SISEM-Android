@@ -57,29 +57,29 @@ fun TextFieldComponent(
             TextFieldStyle.DATE_PICKER -> DatePickerTextFieldView(
                 uiModel = uiModel,
                 validateFields = validateFields || uiModel.realTimeValidation
-            ) { id, updatedValue, fieldValidated ->
-                onAction(InputUiModel(id, updatedValue, fieldValidated))
+            ) { id, updatedValue, fieldValidated, required ->
+                onAction(InputUiModel(id, updatedValue, fieldValidated, required))
             }
 
             TextFieldStyle.FILLED -> FilledTextFieldView(
                 uiModel = uiModel,
                 validateFields = validateFields || uiModel.realTimeValidation
-            ) { id, updatedValue, fieldValidated ->
-                onAction(InputUiModel(id, updatedValue, fieldValidated))
+            ) { id, updatedValue, fieldValidated, required ->
+                onAction(InputUiModel(id, updatedValue, fieldValidated, required))
             }
 
             TextFieldStyle.FIXED_DATE -> FixedDateTextFieldView(
                 uiModel = uiModel,
                 validateFields = validateFields || uiModel.realTimeValidation
-            ) { id, updatedValue, fieldValidated ->
-                onAction(InputUiModel(id, updatedValue, fieldValidated))
+            ) { id, updatedValue, fieldValidated, required ->
+                onAction(InputUiModel(id, updatedValue, fieldValidated, required))
             }
 
             TextFieldStyle.OUTLINED -> OutlinedTextFieldView(
                 uiModel = uiModel,
                 validateFields = validateFields || uiModel.realTimeValidation
-            ) { id, updatedValue, fieldValidated ->
-                onAction(InputUiModel(id, updatedValue, fieldValidated))
+            ) { id, updatedValue, fieldValidated, required ->
+                onAction(InputUiModel(id, updatedValue, fieldValidated, required))
             }
         }
     }

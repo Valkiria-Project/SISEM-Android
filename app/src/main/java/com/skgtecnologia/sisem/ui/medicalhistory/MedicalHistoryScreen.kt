@@ -67,7 +67,8 @@ fun MedicalHistoryScreen(
     }
 
     BodySection(
-        body = uiState.screenModel?.body
+        body = uiState.screenModel?.body,
+        validateFields = uiState.validateFields
     ) { uiAction ->
         handleAction(uiAction, viewModel)
     }
