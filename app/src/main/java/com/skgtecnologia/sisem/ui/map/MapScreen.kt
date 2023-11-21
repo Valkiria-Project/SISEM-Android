@@ -43,9 +43,6 @@ fun MapScreen(
         (context as ComponentActivity).finish()
     }
 
-    // Observe this, subscribe only once, not every Composable pass
-    viewModel.getLocationCoordinates()
-
     MenuDrawer(
         drawerState = drawerState,
         onClick = { menuNavigationRoute ->

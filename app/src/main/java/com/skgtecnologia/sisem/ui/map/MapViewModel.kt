@@ -20,7 +20,7 @@ import timber.log.Timber
 
 @HiltViewModel
 class MapViewModel @Inject constructor(
-    private val fusedLocationClient: FusedLocationProviderClient,
+    fusedLocationClient: FusedLocationProviderClient,
     observeActiveIncident: ObserveActiveIncident
 ) : ViewModel() {
 
@@ -38,10 +38,7 @@ class MapViewModel @Inject constructor(
             }
             .catch { Timber.wtf("Error observing active incident ${it.localizedMessage}") }
             .launchIn(viewModelScope)
-    }
 
-    // FIXME: This should be observed
-    fun getLocationCoordinates() {
         fusedLocationClient.locationFlow()
             .conflate()
             .catch { e ->
