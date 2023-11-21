@@ -210,8 +210,10 @@ class MedicalHistoryViewModel @Inject constructor(
                     sliderValues[bodyRowModel.identifier] = bodyRowModel.selected.toString()
 
                 is TextFieldUiModel -> fieldsValues[bodyRowModel.identifier] = InputUiModel(
-                    bodyRowModel.identifier,
-                    bodyRowModel.text
+                    identifier = bodyRowModel.identifier,
+                    updatedValue = bodyRowModel.text,
+                    fieldValidated = bodyRowModel.text.isNotEmpty(),
+                    required = bodyRowModel.required
                 )
 
                 is InfoCardUiModel -> if (bodyRowModel.identifier == INITIAL_VITAL_SIGNS) {
@@ -470,7 +472,8 @@ class MedicalHistoryViewModel @Inject constructor(
         fieldsValues[inputAction.identifier] = InputUiModel(
             inputAction.identifier,
             inputAction.updatedValue,
-            inputAction.fieldValidated
+            inputAction.fieldValidated,
+            inputAction.required
         )
 
         if (inputAction.identifier == FUR_KEY) {
@@ -846,6 +849,22 @@ class MedicalHistoryViewModel @Inject constructor(
     }
 
     fun sendMedicalHistory() {
+        uiState = uiState.copy(
+            validateFields = true
+        )
+
+        val invalidRequiredFields = fieldsValues.values
+            .filter { it.required && !it.fieldValidated }
+
+        val invalidOptionalFields = fieldsValues.values
+            .filter { it.required.not() && it.updatedValue.isNotEmpty() && !it.fieldValidated }
+
+        if (invalidRequiredFields.isEmpty() && invalidOptionalFields.isEmpty()) {
+            send()
+        }
+    }
+
+    private fun send() {
         uiState = uiState.copy(
             isLoading = true
         )
