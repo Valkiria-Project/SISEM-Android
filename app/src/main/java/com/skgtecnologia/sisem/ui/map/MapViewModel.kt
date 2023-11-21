@@ -21,7 +21,7 @@ import timber.log.Timber
 @HiltViewModel
 class MapViewModel @Inject constructor(
     private val fusedLocationClient: FusedLocationProviderClient,
-    private val observeActiveIncident: ObserveActiveIncident
+    observeActiveIncident: ObserveActiveIncident
 ) : ViewModel() {
 
     var uiState by mutableStateOf(MapUiState())
@@ -32,6 +32,9 @@ class MapViewModel @Inject constructor(
             .flowOn(Dispatchers.IO)
             .onEach {
                 Timber.d("Observed incident with id ${it?.incident?.id}")
+                uiState = uiState.copy(
+                    incident = it
+                )
             }
             .catch { Timber.wtf("Error observing active incident ${it.localizedMessage}") }
             .launchIn(viewModelScope)
@@ -46,7 +49,9 @@ class MapViewModel @Inject constructor(
             }
             .onEach { location ->
                 Timber.d("Location: $location")
-                uiState = uiState.copy(location = location.longitude to location.latitude)
+                uiState = uiState.copy(
+                    location = location.longitude to location.latitude
+                )
             }
             .launchIn(viewModelScope)
     }

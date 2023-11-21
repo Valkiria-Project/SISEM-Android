@@ -4,7 +4,7 @@ import androidx.annotation.CheckResult
 import com.skgtecnologia.sisem.data.incident.cache.dao.IncidentDao
 import com.skgtecnologia.sisem.data.incident.cache.model.mapToCache
 import com.skgtecnologia.sisem.data.incident.cache.model.mapToDomain
-import com.skgtecnologia.sisem.domain.incident.model.IncidentModel
+import com.valkiria.uicomponents.components.incident.model.IncidentUiModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -17,11 +17,11 @@ class IncidentCacheDataSource @Inject constructor(
     private val incidentDao: IncidentDao
 ) {
 
-    suspend fun storeIncident(incidentModel: IncidentModel) =
-        incidentDao.insertIncident(incidentModel.mapToCache())
+    suspend fun storeIncident(incidentUiModel: IncidentUiModel) =
+        incidentDao.insertIncident(incidentUiModel.mapToCache())
 
     @CheckResult
-    fun observeActiveIncident(): Flow<IncidentModel?> = incidentDao.observeActiveIncident()
+    fun observeActiveIncident(): Flow<IncidentUiModel> = incidentDao.observeActiveIncident()
         .filterNotNull()
         .map {
             it.mapToDomain()

@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.data.incident.remote.model
 
-import com.skgtecnologia.sisem.domain.incident.model.PatientModel
+import com.valkiria.uicomponents.components.incident.model.PatientUiModel
 import com.squareup.moshi.Json
 
 data class PatientResponse(
@@ -9,7 +9,7 @@ data class PatientResponse(
     @Json(name = "id_aph") val idAph: Int
 )
 
-fun PatientResponse.mapToDomain(): PatientModel = PatientModel(
+fun PatientResponse.mapToUi(): PatientUiModel = PatientUiModel(
     id = id,
     fullName = fullName,
     idAph = idAph

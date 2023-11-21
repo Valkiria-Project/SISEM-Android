@@ -11,6 +11,7 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,9 +36,11 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.action.GenericUiAction.NotificationAction
+import com.valkiria.uicomponents.bricks.bottomsheet.BottomSheetView
 import com.valkiria.uicomponents.bricks.notification.OnNotificationHandler
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
-import kotlinx.coroutines.CoroutineScope
+import com.valkiria.uicomponents.components.incident.IncidentContent
+import com.valkiria.uicomponents.components.incident.model.IncidentUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -45,13 +48,15 @@ import timber.log.Timber
 @Composable
 fun MapView(
     coordinates: Pair<Double, Double>,
+    incident: IncidentUiModel?,
     drawerState: DrawerState,
     notificationData: NotificationData?,
     modifier: Modifier = Modifier,
     onAction: (notificationAction: NotificationAction) -> Unit
 ) {
     val context = LocalContext.current
-    val coroutineScope: CoroutineScope = rememberCoroutineScope()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
+    val scope = rememberCoroutineScope()
 
     val point = Point.fromLngLat(coordinates.first, coordinates.second)
     val marker = remember(context) {
@@ -93,7 +98,7 @@ fun MapView(
 
         IconButton(
             onClick = {
-                coroutineScope.launch {
+                scope.launch {
                     drawerState.open()
                 }
             },
@@ -115,6 +120,20 @@ fun MapView(
             if (it.isDismiss.not()) {
                 // FIXME: Navigate to MapScreen if is type INCIDENT_ASSIGNED
                 Timber.d("Navigate to MapScreen")
+            }
+        }
+
+        incident?.let {
+            scope.launch { sheetState.show() }
+
+            BottomSheetView(
+                content = {
+                    IncidentContent()
+                },
+                sheetState = sheetState,
+                scope = scope
+            ) {
+                Timber.d("Dismiss gesture")
             }
         }
     }

@@ -1,6 +1,6 @@
-package com.skgtecnologia.sisem.domain.incident.model
+package com.valkiria.uicomponents.components.incident.model
 
-data class ResourceDetailModel(
+data class ResourceUiDetailModel(
     val id: Int,
     val code: String,
     val transitAgency: String,

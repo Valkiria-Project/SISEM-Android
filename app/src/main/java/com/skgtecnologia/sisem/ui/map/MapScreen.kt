@@ -57,6 +57,7 @@ fun MapScreen(
     ) {
         MapView(
             coordinates = viewModel.uiState.location,
+            incident = viewModel.uiState.incident,
             drawerState = drawerState,
             notificationData = notificationData,
             modifier = modifier.fillMaxSize()

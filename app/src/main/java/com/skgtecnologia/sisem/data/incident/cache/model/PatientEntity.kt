@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.data.incident.cache.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.skgtecnologia.sisem.domain.incident.model.PatientModel
+import com.valkiria.uicomponents.components.incident.model.PatientUiModel
 
 @Entity(tableName = "patient")
 data class PatientEntity(
@@ -13,15 +13,15 @@ data class PatientEntity(
     @ColumnInfo(name = "id_aph") val idAph: Int
 )
 
-fun PatientEntity.mapToDomain(): PatientModel = with(this) {
-    PatientModel(
+fun PatientEntity.mapToDomain(): PatientUiModel = with(this) {
+    PatientUiModel(
         id = id,
         fullName = fullName,
         idAph = idAph
     )
 }
 
-fun PatientModel.mapToCache(): PatientEntity = with(this) {
+fun PatientUiModel.mapToCache(): PatientEntity = with(this) {
     PatientEntity(
         id = id,
         fullName = fullName,

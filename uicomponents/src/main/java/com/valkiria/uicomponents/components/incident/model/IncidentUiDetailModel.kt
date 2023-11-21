@@ -1,6 +1,6 @@
-package com.skgtecnologia.sisem.domain.incident.model
+package com.valkiria.uicomponents.components.incident.model
 
-data class IncidentDetailModel(
+data class IncidentUiDetailModel(
     val id: Int,
     val code: String,
     val codeSisem: String,
@@ -8,6 +8,6 @@ data class IncidentDetailModel(
     val addressReferencePoint: String,
     val premierOneDate: String,
     val premierOneHour: String,
-    val incidentType: IncidentTypeModel,
+    val incidentType: IncidentUiTypeModel,
     val doctorAuthName: String
 )

@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.data.incident.remote.model
 
-import com.skgtecnologia.sisem.domain.incident.model.IncidentModel
+import com.valkiria.uicomponents.components.incident.model.IncidentUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -11,8 +11,8 @@ data class IncidentResponse(
     @Json(name = "resources") val resources: List<ResourceResponse>
 )
 
-fun IncidentResponse.mapToDomain(): IncidentModel = IncidentModel(
-    incident = incident.mapToDomain(),
-    patients = patients.map { it.mapToDomain() },
-    resources = resources.map { it.mapToDomain() }
+fun IncidentResponse.mapToUi(): IncidentUiModel = IncidentUiModel(
+    incident = incident.mapToUi(),
+    patients = patients.map { it.mapToUi() },
+    resources = resources.map { it.mapToUi() }
 )

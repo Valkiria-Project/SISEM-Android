@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.data.incident.remote.model
 
-import com.skgtecnologia.sisem.domain.incident.model.ResourceModel
+import com.valkiria.uicomponents.components.incident.model.ResourceUiModel
 import com.squareup.moshi.Json
 
 data class ResourceResponse(
@@ -9,8 +9,8 @@ data class ResourceResponse(
     @Json(name = "resource") val resource: ResourceDetailResponse
 )
 
-fun ResourceResponse.mapToDomain(): ResourceModel = ResourceModel(
+fun ResourceResponse.mapToUi(): ResourceUiModel = ResourceUiModel(
     id = id,
     resourceId = resourceId,
-    resource = resource.mapToDomain()
+    resource = resource.mapToUi()
 )

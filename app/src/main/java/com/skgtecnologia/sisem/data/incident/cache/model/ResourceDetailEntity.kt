@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.skgtecnologia.sisem.domain.incident.model.ResourceDetailModel
+import com.valkiria.uicomponents.components.incident.model.ResourceUiDetailModel
 
 @Entity(tableName = "resource_detail")
 data class ResourceDetailEntity(
@@ -15,8 +15,8 @@ data class ResourceDetailEntity(
     @Embedded(prefix = "ic_transit_agency") val icTransitAgency: String
 )
 
-fun ResourceDetailEntity.mapToDomain(): ResourceDetailModel = with(this) {
-    ResourceDetailModel(
+fun ResourceDetailEntity.mapToDomain(): ResourceUiDetailModel = with(this) {
+    ResourceUiDetailModel(
         id = id,
         code = code,
         transitAgency = transitAgency,
@@ -24,7 +24,7 @@ fun ResourceDetailEntity.mapToDomain(): ResourceDetailModel = with(this) {
     )
 }
 
-fun ResourceDetailModel.mapToCache(): ResourceDetailEntity = with(this) {
+fun ResourceUiDetailModel.mapToCache(): ResourceDetailEntity = with(this) {
     ResourceDetailEntity(
         id = id,
         code = code,
