@@ -1,9 +1,10 @@
 package com.skgtecnologia.sisem.data.incident.remote
 
 import com.skgtecnologia.sisem.commons.extensions.mapResult
+import com.skgtecnologia.sisem.data.incident.remote.model.mapToDomain
 import com.skgtecnologia.sisem.data.remote.extensions.apiCall
+import com.skgtecnologia.sisem.domain.incident.model.IncidentModel
 import javax.inject.Inject
-import timber.log.Timber
 
 class IncidentRemoteDataSource @Inject constructor(
     private val incidentApi: IncidentApi
@@ -13,14 +14,13 @@ class IncidentRemoteDataSource @Inject constructor(
         idIncident: String,
         idTurn: String,
         codeVehicle: String
-    ): Result<Unit> = apiCall {
+    ): Result<IncidentModel> = apiCall {
         incidentApi.getIncidentInfo(
             idIncident = idIncident,
             idTurn = idTurn,
             codeVehicle = codeVehicle
         )
     }.mapResult {
-        Timber.d("map to Incident domain model ${it.incident.code}")
-//        it.mapToDomain()
+        it.mapToDomain()
     }
 }

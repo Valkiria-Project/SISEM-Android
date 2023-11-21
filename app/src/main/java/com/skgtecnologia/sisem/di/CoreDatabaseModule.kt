@@ -32,7 +32,7 @@ object CoreDatabaseModule {
     }
 
     @Provides
-    fun provideIncidentTokenDao(sisemDatabase: SisemDatabase): IncidentDao {
+    fun provideIncidentDao(sisemDatabase: SisemDatabase): IncidentDao {
         return sisemDatabase.incidentDao()
     }
 

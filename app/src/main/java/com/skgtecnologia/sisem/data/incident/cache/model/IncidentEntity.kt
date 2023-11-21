@@ -1,33 +1,36 @@
 package com.skgtecnologia.sisem.data.incident.cache.model
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.valkiria.uicomponents.bricks.notification.model.NotificationData
-import com.valkiria.uicomponents.bricks.notification.model.NotificationType
-import com.valkiria.uicomponents.bricks.notification.model.getNotificationDataByType
-import com.valkiria.uicomponents.bricks.notification.model.getNotificationRawDataByType
-
+import com.skgtecnologia.sisem.domain.incident.model.IncidentModel
 @Entity(
     tableName = "incident",
-    indices = [Index(value = ["data"], unique = true)]
+    indices = [Index(value = ["incident_id"], unique = true)]
 )
 data class IncidentEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var id: Long = 0,
-    @ColumnInfo(name = "notificationType") val notificationType: NotificationType,
-    @ColumnInfo(name = "data") val data: Map<String, String>
+    @Embedded(prefix = "incident_") val incident: IncidentDetailEntity,
+    @ColumnInfo(name = "patients") val patients: List<PatientEntity>,
+    @ColumnInfo(name = "resources") val resources: List<ResourceEntity>
 )
 
-fun IncidentEntity.mapToDomain(): NotificationData? = with(this) {
-    getNotificationDataByType(this.data)
+fun IncidentEntity.mapToDomain(): IncidentModel = with(this) {
+    IncidentModel(
+        incident = incident.mapToDomain(),
+        patients = patients.map { it.mapToDomain() },
+        resources = resources.map { it.mapToDomain() }
+    )
 }
-//
-fun NotificationData.mapToCache(): IncidentEntity = with(this) {
+
+fun IncidentModel.mapToCache(): IncidentEntity = with(this) {
     IncidentEntity(
-        notificationType = this.notificationType,
-        data = getNotificationRawDataByType(this)
+        incident = incident.mapToCache(),
+        patients = patients.map { it.mapToCache() },
+        resources = resources.map { it.mapToCache() }
     )
 }

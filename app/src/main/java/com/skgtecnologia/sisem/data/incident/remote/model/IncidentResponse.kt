@@ -18,7 +18,7 @@ data class IncidentResponse(
 
 fun IncidentResponse.mapToDomain(): IncidentModel = IncidentModel(
     incident = incident.mapToDomain(),
-    patientModels = patients.map { it.mapToDomain() },
+    patients = patients.map { it.mapToDomain() },
     resources = resources.map { it.mapToDomain() }
 )
 
