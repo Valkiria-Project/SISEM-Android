@@ -15,6 +15,7 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
+import com.skgtecnologia.sisem.domain.medicalhistory.model.ACCEPT_TRANSFER_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ADMINISTRATION_ROUTE
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ADMINISTRATION_ROUTE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ALIVE_KEY
@@ -71,6 +72,7 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextUiModel
 import com.valkiria.uicomponents.components.media.MediaActionsUiModel
 import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
+import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import com.valkiria.uicomponents.components.signature.SignatureUiModel
 import com.valkiria.uicomponents.components.slider.SliderUiModel
@@ -546,12 +548,24 @@ class MedicalHistoryViewModel @Inject constructor(
             }
         )
 
-        segmentedSwitchAction.viewsVisibility.forEach { viewsVisibility ->
+        val viewsVisibility =
+            if (
+                segmentedSwitchAction.identifier == ACCEPT_TRANSFER_KEY &&
+                !segmentedSwitchAction.status
+            ) {
+                segmentedSwitchAction.viewsVisibility.map { entry ->
+                    entry.key to true
+                }.toMap()
+            } else {
+                segmentedSwitchAction.viewsVisibility
+            }
+
+        viewsVisibility.forEach { viewVisibility ->
             updateBodyModel(
                 uiModels = updatedBody,
-                identifier = viewsVisibility.key
+                identifier = viewVisibility.key
             ) { model ->
-                updateComponentVisibility(model, viewsVisibility)
+                updateComponentVisibility(model, viewVisibility)
             }.also { body -> updatedBody = body }
         }
 
@@ -642,6 +656,20 @@ class MedicalHistoryViewModel @Inject constructor(
         }
 
         is LabelUiModel -> model.copy(visibility = viewsVisibility.value)
+
+        is RichLabelUiModel -> model.copy(visibility = viewsVisibility.value)
+
+        is SignatureUiModel -> {
+            if (viewsVisibility.value) {
+                model.copy(visibility = viewsVisibility.value)
+            } else {
+                signatureValues.remove(viewsVisibility.key)
+                model.copy(
+                    signature = null,
+                    visibility = viewsVisibility.value
+                )
+            }
+        }
 
         is SliderUiModel -> {
             if (viewsVisibility.value) {
