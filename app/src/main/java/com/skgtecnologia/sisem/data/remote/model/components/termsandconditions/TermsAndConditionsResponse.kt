@@ -11,6 +11,8 @@ import com.valkiria.uicomponents.components.termsandconditions.TermsAndCondition
 @JsonClass(generateAdapter = true)
 data class TermsAndConditionsResponse(
     @Json(name = "identifier") val identifier: String?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
@@ -18,6 +20,8 @@ data class TermsAndConditionsResponse(
     override val type: BodyRowType = BodyRowType.TERMS_AND_CONDITIONS
 
     override fun mapToUi(): TermsAndConditionsUiModel = TermsAndConditionsUiModel(
+        visibility = visibility ?: true,
+        required = required ?: false,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

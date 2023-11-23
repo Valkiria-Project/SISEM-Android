@@ -59,7 +59,8 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
     data class InputAction(
         override val identifier: String,
         val updatedValue: String,
-        val fieldValidated: Boolean
+        val fieldValidated: Boolean,
+        val required: Boolean
     ) : GenericUiAction(identifier)
 
     data class InventoryAction(
@@ -79,12 +80,14 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
     ) : GenericUiAction(identifier)
 
     data class NotificationAction(
-        override val identifier: String
+        override val identifier: String,
+        val isDismiss: Boolean
     ) : GenericUiAction(identifier)
 
     data class SegmentedSwitchAction(
         override val identifier: String,
-        val status: Boolean
+        val status: Boolean,
+        val viewsVisibility: Map<String, Boolean>
     ) : GenericUiAction(identifier)
 
     data class SignatureAction(

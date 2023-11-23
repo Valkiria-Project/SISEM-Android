@@ -16,6 +16,8 @@ data class InventorySearchResponse(
     @Json(name = "title") val title: TextResponse?,
     @Json(name = "icon") val icon: String?,
     @Json(name = "inventory_items") val inventoryItems: List<InventoryItemResponse>?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
@@ -27,6 +29,8 @@ data class InventorySearchResponse(
         title = title?.mapToUi() ?: error("InventorySearch title cannot be null"),
         icon = icon ?: error("InventorySearch icon cannot be null"),
         inventoryItems = inventoryItems?.map { it.mapToUi() },
+        visibility = visibility ?: true,
+        required = required ?: false,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

@@ -24,6 +24,8 @@ data class InfoCardResponse(
     @Json(name = "date") val date: TextResponse?,
     @Json(name = "chip_section") val chipSection: ChipSectionResponse?,
     @Json(name = "reports_detail") val reportsDetail: ReportsDetailResponse?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
@@ -38,6 +40,8 @@ data class InfoCardResponse(
         date = date?.mapToUi(),
         chipSection = chipSection?.mapToUi(),
         reportsDetail = reportsDetail?.mapToUi(),
+        visibility = visibility ?: true,
+        required = required ?: false,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

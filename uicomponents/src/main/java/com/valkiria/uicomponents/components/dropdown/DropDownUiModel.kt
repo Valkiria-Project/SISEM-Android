@@ -13,6 +13,8 @@ data class DropDownUiModel(
     val selected: String = "",
     val header: HeaderUiModel,
     val section: String?,
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier
 ) : BodyRowModel {

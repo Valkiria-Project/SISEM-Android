@@ -116,7 +116,7 @@ fun BodySection(
     onAction: (actionInput: UiAction) -> Unit
 ) {
     val listState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
 
     if (body?.isNotEmpty() == true) {
         Box(modifier = modifier.fillMaxSize()) {
@@ -137,7 +137,7 @@ fun BodySection(
                 handleBodyRows(
                     body = body,
                     listState = listState,
-                    coroutineScope = coroutineScope,
+                    coroutineScope = scope,
                     validateFields = validateFields,
                     onAction = onAction
                 )
@@ -150,7 +150,7 @@ fun BodySection(
                         .align(Alignment.BottomCenter)
                 ) {
                     StepperComponent(uiModel = model) { selectedIndex ->
-                        coroutineScope.launch {
+                        scope.launch {
                             val selected = model.options[selectedIndex.toString()]
 
                             val contentHeader = body.indexOfFirst {
@@ -189,12 +189,16 @@ private fun LazyListScope.handleBodyRows(
 ) {
     body.forEach { model ->
         when (model) {
-            is ButtonUiModel -> item(key = model.identifier) {
-                HandleButtonRows(model, onAction)
+            is ButtonUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    HandleButtonRows(model, onAction)
+                }
             }
 
-            is ChipUiModel -> item(key = model.identifier) {
-                HandleChipRows(model, onAction)
+            is ChipUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    HandleChipRows(model, onAction)
+                }
             }
 
             is ChipOptionsUiModel -> if (model.visibility) {
@@ -210,68 +214,80 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
-            is ChipSelectionUiModel -> item(key = model.identifier) {
-                ChipSelectionComponent(
-                    uiModel = model,
-                    validateFields = validateFields
-                ) { id, chipSelectionItem, isSelection, viewsVisibility ->
-                    onAction(
-                        GenericUiAction.ChipSelectionAction(
-                            identifier = id,
-                            chipSelectionItemUiModel = chipSelectionItem,
-                            status = isSelection,
-                            viewsVisibility = viewsVisibility
+            is ChipSelectionUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    ChipSelectionComponent(
+                        uiModel = model,
+                        validateFields = validateFields
+                    ) { id, chipSelectionItem, isSelection, viewsVisibility ->
+                        onAction(
+                            GenericUiAction.ChipSelectionAction(
+                                identifier = id,
+                                chipSelectionItemUiModel = chipSelectionItem,
+                                status = isSelection,
+                                viewsVisibility = viewsVisibility
+                            )
                         )
-                    )
-                }
-            }
-
-            is CrewMemberSignatureUiModel -> item(key = model.identifier) {
-                CrewMemberSignatureComponent(uiModel = model)
-            }
-
-            is DetailedInfoListUiModel -> item(key = model.identifier) {
-                DetailedInfoListComponent(uiModel = model)
-            }
-
-            is DropDownUiModel -> item(key = model.identifier) {
-                DropDownComponent(model, validateFields) { dropDownInputUiModel ->
-                    onAction(
-                        GenericUiAction.DropDownAction(
-                            identifier = dropDownInputUiModel.identifier,
-                            id = dropDownInputUiModel.id,
-                            name = dropDownInputUiModel.name,
-                            fieldValidated = dropDownInputUiModel.fieldValidated
-                        )
-                    )
-                }
-            }
-
-            is FiltersUiModel -> stickyHeader(key = model.identifier) {
-                FiltersComponent(uiModel = model) { selected, _ ->
-                    coroutineScope.launch {
-                        val contentHeader = body.indexOfFirst {
-                            it is HeaderUiModel && it.title.text == selected
-                        }
-
-                        if (contentHeader >= 0) {
-                            listState.animateScrollToItem(index = contentHeader)
-                        }
                     }
                 }
-
-                // FIXME: Send data to Stepper or create shared fun
             }
 
-            is FindingUiModel -> item(key = model.identifier) {
-                FindingComponent(uiModel = model) { id, status, findingDetail ->
-                    onAction(
-                        GenericUiAction.FindingAction(
-                            identifier = id,
-                            status = status,
-                            findingDetail = findingDetail
+            is CrewMemberSignatureUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    CrewMemberSignatureComponent(uiModel = model)
+                }
+            }
+
+            is DetailedInfoListUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    DetailedInfoListComponent(uiModel = model)
+                }
+            }
+
+            is DropDownUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    DropDownComponent(model, validateFields) { dropDownInputUiModel ->
+                        onAction(
+                            GenericUiAction.DropDownAction(
+                                identifier = dropDownInputUiModel.identifier,
+                                id = dropDownInputUiModel.id,
+                                name = dropDownInputUiModel.name,
+                                fieldValidated = dropDownInputUiModel.fieldValidated
+                            )
                         )
-                    )
+                    }
+                }
+            }
+
+            is FiltersUiModel -> if (model.visibility) {
+                stickyHeader(key = model.identifier) {
+                    FiltersComponent(uiModel = model) { selected, _ ->
+                        coroutineScope.launch {
+                            val contentHeader = body.indexOfFirst {
+                                it is HeaderUiModel && it.title.text == selected
+                            }
+
+                            if (contentHeader >= 0) {
+                                listState.animateScrollToItem(index = contentHeader)
+                            }
+                        }
+                    }
+
+                    // FIXME: Send data to Stepper or create shared fun
+                }
+            }
+
+            is FindingUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    FindingComponent(uiModel = model) { id, status, findingDetail ->
+                        onAction(
+                            GenericUiAction.FindingAction(
+                                identifier = id,
+                                status = status,
+                                findingDetail = findingDetail
+                            )
+                        )
+                    }
                 }
             }
 
@@ -289,134 +305,171 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
-            is HeaderUiModel -> item(key = model.identifier) {
-                HeaderSection(
-                    headerUiModel = model
-                ) {
-                    onAction(HeaderUiAction.GoBack)
+            is HeaderUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    HeaderSection(
+                        headerUiModel = model
+                    ) {
+                        onAction(HeaderUiAction.GoBack)
+                    }
                 }
             }
 
-            is HumanBodyUiModel -> item(key = model.identifier) {
-                HumanBodyComponent(model) { values ->
-                    onAction(GenericUiAction.HumanBodyAction(model.identifier, values))
+            is HumanBodyUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    HumanBodyComponent(model) { values ->
+                        onAction(GenericUiAction.HumanBodyAction(model.identifier, values))
+                    }
                 }
             }
 
-            is ImageButtonSectionUiModel -> item(key = model.identifier) {
-                ImageButtonSectionComponent(model) { id, itemId ->
-                    onAction(
-                        GenericUiAction.ImageButtonAction(
-                            identifier = id,
-                            itemIdentifier = itemId
+            is ImageButtonSectionUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    ImageButtonSectionComponent(model) { id, itemId ->
+                        onAction(
+                            GenericUiAction.ImageButtonAction(
+                                identifier = id,
+                                itemIdentifier = itemId
+                            )
                         )
-                    )
+                    }
                 }
             }
 
-            is InfoCardUiModel -> item(key = model.identifier) {
-                HandleInfoCardRows(model, onAction)
+            is InfoCardUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    HandleInfoCardRows(model, onAction)
+                }
             }
 
-            is InventoryCheckUiModel -> item(key = model.identifier) {
-                InventoryCheckComponent(
-                    uiModel = model,
-                    validateFields = validateFields
-                ) { inputUiModel ->
-                    onAction(
-                        GenericUiAction.InventoryAction(
-                            identifier = model.identifier,
-                            itemIdentifier = inputUiModel.identifier,
-                            updatedValue = inputUiModel.updatedValue,
-                            fieldValidated = inputUiModel.fieldValidated
+            is InventoryCheckUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    InventoryCheckComponent(
+                        uiModel = model,
+                        validateFields = validateFields
+                    ) { inputUiModel ->
+                        onAction(
+                            GenericUiAction.InventoryAction(
+                                identifier = model.identifier,
+                                itemIdentifier = inputUiModel.identifier,
+                                updatedValue = inputUiModel.updatedValue,
+                                fieldValidated = inputUiModel.fieldValidated
+                            )
                         )
-                    )
+                    }
                 }
             }
 
-            is InventorySearchUiModel -> item(key = model.identifier) {
-                InventorySearchComponent(uiModel = model)
-            }
-
-            is LabelUiModel -> item(key = model.identifier) {
-                LabelComponent(uiModel = model)
-            }
-
-            is MediaActionsUiModel -> item(key = model.identifier) {
-                val mediaActionsIndex by remember {
-                    mutableIntStateOf(body.indexOfFirst { it is MediaActionsUiModel })
+            is InventorySearchUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    InventorySearchComponent(uiModel = model)
                 }
+            }
 
-                MediaActionsComponent(
-                    uiModel = model,
-                    listState = listState,
-                    mediaActionsIndex = mediaActionsIndex
-                ) { id, mediaAction ->
-                    onAction(
-                        GenericUiAction.MediaItemAction(
-                            identifier = id,
-                            mediaAction = mediaAction
+            is LabelUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    LabelComponent(uiModel = model)
+                }
+            }
+
+            is MediaActionsUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    val mediaActionsIndex by remember {
+                        mutableIntStateOf(body.indexOfFirst { it is MediaActionsUiModel })
+                    }
+
+                    MediaActionsComponent(
+                        uiModel = model,
+                        listState = listState,
+                        mediaActionsIndex = mediaActionsIndex
+                    ) { id, mediaAction ->
+                        onAction(
+                            GenericUiAction.MediaItemAction(
+                                identifier = id,
+                                mediaAction = mediaAction
+                            )
                         )
-                    )
+                    }
                 }
             }
 
-            is MedsSelectorUiModel -> item(key = model.identifier) {
-                MedsSelectorComponent(uiModel = model) { id ->
-                    onAction(GenericUiAction.MedsSelectorAction(identifier = id))
+            is MedsSelectorUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    MedsSelectorComponent(uiModel = model) { id ->
+                        onAction(GenericUiAction.MedsSelectorAction(identifier = id))
+                    }
                 }
             }
 
-            is PasswordTextFieldUiModel -> item(key = model.identifier) {
-                HandlePasswordTextFieldRows(model, validateFields, onAction)
+            is PasswordTextFieldUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    HandlePasswordTextFieldRows(model, validateFields, onAction)
+                }
             }
 
-            is RichLabelUiModel -> item(key = model.identifier) {
-                RichLabelComponent(uiModel = model)
+            is RichLabelUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    RichLabelComponent(uiModel = model)
+                }
             }
 
-            is SegmentedSwitchUiModel -> item(key = model.identifier) {
-                SegmentedSwitchComponent(uiModel = model) { id, status ->
-                    onAction(
-                        GenericUiAction.SegmentedSwitchAction(
-                            identifier = id,
-                            status = status
+            is SegmentedSwitchUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    SegmentedSwitchComponent(uiModel = model) { id, status, viewsVisibility ->
+                        onAction(
+                            GenericUiAction.SegmentedSwitchAction(
+                                identifier = id,
+                                status = status,
+                                viewsVisibility = viewsVisibility
+                            )
                         )
-                    )
+                    }
                 }
             }
 
-            is SignatureUiModel -> item(key = model.identifier) {
-                SignatureComponent(uiModel = model) { id ->
-                    onAction(GenericUiAction.SignatureAction(identifier = id))
+            is SignatureUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    SignatureComponent(uiModel = model) { id ->
+                        onAction(GenericUiAction.SignatureAction(identifier = id))
+                    }
                 }
             }
 
-            is SimpleCardUiModel -> item(key = model.identifier) {
-                SimpleCardComponent(uiModel = model) { identifier ->
-                    onAction(GenericUiAction.SimpleCardAction(identifier = identifier))
+            is SimpleCardUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    SimpleCardComponent(uiModel = model) { identifier ->
+                        onAction(GenericUiAction.SimpleCardAction(identifier = identifier))
+                    }
                 }
             }
 
-            is SliderUiModel -> item(key = model.identifier) {
-                SliderComponent(uiModel = model) { id, value ->
-                    onAction(GenericUiAction.SliderAction(identifier = id, value = value))
+            is SliderUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    SliderComponent(uiModel = model) { id, value ->
+                        onAction(GenericUiAction.SliderAction(identifier = id, value = value))
+                    }
                 }
             }
 
-            is TermsAndConditionsUiModel -> item(key = model.identifier) {
-                TermsAndConditionsComponent(uiModel = model.mapToLoginModel()) { link ->
-                    onAction(TermsAndConditions(link = link))
+            is TermsAndConditionsUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    TermsAndConditionsComponent(uiModel = model.mapToLoginModel()) { link ->
+                        onAction(TermsAndConditions(link = link))
+                    }
                 }
             }
 
-            is TextFieldUiModel -> item(key = model.identifier) {
-                HandleTextFieldRows(model, validateFields, onAction)
+            is TextFieldUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    HandleTextFieldRows(model, validateFields, onAction)
+                }
             }
 
-            is TimePickerUiModel -> item(key = model.identifier) {
-                TimePickerComponent(uiModel = model) { id, time ->
-                    onAction(GenericUiAction.TimePickerAction(identifier = id, value = time))
+            is TimePickerUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    TimePickerComponent(uiModel = model) { id, time ->
+                        onAction(GenericUiAction.TimePickerAction(identifier = id, value = time))
+                    }
                 }
             }
         }
@@ -619,7 +672,8 @@ private fun HandleTextFieldRows(
                 GenericUiAction.InputAction(
                     identifier = inputUiModel.identifier,
                     updatedValue = inputUiModel.updatedValue,
-                    fieldValidated = inputUiModel.fieldValidated
+                    fieldValidated = inputUiModel.fieldValidated,
+                    required = inputUiModel.required
                 )
             )
         }

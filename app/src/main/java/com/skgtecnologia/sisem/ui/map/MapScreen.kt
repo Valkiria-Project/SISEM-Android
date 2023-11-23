@@ -18,6 +18,7 @@ import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.NavigationRoute
 import com.valkiria.uicomponents.bricks.map.MapView
+import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import timber.log.Timber
 
 @Suppress("MagicNumber")
@@ -27,23 +28,20 @@ fun MapScreen(
     onAction: (NavigationRoute) -> Unit,
     onLogout: () -> Unit
 ) {
-    val viewModel = hiltViewModel<MapViewModel>()
     val context = LocalContext.current
+    val viewModel = hiltViewModel<MapViewModel>()
+
     val drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
-    var hasNotification by remember { mutableStateOf(false) }
-
+    var notificationData by remember { mutableStateOf<NotificationData?>(null) }
     NotificationEventHandler.subscribeNotificationEvent {
-        hasNotification = true
+        notificationData = it
     }
 
     BackHandler {
         Timber.d("Close the App")
         (context as ComponentActivity).finish()
     }
-
-    // Observe this, subscribe only once, not every Composable pass
-    viewModel.getLocationCoordinates()
 
     MenuDrawer(
         drawerState = drawerState,
@@ -56,9 +54,12 @@ fun MapScreen(
     ) {
         MapView(
             coordinates = viewModel.uiState.location,
+            incident = viewModel.uiState.incident,
             drawerState = drawerState,
-            hasNotification = hasNotification,
+            notificationData = notificationData,
             modifier = modifier.fillMaxSize()
-        )
+        ) {
+            notificationData = null
+        }
     }
 }

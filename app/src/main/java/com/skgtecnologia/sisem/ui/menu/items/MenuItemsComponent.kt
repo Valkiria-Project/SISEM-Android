@@ -26,7 +26,7 @@ fun MenuItemsComponent(
     var currentPick by remember {
         mutableStateOf<NavigationRoute>(MapScreen)
     }
-    val coroutineScope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = modifier
@@ -36,7 +36,7 @@ fun MenuItemsComponent(
         menuItems.forEach { item ->
             MenuItem(item = item) { navOption ->
                 if (currentPick == navOption) {
-                    coroutineScope.launch {
+                    scope.launch {
                         drawerState.close()
                     }
                     return@MenuItem
@@ -44,7 +44,7 @@ fun MenuItemsComponent(
 
                 currentPick = navOption
 
-                coroutineScope.launch {
+                scope.launch {
                     drawerState.close()
                 }
 

@@ -11,7 +11,7 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "ComplexMethod")
 @JsonClass(generateAdapter = true)
 data class TextFieldResponse(
     @Json(name = "identifier") val identifier: String?,
@@ -26,8 +26,12 @@ data class TextFieldResponse(
     @Json(name = "validations") val validations: List<ValidationResponse>?,
     @Json(name = "real_time_validation") val realTimeValidation: Boolean?,
     @Json(name = "max_date") val maxDate: String?,
+    @Json(name = "min_date") val minDate: String?,
+    @Json(name = "visibility") val visibility: Boolean?,
     @Json(name = "required") val required: Boolean?,
     @Json(name = "text") val text: String?,
+    @Json(name = "min_lines") val minLines: Int?,
+    @Json(name = "single_line") val singleLine: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val margins: Modifier?
 ) : BodyRowResponse {
@@ -48,8 +52,12 @@ data class TextFieldResponse(
             ?: error("TextField validations cannot be null"),
         realTimeValidation = realTimeValidation ?: false,
         maxDate = maxDate,
+        minDate = minDate,
+        visibility = visibility ?: true,
         required = required ?: true,
         text = text ?: "",
+        minLines = minLines ?: 1,
+        singleLine = singleLine ?: true,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = margins ?: Modifier
     )

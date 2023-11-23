@@ -16,6 +16,8 @@ data class InfoCardUiModel(
     val date: TextUiModel?,
     val chipSection: ChipSectionUiModel?,
     val reportsDetail: ReportsDetailUiModel?,
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier
 ) : BodyRowModel {

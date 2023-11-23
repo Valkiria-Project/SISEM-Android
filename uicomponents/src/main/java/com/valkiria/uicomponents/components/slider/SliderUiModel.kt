@@ -10,6 +10,8 @@ data class SliderUiModel(
     val min: Int,
     val max: Int,
     val selected: Int = 0,
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier
 ) : BodyRowModel {

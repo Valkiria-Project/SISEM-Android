@@ -11,6 +11,8 @@ import com.valkiria.uicomponents.components.media.MediaActionsUiModel
 data class MediaActionsResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "within_form") val withinForm: Boolean?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
@@ -19,6 +21,8 @@ data class MediaActionsResponse(
     override fun mapToUi(): MediaActionsUiModel = MediaActionsUiModel(
         identifier = identifier ?: error("MediaActions identifier cannot be null"),
         withinForm = withinForm ?: false,
+        visibility = visibility ?: true,
+        required = required ?: false,
         modifier = modifier ?: Modifier
     )
 }

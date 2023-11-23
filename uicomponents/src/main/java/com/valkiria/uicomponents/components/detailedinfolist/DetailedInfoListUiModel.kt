@@ -11,6 +11,8 @@ data class DetailedInfoListUiModel(
     val details: List<DetailedInfoUiModel>,
     val labelTextStyle: TextStyle,
     val textTextStyle: TextStyle,
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {

@@ -19,6 +19,8 @@ data class PasswordTextFieldResponse(
     @Json(name = "keyboard_type") val keyboardOptions: KeyboardOptions?,
     @Json(name = "text_style") val textStyle: TextStyle?,
     @Json(name = "validations") val validations: List<ValidationResponse>?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val margins: Modifier?
 ) : BodyRowResponse {
@@ -35,6 +37,8 @@ data class PasswordTextFieldResponse(
         textStyle = textStyle ?: error("PasswordTextField textStyle cannot be null"),
         validations = validations?.map { it.mapToUi() }
             ?: error("PasswordTextField validations cannot be null"),
+        visibility = visibility ?: true,
+        required = required ?: false,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = margins ?: Modifier
     )
