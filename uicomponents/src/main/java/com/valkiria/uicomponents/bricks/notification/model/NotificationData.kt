@@ -14,6 +14,7 @@ import timber.log.Timber
 private const val NOTIFICATION_TYPE_KEY = "notification_type"
 
 // INCIDENT_ASSIGNED
+private const val CRU = "CRU"
 private const val INCIDENT_NUMBER = "incident_number"
 private const val INCIDENT_TYPE = "incident_type"
 private const val INCIDENT_PRIORITY = "incident_priority"
@@ -25,6 +26,10 @@ private const val GEOLOCATION = "geolocation"
 // TRANSMILENIO_AUTHORIZATION
 private const val AUTHORIZATION_NUMBER = "authorization_number"
 private const val AUTHORIZES = "authorizes"
+private const val JOURNEY = "journey"
+
+// TRANSMILENIO_DENIED
+private const val AUTHORIZATION_NUMBER_DENIED = "authorization_number"
 
 // SUPPORT_REQUEST_ON_THE_WAY
 private const val RESOURCE_TYPE_AND_CODE = "resource_type_and_code"
@@ -49,6 +54,7 @@ fun getNotificationDataByType(notificationDataMap: Map<String, String>): Notific
 
     return when (notificationType) {
         INCIDENT_ASSIGNED -> IncidentAssignedNotification(
+            cru = notificationDataMap[CRU].orEmpty(),
             incidentNumber = notificationDataMap[INCIDENT_NUMBER].orEmpty(),
             incidentType = notificationDataMap[INCIDENT_TYPE].orEmpty(),
             incidentPriority = notificationDataMap[INCIDENT_PRIORITY].orEmpty(),
@@ -60,10 +66,13 @@ fun getNotificationDataByType(notificationDataMap: Map<String, String>): Notific
 
         TRANSMILENIO_AUTHORIZATION -> TransmilenioAuthorizationNotification(
             authorizationNumber = notificationDataMap[AUTHORIZATION_NUMBER].orEmpty(),
-            authorizes = notificationDataMap[AUTHORIZES].orEmpty()
+            authorizes = notificationDataMap[AUTHORIZES].orEmpty(),
+            journey = notificationDataMap[JOURNEY].orEmpty()
         )
 
-        TRANSMILENIO_DENIED -> TransmilenioDeniedNotification()
+        TRANSMILENIO_DENIED -> TransmilenioDeniedNotification(
+            authorizationNumber = notificationDataMap[AUTHORIZATION_NUMBER_DENIED].orEmpty()
+        )
 
         NO_PRE_OPERATIONAL_GENERATED_CRUE -> NoPreOperationalGeneratedCrueNotification()
 
@@ -92,7 +101,7 @@ fun getNotificationRawDataByType(notificationData: NotificationData): Map<String
     return when (notificationData) {
         is IncidentAssignedNotification -> mapOf(
             NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
-            INCIDENT_NUMBER to notificationData.incidentNumber,
+            CRU to notificationData.cru,
             INCIDENT_NUMBER to notificationData.incidentNumber,
             INCIDENT_TYPE to notificationData.incidentType,
             INCIDENT_PRIORITY to notificationData.incidentPriority,
@@ -105,11 +114,13 @@ fun getNotificationRawDataByType(notificationData: NotificationData): Map<String
         is TransmilenioAuthorizationNotification -> mapOf(
             NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
             AUTHORIZATION_NUMBER to notificationData.authorizationNumber,
-            AUTHORIZES to notificationData.authorizes
+            AUTHORIZES to notificationData.authorizes,
+            JOURNEY to notificationData.journey
         )
 
         is TransmilenioDeniedNotification -> mapOf(
-            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name
+            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
+            AUTHORIZATION_NUMBER_DENIED to notificationData.authorizationNumber
         )
 
         is NoPreOperationalGeneratedCrueNotification -> mapOf(
