@@ -20,6 +20,8 @@ data class TextFieldUiModel(
     val validations: List<ValidationUiModel>,
     val realTimeValidation: Boolean = false,
     val maxDate: String? = null,
+    val minDate: String? = null,
+    val visibility: Boolean = true,
     val required: Boolean = true,
     val singleLine: Boolean = true,
     val minLines: Int = 1,

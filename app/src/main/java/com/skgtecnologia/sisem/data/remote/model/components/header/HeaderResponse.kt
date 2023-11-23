@@ -18,6 +18,8 @@ data class HeaderResponse(
     @Json(name = "left_icon") val leftIcon: String?,
     @Json(name = "right_icon") val rightIcon: String?,
     @Json(name = "badge_count") val badgeCount: String?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
@@ -30,6 +32,8 @@ data class HeaderResponse(
         leftIcon = leftIcon,
         rightIcon = rightIcon,
         badgeCount = badgeCount,
+        visibility = visibility ?: true,
+        required = required ?: false,
         arrangement = Arrangement.Center,
         modifier = modifier ?: Modifier
     )

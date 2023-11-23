@@ -13,6 +13,8 @@ data class LabelUiModel(
     val textStyle: TextStyle,
     val textColor: String = DEFAULT_TEXT_COLOR,
     val rightIcon: String? = null,
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val arrangement: Arrangement.Horizontal = Arrangement.Center,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {

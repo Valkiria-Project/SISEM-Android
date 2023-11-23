@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.di
 import android.app.Application
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.skgtecnologia.sisem.data.notifications.NotificationsManager
+import com.skgtecnologia.sisem.data.notification.NotificationsManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -13,6 +13,8 @@ data class FiltersResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "options") val options: List<String>?,
     @Json(name = "text_style") val textStyle: TextStyle?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
@@ -22,6 +24,8 @@ data class FiltersResponse(
         identifier = identifier ?: error("Filters identifier cannot be null"),
         options = options ?: error("Filters options cannot be null"),
         textStyle = textStyle ?: error("Filters textStyle cannot be null"),
+        visibility = visibility ?: true,
+        required = required ?: false,
         modifier = modifier ?: Modifier
     )
 }

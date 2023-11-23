@@ -60,12 +60,15 @@ fun MedicalHistoryScreen(
 
     LaunchedEffect(photoTaken) {
         launch {
-            photoTaken.let { viewModel.updateMediaActions() }
+            if (photoTaken) {
+                viewModel.updateMediaActions()
+            }
         }
     }
 
     BodySection(
-        body = uiState.screenModel?.body
+        body = uiState.screenModel?.body,
+        validateFields = uiState.validateFields
     ) { uiAction ->
         handleAction(uiAction, viewModel)
     }
