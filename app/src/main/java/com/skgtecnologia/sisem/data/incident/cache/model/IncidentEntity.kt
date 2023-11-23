@@ -16,14 +16,16 @@ data class IncidentEntity(
     var id: Long = 0,
     @Embedded(prefix = "incident_") val incident: IncidentDetailEntity,
     @ColumnInfo(name = "patients") val patients: List<PatientEntity>,
-    @ColumnInfo(name = "resources") val resources: List<ResourceEntity>
+    @ColumnInfo(name = "resources") val resources: List<ResourceEntity>,
+    @ColumnInfo(name = "is_active") val isActive: Boolean
 )
 
 fun IncidentEntity.mapToDomain(): IncidentUiModel = with(this) {
     IncidentUiModel(
         incident = incident.mapToDomain(),
         patients = patients.map { it.mapToDomain() },
-        resources = resources.map { it.mapToDomain() }
+        resources = resources.map { it.mapToDomain() },
+        isActive = isActive
     )
 }
 
@@ -31,6 +33,7 @@ fun IncidentUiModel.mapToCache(): IncidentEntity = with(this) {
     IncidentEntity(
         incident = incident.mapToCache(),
         patients = patients.map { it.mapToCache() },
-        resources = resources.map { it.mapToCache() }
+        resources = resources.map { it.mapToCache() },
+        isActive = isActive
     )
 }
