@@ -13,7 +13,6 @@ interface IncidentDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertIncident(incidentEntity: IncidentEntity): Long
 
-    // FIXME: Observe the last active Incident only
-    @Query("SELECT * FROM incident LIMIT 1")
-    fun observeActiveIncident(): Flow<IncidentEntity?>
+    @Query("SELECT * FROM incident WHERE is_active = :isActive LIMIT 1")
+    fun observeActiveIncident(isActive: Boolean = true): Flow<IncidentEntity?>
 }
