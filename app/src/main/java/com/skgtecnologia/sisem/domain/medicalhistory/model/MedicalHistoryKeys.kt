@@ -21,6 +21,8 @@ const val PREGNANT_WEEKS_KEY = "PREGNANT_WEEKS"
 
 const val ALIVE_KEY = "KEY_ALIVE"
 
+const val ACCEPT_TRANSFER_KEY = "KEY_ACCEPT_TRANSFER"
+
 // FIXME: Move this to String resources
 const val APPLIED_DOSES = "Dosis aplicada"
 const val CODE = "Código"
