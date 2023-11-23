@@ -35,7 +35,7 @@ fun NotificationData.mapToUi(): NotificationUiModel {
             icon = INCIDENT_ASSIGNED.icon,
             iconColor = INCIDENT_ASSIGNED.iconColor,
             title = INCIDENT_ASSIGNED.title,
-            description = this.incidentNumber,
+            description = this.cru,
             contentLeft = this.address,
             contentRight = this.hour
         )

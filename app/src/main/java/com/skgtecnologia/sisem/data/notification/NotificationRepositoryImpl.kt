@@ -8,9 +8,8 @@ import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.domain.notification.repository.NotificationRepository
 import com.valkiria.uicomponents.bricks.notification.model.IncidentAssignedNotification
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
-import com.valkiria.uicomponents.bricks.notification.model.toIncidentNumber
-import javax.inject.Inject
 import kotlinx.coroutines.flow.first
+import javax.inject.Inject
 
 class NotificationRepositoryImpl @Inject constructor(
     private val authCacheDataSource: AuthCacheDataSource,
@@ -25,7 +24,7 @@ class NotificationRepositoryImpl @Inject constructor(
 
         if (notification is IncidentAssignedNotification) {
             incidentRemoteDataSource.getIncidentInfo(
-                idIncident = notification.incidentNumber.toIncidentNumber(),
+                idIncident = notification.incidentNumber,
                 idTurn = authCacheDataSource.observeAccessToken()
                     .first()
                     ?.turn

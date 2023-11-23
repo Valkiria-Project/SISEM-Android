@@ -14,6 +14,7 @@ import timber.log.Timber
 private const val NOTIFICATION_TYPE_KEY = "notification_type"
 
 // INCIDENT_ASSIGNED
+private const val CRU = "CRU"
 private const val INCIDENT_NUMBER = "incident_number"
 private const val INCIDENT_TYPE = "incident_type"
 private const val INCIDENT_PRIORITY = "incident_priority"
@@ -49,6 +50,7 @@ fun getNotificationDataByType(notificationDataMap: Map<String, String>): Notific
 
     return when (notificationType) {
         INCIDENT_ASSIGNED -> IncidentAssignedNotification(
+            cru = notificationDataMap[CRU].orEmpty(),
             incidentNumber = notificationDataMap[INCIDENT_NUMBER].orEmpty(),
             incidentType = notificationDataMap[INCIDENT_TYPE].orEmpty(),
             incidentPriority = notificationDataMap[INCIDENT_PRIORITY].orEmpty(),
@@ -92,7 +94,7 @@ fun getNotificationRawDataByType(notificationData: NotificationData): Map<String
     return when (notificationData) {
         is IncidentAssignedNotification -> mapOf(
             NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
-            INCIDENT_NUMBER to notificationData.incidentNumber,
+            CRU to notificationData.cru,
             INCIDENT_NUMBER to notificationData.incidentNumber,
             INCIDENT_TYPE to notificationData.incidentType,
             INCIDENT_PRIORITY to notificationData.incidentPriority,
