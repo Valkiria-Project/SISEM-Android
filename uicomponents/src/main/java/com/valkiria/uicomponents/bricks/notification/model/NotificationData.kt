@@ -26,6 +26,7 @@ private const val GEOLOCATION = "geolocation"
 // TRANSMILENIO_AUTHORIZATION
 private const val AUTHORIZATION_NUMBER = "authorization_number"
 private const val AUTHORIZES = "authorizes"
+private const val JOURNEY = "journey"
 
 // SUPPORT_REQUEST_ON_THE_WAY
 private const val RESOURCE_TYPE_AND_CODE = "resource_type_and_code"
@@ -62,7 +63,8 @@ fun getNotificationDataByType(notificationDataMap: Map<String, String>): Notific
 
         TRANSMILENIO_AUTHORIZATION -> TransmilenioAuthorizationNotification(
             authorizationNumber = notificationDataMap[AUTHORIZATION_NUMBER].orEmpty(),
-            authorizes = notificationDataMap[AUTHORIZES].orEmpty()
+            authorizes = notificationDataMap[AUTHORIZES].orEmpty(),
+            journey = notificationDataMap[JOURNEY].orEmpty()
         )
 
         TRANSMILENIO_DENIED -> TransmilenioDeniedNotification()
@@ -107,7 +109,8 @@ fun getNotificationRawDataByType(notificationData: NotificationData): Map<String
         is TransmilenioAuthorizationNotification -> mapOf(
             NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
             AUTHORIZATION_NUMBER to notificationData.authorizationNumber,
-            AUTHORIZES to notificationData.authorizes
+            AUTHORIZES to notificationData.authorizes,
+            JOURNEY to notificationData.journey
         )
 
         is TransmilenioDeniedNotification -> mapOf(
