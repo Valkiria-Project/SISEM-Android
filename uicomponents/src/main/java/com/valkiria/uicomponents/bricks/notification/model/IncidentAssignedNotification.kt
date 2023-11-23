@@ -4,6 +4,7 @@ import com.valkiria.uicomponents.bricks.notification.model.NotificationType.INCI
 
 data class IncidentAssignedNotification(
     override val notificationType: NotificationType = INCIDENT_ASSIGNED,
+    val cru: String,
     val incidentNumber: String,
     val incidentType: String,
     val incidentPriority: String,

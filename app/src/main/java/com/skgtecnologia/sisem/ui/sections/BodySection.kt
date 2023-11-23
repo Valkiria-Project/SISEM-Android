@@ -116,7 +116,7 @@ fun BodySection(
     onAction: (actionInput: UiAction) -> Unit
 ) {
     val listState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
 
     if (body?.isNotEmpty() == true) {
         Box(modifier = modifier.fillMaxSize()) {
@@ -137,7 +137,7 @@ fun BodySection(
                 handleBodyRows(
                     body = body,
                     listState = listState,
-                    coroutineScope = coroutineScope,
+                    coroutineScope = scope,
                     validateFields = validateFields,
                     onAction = onAction
                 )
@@ -150,7 +150,7 @@ fun BodySection(
                         .align(Alignment.BottomCenter)
                 ) {
                     StepperComponent(uiModel = model) { selectedIndex ->
-                        coroutineScope.launch {
+                        scope.launch {
                             val selected = model.options[selectedIndex.toString()]
 
                             val contentHeader = body.indexOfFirst {
