@@ -15,6 +15,8 @@ data class LabelResponse(
     @Json(name = "text") val text: String?,
     @Json(name = "text_style") val textStyle: TextStyle?,
     @Json(name = "color") val textColor: String?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
@@ -26,6 +28,8 @@ data class LabelResponse(
         text = text ?: error("Label text cannot be null"),
         textStyle = textStyle ?: error("Label textStyle cannot be null"),
         textColor = textColor ?: error("Label textColor cannot be null"),
+        visibility = visibility ?: true,
+        required = required ?: false,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

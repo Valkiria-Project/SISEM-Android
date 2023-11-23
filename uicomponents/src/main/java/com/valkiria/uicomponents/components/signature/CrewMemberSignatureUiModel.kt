@@ -11,6 +11,8 @@ data class CrewMemberSignatureUiModel(
     val name: TextUiModel,
     val identification: TextUiModel,
     val signature: String,
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier
 ) : BodyRowModel {

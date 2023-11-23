@@ -32,7 +32,7 @@ import com.valkiria.uicomponents.mocks.getDeviceAuthSegmentedSwitchUiModel
 @Composable
 fun SegmentedSwitchComponent(
     uiModel: SegmentedSwitchUiModel,
-    onAction: (id: String, status: Boolean) -> Unit
+    onAction: (id: String, status: Boolean, viewsVisibility: Map<String, Boolean>) -> Unit
 ) {
     val items = uiModel.options.map { it.text }
     var selectedIndex by rememberSaveable(uiModel.selected) {
@@ -75,7 +75,13 @@ fun SegmentedSwitchComponent(
                     },
                     onClick = {
                         selectedIndex = index
-                        onAction(uiModel.identifier, index == 0)
+
+                        val viewsVisibility = mutableMapOf<String, Boolean>()
+                        uiModel.selectionVisibility?.forEach {
+                            viewsVisibility[it.key] = index == 0
+                        }
+
+                        onAction(uiModel.identifier, index == 0, viewsVisibility)
                     },
                     shape = when (index) {
                         /**
@@ -140,6 +146,6 @@ fun SegmentedSwitchComponent(
 fun SegmentedSwitchComponentPreview() {
     SegmentedSwitchComponent(
         uiModel = getDeviceAuthSegmentedSwitchUiModel(),
-        onAction = { _, _ -> }
+        onAction = { _, _, _ -> }
     )
 }

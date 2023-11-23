@@ -11,6 +11,8 @@ data class InventorySearchUiModel(
     val title: TextUiModel,
     val icon: String,
     val inventoryItems: List<InventoryItemUiModel>?,
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier
 ) : BodyRowModel {

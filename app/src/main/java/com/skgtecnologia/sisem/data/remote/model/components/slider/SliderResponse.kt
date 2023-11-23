@@ -15,6 +15,8 @@ data class SliderResponse(
     @Json(name = "max") val max: Int?,
     @Json(name = "selected") val selected: Int?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
+    @Json(name = "visibility") val visibility: Boolean?,
+    @Json(name = "required") val required: Boolean?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
@@ -25,6 +27,8 @@ data class SliderResponse(
         min = min ?: error("Slider min cannot be null"),
         max = max ?: error("Slider max cannot be null"),
         selected = selected ?: 0,
+        visibility = visibility ?: true,
+        required = required ?: false,
         arrangement = arrangement ?: Arrangement.Center,
         modifier = modifier ?: Modifier
     )

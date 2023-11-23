@@ -496,7 +496,8 @@ class MedicalHistoryViewModelTest {
             GenericUiAction.InputAction(
                 identifier = identifier,
                 updatedValue = "13/11/2023",
-                fieldValidated = false
+                fieldValidated = false,
+                required = false
             )
         )
 
@@ -524,7 +525,8 @@ class MedicalHistoryViewModelTest {
         viewModel.handleSegmentedSwitchAction(
             GenericUiAction.SegmentedSwitchAction(
                 identifier = IDENTIFIER,
-                status = true
+                status = true,
+                viewsVisibility = mapOf()
             )
         )
 

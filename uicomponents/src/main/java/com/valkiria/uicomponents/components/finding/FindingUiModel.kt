@@ -14,6 +14,8 @@ data class FindingUiModel(
     val segmentedValueUiModel: SegmentedValueUiModel?,
     val readOnly: Boolean,
     val findingDetail: FindingsDetailUiModel?,
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {

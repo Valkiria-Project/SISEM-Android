@@ -15,6 +15,7 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
+import com.skgtecnologia.sisem.domain.medicalhistory.model.ACCEPT_TRANSFER_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ADMINISTRATION_ROUTE
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ADMINISTRATION_ROUTE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ALIVE_KEY
@@ -53,14 +54,17 @@ import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
+import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.button.ImageButtonSectionUiModel
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
 import com.valkiria.uicomponents.components.card.PillUiModel
 import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
 import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
 import com.valkiria.uicomponents.components.chip.ChipSelectionUiModel
+import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListUiModel
 import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
 import com.valkiria.uicomponents.components.dropdown.DropDownUiModel
+import com.valkiria.uicomponents.components.header.HeaderUiModel
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.ListTextUiModel
@@ -68,6 +72,7 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextUiModel
 import com.valkiria.uicomponents.components.media.MediaActionsUiModel
 import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
+import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import com.valkiria.uicomponents.components.signature.SignatureUiModel
 import com.valkiria.uicomponents.components.slider.SliderUiModel
@@ -93,7 +98,7 @@ private const val TEMPERATURE_SYMBOL = "°C"
 private const val GLUCOMETRY_SYMBOL = "mg/dL"
 
 // FIXME: Split into use cases
-@Suppress("LargeClass", "TooManyFunctions")
+@Suppress("LargeClass", "TooManyFunctions", "LongMethod", "ComplexMethod")
 @HiltViewModel
 class MedicalHistoryViewModel @Inject constructor(
     private val getMedicalHistoryScreen: GetMedicalHistoryScreen,
@@ -109,6 +114,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
     private var initialVitalSignsTas: Int = 0
     private var initialVitalSignsFc: Int = 0
+    private var vitalSignsChipSection: ChipSectionUiModel? = null
 
     private val allowInfoCardIdentifiers = listOf(
         INITIAL_VITAL_SIGNS,
@@ -206,8 +212,10 @@ class MedicalHistoryViewModel @Inject constructor(
                     sliderValues[bodyRowModel.identifier] = bodyRowModel.selected.toString()
 
                 is TextFieldUiModel -> fieldsValues[bodyRowModel.identifier] = InputUiModel(
-                    bodyRowModel.identifier,
-                    bodyRowModel.text
+                    identifier = bodyRowModel.identifier,
+                    updatedValue = bodyRowModel.text,
+                    fieldValidated = bodyRowModel.text.isNotEmpty(),
+                    required = bodyRowModel.required
                 )
 
                 is InfoCardUiModel -> if (bodyRowModel.identifier == INITIAL_VITAL_SIGNS) {
@@ -218,6 +226,8 @@ class MedicalHistoryViewModel @Inject constructor(
                     initialVitalSignsFc = bodyRowModel.chipSection?.listText?.texts?.find {
                         it.startsWith(FC_KEY)
                     }?.substringAfter(FC_KEY)?.trim()?.toInt() ?: 0
+                } else {
+                    vitalSignsChipSection = bodyRowModel.chipSection
                 }
             }
         }
@@ -296,20 +306,7 @@ class MedicalHistoryViewModel @Inject constructor(
                 uiModels = updatedBody,
                 identifier = viewsVisibility.key
             ) { model ->
-                when {
-                    model is ChipOptionsUiModel && viewsVisibility.value ->
-                        model.copy(visibility = viewsVisibility.value)
-
-                    model is ChipOptionsUiModel && viewsVisibility.value.not() -> {
-                        chipOptionValues.remove(viewsVisibility.key)
-                        model.copy(
-                            items = model.items.map { item -> item.copy(selected = false) },
-                            visibility = viewsVisibility.value
-                        )
-                    }
-
-                    else -> model
-                }
+                updateComponentVisibility(model, viewsVisibility)
             }.also { body -> updatedBody = body }
         }
 
@@ -477,7 +474,8 @@ class MedicalHistoryViewModel @Inject constructor(
         fieldsValues[inputAction.identifier] = InputUiModel(
             inputAction.identifier,
             inputAction.updatedValue,
-            inputAction.fieldValidated
+            inputAction.fieldValidated,
+            inputAction.required
         )
 
         if (inputAction.identifier == FUR_KEY) {
@@ -538,7 +536,7 @@ class MedicalHistoryViewModel @Inject constructor(
     fun handleSegmentedSwitchAction(segmentedSwitchAction: GenericUiAction.SegmentedSwitchAction) {
         segmentedValues[segmentedSwitchAction.identifier] = segmentedSwitchAction.status
 
-        val updatedBody = updateBodyModel(
+        var updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
             identifier = segmentedSwitchAction.identifier,
             updater = { model ->
@@ -550,11 +548,154 @@ class MedicalHistoryViewModel @Inject constructor(
             }
         )
 
+        val viewsVisibility =
+            if (
+                segmentedSwitchAction.identifier == ACCEPT_TRANSFER_KEY &&
+                !segmentedSwitchAction.status
+            ) {
+                segmentedSwitchAction.viewsVisibility.map { entry ->
+                    entry.key to true
+                }.toMap()
+            } else {
+                segmentedSwitchAction.viewsVisibility
+            }
+
+        viewsVisibility.forEach { viewVisibility ->
+            updateBodyModel(
+                uiModels = updatedBody,
+                identifier = viewVisibility.key
+            ) { model ->
+                updateComponentVisibility(model, viewVisibility)
+            }.also { body -> updatedBody = body }
+        }
+
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(
                 body = updatedBody
             )
         )
+    }
+
+    private fun updateComponentVisibility(
+        model: BodyRowModel,
+        viewsVisibility: Map.Entry<String, Boolean>
+    ) = when (model) {
+        is ChipOptionsUiModel -> {
+            if (viewsVisibility.value) {
+                model.copy(visibility = viewsVisibility.value)
+            } else {
+                chipOptionValues.remove(viewsVisibility.key)
+                model.copy(
+                    items = model.items.map { item -> item.copy(selected = false) },
+                    visibility = viewsVisibility.value
+                )
+            }
+        }
+
+        is ChipSelectionUiModel -> {
+            if (viewsVisibility.value) {
+                model.copy(visibility = viewsVisibility.value)
+            } else {
+                chipSelectionValues.remove(viewsVisibility.key)
+                model.copy(
+                    selected = null,
+                    visibility = viewsVisibility.value
+                )
+            }
+        }
+
+        is DetailedInfoListUiModel -> model.copy(visibility = viewsVisibility.value)
+
+        is DropDownUiModel -> {
+            if (viewsVisibility.value) {
+                model.copy(visibility = viewsVisibility.value)
+            } else {
+                dropDownValues.remove(viewsVisibility.key)
+                model.copy(
+                    selected = "",
+                    visibility = viewsVisibility.value
+                )
+            }
+        }
+
+        is HeaderUiModel -> model.copy(visibility = viewsVisibility.value)
+
+        is ImageButtonSectionUiModel -> {
+            if (viewsVisibility.value) {
+                model.copy(visibility = viewsVisibility.value)
+            } else {
+                imageButtonSectionValues.remove(viewsVisibility.key)
+                model.copy(
+                    options = model.options.map { option ->
+                        option.copy(
+                            options = option.options.map { imageButtonUiModel ->
+                                imageButtonUiModel.copy(
+                                    selected = false
+                                )
+                            }
+                        )
+                    },
+                    visibility = viewsVisibility.value
+                )
+            }
+        }
+
+        is InfoCardUiModel -> {
+            when {
+                viewsVisibility.key == INITIAL_VITAL_SIGNS || viewsVisibility.value ->
+                    model.copy(visibility = viewsVisibility.value)
+
+                else -> {
+                    vitalSignsValues.remove(viewsVisibility.key)
+                    model.copy(
+                        chipSection = vitalSignsChipSection,
+                        visibility = viewsVisibility.value
+                    )
+                }
+            }
+        }
+
+        is LabelUiModel -> model.copy(visibility = viewsVisibility.value)
+
+        is RichLabelUiModel -> model.copy(visibility = viewsVisibility.value)
+
+        is SignatureUiModel -> {
+            if (viewsVisibility.value) {
+                model.copy(visibility = viewsVisibility.value)
+            } else {
+                signatureValues.remove(viewsVisibility.key)
+                model.copy(
+                    signature = null,
+                    visibility = viewsVisibility.value
+                )
+            }
+        }
+
+        is SliderUiModel -> {
+            if (viewsVisibility.value) {
+                model.copy(visibility = viewsVisibility.value)
+            } else {
+                sliderValues.remove(viewsVisibility.key)
+                model.copy(
+                    selected = 0,
+                    visibility = viewsVisibility.value
+                )
+            }
+        }
+
+        is TextFieldUiModel -> {
+            if (viewsVisibility.value) {
+                model.copy(visibility = viewsVisibility.value)
+            } else {
+                fieldsValues.remove(viewsVisibility.key)
+                model.copy(
+                    text = "",
+                    visibility = viewsVisibility.value
+                )
+            }
+        }
+
+        else -> model
     }
 
     fun handleSliderAction(sliderAction: GenericUiAction.SliderAction) {
@@ -737,6 +878,22 @@ class MedicalHistoryViewModel @Inject constructor(
 
     fun sendMedicalHistory() {
         uiState = uiState.copy(
+            validateFields = true
+        )
+
+        val invalidRequiredFields = fieldsValues.values
+            .filter { it.required && !it.fieldValidated }
+
+        val invalidOptionalFields = fieldsValues.values
+            .filter { it.required.not() && it.updatedValue.isNotEmpty() && !it.fieldValidated }
+
+        if (invalidRequiredFields.isEmpty() && invalidOptionalFields.isEmpty()) {
+            send()
+        }
+    }
+
+    private fun send() {
+        uiState = uiState.copy(
             isLoading = true
         )
 
@@ -816,6 +973,31 @@ class MedicalHistoryViewModel @Inject constructor(
             } else {
                 updatedSelectedMedia
             },
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
+    fun removeMediaActionsImage(selectedMedia: Uri) {
+        val updatedSelectedMedia = buildList {
+            addAll(uiState.selectedMediaUris)
+
+            removeIf { uri ->
+                selectedMedia.toString() == uri.toString()
+            }
+        }
+
+        val updatedBody = uiState.screenModel?.body?.map { model ->
+            if (model is MediaActionsUiModel) {
+                model.copy(selectedMediaUris = updatedSelectedMedia)
+            } else {
+                model
+            }
+        }.orEmpty()
+
+        uiState = uiState.copy(
+            selectedMediaUris = updatedSelectedMedia,
             screenModel = uiState.screenModel?.copy(
                 body = updatedBody
             )

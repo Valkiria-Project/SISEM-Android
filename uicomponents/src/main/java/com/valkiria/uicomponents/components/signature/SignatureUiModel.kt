@@ -11,6 +11,8 @@ data class SignatureUiModel(
     val signatureLabel: TextUiModel,
     val signatureButton: ButtonUiModel,
     val signature: String? = null,
+    val visibility: Boolean = true,
+    val required: Boolean = false,
     val modifier: Modifier
 ) : BodyRowModel {
 
