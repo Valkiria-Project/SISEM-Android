@@ -17,7 +17,7 @@ android {
         applicationId = "com.skgtecnologia.sisem"
         minSdk = 30
         targetSdk = 34
-        versionCode = 16
+        versionCode = 17
         versionName = "0.10.0"
         setProperty("archivesBaseName", "$applicationId-v$versionName($versionCode)")
 
