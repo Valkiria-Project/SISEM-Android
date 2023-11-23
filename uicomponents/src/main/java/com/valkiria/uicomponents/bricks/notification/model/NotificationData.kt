@@ -28,6 +28,9 @@ private const val AUTHORIZATION_NUMBER = "authorization_number"
 private const val AUTHORIZES = "authorizes"
 private const val JOURNEY = "journey"
 
+// TRANSMILENIO_DENIED
+private const val AUTHORIZATION_NUMBER_DENIED = "authorization_number"
+
 // SUPPORT_REQUEST_ON_THE_WAY
 private const val RESOURCE_TYPE_AND_CODE = "resource_type_and_code"
 
@@ -67,7 +70,9 @@ fun getNotificationDataByType(notificationDataMap: Map<String, String>): Notific
             journey = notificationDataMap[JOURNEY].orEmpty()
         )
 
-        TRANSMILENIO_DENIED -> TransmilenioDeniedNotification()
+        TRANSMILENIO_DENIED -> TransmilenioDeniedNotification(
+            authorizationNumber = notificationDataMap[AUTHORIZATION_NUMBER_DENIED].orEmpty()
+        )
 
         NO_PRE_OPERATIONAL_GENERATED_CRUE -> NoPreOperationalGeneratedCrueNotification()
 
@@ -114,7 +119,8 @@ fun getNotificationRawDataByType(notificationData: NotificationData): Map<String
         )
 
         is TransmilenioDeniedNotification -> mapOf(
-            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name
+            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
+            AUTHORIZATION_NUMBER_DENIED to notificationData.authorizationNumber
         )
 
         is NoPreOperationalGeneratedCrueNotification -> mapOf(
