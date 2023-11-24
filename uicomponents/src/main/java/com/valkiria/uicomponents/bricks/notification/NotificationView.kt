@@ -194,7 +194,7 @@ private fun NotificationViewRender(
                             contentDescription = null,
                             modifier = Modifier
                                 .padding(start = 48.dp)
-                                .size(32.dp),
+                                .size(24.dp),
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
@@ -213,12 +213,12 @@ private fun NotificationViewRender(
                     if (uiModel.title == INCIDENT_ASSIGNED.title && uiModel.contentRight != null) {
                         Icon(
                             imageVector = ImageVector.vectorResource(
-                                id = drawable.ic_clock_timer
+                                id = drawable.ic_chronometer
                             ),
                             contentDescription = null,
                             modifier = Modifier
                                 .padding(start = 4.dp)
-                                .size(32.dp),
+                                .size(24.dp),
                             tint = MaterialTheme.colorScheme.primary
                         )
 

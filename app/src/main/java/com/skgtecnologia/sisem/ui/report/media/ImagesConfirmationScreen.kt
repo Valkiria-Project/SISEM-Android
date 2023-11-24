@@ -62,7 +62,7 @@ fun ImagesConfirmationScreen(
 ) {
     val uiState = viewModel.uiState
     val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
 
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -165,7 +165,7 @@ fun ImagesConfirmationScreen(
     }
 
     OnBannerHandler(uiState.confirmInfoModel) {
-        handleAction(it, from, context, viewModel, coroutineScope)
+        handleAction(it, from, context, viewModel, scope)
     }
 
     OnBannerHandler(uiState.successInfoModel) {
