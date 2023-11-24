@@ -24,6 +24,7 @@ import com.valkiria.uicomponents.components.textfield.InputUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+@Suppress("LongMethod")
 @Composable
 fun InitSignatureScreen(
     modifier: Modifier = Modifier,
@@ -111,7 +112,8 @@ fun handleAction(uiAction: UiAction, viewModel: InitSignatureViewModel) {
 fun handleFooterAction(uiAction: UiAction, viewModel: InitSignatureViewModel) {
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
-            SignatureIdentifier.BUTTON_SEARCH_DOCUMENT.name -> viewModel.searchDocument()
+            SignatureIdentifier.SIGNATURE_REGISTRATION_SEARCH_BUTTON.name ->
+                viewModel.searchDocument()
         }
     }
 }

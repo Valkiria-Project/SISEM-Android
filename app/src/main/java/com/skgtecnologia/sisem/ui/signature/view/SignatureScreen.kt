@@ -21,6 +21,7 @@ import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 
+@Suppress("LongMethod")
 @Composable
 fun SignatureScreen(
     modifier: Modifier = Modifier,
@@ -103,7 +104,8 @@ fun SignatureScreen(
 fun handleFooterAction(uiAction: UiAction, viewModel: SignatureViewModel) {
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
-            SignatureIdentifier.BUTTON_REGISTER_SIGNATURE.name -> viewModel.showSignaturePad()
+            SignatureIdentifier.SIGNATURE_REGISTRATION_ADD_BUTTON.name ->
+                viewModel.showSignaturePad()
         }
     }
 }

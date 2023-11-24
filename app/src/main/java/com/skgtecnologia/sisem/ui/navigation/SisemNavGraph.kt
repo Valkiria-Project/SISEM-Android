@@ -310,8 +310,7 @@ private fun NavGraphBuilder.mainGraph(
         }
 
         composable(
-            route = MainNavigationRoute.SignatureScreen.route +
-                    "?$DOCUMENT={$DOCUMENT}",
+            route = MainNavigationRoute.SignatureScreen.route + "?$DOCUMENT={$DOCUMENT}",
             arguments = listOf(navArgument(DOCUMENT) { type = NavType.StringType })
         ) { navBackStackEntry ->
             val signature = navBackStackEntry.savedStateHandle.get<String>(SIGNATURE)
