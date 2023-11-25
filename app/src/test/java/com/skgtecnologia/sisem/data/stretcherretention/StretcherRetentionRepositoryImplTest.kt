@@ -1,14 +1,11 @@
 package com.skgtecnologia.sisem.data.stretcherretention
 
-import com.skgtecnologia.sisem.commons.CODE
 import com.skgtecnologia.sisem.commons.ID_APH
 import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.data.stretcherretention.remote.StretcherRetentionRemoteDataSource
-import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
-import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
@@ -32,9 +29,6 @@ class StretcherRetentionRepositoryImplTest {
 
     @Test
     fun `when getStretcherRetentionScreen is called`() = runTest {
-        val operationModel = mockk<OperationModel> {
-            coEvery { vehicleCode } returns CODE
-        }
         coEvery {
             stretcherRetentionRemoteDataSource.getStretcherRetentionScreen(
                 idAph = ID_APH

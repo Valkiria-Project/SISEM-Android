@@ -102,7 +102,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -118,7 +117,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -142,7 +140,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -175,7 +172,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -213,7 +209,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -251,7 +246,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -286,7 +280,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -336,7 +329,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -366,7 +358,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -390,7 +381,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -432,7 +422,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -460,7 +449,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -487,7 +475,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -517,7 +504,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -546,7 +532,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -587,7 +572,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -605,7 +589,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -628,7 +611,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -646,7 +628,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -669,7 +650,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -702,7 +682,6 @@ class MedicalHistoryViewModelTest {
         } returns Result.success(Unit)
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -734,7 +713,6 @@ class MedicalHistoryViewModelTest {
         } returns Result.failure(Throwable())
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -751,7 +729,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -768,7 +745,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -792,7 +768,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -815,7 +790,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -833,7 +807,6 @@ class MedicalHistoryViewModelTest {
         coEvery { logoutCurrentUser.invoke() } returns Result.success("")
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -850,7 +823,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -868,7 +840,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -885,7 +856,6 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
-            androidIdProvider = androidIdProvider,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory

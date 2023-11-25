@@ -15,18 +15,19 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
     private val medicalHistoryApi: MedicalHistoryApi
 ) {
 
-    suspend fun getMedicalHistoryScreen(code: String, idAph: String): Result<ScreenModel> = apiCall {
-        medicalHistoryApi.getMedicalHistoryScreen(
-            screenBody = ScreenBody(
-                params = Params(
-                    code = code,
-                    idAph = idAph
+    suspend fun getMedicalHistoryScreen(code: String, idAph: String): Result<ScreenModel> =
+        apiCall {
+            medicalHistoryApi.getMedicalHistoryScreen(
+                screenBody = ScreenBody(
+                    params = Params(
+                        code = code,
+                        idAph = idAph
+                    )
                 )
             )
-        )
-    }.mapResult {
-        it.mapToDomain()
-    }
+        }.mapResult {
+            it.mapToDomain()
+        }
 
     suspend fun getVitalSignsScreen(): Result<ScreenModel> = apiCall {
         medicalHistoryApi.getVitalSignsScreen(
