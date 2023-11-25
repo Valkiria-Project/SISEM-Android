@@ -1,8 +1,6 @@
 package com.skgtecnologia.sisem.domain.medicalhistory.usecases
 
-import com.skgtecnologia.sisem.commons.INCIDENT_CODE
-import com.skgtecnologia.sisem.commons.PATIENT_ID
-import com.skgtecnologia.sisem.commons.SERIAL
+import com.skgtecnologia.sisem.commons.ID_APH
 import com.skgtecnologia.sisem.domain.medicalhistory.MedicalHistoryRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -31,16 +29,12 @@ class GetMedicalHistoryScreenTest {
     fun `when getMedicalHistoryScreen is success`() = runTest {
         coEvery {
             medicalHistoryRepository.getMedicalHistoryScreen(
-                any(),
-                any(),
-                any()
+                idAph = ID_APH
             )
         } returns mockk()
 
         val result = getMedicalHistoryScreen(
-            serial = SERIAL,
-            incidentCode = INCIDENT_CODE,
-            patientId = PATIENT_ID
+            idAph = ID_APH
         )
 
         Assert.assertEquals(true, result.isSuccess)
@@ -50,16 +44,12 @@ class GetMedicalHistoryScreenTest {
     fun `when getMedicalHistoryScreen is failure`() = runTest {
         coEvery {
             medicalHistoryRepository.getMedicalHistoryScreen(
-                any(),
-                any(),
-                any()
+                idAph = ID_APH
             )
         } throws Exception()
 
         val result = getMedicalHistoryScreen(
-            serial = SERIAL,
-            incidentCode = INCIDENT_CODE,
-            patientId = PATIENT_ID
+            idAph = ID_APH
         )
 
         Assert.assertEquals(true, result.isFailure)

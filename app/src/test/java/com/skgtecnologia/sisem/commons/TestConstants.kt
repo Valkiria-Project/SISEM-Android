@@ -66,12 +66,10 @@ const val PASSWORD = "password"
 const val SERIAL = "serial"
 const val CODE = "123"
 const val EMAIL = "email"
-const val PATIENT_ID = "patientId"
-const val INCIDENT_CODE = "incidentCode"
 const val TOPIC = "topic"
 const val DESCRIPTION = "description"
 const val TURN_ID = "1"
-const val ID_APH = "id_aph"
+const val ID_APH = "14"
 
 val uiAction = FooterUiAction.FooterButton(LoginIdentifier.LOGIN_RE_AUTH_BANNER.name)
 val emptyScreenModel = ScreenModel(body = emptyList())

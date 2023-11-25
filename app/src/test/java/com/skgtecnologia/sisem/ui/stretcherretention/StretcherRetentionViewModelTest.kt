@@ -71,7 +71,7 @@ class StretcherRetentionViewModelTest {
                 )
             )
         )
-        coEvery { getStretcherRetentionScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getStretcherRetentionScreen.invoke(any()) } returns Result.success(
             screenModel
         )
 
@@ -87,7 +87,7 @@ class StretcherRetentionViewModelTest {
 
     @Test
     fun `when getStretcherRetentionScreen is failure`() = runTest {
-        coEvery { getStretcherRetentionScreen.invoke(any(), any(), any()) } returns Result.failure(
+        coEvery { getStretcherRetentionScreen.invoke(any()) } returns Result.failure(
             Throwable()
         )
 
@@ -103,7 +103,7 @@ class StretcherRetentionViewModelTest {
 
     @Test
     fun `when consumeNavigationEvent is called clear uiState`() = runTest {
-        coEvery { getStretcherRetentionScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getStretcherRetentionScreen.invoke(any()) } returns Result.success(
             emptyScreenModel
         )
 
@@ -123,7 +123,7 @@ class StretcherRetentionViewModelTest {
 
     @Test
     fun `when handleEvent is called clear uiState`() = runTest {
-        coEvery { getStretcherRetentionScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getStretcherRetentionScreen.invoke(any()) } returns Result.success(
             emptyScreenModel
         )
         coEvery { logoutCurrentUser.invoke() } returns Result.success("")
@@ -142,7 +142,7 @@ class StretcherRetentionViewModelTest {
 
     @Test
     fun `when navigateBack is called clear successEvent and navigate back`() = runTest {
-        coEvery { getStretcherRetentionScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getStretcherRetentionScreen.invoke(any()) } returns Result.success(
             emptyScreenModel
         )
 
@@ -161,7 +161,7 @@ class StretcherRetentionViewModelTest {
 
     @Test
     fun `when saveRetention is called validate fields and save retention success`() = runTest {
-        coEvery { getStretcherRetentionScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getStretcherRetentionScreen.invoke(any()) } returns Result.success(
             emptyScreenModel
         )
         coEvery { saveStretcherRetention.invoke(any(), any()) } returns Result.success(Unit)
@@ -183,7 +183,7 @@ class StretcherRetentionViewModelTest {
 
     @Test
     fun `when saveRetention is called validate fields and save retention failure`() = runTest {
-        coEvery { getStretcherRetentionScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getStretcherRetentionScreen.invoke(any()) } returns Result.success(
             emptyScreenModel
         )
         coEvery { saveStretcherRetention.invoke(any(), any()) } returns Result.failure(Throwable())

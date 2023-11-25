@@ -1,8 +1,6 @@
 package com.skgtecnologia.sisem.domain.stretcherretention.usecases
 
-import com.skgtecnologia.sisem.commons.INCIDENT_CODE
-import com.skgtecnologia.sisem.commons.PATIENT_ID
-import com.skgtecnologia.sisem.commons.SERIAL
+import com.skgtecnologia.sisem.commons.ID_APH
 import com.skgtecnologia.sisem.domain.stretcherretention.StretcherRetentionRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -30,17 +28,11 @@ class GetStretcherRetentionScreenTest {
     @Test
     fun `when getStretcherRetentionScreen is success`() = runTest {
         coEvery {
-            stretcherRetentionRepository.getStretcherRetentionScreen(
-                any(),
-                any(),
-                any()
-            )
+            stretcherRetentionRepository.getStretcherRetentionScreen(idAph = ID_APH)
         } returns mockk()
 
         val result = getStretcherRetentionScreen(
-            serial = SERIAL,
-            incidentCode = INCIDENT_CODE,
-            patientId = PATIENT_ID
+            idAph = ID_APH
         )
 
         Assert.assertEquals(true, result.isSuccess)
@@ -49,17 +41,11 @@ class GetStretcherRetentionScreenTest {
     @Test
     fun `when getStretcherRetentionScreen is failure`() = runTest {
         coEvery {
-            stretcherRetentionRepository.getStretcherRetentionScreen(
-                any(),
-                any(),
-                any()
-            )
+            stretcherRetentionRepository.getStretcherRetentionScreen(idAph = ID_APH)
         } throws Exception()
 
         val result = getStretcherRetentionScreen(
-            serial = SERIAL,
-            incidentCode = INCIDENT_CODE,
-            patientId = PATIENT_ID
+            idAph = ID_APH
         )
 
         Assert.assertEquals(true, result.isFailure)
