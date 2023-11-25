@@ -20,6 +20,9 @@ android {
         create("staging") {
             initWith(getByName("debug"))
         }
+        create("preProd") {
+            initWith(getByName("debug"))
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")

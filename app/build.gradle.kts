@@ -39,6 +39,12 @@ android {
             buildConfigField("String", "AUTH_BASE_URL", "\"https://test.emergencias-sisem.co/qa/sisem-api/\"")
             buildConfigField("String", "BASE_URL", "\"https://test.emergencias-sisem.co/qa/sisem-api/v1/\"")
         }
+        create("preProd") {
+            initWith(getByName("debug"))
+            applicationIdSuffix = ".preProd"
+            buildConfigField("String", "AUTH_BASE_URL", "\"https://test.emergencias-sisem.co/preprod/\"")
+            buildConfigField("String", "BASE_URL", "\"https://test.emergencias-sisem.co/preprod/v1/\"")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
