@@ -36,7 +36,6 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.action.GenericUiAction.NotificationAction
-import com.valkiria.uicomponents.bricks.bottomsheet.BottomSheetView
 import com.valkiria.uicomponents.bricks.notification.OnNotificationHandler
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import com.valkiria.uicomponents.components.incident.IncidentContent
@@ -126,9 +125,9 @@ fun MapView(
         incident?.let {
             scope.launch { sheetState.show() }
 
-            BottomSheetView(
+            MapBottomSheetView(
                 content = {
-                    IncidentContent()
+                    IncidentContent(it)
                 },
                 sheetState = sheetState,
                 scope = scope

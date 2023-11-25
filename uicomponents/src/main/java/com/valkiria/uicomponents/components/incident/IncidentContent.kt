@@ -24,15 +24,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
+import com.valkiria.uicomponents.components.incident.model.IncidentUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.toTextStyle
 
 @Composable
-fun IncidentContent() {
+fun IncidentContent(incidentUiModel: IncidentUiModel) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 20.dp, top = 20.dp, end = 20.dp),
+            .padding(start = 20.dp, end = 20.dp)
     ) {
         IncidentPart1()
 
@@ -371,5 +372,6 @@ private fun IncidentPart5_1() {
 @Preview(showBackground = false)
 @Composable
 fun IncidentContentPreview() {
-    IncidentContent()
+    // FIXME: Create mock
+//    IncidentContent(it)
 }
