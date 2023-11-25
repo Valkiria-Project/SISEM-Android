@@ -10,6 +10,7 @@ data class CrewMemberSignatureUiModel(
     override val identifier: String,
     val name: TextUiModel,
     val identification: TextUiModel,
+    val role: TextUiModel? = null,
     val signature: String,
     val visibility: Boolean = true,
     val required: Boolean = false,

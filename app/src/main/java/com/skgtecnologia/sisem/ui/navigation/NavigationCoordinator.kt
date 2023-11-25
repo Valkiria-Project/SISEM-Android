@@ -13,6 +13,7 @@ import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsNavigationModel
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.DOCUMENT
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.INVENTORY_TYPE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
@@ -24,6 +25,8 @@ import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
 import com.skgtecnologia.sisem.ui.preoperational.create.PreOpNavigationModel
 import com.skgtecnologia.sisem.ui.preoperational.view.PreOpViewNavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
+import com.skgtecnologia.sisem.ui.signature.init.InitSignatureNavigationModel
+import com.skgtecnologia.sisem.ui.signature.view.SignatureNavigationModel
 import com.skgtecnologia.sisem.ui.stretcherretention.StretcherRetentionNavigationModel
 
 const val APP_STARTED = "app_started"
@@ -60,6 +63,7 @@ fun navigateToNextStep(
         deviceAuthToNextStep(navController, navigationModel, onNavigationFallback)
 
     is ForgotPasswordNavigationModel -> forgotPasswordToNextStep(navController, navigationModel)
+    is InitSignatureNavigationModel -> initSignatureToNextStep(navController, navigationModel)
     is InventoryNavigationModel -> inventoryToNextStep(navController, navigationModel)
     is InventoryViewNavigationModel -> inventoryViewToNextStep(navController, navigationModel)
     is LoginNavigationModel -> loginToNextStep(navController, navigationModel)
@@ -68,6 +72,7 @@ fun navigateToNextStep(
     is PreOpViewNavigationModel -> preOpViewToNextStep(navController, navigationModel)
     is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
     is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
+    is SignatureNavigationModel -> signatureToNextStep(navController, navigationModel)
     is SignaturePadNavigationModel -> signaturePadToNextStep(navController, navigationModel)
     is StretcherRetentionNavigationModel ->
         stretcherRetentionToNextStep(navController, navigationModel)
@@ -139,6 +144,18 @@ fun forgotPasswordToNextStep(
 ) {
     when {
         model.isCancel || model.isSuccess -> navController.popBackStack()
+    }
+}
+
+fun initSignatureToNextStep(
+    navController: NavHostController,
+    model: InitSignatureNavigationModel
+) {
+    when {
+        model.back -> navController.popBackStack()
+        model.document?.isNotEmpty() == true -> navController.navigate(
+            MainNavigationRoute.SignatureScreen.route + "?$DOCUMENT=${model.document}"
+        )
     }
 }
 
@@ -320,6 +337,21 @@ private fun reportToNextStep(
                     inclusive = true
                 }
             }
+    }
+}
+
+fun signatureToNextStep(
+    navController: NavHostController,
+    model: SignatureNavigationModel
+) {
+    when {
+        model.back -> navController.popBackStack()
+
+        model.isSignatureEvent ->
+            navController.navigate(MainNavigationRoute.SignaturePadScreen.route)
+
+        // FIXME: validar si no se devuelve a la pantalla de firma
+        model.isSaved -> navController.navigate(NavigationGraph.Main.route)
     }
 }
 
