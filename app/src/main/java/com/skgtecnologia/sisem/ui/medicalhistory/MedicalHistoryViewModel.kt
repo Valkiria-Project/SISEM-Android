@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
-import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ACCEPT_TRANSFER_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ADMINISTRATION_ROUTE
@@ -103,8 +102,7 @@ private const val GLUCOMETRY_SYMBOL = "mg/dL"
 class MedicalHistoryViewModel @Inject constructor(
     private val getMedicalHistoryScreen: GetMedicalHistoryScreen,
     private val logoutCurrentUser: LogoutCurrentUser,
-    private val sendMedicalHistory: SendMedicalHistory,
-    androidIdProvider: AndroidIdProvider
+    private val sendMedicalHistory: SendMedicalHistory
 ) : ViewModel() {
 
     private var job: Job? = null

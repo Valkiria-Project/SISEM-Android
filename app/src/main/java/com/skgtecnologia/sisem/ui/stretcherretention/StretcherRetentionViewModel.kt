@@ -7,7 +7,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
-import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.banner.stretcherRetentionSuccess
@@ -29,7 +28,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StretcherRetentionViewModel @Inject constructor(
-    private val androidIdProvider: AndroidIdProvider,
     private val logoutCurrentUser: LogoutCurrentUser,
     private val getStretcherRetentionScreen: GetStretcherRetentionScreen,
     private val saveStretcherRetention: SaveStretcherRetention

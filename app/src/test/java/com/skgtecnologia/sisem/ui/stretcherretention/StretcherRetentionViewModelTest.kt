@@ -76,7 +76,6 @@ class StretcherRetentionViewModelTest {
         )
 
         viewModel = StretcherRetentionViewModel(
-            androidIdProvider,
             logoutCurrentUser,
             getStretcherRetentionScreen,
             saveStretcherRetention
@@ -92,7 +91,6 @@ class StretcherRetentionViewModelTest {
         )
 
         viewModel = StretcherRetentionViewModel(
-            androidIdProvider,
             logoutCurrentUser,
             getStretcherRetentionScreen,
             saveStretcherRetention
@@ -108,7 +106,6 @@ class StretcherRetentionViewModelTest {
         )
 
         viewModel = StretcherRetentionViewModel(
-            androidIdProvider,
             logoutCurrentUser,
             getStretcherRetentionScreen,
             saveStretcherRetention
@@ -129,7 +126,6 @@ class StretcherRetentionViewModelTest {
         coEvery { logoutCurrentUser.invoke() } returns Result.success("")
 
         viewModel = StretcherRetentionViewModel(
-            androidIdProvider,
             logoutCurrentUser,
             getStretcherRetentionScreen,
             saveStretcherRetention
@@ -147,7 +143,6 @@ class StretcherRetentionViewModelTest {
         )
 
         viewModel = StretcherRetentionViewModel(
-            androidIdProvider,
             logoutCurrentUser,
             getStretcherRetentionScreen,
             saveStretcherRetention
@@ -167,7 +162,6 @@ class StretcherRetentionViewModelTest {
         coEvery { saveStretcherRetention.invoke(any(), any()) } returns Result.success(Unit)
 
         viewModel = StretcherRetentionViewModel(
-            androidIdProvider,
             logoutCurrentUser,
             getStretcherRetentionScreen,
             saveStretcherRetention
@@ -189,7 +183,6 @@ class StretcherRetentionViewModelTest {
         coEvery { saveStretcherRetention.invoke(any(), any()) } returns Result.failure(Throwable())
 
         viewModel = StretcherRetentionViewModel(
-            androidIdProvider,
             logoutCurrentUser,
             getStretcherRetentionScreen,
             saveStretcherRetention
