@@ -48,11 +48,7 @@ class StretcherRetentionViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch {
-            getStretcherRetentionScreen.invoke(
-                serial = androidIdProvider.getAndroidId(),
-                incidentCode = "101", // FIXME: review
-                patientId = "14"
-            )
+            getStretcherRetentionScreen.invoke(idAph = "14")
                 .onSuccess { stretcherRetentionScreen ->
                     stretcherRetentionScreen.getFormInitialValues()
 

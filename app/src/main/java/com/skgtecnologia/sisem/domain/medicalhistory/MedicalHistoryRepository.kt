@@ -5,11 +5,7 @@ import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 
 interface MedicalHistoryRepository {
 
-    suspend fun getMedicalHistoryScreen(
-        serial: String,
-        incidentCode: String,
-        patientId: String
-    ): ScreenModel
+    suspend fun getMedicalHistoryScreen(idAph: String): ScreenModel
 
     suspend fun getVitalSignsScreen(): ScreenModel
 

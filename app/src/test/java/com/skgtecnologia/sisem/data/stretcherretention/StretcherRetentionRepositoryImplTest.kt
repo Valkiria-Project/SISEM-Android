@@ -1,18 +1,14 @@
 package com.skgtecnologia.sisem.data.stretcherretention
 
 import com.skgtecnologia.sisem.commons.CODE
-import com.skgtecnologia.sisem.commons.INCIDENT_CODE
-import com.skgtecnologia.sisem.commons.PATIENT_ID
-import com.skgtecnologia.sisem.commons.SERIAL
+import com.skgtecnologia.sisem.commons.ID_APH
 import com.skgtecnologia.sisem.commons.emptyScreenModel
-import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.data.stretcherretention.remote.StretcherRetentionRemoteDataSource
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
@@ -23,9 +19,6 @@ class StretcherRetentionRepositoryImplTest {
     @MockK
     private lateinit var stretcherRetentionRemoteDataSource: StretcherRetentionRemoteDataSource
 
-    @MockK
-    private lateinit var operationCacheDataSource: OperationCacheDataSource
-
     private lateinit var stretcherRetentionRepositoryImpl: StretcherRetentionRepositoryImpl
 
     @Before
@@ -33,8 +26,7 @@ class StretcherRetentionRepositoryImplTest {
         MockKAnnotations.init(this)
 
         stretcherRetentionRepositoryImpl = StretcherRetentionRepositoryImpl(
-            stretcherRetentionRemoteDataSource = stretcherRetentionRemoteDataSource,
-            operationCacheDataSource = operationCacheDataSource
+            stretcherRetentionRemoteDataSource = stretcherRetentionRemoteDataSource
         )
     }
 
@@ -45,22 +37,11 @@ class StretcherRetentionRepositoryImplTest {
         }
         coEvery {
             stretcherRetentionRemoteDataSource.getStretcherRetentionScreen(
-                any(),
-                any(),
-                any(),
-                any(),
-                any()
+                idAph = ID_APH
             )
         } returns Result.success(emptyScreenModel)
-        coEvery { operationCacheDataSource.observeOperationConfig() } returns flow {
-            emit(operationModel)
-        }
 
-        val result = stretcherRetentionRepositoryImpl.getStretcherRetentionScreen(
-            serial = SERIAL,
-            incidentCode = INCIDENT_CODE,
-            patientId = PATIENT_ID
-        )
+        val result = stretcherRetentionRepositoryImpl.getStretcherRetentionScreen(idAph = ID_APH)
 
         Assert.assertEquals(emptyScreenModel, result)
     }

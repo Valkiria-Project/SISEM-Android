@@ -97,7 +97,7 @@ class MedicalHistoryViewModelTest {
                 infoCardUiModelMock
             )
         )
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             screenModel
         )
 
@@ -113,7 +113,7 @@ class MedicalHistoryViewModelTest {
 
     @Test
     fun `when getMedicalHistoryScreen is failure`() = runTest {
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.failure(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.failure(
             Throwable()
         )
 
@@ -137,7 +137,7 @@ class MedicalHistoryViewModelTest {
         val screenModel = ScreenModel(
             body = listOf(chipOptionsUiModelMock)
         )
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             screenModel
         )
 
@@ -170,7 +170,7 @@ class MedicalHistoryViewModelTest {
                 chipOptionsUiModelMock
             )
         )
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             screenModel
         )
 
@@ -208,7 +208,7 @@ class MedicalHistoryViewModelTest {
             name = "name",
             selected = true
         )
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             emptyScreenModel
         )
 
@@ -246,7 +246,7 @@ class MedicalHistoryViewModelTest {
                 chipOptionsUiModelMock
             )
         )
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             screenModel
         )
 
@@ -281,7 +281,7 @@ class MedicalHistoryViewModelTest {
                 chipOptionsUiModelMock
             )
         )
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             screenModel
         )
 
@@ -331,7 +331,7 @@ class MedicalHistoryViewModelTest {
                 labelUiModelMock.copy(identifier = GLASGOW_RTS_KEY)
             )
         )
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             screenModel
         )
 
@@ -361,7 +361,7 @@ class MedicalHistoryViewModelTest {
                 dropDownUiModelMock
             )
         )
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             screenModel
         )
 
@@ -385,7 +385,7 @@ class MedicalHistoryViewModelTest {
 
     @Test
     fun `when handleHumanBodyAction is called`() = runTest {
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             emptyScreenModel
         )
 
@@ -427,7 +427,7 @@ class MedicalHistoryViewModelTest {
                 imageButtonSectionUiModelMock
             )
         )
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             screenModel
         )
 
@@ -455,7 +455,7 @@ class MedicalHistoryViewModelTest {
                 segmentedSwitchUiModelMock.copy(identifier = ALIVE_KEY)
             )
         )
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             screenModel
         )
 
@@ -482,7 +482,7 @@ class MedicalHistoryViewModelTest {
                 labelUiModelMock.copy(identifier = PREGNANT_WEEKS_KEY)
             )
         )
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             screenModel
         )
 
@@ -512,7 +512,7 @@ class MedicalHistoryViewModelTest {
                 segmentedSwitchUiModelMock
             )
         )
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             screenModel
         )
 
@@ -541,7 +541,7 @@ class MedicalHistoryViewModelTest {
                 sliderUiModelMock
             )
         )
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             screenModel
         )
 
@@ -582,7 +582,7 @@ class MedicalHistoryViewModelTest {
                 )
             )
         )
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             screenModel
         )
 
@@ -600,7 +600,7 @@ class MedicalHistoryViewModelTest {
 
     @Test
     fun `when showMedicineForm is called`() = runTest {
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             emptyScreenModel
         )
 
@@ -623,7 +623,7 @@ class MedicalHistoryViewModelTest {
                 medsSelectorUiModelMock
             )
         )
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             screenModel
         )
 
@@ -641,7 +641,7 @@ class MedicalHistoryViewModelTest {
 
     @Test
     fun `when showSignaturePad is called`() = runTest {
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             emptyScreenModel
         )
 
@@ -664,7 +664,7 @@ class MedicalHistoryViewModelTest {
                 signatureUiModelMock
             )
         )
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             screenModel
         )
 
@@ -682,7 +682,7 @@ class MedicalHistoryViewModelTest {
 
     @Test
     fun `when sendMedicalHistory is success`() = runTest {
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             emptyScreenModel
         )
         coEvery {
@@ -714,7 +714,7 @@ class MedicalHistoryViewModelTest {
 
     @Test
     fun `when sendMedicalHistory is failure`() = runTest {
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             emptyScreenModel
         )
         coEvery {
@@ -746,7 +746,7 @@ class MedicalHistoryViewModelTest {
 
     @Test
     fun `when showCamera is called`() = runTest {
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             emptyScreenModel
         )
 
@@ -763,7 +763,7 @@ class MedicalHistoryViewModelTest {
 
     @Test
     fun `when onPhotoTaken is called`() = runTest {
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             emptyScreenModel
         )
 
@@ -787,7 +787,7 @@ class MedicalHistoryViewModelTest {
                 mediaActionsUiModelMock
             )
         )
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             screenModel
         )
 
@@ -810,7 +810,7 @@ class MedicalHistoryViewModelTest {
                 mediaActionsUiModelMock
             )
         )
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             screenModel
         )
 
@@ -827,7 +827,7 @@ class MedicalHistoryViewModelTest {
 
     @Test
     fun `when call handleEvent uiState should have errorModel clear`() = runTest {
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             emptyScreenModel
         )
         coEvery { logoutCurrentUser.invoke() } returns Result.success("")
@@ -845,7 +845,7 @@ class MedicalHistoryViewModelTest {
 
     @Test
     fun `when call consumeShownInfoEvent uiState should have infoEvent clear`() = runTest {
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             emptyScreenModel
         )
 
@@ -863,7 +863,7 @@ class MedicalHistoryViewModelTest {
 
     @Test
     fun `when call consumeNavigationEvent uiState should have navigationModel clear`() = runTest {
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             emptyScreenModel
         )
 
@@ -880,7 +880,7 @@ class MedicalHistoryViewModelTest {
 
     @Test
     fun `when call goBack uiState should have navigationModel back true`() = runTest {
-        coEvery { getMedicalHistoryScreen.invoke(any(), any(), any()) } returns Result.success(
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             emptyScreenModel
         )
 

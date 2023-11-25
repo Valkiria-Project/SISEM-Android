@@ -149,27 +149,24 @@ class MedicalHistoryViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch {
-            getMedicalHistoryScreen.invoke(
-                serial = androidIdProvider.getAndroidId(),
-                incidentCode = "101",
-                patientId = "14"
-            ).onSuccess { medicalHistoryScreenModel ->
-                medicalHistoryScreenModel.getFormInitialValues()
+            getMedicalHistoryScreen.invoke(idAph = "14")
+                .onSuccess { medicalHistoryScreenModel ->
+                    medicalHistoryScreenModel.getFormInitialValues()
 
-                withContext(Dispatchers.Main) {
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        screenModel = medicalHistoryScreenModel
-                    )
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            screenModel = medicalHistoryScreenModel
+                        )
+                    }
+                }.onFailure { throwable ->
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            errorEvent = throwable.mapToUi()
+                        )
+                    }
                 }
-            }.onFailure { throwable ->
-                withContext(Dispatchers.Main) {
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        errorEvent = throwable.mapToUi()
-                    )
-                }
-            }
         }
     }
 

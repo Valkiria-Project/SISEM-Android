@@ -15,16 +15,10 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
 ) : MedicalHistoryRepository {
 
     override suspend fun getMedicalHistoryScreen(
-        serial: String,
-        incidentCode: String,
-        patientId: String
+        idAph: String
     ): ScreenModel = medicalHistoryRemoteDataSource.getMedicalHistoryScreen(
-        serial = serial,
         code = operationCacheDataSource.observeOperationConfig().first()?.vehicleCode.orEmpty(),
-        // FIXME: authCacheDataSource.observeAccessToken().first()?.turn?.id.orEmpty(),
-        turnId = "1",
-        incidentCode = incidentCode,
-        patientId = patientId
+        idAph = idAph
     ).getOrThrow()
 
     override suspend fun getVitalSignsScreen(): ScreenModel =

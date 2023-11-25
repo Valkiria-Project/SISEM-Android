@@ -1,11 +1,6 @@
 package com.skgtecnologia.sisem.data.stretcherretention.remote
 
-import com.skgtecnologia.sisem.commons.CODE
 import com.skgtecnologia.sisem.commons.ID_APH
-import com.skgtecnologia.sisem.commons.INCIDENT_CODE
-import com.skgtecnologia.sisem.commons.PATIENT_ID
-import com.skgtecnologia.sisem.commons.SERIAL
-import com.skgtecnologia.sisem.commons.TURN_ID
 import com.skgtecnologia.sisem.commons.buttonResponseMock
 import com.skgtecnologia.sisem.commons.footerResponseMock
 import com.skgtecnologia.sisem.commons.headerResponseMock
@@ -48,11 +43,7 @@ class StretcherRetentionRemoteDataSourceTest {
         } returns Response.success(screenResponse)
 
         val result = stretcherRetentionRemoteDataSource.getStretcherRetentionScreen(
-            serial = SERIAL,
-            code = CODE,
-            turnId = TURN_ID,
-            incidentCode = INCIDENT_CODE,
-            patientId = PATIENT_ID
+            idAph = ID_APH
         )
 
         Assert.assertEquals(true, result.isSuccess)
@@ -66,11 +57,7 @@ class StretcherRetentionRemoteDataSourceTest {
         } returns Response.error(400, "".toResponseBody())
 
         val result = stretcherRetentionRemoteDataSource.getStretcherRetentionScreen(
-            serial = SERIAL,
-            code = CODE,
-            turnId = TURN_ID,
-            incidentCode = INCIDENT_CODE,
-            patientId = PATIENT_ID
+            idAph = ID_APH
         )
 
         Assert.assertEquals(true, result.isFailure)

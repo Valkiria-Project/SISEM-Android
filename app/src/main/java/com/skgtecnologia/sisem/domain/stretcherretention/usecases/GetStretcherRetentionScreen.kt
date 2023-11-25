@@ -12,14 +12,8 @@ class GetStretcherRetentionScreen @Inject constructor(
 
     @CheckResult
     suspend operator fun invoke(
-        serial: String,
-        incidentCode: String,
-        patientId: String
+        idAph: String
     ): Result<ScreenModel> = resultOf {
-        stretcherRetentionRepository.getStretcherRetentionScreen(
-            serial = serial,
-            incidentCode = incidentCode,
-            patientId = patientId
-        )
+        stretcherRetentionRepository.getStretcherRetentionScreen(idAph)
     }
 }

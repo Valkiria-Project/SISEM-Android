@@ -14,20 +14,12 @@ class StretcherRetentionRemoteDataSource @Inject constructor(
 ) {
 
     suspend fun getStretcherRetentionScreen(
-        serial: String,
-        code: String,
-        turnId: String,
-        incidentCode: String,
-        patientId: String
+        idAph: String
     ): Result<ScreenModel> = apiCall {
         stretcherRetentionApi.getStretcherRetentionScreen(
             screenBody = ScreenBody(
                 params = Params(
-                    serial = serial,
-                    code = code,
-                    turnId = turnId,
-                    incidentCode = incidentCode,
-                    patientId = patientId
+                    idAph = idAph
                 )
             )
         )

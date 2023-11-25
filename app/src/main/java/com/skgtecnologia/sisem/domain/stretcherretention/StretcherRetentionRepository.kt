@@ -5,9 +5,7 @@ import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 interface StretcherRetentionRepository {
 
     suspend fun getStretcherRetentionScreen(
-        serial: String,
-        incidentCode: String,
-        patientId: String
+        idAph: String
     ): ScreenModel
 
     suspend fun saveStretcherRetention(
