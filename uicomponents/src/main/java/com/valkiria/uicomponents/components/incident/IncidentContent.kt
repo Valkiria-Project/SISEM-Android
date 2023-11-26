@@ -48,7 +48,7 @@ fun IncidentContent(incidentUiModel: IncidentUiModel) {
             incidentUiModel.incident.premierOneHour
         )
 
-        IncidentPart3()
+        IncidentLocationDescription(incidentUiModel.incident.addressReferencePoint)
 
         IncidentPart4()
 
@@ -79,7 +79,7 @@ private fun IncidentHeader(codeSisem: String, code: String) {
             color = Color.White,
             style = TextStyle.HEADLINE_2.toTextStyle().copy(
                 fontSize = 22.sp,
-                fontWeight = FontWeight.W500
+                fontWeight = FontWeight.Medium
             )
         )
 
@@ -111,9 +111,11 @@ private fun IncidentDetails(address: String, premierOneDate: String, premierOneH
 
         Text(
             modifier = Modifier.padding(end = 8.dp),
-            text = "Kra 45 #43-21",
+            text = address,
             color = Color.White,
-            style = TextStyle.HEADLINE_4.toTextStyle()
+            style = TextStyle.HEADLINE_4.toTextStyle().copy(
+                fontWeight = FontWeight.SemiBold
+            )
         )
 
         Icon(
@@ -126,32 +128,29 @@ private fun IncidentDetails(address: String, premierOneDate: String, premierOneH
         )
 
         Text(
-            text = "11 Min",
+            text = premierOneDate.plus(" ").plus(premierOneHour),
             color = Color.White,
-            style = TextStyle.HEADLINE_4.toTextStyle()
+            style = TextStyle.HEADLINE_4.toTextStyle().copy(
+                fontWeight = FontWeight.SemiBold
+            )
         )
     }
 }
 
 @Composable
-private fun IncidentPart3() {
+private fun IncidentLocationDescription(addressReferencePoint: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 4.dp)
+            .padding(top = 8.dp)
             .clip(
-                shape = RoundedCornerShape(
-                    topStart = 20.dp,
-                    topEnd = 20.dp,
-                    bottomEnd = 20.dp,
-                    bottomStart = 20.dp
-                )
+                shape = RoundedCornerShape(20.dp)
             )
-            .background(MaterialTheme.colorScheme.background.copy(alpha = 0.8f))
+            .background(color = Color(parseColor("#2B3139")))
     ) {
         Text(
             modifier = Modifier.padding(10.dp),
-            text = "Frente a la estación de Transmilenio de la 106, persona no identificada.",
+            text = addressReferencePoint,
             color = Color.White,
             style = TextStyle.HEADLINE_7.toTextStyle()
         )
