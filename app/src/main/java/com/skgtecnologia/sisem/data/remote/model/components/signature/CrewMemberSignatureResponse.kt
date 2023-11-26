@@ -15,6 +15,7 @@ data class CrewMemberSignatureResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "name") val name: TextResponse?,
     @Json(name = "identification") val identification: TextResponse?,
+    @Json(name = "role") val role: TextResponse?,
     @Json(name = "signature") val signature: String?,
     @Json(name = "visibility") val visibility: Boolean?,
     @Json(name = "required") val required: Boolean?,
@@ -29,6 +30,7 @@ data class CrewMemberSignatureResponse(
         name = name?.mapToUi() ?: error("Signature name cannot be null"),
         identification = identification?.mapToUi()
             ?: error("Signature identification cannot be null"),
+        role = role?.mapToUi(),
         signature = signature ?: error("Signature signature cannot be null"),
         visibility = visibility ?: true,
         required = required ?: false,

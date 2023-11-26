@@ -34,6 +34,13 @@ fun CrewMemberSignatureComponent(
                 style = uiModel.name.textStyle.toTextStyle()
             )
 
+            uiModel.role?.let {
+                Text(
+                    text = it.text,
+                    style = it.textStyle.toTextStyle()
+                )
+            }
+
             Text(
                 text = uiModel.identification.text,
                 style = uiModel.identification.textStyle.toTextStyle()
@@ -66,6 +73,10 @@ fun CrewMemberSignatureComponentPreview() {
             ),
             identification = TextUiModel(
                 text = "CC 1070926476",
+                textStyle = TextStyle.HEADLINE_5
+            ),
+            role = TextUiModel(
+                text = "Rol Médico",
                 textStyle = TextStyle.HEADLINE_5
             ),
             signature = """/9j/4AAQSkZJRgABAQEAeAB4AAD/4gHbSUNDX1BST0ZJTEUAAQEAAAHLAAAAAAJAAABtbnRyU
