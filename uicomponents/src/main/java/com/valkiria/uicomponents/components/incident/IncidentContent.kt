@@ -20,9 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.components.incident.model.IncidentUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
@@ -35,9 +37,16 @@ fun IncidentContent(incidentUiModel: IncidentUiModel) {
             .fillMaxWidth()
             .padding(start = 20.dp, end = 20.dp)
     ) {
-        IncidentPart1()
+        IncidentHeader(
+            incidentUiModel.incident.codeSisem,
+            incidentUiModel.incident.incidentType.code
+        )
 
-        IncidentPart2()
+        IncidentDetails(
+            incidentUiModel.incident.address,
+            incidentUiModel.incident.premierOneDate,
+            incidentUiModel.incident.premierOneHour
+        )
 
         IncidentPart3()
 
@@ -50,14 +59,15 @@ fun IncidentContent(incidentUiModel: IncidentUiModel) {
 }
 
 @Composable
-private fun IncidentPart1() {
+private fun IncidentHeader(codeSisem: String, code: String) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier
+                .padding(8.dp)
+                .size(10.dp),
             painter = painterResource(id = R.drawable.ic_circle),
             tint = Color(parseColor("#BE392F")),
             contentDescription = null
@@ -65,25 +75,31 @@ private fun IncidentPart1() {
 
         Text(
             modifier = Modifier.padding(end = 8.dp),
-            text = "CRU-12345678-22  |",
+            text = "$codeSisem  |",
             color = Color.White,
-            style = TextStyle.HEADLINE_4.toTextStyle()
+            style = TextStyle.HEADLINE_2.toTextStyle().copy(
+                fontSize = 22.sp,
+                fontWeight = FontWeight.W500
+            )
         )
 
         Text(
-            text = "906",
+            text = code,
             color = Color(parseColor("#DB095C")),
-            style = TextStyle.HEADLINE_4.toTextStyle()
+            style = TextStyle.HEADLINE_2.toTextStyle().copy(
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold
+            )
         )
     }
 }
 
 @Composable
-private fun IncidentPart2() {
+private fun IncidentDetails(address: String, premierOneDate: String, premierOneHour: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 10.dp),
+            .padding(top = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
