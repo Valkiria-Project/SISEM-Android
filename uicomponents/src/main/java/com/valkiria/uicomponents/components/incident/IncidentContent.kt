@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,8 +28,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.components.incident.model.IncidentUiModel
+import com.valkiria.uicomponents.components.incident.model.ResourceUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.toTextStyle
+
+private val ContentBackground = Modifier.background(color = Color(parseColor("#2B3139")))
 
 @Composable
 fun IncidentContent(incidentUiModel: IncidentUiModel) {
@@ -50,7 +54,7 @@ fun IncidentContent(incidentUiModel: IncidentUiModel) {
 
         IncidentLocationDescription(incidentUiModel.incident.addressReferencePoint)
 
-        IncidentPart4()
+        IncidentResources(incidentUiModel.resources)
 
         TransmilenioLane()
 
@@ -146,7 +150,7 @@ private fun IncidentLocationDescription(addressReferencePoint: String) {
             .clip(
                 shape = RoundedCornerShape(20.dp)
             )
-            .background(color = Color(parseColor("#2B3139")))
+            .then(ContentBackground)
             .padding(10.dp)
     ) {
         Text(
@@ -160,7 +164,7 @@ private fun IncidentLocationDescription(addressReferencePoint: String) {
 
 @Suppress("MagicNumber")
 @Composable
-private fun IncidentPart4() {
+private fun IncidentResources(resources: List<ResourceUiModel>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -173,7 +177,8 @@ private fun IncidentPart4() {
                     bottomStart = 20.dp
                 )
             )
-            .background(MaterialTheme.colorScheme.background.copy(alpha = 0.8f))
+            .then(ContentBackground)
+            .padding(10.dp)
     ) {
         Row(
             modifier = Modifier
@@ -191,20 +196,20 @@ private fun IncidentPart4() {
             )
 
             Text(
-                text = "Solicitud de apoyo",
+                text = stringResource(R.string.incident_support_request_title),
                 color = Color.White,
                 style = TextStyle.HEADLINE_4.toTextStyle()
             )
         }
 
-        repeat(3) {
-            IncidentPart4Item()
+        resources.forEach { _ ->
+            IncidentResource()
         }
     }
 }
 
 @Composable
-private fun IncidentPart4Item() {
+private fun IncidentResource() {
     Row(
         modifier = Modifier
             .padding(start = 46.dp, top = 10.dp)
