@@ -317,3 +317,10 @@ fun medicalHistorySuccess(): BannerModel = BannerModel(
     title = "Registro APH",
     description = "Se ha guardado correctamente el registro APH."
 )
+
+fun successfulSignatureRecord(): BannerModel = BannerModel(
+    icon = "ic_alert",
+    iconColor = "#42A4FA",
+    title = "Firma exitosa",
+    description = "La firma ha sido guardada exitosamente"
+)
