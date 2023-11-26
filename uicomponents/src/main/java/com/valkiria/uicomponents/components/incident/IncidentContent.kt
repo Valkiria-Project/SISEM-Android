@@ -147,6 +147,7 @@ private fun IncidentLocationDescription(addressReferencePoint: String) {
                 shape = RoundedCornerShape(20.dp)
             )
             .background(color = Color(parseColor("#2B3139")))
+            .padding(10.dp)
     ) {
         Text(
             modifier = Modifier.padding(10.dp),
