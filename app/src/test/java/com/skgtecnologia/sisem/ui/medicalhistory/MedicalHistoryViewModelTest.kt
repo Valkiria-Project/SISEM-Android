@@ -1,6 +1,8 @@
 package com.skgtecnologia.sisem.ui.medicalhistory
 
+import androidx.lifecycle.SavedStateHandle
 import com.skgtecnologia.sisem.commons.ANDROID_ID
+import com.skgtecnologia.sisem.commons.ID_APH
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.chipOptionsUiModelMock
@@ -34,6 +36,7 @@ import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryS
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SendMedicalHistory
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.ui.humanbody.area.FrontArea
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.components.chip.ChipOptionUiModel
@@ -75,6 +78,10 @@ class MedicalHistoryViewModelTest {
     @MockK
     private lateinit var sendMedicalHistory: SendMedicalHistory
 
+    private val savedStateHandle = SavedStateHandle(
+        mapOf(NavigationArgument.ID_APH to ID_APH)
+    )
+
     private lateinit var viewModel: MedicalHistoryViewModel
 
     @Before
@@ -102,6 +109,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -117,6 +125,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -140,6 +149,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -172,6 +182,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -209,6 +220,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -246,6 +258,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -280,6 +293,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -329,6 +343,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -358,6 +373,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -381,6 +397,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -422,6 +439,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -449,6 +467,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -475,6 +494,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -504,6 +524,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -532,6 +553,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -572,6 +594,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -589,6 +612,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -611,6 +635,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -628,6 +653,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -650,6 +676,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -667,6 +694,7 @@ class MedicalHistoryViewModelTest {
         )
         coEvery {
             sendMedicalHistory.invoke(
+                ID_APH,
                 any(),
                 any(),
                 any(),
@@ -677,12 +705,12 @@ class MedicalHistoryViewModelTest {
                 any(),
                 any(),
                 any(),
-                any(),
-                idAph
+                any()
             )
         } returns Result.success(Unit)
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -699,6 +727,7 @@ class MedicalHistoryViewModelTest {
         )
         coEvery {
             sendMedicalHistory.invoke(
+                ID_APH,
                 any(),
                 any(),
                 any(),
@@ -709,12 +738,12 @@ class MedicalHistoryViewModelTest {
                 any(),
                 any(),
                 any(),
-                any(),
-                idAph
+                any()
             )
         } returns Result.failure(Throwable())
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -731,6 +760,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -747,6 +777,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -770,6 +801,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -792,6 +824,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -809,6 +842,7 @@ class MedicalHistoryViewModelTest {
         coEvery { logoutCurrentUser.invoke() } returns Result.success("")
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -825,6 +859,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -842,6 +877,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
@@ -858,6 +894,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory
