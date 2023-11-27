@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.data.incident.cache.model
 
 import androidx.room.ColumnInfo
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.valkiria.uicomponents.components.incident.model.ResourceUiDetailModel
@@ -11,8 +10,8 @@ data class ResourceDetailEntity(
     @PrimaryKey
     @ColumnInfo(name = "id") val id: Int,
     @ColumnInfo(name = "code") val code: String,
-    @Embedded(prefix = "name") val name: String,
-    @Embedded(prefix = "ic_transit_agency") val icTransitAgency: String
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "ic_transit_agency") val icTransitAgency: String
 )
 
 fun ResourceDetailEntity.mapToDomain(): ResourceUiDetailModel = with(this) {
