@@ -11,7 +11,7 @@ data class ResourceDetailEntity(
     @PrimaryKey
     @ColumnInfo(name = "id") val id: Int,
     @ColumnInfo(name = "code") val code: String,
-    @Embedded(prefix = "transit_agency") val transitAgency: String,
+    @Embedded(prefix = "name") val name: String,
     @Embedded(prefix = "ic_transit_agency") val icTransitAgency: String
 )
 
@@ -19,7 +19,7 @@ fun ResourceDetailEntity.mapToDomain(): ResourceUiDetailModel = with(this) {
     ResourceUiDetailModel(
         id = id,
         code = code,
-        transitAgency = transitAgency,
+        name = name,
         icTransitAgency = icTransitAgency
     )
 }
@@ -28,7 +28,7 @@ fun ResourceUiDetailModel.mapToCache(): ResourceDetailEntity = with(this) {
     ResourceDetailEntity(
         id = id,
         code = code,
-        transitAgency = transitAgency,
+        name = name,
         icTransitAgency = icTransitAgency
     )
 }

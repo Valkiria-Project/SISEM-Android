@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -27,15 +28,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.valkiria.uicomponents.R
+import com.valkiria.uicomponents.bricks.notification.model.TransmiNotification
+import com.valkiria.uicomponents.bricks.notification.model.TransmilenioAuthorizationNotification
+import com.valkiria.uicomponents.bricks.notification.model.TransmilenioDeniedNotification
 import com.valkiria.uicomponents.components.incident.model.IncidentUiModel
+import com.valkiria.uicomponents.components.incident.model.PatientUiModel
 import com.valkiria.uicomponents.components.incident.model.ResourceUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.toTextStyle
+import com.valkiria.uicomponents.utlis.DefType
+import com.valkiria.uicomponents.utlis.getResourceIdByName
 
 private val ContentBackground = Modifier.background(color = Color(parseColor("#2B3139")))
 
 @Composable
-fun IncidentContent(incidentUiModel: IncidentUiModel) {
+fun IncidentContent(
+    incidentUiModel: IncidentUiModel,
+    onAction: (idAph: Int) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -56,9 +66,11 @@ fun IncidentContent(incidentUiModel: IncidentUiModel) {
 
         IncidentResources(incidentUiModel.resources)
 
-        TransmilenioLane()
+        incidentUiModel.transmiRequests?.let { transmiNotifications ->
+            IncidentTransmilenioRequest(transmiNotifications)
+        }
 
-        IncidentPart5()
+        IncidentFooter(incidentUiModel.patients, onAction)
     }
 }
 
@@ -157,7 +169,10 @@ private fun IncidentLocationDescription(addressReferencePoint: String) {
             modifier = Modifier.padding(10.dp),
             text = addressReferencePoint,
             color = Color.White,
-            style = TextStyle.HEADLINE_7.toTextStyle()
+            style = TextStyle.HEADLINE_7.toTextStyle().copy(
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Normal
+            )
         )
     }
 }
@@ -198,184 +213,222 @@ private fun IncidentResources(resources: List<ResourceUiModel>) {
             Text(
                 text = stringResource(R.string.incident_support_request_title),
                 color = Color.White,
-                style = TextStyle.HEADLINE_4.toTextStyle()
+                style = TextStyle.HEADLINE_4.toTextStyle().copy(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
             )
         }
 
-        resources.forEach { _ ->
-            IncidentResource()
+        resources.forEach { resource ->
+            IncidentResource(resource)
         }
     }
 }
 
 @Composable
-private fun IncidentResource() {
+private fun IncidentResource(resource: ResourceUiModel) {
     Row(
         modifier = Modifier
-            .padding(start = 46.dp, top = 10.dp)
+            .padding(start = 40.dp, top = 10.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            modifier = Modifier
-                .padding(end = 6.dp)
-                .size(28.dp),
-            painter = painterResource(id = R.drawable.ic_location),
-            tint = MaterialTheme.colorScheme.primary,
-            contentDescription = null
+        val iconResourceId = LocalContext.current.getResourceIdByName(
+            resource.resource.icTransitAgency, DefType.DRAWABLE
         )
 
+        iconResourceId?.let {
+            Icon(
+                modifier = Modifier
+                    .padding(end = 6.dp)
+                    .size(20.dp),
+                painter = painterResource(id = iconResourceId),
+                tint = MaterialTheme.colorScheme.primary,
+                contentDescription = null
+            )
+        }
+
         Text(
-            text = "No 4394",
+            text = resource.resource.name,
             color = Color.White,
-            style = TextStyle.HEADLINE_6.toTextStyle()
+            style = TextStyle.HEADLINE_3.toTextStyle().copy(
+                fontSize = 14.sp,
+                fontWeight = if (resource.resource.icTransitAgency == "ic_ambulance") {
+                    FontWeight.SemiBold
+                } else {
+                    FontWeight.Normal
+                }
+            )
         )
     }
 }
 
 @Suppress("LongMethod", "MagicNumber")
 @Composable
-private fun TransmilenioLane() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 16.dp)
-            .clip(
-                shape = RoundedCornerShape(
-                    topStart = 20.dp,
-                    topEnd = 20.dp,
-                    bottomEnd = 20.dp,
-                    bottomStart = 20.dp
-                )
-            )
-            .background(MaterialTheme.colorScheme.background.copy(alpha = 0.8f))
-    ) {
-        Column(
+private fun IncidentTransmilenioRequest(transmiRequests: List<TransmiNotification>) {
+    transmiRequests.forEach {
+        Box(
             modifier = Modifier
-                .padding(10.dp)
                 .fillMaxWidth()
+                .padding(top = 16.dp)
+                .clip(
+                    shape = RoundedCornerShape(
+                        topStart = 20.dp,
+                        topEnd = 20.dp,
+                        bottomEnd = 20.dp,
+                        bottomStart = 20.dp
+                    )
+                )
+                .then(ContentBackground)
+                .padding(10.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .padding(end = 6.dp)
-                        .size(20.dp),
-                    painter = painterResource(id = R.drawable.ic_road),
-                    tint = MaterialTheme.colorScheme.primary,
-                    contentDescription = null
-                )
-
-                Text(
-                    text = "Carril de transmilenio",
-                    color = Color.White,
-                    style = TextStyle.HEADLINE_4.toTextStyle()
-                )
-            }
-
-            Row(
+            Column(
                 modifier = Modifier
-                    .padding(top = 10.dp)
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                    .padding(10.dp)
+                    .fillMaxWidth()
             ) {
-                Text(
-                    modifier = Modifier.padding(start = 26.dp, end = 6.dp),
-                    text = "No 987798",
-                    color = Color.White,
-                    style = TextStyle.HEADLINE_6.toTextStyle()
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        modifier = Modifier
+                            .padding(end = 6.dp)
+                            .size(20.dp),
+                        painter = painterResource(id = R.drawable.ic_road),
+                        tint = MaterialTheme.colorScheme.primary,
+                        contentDescription = null
+                    )
+
+                    Text(
+                        text = stringResource(R.string.incident_transmi_lane_request_title),
+                        color = Color.White,
+                        style = TextStyle.HEADLINE_4.toTextStyle()
+                    )
+                }
+
+                Row(
+                    modifier = Modifier
+                        .padding(top = 10.dp)
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        modifier = Modifier.padding(start = 26.dp, end = 6.dp),
+                        text = "No 987798",
+                        color = Color.White,
+                        style = TextStyle.HEADLINE_6.toTextStyle()
+                    )
+
+                    Text(
+                        text = "|",
+                        style = TextStyle.HEADLINE_4.toTextStyle(),
+                        color = Color.White,
+                    )
+
+                    Text(
+                        modifier = Modifier.padding(start = 2.dp),
+                        text = "No hay respuesta",
+                        color = Color.White,
+                        style = TextStyle.HEADLINE_6.toTextStyle(),
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1
+                    )
+                }
 
                 Text(
-                    text = "|",
-                    style = TextStyle.HEADLINE_4.toTextStyle(),
-                    color = Color.White,
-                )
-
-                Text(
-                    modifier = Modifier.padding(start = 2.dp),
-                    text = "No hay respuesta",
+                    modifier = Modifier.padding(start = 26.dp),
+                    text = "Autoriza: Juan Correa algo",
                     color = Color.White,
                     style = TextStyle.HEADLINE_6.toTextStyle(),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1
                 )
+
+                Row(
+                    modifier = Modifier
+                        .padding(top = 10.dp)
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .padding(start = 26.dp, end = 2.dp)
+                            .fillMaxWidth(0.60f),
+                        text = "Trayecto Perdomo a Reicaurte",
+                        color = Color.White,
+                        style = TextStyle.HEADLINE_6.toTextStyle()
+                    )
+
+                    Text(
+                        text = "|",
+                        style = TextStyle.HEADLINE_3.toTextStyle(),
+                        color = Color.White,
+                    )
+
+                    Text(
+                        modifier = Modifier.padding(start = 2.dp),
+                        text = "Autorizado",
+                        color = Color(parseColor("#3CF2DD")),
+                        style = TextStyle.HEADLINE_6.toTextStyle(),
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1
+                    )
+                }
             }
 
-            Text(
-                modifier = Modifier.padding(start = 26.dp),
-                text = "Autoriza: Juan Correa algo",
-                color = Color.White,
-                style = TextStyle.HEADLINE_6.toTextStyle(),
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1
-            )
 
-            Row(
-                modifier = Modifier
-                    .padding(top = 10.dp)
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    modifier = Modifier
-                        .padding(start = 26.dp, end = 2.dp)
-                        .fillMaxWidth(0.60f),
-                    text = "Trayecto Perdomo a Reicaurte",
-                    color = Color.White,
-                    style = TextStyle.HEADLINE_6.toTextStyle()
-                )
+            when (it) {
+                is TransmilenioAuthorizationNotification -> {
 
-                Text(
-                    text = "|",
-                    style = TextStyle.HEADLINE_3.toTextStyle(),
-                    color = Color.White,
-                )
+                }
 
-                Text(
-                    modifier = Modifier.padding(start = 2.dp),
-                    text = "Autorizado",
-                    color = Color(parseColor("#3CF2DD")),
-                    style = TextStyle.HEADLINE_6.toTextStyle(),
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1
-                )
+                is TransmilenioDeniedNotification -> {
+
+                }
             }
         }
     }
 }
 
 @Composable
-private fun IncidentPart5() {
+private fun IncidentFooter(patients: List<PatientUiModel>, onAction: (idAph: Int) -> Unit) {
     Column(
         modifier = Modifier
-            .padding(top = 20.dp)
+            .padding(top = 20.dp, bottom = 20.dp)
             .fillMaxWidth()
     ) {
-        IncidentPart5_1()
+        patients.forEach { patientUiModel ->
+            IncidentPatient(patientUiModel, onAction)
+        }
     }
 }
 
 @Composable
-private fun IncidentPart5_1() {
+private fun IncidentPatient(patientUiModel: PatientUiModel, onAction: (idAph: Int) -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
         Button(
-            onClick = { /*TODO*/ }
+            onClick = { onAction(patientUiModel.idAph) },
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 8.dp)
         ) {
             Icon(
-                modifier = Modifier.padding(end = 6.dp),
-                painter = painterResource(id = R.drawable.ic_hceud),
+                modifier = Modifier.padding(end = 10.dp),
+                painter = painterResource(id = R.drawable.ic_patient),
                 contentDescription = null
             )
             Text(
-                text = "Gabriela Quintero",
-                color = Color.White,
-                style = TextStyle.HEADLINE_6.toTextStyle()
+                text = patientUiModel.fullName,
+                color = Color(parseColor("#0A090A")),
+                style = TextStyle.HEADLINE_6.toTextStyle().copy(
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
             )
         }
 
