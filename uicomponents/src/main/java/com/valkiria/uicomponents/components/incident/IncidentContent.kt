@@ -38,6 +38,7 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.toTextStyle
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
+import timber.log.Timber
 
 private val ContentBackground = Modifier.background(color = Color(parseColor("#2B3139")))
 
@@ -378,14 +379,13 @@ private fun IncidentTransmilenioRequest(transmiRequests: List<TransmiNotificatio
                 }
             }
 
-
             when (it) {
                 is TransmilenioAuthorizationNotification -> {
-
+                    Timber.d(("FIXME"))
                 }
 
                 is TransmilenioDeniedNotification -> {
-
+                    Timber.d(("FIXME"))
                 }
             }
         }

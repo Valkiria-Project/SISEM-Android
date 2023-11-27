@@ -9,6 +9,7 @@ import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.time.LocalDateTime
 
+@Suppress("TooManyFunctions")
 class CacheConverters {
 
     private val listOfStringAdapter: JsonAdapter<List<String>> = Moshi.Builder()
