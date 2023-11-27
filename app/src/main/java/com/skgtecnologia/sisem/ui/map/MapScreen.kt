@@ -16,6 +16,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.skgtecnologia.sisem.ui.navigation.NavigationRoute
 import com.valkiria.uicomponents.bricks.map.MapView
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
@@ -25,7 +27,8 @@ import timber.log.Timber
 @Composable
 fun MapScreen(
     modifier: Modifier = Modifier,
-    onAction: (NavigationRoute) -> Unit,
+    onMenuAction: (NavigationRoute) -> Unit,
+    onAction: (aphRoute: String) -> Unit,
     onLogout: () -> Unit
 ) {
     val context = LocalContext.current
@@ -46,7 +49,7 @@ fun MapScreen(
     MenuDrawer(
         drawerState = drawerState,
         onClick = { menuNavigationRoute ->
-            onAction(menuNavigationRoute)
+            onMenuAction(menuNavigationRoute)
         },
         onLogout = {
             onLogout()
@@ -57,9 +60,15 @@ fun MapScreen(
             incident = viewModel.uiState.incident,
             drawerState = drawerState,
             notificationData = notificationData,
-            modifier = modifier.fillMaxSize()
-        ) {
-            notificationData = null
+            modifier = modifier.fillMaxSize(),
+            onNotificationAction = {
+                notificationData = null
+            }
+        ) { idAph ->
+            Timber.d("Navigate to APH with Id APH $idAph")
+            onAction(
+                MainNavigationRoute.IncidentScreen.route + "?${NavigationArgument.ID_APH}=$idAph"
+            )
         }
     }
 }

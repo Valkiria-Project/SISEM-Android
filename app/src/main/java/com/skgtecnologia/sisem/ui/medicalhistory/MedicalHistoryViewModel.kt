@@ -11,6 +11,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.R
@@ -67,6 +68,7 @@ import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
@@ -117,6 +119,7 @@ private const val GLUCOMETRY_SYMBOL = "mg/dL"
 @Suppress("LargeClass", "TooManyFunctions", "LongMethod", "ComplexMethod")
 @HiltViewModel
 class MedicalHistoryViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val getMedicalHistoryScreen: GetMedicalHistoryScreen,
     private val logoutCurrentUser: LogoutCurrentUser,
     private val sendMedicalHistory: SendMedicalHistory,
@@ -128,6 +131,8 @@ class MedicalHistoryViewModel @Inject constructor(
 
     var uiState by mutableStateOf(MedicalHistoryUiState())
         private set
+
+    private val idAph: String? = savedStateHandle[NavigationArgument.ID_APH]
 
     private var initialVitalSignsTas: Int = 0
     private var initialVitalSignsFc: Int = 0
@@ -176,7 +181,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch {
-            getMedicalHistoryScreen.invoke(idAph = "14")
+            getMedicalHistoryScreen.invoke(idAph = idAph.orEmpty())
                 .onSuccess { medicalHistoryScreenModel ->
                     medicalHistoryScreenModel.getFormInitialValues()
 
@@ -1025,6 +1030,7 @@ class MedicalHistoryViewModel @Inject constructor(
         job?.cancel()
         job = viewModelScope.launch {
             sendMedicalHistory.invoke(
+                idAph = idAph.orEmpty(),
                 humanBodyValues = humanBodyValues,
                 segmentedValues = segmentedValues,
                 signatureValues = signatureValues,
