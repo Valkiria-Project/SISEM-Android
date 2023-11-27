@@ -35,7 +35,9 @@ fun getTransmiNotificationDataByType(
     }
 }
 
-fun getTransmiNotificationRawDataByType(transmiNotification: TransmiNotification): Map<String, String> {
+fun getTransmiNotificationRawDataByType(
+    transmiNotification: TransmiNotification
+): Map<String, String> {
     return when (transmiNotification) {
         is TransmilenioAuthorizationNotification -> mapOf(
             NOTIFICATION_TYPE_KEY to transmiNotification.notificationType.name,
