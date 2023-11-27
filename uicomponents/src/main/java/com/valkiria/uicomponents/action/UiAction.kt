@@ -53,7 +53,12 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
     ) : GenericUiAction(identifier)
 
     data class InfoCardAction(
-        override val identifier: String
+        override val identifier: String,
+        val isPill: Boolean,
+        val patient: String?,
+        val isClickCard: Boolean,
+        val reportDetail: ReportsDetailUiModel?,
+        val chipSection: ChipSectionUiModel?
     ) : GenericUiAction(identifier)
 
     data class InputAction(
@@ -123,8 +128,6 @@ sealed class FooterUiAction(open val identifier: String) : UiAction {
 
 sealed class AuthCardsUiAction : UiAction {
     data object AuthCard : AuthCardsUiAction()
-    data class AuthCardNews(val reportUiDetail: ReportsDetailUiModel) : AuthCardsUiAction()
-    data class AuthCardFindings(val chipSectionUiModel: ChipSectionUiModel) : AuthCardsUiAction()
 }
 
 sealed class LoginUiAction : UiAction {

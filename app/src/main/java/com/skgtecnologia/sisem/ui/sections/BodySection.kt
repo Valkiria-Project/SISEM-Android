@@ -338,7 +338,21 @@ private fun LazyListScope.handleBodyRows(
 
             is InfoCardUiModel -> if (model.visibility) {
                 item(key = model.identifier) {
-                    HandleInfoCardRows(model, onAction)
+                    InfoCardComponent(
+                        uiModel = model,
+                        onAction = { cardUiModel ->
+                            onAction(
+                                GenericUiAction.InfoCardAction(
+                                    identifier = cardUiModel.identifier,
+                                    isPill = cardUiModel.isPill,
+                                    patient = cardUiModel.patient,
+                                    isClickCard = cardUiModel.isClickCard,
+                                    reportDetail = cardUiModel.reportDetail,
+                                    chipSection = cardUiModel.chipSection
+                                )
+                            )
+                        }
+                    )
                 }
             }
 
@@ -524,30 +538,6 @@ private fun HandleChipRows(
 
         else -> ChipComponent(
             uiModel = model,
-        )
-    }
-}
-
-@Composable
-private fun HandleInfoCardRows(
-    model: InfoCardUiModel,
-    onAction: (actionInput: UiAction) -> Unit
-) {
-    when (model.identifier) {
-        AuthCardsIdentifier.CREW_MEMBER_CARD_ASSISTANT.name,
-        AuthCardsIdentifier.CREW_MEMBER_CARD_DRIVER.name,
-        AuthCardsIdentifier.CREW_MEMBER_CARD_DOCTOR.name -> {
-            InfoCardComponent(
-                uiModel = model,
-                onAction = { onAction(GenericUiAction.InfoCardAction(it)) },
-                onNewsAction = { onAction(AuthCardsUiAction.AuthCardNews(it)) },
-                onFindingsAction = { onAction(AuthCardsUiAction.AuthCardFindings(it)) }
-            )
-        }
-
-        else -> InfoCardComponent(
-            uiModel = model,
-            onAction = { onAction(GenericUiAction.InfoCardAction(it)) }
         )
     }
 }

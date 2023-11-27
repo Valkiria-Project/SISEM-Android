@@ -25,6 +25,7 @@ import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.sharedViewModel
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
 import com.skgtecnologia.sisem.ui.forgotpassword.ForgotPasswordScreen
+import com.skgtecnologia.sisem.ui.incident.IncidentScreen
 import com.skgtecnologia.sisem.ui.inventory.InventoryScreen
 import com.skgtecnologia.sisem.ui.inventory.view.InventoryViewScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
@@ -209,27 +210,9 @@ private fun NavGraphBuilder.mainGraph(
 
         composable(
             route = MainNavigationRoute.IncidentScreen.route
-        ) { navBackStackEntry ->
-            val vitalSigns =
-                navBackStackEntry.savedStateHandle.get<Map<String, String>>(VITAL_SIGNS)
-            navBackStackEntry.savedStateHandle.remove<Map<String, String>>(VITAL_SIGNS)
-
-            val medicine = navBackStackEntry.savedStateHandle.get<Map<String, String>>(MEDICINE)
-            navBackStackEntry.savedStateHandle.remove<Map<String, String>>(MEDICINE)
-
-            val signature = navBackStackEntry.savedStateHandle.get<String>(SIGNATURE)
-            navBackStackEntry.savedStateHandle.remove<String>(SIGNATURE)
-
-            val photoTaken = navBackStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN)
-            navBackStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)
-
-            MedicalHistoryScreen(
-                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
-                modifier = modifier,
-                vitalSigns = vitalSigns,
-                medicine = medicine,
-                signature = signature,
-                photoTaken = photoTaken == true
+        ) {
+            IncidentScreen(
+                modifier = modifier
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
