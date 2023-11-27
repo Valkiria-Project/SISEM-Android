@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,8 +28,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.components.incident.model.IncidentUiModel
+import com.valkiria.uicomponents.components.incident.model.ResourceUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.toTextStyle
+
+private val ContentBackground = Modifier.background(color = Color(parseColor("#2B3139")))
 
 @Composable
 fun IncidentContent(incidentUiModel: IncidentUiModel) {
@@ -48,9 +52,9 @@ fun IncidentContent(incidentUiModel: IncidentUiModel) {
             incidentUiModel.incident.premierOneHour
         )
 
-        IncidentPart3()
+        IncidentLocationDescription(incidentUiModel.incident.addressReferencePoint)
 
-        IncidentPart4()
+        IncidentResources(incidentUiModel.resources)
 
         TransmilenioLane()
 
@@ -79,7 +83,7 @@ private fun IncidentHeader(codeSisem: String, code: String) {
             color = Color.White,
             style = TextStyle.HEADLINE_2.toTextStyle().copy(
                 fontSize = 22.sp,
-                fontWeight = FontWeight.W500
+                fontWeight = FontWeight.Medium
             )
         )
 
@@ -111,9 +115,11 @@ private fun IncidentDetails(address: String, premierOneDate: String, premierOneH
 
         Text(
             modifier = Modifier.padding(end = 8.dp),
-            text = "Kra 45 #43-21",
+            text = address,
             color = Color.White,
-            style = TextStyle.HEADLINE_4.toTextStyle()
+            style = TextStyle.HEADLINE_4.toTextStyle().copy(
+                fontWeight = FontWeight.SemiBold
+            )
         )
 
         Icon(
@@ -126,32 +132,30 @@ private fun IncidentDetails(address: String, premierOneDate: String, premierOneH
         )
 
         Text(
-            text = "11 Min",
+            text = premierOneDate.plus(" ").plus(premierOneHour),
             color = Color.White,
-            style = TextStyle.HEADLINE_4.toTextStyle()
+            style = TextStyle.HEADLINE_4.toTextStyle().copy(
+                fontWeight = FontWeight.SemiBold
+            )
         )
     }
 }
 
 @Composable
-private fun IncidentPart3() {
+private fun IncidentLocationDescription(addressReferencePoint: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 4.dp)
+            .padding(top = 8.dp)
             .clip(
-                shape = RoundedCornerShape(
-                    topStart = 20.dp,
-                    topEnd = 20.dp,
-                    bottomEnd = 20.dp,
-                    bottomStart = 20.dp
-                )
+                shape = RoundedCornerShape(20.dp)
             )
-            .background(MaterialTheme.colorScheme.background.copy(alpha = 0.8f))
+            .then(ContentBackground)
+            .padding(10.dp)
     ) {
         Text(
             modifier = Modifier.padding(10.dp),
-            text = "Frente a la estación de Transmilenio de la 106, persona no identificada.",
+            text = addressReferencePoint,
             color = Color.White,
             style = TextStyle.HEADLINE_7.toTextStyle()
         )
@@ -160,7 +164,7 @@ private fun IncidentPart3() {
 
 @Suppress("MagicNumber")
 @Composable
-private fun IncidentPart4() {
+private fun IncidentResources(resources: List<ResourceUiModel>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -173,7 +177,8 @@ private fun IncidentPart4() {
                     bottomStart = 20.dp
                 )
             )
-            .background(MaterialTheme.colorScheme.background.copy(alpha = 0.8f))
+            .then(ContentBackground)
+            .padding(10.dp)
     ) {
         Row(
             modifier = Modifier
@@ -191,20 +196,20 @@ private fun IncidentPart4() {
             )
 
             Text(
-                text = "Solicitud de apoyo",
+                text = stringResource(R.string.incident_support_request_title),
                 color = Color.White,
                 style = TextStyle.HEADLINE_4.toTextStyle()
             )
         }
 
-        repeat(3) {
-            IncidentPart4Item()
+        resources.forEach { _ ->
+            IncidentResource()
         }
     }
 }
 
 @Composable
-private fun IncidentPart4Item() {
+private fun IncidentResource() {
     Row(
         modifier = Modifier
             .padding(start = 46.dp, top = 10.dp)
