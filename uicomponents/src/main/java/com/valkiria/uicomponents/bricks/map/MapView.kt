@@ -51,7 +51,8 @@ fun MapView(
     drawerState: DrawerState,
     notificationData: NotificationData?,
     modifier: Modifier = Modifier,
-    onAction: (notificationAction: NotificationAction) -> Unit
+    onNotificationAction: (notificationAction: NotificationAction) -> Unit,
+    onAction: (idAph: Int) -> Unit
 ) {
     val context = LocalContext.current
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
@@ -115,7 +116,7 @@ fun MapView(
         }
 
         OnNotificationHandler(notificationData) {
-            onAction(it)
+            onNotificationAction(it)
             if (it.isDismiss.not()) {
                 // FIXME: Navigate to MapScreen if is type INCIDENT_ASSIGNED
                 Timber.d("Navigate to MapScreen")
@@ -127,7 +128,7 @@ fun MapView(
 
             MapBottomSheetView(
                 content = {
-                    IncidentContent(it)
+                    IncidentContent(it, onAction)
                 },
                 sheetState = sheetState,
                 scope = scope
