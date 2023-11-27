@@ -11,7 +11,7 @@ import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRAN
 import timber.log.Timber
 
 // NOTIFICATION_TYPE
-private const val NOTIFICATION_TYPE_KEY = "notification_type"
+const val NOTIFICATION_TYPE_KEY = "notification_type"
 
 // INCIDENT_ASSIGNED
 private const val CRU = "CRU"
@@ -22,14 +22,6 @@ private const val INCIDENT_DATE = "incident_date"
 private const val ADDRESS = "address"
 private const val HOUR = "hour"
 private const val GEOLOCATION = "geolocation"
-
-// TRANSMILENIO_AUTHORIZATION
-private const val AUTHORIZATION_NUMBER = "authorization_number"
-private const val AUTHORIZES = "authorizes"
-private const val JOURNEY = "journey"
-
-// TRANSMILENIO_DENIED
-private const val AUTHORIZATION_NUMBER_DENIED = "authorization_number"
 
 // SUPPORT_REQUEST_ON_THE_WAY
 private const val RESOURCE_TYPE_AND_CODE = "resource_type_and_code"
@@ -147,5 +139,7 @@ fun getNotificationRawDataByType(notificationData: NotificationData): Map<String
             CONSECUTIVE_NUMBER to notificationData.consecutiveNumber,
             UPDATE_TIME_OBSERVATIONS to notificationData.updateTimeObservationsAttachments
         )
+
+        is TransmiNotification -> mapOf()
     }
 }

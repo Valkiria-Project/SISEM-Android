@@ -10,14 +10,16 @@ data class PatientEntity(
     @PrimaryKey
     @ColumnInfo(name = "id") val id: Int,
     @ColumnInfo(name = "full_name") val fullName: String,
-    @ColumnInfo(name = "id_aph") val idAph: Int
+    @ColumnInfo(name = "id_aph") val idAph: Int,
+    @ColumnInfo(name = "is_pending_aph") val isPendingAph: Boolean
 )
 
 fun PatientEntity.mapToDomain(): PatientUiModel = with(this) {
     PatientUiModel(
         id = id,
         fullName = fullName,
-        idAph = idAph
+        idAph = idAph,
+        isPendingAph = isPendingAph
     )
 }
 
@@ -25,6 +27,7 @@ fun PatientUiModel.mapToCache(): PatientEntity = with(this) {
     PatientEntity(
         id = id,
         fullName = fullName,
-        idAph = idAph
+        idAph = idAph,
+        isPendingAph = isPendingAph
     )
 }

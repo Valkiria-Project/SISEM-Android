@@ -7,4 +7,4 @@ data class TransmilenioAuthorizationNotification(
     val authorizationNumber: String,
     val authorizes: String,
     val journey: String
-) : NotificationData
+) : TransmiNotification

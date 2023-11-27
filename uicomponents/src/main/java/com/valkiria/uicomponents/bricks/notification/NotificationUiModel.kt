@@ -15,6 +15,7 @@ import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRAN
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_DENIED
 import com.valkiria.uicomponents.bricks.notification.model.StretcherRetentionEnableNotification
 import com.valkiria.uicomponents.bricks.notification.model.SupportRequestNotification
+import com.valkiria.uicomponents.bricks.notification.model.TransmiNotification
 import com.valkiria.uicomponents.bricks.notification.model.TransmilenioAuthorizationNotification
 import com.valkiria.uicomponents.bricks.notification.model.TransmilenioDeniedNotification
 import java.util.UUID
@@ -88,5 +89,7 @@ fun NotificationData.mapToUi(): NotificationUiModel {
             title = CLOSING_OF_APH.title.plus(this.consecutiveNumber),
             description = this.updateTimeObservationsAttachments
         )
+
+        is TransmiNotification -> error("Invalid Transmi Notification Type")
     }
 }

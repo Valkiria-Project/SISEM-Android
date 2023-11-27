@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.domain.medicalhistory.usecases
 
+import com.skgtecnologia.sisem.commons.ID_APH
 import com.skgtecnologia.sisem.domain.medicalhistory.MedicalHistoryRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -27,6 +28,7 @@ class SendMedicalHistoryTest {
     fun `when sendMedicalHistory is success`() = runTest {
         coEvery {
             medicalHistoryRepository.sendMedicalHistory(
+                ID_APH,
                 any(),
                 any(),
                 any(),
@@ -42,6 +44,7 @@ class SendMedicalHistoryTest {
         } returns Unit
 
         val result = sendMedicalHistory(
+            idAph = ID_APH,
             humanBodyValues = listOf(),
             segmentedValues = mapOf(),
             signatureValues = mapOf(),
@@ -62,6 +65,7 @@ class SendMedicalHistoryTest {
     fun `when sendMedicalHistory is failure`() = runTest {
         coEvery {
             medicalHistoryRepository.sendMedicalHistory(
+                ID_APH,
                 any(),
                 any(),
                 any(),
@@ -77,6 +81,7 @@ class SendMedicalHistoryTest {
         } throws Exception()
 
         val result = sendMedicalHistory(
+            idAph = ID_APH,
             humanBodyValues = listOf(),
             segmentedValues = mapOf(),
             signatureValues = mapOf(),

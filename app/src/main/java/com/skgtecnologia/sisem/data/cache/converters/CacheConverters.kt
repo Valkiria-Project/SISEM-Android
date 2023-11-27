@@ -9,6 +9,7 @@ import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.time.LocalDateTime
 
+@Suppress("TooManyFunctions")
 class CacheConverters {
 
     private val listOfStringAdapter: JsonAdapter<List<String>> = Moshi.Builder()
@@ -73,8 +74,29 @@ class CacheConverters {
     }
 
     @TypeConverter
-    fun mapToString(list: Map<String, String>?): String? {
-        return mapOfStringAdapter.toJson(list)
+    fun mapToString(map: Map<String, String>?): String? {
+        return mapOfStringAdapter.toJson(map)
+    }
+
+    private val listOfMapOfStringAdapter: JsonAdapter<List<Map<String, String>>> = Moshi.Builder()
+        .build()
+        .adapter(
+            Types.newParameterizedType(
+                List::class.java,
+                Map::class.java,
+                String::class.java,
+                String::class.java
+            )
+        )
+
+    @TypeConverter
+    fun stringToListOfMap(value: String?): List<Map<String, String>>? {
+        return if (value != null) listOfMapOfStringAdapter.fromJson(value) else null
+    }
+
+    @TypeConverter
+    fun listOfMapToString(list: List<Map<String, String>>?): String? {
+        return listOfMapOfStringAdapter.toJson(list)
     }
 
     @TypeConverter

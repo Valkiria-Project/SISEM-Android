@@ -5,4 +5,4 @@ import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRAN
 data class TransmilenioDeniedNotification(
     override val notificationType: NotificationType = TRANSMILENIO_DENIED,
     val authorizationNumber: String
-) : NotificationData
+) : TransmiNotification
