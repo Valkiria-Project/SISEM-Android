@@ -16,6 +16,9 @@
     <string name="media_action_select_files">Archivo</string>
     <string name="media_action_attached_files">Archivos adjuntos</string>
 
+    <!-- Incident -->
+    <string name="incident_support_request_title">Solicitud de apoyo</string>
+
     <!-- Date / Time picker -->
     <string name="date_picker_select">Seleccionar</string>
     <string name="date_picker_cancel">Cancelar</string>
