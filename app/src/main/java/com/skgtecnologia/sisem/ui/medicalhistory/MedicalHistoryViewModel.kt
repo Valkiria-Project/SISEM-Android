@@ -8,11 +8,14 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
+import com.skgtecnologia.sisem.commons.resources.StringProvider
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ACCEPT_TRANSFER_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ADMINISTRATION_ROUTE
@@ -21,13 +24,16 @@ import com.skgtecnologia.sisem.domain.medicalhistory.model.ALIVE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.APPLICATION_TIME_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.APPLIED_DOSES
 import com.skgtecnologia.sisem.domain.medicalhistory.model.APPLIED_DOSE_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.AUTH_NAME_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.CODE
 import com.skgtecnologia.sisem.domain.medicalhistory.model.CODE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.DATE_MEDICINE_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.DOCUMENT_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.DOSE_UNIT_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.DURING_VITAL_SIGNS
 import com.skgtecnologia.sisem.domain.medicalhistory.model.END_VITAL_SIGNS
 import com.skgtecnologia.sisem.domain.medicalhistory.model.FC_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.FIRST_NAME_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.FUR_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.GENERIC_NAME_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.GLASGOW_MRM_KEY
@@ -37,17 +43,28 @@ import com.skgtecnologia.sisem.domain.medicalhistory.model.GLASGOW_RTS_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.GLASGOW_TOTAL_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.GLUCOMETRY_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.INITIAL_VITAL_SIGNS
+import com.skgtecnologia.sisem.domain.medicalhistory.model.LASTNAME_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.PREGNANT_FUR_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.PREGNANT_WEEKS_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.QUANTITY_USED
 import com.skgtecnologia.sisem.domain.medicalhistory.model.QUANTITY_USED_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.RESPONSIBLE_DOCUMENT_NUMBER_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.RESPONSIBLE_DOCUMENT_TYPE_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.RESPONSIBLE_NAME_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.SECOND_LASTNAME_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.SECOND_NAME_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.TAS_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.TEMPERATURE_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_DECLARATION_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_RESPONSIBLE_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.getWithdrawalResponsibleText
+import com.skgtecnologia.sisem.domain.medicalhistory.model.getWithdrawalWitnessText
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryScreen
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SendMedicalHistory
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.banner.medicalHistorySuccess
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
 import com.valkiria.uicomponents.action.GenericUiAction
@@ -102,7 +119,9 @@ private const val GLUCOMETRY_SYMBOL = "mg/dL"
 class MedicalHistoryViewModel @Inject constructor(
     private val getMedicalHistoryScreen: GetMedicalHistoryScreen,
     private val logoutCurrentUser: LogoutCurrentUser,
-    private val sendMedicalHistory: SendMedicalHistory
+    private val sendMedicalHistory: SendMedicalHistory,
+    private val observeOperationConfig: ObserveOperationConfig,
+    private val stringProvider: StringProvider
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -124,6 +143,16 @@ class MedicalHistoryViewModel @Inject constructor(
         GLASGOW_MRO_KEY,
         GLASGOW_MRV_KEY,
         GLASGOW_MRM_KEY
+    )
+
+    private val patientNameIdentifiers = listOf(
+        FIRST_NAME_KEY,
+        SECOND_NAME_KEY,
+        LASTNAME_KEY,
+        SECOND_LASTNAME_KEY,
+        DOCUMENT_KEY,
+        RESPONSIBLE_NAME_KEY,
+        RESPONSIBLE_DOCUMENT_NUMBER_KEY
     )
 
     private var temporalInfoCard by mutableStateOf("")
@@ -473,6 +502,12 @@ class MedicalHistoryViewModel @Inject constructor(
             inputAction.required
         )
 
+        if (patientNameIdentifiers.contains(inputAction.identifier)) {
+            updatePatientName()
+            updateWithdrawalResponsible()
+            updateWithdrawalWitness()
+        }
+
         if (inputAction.identifier == FUR_KEY) {
             updateFurAndGestationWeeks()
         }
@@ -495,6 +530,116 @@ class MedicalHistoryViewModel @Inject constructor(
             )
         )
     }
+
+    private fun updatePatientName() {
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = AUTH_NAME_KEY,
+            updater = { model ->
+                if (model is LabelUiModel) {
+                    model.copy(
+                        text = stringProvider.getString(
+                            R.string.medical_history_proc_auth_label,
+                            fieldsValues.getPatientName()
+                        )
+                    )
+                } else {
+                    model
+                }
+            }
+        )
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
+    private fun updateWithdrawalResponsible() {
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = WITHDRAWAL_RESPONSIBLE_KEY,
+            updater = { model ->
+                if (model is RichLabelUiModel) {
+                    model.copy(
+                        text = getWithdrawalResponsibleText(
+                            responsible = fieldsValues.getResponsibleName(),
+                            documentType = chipSelectionValues.getResponsibleDocType(),
+                            document = fieldsValues.getResponsibleDocument()
+                        )
+                    )
+                } else {
+                    model
+                }
+            }
+        )
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
+    private fun updateWithdrawalWitness() {
+        job?.cancel()
+        job = viewModelScope.launch {
+            observeOperationConfig.invoke()
+                .onSuccess { operationModel ->
+                    val updatedBody = updateBodyModel(
+                        uiModels = uiState.screenModel?.body,
+                        identifier = WITHDRAWAL_DECLARATION_KEY,
+                        updater = { model ->
+                            if (model is RichLabelUiModel) {
+                                model.copy(
+                                    text = getWithdrawalWitnessText(
+                                        patient = fieldsValues.getPatientName(),
+                                        document = fieldsValues.getPatientDocument(),
+                                        code = operationModel.vehicleCode.orEmpty()
+                                    )
+                                )
+                            } else {
+                                model
+                            }
+                        }
+                    )
+
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            screenModel = uiState.screenModel?.copy(
+                                body = updatedBody
+                            )
+                        )
+                    }
+                }
+                .onFailure { throwable ->
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            errorEvent = throwable.mapToUi()
+                        )
+                    }
+                }
+        }
+    }
+
+    private fun SnapshotStateMap<String, InputUiModel>.getPatientName(): String =
+        this[FIRST_NAME_KEY]?.updatedValue.orEmpty() + " " +
+            this[SECOND_NAME_KEY]?.updatedValue.orEmpty() + " " +
+            this[LASTNAME_KEY]?.updatedValue.orEmpty() + " " +
+            this[SECOND_LASTNAME_KEY]?.updatedValue.orEmpty()
+
+    private fun SnapshotStateMap<String, InputUiModel>.getPatientDocument(): String =
+        this[DOCUMENT_KEY]?.updatedValue.orEmpty()
+
+    private fun SnapshotStateMap<String, InputUiModel>.getResponsibleName(): String =
+        this[RESPONSIBLE_NAME_KEY]?.updatedValue.orEmpty()
+
+    private fun SnapshotStateMap<String, InputUiModel>.getResponsibleDocument(): String =
+        this[RESPONSIBLE_DOCUMENT_NUMBER_KEY]?.updatedValue.orEmpty()
+
+    private fun SnapshotStateMap<String, ChipSelectionItemUiModel>.getResponsibleDocType(): String =
+        this[RESPONSIBLE_DOCUMENT_TYPE_KEY]?.name.orEmpty()
 
     private fun updateFurAndGestationWeeks() {
         val updatedBody = uiState.screenModel?.body?.map {
@@ -873,23 +1018,8 @@ class MedicalHistoryViewModel @Inject constructor(
 
     fun sendMedicalHistory() {
         uiState = uiState.copy(
+            isLoading = true,
             validateFields = true
-        )
-
-        val invalidRequiredFields = fieldsValues.values
-            .filter { it.required && !it.fieldValidated }
-
-        val invalidOptionalFields = fieldsValues.values
-            .filter { it.required.not() && it.updatedValue.isNotEmpty() && !it.fieldValidated }
-
-        if (invalidRequiredFields.isEmpty() && invalidOptionalFields.isEmpty()) {
-            send()
-        }
-    }
-
-    private fun send() {
-        uiState = uiState.copy(
-            isLoading = true
         )
 
         job?.cancel()

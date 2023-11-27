@@ -13,6 +13,7 @@ import com.skgtecnologia.sisem.commons.labelUiModelMock
 import com.skgtecnologia.sisem.commons.mediaActionsUiModelMock
 import com.skgtecnologia.sisem.commons.medsSelectorUiModelMock
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
+import com.skgtecnologia.sisem.commons.resources.StringProvider
 import com.skgtecnologia.sisem.commons.segmentedSwitchUiModelMock
 import com.skgtecnologia.sisem.commons.signatureUiModelMock
 import com.skgtecnologia.sisem.commons.sliderUiModelMock
@@ -33,6 +34,7 @@ import com.skgtecnologia.sisem.domain.medicalhistory.model.TAS_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryScreen
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SendMedicalHistory
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.ui.humanbody.area.FrontArea
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
@@ -75,6 +77,12 @@ class MedicalHistoryViewModelTest {
     @MockK
     private lateinit var sendMedicalHistory: SendMedicalHistory
 
+    @MockK
+    private lateinit var observeOperationConfig: ObserveOperationConfig
+
+    @MockK
+    private lateinit var stringProvider: StringProvider
+
     private lateinit var viewModel: MedicalHistoryViewModel
 
     @Before
@@ -104,7 +112,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
 
         Assert.assertEquals(screenModel, viewModel.uiState.screenModel)
@@ -119,7 +129,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.errorEvent?.title)
@@ -142,7 +154,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.handleChipOptionAction(
             GenericUiAction.ChipOptionAction(
@@ -174,7 +188,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.handleChipOptionAction(
             GenericUiAction.ChipOptionAction(
@@ -211,7 +227,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.handleChipOptionAction(
             GenericUiAction.ChipOptionAction(
@@ -248,7 +266,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.handleChipSelectionAction(
             GenericUiAction.ChipSelectionAction(
@@ -282,7 +302,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.handleChipSelectionAction(
             GenericUiAction.ChipSelectionAction(
@@ -331,7 +353,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.handleChipSelectionAction(
             GenericUiAction.ChipSelectionAction(
@@ -360,7 +384,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.handleDropDownAction(
             GenericUiAction.DropDownAction(
@@ -383,7 +409,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.handleHumanBodyAction(
             GenericUiAction.HumanBodyAction(
@@ -424,7 +452,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.handleImageButtonAction(
             GenericUiAction.ImageButtonAction(
@@ -451,7 +481,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.showVitalSignsForm(identifier)
 
@@ -477,7 +509,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.handleInputAction(
             GenericUiAction.InputAction(
@@ -506,7 +540,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.handleSegmentedSwitchAction(
             GenericUiAction.SegmentedSwitchAction(
@@ -534,7 +570,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.handleSliderAction(
             GenericUiAction.SliderAction(
@@ -574,7 +612,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.showVitalSignsForm(identifierVitalSigns)
         viewModel.updateVitalSignsInfoCard(mapOf(TAS_KEY to "10", FC_KEY to "10"))
@@ -591,7 +631,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.showMedicineForm(IDENTIFIER)
 
@@ -613,7 +655,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.showMedicineForm(IDENTIFIER)
         viewModel.updateMedicineInfoCard(mapOf(IDENTIFIER to IDENTIFIER))
@@ -630,7 +674,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.showSignaturePad(IDENTIFIER)
 
@@ -652,7 +698,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.showSignaturePad(IDENTIFIER)
         viewModel.updateSignature("signature")
@@ -684,7 +732,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.sendMedicalHistory()
 
@@ -715,7 +765,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.sendMedicalHistory()
 
@@ -731,7 +783,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.showCamera()
 
@@ -747,7 +801,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.onPhotoTaken(mockk())
 
@@ -770,7 +826,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.updateMediaActions()
 
@@ -792,7 +850,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.updateMediaActions(listOf(mockk()))
 
@@ -809,7 +869,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.handleEvent(uiAction)
 
@@ -825,7 +887,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.consumeShownInfoEvent()
 
@@ -842,7 +906,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.consumeNavigationEvent()
 
@@ -858,7 +924,9 @@ class MedicalHistoryViewModelTest {
         viewModel = MedicalHistoryViewModel(
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
         )
         viewModel.goBack()
 
