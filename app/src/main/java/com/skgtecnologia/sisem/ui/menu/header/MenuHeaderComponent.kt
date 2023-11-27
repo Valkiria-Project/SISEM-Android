@@ -62,7 +62,7 @@ fun MenuHeaderComponent(
                         fontFamily = FontFamily.Default,
                         fontSize = 24.sp,
                         fontStyle = FontStyle.Normal,
-                        fontWeight = FontWeight.W700,
+                        fontWeight = FontWeight.Bold,
                         lineHeight = 28.sp,
                         letterSpacing = (2).sp,
                         color = Color(parseColor(color))
