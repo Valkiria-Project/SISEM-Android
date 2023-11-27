@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.data.medicalhistory
 
-import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.data.medicalhistory.remote.MedicalHistoryRemoteDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.domain.medicalhistory.MedicalHistoryRepository
@@ -28,6 +27,7 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
         medicalHistoryRemoteDataSource.getMedicineScreen().getOrThrow()
 
     override suspend fun sendMedicalHistory(
+        idAph: String,
         humanBodyValues: List<HumanBodyUi>,
         segmentedValues: Map<String, Boolean>,
         signatureValues: Map<String, String>,
@@ -42,8 +42,7 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
     ) = medicalHistoryRemoteDataSource.sendMedicalHistory(
         // FIXME: authCacheDataSource.observeAccessToken().first()?.turn?.id.orEmpty(),
         idTurn = "1",
-        // FIXME: Complete with notification work
-        idAph = if (BuildConfig.BUILD_TYPE == "debug") "24" else "14", // FIXME: 14 QA & 24 DEV
+        idAph = idAph,
         humanBodyValues = humanBodyValues,
         segmentedValues = segmentedValues,
         signatureValues = signatureValues,

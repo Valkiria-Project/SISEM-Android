@@ -152,7 +152,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch {
-            getMedicalHistoryScreen.invoke(idAph = "14")
+            getMedicalHistoryScreen.invoke(idAph = idAph.orEmpty())
                 .onSuccess { medicalHistoryScreenModel ->
                     medicalHistoryScreenModel.getFormInitialValues()
 
@@ -900,6 +900,7 @@ class MedicalHistoryViewModel @Inject constructor(
         job?.cancel()
         job = viewModelScope.launch {
             sendMedicalHistory.invoke(
+                idAph = idAph.orEmpty(),
                 humanBodyValues = humanBodyValues,
                 segmentedValues = segmentedValues,
                 signatureValues = signatureValues,

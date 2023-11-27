@@ -677,7 +677,8 @@ class MedicalHistoryViewModelTest {
                 any(),
                 any(),
                 any(),
-                any()
+                any(),
+                idAph
             )
         } returns Result.success(Unit)
 
@@ -708,7 +709,8 @@ class MedicalHistoryViewModelTest {
                 any(),
                 any(),
                 any(),
-                any()
+                any(),
+                idAph
             )
         } returns Result.failure(Throwable())
 

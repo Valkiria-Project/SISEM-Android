@@ -13,6 +13,7 @@ class SendMedicalHistory @Inject constructor(
     @Suppress("LongParameterList")
     @CheckResult
     suspend operator fun invoke(
+        idAph: String,
         humanBodyValues: List<HumanBodyUi>,
         segmentedValues: Map<String, Boolean>,
         signatureValues: Map<String, String>,
@@ -26,6 +27,7 @@ class SendMedicalHistory @Inject constructor(
         infoCardButtonValues: List<Map<String, String>>
     ): Result<Unit> = resultOf {
         medicalHistoryRepository.sendMedicalHistory(
+            idAph,
             humanBodyValues,
             segmentedValues,
             signatureValues,

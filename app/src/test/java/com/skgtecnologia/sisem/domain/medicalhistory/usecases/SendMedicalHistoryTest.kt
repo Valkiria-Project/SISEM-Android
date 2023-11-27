@@ -27,6 +27,7 @@ class SendMedicalHistoryTest {
     fun `when sendMedicalHistory is success`() = runTest {
         coEvery {
             medicalHistoryRepository.sendMedicalHistory(
+                idAph,
                 any(),
                 any(),
                 any(),
@@ -62,6 +63,7 @@ class SendMedicalHistoryTest {
     fun `when sendMedicalHistory is failure`() = runTest {
         coEvery {
             medicalHistoryRepository.sendMedicalHistory(
+                idAph,
                 any(),
                 any(),
                 any(),
