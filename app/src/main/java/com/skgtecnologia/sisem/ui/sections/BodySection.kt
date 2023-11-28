@@ -32,6 +32,7 @@ import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
 import com.skgtecnologia.sisem.ui.dropdown.DropDownComponent
 import com.skgtecnologia.sisem.ui.humanbody.HumanBodyComponent
+import com.skgtecnologia.sisem.ui.humanbody.view.HumanBodyViewComponent
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedsSelectorComponent
 import com.valkiria.uicomponents.action.AddReportUiAction
 import com.valkiria.uicomponents.action.AuthCardsUiAction
@@ -75,6 +76,7 @@ import com.valkiria.uicomponents.components.footer.FooterBodyUiModel
 import com.valkiria.uicomponents.components.footer.mapToSection
 import com.valkiria.uicomponents.components.header.HeaderUiModel
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUiModel
+import com.valkiria.uicomponents.components.humanbody.HumanBodyViewUiModel
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckComponent
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
 import com.valkiria.uicomponents.components.inventorysearch.InventorySearchComponent
@@ -323,6 +325,12 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
+            is HumanBodyViewUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    HumanBodyViewComponent(model)
+                }
+            }
+
             is ImageButtonSectionUiModel -> if (model.visibility) {
                 item(key = model.identifier) {
                     ImageButtonSectionComponent(model) { id, itemId ->
@@ -338,7 +346,21 @@ private fun LazyListScope.handleBodyRows(
 
             is InfoCardUiModel -> if (model.visibility) {
                 item(key = model.identifier) {
-                    HandleInfoCardRows(model, onAction)
+                    InfoCardComponent(
+                        uiModel = model,
+                        onAction = { cardUiModel ->
+                            onAction(
+                                GenericUiAction.InfoCardAction(
+                                    identifier = cardUiModel.identifier,
+                                    isPill = cardUiModel.isPill,
+                                    patient = cardUiModel.patient,
+                                    isClickCard = cardUiModel.isClickCard,
+                                    reportDetail = cardUiModel.reportDetail,
+                                    chipSection = cardUiModel.chipSection
+                                )
+                            )
+                        }
+                    )
                 }
             }
 
@@ -524,30 +546,6 @@ private fun HandleChipRows(
 
         else -> ChipComponent(
             uiModel = model,
-        )
-    }
-}
-
-@Composable
-private fun HandleInfoCardRows(
-    model: InfoCardUiModel,
-    onAction: (actionInput: UiAction) -> Unit
-) {
-    when (model.identifier) {
-        AuthCardsIdentifier.CREW_MEMBER_CARD_ASSISTANT.name,
-        AuthCardsIdentifier.CREW_MEMBER_CARD_DRIVER.name,
-        AuthCardsIdentifier.CREW_MEMBER_CARD_DOCTOR.name -> {
-            InfoCardComponent(
-                uiModel = model,
-                onAction = { onAction(GenericUiAction.InfoCardAction(it)) },
-                onNewsAction = { onAction(AuthCardsUiAction.AuthCardNews(it)) },
-                onFindingsAction = { onAction(AuthCardsUiAction.AuthCardFindings(it)) }
-            )
-        }
-
-        else -> InfoCardComponent(
-            uiModel = model,
-            onAction = { onAction(GenericUiAction.InfoCardAction(it)) }
         )
     }
 }

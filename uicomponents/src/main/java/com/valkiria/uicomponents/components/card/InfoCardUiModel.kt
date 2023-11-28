@@ -12,7 +12,7 @@ data class InfoCardUiModel(
     override val identifier: String,
     val icon: String,
     val title: TextUiModel,
-    val pill: PillUiModel,
+    val pill: PillUiModel? = null,
     val date: TextUiModel?,
     val chipSection: ChipSectionUiModel?,
     val reportsDetail: ReportsDetailUiModel?,

@@ -30,8 +30,10 @@ fun FindingsContent(chipSection: ChipSectionUiModel) {
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        chipSection.listText.texts.forEach { text ->
-            SuggestionChipView(text = text, textStyle = chipSection.listText.textStyle)
+        chipSection.listText?.let {
+            it.texts.forEach { text ->
+                SuggestionChipView(text = text, textStyle = it.textStyle)
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import com.skgtecnologia.sisem.ui.authcards.view.AuthCardViewNavigationModel
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthNavigationModel
 import com.skgtecnologia.sisem.ui.forgotpassword.ForgotPasswordNavigationModel
+import com.skgtecnologia.sisem.ui.incident.IncidentNavigationModel
 import com.skgtecnologia.sisem.ui.inventory.InventoryNavigationModel
 import com.skgtecnologia.sisem.ui.inventory.view.InventoryViewNavigationModel
 import com.skgtecnologia.sisem.ui.login.LoginNavigationModel
@@ -63,6 +64,7 @@ fun navigateToNextStep(
         deviceAuthToNextStep(navController, navigationModel, onNavigationFallback)
 
     is ForgotPasswordNavigationModel -> forgotPasswordToNextStep(navController, navigationModel)
+    is IncidentNavigationModel -> incidentToNextStep(navController, navigationModel)
     is InitSignatureNavigationModel -> initSignatureToNextStep(navController, navigationModel)
     is InventoryNavigationModel -> inventoryToNextStep(navController, navigationModel)
     is InventoryViewNavigationModel -> inventoryViewToNextStep(navController, navigationModel)
@@ -144,6 +146,17 @@ fun forgotPasswordToNextStep(
 ) {
     when {
         model.isCancel || model.isSuccess -> navController.popBackStack()
+    }
+}
+
+fun incidentToNextStep(
+    navController: NavHostController,
+    model: IncidentNavigationModel
+) {
+    when {
+        model.back -> navController.popBackStack()
+        model.isAph -> {}
+        model.isStretcherRetention -> {}
     }
 }
 

@@ -171,4 +171,12 @@
     <!-- SignaturePad screen -->
     <string name="signature_pad_title">Firmar</string>
     <string name="signature_pad_subtitle">Firma del responsable</string>
+
+    <!-- Medical history screen -->
+    <string name="medical_history_proc_auth_label">
+        Autorizo a la tripulación del vehículo de emergencias o ambulancia para realizar la evaluación, procedimiento y traslado del paciente %s.
+        Acepto que se me han explicado las razones del traslado y las posibles complicaciones que podrían ocurrir como consecuencia de la patología base o durante el traslado,
+        de tal manera que admito la realización de maniobras de reanimación o su finalización, de acuerdo con el criterio médico y a la patología del paciente.
+        He tenido la oportunidad de hacer todas las preguntas pertinentes para aclarar mis dudas y se me han respondido de manera clara y suficiente.
+    </string>
 </resources>
