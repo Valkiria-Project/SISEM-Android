@@ -40,6 +40,7 @@ import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.bricks.chip.SuggestionChipView
 import com.valkiria.uicomponents.components.header.HeaderUiModel
+import com.valkiria.uicomponents.components.label.ListPatientUiModel
 import com.valkiria.uicomponents.components.label.ListTextUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextUiModel
@@ -53,9 +54,7 @@ private const val MAX_FINDINGS = 3
 @Composable
 fun InfoCardComponent(
     uiModel: InfoCardUiModel,
-    onAction: (identifier: String) -> Unit,
-    onNewsAction: (reportDetail: ReportsDetailUiModel) -> Unit = {},
-    onFindingsAction: (chipSection: ChipSectionUiModel) -> Unit = {}
+    onAction: (cardUiModel: CardUiModel) -> Unit
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon, DefType.DRAWABLE
@@ -80,7 +79,14 @@ fun InfoCardComponent(
     ) {
         Box(
             modifier = Modifier
-                .clickable { onAction(uiModel.identifier) }
+                .clickable {
+                    onAction(
+                        CardUiModel(
+                            identifier = uiModel.identifier,
+                            isClickCard = true
+                        )
+                    )
+                }
                 .background(brush = brush)
                 .fillMaxWidth()
         ) {
@@ -123,20 +129,49 @@ fun InfoCardComponent(
                             style = uiModel.title.textStyle.toTextStyle(),
                         )
 
-                        Text(
-                            modifier = Modifier
-                                .padding(top = 5.dp)
-                                .background(
-                                    color = Color(parseColor(uiModel.pill.color)),
-                                    shape = RoundedCornerShape(25.dp)
+                        uiModel.pill?.let {
+                            val leftIcon = LocalContext.current.getResourceIdByName(
+                                it.leftIcon.orEmpty(), DefType.DRAWABLE
+                            )
+
+                            Row(
+                                modifier = Modifier
+                                    .clickable {
+                                        onAction(
+                                            CardUiModel(
+                                                identifier = uiModel.identifier,
+                                                isPill = true
+                                            )
+                                        )
+                                    }
+                                    .padding(top = 5.dp)
+                                    .background(
+                                        color = Color(parseColor(it.color)),
+                                        shape = RoundedCornerShape(25.dp)
+                                    )
+                                    .padding(horizontal = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                leftIcon?.let {
+                                    Icon(
+                                        imageVector = ImageVector.vectorResource(id = leftIcon),
+                                        contentDescription = "",
+                                        modifier = Modifier
+                                            .padding(end = 8.dp)
+                                            .size(20.dp),
+                                        tint = Color.Black,
+                                    )
+                                }
+
+                                Text(
+                                    text = it.title.text,
+                                    style = it.title.textStyle.toTextStyle(),
+                                    color = Color.Black,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
-                                .padding(horizontal = 8.dp),
-                            text = uiModel.pill.title.text,
-                            style = uiModel.pill.title.textStyle.toTextStyle(),
-                            color = Color.Black,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
+                            }
+                        }
                     }
 
                     uiModel.reportsDetail?.let {
@@ -150,7 +185,7 @@ fun InfoCardComponent(
                                 .padding(start = 12.dp),
                             count = it.details.size,
                             reportDetail = it,
-                            onAction = onNewsAction
+                            onAction = onAction
                         )
                     }
                 }
@@ -198,37 +233,89 @@ fun InfoCardComponent(
                         modifier = Modifier.padding(top = 10.dp),
                     )
 
-                    FlowRow(
-                        modifier = Modifier
-                            .padding(top = 8.dp)
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(6.dp)
-                    ) {
-                        var count = 0
+                    if (it.listPatient != null) {
+                        Column {
+                            val icon = LocalContext.current.getResourceIdByName(
+                                it.listPatient.icon, DefType.DRAWABLE
+                            )
 
-                        it.listText.texts.forEachIndexed { index, text ->
-                            when {
-                                uiModel.date?.textStyle == null ->
-                                    SuggestionChipView(
-                                        text = text,
-                                        textStyle = it.listText.textStyle
-                                    )
-
-                                index < MAX_FINDINGS ->
-                                    SuggestionChipView(
-                                        text = text,
-                                        textStyle = it.listText.textStyle
-                                    )
-
-                                count == 0 -> {
-                                    SuggestionChipView(
-                                        text = "...",
-                                        textStyle = it.listText.textStyle,
-                                    ) { _ ->
-                                        onFindingsAction(it)
+                            it.listPatient.texts.forEach { text ->
+                                Row(
+                                    modifier = Modifier
+                                        .clickable {
+                                            onAction(
+                                                CardUiModel(
+                                                    identifier = uiModel.identifier,
+                                                    patient = text
+                                                )
+                                            )
+                                        }
+                                        .padding(top = 10.dp)
+                                        .background(
+                                            color = Color.DarkGray,
+                                            shape = RoundedCornerShape(25.dp)
+                                        )
+                                        .padding(horizontal = 8.dp),
+                                ) {
+                                    icon?.let {
+                                        Icon(
+                                            imageVector = ImageVector.vectorResource(id = icon),
+                                            contentDescription = "",
+                                            modifier = Modifier
+                                                .padding(end = 8.dp)
+                                                .size(20.dp),
+                                            tint = Color.White,
+                                        )
                                     }
 
-                                    count++
+                                    Text(
+                                        text = text,
+                                        style = it.listPatient.textStyle.toTextStyle(),
+                                        color = Color.White,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                }
+                            }
+                        }
+                    } else {
+                        FlowRow(
+                            modifier = Modifier
+                                .padding(top = 8.dp)
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            var count = 0
+
+                            it.listText?.texts?.forEachIndexed { index, text ->
+                                when {
+                                    uiModel.date?.textStyle == null ->
+                                        SuggestionChipView(
+                                            text = text,
+                                            textStyle = it.listText.textStyle
+                                        )
+
+                                    index < MAX_FINDINGS ->
+                                        SuggestionChipView(
+                                            text = text,
+                                            textStyle = it.listText.textStyle
+                                        )
+
+                                    count == 0 -> {
+                                        SuggestionChipView(
+                                            text = "...",
+                                            textStyle = it.listText.textStyle,
+                                        ) { _ ->
+                                            onAction(
+                                                CardUiModel(
+                                                    identifier = uiModel.identifier,
+                                                    chipSection = it
+                                                )
+                                            )
+                                        }
+
+                                        count++
+                                    }
                                 }
                             }
                         }
@@ -244,11 +331,11 @@ fun BadgedBoxView(
     modifier: Modifier = Modifier,
     count: Int,
     reportDetail: ReportsDetailUiModel,
-    onAction: (reportDetail: ReportsDetailUiModel) -> Unit
+    onAction: (cardUiModel: CardUiModel) -> Unit
 ) {
     BadgedBox(
         modifier = modifier
-            .clickable { onAction(reportDetail) }
+            .clickable { onAction(CardUiModel(reportDetail = reportDetail)) }
             .size(25.dp),
         badge = {
             Badge {
@@ -283,8 +370,77 @@ fun InfoCardComponentPreview() {
                     text = "Anterior: RODOLFO EDINSON BARRIOS GOMEZ",
                     textStyle = TextStyle.HEADLINE_7
                 ),
-                color = "#FF0000"
+                color = "#FF0000",
+                leftIcon = "ic_aux"
             ),
+            date = TextUiModel(
+                text = "10:30",
+                textStyle = TextStyle.HEADLINE_4
+            ),
+            chipSection = ChipSectionUiModel(
+                title = TextUiModel(
+                    text = "ChipSection",
+                    textStyle = TextStyle.HEADLINE_7
+                ),
+                listText = ListTextUiModel(
+                    listOf("Prueba1", "Prueba2"),
+                    textStyle = TextStyle.HEADLINE_7
+                ),
+                listPatient = ListPatientUiModel(
+                    texts = listOf("Prueba1", "Prueba2"),
+                    icon = "ic_user_2",
+                    textStyle = TextStyle.HEADLINE_7
+                )
+            ),
+            reportsDetail = ReportsDetailUiModel(
+                header = HeaderUiModel(
+                    identifier = "identifier",
+                    title = TextUiModel(
+                        text = "Title",
+                        textStyle = TextStyle.HEADLINE_4
+                    ),
+                    arrangement = Arrangement.Center,
+                    modifier = Modifier
+                ),
+                details = listOf(
+                    ReportDetailUiModel(
+                        images = listOf("ic_aux"),
+                        title = TextUiModel(
+                            text = "Title",
+                            textStyle = TextStyle.HEADLINE_4
+                        ),
+                        subtitle = TextUiModel(
+                            text = "Subtitle",
+                            textStyle = TextStyle.HEADLINE_7
+                        ),
+                        description = TextUiModel(
+                            text = "Description",
+                            textStyle = TextStyle.HEADLINE_7
+                        ),
+                        modifier = Modifier
+                    )
+                )
+            ),
+            arrangement = Arrangement.Center,
+            modifier = Modifier
+        ),
+        onAction = {}
+    )
+}
+
+@Suppress("LongMethod")
+@Preview(showBackground = true)
+@Composable
+fun InfoCardComponentPreview2() {
+    InfoCardComponent(
+        uiModel = InfoCardUiModel(
+            identifier = "identifier",
+            icon = "ic_aux",
+            title = TextUiModel(
+                text = "Title",
+                textStyle = TextStyle.HEADLINE_4
+            ),
+            pill = null,
             date = TextUiModel(
                 text = "10:30",
                 textStyle = TextStyle.HEADLINE_4
@@ -331,8 +487,6 @@ fun InfoCardComponentPreview() {
             arrangement = Arrangement.Center,
             modifier = Modifier
         ),
-        onAction = {},
-        onNewsAction = {},
-        onFindingsAction = {}
+        onAction = {}
     )
 }

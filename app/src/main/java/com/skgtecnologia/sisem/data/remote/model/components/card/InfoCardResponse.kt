@@ -36,7 +36,7 @@ data class InfoCardResponse(
         identifier = identifier ?: error("InfoCard identifier cannot be null"),
         icon = icon ?: error("InfoCard icon cannot be null"),
         title = title?.mapToUi(getHumanizedRoleName()) ?: error("InfoCard title cannot be null"),
-        pill = pill?.mapToUi() ?: error("InfoCard pill cannot be null"),
+        pill = pill?.mapToUi(),
         date = date?.mapToUi(),
         chipSection = chipSection?.mapToUi(),
         reportsDetail = reportsDetail?.mapToUi(),
