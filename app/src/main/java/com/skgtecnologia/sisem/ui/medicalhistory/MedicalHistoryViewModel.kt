@@ -132,8 +132,7 @@ class MedicalHistoryViewModel @Inject constructor(
     var uiState by mutableStateOf(MedicalHistoryUiState())
         private set
 
-    private val idAph: String? = savedStateHandle[NavigationArgument.ID_APH]
-    private val routeId = savedStateHandle.get<String>(NavigationArgument.ID_APH) // for example String in my case
+    private val idAph: Int? = savedStateHandle[NavigationArgument.ID_APH]
 
     private var initialVitalSignsTas: Int = 0
     private var initialVitalSignsFc: Int = 0
@@ -182,7 +181,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch {
-            getMedicalHistoryScreen.invoke(idAph = idAph.orEmpty())
+            getMedicalHistoryScreen.invoke(idAph = idAph.toString())
                 .onSuccess { medicalHistoryScreenModel ->
                     medicalHistoryScreenModel.getFormInitialValues()
 
@@ -1031,7 +1030,7 @@ class MedicalHistoryViewModel @Inject constructor(
         job?.cancel()
         job = viewModelScope.launch {
             sendMedicalHistory.invoke(
-                idAph = idAph.orEmpty(),
+                idAph = idAph.toString(),
                 humanBodyValues = humanBodyValues,
                 segmentedValues = segmentedValues,
                 signatureValues = signatureValues,

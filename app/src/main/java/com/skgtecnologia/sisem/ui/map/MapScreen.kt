@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
+import com.skgtecnologia.sisem.ui.navigation.AphNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.NavigationRoute
 import com.valkiria.uicomponents.bricks.map.MapView
@@ -66,7 +67,7 @@ fun MapScreen(
         ) { idAph ->
             Timber.d("Navigate to APH with Id APH $idAph")
             onAction(
-                MainNavigationRoute.MedicalHistoryScreen.route + "/$idAph"
+                AphNavigationRoute.MedicalHistoryScreen.route + "/$idAph"
             )
         }
     }
