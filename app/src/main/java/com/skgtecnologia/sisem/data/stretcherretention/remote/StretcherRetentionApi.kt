@@ -16,4 +16,9 @@ interface StretcherRetentionApi {
     suspend fun saveStretcherRetention(
         @Body stretcherRetentionBody: StretcherRetentionBody
     ): Response<Unit>
+
+    @POST("screen/aph-stretcher-retention-view")
+    suspend fun getStretcherRetentionViewScreen(
+        @Body screenBody: ScreenBody
+    ): Response<ScreenResponse>
 }

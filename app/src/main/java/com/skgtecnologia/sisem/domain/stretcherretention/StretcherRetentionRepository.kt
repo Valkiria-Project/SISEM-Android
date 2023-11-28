@@ -12,4 +12,8 @@ interface StretcherRetentionRepository {
         fieldsValue: Map<String, String>,
         chipSelectionValues: Map<String, String>
     )
+
+    suspend fun getStretcherRetentionViewScreen(
+        idAph: String
+    ): ScreenModel
 }

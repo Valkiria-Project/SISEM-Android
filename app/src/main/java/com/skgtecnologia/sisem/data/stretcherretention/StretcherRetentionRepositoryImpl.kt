@@ -23,4 +23,10 @@ class StretcherRetentionRepositoryImpl @Inject constructor(
         fieldsValue = fieldsValue,
         chipSelectionValues = chipSelectionValues
     ).getOrThrow()
+
+    override suspend fun getStretcherRetentionViewScreen(
+        idAph: String
+    ): ScreenModel = stretcherRetentionRemoteDataSource.getStretcherRetentionScreen(
+        idAph = idAph
+    ).getOrThrow()
 }

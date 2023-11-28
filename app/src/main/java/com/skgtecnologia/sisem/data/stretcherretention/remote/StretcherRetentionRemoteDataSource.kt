@@ -40,4 +40,18 @@ class StretcherRetentionRemoteDataSource @Inject constructor(
             )
         )
     }
+
+    suspend fun getStretcherRetentionViewScreen(
+        idAph: String
+    ): Result<ScreenModel> = apiCall {
+        stretcherRetentionApi.getStretcherRetentionScreen(
+            screenBody = ScreenBody(
+                params = Params(
+                    idAph = idAph
+                )
+            )
+        )
+    }.mapResult {
+        it.mapToDomain()
+    }
 }
