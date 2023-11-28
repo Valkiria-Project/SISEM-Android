@@ -100,16 +100,16 @@ import com.valkiria.uicomponents.utlis.HOURS_MINUTES_24_HOURS_PATTERN
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDate
 import com.valkiria.uicomponents.utlis.WEEK_DAYS
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import timber.log.Timber
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 private const val SAVED_VITAL_SIGNS_COLOR = "#3cf2dd"
 private const val TEMPERATURE_SYMBOL = "°C"
@@ -133,6 +133,7 @@ class MedicalHistoryViewModel @Inject constructor(
         private set
 
     private val idAph: String? = savedStateHandle[NavigationArgument.ID_APH]
+    private val routeId = savedStateHandle.get<String>(NavigationArgument.ID_APH) // for example String in my case
 
     private var initialVitalSignsTas: Int = 0
     private var initialVitalSignsFc: Int = 0
@@ -270,7 +271,7 @@ class MedicalHistoryViewModel @Inject constructor(
                 chipOption.remove(chipOptionAction.chipOptionUiModel.id)
 
             chipOption != null &&
-                chipOption.contains(chipOptionAction.chipOptionUiModel.id).not() -> {
+                    chipOption.contains(chipOptionAction.chipOptionUiModel.id).not() -> {
                 chipOption.add(chipOptionAction.chipOptionUiModel.id)
             }
 
@@ -469,7 +470,7 @@ class MedicalHistoryViewModel @Inject constructor(
                                 options = it.options.map { imageButtonUiModel ->
                                     imageButtonUiModel.copy(
                                         selected = imageButtonUiModel.identifier ==
-                                            imageButtonAction.itemIdentifier
+                                                imageButtonAction.itemIdentifier
                                     )
                                 }
                             )
@@ -630,9 +631,9 @@ class MedicalHistoryViewModel @Inject constructor(
 
     private fun SnapshotStateMap<String, InputUiModel>.getPatientName(): String =
         this[FIRST_NAME_KEY]?.updatedValue.orEmpty() + " " +
-            this[SECOND_NAME_KEY]?.updatedValue.orEmpty() + " " +
-            this[LASTNAME_KEY]?.updatedValue.orEmpty() + " " +
-            this[SECOND_LASTNAME_KEY]?.updatedValue.orEmpty()
+                this[SECOND_NAME_KEY]?.updatedValue.orEmpty() + " " +
+                this[LASTNAME_KEY]?.updatedValue.orEmpty() + " " +
+                this[SECOND_LASTNAME_KEY]?.updatedValue.orEmpty()
 
     private fun SnapshotStateMap<String, InputUiModel>.getPatientDocument(): String =
         this[DOCUMENT_KEY]?.updatedValue.orEmpty()

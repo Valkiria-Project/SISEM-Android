@@ -213,7 +213,7 @@ private fun NavGraphBuilder.mainGraph(
         }
 
         composable(
-            route = MainNavigationRoute.MedicalHistoryScreen.route + "?$ID_APH={$ID_APH}",
+            route = MainNavigationRoute.MedicalHistoryScreen.route + "/{$ID_APH}",
             arguments = listOf(navArgument(ID_APH) { type = NavType.IntType })
         ) { navBackStackEntry ->
             val vitalSigns =
