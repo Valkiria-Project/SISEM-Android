@@ -67,8 +67,6 @@ fun InfoCardComponent(
         )
     )
 
-    var isPill = false
-
     ElevatedCard(
         modifier = uiModel.modifier
             .fillMaxWidth()
@@ -132,14 +130,20 @@ fun InfoCardComponent(
                         )
 
                         uiModel.pill?.let {
-                            isPill = true
-
                             val leftIcon = LocalContext.current.getResourceIdByName(
                                 it.leftIcon.orEmpty(), DefType.DRAWABLE
                             )
 
                             Row(
                                 modifier = Modifier
+                                    .clickable {
+                                        onAction(
+                                            CardUiModel(
+                                                identifier = uiModel.identifier,
+                                                isPill = true
+                                            )
+                                        )
+                                    }
                                     .padding(top = 5.dp)
                                     .background(
                                         color = Color(parseColor(it.color)),
@@ -235,14 +239,13 @@ fun InfoCardComponent(
                                 it.listPatient.icon, DefType.DRAWABLE
                             )
 
-                            it.listText?.texts?.forEach { text ->
+                            it.listPatient.texts.forEach { text ->
                                 Row(
                                     modifier = Modifier
                                         .clickable {
                                             onAction(
                                                 CardUiModel(
                                                     identifier = uiModel.identifier,
-                                                    isPill = isPill,
                                                     patient = text
                                                 )
                                             )
