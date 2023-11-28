@@ -8,6 +8,7 @@ enum class BodyRowType {
     CREW_MEMBER_SIGNATURE,
     DROP_DOWN,
     HUMAN_BODY,
+    HUMAN_BODY_VIEW,
     IMAGE_BUTTON,
     IMAGE_BUTTON_SECTION,
     INFO_CARD,

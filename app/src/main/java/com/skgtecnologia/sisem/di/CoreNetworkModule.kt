@@ -6,6 +6,7 @@ import com.skgtecnologia.sisem.data.remote.adapters.KeyboardOptionsAdapter
 import com.skgtecnologia.sisem.data.remote.adapters.ModifierAdapter
 import com.skgtecnologia.sisem.data.remote.model.components.BodyRowResponse
 import com.skgtecnologia.sisem.data.remote.model.components.body.HumanBodyResponse
+import com.skgtecnologia.sisem.data.remote.model.components.body.HumanBodyViewResponse
 import com.skgtecnologia.sisem.data.remote.model.components.button.ButtonResponse
 import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonResponse
 import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonSectionResponse
@@ -134,6 +135,9 @@ object CoreNetworkModule {
         ).withSubtype(
             HumanBodyResponse::class.java,
             BodyRowType.HUMAN_BODY.name
+        ).withSubtype(
+            HumanBodyViewResponse::class.java,
+            BodyRowType.HUMAN_BODY_VIEW.name
         ).withSubtype(
             ImageButtonResponse::class.java,
             BodyRowType.IMAGE_BUTTON.name

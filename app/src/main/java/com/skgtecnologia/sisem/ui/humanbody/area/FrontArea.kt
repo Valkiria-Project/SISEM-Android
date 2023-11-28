@@ -30,6 +30,8 @@ enum class FrontArea(val image: Int) : Parcelable {
 
     companion object {
 
+        fun fromName(name: String): FrontArea = entries.firstOrNull { it.name == name } ?: NONE
+
         private fun getHeadArea(width: Int, height: Int): List<Point> {
             val headArea = listOf(
                 Point(530f, 272f),

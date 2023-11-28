@@ -24,9 +24,11 @@ enum class BackArea(val image: Int) {
     LEFT_LEG(R.drawable.img_left_leg_human_body),
     RIGHT_FOOT(R.drawable.img_right_foot_human_body),
     LEFT_FOOT(R.drawable.img_left_foot_human_body),
-    NONE(R.drawable.img_front_human_body);
+    NONE(R.drawable.img_back_human_body);
 
     companion object {
+
+        fun fromName(name: String): BackArea = entries.firstOrNull { it.name == name } ?: NONE
 
         private fun getHeadArea(width: Int, height: Int): List<Point> {
             val headArea = listOf(
