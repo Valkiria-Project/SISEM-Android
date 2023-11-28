@@ -20,6 +20,7 @@ import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipSelectionIt
 import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipSelectionResponse
 import com.skgtecnologia.sisem.data.remote.model.components.footer.FooterResponse
 import com.skgtecnologia.sisem.data.remote.model.components.header.HeaderResponse
+import com.skgtecnologia.sisem.data.remote.model.components.label.ListPatientResponse
 import com.skgtecnologia.sisem.data.remote.model.components.label.ListTextResponse
 import com.skgtecnologia.sisem.data.remote.model.components.label.TextResponse
 import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
@@ -444,7 +445,8 @@ val infoCardResponseMock = InfoCardResponse(
             text = "text",
             textStyle = TextStyle.BODY_1
         ),
-        color = "color"
+        color = "color",
+        leftIcon = null
     ),
     date = TextResponse(
         text = "text",
@@ -458,6 +460,11 @@ val infoCardResponseMock = InfoCardResponse(
         listText = ListTextResponse(
             texts = listOf("texts"),
             textStyle = TextStyle.BODY_1
+        ),
+        listPatient = ListPatientResponse(
+            texts = listOf("texts"),
+            textStyle = TextStyle.BODY_1,
+            icon = "icon"
         )
     ),
     reportsDetail = ReportsDetailResponse(
