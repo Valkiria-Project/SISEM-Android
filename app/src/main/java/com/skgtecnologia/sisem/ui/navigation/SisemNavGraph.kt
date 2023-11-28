@@ -213,6 +213,35 @@ private fun NavGraphBuilder.mainGraph(
         }
 
         composable(
+            route = MainNavigationRoute.MedicalHistoryScreen.route + "?$ID_APH={$ID_APH}",
+            arguments = listOf(navArgument(ID_APH) { type = NavType.IntType })
+        ) { navBackStackEntry ->
+            val vitalSigns =
+                navBackStackEntry.savedStateHandle.get<Map<String, String>>(VITAL_SIGNS)
+            navBackStackEntry.savedStateHandle.remove<Map<String, String>>(VITAL_SIGNS)
+
+            val medicine = navBackStackEntry.savedStateHandle.get<Map<String, String>>(MEDICINE)
+            navBackStackEntry.savedStateHandle.remove<Map<String, String>>(MEDICINE)
+
+            val signature = navBackStackEntry.savedStateHandle.get<String>(SIGNATURE)
+            navBackStackEntry.savedStateHandle.remove<String>(SIGNATURE)
+
+            val photoTaken = navBackStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN)
+            navBackStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)
+
+            MedicalHistoryScreen(
+                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
+                modifier = modifier,
+                vitalSigns = vitalSigns,
+                medicine = medicine,
+                signature = signature,
+                photoTaken = photoTaken == true
+            ) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
             route = MainNavigationRoute.IncidentScreen.route
         ) {
             IncidentScreen(

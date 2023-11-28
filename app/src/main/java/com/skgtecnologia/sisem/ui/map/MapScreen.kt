@@ -67,7 +67,7 @@ fun MapScreen(
         ) { idAph ->
             Timber.d("Navigate to APH with Id APH $idAph")
             onAction(
-                MainNavigationRoute.IncidentScreen.route + "?${NavigationArgument.ID_APH}=$idAph"
+                MainNavigationRoute.MedicalHistoryScreen.route + "?${NavigationArgument.ID_APH}=$idAph"
             )
         }
     }
