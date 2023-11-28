@@ -180,13 +180,20 @@ private fun handleAction(
     when (uiAction) {
         is AuthCardsUiAction.AuthCard -> onNavigation(AuthNavigationRoute.LoginScreen)
 
-        is AuthCardsUiAction.AuthCardNews ->
-            viewModel.showReportBottomSheet(uiAction.reportUiDetail)
+        is GenericUiAction.InfoCardAction -> {
+            if (uiAction.isClickCard) {
+                onNavigation(AuthNavigationRoute.LoginScreen)
+                return
+            }
 
-        is AuthCardsUiAction.AuthCardFindings ->
-            viewModel.showFindingsBottomSheet(uiAction.chipSectionUiModel)
+            uiAction.reportDetail?.let {
+                viewModel.showReportBottomSheet(it)
+            }
 
-        is GenericUiAction.InfoCardAction -> onNavigation(AuthNavigationRoute.LoginScreen)
+            uiAction.chipSection?.let {
+                viewModel.showFindingsBottomSheet(it)
+            }
+        }
 
         else -> Timber.d("no-op")
     }

@@ -25,6 +25,7 @@ import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.sharedViewModel
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
 import com.skgtecnologia.sisem.ui.forgotpassword.ForgotPasswordScreen
+import com.skgtecnologia.sisem.ui.incident.IncidentScreen
 import com.skgtecnologia.sisem.ui.inventory.InventoryScreen
 import com.skgtecnologia.sisem.ui.inventory.view.InventoryViewScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
@@ -212,8 +213,7 @@ private fun NavGraphBuilder.mainGraph(
         }
 
         composable(
-            route = MainNavigationRoute.IncidentScreen.route +
-                "?$ID_APH={$ID_APH}",
+            route = MainNavigationRoute.MedicalHistoryScreen.route + "?$ID_APH={$ID_APH}",
             arguments = listOf(navArgument(ID_APH) { type = NavType.IntType })
         ) { navBackStackEntry ->
             val vitalSigns =
@@ -236,6 +236,16 @@ private fun NavGraphBuilder.mainGraph(
                 medicine = medicine,
                 signature = signature,
                 photoTaken = photoTaken == true
+            ) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = MainNavigationRoute.IncidentScreen.route
+        ) {
+            IncidentScreen(
+                modifier = modifier
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
