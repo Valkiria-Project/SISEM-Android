@@ -18,6 +18,7 @@
 
     <!-- Incident -->
     <string name="incident_support_request_title">Solicitud de apoyo</string>
+    <string name="incident_transmi_lane_request_title">Carril de transmilenio</string>
 
     <!-- Date / Time picker -->
     <string name="date_picker_select">Seleccionar</string>

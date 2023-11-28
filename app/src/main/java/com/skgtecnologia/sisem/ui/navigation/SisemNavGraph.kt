@@ -36,6 +36,7 @@ import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsScreen
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.DOCUMENT
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ID_APH
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.INVENTORY_TYPE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
@@ -195,8 +196,11 @@ private fun NavGraphBuilder.mainGraph(
         ) {
             MapScreen(
                 modifier = modifier,
-                onAction = { menuNavigationRoute ->
-                    navController.navigate(menuNavigationRoute.route)
+                onMenuAction = { navigationRoute ->
+                    navController.navigate(navigationRoute.route)
+                },
+                onAction = { aphRoute ->
+                    navController.navigate(aphRoute)
                 },
                 onLogout = {
                     navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {

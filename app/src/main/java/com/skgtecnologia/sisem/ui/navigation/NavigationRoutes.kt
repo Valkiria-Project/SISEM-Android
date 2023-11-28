@@ -51,6 +51,7 @@ object NavigationArgument {
     const val DOCUMENT = "document"
     const val FINDING_ID = "finding_id"
     const val FROM = "from"
+    const val ID_APH = "id_aph"
     const val INVENTORY_TYPE = "inventory_type"
     const val MEDICINE = "medicine"
     const val NOVELTY = "novelty"
