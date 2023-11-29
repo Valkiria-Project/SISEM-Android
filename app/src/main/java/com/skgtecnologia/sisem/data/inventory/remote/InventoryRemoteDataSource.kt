@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.data.inventory.remote
 
 import com.skgtecnologia.sisem.commons.extensions.mapResult
+import com.skgtecnologia.sisem.data.inventory.remote.model.TransferReturnsBody
 import com.skgtecnologia.sisem.data.remote.extensions.apiCall
 import com.skgtecnologia.sisem.data.remote.model.screen.Params
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
@@ -53,8 +54,24 @@ class InventoryRemoteDataSource @Inject constructor(
             InventoryType.VEHICLE -> inventoryApi.getInventoryVehicleScreen(
                 screenBody = screenBody
             )
+
+            InventoryType.TRANSFER_AND_RETURN -> inventoryApi.getTransfersReturnsScreen(
+                screenBody = screenBody
+            )
         }
     }.mapResult {
         it.mapToDomain()
+    }
+
+    suspend fun saveTransferReturns(
+        idTurn: String,
+        fieldsValues: Map<String, String>
+    ): Result<Unit> = apiCall {
+        inventoryApi.saveTransferReturn(
+            transferReturnsBody = TransferReturnsBody(
+                idTurn = idTurn,
+                fieldsValues = fieldsValues
+            )
+        )
     }
 }

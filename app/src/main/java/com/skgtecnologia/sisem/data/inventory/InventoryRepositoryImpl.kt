@@ -32,4 +32,11 @@ class InventoryRepositoryImpl @Inject constructor(
                 .first()?.vehicleCode.orEmpty(),
             inventoryType = inventoryType
         ).getOrThrow()
+
+    override suspend fun saveTransferReturn(fieldsValues: Map<String, String>) =
+        inventoryRemoteDataSource.saveTransferReturns(
+            idTurn = authCacheDataSource.observeAccessToken().first()?.turn?.id?.toString()
+                .orEmpty(),
+            fieldsValues = fieldsValues
+        ).getOrThrow()
 }
