@@ -334,6 +334,7 @@ private fun NavGraphBuilder.mainGraph(
     }
 }
 
+@Suppress("LongMethod")
 private fun NavGraphBuilder.aphGraph(
     navController: NavHostController,
     modifier: Modifier
