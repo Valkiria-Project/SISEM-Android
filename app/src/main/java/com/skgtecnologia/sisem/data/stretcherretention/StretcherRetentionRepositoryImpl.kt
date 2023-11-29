@@ -26,7 +26,7 @@ class StretcherRetentionRepositoryImpl @Inject constructor(
 
     override suspend fun getStretcherRetentionViewScreen(
         idAph: String
-    ): ScreenModel = stretcherRetentionRemoteDataSource.getStretcherRetentionScreen(
+    ): ScreenModel = stretcherRetentionRemoteDataSource.getStretcherRetentionViewScreen(
         idAph = idAph
     ).getOrThrow()
 }

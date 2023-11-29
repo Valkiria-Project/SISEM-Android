@@ -55,6 +55,7 @@ import com.skgtecnologia.sisem.ui.report.media.ReportCameraScreen
 import com.skgtecnologia.sisem.ui.signature.init.InitSignatureScreen
 import com.skgtecnologia.sisem.ui.signature.view.SignatureScreen
 import com.skgtecnologia.sisem.ui.stretcherretention.StretcherRetentionScreen
+import com.skgtecnologia.sisem.ui.stretcherretention.view.StretcherRetentionViewScreen
 
 @Composable
 fun SisemNavGraph(
@@ -379,6 +380,16 @@ private fun NavGraphBuilder.mainGraph(
             route = MainNavigationRoute.StretcherRetentionScreen.route
         ) {
             StretcherRetentionScreen(
+                modifier = modifier
+            ) {
+                navigateToNextStep(navController, it)
+            }
+        }
+
+        composable(
+            route = MainNavigationRoute.StretcherViewScreen.route
+        ) {
+            StretcherRetentionViewScreen(
                 modifier = modifier
             ) {
                 navigateToNextStep(navController, it)

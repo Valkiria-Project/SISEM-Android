@@ -36,6 +36,7 @@ sealed class MainNavigationRoute(override val route: String) : NavigationRoute(r
     data object InitSignatureScreen : MainNavigationRoute("menu_init_signature_screen")
     data object SignatureScreen : MainNavigationRoute("signature_screen")
     data object StretcherRetentionScreen : MainNavigationRoute("stretcher_retention_screen")
+    data object StretcherViewScreen : MainNavigationRoute("stretcher_view_screen")
     data object SignaturePadScreen : MainNavigationRoute("signature_pad_screen")
     data object VitalSignsScreen : MainNavigationRoute("vital_signs_screen")
 }
