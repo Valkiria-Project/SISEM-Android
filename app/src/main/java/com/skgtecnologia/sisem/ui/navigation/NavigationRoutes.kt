@@ -28,6 +28,7 @@ sealed class MainNavigationRoute(override val route: String) : NavigationRoute(r
     data object InventoryViewScreen : MainNavigationRoute("menu_inventory_view_screen")
     data object MapScreen : MainNavigationRoute("map_screen")
     data object MedicalHistoryScreen : MainNavigationRoute("menu_medical_history_screen")
+    data object MedicalHistoryViewScreen : MainNavigationRoute("menu_medical_history_view_screen")
     data object MedicineScreen : MainNavigationRoute("medicine_screen")
     data object NotificationsScreen : MainNavigationRoute("menu_notifications_screen")
     data object PreOperationalViewScreen : MainNavigationRoute("pre_operational_view_screen")

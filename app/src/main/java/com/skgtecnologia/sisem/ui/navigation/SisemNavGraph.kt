@@ -34,6 +34,7 @@ import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.camera.CameraScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadScreen
+import com.skgtecnologia.sisem.ui.medicalhistory.view.MedicalHistoryViewScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsScreen
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.DOCUMENT
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ID_APH
@@ -236,6 +237,20 @@ private fun NavGraphBuilder.mainGraph(
                 vitalSigns = vitalSigns,
                 medicine = medicine,
                 signature = signature,
+                photoTaken = photoTaken == true
+            ) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = MainNavigationRoute.MedicalHistoryViewScreen.route
+        ) { navBackStackEntry ->
+            val photoTaken = navBackStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN)
+            navBackStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)
+
+            MedicalHistoryViewScreen(
+                modifier = modifier,
                 photoTaken = photoTaken == true
             ) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)

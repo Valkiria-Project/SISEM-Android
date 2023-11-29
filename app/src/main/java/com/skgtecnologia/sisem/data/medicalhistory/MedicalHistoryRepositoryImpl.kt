@@ -55,4 +55,10 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
         vitalSigns = vitalSigns,
         infoCardButtonValues = infoCardButtonValues
     ).getOrThrow()
+
+    override suspend fun getMedicalHistoryViewScreen(): ScreenModel =
+        medicalHistoryRemoteDataSource.getMedicalHistoryScreen(
+            code = operationCacheDataSource.observeOperationConfig().first()?.vehicleCode.orEmpty(),
+            idAph = "14"
+        ).getOrThrow()
 }

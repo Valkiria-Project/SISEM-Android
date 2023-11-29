@@ -13,6 +13,7 @@ import com.skgtecnologia.sisem.ui.login.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadNavigationModel
+import com.skgtecnologia.sisem.ui.medicalhistory.view.MedicalHistoryViewNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.DOCUMENT
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.INVENTORY_TYPE
@@ -71,6 +72,8 @@ fun navigateToNextStep(
     is InventoryViewNavigationModel -> inventoryViewToNextStep(navController, navigationModel)
     is LoginNavigationModel -> loginToNextStep(navController, navigationModel)
     is MedicalHistoryNavigationModel -> medicalHistoryToNextStep(navController, navigationModel)
+    is MedicalHistoryViewNavigationModel ->
+        medicalHistoryViewToNextStep(navController, navigationModel)
     is MedicineNavigationModel -> medicineToNextStep(navController, navigationModel)
     is PreOpViewNavigationModel -> preOpViewToNextStep(navController, navigationModel)
     is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
@@ -158,7 +161,11 @@ fun incidentToNextStep(
 ) {
     when {
         model.back -> navController.popBackStack()
-        model.isAph -> {}
+
+        model.isAph -> navController.navigate(
+            MainNavigationRoute.MedicalHistoryViewScreen.route
+        )
+
         model.isStretcherRetention -> navController.navigate(
             MainNavigationRoute.StretcherViewScreen.route
         )
@@ -249,6 +256,25 @@ private fun medicalHistoryToNextStep(
             navController.navigate(MainNavigationRoute.SignaturePadScreen.route)
 
         model.showCamera -> navController.navigate(MainNavigationRoute.CameraScreen.route)
+        model.photoTaken -> with(navController) {
+            popBackStack()
+
+            currentBackStackEntry
+                ?.savedStateHandle
+                ?.set(PHOTO_TAKEN, true)
+        }
+    }
+}
+
+private fun medicalHistoryViewToNextStep(
+    navController: NavHostController,
+    model: MedicalHistoryViewNavigationModel
+) {
+    when {
+        model.back -> navController.popBackStack()
+
+        model.showCamera -> navController.navigate(MainNavigationRoute.CameraScreen.route)
+
         model.photoTaken -> with(navController) {
             popBackStack()
 

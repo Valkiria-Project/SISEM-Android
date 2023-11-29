@@ -26,4 +26,6 @@ interface MedicalHistoryRepository {
         vitalSigns: Map<String, Map<String, String>>,
         infoCardButtonValues: List<Map<String, String>>
     )
+
+    suspend fun getMedicalHistoryViewScreen(): ScreenModel
 }
