@@ -43,7 +43,7 @@ class StretcherRetentionRemoteDataSourceTest {
         } returns Response.success(screenResponse)
 
         val result = stretcherRetentionRemoteDataSource.getStretcherRetentionScreen(
-            idAph = ID_APH
+            idAph = ID_APH.toString()
         )
 
         Assert.assertEquals(true, result.isSuccess)
@@ -57,7 +57,7 @@ class StretcherRetentionRemoteDataSourceTest {
         } returns Response.error(400, "".toResponseBody())
 
         val result = stretcherRetentionRemoteDataSource.getStretcherRetentionScreen(
-            idAph = ID_APH
+            idAph = ID_APH.toString()
         )
 
         Assert.assertEquals(true, result.isFailure)
@@ -70,7 +70,7 @@ class StretcherRetentionRemoteDataSourceTest {
         } returns Response.success(Unit)
 
         val result = stretcherRetentionRemoteDataSource.saveStretcherRetention(
-            idAph = ID_APH,
+            idAph = ID_APH.toString(),
             fieldsValue = mapOf(),
             chipSelectionValues = mapOf()
         )
@@ -85,7 +85,7 @@ class StretcherRetentionRemoteDataSourceTest {
         } returns Response.error(400, "".toResponseBody())
 
         val result = stretcherRetentionRemoteDataSource.saveStretcherRetention(
-            idAph = ID_APH,
+            idAph = ID_APH.toString(),
             fieldsValue = mapOf(),
             chipSelectionValues = mapOf()
         )
