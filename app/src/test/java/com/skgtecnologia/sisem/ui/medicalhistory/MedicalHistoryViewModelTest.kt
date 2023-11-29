@@ -161,6 +161,7 @@ class MedicalHistoryViewModelTest {
         )
 
         viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
             getMedicalHistoryScreen = getMedicalHistoryScreen,
             logoutCurrentUser = logoutCurrentUser,
             sendMedicalHistory = sendMedicalHistory,
@@ -741,7 +742,7 @@ class MedicalHistoryViewModelTest {
         )
         coEvery {
             sendMedicalHistory.invoke(
-                ID_APH,
+                ID_APH.toString(),
                 any(),
                 any(),
                 any(),
@@ -776,7 +777,7 @@ class MedicalHistoryViewModelTest {
         )
         coEvery {
             sendMedicalHistory.invoke(
-                ID_APH,
+                ID_APH.toString(),
                 any(),
                 any(),
                 any(),
