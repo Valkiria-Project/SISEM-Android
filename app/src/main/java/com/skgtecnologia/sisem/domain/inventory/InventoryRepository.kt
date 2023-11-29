@@ -7,7 +7,12 @@ interface InventoryRepository {
 
     suspend fun getInventoryInitialScreen(serial: String): ScreenModel
 
-    suspend fun getInventoryViewScreen(inventoryType: InventoryType): ScreenModel
+    suspend fun getInventoryViewScreen(inventoryType: InventoryType, serial: String): ScreenModel
 
-    suspend fun saveTransferReturn(fieldsValues: Map<String, String>)
+    suspend fun saveTransferReturn(
+        fieldsValues: Map<String, String>,
+        dropDownValues: Map<String, String>,
+        chipSelectionValues: Map<String, String>,
+        labelValues: Map<String, String>
+    )
 }

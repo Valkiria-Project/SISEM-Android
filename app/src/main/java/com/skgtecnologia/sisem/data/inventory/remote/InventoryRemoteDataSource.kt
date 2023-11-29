@@ -33,11 +33,13 @@ class InventoryRemoteDataSource @Inject constructor(
     }
 
     suspend fun getInventoryViewScreen(
+        serial: String,
         code: String,
         inventoryType: InventoryType
     ): Result<ScreenModel> = apiCall {
         val screenBody = ScreenBody(
             params = Params(
+                serial = serial,
                 code = code
             )
         )
@@ -55,7 +57,7 @@ class InventoryRemoteDataSource @Inject constructor(
                 screenBody = screenBody
             )
 
-            InventoryType.TRANSFER_AND_RETURN -> inventoryApi.getTransfersReturnsScreen(
+            InventoryType.TRANSFER_RETURNS -> inventoryApi.getTransfersReturnsScreen(
                 screenBody = screenBody
             )
         }
@@ -65,12 +67,18 @@ class InventoryRemoteDataSource @Inject constructor(
 
     suspend fun saveTransferReturns(
         idTurn: String,
-        fieldsValues: Map<String, String>
+        fieldsValues: Map<String, String>,
+        dropDownValues: Map<String, String>,
+        chipSelectionValues: Map<String, String>,
+        labelValues: Map<String, String>
     ): Result<Unit> = apiCall {
         inventoryApi.saveTransferReturn(
             transferReturnsBody = TransferReturnsBody(
                 idTurn = idTurn,
-                fieldsValues = fieldsValues
+                fieldsValues = fieldsValues,
+                dropDownValues = dropDownValues,
+                chipSelectionValues = chipSelectionValues,
+                labelValues = labelValues
             )
         )
     }

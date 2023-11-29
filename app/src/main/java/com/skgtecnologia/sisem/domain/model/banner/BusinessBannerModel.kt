@@ -326,6 +326,12 @@ fun successfulSignatureRecord(): BannerModel = BannerModel(
     description = "La firma ha sido guardada exitosamente"
 )
 
+fun errorTransferReturn(): BannerModel = BannerModel(
+    icon = "ic_alert",
+    title = "Cantidad registrada",
+    description = "La cantidad registrada es mayorque la cantidad en existencia."
+)
+
 fun confirmTransferReturn(): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "Guardar traslado o devolución",

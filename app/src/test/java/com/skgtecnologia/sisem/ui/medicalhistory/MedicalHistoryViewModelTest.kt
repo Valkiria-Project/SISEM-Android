@@ -409,6 +409,7 @@ class MedicalHistoryViewModelTest {
                 identifier = IDENTIFIER,
                 id = IDENTIFIER,
                 name = "name",
+                quantity = 0,
                 fieldValidated = false
             )
         )

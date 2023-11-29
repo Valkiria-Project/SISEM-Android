@@ -26,17 +26,27 @@ class InventoryRepositoryImpl @Inject constructor(
         ).getOrThrow()
     }
 
-    override suspend fun getInventoryViewScreen(inventoryType: InventoryType): ScreenModel =
-        inventoryRemoteDataSource.getInventoryViewScreen(
-            code = operationCacheDataSource.observeOperationConfig()
-                .first()?.vehicleCode.orEmpty(),
-            inventoryType = inventoryType
-        ).getOrThrow()
+    override suspend fun getInventoryViewScreen(
+        inventoryType: InventoryType,
+        serial: String
+    ): ScreenModel = inventoryRemoteDataSource.getInventoryViewScreen(
+        serial = serial,
+        code = operationCacheDataSource.observeOperationConfig()
+            .first()?.vehicleCode.orEmpty(),
+        inventoryType = inventoryType
+    ).getOrThrow()
 
-    override suspend fun saveTransferReturn(fieldsValues: Map<String, String>) =
-        inventoryRemoteDataSource.saveTransferReturns(
-            idTurn = authCacheDataSource.observeAccessToken().first()?.turn?.id?.toString()
-                .orEmpty(),
-            fieldsValues = fieldsValues
-        ).getOrThrow()
+    override suspend fun saveTransferReturn(
+        fieldsValues: Map<String, String>,
+        dropDownValues: Map<String, String>,
+        chipSelectionValues: Map<String, String>,
+        labelValues: Map<String, String>
+    ) = inventoryRemoteDataSource.saveTransferReturns(
+        idTurn = authCacheDataSource.observeAccessToken().first()?.turn?.id?.toString()
+            .orEmpty(),
+        fieldsValues = fieldsValues,
+        dropDownValues = dropDownValues,
+        chipSelectionValues = chipSelectionValues,
+        labelValues = labelValues
+    ).getOrThrow()
 }

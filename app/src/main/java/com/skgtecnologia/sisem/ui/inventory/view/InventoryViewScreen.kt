@@ -18,8 +18,6 @@ import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
-import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
-import com.valkiria.uicomponents.components.textfield.InputUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -101,23 +99,13 @@ fun InventoryViewScreen(
 
 fun handleAction(uiAction: UiAction, viewModel: InventoryViewViewModel) {
     when (uiAction) {
-        is GenericUiAction.DropDownAction ->
-            viewModel.dropDownValue.value = DropDownInputUiModel(
-                uiAction.identifier,
-                uiAction.id,
-                uiAction.name,
-                uiAction.fieldValidated
-            )
+        is GenericUiAction.ButtonAction -> viewModel.save()
 
-        is GenericUiAction.InputAction ->
-            viewModel.fieldsValues[uiAction.identifier] = InputUiModel(
-                uiAction.identifier,
-                uiAction.updatedValue,
-                uiAction.fieldValidated
-            )
+        is GenericUiAction.DropDownAction -> viewModel.handleDropDownAction(uiAction)
 
-        is GenericUiAction.ChipSelectionAction ->
-            viewModel.chipValues[uiAction.identifier] = uiAction.chipSelectionItemUiModel
+        is GenericUiAction.InputAction -> viewModel.handleInputAction(uiAction)
+
+        is GenericUiAction.ChipSelectionAction -> viewModel.handleChipSelectionAction(uiAction)
 
         else -> Timber.d("no-op")
     }
@@ -126,8 +114,6 @@ fun handleAction(uiAction: UiAction, viewModel: InventoryViewViewModel) {
 fun handleFooterAction(uiAction: UiAction, viewModel: InventoryViewViewModel) {
     (uiAction as? FooterUiAction)?.let {
         when (it.identifier) {
-            TransferReturnIdentifiers.TRANSFER_RETURN_SEND_BUTTON.name -> viewModel.save()
-
             TransferReturnIdentifiers.TRANSFER_RETURN_CANCEL_BANNER.name ->
                 viewModel.consumeInfoEvent()
 
