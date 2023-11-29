@@ -28,7 +28,7 @@ class SendMedicalHistoryTest {
     fun `when sendMedicalHistory is success`() = runTest {
         coEvery {
             medicalHistoryRepository.sendMedicalHistory(
-                ID_APH,
+                ID_APH.toString(),
                 any(),
                 any(),
                 any(),
@@ -44,7 +44,7 @@ class SendMedicalHistoryTest {
         } returns Unit
 
         val result = sendMedicalHistory(
-            idAph = ID_APH,
+            idAph = ID_APH.toString(),
             humanBodyValues = listOf(),
             segmentedValues = mapOf(),
             signatureValues = mapOf(),
@@ -65,7 +65,7 @@ class SendMedicalHistoryTest {
     fun `when sendMedicalHistory is failure`() = runTest {
         coEvery {
             medicalHistoryRepository.sendMedicalHistory(
-                ID_APH,
+                ID_APH.toString(),
                 any(),
                 any(),
                 any(),
@@ -81,7 +81,7 @@ class SendMedicalHistoryTest {
         } throws Exception()
 
         val result = sendMedicalHistory(
-            idAph = ID_APH,
+            idAph = ID_APH.toString(),
             humanBodyValues = listOf(),
             segmentedValues = mapOf(),
             signatureValues = mapOf(),

@@ -7,11 +7,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons.Outlined
 import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -55,7 +56,7 @@ fun MapView(
     onAction: (idAph: Int) -> Unit
 ) {
     val context = LocalContext.current
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
+    val scaffoldState = rememberBottomSheetScaffoldState()
     val scope = rememberCoroutineScope()
 
     val point = Point.fromLngLat(coordinates.first, coordinates.second)
@@ -66,74 +67,79 @@ fun MapView(
         mutableStateOf(null)
     }
 
-    Box(modifier = modifier) {
-        AndroidView(
-            factory = {
-                MapView(it).also { mapView ->
-                    mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS)
-                    val annotationApi = mapView.annotations
-                    pointAnnotationManager = annotationApi.createPointAnnotationManager()
-                }
-            },
-            update = { mapView ->
-                if (point != null) {
-                    pointAnnotationManager?.let {
-                        it.deleteAll()
-                        val pointAnnotationOptions = PointAnnotationOptions().apply {
-                            withPoint(point)
-                            marker?.let { bitmap ->
-                                withIconImage(bitmap)
-                            }
-                        }
-
-                        it.create(pointAnnotationOptions)
-                        mapView.getMapboxMap()
-                            .flyTo(CameraOptions.Builder().zoom(16.0).center(point).build())
-                    }
-                }
-                NoOpUpdate
-            },
-            modifier = modifier
-        )
-
-        IconButton(
-            onClick = {
-                scope.launch {
-                    drawerState.open()
-                }
-            },
-            modifier = Modifier.padding(12.dp)
-        ) {
-            Icon(
-                imageVector = Outlined.Menu,
-                contentDescription = null,
-                modifier = Modifier
-                    .background(color = MaterialTheme.colorScheme.primary)
-                    .size(72.dp)
-                    .padding(5.dp),
-                tint = Color.Black
-            )
-        }
-
-        OnNotificationHandler(notificationData) {
-            onNotificationAction(it)
-            if (it.isDismiss.not()) {
-                // FIXME: Navigate to MapScreen if is type INCIDENT_ASSIGNED
-                Timber.d("Navigate to MapScreen")
+    BottomSheetScaffold(
+        sheetContainerColor = MaterialTheme.colorScheme.surface,
+        sheetContent = {
+            incident?.let {
+                IncidentContent(it, onAction)
             }
+        },
+        scaffoldState = scaffoldState,
+        sheetPeekHeight = if (scaffoldState.bottomSheetState.isVisible) {
+            0.dp
+        } else {
+            65.dp
         }
-
-        incident?.let {
-            scope.launch { sheetState.show() }
-
-            MapBottomSheetView(
-                content = {
-                    IncidentContent(it, onAction)
+    ) {
+        Box(modifier = modifier) {
+            AndroidView(
+                factory = {
+                    MapView(it).also { mapView ->
+                        mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS)
+                        val annotationApi = mapView.annotations
+                        pointAnnotationManager = annotationApi.createPointAnnotationManager()
+                    }
                 },
-                sheetState = sheetState,
-                scope = scope
+                update = { mapView ->
+                    if (point != null) {
+                        pointAnnotationManager?.let {
+                            it.deleteAll()
+                            val pointAnnotationOptions = PointAnnotationOptions().apply {
+                                withPoint(point)
+                                marker?.let { bitmap ->
+                                    withIconImage(bitmap)
+                                }
+                            }
+
+                            it.create(pointAnnotationOptions)
+                            mapView.getMapboxMap()
+                                .flyTo(CameraOptions.Builder().zoom(16.0).center(point).build())
+                        }
+                    }
+                    NoOpUpdate
+                },
+                modifier = modifier
+            )
+
+            IconButton(
+                onClick = {
+                    scope.launch {
+                        drawerState.open()
+                    }
+                },
+                modifier = Modifier.padding(12.dp)
             ) {
-                Timber.d("Dismiss gesture")
+                Icon(
+                    imageVector = Outlined.Menu,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .background(color = MaterialTheme.colorScheme.primary)
+                        .size(72.dp)
+                        .padding(5.dp),
+                    tint = Color.Black
+                )
+            }
+
+            OnNotificationHandler(notificationData) {
+                onNotificationAction(it)
+                if (it.isDismiss.not()) {
+                    // FIXME: Navigate to MapScreen if is type INCIDENT_ASSIGNED
+                    Timber.d("Navigate to MapScreen")
+                }
+            }
+
+            incident?.let {
+                scope.launch { scaffoldState.bottomSheetState.expand() }
             }
         }
     }

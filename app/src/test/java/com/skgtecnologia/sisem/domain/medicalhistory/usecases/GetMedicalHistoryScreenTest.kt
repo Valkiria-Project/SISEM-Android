@@ -29,12 +29,12 @@ class GetMedicalHistoryScreenTest {
     fun `when getMedicalHistoryScreen is success`() = runTest {
         coEvery {
             medicalHistoryRepository.getMedicalHistoryScreen(
-                idAph = ID_APH
+                idAph = ID_APH.toString()
             )
         } returns mockk()
 
         val result = getMedicalHistoryScreen(
-            idAph = ID_APH
+            idAph = ID_APH.toString()
         )
 
         Assert.assertEquals(true, result.isSuccess)
@@ -44,12 +44,12 @@ class GetMedicalHistoryScreenTest {
     fun `when getMedicalHistoryScreen is failure`() = runTest {
         coEvery {
             medicalHistoryRepository.getMedicalHistoryScreen(
-                idAph = ID_APH
+                idAph = ID_APH.toString()
             )
         } throws Exception()
 
         val result = getMedicalHistoryScreen(
-            idAph = ID_APH
+            idAph = ID_APH.toString()
         )
 
         Assert.assertEquals(true, result.isFailure)

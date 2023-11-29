@@ -31,11 +31,13 @@ class StretcherRetentionRepositoryImplTest {
     fun `when getStretcherRetentionScreen is called`() = runTest {
         coEvery {
             stretcherRetentionRemoteDataSource.getStretcherRetentionScreen(
-                idAph = ID_APH
+                idAph = ID_APH.toString()
             )
         } returns Result.success(emptyScreenModel)
 
-        val result = stretcherRetentionRepositoryImpl.getStretcherRetentionScreen(idAph = ID_APH)
+        val result = stretcherRetentionRepositoryImpl.getStretcherRetentionScreen(
+            idAph = ID_APH.toString()
+        )
 
         Assert.assertEquals(emptyScreenModel, result)
     }
