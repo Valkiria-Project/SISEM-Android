@@ -1,7 +1,8 @@
 package com.skgtecnologia.sisem.ui.menu
 
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.runtime.Composable
@@ -29,7 +30,9 @@ fun DrawerContent(
 ) {
     ModalDrawerSheet {
         ConstraintLayout(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(306.dp)
         ) {
             val (personalComponent, itemsComponent, bottomComponent) = createRefs()
 

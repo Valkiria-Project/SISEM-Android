@@ -16,15 +16,13 @@ fun MenuFooterComponent(modifier: Modifier) {
         Image(
             imageVector = ImageVector.vectorResource(id = R.drawable.banner_sisem),
             contentDescription = null,
-            modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp)
+            modifier = Modifier.padding(start = 16.dp)
         )
 
         Image(
             imageVector = ImageVector.vectorResource(id = R.drawable.banner_gov),
             contentDescription = null,
-            modifier = Modifier
-                .padding(start = 25.dp)
+            modifier = Modifier.padding(end = 16.dp)
         )
     }
 }
