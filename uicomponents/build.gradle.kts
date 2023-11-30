@@ -74,7 +74,8 @@ dependencies {
     implementation(libs.compressor)
 
     // Maps
-    implementation(libs.mapbox.android)
+    api(libs.mapbox.maps.android)
+    api(libs.mapbox.navigation.android)
 
     // Unit Testing
     testImplementation(libs.junit)

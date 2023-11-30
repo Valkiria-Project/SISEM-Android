@@ -69,13 +69,13 @@ fun MapNavigationView(
     val scaffoldState = rememberBottomSheetScaffoldState()
 
     BottomSheetScaffold(
-        scaffoldState = scaffoldState,
-        sheetPeekHeight = 140.dp,
         sheetContent = {
             incident?.let {
                 IncidentContent(it, onAction)
             }
-        }
+        },
+        scaffoldState = scaffoldState,
+        sheetPeekHeight = 140.dp
     ) { innerPadding ->
         Box(modifier.padding(innerPadding)) {
             MapboxAndroidView(point, marker, modifier)
