@@ -14,12 +14,12 @@ fun AccessTokenModel.toCrewMemberItemModel() = CrewMemberMenuItemModel(
     name = nameUser,
     username = username,
     specialtyAndDocument = "${OperationRole.getRoleByName(role)?.humanizedName} $docType $document",
-    drawableProfession = role.toDrawable()
+    drawableProfession = OperationRole.getRoleByName(role)?.humanizedName.orEmpty().toDrawable()
 )
 
 private fun String.toDrawable() = when (this) {
-    "MEDICO" -> "ic_doctor"
-    "CONDUCTOR" -> "ic_driver"
-    "AUXILIAR" -> "ic_aux"
+    "Auxiliar" -> "ic_aux"
+    "Conductor" -> "ic_driver"
+    "Médico" -> "ic_doctor"
     else -> "ic_lead"
 }

@@ -28,11 +28,11 @@ class GetStretcherRetentionScreenTest {
     @Test
     fun `when getStretcherRetentionScreen is success`() = runTest {
         coEvery {
-            stretcherRetentionRepository.getStretcherRetentionScreen(idAph = ID_APH)
+            stretcherRetentionRepository.getStretcherRetentionScreen(idAph = ID_APH.toString())
         } returns mockk()
 
         val result = getStretcherRetentionScreen(
-            idAph = ID_APH
+            idAph = ID_APH.toString()
         )
 
         Assert.assertEquals(true, result.isSuccess)
@@ -41,11 +41,11 @@ class GetStretcherRetentionScreenTest {
     @Test
     fun `when getStretcherRetentionScreen is failure`() = runTest {
         coEvery {
-            stretcherRetentionRepository.getStretcherRetentionScreen(idAph = ID_APH)
+            stretcherRetentionRepository.getStretcherRetentionScreen(idAph = ID_APH.toString())
         } throws Exception()
 
         val result = getStretcherRetentionScreen(
-            idAph = ID_APH
+            idAph = ID_APH.toString()
         )
 
         Assert.assertEquals(true, result.isFailure)

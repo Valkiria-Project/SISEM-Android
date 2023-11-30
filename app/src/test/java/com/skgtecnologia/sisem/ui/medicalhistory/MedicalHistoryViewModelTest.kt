@@ -743,7 +743,7 @@ class MedicalHistoryViewModelTest {
         )
         coEvery {
             sendMedicalHistory.invoke(
-                ID_APH,
+                ID_APH.toString(),
                 any(),
                 any(),
                 any(),
@@ -778,7 +778,7 @@ class MedicalHistoryViewModelTest {
         )
         coEvery {
             sendMedicalHistory.invoke(
-                ID_APH,
+                ID_APH.toString(),
                 any(),
                 any(),
                 any(),

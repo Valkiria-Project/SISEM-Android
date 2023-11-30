@@ -51,7 +51,7 @@ private fun getDrawerItems(context: Context) = listOf(
     DrawerMenuItemModel(
         DrivingGuideScreen,
         context.getString(R.string.drawer_guides),
-        drawable.ic_driver
+        drawable.ic_folder
     ),
     DrawerMenuItemModel(
         CertificationsScreen,
