@@ -423,6 +423,7 @@ class MedicalHistoryViewModel @Inject constructor(
             dropDownAction.identifier,
             dropDownAction.id,
             dropDownAction.name,
+            dropDownAction.quantity,
             dropDownAction.fieldValidated
         )
 

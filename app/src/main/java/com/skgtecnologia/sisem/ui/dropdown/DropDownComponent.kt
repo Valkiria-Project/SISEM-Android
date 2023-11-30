@@ -139,6 +139,7 @@ fun DropDownComponent(
                                 identifier = uiModel.identifier,
                                 id = selectedItem.id,
                                 name = selectedItem.name,
+                                quantity = selectedItem.quantity ?: 0,
                                 fieldValidated = selectedItem.name.isNotEmpty()
                             )
                         )

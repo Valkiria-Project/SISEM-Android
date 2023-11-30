@@ -93,6 +93,7 @@ fun handleAction(
                 uiAction.identifier,
                 uiAction.id,
                 uiAction.name,
+                uiAction.quantity,
                 uiAction.fieldValidated
             )
 

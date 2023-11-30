@@ -254,6 +254,7 @@ private fun LazyListScope.handleBodyRows(
                                 identifier = dropDownInputUiModel.identifier,
                                 id = dropDownInputUiModel.id,
                                 name = dropDownInputUiModel.name,
+                                quantity = dropDownInputUiModel.quantity,
                                 fieldValidated = dropDownInputUiModel.fieldValidated
                             )
                         )

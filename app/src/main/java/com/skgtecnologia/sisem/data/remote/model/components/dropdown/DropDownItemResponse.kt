@@ -7,10 +7,12 @@ import com.valkiria.uicomponents.components.dropdown.DropDownItemUiModel
 @JsonClass(generateAdapter = true)
 data class DropDownItemResponse(
     @Json(name = "id") val id: String?,
-    @Json(name = "name") val name: String?
+    @Json(name = "name") val name: String?,
+    @Json(name = "quantity") val quantity: Int?
 )
 
 fun DropDownItemResponse.mapToUi() = DropDownItemUiModel(
     id = id ?: error("DropDownItem id cannot be null"),
-    name = name ?: error("DropDownItem name cannot be null")
+    name = name ?: error("DropDownItem name cannot be null"),
+    quantity = quantity
 )

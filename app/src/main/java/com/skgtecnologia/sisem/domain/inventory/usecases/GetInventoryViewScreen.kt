@@ -13,8 +13,9 @@ class GetInventoryViewScreen @Inject constructor(
 
     @CheckResult
     suspend operator fun invoke(
-        inventoryType: InventoryType
+        inventoryType: InventoryType,
+        serial: String
     ): Result<ScreenModel> = resultOf {
-        inventoryRepository.getInventoryViewScreen(inventoryType)
+        inventoryRepository.getInventoryViewScreen(inventoryType, serial)
     }
 }

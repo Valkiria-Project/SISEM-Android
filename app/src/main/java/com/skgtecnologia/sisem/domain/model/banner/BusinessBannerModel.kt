@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
+import com.skgtecnologia.sisem.domain.inventory.model.TransferReturnIdentifiers
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddFindingIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
@@ -323,4 +324,42 @@ fun successfulSignatureRecord(): BannerModel = BannerModel(
     iconColor = "#42A4FA",
     title = "Firma exitosa",
     description = "La firma ha sido guardada exitosamente"
+)
+
+fun confirmTransferReturn(): BannerModel = BannerModel(
+    icon = "ic_alert",
+    title = "Guardar traslado o devolución",
+    description = "¿Desea guardar los cambios?",
+    footerModel = FooterUiModel(
+        leftButton = ButtonUiModel(
+            identifier = TransferReturnIdentifiers.TRANSFER_RETURN_CANCEL_BANNER.name,
+            label = "CANCELAR",
+            style = ButtonStyle.LOUD,
+            textStyle = TextStyle.HEADLINE_5,
+            onClick = OnClick.DISMISS,
+            size = ButtonSize.DEFAULT,
+            arrangement = Arrangement.Center,
+            modifier = Modifier.padding(
+                start = 0.dp,
+                top = 20.dp,
+                end = 0.dp,
+                bottom = 0.dp
+            )
+        ),
+        rightButton = ButtonUiModel(
+            identifier = TransferReturnIdentifiers.TRANSFER_RETURN_SAVE_BANNER.name,
+            label = "GUARDAR",
+            style = ButtonStyle.LOUD,
+            textStyle = TextStyle.HEADLINE_5,
+            onClick = OnClick.DISMISS,
+            size = ButtonSize.DEFAULT,
+            arrangement = Arrangement.Center,
+            modifier = Modifier.padding(
+                start = 0.dp,
+                top = 20.dp,
+                end = 0.dp,
+                bottom = 0.dp
+            )
+        )
+    )
 )

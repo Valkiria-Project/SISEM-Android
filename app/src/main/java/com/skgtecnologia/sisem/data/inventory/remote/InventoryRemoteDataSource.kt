@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.data.inventory.remote
 
 import com.skgtecnologia.sisem.commons.extensions.mapResult
+import com.skgtecnologia.sisem.data.inventory.remote.model.TransferReturnsBody
 import com.skgtecnologia.sisem.data.remote.extensions.apiCall
 import com.skgtecnologia.sisem.data.remote.model.screen.Params
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
@@ -32,11 +33,13 @@ class InventoryRemoteDataSource @Inject constructor(
     }
 
     suspend fun getInventoryViewScreen(
+        serial: String,
         code: String,
         inventoryType: InventoryType
     ): Result<ScreenModel> = apiCall {
         val screenBody = ScreenBody(
             params = Params(
+                serial = serial,
                 code = code
             )
         )
@@ -53,8 +56,30 @@ class InventoryRemoteDataSource @Inject constructor(
             InventoryType.VEHICLE -> inventoryApi.getInventoryVehicleScreen(
                 screenBody = screenBody
             )
+
+            InventoryType.TRANSFER_RETURNS -> inventoryApi.getTransfersReturnsScreen(
+                screenBody = screenBody
+            )
         }
     }.mapResult {
         it.mapToDomain()
+    }
+
+    suspend fun saveTransferReturns(
+        idTurn: String,
+        fieldsValues: Map<String, String>,
+        dropDownValues: Map<String, String>,
+        chipSelectionValues: Map<String, String>,
+        labelValues: Map<String, String>
+    ): Result<Unit> = apiCall {
+        inventoryApi.saveTransferReturn(
+            transferReturnsBody = TransferReturnsBody(
+                idTurn = idTurn,
+                fieldsValues = fieldsValues,
+                dropDownValues = dropDownValues,
+                chipSelectionValues = chipSelectionValues,
+                labelValues = labelValues
+            )
+        )
     }
 }
