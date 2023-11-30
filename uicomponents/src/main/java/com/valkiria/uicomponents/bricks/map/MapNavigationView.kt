@@ -1,5 +1,6 @@
 package com.valkiria.uicomponents.bricks.map
 
+import android.graphics.Bitmap
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -44,9 +45,11 @@ import com.valkiria.uicomponents.components.incident.model.IncidentUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-@Suppress("LongMethod", "LongParameterList", "MagicNumber")
+private const val MAP_ZOOM = 16.0
+
+@Suppress("LongParameterList")
 @Composable
-fun MapView(
+fun MapNavigationView(
     coordinates: Pair<Double, Double>,
     incident: IncidentUiModel?,
     drawerState: DrawerState,
@@ -56,60 +59,26 @@ fun MapView(
     onAction: (idAph: Int) -> Unit
 ) {
     val context = LocalContext.current
-    val scaffoldState = rememberBottomSheetScaffoldState()
-    val scope = rememberCoroutineScope()
 
     val point = Point.fromLngLat(coordinates.first, coordinates.second)
     val marker = remember(context) {
         AppCompatResources.getDrawable(context, R.drawable.ic_marker)?.toBitmap()
     }
-    var pointAnnotationManager: PointAnnotationManager? by remember {
-        mutableStateOf(null)
-    }
+
+    val scope = rememberCoroutineScope()
+    val scaffoldState = rememberBottomSheetScaffoldState()
 
     BottomSheetScaffold(
-        sheetContainerColor = MaterialTheme.colorScheme.surface,
+        scaffoldState = scaffoldState,
+        sheetPeekHeight = 140.dp,
         sheetContent = {
             incident?.let {
                 IncidentContent(it, onAction)
             }
-        },
-        scaffoldState = scaffoldState,
-        sheetPeekHeight = if (scaffoldState.bottomSheetState.isVisible) {
-            0.dp
-        } else {
-            65.dp
         }
-    ) {
-        Box(modifier = modifier) {
-            AndroidView(
-                factory = {
-                    MapView(it).also { mapView ->
-                        mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS)
-                        val annotationApi = mapView.annotations
-                        pointAnnotationManager = annotationApi.createPointAnnotationManager()
-                    }
-                },
-                update = { mapView ->
-                    if (point != null) {
-                        pointAnnotationManager?.let {
-                            it.deleteAll()
-                            val pointAnnotationOptions = PointAnnotationOptions().apply {
-                                withPoint(point)
-                                marker?.let { bitmap ->
-                                    withIconImage(bitmap)
-                                }
-                            }
-
-                            it.create(pointAnnotationOptions)
-                            mapView.getMapboxMap()
-                                .flyTo(CameraOptions.Builder().zoom(16.0).center(point).build())
-                        }
-                    }
-                    NoOpUpdate
-                },
-                modifier = modifier
-            )
+    ) { innerPadding ->
+        Box(modifier.padding(innerPadding)) {
+            MapboxAndroidView(point, marker, modifier)
 
             IconButton(
                 onClick = {
@@ -137,10 +106,48 @@ fun MapView(
                     Timber.d("Navigate to MapScreen")
                 }
             }
-
-            incident?.let {
-                scope.launch { scaffoldState.bottomSheetState.expand() }
-            }
         }
     }
+}
+
+@Composable
+private fun MapboxAndroidView(
+    point: Point,
+    marker: Bitmap?,
+    modifier: Modifier
+) {
+    var pointAnnotationManager: PointAnnotationManager? by remember {
+        mutableStateOf(null)
+    }
+
+    AndroidView(
+        factory = {
+            MapView(it).also { mapView ->
+                mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS)
+                val annotationApi = mapView.annotations
+                pointAnnotationManager = annotationApi.createPointAnnotationManager()
+            }
+        },
+        update = { mapView ->
+            pointAnnotationManager?.let {
+                it.deleteAll()
+                val pointAnnotationOptions = PointAnnotationOptions().apply {
+                    withPoint(point)
+                    marker?.let { bitmap ->
+                        withIconImage(bitmap)
+                    }
+                }
+
+                it.create(pointAnnotationOptions)
+                mapView.getMapboxMap().flyTo(
+                    CameraOptions.Builder()
+                        .zoom(MAP_ZOOM)
+                        .center(point)
+                        .build()
+                )
+            }
+            NoOpUpdate
+        },
+        modifier = modifier
+    )
 }
