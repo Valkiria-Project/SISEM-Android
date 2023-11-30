@@ -32,10 +32,10 @@ class InventoryViewViewModelTest {
 
     @MockK
     lateinit var logoutCurrentUser: LogoutCurrentUser
-    
+
     @MockK
     lateinit var saveTransferReturn: SaveTransferReturn
-    
+
     @MockK
     lateinit var androidIdProvider: AndroidIdProvider
 
@@ -48,13 +48,15 @@ class InventoryViewViewModelTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        
+
         every { androidIdProvider.getAndroidId() } returns ANDROID_ID
     }
 
     @Test
     fun `when getInventoryViewScreen is success`() = runTest {
-        coEvery { getInventoryViewScreen.invoke(any(), any()) } returns Result.success(emptyScreenModel)
+        coEvery { getInventoryViewScreen.invoke(any(), any()) } returns Result.success(
+            emptyScreenModel
+        )
 
         viewModel = InventoryViewViewModel(
             savedStateHandle = savedStateHandle,
@@ -99,7 +101,9 @@ class InventoryViewViewModelTest {
 
     @Test
     fun `when goBack is called`() = runTest {
-        coEvery { getInventoryViewScreen.invoke(any(), any()) } returns Result.success(emptyScreenModel)
+        coEvery { getInventoryViewScreen.invoke(any(), any()) } returns Result.success(
+            emptyScreenModel
+        )
 
         viewModel = InventoryViewViewModel(
             savedStateHandle = savedStateHandle,
@@ -116,7 +120,9 @@ class InventoryViewViewModelTest {
 
     @Test
     fun `when consumeNavigationEvent is called`() = runTest {
-        coEvery { getInventoryViewScreen.invoke(any(), any()) } returns Result.success(emptyScreenModel)
+        coEvery { getInventoryViewScreen.invoke(any(), any()) } returns Result.success(
+            emptyScreenModel
+        )
 
         viewModel = InventoryViewViewModel(
             savedStateHandle = savedStateHandle,
@@ -133,7 +139,9 @@ class InventoryViewViewModelTest {
 
     @Test
     fun `when call handleEvent uiState should have errorModel clear`() = runTest {
-        coEvery { getInventoryViewScreen.invoke(any(), any()) } returns Result.success(emptyScreenModel)
+        coEvery { getInventoryViewScreen.invoke(any(), any()) } returns Result.success(
+            emptyScreenModel
+        )
         coEvery { logoutCurrentUser.invoke() } returns Result.success("")
 
         viewModel = InventoryViewViewModel(
