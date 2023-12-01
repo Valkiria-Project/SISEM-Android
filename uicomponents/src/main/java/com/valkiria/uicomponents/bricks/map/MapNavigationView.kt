@@ -62,7 +62,7 @@ fun MapNavigationView(
 
     val point = Point.fromLngLat(coordinates.first, coordinates.second)
     val marker = remember(context) {
-        AppCompatResources.getDrawable(context, R.drawable.ic_marker)?.toBitmap()
+        AppCompatResources.getDrawable(context, R.drawable.ic_ambulance_marker)?.toBitmap()
     }
 
     val scope = rememberCoroutineScope()
@@ -123,7 +123,7 @@ private fun MapboxAndroidView(
     AndroidView(
         factory = {
             MapView(it).also { mapView ->
-                mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS)
+                mapView.getMapboxMap().loadStyleUri(Style.DARK)
                 val annotationApi = mapView.annotations
                 pointAnnotationManager = annotationApi.createPointAnnotationManager()
             }
