@@ -75,7 +75,7 @@ fun MapNavigationView(
             }
         },
         scaffoldState = scaffoldState,
-        sheetPeekHeight = 140.dp
+        sheetPeekHeight = if (incident != null) 140.dp else 0.dp
     ) { innerPadding ->
         Box(modifier.padding(innerPadding)) {
             MapboxAndroidView(point, marker, modifier)

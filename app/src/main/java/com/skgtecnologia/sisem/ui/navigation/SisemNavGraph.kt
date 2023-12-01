@@ -198,7 +198,13 @@ private fun NavGraphBuilder.mainGraph(
             MapScreen(
                 modifier = modifier,
                 onMenuAction = { navigationRoute ->
-                    navController.navigate(navigationRoute.route)
+                    // FIXME: Revert this
+                    if (navigationRoute.route == MainNavigationRoute.IncidentScreen.route) {
+                        val idAph = 14
+                        navController.navigate("${AphNavigationRoute.MedicalHistoryScreen.route}/$idAph")
+                    } else {
+                        navController.navigate(navigationRoute.route)
+                    }
                 },
                 onAction = { aphRoute ->
                     navController.navigate(aphRoute)
