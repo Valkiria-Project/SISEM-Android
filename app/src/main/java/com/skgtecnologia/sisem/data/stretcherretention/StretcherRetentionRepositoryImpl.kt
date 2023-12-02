@@ -13,9 +13,10 @@ class StretcherRetentionRepositoryImpl @Inject constructor(
 ) : StretcherRetentionRepository {
 
     override suspend fun getPreStretcherRetentionScreen(): ScreenModel {
-        val incidentId = checkNotNull(incidentCacheDataSource.observeActiveIncident())
+        val incidentId = checkNotNull(incidentCacheDataSource.observeActiveIncident()
             .first()
             .incident.id
+        )
 
         return stretcherRetentionRemoteDataSource.getPreStretcherRetentionScreen(
             idIncident = incidentId.toString()

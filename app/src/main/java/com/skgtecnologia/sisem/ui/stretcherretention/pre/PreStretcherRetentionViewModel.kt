@@ -9,10 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
-import com.skgtecnologia.sisem.domain.model.banner.stretcherRetentionSuccess
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.stretcherretention.usecases.GetPreStretcherRetentionScreen
-import com.skgtecnologia.sisem.domain.stretcherretention.usecases.SaveStretcherRetention
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
@@ -29,8 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PreStretcherRetentionViewModel @Inject constructor(
     private val logoutCurrentUser: LogoutCurrentUser,
-    private val getPreStretcherRetentionScreen: GetPreStretcherRetentionScreen,
-    private val saveStretcherRetention: SaveStretcherRetention
+    private val getPreStretcherRetentionScreen: GetPreStretcherRetentionScreen
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -113,40 +110,5 @@ class PreStretcherRetentionViewModel @Inject constructor(
             successEvent = null,
             navigationModel = PreStretcherRetentionNavigationModel(back = true)
         )
-    }
-
-    fun saveRetention() {
-        uiState = uiState.copy(
-            validateFields = true
-        )
-
-        if (fieldsValues.values.all { it.fieldValidated }) {
-            uiState = uiState.copy(
-                isLoading = true
-            )
-
-            job?.cancel()
-            job = viewModelScope.launch {
-                saveStretcherRetention.invoke(
-                    fieldsValue = fieldsValues.mapValues { it.value.updatedValue },
-                    chipSelectionValues = chipSelectionValues.mapValues { it.value.id }
-                ).onSuccess {
-                    withContext(Dispatchers.Main) {
-                        uiState = uiState.copy(
-                            isLoading = false,
-                            successEvent = stretcherRetentionSuccess().mapToUi(),
-                        )
-                    }
-                }.onFailure { throwable ->
-                    Timber.wtf(throwable, "This is a failure")
-                    withContext(Dispatchers.Main) {
-                        uiState = uiState.copy(
-                            isLoading = false,
-                            infoEvent = throwable.mapToUi()
-                        )
-                    }
-                }
-            }
-        }
     }
 }
