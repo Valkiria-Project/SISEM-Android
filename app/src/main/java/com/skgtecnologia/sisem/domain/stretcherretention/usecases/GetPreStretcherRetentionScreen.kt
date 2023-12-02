@@ -11,9 +11,7 @@ class GetPreStretcherRetentionScreen @Inject constructor(
 ) {
 
     @CheckResult
-    suspend operator fun invoke(
-        idIncident: String
-    ): Result<ScreenModel> = resultOf {
-        stretcherRetentionRepository.getPreStretcherRetentionScreen(idIncident)
+    suspend operator fun invoke(): Result<ScreenModel> = resultOf {
+        stretcherRetentionRepository.getPreStretcherRetentionScreen()
     }
 }

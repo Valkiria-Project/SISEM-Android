@@ -46,8 +46,7 @@ class PreStretcherRetentionViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch {
-            // FIXME: Update this, savedStateHandle?
-            getPreStretcherRetentionScreen.invoke(idIncident = "14")
+            getPreStretcherRetentionScreen.invoke()
                 .onSuccess { stretcherRetentionScreen ->
                     stretcherRetentionScreen.getFormInitialValues()
 
