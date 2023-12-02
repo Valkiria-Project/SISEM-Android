@@ -354,7 +354,7 @@ private fun LazyListScope.handleBodyRows(
                                 GenericUiAction.InfoCardAction(
                                     identifier = cardUiModel.identifier,
                                     isPill = cardUiModel.isPill,
-                                    patient = cardUiModel.patient,
+                                    patient = cardUiModel.patientAph,
                                     isClickCard = cardUiModel.isClickCard,
                                     reportDetail = cardUiModel.reportDetail,
                                     chipSection = cardUiModel.chipSection

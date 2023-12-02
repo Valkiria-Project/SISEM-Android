@@ -246,7 +246,7 @@ fun InfoCardComponent(
                                             onAction(
                                                 CardUiModel(
                                                     identifier = uiModel.identifier,
-                                                    patient = text.component2()
+                                                    patientAph = text.component1()
                                                 )
                                             )
                                         }

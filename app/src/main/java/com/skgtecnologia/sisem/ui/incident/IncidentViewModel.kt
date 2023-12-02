@@ -71,8 +71,7 @@ class IncidentViewModel @Inject constructor(
     fun navigateToAphView(patient: String) {
         uiState = uiState.copy(
             navigationModel = IncidentNavigationModel(
-                isAph = true,
-                patient = patient
+                patientAph = patient
             )
         )
     }
