@@ -140,7 +140,7 @@ private fun NavGraphBuilder.authGraph(
 
         composable(
             route = AuthNavigationRoute.DeviceAuthScreen.route +
-                    "/{${NavigationArgument.FROM}}",
+                "/{${NavigationArgument.FROM}}",
             arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
         ) {
             DeviceAuthScreen(
@@ -237,7 +237,7 @@ private fun NavGraphBuilder.mainGraph(
 
         composable(
             route = MainNavigationRoute.InventoryViewScreen.route +
-                    "?$INVENTORY_TYPE={$INVENTORY_TYPE}",
+                "?$INVENTORY_TYPE={$INVENTORY_TYPE}",
             arguments = listOf(navArgument(INVENTORY_TYPE) { type = NavType.StringType })
         ) {
             InventoryViewScreen(
@@ -346,7 +346,7 @@ private fun NavGraphBuilder.mainGraph(
 
         composable(
             route = MainNavigationRoute.PreOperationalViewScreen.route +
-                    "?$ROLE={$ROLE}",
+                "?$ROLE={$ROLE}",
             arguments = listOf(navArgument(ROLE) { type = NavType.StringType })
         ) {
             PreOperationalViewScreen { navigationModel ->
@@ -442,7 +442,7 @@ private fun NavGraphBuilder.reportGraph(
     ) {
         composable(
             route = ReportNavigationRoute.AddFindingScreen.route +
-                    "?${NavigationArgument.FINDING_ID}={${NavigationArgument.FINDING_ID}}",
+                "?${NavigationArgument.FINDING_ID}={${NavigationArgument.FINDING_ID}}",
             arguments = listOf(
                 navArgument(NavigationArgument.FINDING_ID) { type = NavType.StringType }
             )
