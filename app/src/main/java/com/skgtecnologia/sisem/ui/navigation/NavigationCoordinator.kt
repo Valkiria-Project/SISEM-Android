@@ -332,7 +332,7 @@ private fun preOpToNextStep(
     model.isNewFindingEvent ->
         navController.navigate(
             ReportNavigationRoute.AddFindingScreen.route +
-                    "?${NavigationArgument.FINDING_ID}=${model.findingId}"
+                "?${NavigationArgument.FINDING_ID}=${model.findingId}"
         )
 
     else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
