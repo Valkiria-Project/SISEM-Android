@@ -25,6 +25,7 @@ import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
 import com.valkiria.uicomponents.components.chip.ChipSelectionUiModel
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListUiModel
 import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
+import com.valkiria.uicomponents.components.dropdown.DropDownUiModel
 import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
@@ -188,12 +189,28 @@ class InventoryViewViewModel @Inject constructor(
     ) = when (model) {
         is DetailedInfoListUiModel -> model.copy(visibility = viewsVisibility.value)
 
+        is DropDownUiModel -> {
+            if (viewsVisibility.value) {
+                model.copy(visibility = viewsVisibility.value)
+            } else {
+                dropDownValue.remove(viewsVisibility.key)
+                model.copy(
+                    selected = "",
+                    visibility = viewsVisibility.value
+                )
+            }
+        }
+
         is LabelUiModel -> model.copy(visibility = viewsVisibility.value)
 
         is RichLabelUiModel -> model.copy(visibility = viewsVisibility.value)
 
         is TextFieldUiModel -> {
             if (viewsVisibility.value) {
+                fieldsValues[viewsVisibility.key] = InputUiModel(
+                    identifier = viewsVisibility.key,
+                    updatedValue = ""
+                )
                 model.copy(visibility = viewsVisibility.value)
             } else {
                 fieldsValues.remove(viewsVisibility.key)
