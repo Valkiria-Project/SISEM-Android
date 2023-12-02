@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.domain.inventory.usecases
 
+import com.skgtecnologia.sisem.commons.ANDROID_ID
 import com.skgtecnologia.sisem.domain.inventory.InventoryRepository
 import com.skgtecnologia.sisem.domain.inventory.model.InventoryType
 import io.mockk.MockKAnnotations
@@ -27,18 +28,18 @@ class GetInventoryViewScreenTest {
 
     @Test
     fun `when getInventoryViewScreen is success`() = runTest {
-        coEvery { inventoryRepository.getInventoryViewScreen(any()) } returns mockk()
+        coEvery { inventoryRepository.getInventoryViewScreen(any(), any()) } returns mockk()
 
-        val result = getInventoryViewScreen.invoke(InventoryType.MEDICINE)
+        val result = getInventoryViewScreen.invoke(InventoryType.MEDICINE, ANDROID_ID)
 
         Assert.assertEquals(true, result.isSuccess)
     }
 
     @Test
     fun `when getInventoryViewScreen is failure`() = runTest {
-        coEvery { inventoryRepository.getInventoryViewScreen(any()) } throws Exception()
+        coEvery { inventoryRepository.getInventoryViewScreen(any(), any()) } throws Exception()
 
-        val result = getInventoryViewScreen.invoke(InventoryType.MEDICINE)
+        val result = getInventoryViewScreen.invoke(InventoryType.MEDICINE, ANDROID_ID)
 
         Assert.assertEquals(true, result.isFailure)
     }

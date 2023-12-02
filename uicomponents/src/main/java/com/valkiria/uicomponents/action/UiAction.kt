@@ -33,6 +33,7 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
         override val identifier: String,
         val id: String,
         val name: String,
+        val quantity: Int,
         val fieldValidated: Boolean
     ) : GenericUiAction(identifier)
 

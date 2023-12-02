@@ -89,6 +89,7 @@ fun SisemNavGraph(
                 context
             )
             mainGraph(navController, modifier)
+            aphGraph(navController, modifier)
             reportGraph(navController, modifier)
         }
     }
@@ -214,35 +215,6 @@ private fun NavGraphBuilder.mainGraph(
         }
 
         composable(
-            route = MainNavigationRoute.MedicalHistoryScreen.route + "?$ID_APH={$ID_APH}",
-            arguments = listOf(navArgument(ID_APH) { type = NavType.IntType })
-        ) { navBackStackEntry ->
-            val vitalSigns =
-                navBackStackEntry.savedStateHandle.get<Map<String, String>>(VITAL_SIGNS)
-            navBackStackEntry.savedStateHandle.remove<Map<String, String>>(VITAL_SIGNS)
-
-            val medicine = navBackStackEntry.savedStateHandle.get<Map<String, String>>(MEDICINE)
-            navBackStackEntry.savedStateHandle.remove<Map<String, String>>(MEDICINE)
-
-            val signature = navBackStackEntry.savedStateHandle.get<String>(SIGNATURE)
-            navBackStackEntry.savedStateHandle.remove<String>(SIGNATURE)
-
-            val photoTaken = navBackStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN)
-            navBackStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)
-
-            MedicalHistoryScreen(
-                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
-                modifier = modifier,
-                vitalSigns = vitalSigns,
-                medicine = medicine,
-                signature = signature,
-                photoTaken = photoTaken == true
-            ) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
-            }
-        }
-
-        composable(
             route = MainNavigationRoute.IncidentScreen.route
         ) {
             IncidentScreen(
@@ -342,41 +314,6 @@ private fun NavGraphBuilder.mainGraph(
         }
 
         composable(
-            route = MainNavigationRoute.VitalSignsScreen.route
-        ) {
-            VitalSignsScreen(modifier = modifier) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
-            }
-        }
-
-        composable(
-            route = MainNavigationRoute.MedicineScreen.route
-        ) {
-            MedicineScreen(modifier = modifier) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
-            }
-        }
-
-        composable(
-            route = MainNavigationRoute.SignaturePadScreen.route
-        ) {
-            SignaturePadScreen(modifier = modifier) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
-            }
-        }
-
-        composable(
-            route = MainNavigationRoute.CameraScreen.route
-        ) { navBackStackEntry ->
-            CameraScreen(
-                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
-                modifier = modifier
-            ) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
-            }
-        }
-
-        composable(
             route = MainNavigationRoute.StretcherRetentionScreen.route
         ) {
             StretcherRetentionScreen(
@@ -387,10 +324,10 @@ private fun NavGraphBuilder.mainGraph(
         }
 
         composable(
-            route = MainNavigationRoute.StretcherViewScreen.route
+                route = MainNavigationRoute.StretcherViewScreen.route
         ) {
             StretcherRetentionViewScreen(
-                modifier = modifier
+                    modifier = modifier
             ) {
                 navigateToNextStep(navController, it)
             }
@@ -402,6 +339,81 @@ private fun NavGraphBuilder.mainGraph(
             arguments = listOf(navArgument(ROLE) { type = NavType.StringType })
         ) {
             PreOperationalViewScreen { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
+        }
+    }
+}
+
+@Suppress("LongMethod")
+private fun NavGraphBuilder.aphGraph(
+    navController: NavHostController,
+    modifier: Modifier
+) {
+    navigation(
+        startDestination = AphNavigationRoute.MedicalHistoryScreen.route,
+        route = NavigationGraph.Aph.route
+    ) {
+        composable(
+            route = AphNavigationRoute.MedicalHistoryScreen.route + "/{$ID_APH}",
+            arguments = listOf(navArgument(ID_APH) { type = NavType.IntType })
+        ) { navBackStackEntry ->
+            val vitalSigns =
+                navBackStackEntry.savedStateHandle.get<Map<String, String>>(VITAL_SIGNS)
+            navBackStackEntry.savedStateHandle.remove<Map<String, String>>(VITAL_SIGNS)
+
+            val medicine = navBackStackEntry.savedStateHandle.get<Map<String, String>>(MEDICINE)
+            navBackStackEntry.savedStateHandle.remove<Map<String, String>>(MEDICINE)
+
+            val signature = navBackStackEntry.savedStateHandle.get<String>(SIGNATURE)
+            navBackStackEntry.savedStateHandle.remove<String>(SIGNATURE)
+
+            val photoTaken = navBackStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN)
+            navBackStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)
+
+            MedicalHistoryScreen(
+                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
+                modifier = modifier,
+                vitalSigns = vitalSigns,
+                medicine = medicine,
+                signature = signature,
+                photoTaken = photoTaken == true
+            ) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = AphNavigationRoute.CameraScreen.route
+        ) { navBackStackEntry ->
+            CameraScreen(
+                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
+                modifier = modifier
+            ) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = AphNavigationRoute.MedicineScreen.route
+        ) {
+            MedicineScreen(modifier = modifier) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = AphNavigationRoute.SignaturePadScreen.route
+        ) {
+            SignaturePadScreen(modifier = modifier) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = AphNavigationRoute.VitalSignsScreen.route
+        ) {
+            VitalSignsScreen(modifier = modifier) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
             }
         }

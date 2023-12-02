@@ -240,15 +240,15 @@ private fun medicalHistoryToNextStep(
     when {
         model.back -> navController.popBackStack()
 
-        model.isInfoCardEvent -> navController.navigate(MainNavigationRoute.VitalSignsScreen.route)
+        model.isInfoCardEvent -> navController.navigate(AphNavigationRoute.VitalSignsScreen.route)
 
         model.isMedsSelectorEvent ->
-            navController.navigate(MainNavigationRoute.MedicineScreen.route)
+            navController.navigate(AphNavigationRoute.MedicineScreen.route)
 
         model.isSignatureEvent ->
-            navController.navigate(MainNavigationRoute.SignaturePadScreen.route)
+            navController.navigate(AphNavigationRoute.SignaturePadScreen.route)
 
-        model.showCamera -> navController.navigate(MainNavigationRoute.CameraScreen.route)
+        model.showCamera -> navController.navigate(AphNavigationRoute.CameraScreen.route)
         model.photoTaken -> with(navController) {
             popBackStack()
 
@@ -366,7 +366,7 @@ fun signatureToNextStep(
         model.back -> navController.popBackStack()
 
         model.isSignatureEvent ->
-            navController.navigate(MainNavigationRoute.SignaturePadScreen.route)
+            navController.navigate(AphNavigationRoute.SignaturePadScreen.route)
 
         // FIXME: validar si no se devuelve a la pantalla de firma
         model.isSaved -> navController.navigate(NavigationGraph.Main.route)
