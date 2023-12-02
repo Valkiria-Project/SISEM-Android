@@ -246,7 +246,7 @@ fun InfoCardComponent(
                                             onAction(
                                                 CardUiModel(
                                                     identifier = uiModel.identifier,
-                                                    patient = text
+                                                    patientAph = text.component1()
                                                 )
                                             )
                                         }
@@ -269,7 +269,7 @@ fun InfoCardComponent(
                                     }
 
                                     Text(
-                                        text = text,
+                                        text = text.component2(),
                                         style = it.listPatient.textStyle.toTextStyle(),
                                         color = Color.White,
                                         maxLines = 1,
@@ -387,7 +387,7 @@ fun InfoCardComponentPreview() {
                     textStyle = TextStyle.HEADLINE_7
                 ),
                 listPatient = ListPatientUiModel(
-                    texts = listOf("Prueba1", "Prueba2"),
+                    texts = mapOf("1" to "Prueba1", "2" to "Prueba2"),
                     icon = "ic_user_2",
                     textStyle = TextStyle.HEADLINE_7
                 )
