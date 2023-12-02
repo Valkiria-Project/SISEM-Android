@@ -165,7 +165,7 @@ fun incidentToNextStep(
     when {
         model.back -> navController.popBackStack()
         model.isAph -> navController.navigate(
-                MainNavigationRoute.MedicalHistoryViewScreen.route
+                AphNavigationRoute.MedicalHistoryViewScreen.route
         )
 
         model.isStretcherRetention -> navController.navigate(
@@ -275,7 +275,7 @@ private fun medicalHistoryViewToNextStep(
     when {
         model.back -> navController.popBackStack()
 
-        model.showCamera -> navController.navigate(MainNavigationRoute.CameraScreen.route)
+        model.showCamera -> navController.navigate(AphNavigationRoute.CameraScreen.route)
 
         model.photoTaken -> with(navController) {
             popBackStack()
