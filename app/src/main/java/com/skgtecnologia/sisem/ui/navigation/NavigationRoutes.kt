@@ -33,7 +33,9 @@ sealed class MainNavigationRoute(override val route: String) : NavigationRoute(r
     data object ShiftScreen : MainNavigationRoute("menu_shift_screen")
     data object InitSignatureScreen : MainNavigationRoute("menu_init_signature_screen")
     data object SignatureScreen : MainNavigationRoute("signature_screen")
+    data object PreStretcherRetentionScreen : MainNavigationRoute("pre_stretcher_retention_screen")
     data object StretcherRetentionScreen : MainNavigationRoute("stretcher_retention_screen")
+    data object StretcherViewScreen : MainNavigationRoute("stretcher_view_screen")
 }
 
 sealed class AphNavigationRoute(override val route: String) : NavigationRoute(route) {

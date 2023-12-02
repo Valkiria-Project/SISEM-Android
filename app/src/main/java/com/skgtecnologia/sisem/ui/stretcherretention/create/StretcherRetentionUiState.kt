@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.stretcherretention
+package com.skgtecnologia.sisem.ui.stretcherretention.create
 
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.valkiria.uicomponents.bricks.banner.BannerUiModel
