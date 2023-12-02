@@ -9,6 +9,12 @@ class StretcherRetentionRepositoryImpl @Inject constructor(
     private val stretcherRetentionRemoteDataSource: StretcherRetentionRemoteDataSource
 ) : StretcherRetentionRepository {
 
+    override suspend fun getPreStretcherRetentionScreen(
+        idIncident: String
+    ): ScreenModel = stretcherRetentionRemoteDataSource.getPreStretcherRetentionScreen(
+        idIncident = idIncident
+    ).getOrThrow()
+
     override suspend fun getStretcherRetentionScreen(
         idAph: String
     ): ScreenModel = stretcherRetentionRemoteDataSource.getStretcherRetentionScreen(

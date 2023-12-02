@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.stretcherretention
+package com.skgtecnologia.sisem.ui.stretcherretention.pre
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
@@ -11,7 +11,7 @@ import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.banner.stretcherRetentionSuccess
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
-import com.skgtecnologia.sisem.domain.stretcherretention.usecases.GetStretcherRetentionScreen
+import com.skgtecnologia.sisem.domain.stretcherretention.usecases.GetPreStretcherRetentionScreen
 import com.skgtecnologia.sisem.domain.stretcherretention.usecases.SaveStretcherRetention
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.valkiria.uicomponents.action.UiAction
@@ -27,15 +27,15 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class StretcherRetentionViewModel @Inject constructor(
+class PreStretcherRetentionViewModel @Inject constructor(
     private val logoutCurrentUser: LogoutCurrentUser,
-    private val getStretcherRetentionScreen: GetStretcherRetentionScreen,
+    private val getPreStretcherRetentionScreen: GetPreStretcherRetentionScreen,
     private val saveStretcherRetention: SaveStretcherRetention
 ) : ViewModel() {
 
     private var job: Job? = null
 
-    var uiState by mutableStateOf(StretcherRetentionUiState())
+    var uiState by mutableStateOf(PreStretcherRetentionUiState())
         private set
 
     var chipSelectionValues = mutableStateMapOf<String, ChipSelectionItemUiModel>()
@@ -46,7 +46,8 @@ class StretcherRetentionViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch {
-            getStretcherRetentionScreen.invoke(idAph = "14")
+            // FIXME: Update this, savedStateHandle?
+            getPreStretcherRetentionScreen.invoke(idIncident = "14")
                 .onSuccess { stretcherRetentionScreen ->
                     stretcherRetentionScreen.getFormInitialValues()
 
@@ -111,7 +112,7 @@ class StretcherRetentionViewModel @Inject constructor(
     fun navigateBack() {
         uiState = uiState.copy(
             successEvent = null,
-            navigationModel = StretcherRetentionNavigationModel(back = true)
+            navigationModel = PreStretcherRetentionNavigationModel(back = true)
         )
     }
 

@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.stretcherretention
+package com.skgtecnologia.sisem.ui.stretcherretention.pre
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -22,11 +22,11 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @Composable
-fun StretcherRetentionScreen(
+fun PreStretcherRetentionScreen(
     modifier: Modifier = Modifier,
-    onNavigation: (stretcherRetentionNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (preStretcherRetentionNavigationModel: NavigationModel?) -> Unit
 ) {
-    val viewModel = hiltViewModel<StretcherRetentionViewModel>()
+    val viewModel = hiltViewModel<PreStretcherRetentionViewModel>()
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState) {
@@ -88,7 +88,7 @@ fun StretcherRetentionScreen(
 
 private fun handleAction(
     uiAction: UiAction,
-    viewModel: StretcherRetentionViewModel
+    viewModel: PreStretcherRetentionViewModel
 ) {
     when (uiAction) {
         is GenericUiAction.ButtonAction -> viewModel.saveRetention()

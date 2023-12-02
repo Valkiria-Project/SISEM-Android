@@ -28,7 +28,7 @@ import com.skgtecnologia.sisem.ui.preoperational.view.PreOpViewNavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.signature.init.InitSignatureNavigationModel
 import com.skgtecnologia.sisem.ui.signature.view.SignatureNavigationModel
-import com.skgtecnologia.sisem.ui.stretcherretention.StretcherRetentionNavigationModel
+import com.skgtecnologia.sisem.ui.stretcherretention.create.StretcherRetentionNavigationModel
 import com.skgtecnologia.sisem.ui.stretcherretention.view.StretcherRetentionViewNavigationModel
 
 const val APP_STARTED = "app_started"

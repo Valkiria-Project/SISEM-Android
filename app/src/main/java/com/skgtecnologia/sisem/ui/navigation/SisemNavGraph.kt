@@ -54,7 +54,8 @@ import com.skgtecnologia.sisem.ui.report.media.ImagesConfirmationScreen
 import com.skgtecnologia.sisem.ui.report.media.ReportCameraScreen
 import com.skgtecnologia.sisem.ui.signature.init.InitSignatureScreen
 import com.skgtecnologia.sisem.ui.signature.view.SignatureScreen
-import com.skgtecnologia.sisem.ui.stretcherretention.StretcherRetentionScreen
+import com.skgtecnologia.sisem.ui.stretcherretention.create.StretcherRetentionScreen
+import com.skgtecnologia.sisem.ui.stretcherretention.pre.PreStretcherRetentionScreen
 import com.skgtecnologia.sisem.ui.stretcherretention.view.StretcherRetentionViewScreen
 
 @Composable
@@ -139,7 +140,7 @@ private fun NavGraphBuilder.authGraph(
 
         composable(
             route = AuthNavigationRoute.DeviceAuthScreen.route +
-                "/{${NavigationArgument.FROM}}",
+                    "/{${NavigationArgument.FROM}}",
             arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
         ) {
             DeviceAuthScreen(
@@ -236,7 +237,7 @@ private fun NavGraphBuilder.mainGraph(
 
         composable(
             route = MainNavigationRoute.InventoryViewScreen.route +
-                "?$INVENTORY_TYPE={$INVENTORY_TYPE}",
+                    "?$INVENTORY_TYPE={$INVENTORY_TYPE}",
             arguments = listOf(navArgument(INVENTORY_TYPE) { type = NavType.StringType })
         ) {
             InventoryViewScreen(
@@ -314,6 +315,16 @@ private fun NavGraphBuilder.mainGraph(
         }
 
         composable(
+            route = MainNavigationRoute.PreStretcherRetentionScreen.route
+        ) {
+            PreStretcherRetentionScreen(
+                modifier = modifier
+            ) {
+                navigateToNextStep(navController, it)
+            }
+        }
+
+        composable(
             route = MainNavigationRoute.StretcherRetentionScreen.route
         ) {
             StretcherRetentionScreen(
@@ -324,10 +335,10 @@ private fun NavGraphBuilder.mainGraph(
         }
 
         composable(
-                route = MainNavigationRoute.StretcherViewScreen.route
+            route = MainNavigationRoute.StretcherViewScreen.route
         ) {
             StretcherRetentionViewScreen(
-                    modifier = modifier
+                modifier = modifier
             ) {
                 navigateToNextStep(navController, it)
             }
@@ -335,7 +346,7 @@ private fun NavGraphBuilder.mainGraph(
 
         composable(
             route = MainNavigationRoute.PreOperationalViewScreen.route +
-                "?$ROLE={$ROLE}",
+                    "?$ROLE={$ROLE}",
             arguments = listOf(navArgument(ROLE) { type = NavType.StringType })
         ) {
             PreOperationalViewScreen { navigationModel ->
@@ -431,7 +442,7 @@ private fun NavGraphBuilder.reportGraph(
     ) {
         composable(
             route = ReportNavigationRoute.AddFindingScreen.route +
-                "?${NavigationArgument.FINDING_ID}={${NavigationArgument.FINDING_ID}}",
+                    "?${NavigationArgument.FINDING_ID}={${NavigationArgument.FINDING_ID}}",
             arguments = listOf(
                 navArgument(NavigationArgument.FINDING_ID) { type = NavType.StringType }
             )
@@ -459,7 +470,7 @@ private fun NavGraphBuilder.reportGraph(
 
         composable(
             route = ReportNavigationRoute.ImagesConfirmationScreen.route +
-                "/{${NavigationArgument.FROM}}",
+                    "/{${NavigationArgument.FROM}}",
             arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
         ) { navBackStackEntry ->
             ImagesConfirmationScreen(

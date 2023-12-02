@@ -9,6 +9,11 @@ import retrofit2.http.POST
 
 interface StretcherRetentionApi {
 
+    @POST("screen/pre-aph-stretcher-retention")
+    suspend fun getPreStretcherRetentionScreen(
+        @Body screenBody: ScreenBody
+    ): Response<ScreenResponse>
+
     @POST("screen/aph-stretcher-retention")
     suspend fun getStretcherRetentionScreen(@Body screenBody: ScreenBody): Response<ScreenResponse>
 
