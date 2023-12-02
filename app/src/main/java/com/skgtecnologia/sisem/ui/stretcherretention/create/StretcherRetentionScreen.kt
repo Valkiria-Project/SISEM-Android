@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.medicalhistory.medicine
+package com.skgtecnologia.sisem.ui.stretcherretention.create
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -17,25 +17,24 @@ import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
-import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @Composable
-fun MedicineScreen(
+fun StretcherRetentionScreen(
     modifier: Modifier = Modifier,
-    onNavigation: (medicineNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (stretcherRetentionNavigationModel: NavigationModel?) -> Unit
 ) {
-    val viewModel = hiltViewModel<MedicineViewModel>()
+    val viewModel = hiltViewModel<StretcherRetentionViewModel>()
     val uiState = viewModel.uiState
 
-    LaunchedEffect(uiState.navigationModel) {
+    LaunchedEffect(uiState) {
         launch {
-            with(uiState.navigationModel) {
-                if (this?.goBack == true || this?.values != null) {
-                    onNavigation(uiState.navigationModel)
+            when {
+                uiState.navigationModel != null -> {
                     viewModel.consumeNavigationEvent()
+                    onNavigation(uiState.navigationModel)
                 }
             }
         }
@@ -76,26 +75,26 @@ fun MedicineScreen(
         }
     }
 
-    OnBannerHandler(uiModel = uiState.infoEvent) {
-        viewModel.consumeInfoEvent()
+    OnBannerHandler(uiModel = uiState.infoEvent) { uiAction ->
+        viewModel.handleEvent(uiAction)
+    }
+
+    OnBannerHandler(uiModel = uiState.successEvent) {
+        viewModel.navigateBack()
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)
 }
 
-fun handleAction(
+private fun handleAction(
     uiAction: UiAction,
-    viewModel: MedicineViewModel
+    viewModel: StretcherRetentionViewModel
 ) {
     when (uiAction) {
-        is GenericUiAction.DropDownAction ->
-            viewModel.dropDownValue.value = DropDownInputUiModel(
-                uiAction.identifier,
-                uiAction.id,
-                uiAction.name,
-                uiAction.quantity,
-                uiAction.fieldValidated
-            )
+        is GenericUiAction.ButtonAction -> viewModel.saveRetention()
+
+        is GenericUiAction.ChipSelectionAction ->
+            viewModel.chipSelectionValues[uiAction.identifier] = uiAction.chipSelectionItemUiModel
 
         is GenericUiAction.InputAction ->
             viewModel.fieldsValues[uiAction.identifier] = InputUiModel(
@@ -103,13 +102,6 @@ fun handleAction(
                 uiAction.updatedValue,
                 uiAction.fieldValidated
             )
-
-        is GenericUiAction.TimePickerAction -> viewModel.timePickerValue.value = uiAction.value
-
-        is GenericUiAction.ChipSelectionAction ->
-            viewModel.chipValues[uiAction.identifier] = uiAction.chipSelectionItemUiModel
-
-        is GenericUiAction.ButtonAction -> viewModel.saveMedicine()
 
         else -> Timber.d("no-op")
     }

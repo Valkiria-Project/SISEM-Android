@@ -1,13 +1,26 @@
 package com.skgtecnologia.sisem.data.stretcherretention
 
+import com.skgtecnologia.sisem.data.incident.cache.IncidentCacheDataSource
 import com.skgtecnologia.sisem.data.stretcherretention.remote.StretcherRetentionRemoteDataSource
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.stretcherretention.StretcherRetentionRepository
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class StretcherRetentionRepositoryImpl @Inject constructor(
+    private val incidentCacheDataSource: IncidentCacheDataSource,
     private val stretcherRetentionRemoteDataSource: StretcherRetentionRemoteDataSource
 ) : StretcherRetentionRepository {
+
+    override suspend fun getPreStretcherRetentionScreen(): ScreenModel {
+        val incidentId = checkNotNull(incidentCacheDataSource.observeActiveIncident())
+            .first()
+            .incident.id
+
+        return stretcherRetentionRemoteDataSource.getPreStretcherRetentionScreen(
+            idIncident = incidentId.toString()
+        ).getOrThrow()
+    }
 
     override suspend fun getStretcherRetentionScreen(
         idAph: String

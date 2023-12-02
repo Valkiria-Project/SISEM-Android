@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.ui.navigation
 
 sealed class NavigationGraph(val route: String) {
     data object Auth : NavigationGraph("auth_graph")
+    data object Aph : NavigationGraph("aph_graph")
     data object Main : NavigationGraph("main_graph")
     data object Report : NavigationGraph("report_graph")
 }
@@ -18,7 +19,6 @@ sealed class AuthNavigationRoute(override val route: String) : NavigationRoute(r
 }
 
 sealed class MainNavigationRoute(override val route: String) : NavigationRoute(route) {
-    data object CameraScreen : MainNavigationRoute("camera_screen")
     data object CertificationsScreen : MainNavigationRoute("menu_certifications_screen")
     data object DeviceAuthScreen : MainNavigationRoute("menu_device_auth_screen")
     data object DrivingGuideScreen : MainNavigationRoute("menu_driving_guide_screen")
@@ -27,17 +27,22 @@ sealed class MainNavigationRoute(override val route: String) : NavigationRoute(r
     data object InventoryScreen : MainNavigationRoute("menu_inventory_screen")
     data object InventoryViewScreen : MainNavigationRoute("menu_inventory_view_screen")
     data object MapScreen : MainNavigationRoute("map_screen")
-    data object MedicalHistoryScreen : MainNavigationRoute("menu_medical_history_screen")
-    data object MedicalHistoryViewScreen : MainNavigationRoute("menu_medical_history_view_screen")
-    data object MedicineScreen : MainNavigationRoute("medicine_screen")
     data object NotificationsScreen : MainNavigationRoute("menu_notifications_screen")
     data object PreOperationalViewScreen : MainNavigationRoute("pre_operational_view_screen")
     data object PreoperationalMainScreen : MainNavigationRoute("menu_preoperational_menu_screen")
     data object ShiftScreen : MainNavigationRoute("menu_shift_screen")
     data object InitSignatureScreen : MainNavigationRoute("menu_init_signature_screen")
     data object SignatureScreen : MainNavigationRoute("signature_screen")
+    data object PreStretcherRetentionScreen : MainNavigationRoute("pre_stretcher_retention_screen")
     data object StretcherRetentionScreen : MainNavigationRoute("stretcher_retention_screen")
     data object StretcherViewScreen : MainNavigationRoute("stretcher_view_screen")
+}
+
+sealed class AphNavigationRoute(override val route: String) : NavigationRoute(route) {
+    data object CameraScreen : MainNavigationRoute("camera_screen")
+    data object MedicalHistoryScreen : MainNavigationRoute("medical_history_screen")
+    data object MedicalHistoryViewScreen : MainNavigationRoute("medical_history_view_screen")
+    data object MedicineScreen : MainNavigationRoute("medicine_screen")
     data object SignaturePadScreen : MainNavigationRoute("signature_pad_screen")
     data object VitalSignsScreen : MainNavigationRoute("vital_signs_screen")
 }

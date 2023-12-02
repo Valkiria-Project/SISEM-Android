@@ -29,7 +29,7 @@ import com.skgtecnologia.sisem.ui.preoperational.view.PreOpViewNavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.signature.init.InitSignatureNavigationModel
 import com.skgtecnologia.sisem.ui.signature.view.SignatureNavigationModel
-import com.skgtecnologia.sisem.ui.stretcherretention.StretcherRetentionNavigationModel
+import com.skgtecnologia.sisem.ui.stretcherretention.create.StretcherRetentionNavigationModel
 import com.skgtecnologia.sisem.ui.stretcherretention.view.StretcherRetentionViewNavigationModel
 
 const val APP_STARTED = "app_started"
@@ -57,9 +57,9 @@ fun getAuthStartDestination(model: StartupNavigationModel?): String = when {
 
 @Suppress("ComplexMethod")
 fun navigateToNextStep(
-    navController: NavHostController,
-    navigationModel: NavigationModel?,
-    onNavigationFallback: () -> Unit = {}
+        navController: NavHostController,
+        navigationModel: NavigationModel?,
+        onNavigationFallback: () -> Unit = {}
 ) = when (navigationModel) {
     is AuthCardViewNavigationModel -> authCardViewNextStep(navController, navigationModel)
     is DeviceAuthNavigationModel ->
@@ -74,6 +74,7 @@ fun navigateToNextStep(
     is MedicalHistoryNavigationModel -> medicalHistoryToNextStep(navController, navigationModel)
     is MedicalHistoryViewNavigationModel ->
         medicalHistoryViewToNextStep(navController, navigationModel)
+
     is MedicineNavigationModel -> medicineToNextStep(navController, navigationModel)
     is PreOpViewNavigationModel -> preOpViewToNextStep(navController, navigationModel)
     is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
@@ -82,31 +83,33 @@ fun navigateToNextStep(
     is SignaturePadNavigationModel -> signaturePadToNextStep(navController, navigationModel)
     is StretcherRetentionNavigationModel ->
         stretcherRetentionToNextStep(navController, navigationModel)
+
     is StretcherRetentionViewNavigationModel ->
         stretcherRetentionViewToNextStep(navController, navigationModel)
+
     is VitalSignsNavigationModel -> vitalSignsToNextStep(navController, navigationModel)
     else -> {}
 }
 
 fun authCardViewNextStep(
-    navController: NavHostController,
-    model: AuthCardViewNavigationModel
+        navController: NavHostController,
+        model: AuthCardViewNavigationModel
 ) {
     when {
         model.back -> navController.popBackStack()
 
         model.role != null -> {
             navController.navigate(
-                MainNavigationRoute.PreOperationalViewScreen.route + "?$ROLE=${model.role.name}"
+                    MainNavigationRoute.PreOperationalViewScreen.route + "?$ROLE=${model.role.name}"
             )
         }
     }
 }
 
 private fun deviceAuthToNextStep(
-    navController: NavHostController,
-    model: DeviceAuthNavigationModel,
-    onNavigationFallback: () -> Unit = {}
+        navController: NavHostController,
+        model: DeviceAuthNavigationModel,
+        onNavigationFallback: () -> Unit = {}
 ) {
     when {
         model.isCrewList && model.from == LOGIN ->
@@ -147,8 +150,8 @@ private fun deviceAuthToNextStep(
 }
 
 fun forgotPasswordToNextStep(
-    navController: NavHostController,
-    model: ForgotPasswordNavigationModel
+        navController: NavHostController,
+        model: ForgotPasswordNavigationModel
 ) {
     when {
         model.isCancel || model.isSuccess -> navController.popBackStack()
@@ -156,49 +159,48 @@ fun forgotPasswordToNextStep(
 }
 
 fun incidentToNextStep(
-    navController: NavHostController,
-    model: IncidentNavigationModel
+        navController: NavHostController,
+        model: IncidentNavigationModel
 ) {
     when {
         model.back -> navController.popBackStack()
-
         model.isAph -> navController.navigate(
-            MainNavigationRoute.MedicalHistoryViewScreen.route
+                MainNavigationRoute.MedicalHistoryViewScreen.route
         )
 
         model.isStretcherRetention -> navController.navigate(
-            MainNavigationRoute.StretcherViewScreen.route
+                MainNavigationRoute.StretcherViewScreen.route
         )
     }
 }
 
 fun initSignatureToNextStep(
-    navController: NavHostController,
-    model: InitSignatureNavigationModel
+        navController: NavHostController,
+        model: InitSignatureNavigationModel
 ) {
     when {
         model.back -> navController.popBackStack()
         model.document?.isNotEmpty() == true -> navController.navigate(
-            MainNavigationRoute.SignatureScreen.route + "?$DOCUMENT=${model.document}"
+                MainNavigationRoute.SignatureScreen.route + "?$DOCUMENT=${model.document}"
         )
     }
 }
 
 fun inventoryToNextStep(
-    navController: NavHostController,
-    model: InventoryNavigationModel
+        navController: NavHostController,
+        model: InventoryNavigationModel
 ) {
     when {
         model.back -> navController.popBackStack()
         model.identifier != null -> navController.navigate(
-            MainNavigationRoute.InventoryViewScreen.route + "?$INVENTORY_TYPE=${model.identifier}"
+                MainNavigationRoute.InventoryViewScreen.route + "?$INVENTORY_TYPE=${model.identifier}"
         )
     }
 }
 
 fun inventoryViewToNextStep(
-    navController: NavHostController,
-    model: InventoryViewNavigationModel
+        navController: NavHostController,
+        model: InventoryViewNavigationModel
 ) {
     when {
         model.back -> navController.popBackStack()
@@ -206,8 +208,8 @@ fun inventoryViewToNextStep(
 }
 
 private fun loginToNextStep(
-    navController: NavHostController,
-    model: LoginNavigationModel
+        navController: NavHostController,
+        model: LoginNavigationModel
 ) = when {
     model.isWarning -> navController.navigate(AuthNavigationRoute.ChangePasswordScreen.route)
     model.isAdmin && model.requiresDeviceAuth ->
@@ -241,34 +243,34 @@ private fun loginToNextStep(
 }
 
 private fun medicalHistoryToNextStep(
-    navController: NavHostController,
-    model: MedicalHistoryNavigationModel
+        navController: NavHostController,
+        model: MedicalHistoryNavigationModel
 ) {
     when {
         model.back -> navController.popBackStack()
 
-        model.isInfoCardEvent -> navController.navigate(MainNavigationRoute.VitalSignsScreen.route)
+        model.isInfoCardEvent -> navController.navigate(AphNavigationRoute.VitalSignsScreen.route)
 
         model.isMedsSelectorEvent ->
-            navController.navigate(MainNavigationRoute.MedicineScreen.route)
+            navController.navigate(AphNavigationRoute.MedicineScreen.route)
 
         model.isSignatureEvent ->
-            navController.navigate(MainNavigationRoute.SignaturePadScreen.route)
+            navController.navigate(AphNavigationRoute.SignaturePadScreen.route)
 
-        model.showCamera -> navController.navigate(MainNavigationRoute.CameraScreen.route)
+        model.showCamera -> navController.navigate(AphNavigationRoute.CameraScreen.route)
         model.photoTaken -> with(navController) {
             popBackStack()
 
             currentBackStackEntry
-                ?.savedStateHandle
-                ?.set(PHOTO_TAKEN, true)
+                    ?.savedStateHandle
+                    ?.set(PHOTO_TAKEN, true)
         }
     }
 }
 
 private fun medicalHistoryViewToNextStep(
-    navController: NavHostController,
-    model: MedicalHistoryViewNavigationModel
+        navController: NavHostController,
+        model: MedicalHistoryViewNavigationModel
 ) {
     when {
         model.back -> navController.popBackStack()
@@ -279,38 +281,38 @@ private fun medicalHistoryViewToNextStep(
             popBackStack()
 
             currentBackStackEntry
-                ?.savedStateHandle
-                ?.set(PHOTO_TAKEN, true)
+                    ?.savedStateHandle
+                    ?.set(PHOTO_TAKEN, true)
         }
     }
 }
 
 private fun medicineToNextStep(
-    navController: NavHostController,
-    model: MedicineNavigationModel
+        navController: NavHostController,
+        model: MedicineNavigationModel
 ) {
     when {
         model.goBack -> with(navController) {
             popBackStack()
 
             currentBackStackEntry
-                ?.savedStateHandle
-                ?.set(MEDICINE, null)
+                    ?.savedStateHandle
+                    ?.set(MEDICINE, null)
         }
 
         model.values != null -> with(navController) {
             popBackStack()
 
             currentBackStackEntry
-                ?.savedStateHandle
-                ?.set(MEDICINE, model.values)
+                    ?.savedStateHandle
+                    ?.set(MEDICINE, model.values)
         }
     }
 }
 
 fun preOpViewToNextStep(
-    navController: NavHostController,
-    model: PreOpViewNavigationModel
+        navController: NavHostController,
+        model: PreOpViewNavigationModel
 ) {
     when {
         model.back -> navController.popBackStack()
@@ -318,8 +320,8 @@ fun preOpViewToNextStep(
 }
 
 private fun preOpToNextStep(
-    navController: NavHostController,
-    model: PreOpNavigationModel
+        navController: NavHostController,
+        model: PreOpNavigationModel
 ) = when {
     model.isTurnCompleteEvent -> navController.navigate(NavigationGraph.Main.route) {
         popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
@@ -329,8 +331,8 @@ private fun preOpToNextStep(
 
     model.isNewFindingEvent ->
         navController.navigate(
-            ReportNavigationRoute.AddFindingScreen.route +
-                "?${NavigationArgument.FINDING_ID}=${model.findingId}"
+                ReportNavigationRoute.AddFindingScreen.route +
+                        "?${NavigationArgument.FINDING_ID}=${model.findingId}"
         )
 
     else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
@@ -341,38 +343,38 @@ private fun preOpToNextStep(
 }
 
 private fun reportToNextStep(
-    navController: NavHostController,
-    model: ReportNavigationModel
+        navController: NavHostController,
+        model: ReportNavigationModel
 ) {
     when {
         model.goBackFromReport -> with(navController) {
             popBackStack()
 
             currentBackStackEntry
-                ?.savedStateHandle
-                ?.set(REVERT_FINDING, true)
+                    ?.savedStateHandle
+                    ?.set(REVERT_FINDING, true)
         }
 
         model.goBackFromImages -> navController.popBackStack()
         model.showCamera -> navController.navigate(ReportNavigationRoute.ReportCameraScreen.route)
         model.photoTaken -> navController.popBackStack()
         model.closeFinding && model.imagesSize > 0 -> navController.navigate(
-            "${ReportNavigationRoute.ImagesConfirmationScreen.route}/$FINDING"
+                "${ReportNavigationRoute.ImagesConfirmationScreen.route}/$FINDING"
         )
 
         model.closeFinding -> with(navController) {
             popBackStack(
-                route = AuthNavigationRoute.PreOperationalScreen.route,
-                inclusive = false
+                    route = AuthNavigationRoute.PreOperationalScreen.route,
+                    inclusive = false
             )
 
             currentBackStackEntry
-                ?.savedStateHandle
-                ?.set(NOVELTY, model.novelty)
+                    ?.savedStateHandle
+                    ?.set(NOVELTY, model.novelty)
         }
 
         model.closeReport && model.imagesSize > 0 -> navController.navigate(
-            "${ReportNavigationRoute.ImagesConfirmationScreen.route}/$REPORT"
+                "${ReportNavigationRoute.ImagesConfirmationScreen.route}/$REPORT"
         )
 
         model.closeReport ->
@@ -385,14 +387,14 @@ private fun reportToNextStep(
 }
 
 fun signatureToNextStep(
-    navController: NavHostController,
-    model: SignatureNavigationModel
+        navController: NavHostController,
+        model: SignatureNavigationModel
 ) {
     when {
         model.back -> navController.popBackStack()
 
         model.isSignatureEvent ->
-            navController.navigate(MainNavigationRoute.SignaturePadScreen.route)
+            navController.navigate(AphNavigationRoute.SignaturePadScreen.route)
 
         // FIXME: validar si no se devuelve a la pantalla de firma
         model.isSaved -> navController.navigate(NavigationGraph.Main.route)
@@ -400,8 +402,8 @@ fun signatureToNextStep(
 }
 
 private fun signaturePadToNextStep(
-    navController: NavHostController,
-    model: SignaturePadNavigationModel
+        navController: NavHostController,
+        model: SignaturePadNavigationModel
 ) {
     when {
         model.goBack -> navController.popBackStack()
@@ -410,15 +412,15 @@ private fun signaturePadToNextStep(
             popBackStack()
 
             currentBackStackEntry
-                ?.savedStateHandle
-                ?.set(SIGNATURE, model.signature)
+                    ?.savedStateHandle
+                    ?.set(SIGNATURE, model.signature)
         }
     }
 }
 
 fun stretcherRetentionToNextStep(
-    navController: NavHostController,
-    model: StretcherRetentionNavigationModel
+        navController: NavHostController,
+        model: StretcherRetentionNavigationModel
 ) {
     when {
         model.back -> navController.popBackStack()
@@ -435,24 +437,24 @@ fun stretcherRetentionViewToNextStep(
 }
 
 private fun vitalSignsToNextStep(
-    navController: NavHostController,
-    model: VitalSignsNavigationModel
+        navController: NavHostController,
+        model: VitalSignsNavigationModel
 ) {
     when {
         model.goBack -> with(navController) {
             popBackStack()
 
             currentBackStackEntry
-                ?.savedStateHandle
-                ?.set(VITAL_SIGNS, null)
+                    ?.savedStateHandle
+                    ?.set(VITAL_SIGNS, null)
         }
 
         model.values != null -> with(navController) {
             popBackStack()
 
             currentBackStackEntry
-                ?.savedStateHandle
-                ?.set(VITAL_SIGNS, model.values)
+                    ?.savedStateHandle
+                    ?.set(VITAL_SIGNS, model.values)
         }
     }
 }

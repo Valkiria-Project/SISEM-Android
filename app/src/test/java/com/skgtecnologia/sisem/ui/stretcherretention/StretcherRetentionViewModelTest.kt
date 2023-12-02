@@ -14,6 +14,7 @@ import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.stretcherretention.usecases.GetStretcherRetentionScreen
 import com.skgtecnologia.sisem.domain.stretcherretention.usecases.SaveStretcherRetention
+import com.skgtecnologia.sisem.ui.stretcherretention.create.StretcherRetentionViewModel
 import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.textfield.InputUiModel

@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.data.stretcherretention
 
 import com.skgtecnologia.sisem.commons.ID_APH
 import com.skgtecnologia.sisem.commons.emptyScreenModel
+import com.skgtecnologia.sisem.data.incident.cache.IncidentCacheDataSource
 import com.skgtecnologia.sisem.data.stretcherretention.remote.StretcherRetentionRemoteDataSource
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -14,6 +15,9 @@ import org.junit.Test
 class StretcherRetentionRepositoryImplTest {
 
     @MockK
+    private lateinit var incidentCacheDataSource: IncidentCacheDataSource
+
+    @MockK
     private lateinit var stretcherRetentionRemoteDataSource: StretcherRetentionRemoteDataSource
 
     private lateinit var stretcherRetentionRepositoryImpl: StretcherRetentionRepositoryImpl
@@ -23,6 +27,7 @@ class StretcherRetentionRepositoryImplTest {
         MockKAnnotations.init(this)
 
         stretcherRetentionRepositoryImpl = StretcherRetentionRepositoryImpl(
+            incidentCacheDataSource = incidentCacheDataSource,
             stretcherRetentionRemoteDataSource = stretcherRetentionRemoteDataSource
         )
     }
@@ -31,11 +36,13 @@ class StretcherRetentionRepositoryImplTest {
     fun `when getStretcherRetentionScreen is called`() = runTest {
         coEvery {
             stretcherRetentionRemoteDataSource.getStretcherRetentionScreen(
-                idAph = ID_APH
+                idAph = ID_APH.toString()
             )
         } returns Result.success(emptyScreenModel)
 
-        val result = stretcherRetentionRepositoryImpl.getStretcherRetentionScreen(idAph = ID_APH)
+        val result = stretcherRetentionRepositoryImpl.getStretcherRetentionScreen(
+            idAph = ID_APH.toString()
+        )
 
         Assert.assertEquals(emptyScreenModel, result)
     }

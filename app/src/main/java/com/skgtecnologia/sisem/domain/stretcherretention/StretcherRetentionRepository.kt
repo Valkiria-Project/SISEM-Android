@@ -4,6 +4,8 @@ import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 
 interface StretcherRetentionRepository {
 
+    suspend fun getPreStretcherRetentionScreen(): ScreenModel
+
     suspend fun getStretcherRetentionScreen(
         idAph: String
     ): ScreenModel

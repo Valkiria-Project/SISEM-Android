@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.stretcherretention
+package com.skgtecnologia.sisem.ui.stretcherretention.create
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
@@ -46,6 +46,7 @@ class StretcherRetentionViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch {
+            // FIXME: Update this
             getStretcherRetentionScreen.invoke(idAph = "14")
                 .onSuccess { stretcherRetentionScreen ->
                     stretcherRetentionScreen.getFormInitialValues()
