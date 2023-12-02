@@ -11,9 +11,9 @@ import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.IncidentScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.InitSignatureScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.InventoryScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.NotificationsScreen
+import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.PreStretcherRetentionScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.PreoperationalMainScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.ShiftScreen
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.StretcherRetentionScreen
 import com.skgtecnologia.sisem.ui.navigation.NavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.ReportNavigationRoute
 import com.valkiria.uicomponents.R.drawable
@@ -79,7 +79,7 @@ private fun getDrawerItems(context: Context) = listOf(
         drawable.ic_hceud
     ),
     DrawerMenuItemModel(
-        StretcherRetentionScreen,
+        PreStretcherRetentionScreen,
         context.getString(R.string.drawer_stretcher_retention),
         drawable.ic_stretcher
     )

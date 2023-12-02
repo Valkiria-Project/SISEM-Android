@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.stretcherretention
+package com.skgtecnologia.sisem.ui.stretcherretention.view
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
@@ -9,15 +9,11 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
-import com.skgtecnologia.sisem.domain.model.banner.stretcherRetentionSuccess
-import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
-import com.skgtecnologia.sisem.domain.stretcherretention.usecases.GetStretcherRetentionScreen
-import com.skgtecnologia.sisem.domain.stretcherretention.usecases.SaveStretcherRetention
+import com.skgtecnologia.sisem.domain.stretcherretention.usecases.GetStretcherRetentionViewScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
-import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -27,15 +23,14 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class StretcherRetentionViewModel @Inject constructor(
+class StretcherRetentionViewViewModel @Inject constructor(
     private val logoutCurrentUser: LogoutCurrentUser,
-    private val getStretcherRetentionScreen: GetStretcherRetentionScreen,
-    private val saveStretcherRetention: SaveStretcherRetention
+    private val getStretcherRetentionViewScreen: GetStretcherRetentionViewScreen
 ) : ViewModel() {
 
     private var job: Job? = null
 
-    var uiState by mutableStateOf(StretcherRetentionUiState())
+    var uiState by mutableStateOf(StretcherRetentionViewUiState())
         private set
 
     var chipSelectionValues = mutableStateMapOf<String, ChipSelectionItemUiModel>()
@@ -46,13 +41,11 @@ class StretcherRetentionViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch {
-            getStretcherRetentionScreen.invoke(idAph = "14")
-                .onSuccess { stretcherRetentionScreen ->
-                    stretcherRetentionScreen.getFormInitialValues()
-
+            getStretcherRetentionViewScreen.invoke(idAph = "14")
+                .onSuccess { stretcherRetentionViewScreen ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
-                            screenModel = stretcherRetentionScreen,
+                            screenModel = stretcherRetentionViewScreen,
                             isLoading = false
                         )
                     }
@@ -69,21 +62,9 @@ class StretcherRetentionViewModel @Inject constructor(
         }
     }
 
-    private fun ScreenModel.getFormInitialValues() {
-        this.body.forEach { bodyRowModel ->
-            when (bodyRowModel) {
-                is TextFieldUiModel -> fieldsValues[bodyRowModel.identifier] = InputUiModel(
-                    bodyRowModel.identifier,
-                    bodyRowModel.text
-                )
-            }
-        }
-    }
-
     fun consumeNavigationEvent() {
         uiState = uiState.copy(
             isLoading = false,
-            validateFields = false,
             navigationModel = null
         )
     }
@@ -110,43 +91,7 @@ class StretcherRetentionViewModel @Inject constructor(
 
     fun navigateBack() {
         uiState = uiState.copy(
-            successEvent = null,
-            navigationModel = StretcherRetentionNavigationModel(back = true)
+            navigationModel = StretcherRetentionViewNavigationModel(back = true)
         )
-    }
-
-    fun saveRetention() {
-        uiState = uiState.copy(
-            validateFields = true
-        )
-
-        if (fieldsValues.values.all { it.fieldValidated }) {
-            uiState = uiState.copy(
-                isLoading = true
-            )
-
-            job?.cancel()
-            job = viewModelScope.launch {
-                saveStretcherRetention.invoke(
-                    fieldsValue = fieldsValues.mapValues { it.value.updatedValue },
-                    chipSelectionValues = chipSelectionValues.mapValues { it.value.id }
-                ).onSuccess {
-                    withContext(Dispatchers.Main) {
-                        uiState = uiState.copy(
-                            isLoading = false,
-                            successEvent = stretcherRetentionSuccess().mapToUi(),
-                        )
-                    }
-                }.onFailure { throwable ->
-                    Timber.wtf(throwable, "This is a failure")
-                    withContext(Dispatchers.Main) {
-                        uiState = uiState.copy(
-                            isLoading = false,
-                            infoEvent = throwable.mapToUi()
-                        )
-                    }
-                }
-            }
-        }
     }
 }
