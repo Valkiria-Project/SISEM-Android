@@ -28,7 +28,8 @@ import com.skgtecnologia.sisem.ui.preoperational.view.PreOpViewNavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.signature.init.InitSignatureNavigationModel
 import com.skgtecnologia.sisem.ui.signature.view.SignatureNavigationModel
-import com.skgtecnologia.sisem.ui.stretcherretention.StretcherRetentionNavigationModel
+import com.skgtecnologia.sisem.ui.stretcherretention.create.StretcherRetentionNavigationModel
+import com.skgtecnologia.sisem.ui.stretcherretention.view.StretcherRetentionViewNavigationModel
 
 const val APP_STARTED = "app_started"
 const val FINDING = "finding"
@@ -78,6 +79,8 @@ fun navigateToNextStep(
     is SignaturePadNavigationModel -> signaturePadToNextStep(navController, navigationModel)
     is StretcherRetentionNavigationModel ->
         stretcherRetentionToNextStep(navController, navigationModel)
+    is StretcherRetentionViewNavigationModel ->
+        stretcherRetentionViewToNextStep(navController, navigationModel)
     is VitalSignsNavigationModel -> vitalSignsToNextStep(navController, navigationModel)
     else -> {}
 }
@@ -156,7 +159,9 @@ fun incidentToNextStep(
     when {
         model.back -> navController.popBackStack()
         model.isAph -> {}
-        model.isStretcherRetention -> {}
+        model.isStretcherRetention -> navController.navigate(
+            MainNavigationRoute.StretcherViewScreen.route
+        )
     }
 }
 
@@ -388,6 +393,15 @@ private fun signaturePadToNextStep(
 fun stretcherRetentionToNextStep(
     navController: NavHostController,
     model: StretcherRetentionNavigationModel
+) {
+    when {
+        model.back -> navController.popBackStack()
+    }
+}
+
+fun stretcherRetentionViewToNextStep(
+    navController: NavHostController,
+    model: StretcherRetentionViewNavigationModel
 ) {
     when {
         model.back -> navController.popBackStack()

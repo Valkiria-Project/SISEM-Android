@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.stretcherretention
+package com.skgtecnologia.sisem.ui.stretcherretention.create
 
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 

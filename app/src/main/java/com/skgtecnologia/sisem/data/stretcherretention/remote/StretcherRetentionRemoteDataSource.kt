@@ -13,6 +13,20 @@ class StretcherRetentionRemoteDataSource @Inject constructor(
     private val stretcherRetentionApi: StretcherRetentionApi
 ) {
 
+    suspend fun getPreStretcherRetentionScreen(
+        idIncident: String
+    ): Result<ScreenModel> = apiCall {
+        stretcherRetentionApi.getPreStretcherRetentionScreen(
+            screenBody = ScreenBody(
+                params = Params(
+                    idIncident = idIncident
+                )
+            )
+        )
+    }.mapResult {
+        it.mapToDomain()
+    }
+
     suspend fun getStretcherRetentionScreen(
         idAph: String
     ): Result<ScreenModel> = apiCall {
@@ -39,5 +53,19 @@ class StretcherRetentionRemoteDataSource @Inject constructor(
                 chipSelectionValues = chipSelectionValues
             )
         )
+    }
+
+    suspend fun getStretcherRetentionViewScreen(
+        idAph: String
+    ): Result<ScreenModel> = apiCall {
+        stretcherRetentionApi.getStretcherRetentionViewScreen(
+            screenBody = ScreenBody(
+                params = Params(
+                    idAph = idAph
+                )
+            )
+        )
+    }.mapResult {
+        it.mapToDomain()
     }
 }
