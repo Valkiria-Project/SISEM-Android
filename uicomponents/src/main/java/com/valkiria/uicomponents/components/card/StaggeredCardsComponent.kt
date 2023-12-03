@@ -75,7 +75,7 @@ private fun StaggeredCardView(
 
 @Preview
 @Composable
-private fun StaggeredCardViewPreview() {
+fun StaggeredCardViewPreview() {
     StaggeredCardView(
         staggeredCardList = StaggeredCardListUiModel(
             content = listOf(

@@ -11,6 +11,6 @@ data class StaggeredCardsUiModel(
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier
 ) : BodyRowModel {
-    
+
     override val type: BodyRowType = BodyRowType.STAGGERED_CARDS
 }
