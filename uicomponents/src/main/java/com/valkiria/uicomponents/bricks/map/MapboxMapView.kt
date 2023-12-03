@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.viewinterop.NoOpUpdate
 import androidx.core.graphics.drawable.toBitmap
+import com.mapbox.api.directions.v5.models.RouteOptions
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
@@ -38,7 +39,14 @@ import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
+import com.mapbox.navigation.base.extensions.applyDefaultNavigationOptions
+import com.mapbox.navigation.base.route.NavigationRoute
+import com.mapbox.navigation.base.route.NavigationRouterCallback
+import com.mapbox.navigation.base.route.RouterFailure
+import com.mapbox.navigation.base.route.RouterOrigin
 import com.mapbox.navigation.core.MapboxNavigation
+import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
+import com.mapbox.navigation.dropin.NavigationView
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.action.GenericUiAction.NotificationAction
 import com.valkiria.uicomponents.bricks.notification.OnNotificationHandler
@@ -50,7 +58,7 @@ import timber.log.Timber
 
 private const val MAP_ZOOM = 16.0
 
-@Suppress("LongParameterList")
+@Suppress("LongMethod", "LongParameterList")
 @Composable
 fun MapboxMapView(
     mapBoxNavigation: MapboxNavigation?,
@@ -64,7 +72,7 @@ fun MapboxMapView(
 ) {
     val context = LocalContext.current
 
-    val point = Point.fromLngLat(coordinates.first, coordinates.second)
+    val locationPoint = Point.fromLngLat(coordinates.first, coordinates.second)
     val marker = remember(context) {
         AppCompatResources.getDrawable(context, R.drawable.ic_ambulance_marker)?.toBitmap()
     }
@@ -82,10 +90,15 @@ fun MapboxMapView(
         sheetPeekHeight = if (incident != null) 140.dp else 0.dp
     ) { innerPadding ->
         Box(modifier.padding(innerPadding)) {
+            val destinationPoint = Point.fromLngLat(-74.0711485, 4.6963453)
             if (incident != null) {
-//                MapboxMapAndroidView(point, marker, modifier)
+                MapboxNavigationAndroidView(
+                    incident, locationPoint, destinationPoint, marker, modifier
+                )
             } else {
-                MapboxMapAndroidView(point, marker, modifier)
+                MapboxMapAndroidView(
+                    incident, locationPoint, destinationPoint, marker, modifier
+                )
             }
 
             IconButton(
@@ -94,7 +107,9 @@ fun MapboxMapView(
                         drawerState.open()
                     }
                 },
-                modifier = Modifier.padding(12.dp).align(Alignment.TopStart)
+                modifier = Modifier
+                    .padding(12.dp)
+                    .align(Alignment.TopStart)
             ) {
                 Icon(
                     imageVector = Outlined.Menu,
@@ -111,7 +126,9 @@ fun MapboxMapView(
                 onClick = {
                     // FIXME: Navigate to notifications screen / Drawer
                 },
-                modifier = Modifier.padding(12.dp).align(Alignment.TopEnd)
+                modifier = Modifier
+                    .padding(12.dp)
+                    .align(Alignment.TopEnd)
             ) {
                 Icon(
                     imageVector = Outlined.Notifications,
@@ -137,7 +154,9 @@ fun MapboxMapView(
 
 @Composable
 private fun MapboxMapAndroidView(
-    point: Point,
+    incident: IncidentUiModel?,
+    locationPoint: Point,
+    destinationPoint: Point,
     marker: Bitmap?,
     modifier: Modifier
 ) {
@@ -157,7 +176,7 @@ private fun MapboxMapAndroidView(
             pointAnnotationManager?.let {
                 it.deleteAll()
                 val pointAnnotationOptions = PointAnnotationOptions().apply {
-                    withPoint(point)
+                    withPoint(locationPoint)
                     marker?.let { bitmap ->
                         withIconImage(bitmap)
                     }
@@ -167,9 +186,81 @@ private fun MapboxMapAndroidView(
                 mapView.getMapboxMap().flyTo(
                     CameraOptions.Builder()
                         .zoom(MAP_ZOOM)
-                        .center(point)
+                        .center(locationPoint)
                         .build()
                 )
+            }
+            NoOpUpdate
+        },
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun MapboxNavigationAndroidView(
+    incident: IncidentUiModel?,
+    locationPoint: Point,
+    destinationPoint: Point,
+    marker: Bitmap?,
+    modifier: Modifier
+) {
+    var pointAnnotationManager: PointAnnotationManager? by remember {
+        mutableStateOf(null)
+    }
+
+    AndroidView(
+        factory = { context ->
+            NavigationView(
+                context = context,
+                accessToken = "sk.eyJ1Ijoic2lzZW0iLCJhIjoiY2xwa2l5bmxmMDB0NDJrankxeG4yZWowMSJ9.o6RJNwx7MDzeUDturbT1LA"
+            ).also { navigationView ->
+                MapboxNavigationApp.current()!!.requestRoutes(
+                    routeOptions = RouteOptions
+                        .builder()
+                        .applyDefaultNavigationOptions()
+//                        .applyLanguageAndVoiceUnitOptions(this)
+                        .coordinatesList(listOf(locationPoint, destinationPoint))
+                        .alternatives(true)
+                        .build(),
+                    callback = object : NavigationRouterCallback {
+                        override fun onCanceled(
+                            routeOptions: RouteOptions,
+                            routerOrigin: RouterOrigin
+                        ) {
+                            Timber.d("NavigationRouterCallback onCanceled")
+                        }
+
+                        override fun onFailure(
+                            reasons: List<RouterFailure>,
+                            routeOptions: RouteOptions
+                        ) {
+                            Timber.d("NavigationRouterCallback onFailure")
+                        }
+
+                        override fun onRoutesReady(
+                            routes: List<NavigationRoute>,
+                            routerOrigin: RouterOrigin
+                        ) {
+                            Timber.d("NavigationRouterCallback onRoutesReady")
+
+                            navigationView.api.routeReplayEnabled(true)
+                            navigationView.api.startActiveGuidance(routes)
+                        }
+                    }
+                )
+            }
+        },
+        update = { navigationView ->
+            pointAnnotationManager?.let {
+                it.deleteAll()
+                val pointAnnotationOptions = PointAnnotationOptions().apply {
+                    withPoint(locationPoint)
+                    marker?.let { bitmap ->
+                        withIconImage(bitmap)
+                    }
+                }
+
+                it.create(pointAnnotationOptions)
             }
             NoOpUpdate
         },

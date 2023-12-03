@@ -32,6 +32,7 @@ leakcanary-android = "2.12"
 lifecycle-runtime-ktx = "2.6.2"
 mapbox-maps = "10.14.0"
 mapbox-navigation = "2.10.1"
+mapbox-navigation-dropin = "2.17.6"
 mockk = "1.12.2"
 moshi = "1.15.0"
 navigation-compose = "2.7.4"
@@ -80,6 +81,7 @@ leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", ve
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 mapbox-maps-android = { module = "com.mapbox.maps:android", version.ref = "mapbox-maps" }
 mapbox-navigation-android = { module = "com.mapbox.navigation:android", version.ref = "mapbox-navigation" }
+mapbox-navigation-dropin = { module = "com.mapbox.navigation:ui-dropin", version.ref = "mapbox-navigation-dropin" }
 material = { module = "com.google.android.material:material", version.ref = "google-material" }
 material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
