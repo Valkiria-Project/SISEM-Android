@@ -3,6 +3,7 @@ package com.valkiria.uicomponents.components.card
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -25,7 +26,7 @@ fun StaggeredCardsComponent(
 ) {
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Fixed(2),
-        modifier = uiModel.modifier
+        modifier = uiModel.modifier.height(300.dp)
     ) {
         itemsIndexed(uiModel.cards) { _, card ->
             StaggeredCardView(
@@ -65,10 +66,12 @@ private fun StaggeredCardView(
                     style = it.label.textStyle.toTextStyle(),
                 )
 
-                Text(
-                    text = it.value.text,
-                    style = it.value.textStyle.toTextStyle(),
-                )
+                it.value?.let { value ->
+                    Text(
+                        text = value.text,
+                        style = value.textStyle.toTextStyle(),
+                    )
+                }
             }
         }
     }

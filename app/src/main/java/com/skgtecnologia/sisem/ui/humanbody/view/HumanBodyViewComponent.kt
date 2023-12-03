@@ -1,9 +1,9 @@
 package com.skgtecnologia.sisem.ui.humanbody.view
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,42 +22,39 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.components.humanbody.HumanBodyType
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
-import com.valkiria.uicomponents.components.humanbody.HumanBodyViewUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.toTextStyle
 
 private const val WOUND_CARD_MAX_WIDTH = 0.33f
+private const val MAX_WIDTH = 0.45f
 
 @Composable
 fun HumanBodyViewComponent(
-    uiModel: HumanBodyViewUiModel
+    values: Map<String, List<HumanBodyUi>>?
 ) {
     var isFront by rememberSaveable { mutableStateOf(true) }
 
     if (isFront) {
-        val wounds = uiModel.wounds?.filter { it.type.equals(HumanBodyType.FRONT.name, true) }
+        val wounds = values?.get(HumanBodyType.FRONT.name)
 
-        Row {
+        Column {
             HumanBodyFrontViewComponent(
-                modifier = Modifier
-                    .weight(1f),
                 wounds = wounds
             ) {
                 isFront = !isFront
             }
 
-            Column {
+            FlowRow(
+                modifier = Modifier
+                    .fillMaxWidth(MAX_WIDTH)
+            ) {
                 wounds?.forEach { humanBodyUi ->
-                    WoundCard(
-                        modifier = Modifier
-                            .fillMaxWidth(WOUND_CARD_MAX_WIDTH),
-                        humanBodyUi = humanBodyUi
-                    )
+                    WoundCard(humanBodyUi = humanBodyUi)
                 }
             }
         }
     } else {
-        val wounds = uiModel.wounds?.filter { it.type.equals(HumanBodyType.BACK.name, true) }
+        val wounds = values?.get(HumanBodyType.BACK.name)
 
         Row {
             HumanBodyBackViewComponent(
@@ -125,9 +122,8 @@ fun WoundCard(
 @Composable
 fun HumanBodyViewComponentPreview() {
     HumanBodyViewComponent(
-        uiModel = HumanBodyViewUiModel(
-            identifier = "1",
-            wounds = listOf(
+        values = mapOf(
+            "FRONT" to listOf(
                 HumanBodyUi(
                     type = "FRONT",
                     area = "HEAD",
@@ -138,12 +134,7 @@ fun HumanBodyViewComponentPreview() {
                     area = "RIGHT_FOREARM",
                     wounds = listOf("Herida 1", "Herida 2")
                 )
-            ),
-            visibility = true,
-            required = false,
-            section = null,
-            arrangement = Arrangement.Center,
-            modifier = Modifier
+            )
         )
     )
 }

@@ -13,6 +13,7 @@ import com.valkiria.uicomponents.components.humanbody.HumanBodyUiModel
 data class HumanBodyResponse(
     @Json(name = "identifier") val identifier: String?,
     @Json(name = "header") val header: HeaderResponse?,
+    @Json(name = "values") val values: Map<String, List<WoundResponse>>?,
     @Json(name = "wounds") val wounds: List<String>?,
     @Json(name = "burning_level") val burningLevel: List<String>?,
     @Json(name = "visibility") val visibility: Boolean?,
@@ -27,6 +28,7 @@ data class HumanBodyResponse(
     override fun mapToUi(): HumanBodyUiModel = HumanBodyUiModel(
         identifier = identifier ?: error("HumanBody identifier cannot be null"),
         header = header?.mapToUi() ?: error("HumanBody header cannot be null"),
+        values = values?.mapValues { (_, value) -> value.map { it.mapToUi() } },
         wounds = wounds ?: error("HumanBody wounds cannot be null"),
         burningLevel = burningLevel ?: error("HumanBody burningLevel cannot be null"),
         visibility = visibility ?: true,
