@@ -51,3 +51,16 @@ fun addReportTopic(
         bottom = 0.dp
     )
 )
+
+fun emptyStretcherRetentionMessage(): LabelUiModel = LabelUiModel(
+    identifier = "EMPTY_STRETCHER_RETENTION_DESCRIPTION",
+    text = "No hay incidentes aún para el turno actual",
+    textStyle = TextStyle.HEADLINE_5,
+    arrangement = Arrangement.Start,
+    modifier = Modifier.padding(
+        start = 20.dp,
+        top = 20.dp,
+        end = 20.dp,
+        bottom = 0.dp
+    )
+)

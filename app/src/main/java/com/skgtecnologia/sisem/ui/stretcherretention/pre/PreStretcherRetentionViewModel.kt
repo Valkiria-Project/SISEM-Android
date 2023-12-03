@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.ui.stretcherretention.pre
 
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -9,15 +8,13 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
-import com.skgtecnologia.sisem.domain.model.banner.stretcherRetentionSuccess
+import com.skgtecnologia.sisem.domain.model.header.emptyStretcherRetentionHeader
+import com.skgtecnologia.sisem.domain.model.label.emptyStretcherRetentionMessage
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import com.skgtecnologia.sisem.domain.stretcherretention.errors.StretchRetentionErrors
 import com.skgtecnologia.sisem.domain.stretcherretention.usecases.GetPreStretcherRetentionScreen
-import com.skgtecnologia.sisem.domain.stretcherretention.usecases.SaveStretcherRetention
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
-import com.valkiria.uicomponents.components.textfield.InputUiModel
-import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -29,17 +26,13 @@ import javax.inject.Inject
 @HiltViewModel
 class PreStretcherRetentionViewModel @Inject constructor(
     private val logoutCurrentUser: LogoutCurrentUser,
-    private val getPreStretcherRetentionScreen: GetPreStretcherRetentionScreen,
-    private val saveStretcherRetention: SaveStretcherRetention
+    private val getPreStretcherRetentionScreen: GetPreStretcherRetentionScreen
 ) : ViewModel() {
 
     private var job: Job? = null
 
     var uiState by mutableStateOf(PreStretcherRetentionUiState())
         private set
-
-    var chipSelectionValues = mutableStateMapOf<String, ChipSelectionItemUiModel>()
-    var fieldsValues = mutableStateMapOf<String, InputUiModel>()
 
     init {
         uiState = uiState.copy(isLoading = true)
@@ -48,7 +41,6 @@ class PreStretcherRetentionViewModel @Inject constructor(
         job = viewModelScope.launch {
             getPreStretcherRetentionScreen.invoke()
                 .onSuccess { stretcherRetentionScreen ->
-                    stretcherRetentionScreen.getFormInitialValues()
 
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
@@ -58,32 +50,41 @@ class PreStretcherRetentionViewModel @Inject constructor(
                     }
                 }
                 .onFailure { throwable ->
-                    Timber.wtf(throwable, "This is a failure")
-                    withContext(Dispatchers.Main) {
-                        uiState = uiState.copy(
-                            isLoading = false,
-                            infoEvent = throwable.mapToUi()
-                        )
+                    Timber.wtf(throwable, "This is a failure ${throwable.localizedMessage}")
+
+                    if (throwable is StretchRetentionErrors.NoIncidentId) {
+                        withContext(Dispatchers.Main) {
+                            uiState = uiState.copy(
+                                screenModel = ScreenModel(
+                                    header = emptyStretcherRetentionHeader(),
+                                    body = listOf(emptyStretcherRetentionMessage())
+                                ),
+                                isLoading = false
+                            )
+                        }
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            uiState = uiState.copy(
+                                isLoading = false,
+                                infoEvent = throwable.mapToUi()
+                            )
+                        }
                     }
                 }
         }
     }
 
-    private fun ScreenModel.getFormInitialValues() {
-        this.body.forEach { bodyRowModel ->
-            when (bodyRowModel) {
-                is TextFieldUiModel -> fieldsValues[bodyRowModel.identifier] = InputUiModel(
-                    bodyRowModel.identifier,
-                    bodyRowModel.text
-                )
-            }
-        }
+    fun navigateToStretcherView(patient: String) {
+        uiState = uiState.copy(
+            navigationModel = PreStretcherRetentionNavigationModel(
+                patientAph = patient
+            )
+        )
     }
 
     fun consumeNavigationEvent() {
         uiState = uiState.copy(
             isLoading = false,
-            validateFields = false,
             navigationModel = null
         )
     }
@@ -110,43 +111,7 @@ class PreStretcherRetentionViewModel @Inject constructor(
 
     fun navigateBack() {
         uiState = uiState.copy(
-            successEvent = null,
             navigationModel = PreStretcherRetentionNavigationModel(back = true)
         )
-    }
-
-    fun saveRetention() {
-        uiState = uiState.copy(
-            validateFields = true
-        )
-
-        if (fieldsValues.values.all { it.fieldValidated }) {
-            uiState = uiState.copy(
-                isLoading = true
-            )
-
-            job?.cancel()
-            job = viewModelScope.launch {
-                saveStretcherRetention.invoke(
-                    fieldsValue = fieldsValues.mapValues { it.value.updatedValue },
-                    chipSelectionValues = chipSelectionValues.mapValues { it.value.id }
-                ).onSuccess {
-                    withContext(Dispatchers.Main) {
-                        uiState = uiState.copy(
-                            isLoading = false,
-                            successEvent = stretcherRetentionSuccess().mapToUi(),
-                        )
-                    }
-                }.onFailure { throwable ->
-                    Timber.wtf(throwable, "This is a failure")
-                    withContext(Dispatchers.Main) {
-                        uiState = uiState.copy(
-                            isLoading = false,
-                            infoEvent = throwable.mapToUi()
-                        )
-                    }
-                }
-            }
-        }
     }
 }

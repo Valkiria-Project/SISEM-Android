@@ -83,4 +83,18 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
             )
         )
     }
+
+    suspend fun getMedicalHistoryViewScreen(code: String, idAph: String): Result<ScreenModel> =
+        apiCall {
+            medicalHistoryApi.getMedicalHistoryViewScreen(
+                screenBody = ScreenBody(
+                    params = Params(
+                        code = code,
+                        idAph = idAph
+                    )
+                )
+            )
+        }.mapResult {
+            it.mapToDomain()
+        }
 }

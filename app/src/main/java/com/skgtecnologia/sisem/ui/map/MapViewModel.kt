@@ -9,14 +9,15 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.skgtecnologia.sisem.domain.incident.usecases.ObserveActiveIncident
 import com.skgtecnologia.sisem.ui.commons.extensions.locationFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltViewModel
 class MapViewModel @Inject constructor(
@@ -30,6 +31,7 @@ class MapViewModel @Inject constructor(
     init {
         observeActiveIncident.invoke()
             .flowOn(Dispatchers.IO)
+            .filterNotNull()
             .onEach {
                 Timber.d("Observed incident with id ${it?.incident?.id}")
                 uiState = uiState.copy(

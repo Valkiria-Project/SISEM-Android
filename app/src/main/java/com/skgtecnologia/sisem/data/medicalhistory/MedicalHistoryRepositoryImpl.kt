@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.data.medicalhistory
 
+import com.skgtecnologia.sisem.data.auth.cache.AuthCacheDataSource
 import com.skgtecnologia.sisem.data.medicalhistory.remote.MedicalHistoryRemoteDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.domain.medicalhistory.MedicalHistoryRepository
@@ -9,6 +10,7 @@ import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class MedicalHistoryRepositoryImpl @Inject constructor(
+    private val authCacheDataSource: AuthCacheDataSource,
     private val medicalHistoryRemoteDataSource: MedicalHistoryRemoteDataSource,
     private val operationCacheDataSource: OperationCacheDataSource
 ) : MedicalHistoryRepository {
@@ -40,8 +42,7 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
         vitalSigns: Map<String, Map<String, String>>,
         infoCardButtonValues: List<Map<String, String>>
     ) = medicalHistoryRemoteDataSource.sendMedicalHistory(
-        // FIXME: authCacheDataSource.observeAccessToken().first()?.turn?.id.orEmpty(),
-        idTurn = "1",
+        idTurn = authCacheDataSource.observeAccessToken().first()?.turn?.id.toString(),
         idAph = idAph,
         humanBodyValues = humanBodyValues,
         segmentedValues = segmentedValues,
@@ -55,4 +56,10 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
         vitalSigns = vitalSigns,
         infoCardButtonValues = infoCardButtonValues
     ).getOrThrow()
+
+    override suspend fun getMedicalHistoryViewScreen(idAph: String): ScreenModel =
+        medicalHistoryRemoteDataSource.getMedicalHistoryViewScreen(
+            code = operationCacheDataSource.observeOperationConfig().first()?.vehicleCode.orEmpty(),
+            idAph = idAph
+        ).getOrThrow()
 }

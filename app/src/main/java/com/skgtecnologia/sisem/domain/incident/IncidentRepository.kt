@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface IncidentRepository {
 
-    fun observeActiveIncident(): Flow<IncidentUiModel>
+    fun observeActiveIncident(): Flow<IncidentUiModel?>
 
     suspend fun getIncidentScreen(): ScreenModel
 }
