@@ -24,7 +24,8 @@ fun StaggeredCardsComponent(
     uiModel: StaggeredCardsUiModel
 ) {
     LazyVerticalStaggeredGrid(
-        columns = StaggeredGridCells.Fixed(2)
+        columns = StaggeredGridCells.Fixed(2),
+        modifier = uiModel.modifier
     ) {
         itemsIndexed(uiModel.cards) { _, card ->
             StaggeredCardView(
