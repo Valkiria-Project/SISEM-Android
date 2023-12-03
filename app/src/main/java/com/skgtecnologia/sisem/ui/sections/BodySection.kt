@@ -86,6 +86,8 @@ import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.media.MediaActionsComponent
 import com.valkiria.uicomponents.components.media.MediaActionsUiModel
 import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
+import com.valkiria.uicomponents.components.obstetrician.ObstetricianDataComponent
+import com.valkiria.uicomponents.components.obstetrician.ObstetricianDataUiModel
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
@@ -424,6 +426,10 @@ private fun LazyListScope.handleBodyRows(
                         onAction(GenericUiAction.MedsSelectorAction(identifier = id))
                     }
                 }
+            }
+
+            is ObstetricianDataUiModel -> item(key = model.identifier) {
+                ObstetricianDataComponent(uiModel = model)
             }
 
             is PasswordTextFieldUiModel -> if (model.visibility) {

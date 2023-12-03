@@ -26,6 +26,7 @@ import com.skgtecnologia.sisem.data.remote.model.components.inventorysearch.Inve
 import com.skgtecnologia.sisem.data.remote.model.components.label.LabelResponse
 import com.skgtecnologia.sisem.data.remote.model.components.media.MediaActionsResponse
 import com.skgtecnologia.sisem.data.remote.model.components.medsselector.MedsSelectorResponse
+import com.skgtecnologia.sisem.data.remote.model.components.obstetrician.ObstetricianDataResponse
 import com.skgtecnologia.sisem.data.remote.model.components.richlabel.RichLabelResponse
 import com.skgtecnologia.sisem.data.remote.model.components.segmentedswitch.SegmentedSwitchResponse
 import com.skgtecnologia.sisem.data.remote.model.components.signature.CrewMemberSignatureResponse
@@ -163,6 +164,9 @@ object CoreNetworkModule {
         ).withSubtype(
             MediaActionsResponse::class.java,
             BodyRowType.MEDIA_ACTIONS.name
+        ).withSubtype(
+            ObstetricianDataResponse::class.java,
+            BodyRowType.OBSTETRICIAN_DATA.name
         ).withSubtype(
             PasswordTextFieldResponse::class.java,
             BodyRowType.PASSWORD_TEXT_FIELD.name
