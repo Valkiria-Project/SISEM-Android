@@ -12,6 +12,7 @@ import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonRe
 import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonSectionResponse
 import com.skgtecnologia.sisem.data.remote.model.components.card.InfoCardResponse
 import com.skgtecnologia.sisem.data.remote.model.components.card.SimpleCardResponse
+import com.skgtecnologia.sisem.data.remote.model.components.card.StaggeredCardsResponse
 import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipOptionsResponse
 import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipResponse
 import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipSelectionResponse
@@ -180,6 +181,9 @@ object CoreNetworkModule {
         ).withSubtype(
             SliderResponse::class.java,
             BodyRowType.SLIDER.name
+        ).withSubtype(
+            StaggeredCardsResponse::class.java,
+            BodyRowType.STAGGERED_CARDS.name
         ).withSubtype(
             StepperResponse::class.java,
             BodyRowType.STEPPER.name
