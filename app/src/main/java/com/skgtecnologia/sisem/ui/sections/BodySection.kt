@@ -104,6 +104,8 @@ import com.valkiria.uicomponents.components.textfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.textfield.PasswordTextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.components.timeline.TimelineComponent
+import com.valkiria.uicomponents.components.timeline.TimelineUiModel
 import com.valkiria.uicomponents.components.timepicker.TimePickerComponent
 import com.valkiria.uicomponents.components.timepicker.TimePickerUiModel
 import kotlinx.coroutines.CoroutineScope
@@ -486,6 +488,10 @@ private fun LazyListScope.handleBodyRows(
                 item(key = model.identifier) {
                     HandleTextFieldRows(model, validateFields, onAction)
                 }
+            }
+
+            is TimelineUiModel -> item(key = model.identifier) {
+                TimelineComponent(uiModel = model)
             }
 
             is TimePickerUiModel -> if (model.visibility) {

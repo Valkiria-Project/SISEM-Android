@@ -32,5 +32,6 @@ enum class BodyRowType {
     STEPPER,
     TERMS_AND_CONDITIONS,
     TEXT_FIELD,
+    TIMELINE,
     TIME_PICKER
 }

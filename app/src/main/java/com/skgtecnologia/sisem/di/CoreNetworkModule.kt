@@ -36,6 +36,7 @@ import com.skgtecnologia.sisem.data.remote.model.components.termsandconditions.T
 import com.skgtecnologia.sisem.data.remote.model.components.textfield.PasswordTextFieldResponse
 import com.skgtecnologia.sisem.data.remote.model.components.textfield.TextFieldResponse
 import com.skgtecnologia.sisem.data.remote.model.components.time.TimePickerResponse
+import com.skgtecnologia.sisem.data.remote.model.components.timeline.TimelineResponse
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.EnumJsonAdapter
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
@@ -189,6 +190,9 @@ object CoreNetworkModule {
         ).withSubtype(
             TextFieldResponse::class.java,
             BodyRowType.TEXT_FIELD.name
+        ).withSubtype(
+            TimelineResponse::class.java,
+            BodyRowType.TIMELINE.name
         ).withSubtype(
             TimePickerResponse::class.java,
             BodyRowType.TIME_PICKER.name
