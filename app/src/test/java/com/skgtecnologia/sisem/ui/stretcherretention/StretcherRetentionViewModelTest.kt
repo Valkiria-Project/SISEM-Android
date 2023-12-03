@@ -4,7 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.SavedStateHandle
 import com.skgtecnologia.sisem.commons.ANDROID_ID
+import com.skgtecnologia.sisem.commons.ID_APH
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.emptyScreenModel
@@ -14,6 +16,7 @@ import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.stretcherretention.usecases.GetStretcherRetentionScreen
 import com.skgtecnologia.sisem.domain.stretcherretention.usecases.SaveStretcherRetention
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.skgtecnologia.sisem.ui.stretcherretention.create.StretcherRetentionViewModel
 import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
@@ -48,6 +51,10 @@ class StretcherRetentionViewModelTest {
     @MockK
     private lateinit var saveStretcherRetention: SaveStretcherRetention
 
+    private val savedStateHandle = SavedStateHandle(
+        mapOf(NavigationArgument.ID_APH to ID_APH)
+    )
+
     private lateinit var viewModel: StretcherRetentionViewModel
 
     @Before
@@ -77,6 +84,7 @@ class StretcherRetentionViewModelTest {
         )
 
         viewModel = StretcherRetentionViewModel(
+            savedStateHandle,
             logoutCurrentUser,
             getStretcherRetentionScreen,
             saveStretcherRetention
@@ -92,6 +100,7 @@ class StretcherRetentionViewModelTest {
         )
 
         viewModel = StretcherRetentionViewModel(
+            savedStateHandle,
             logoutCurrentUser,
             getStretcherRetentionScreen,
             saveStretcherRetention
@@ -107,6 +116,7 @@ class StretcherRetentionViewModelTest {
         )
 
         viewModel = StretcherRetentionViewModel(
+            savedStateHandle,
             logoutCurrentUser,
             getStretcherRetentionScreen,
             saveStretcherRetention
@@ -127,6 +137,7 @@ class StretcherRetentionViewModelTest {
         coEvery { logoutCurrentUser.invoke() } returns Result.success("")
 
         viewModel = StretcherRetentionViewModel(
+            savedStateHandle,
             logoutCurrentUser,
             getStretcherRetentionScreen,
             saveStretcherRetention
@@ -144,6 +155,7 @@ class StretcherRetentionViewModelTest {
         )
 
         viewModel = StretcherRetentionViewModel(
+            savedStateHandle,
             logoutCurrentUser,
             getStretcherRetentionScreen,
             saveStretcherRetention
@@ -163,6 +175,7 @@ class StretcherRetentionViewModelTest {
         coEvery { saveStretcherRetention.invoke(any(), any()) } returns Result.success(Unit)
 
         viewModel = StretcherRetentionViewModel(
+            savedStateHandle,
             logoutCurrentUser,
             getStretcherRetentionScreen,
             saveStretcherRetention
@@ -184,6 +197,7 @@ class StretcherRetentionViewModelTest {
         coEvery { saveStretcherRetention.invoke(any(), any()) } returns Result.failure(Throwable())
 
         viewModel = StretcherRetentionViewModel(
+            savedStateHandle,
             logoutCurrentUser,
             getStretcherRetentionScreen,
             saveStretcherRetention
