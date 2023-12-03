@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.stretcherretention.pre
+package com.skgtecnologia.sisem.ui.medicalhistory.view
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -17,15 +17,17 @@ import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
+import com.valkiria.uicomponents.components.media.MediaAction
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @Composable
-fun PreStretcherRetentionScreen(
+fun MedicalHistoryViewScreen(
     modifier: Modifier = Modifier,
-    onNavigation: (preStretcherRetentionNavigationModel: NavigationModel?) -> Unit
+    photoTaken: Boolean = false,
+    onNavigation: (stretcherRetentionViewNavigationModel: NavigationModel?) -> Unit
 ) {
-    val viewModel = hiltViewModel<PreStretcherRetentionViewModel>()
+    val viewModel = hiltViewModel<MedicalHistoryViewViewModel>()
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState) {
@@ -35,6 +37,14 @@ fun PreStretcherRetentionScreen(
                     viewModel.consumeNavigationEvent()
                     onNavigation(uiState.navigationModel)
                 }
+            }
+        }
+    }
+
+    LaunchedEffect(photoTaken) {
+        launch {
+            if (photoTaken) {
+                viewModel.updateMediaActions()
             }
         }
     }
@@ -73,20 +83,37 @@ fun PreStretcherRetentionScreen(
         }
     }
 
-    OnBannerHandler(uiModel = uiState.infoEvent) { uiAction ->
+    OnBannerHandler(uiModel = uiState.infoEvent) {
+        // FIXME: navigate to send email ?
+    }
+
+    OnBannerHandler(uiModel = uiState.errorEvent) { uiAction ->
         viewModel.handleEvent(uiAction)
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)
 }
 
-private fun handleAction(
-    uiAction: UiAction,
-    viewModel: PreStretcherRetentionViewModel
-) {
+private fun handleAction(uiAction: UiAction, viewModel: MedicalHistoryViewViewModel) {
     when (uiAction) {
-        is GenericUiAction.SimpleCardAction ->
-            viewModel.navigateToStretcherView(uiAction.identifier)
+        is GenericUiAction.InputAction -> {}
+
+        is GenericUiAction.MediaItemAction -> when (uiAction.mediaAction) {
+            MediaAction.Camera -> viewModel.showCamera()
+            is MediaAction.MediaFile -> viewModel.updateMediaActions(
+                selectedMedia = (uiAction.mediaAction as MediaAction.MediaFile).uris,
+            )
+
+            is MediaAction.Gallery -> viewModel.updateMediaActions(
+                selectedMedia = (uiAction.mediaAction as MediaAction.Gallery).uris,
+            )
+
+            is MediaAction.RemoveFile -> viewModel.removeMediaActionsImage(
+                (uiAction.mediaAction as MediaAction.RemoveFile).uri
+            )
+        }
+
+        is GenericUiAction.StepperAction -> viewModel.sendMedicalHistoryView()
 
         else -> Timber.d("no-op")
     }

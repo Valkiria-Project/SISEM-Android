@@ -20,4 +20,7 @@ interface MedicalHistoryApi {
 
     @POST("aph")
     suspend fun sendMedicalHistory(@Body medicalHistoryBody: MedicalHistoryBody): Response<Unit>
+
+    @POST("screen/aph-view")
+    suspend fun getMedicalHistoryViewScreen(@Body screenBody: ScreenBody): Response<ScreenResponse>
 }

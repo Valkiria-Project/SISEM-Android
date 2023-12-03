@@ -13,6 +13,7 @@ import com.skgtecnologia.sisem.ui.login.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadNavigationModel
+import com.skgtecnologia.sisem.ui.medicalhistory.view.MedicalHistoryViewNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.DOCUMENT
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.INVENTORY_TYPE
@@ -29,6 +30,7 @@ import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.signature.init.InitSignatureNavigationModel
 import com.skgtecnologia.sisem.ui.signature.view.SignatureNavigationModel
 import com.skgtecnologia.sisem.ui.stretcherretention.create.StretcherRetentionNavigationModel
+import com.skgtecnologia.sisem.ui.stretcherretention.pre.PreStretcherRetentionNavigationModel
 import com.skgtecnologia.sisem.ui.stretcherretention.view.StretcherRetentionViewNavigationModel
 
 const val APP_STARTED = "app_started"
@@ -71,16 +73,24 @@ fun navigateToNextStep(
     is InventoryViewNavigationModel -> inventoryViewToNextStep(navController, navigationModel)
     is LoginNavigationModel -> loginToNextStep(navController, navigationModel)
     is MedicalHistoryNavigationModel -> medicalHistoryToNextStep(navController, navigationModel)
+    is MedicalHistoryViewNavigationModel ->
+        medicalHistoryViewToNextStep(navController, navigationModel)
+
     is MedicineNavigationModel -> medicineToNextStep(navController, navigationModel)
     is PreOpViewNavigationModel -> preOpViewToNextStep(navController, navigationModel)
     is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
     is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
     is SignatureNavigationModel -> signatureToNextStep(navController, navigationModel)
     is SignaturePadNavigationModel -> signaturePadToNextStep(navController, navigationModel)
+    is PreStretcherRetentionNavigationModel ->
+        preStretcherRetentionToNextStep(navController, navigationModel)
+
     is StretcherRetentionNavigationModel ->
         stretcherRetentionToNextStep(navController, navigationModel)
+
     is StretcherRetentionViewNavigationModel ->
         stretcherRetentionViewToNextStep(navController, navigationModel)
+
     is VitalSignsNavigationModel -> vitalSignsToNextStep(navController, navigationModel)
     else -> {}
 }
@@ -158,7 +168,10 @@ fun incidentToNextStep(
 ) {
     when {
         model.back -> navController.popBackStack()
-        model.isAph -> {}
+        model.patientAph != null -> navController.navigate(
+            AphNavigationRoute.MedicalHistoryViewScreen.route + "/${model.patientAph}"
+        )
+
         model.isStretcherRetention -> navController.navigate(
             MainNavigationRoute.StretcherViewScreen.route
         )
@@ -249,6 +262,25 @@ private fun medicalHistoryToNextStep(
             navController.navigate(AphNavigationRoute.SignaturePadScreen.route)
 
         model.showCamera -> navController.navigate(AphNavigationRoute.CameraScreen.route)
+        model.photoTaken -> with(navController) {
+            popBackStack()
+
+            currentBackStackEntry
+                ?.savedStateHandle
+                ?.set(PHOTO_TAKEN, true)
+        }
+    }
+}
+
+private fun medicalHistoryViewToNextStep(
+    navController: NavHostController,
+    model: MedicalHistoryViewNavigationModel
+) {
+    when {
+        model.back -> navController.popBackStack()
+
+        model.showCamera -> navController.navigate(AphNavigationRoute.CameraScreen.route)
+
         model.photoTaken -> with(navController) {
             popBackStack()
 
@@ -387,6 +419,19 @@ private fun signaturePadToNextStep(
                 ?.savedStateHandle
                 ?.set(SIGNATURE, model.signature)
         }
+    }
+}
+
+fun preStretcherRetentionToNextStep(
+    navController: NavHostController,
+    model: PreStretcherRetentionNavigationModel
+) {
+    when {
+        model.back -> navController.popBackStack()
+
+        model.patientAph != null -> navController.navigate(
+            MainNavigationRoute.StretcherRetentionScreen.route + "/${model.patientAph}"
+        )
     }
 }
 
