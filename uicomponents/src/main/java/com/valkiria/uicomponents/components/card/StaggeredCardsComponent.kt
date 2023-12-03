@@ -65,10 +65,12 @@ private fun StaggeredCardView(
                     style = it.label.textStyle.toTextStyle(),
                 )
 
-                Text(
-                    text = it.value.text,
-                    style = it.value.textStyle.toTextStyle(),
-                )
+                it.value?.let { value ->
+                    Text(
+                        text = value.text,
+                        style = value.textStyle.toTextStyle(),
+                    )
+                }
             }
         }
     }

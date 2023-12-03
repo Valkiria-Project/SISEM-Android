@@ -101,6 +101,7 @@ private fun ObstetricianDataView(
     }
 }
 
+@Suppress("LongMethod")
 @Preview
 @Composable
 fun ObstetricianDataComponentPreview() {

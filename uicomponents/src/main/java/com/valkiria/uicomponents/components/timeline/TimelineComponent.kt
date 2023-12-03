@@ -27,17 +27,12 @@ fun TimelineComponent(
     Column(
         modifier = uiModel.modifier
     ) {
-        uiModel.items.forEachIndexed { index, timelineItem ->
+        uiModel.items.forEach { timelineItem ->
             TimelineNode(
-                timelineItem = timelineItem,
-                position = when (index) {
-                    0 -> TimelinePosition.FIRST
-                    uiModel.items.size -1 -> TimelinePosition.LAST
-                    else -> TimelinePosition.MIDDLE
-                }
-            ) {
+                timelineItem = timelineItem
+            ) { modifier ->
                 DetailInfoView(
-                    modifier = Modifier,
+                    modifier = modifier,
                     timelineItem = timelineItem
                 )
             }
@@ -48,7 +43,6 @@ fun TimelineComponent(
 @Composable
 private fun TimelineNode(
     timelineItem: TimelineItemUiModel,
-    position: TimelinePosition,
     content: @Composable BoxScope.(modifier: Modifier) -> Unit
 ) {
     Box(
