@@ -14,5 +14,5 @@ data class StaggeredCardResponse(
 
 fun StaggeredCardResponse.mapToUi(): StaggeredCardUiModel = StaggeredCardUiModel(
     label = label?.mapToUi() ?: error("StaggeredCard label cannot be null"),
-    value = value?.mapToUi() ?: error("StaggeredCard value cannot be null")
+    value = value?.mapToUi()
 )

@@ -9,6 +9,7 @@ import com.valkiria.uicomponents.components.header.HeaderUiModel
 data class HumanBodyUiModel(
     override val identifier: String,
     val header: HeaderUiModel,
+    val values: Map<String, List<HumanBodyUi>>?,
     val wounds: List<String>,
     val burningLevel: List<String>,
     val visibility: Boolean = true,

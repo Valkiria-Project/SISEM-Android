@@ -6,7 +6,6 @@ import com.skgtecnologia.sisem.data.remote.adapters.KeyboardOptionsAdapter
 import com.skgtecnologia.sisem.data.remote.adapters.ModifierAdapter
 import com.skgtecnologia.sisem.data.remote.model.components.BodyRowResponse
 import com.skgtecnologia.sisem.data.remote.model.components.body.HumanBodyResponse
-import com.skgtecnologia.sisem.data.remote.model.components.body.HumanBodyViewResponse
 import com.skgtecnologia.sisem.data.remote.model.components.button.ButtonResponse
 import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonResponse
 import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonSectionResponse
@@ -27,6 +26,7 @@ import com.skgtecnologia.sisem.data.remote.model.components.inventorysearch.Inve
 import com.skgtecnologia.sisem.data.remote.model.components.label.LabelResponse
 import com.skgtecnologia.sisem.data.remote.model.components.media.MediaActionsResponse
 import com.skgtecnologia.sisem.data.remote.model.components.medsselector.MedsSelectorResponse
+import com.skgtecnologia.sisem.data.remote.model.components.obstetrician.ObstetricianDataResponse
 import com.skgtecnologia.sisem.data.remote.model.components.richlabel.RichLabelResponse
 import com.skgtecnologia.sisem.data.remote.model.components.segmentedswitch.SegmentedSwitchResponse
 import com.skgtecnologia.sisem.data.remote.model.components.signature.CrewMemberSignatureResponse
@@ -37,6 +37,7 @@ import com.skgtecnologia.sisem.data.remote.model.components.termsandconditions.T
 import com.skgtecnologia.sisem.data.remote.model.components.textfield.PasswordTextFieldResponse
 import com.skgtecnologia.sisem.data.remote.model.components.textfield.TextFieldResponse
 import com.skgtecnologia.sisem.data.remote.model.components.time.TimePickerResponse
+import com.skgtecnologia.sisem.data.remote.model.components.timeline.TimelineResponse
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.EnumJsonAdapter
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
@@ -52,8 +53,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 import okhttp3.logging.HttpLoggingInterceptor
+import javax.inject.Singleton
 
 const val CLIENT_TIMEOUT_DEFAULTS = 15_000L
 
@@ -137,9 +138,6 @@ object CoreNetworkModule {
             HumanBodyResponse::class.java,
             BodyRowType.HUMAN_BODY.name
         ).withSubtype(
-            HumanBodyViewResponse::class.java,
-            BodyRowType.HUMAN_BODY_VIEW.name
-        ).withSubtype(
             ImageButtonResponse::class.java,
             BodyRowType.IMAGE_BUTTON.name
         ).withSubtype(
@@ -163,6 +161,9 @@ object CoreNetworkModule {
         ).withSubtype(
             MediaActionsResponse::class.java,
             BodyRowType.MEDIA_ACTIONS.name
+        ).withSubtype(
+            ObstetricianDataResponse::class.java,
+            BodyRowType.OBSTETRICIAN_DATA.name
         ).withSubtype(
             PasswordTextFieldResponse::class.java,
             BodyRowType.PASSWORD_TEXT_FIELD.name
@@ -193,6 +194,9 @@ object CoreNetworkModule {
         ).withSubtype(
             TextFieldResponse::class.java,
             BodyRowType.TEXT_FIELD.name
+        ).withSubtype(
+            TimelineResponse::class.java,
+            BodyRowType.TIMELINE.name
         ).withSubtype(
             TimePickerResponse::class.java,
             BodyRowType.TIME_PICKER.name

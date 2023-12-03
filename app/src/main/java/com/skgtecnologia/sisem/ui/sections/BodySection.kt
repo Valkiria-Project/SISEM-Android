@@ -32,7 +32,6 @@ import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
 import com.skgtecnologia.sisem.ui.dropdown.DropDownComponent
 import com.skgtecnologia.sisem.ui.humanbody.HumanBodyComponent
-import com.skgtecnologia.sisem.ui.humanbody.view.HumanBodyViewComponent
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedsSelectorComponent
 import com.valkiria.uicomponents.action.AddReportUiAction
 import com.valkiria.uicomponents.action.AuthCardsUiAction
@@ -78,7 +77,6 @@ import com.valkiria.uicomponents.components.footer.FooterBodyUiModel
 import com.valkiria.uicomponents.components.footer.mapToSection
 import com.valkiria.uicomponents.components.header.HeaderUiModel
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUiModel
-import com.valkiria.uicomponents.components.humanbody.HumanBodyViewUiModel
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckComponent
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
 import com.valkiria.uicomponents.components.inventorysearch.InventorySearchComponent
@@ -88,6 +86,8 @@ import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.media.MediaActionsComponent
 import com.valkiria.uicomponents.components.media.MediaActionsUiModel
 import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
+import com.valkiria.uicomponents.components.obstetrician.ObstetricianDataComponent
+import com.valkiria.uicomponents.components.obstetrician.ObstetricianDataUiModel
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
 import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
@@ -106,6 +106,8 @@ import com.valkiria.uicomponents.components.textfield.PasswordTextFieldComponent
 import com.valkiria.uicomponents.components.textfield.PasswordTextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.components.timeline.TimelineComponent
+import com.valkiria.uicomponents.components.timeline.TimelineUiModel
 import com.valkiria.uicomponents.components.timepicker.TimePickerComponent
 import com.valkiria.uicomponents.components.timepicker.TimePickerUiModel
 import kotlinx.coroutines.CoroutineScope
@@ -328,12 +330,6 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
-            is HumanBodyViewUiModel -> if (model.visibility) {
-                item(key = model.identifier) {
-                    HumanBodyViewComponent(model)
-                }
-            }
-
             is ImageButtonSectionUiModel -> if (model.visibility) {
                 item(key = model.identifier) {
                     ImageButtonSectionComponent(model) { id, itemId ->
@@ -426,6 +422,10 @@ private fun LazyListScope.handleBodyRows(
                 }
             }
 
+            is ObstetricianDataUiModel -> item(key = model.identifier) {
+                ObstetricianDataComponent(uiModel = model)
+            }
+
             is PasswordTextFieldUiModel -> if (model.visibility) {
                 item(key = model.identifier) {
                     HandlePasswordTextFieldRows(model, validateFields, onAction)
@@ -492,6 +492,10 @@ private fun LazyListScope.handleBodyRows(
                 item(key = model.identifier) {
                     HandleTextFieldRows(model, validateFields, onAction)
                 }
+            }
+
+            is TimelineUiModel -> item(key = model.identifier) {
+                TimelineComponent(uiModel = model)
             }
 
             is TimePickerUiModel -> if (model.visibility) {

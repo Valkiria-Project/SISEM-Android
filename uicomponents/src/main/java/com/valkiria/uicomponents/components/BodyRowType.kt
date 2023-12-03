@@ -23,6 +23,7 @@ enum class BodyRowType {
     INVENTORY_SEARCH,
     LABEL,
     MEDIA_ACTIONS,
+    OBSTETRICIAN_DATA,
     PASSWORD_TEXT_FIELD,
     RICH_LABEL,
     SEGMENTED_SWITCH,
@@ -33,5 +34,6 @@ enum class BodyRowType {
     STEPPER,
     TERMS_AND_CONDITIONS,
     TEXT_FIELD,
+    TIMELINE,
     TIME_PICKER
 }
