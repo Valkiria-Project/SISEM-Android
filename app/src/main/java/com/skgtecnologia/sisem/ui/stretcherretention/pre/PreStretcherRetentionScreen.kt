@@ -68,8 +68,7 @@ fun PreStretcherRetentionScreen(
                     bottom.linkTo(parent.bottom)
                     height = Dimension.fillToConstraints
                 }
-                .padding(top = 20.dp),
-            validateFields = uiState.validateFields
+                .padding(top = 20.dp)
         ) { uiAction ->
             handleAction(uiAction, viewModel)
         }
@@ -77,10 +76,6 @@ fun PreStretcherRetentionScreen(
 
     OnBannerHandler(uiModel = uiState.infoEvent) { uiAction ->
         viewModel.handleEvent(uiAction)
-    }
-
-    OnBannerHandler(uiModel = uiState.successEvent) {
-        viewModel.navigateBack()
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)
@@ -91,8 +86,6 @@ private fun handleAction(
     viewModel: PreStretcherRetentionViewModel
 ) {
     when (uiAction) {
-        is GenericUiAction.ButtonAction -> viewModel.saveRetention()
-
         is GenericUiAction.ChipSelectionAction ->
             viewModel.chipSelectionValues[uiAction.identifier] = uiAction.chipSelectionItemUiModel
 

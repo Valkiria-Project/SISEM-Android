@@ -9,7 +9,10 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
+import com.skgtecnologia.sisem.domain.model.header.emptyStretcherRetentionHeader
+import com.skgtecnologia.sisem.domain.model.label.emptyStretcherRetentionMessage
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import com.skgtecnologia.sisem.domain.stretcherretention.errors.StretchRetentionErrors
 import com.skgtecnologia.sisem.domain.stretcherretention.usecases.GetPreStretcherRetentionScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.valkiria.uicomponents.action.UiAction
@@ -55,12 +58,25 @@ class PreStretcherRetentionViewModel @Inject constructor(
                     }
                 }
                 .onFailure { throwable ->
-                    Timber.wtf(throwable, "This is a failure")
-                    withContext(Dispatchers.Main) {
-                        uiState = uiState.copy(
-                            isLoading = false,
-                            infoEvent = throwable.mapToUi()
-                        )
+                    Timber.wtf(throwable, "This is a failure ${throwable.localizedMessage}")
+
+                    if (throwable is StretchRetentionErrors.NoIncidentId) {
+                        withContext(Dispatchers.Main) {
+                            uiState = uiState.copy(
+                                screenModel = ScreenModel(
+                                    header = emptyStretcherRetentionHeader(),
+                                    body = listOf(emptyStretcherRetentionMessage())
+                                ),
+                                isLoading = false
+                            )
+                        }
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            uiState = uiState.copy(
+                                isLoading = false,
+                                infoEvent = throwable.mapToUi()
+                            )
+                        }
                     }
                 }
         }
@@ -80,7 +96,6 @@ class PreStretcherRetentionViewModel @Inject constructor(
     fun consumeNavigationEvent() {
         uiState = uiState.copy(
             isLoading = false,
-            validateFields = false,
             navigationModel = null
         )
     }
@@ -107,7 +122,6 @@ class PreStretcherRetentionViewModel @Inject constructor(
 
     fun navigateBack() {
         uiState = uiState.copy(
-            successEvent = null,
             navigationModel = PreStretcherRetentionNavigationModel(back = true)
         )
     }
