@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.ui.map
 
+import android.annotation.SuppressLint
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,14 +15,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.AphNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.NavigationRoute
-import com.valkiria.uicomponents.bricks.map.MapNavigationView
+import com.valkiria.uicomponents.bricks.map.MapboxMapView
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import timber.log.Timber
 
+@SuppressLint("MissingPermission")
 @Suppress("MagicNumber")
 @Composable
 fun MapScreen(
@@ -54,7 +57,10 @@ fun MapScreen(
             onLogout()
         }
     ) {
-        MapNavigationView(
+        val mapBoxNavigation = MapboxNavigationApp.current()
+
+        MapboxMapView(
+            mapBoxNavigation = mapBoxNavigation,
             coordinates = viewModel.uiState.location,
             incident = viewModel.uiState.incident,
             drawerState = drawerState,

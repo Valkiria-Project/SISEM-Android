@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons.Outlined
 import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Icon
@@ -20,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -36,6 +38,7 @@ import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
+import com.mapbox.navigation.core.MapboxNavigation
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.action.GenericUiAction.NotificationAction
 import com.valkiria.uicomponents.bricks.notification.OnNotificationHandler
@@ -49,7 +52,8 @@ private const val MAP_ZOOM = 16.0
 
 @Suppress("LongParameterList")
 @Composable
-fun MapNavigationView(
+fun MapboxMapView(
+    mapBoxNavigation: MapboxNavigation?,
     coordinates: Pair<Double, Double>,
     incident: IncidentUiModel?,
     drawerState: DrawerState,
@@ -78,7 +82,11 @@ fun MapNavigationView(
         sheetPeekHeight = if (incident != null) 140.dp else 0.dp
     ) { innerPadding ->
         Box(modifier.padding(innerPadding)) {
-            MapboxAndroidView(point, marker, modifier)
+            if (incident != null) {
+//                MapboxMapAndroidView(point, marker, modifier)
+            } else {
+                MapboxMapAndroidView(point, marker, modifier)
+            }
 
             IconButton(
                 onClick = {
@@ -86,10 +94,27 @@ fun MapNavigationView(
                         drawerState.open()
                     }
                 },
-                modifier = Modifier.padding(12.dp)
+                modifier = Modifier.padding(12.dp).align(Alignment.TopStart)
             ) {
                 Icon(
                     imageVector = Outlined.Menu,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .background(color = MaterialTheme.colorScheme.primary)
+                        .size(72.dp)
+                        .padding(5.dp),
+                    tint = Color.Black
+                )
+            }
+
+            IconButton(
+                onClick = {
+                    // FIXME: Navigate to notifications screen / Drawer
+                },
+                modifier = Modifier.padding(12.dp).align(Alignment.TopEnd)
+            ) {
+                Icon(
+                    imageVector = Outlined.Notifications,
                     contentDescription = null,
                     modifier = Modifier
                         .background(color = MaterialTheme.colorScheme.primary)
@@ -111,7 +136,7 @@ fun MapNavigationView(
 }
 
 @Composable
-private fun MapboxAndroidView(
+private fun MapboxMapAndroidView(
     point: Point,
     marker: Bitmap?,
     modifier: Modifier

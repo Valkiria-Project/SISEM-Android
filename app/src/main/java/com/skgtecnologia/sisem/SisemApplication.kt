@@ -4,8 +4,6 @@ import android.app.Application
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
-import com.mapbox.navigation.base.options.NavigationOptions
-import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -33,14 +31,5 @@ class SisemApplication : Application() {
                 Timber.d("FCM registration token: ${task.result}")
             }
         )
-
-        // Mapbox
-        if (!MapboxNavigationApp.isSetup()) {
-            MapboxNavigationApp.setup {
-                NavigationOptions.Builder(this)
-                    .accessToken(getString(com.valkiria.uicomponents.R.string.mapbox_access_token))
-                    .build()
-            }
-        }
     }
 }
