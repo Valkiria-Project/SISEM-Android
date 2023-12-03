@@ -396,7 +396,8 @@ private fun NavGraphBuilder.aphGraph(
         }
 
         composable(
-            route = AphNavigationRoute.MedicalHistoryViewScreen.route
+            route = AphNavigationRoute.MedicalHistoryViewScreen.route + "/{$ID_APH}",
+            arguments = listOf(navArgument(ID_APH) { type = NavType.IntType })
         ) { navBackStackEntry ->
             val photoTaken = navBackStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN)
             navBackStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)

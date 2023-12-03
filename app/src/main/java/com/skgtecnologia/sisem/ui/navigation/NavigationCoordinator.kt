@@ -165,7 +165,7 @@ fun incidentToNextStep(
     when {
         model.back -> navController.popBackStack()
         model.patientAph != null -> navController.navigate(
-            AphNavigationRoute.MedicalHistoryViewScreen.route
+            AphNavigationRoute.MedicalHistoryViewScreen.route + "/${model.patientAph}"
         )
 
         model.isStretcherRetention -> navController.navigate(

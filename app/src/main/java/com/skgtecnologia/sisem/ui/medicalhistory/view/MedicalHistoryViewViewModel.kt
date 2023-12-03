@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
@@ -11,6 +12,7 @@ import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryViewScreen
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.media.MediaActionsUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +25,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MedicalHistoryViewViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val logoutCurrentUser: LogoutCurrentUser,
     private val getMedicalHistoryViewScreen: GetMedicalHistoryViewScreen
 ) : ViewModel() {
@@ -32,12 +35,14 @@ class MedicalHistoryViewViewModel @Inject constructor(
     var uiState by mutableStateOf(MedicalHistoryViewUiState())
         private set
 
+    private val idAph: Int? = savedStateHandle[NavigationArgument.ID_APH]
+
     init {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
         job = viewModelScope.launch {
-            getMedicalHistoryViewScreen.invoke()
+            getMedicalHistoryViewScreen.invoke(idAph = idAph.toString())
                 .onSuccess { medicalHistoryViewScreen ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(

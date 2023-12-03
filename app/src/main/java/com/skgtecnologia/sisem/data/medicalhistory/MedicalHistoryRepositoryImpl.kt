@@ -57,10 +57,9 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
         infoCardButtonValues = infoCardButtonValues
     ).getOrThrow()
 
-    override suspend fun getMedicalHistoryViewScreen(): ScreenModel =
+    override suspend fun getMedicalHistoryViewScreen(idAph: String): ScreenModel =
         medicalHistoryRemoteDataSource.getMedicalHistoryViewScreen(
             code = operationCacheDataSource.observeOperationConfig().first()?.vehicleCode.orEmpty(),
-            // FIXME: remove the hardcoded id
-            idAph = "14"
+            idAph = idAph
         ).getOrThrow()
 }

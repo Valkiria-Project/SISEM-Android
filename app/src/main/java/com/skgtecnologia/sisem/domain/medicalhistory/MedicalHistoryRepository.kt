@@ -27,5 +27,5 @@ interface MedicalHistoryRepository {
         infoCardButtonValues: List<Map<String, String>>
     )
 
-    suspend fun getMedicalHistoryViewScreen(): ScreenModel
+    suspend fun getMedicalHistoryViewScreen(idAph: String): ScreenModel
 }
