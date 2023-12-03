@@ -58,6 +58,8 @@ import com.valkiria.uicomponents.components.card.InfoCardComponent
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
 import com.valkiria.uicomponents.components.card.SimpleCardComponent
 import com.valkiria.uicomponents.components.card.SimpleCardUiModel
+import com.valkiria.uicomponents.components.card.StaggeredCardsComponent
+import com.valkiria.uicomponents.components.card.StaggeredCardsUiModel
 import com.valkiria.uicomponents.components.chip.ChipComponent
 import com.valkiria.uicomponents.components.chip.ChipOptionsComponent
 import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
@@ -480,6 +482,10 @@ private fun LazyListScope.handleBodyRows(
                         onAction(GenericUiAction.SliderAction(identifier = id, value = value))
                     }
                 }
+            }
+
+            is StaggeredCardsUiModel -> item(key = model.identifier) {
+                StaggeredCardsComponent(uiModel = model)
             }
 
             is TermsAndConditionsUiModel -> if (model.visibility) {

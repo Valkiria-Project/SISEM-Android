@@ -30,6 +30,7 @@ enum class BodyRowType {
     SIGNATURE,
     SIMPLE_CARD,
     SLIDER,
+    STAGGERED_CARDS,
     STEPPER,
     TERMS_AND_CONDITIONS,
     TEXT_FIELD,
