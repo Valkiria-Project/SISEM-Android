@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.ui.stretcherretention.pre
 
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -16,9 +15,6 @@ import com.skgtecnologia.sisem.domain.stretcherretention.errors.StretchRetention
 import com.skgtecnologia.sisem.domain.stretcherretention.usecases.GetPreStretcherRetentionScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
-import com.valkiria.uicomponents.components.textfield.InputUiModel
-import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -38,9 +34,6 @@ class PreStretcherRetentionViewModel @Inject constructor(
     var uiState by mutableStateOf(PreStretcherRetentionUiState())
         private set
 
-    var chipSelectionValues = mutableStateMapOf<String, ChipSelectionItemUiModel>()
-    var fieldsValues = mutableStateMapOf<String, InputUiModel>()
-
     init {
         uiState = uiState.copy(isLoading = true)
 
@@ -48,7 +41,6 @@ class PreStretcherRetentionViewModel @Inject constructor(
         job = viewModelScope.launch {
             getPreStretcherRetentionScreen.invoke()
                 .onSuccess { stretcherRetentionScreen ->
-                    stretcherRetentionScreen.getFormInitialValues()
 
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
@@ -82,15 +74,12 @@ class PreStretcherRetentionViewModel @Inject constructor(
         }
     }
 
-    private fun ScreenModel.getFormInitialValues() {
-        this.body.forEach { bodyRowModel ->
-            when (bodyRowModel) {
-                is TextFieldUiModel -> fieldsValues[bodyRowModel.identifier] = InputUiModel(
-                    bodyRowModel.identifier,
-                    bodyRowModel.text
-                )
-            }
-        }
+    fun navigateToStretcherView(patient: String) {
+        uiState = uiState.copy(
+            navigationModel = PreStretcherRetentionNavigationModel(
+                patientAph = patient
+            )
+        )
     }
 
     fun consumeNavigationEvent() {

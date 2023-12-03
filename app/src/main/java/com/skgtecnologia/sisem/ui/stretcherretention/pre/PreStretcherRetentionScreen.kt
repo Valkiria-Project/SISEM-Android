@@ -17,7 +17,6 @@ import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
-import com.valkiria.uicomponents.components.textfield.InputUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -86,15 +85,8 @@ private fun handleAction(
     viewModel: PreStretcherRetentionViewModel
 ) {
     when (uiAction) {
-        is GenericUiAction.ChipSelectionAction ->
-            viewModel.chipSelectionValues[uiAction.identifier] = uiAction.chipSelectionItemUiModel
-
-        is GenericUiAction.InputAction ->
-            viewModel.fieldsValues[uiAction.identifier] = InputUiModel(
-                uiAction.identifier,
-                uiAction.updatedValue,
-                uiAction.fieldValidated
-            )
+        is GenericUiAction.SimpleCardAction ->
+            viewModel.navigateToStretcherView(uiAction.identifier)
 
         else -> Timber.d("no-op")
     }

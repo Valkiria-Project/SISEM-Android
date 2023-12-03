@@ -30,6 +30,7 @@ import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.signature.init.InitSignatureNavigationModel
 import com.skgtecnologia.sisem.ui.signature.view.SignatureNavigationModel
 import com.skgtecnologia.sisem.ui.stretcherretention.create.StretcherRetentionNavigationModel
+import com.skgtecnologia.sisem.ui.stretcherretention.pre.PreStretcherRetentionNavigationModel
 import com.skgtecnologia.sisem.ui.stretcherretention.view.StretcherRetentionViewNavigationModel
 
 const val APP_STARTED = "app_started"
@@ -81,6 +82,9 @@ fun navigateToNextStep(
     is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
     is SignatureNavigationModel -> signatureToNextStep(navController, navigationModel)
     is SignaturePadNavigationModel -> signaturePadToNextStep(navController, navigationModel)
+    is PreStretcherRetentionNavigationModel ->
+        preStretcherRetentionToNextStep(navController, navigationModel)
+
     is StretcherRetentionNavigationModel ->
         stretcherRetentionToNextStep(navController, navigationModel)
 
@@ -415,6 +419,19 @@ private fun signaturePadToNextStep(
                 ?.savedStateHandle
                 ?.set(SIGNATURE, model.signature)
         }
+    }
+}
+
+fun preStretcherRetentionToNextStep(
+    navController: NavHostController,
+    model: PreStretcherRetentionNavigationModel
+) {
+    when {
+        model.back -> navController.popBackStack()
+
+        model.patientAph != null -> navController.navigate(
+            MainNavigationRoute.StretcherRetentionScreen.route + "/${model.patientAph}"
+        )
     }
 }
 
