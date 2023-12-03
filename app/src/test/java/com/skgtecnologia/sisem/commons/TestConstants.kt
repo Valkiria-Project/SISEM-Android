@@ -462,7 +462,7 @@ val infoCardResponseMock = InfoCardResponse(
             textStyle = TextStyle.BODY_1
         ),
         listPatient = ListPatientResponse(
-            texts = mapOf("texts" to "texts"),
+            texts = mapOf("1" to "texts"),
             textStyle = TextStyle.BODY_1,
             icon = "icon"
         )

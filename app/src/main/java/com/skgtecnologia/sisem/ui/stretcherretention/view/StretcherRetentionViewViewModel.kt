@@ -41,6 +41,7 @@ class StretcherRetentionViewViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch {
+            // FIXME: remove the hardcoded id
             getStretcherRetentionViewScreen.invoke(idAph = "14")
                 .onSuccess { stretcherRetentionViewScreen ->
                     withContext(Dispatchers.Main) {
