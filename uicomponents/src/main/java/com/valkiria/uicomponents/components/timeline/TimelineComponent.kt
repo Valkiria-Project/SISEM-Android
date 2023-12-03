@@ -30,9 +30,8 @@ fun TimelineComponent(
         uiModel.items.forEach { timelineItem ->
             TimelineNode(
                 timelineItem = timelineItem
-            ) { modifier ->
+            ) {
                 DetailInfoView(
-                    modifier = modifier,
                     timelineItem = timelineItem
                 )
             }
@@ -74,7 +73,6 @@ private fun TimelineNode(
 
 @Composable
 private fun DetailInfoView(
-    modifier: Modifier,
     timelineItem: TimelineItemUiModel
 ) {
     Column {

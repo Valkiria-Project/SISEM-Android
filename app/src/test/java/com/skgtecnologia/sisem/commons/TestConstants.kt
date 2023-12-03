@@ -7,6 +7,7 @@ import com.skgtecnologia.sisem.data.remote.model.bricks.banner.report.ReportDeta
 import com.skgtecnologia.sisem.data.remote.model.bricks.banner.report.ReportsDetailResponse
 import com.skgtecnologia.sisem.data.remote.model.bricks.chip.ChipSectionResponse
 import com.skgtecnologia.sisem.data.remote.model.components.body.HumanBodyResponse
+import com.skgtecnologia.sisem.data.remote.model.components.body.WoundResponse
 import com.skgtecnologia.sisem.data.remote.model.components.button.ButtonResponse
 import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonOptionResponse
 import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonResponse
@@ -410,6 +411,15 @@ val chipSelectionResponseMock = ChipSelectionResponse(
 val humanBodyResponseMock = HumanBodyResponse(
     identifier = "identifier",
     header = headerResponseMock,
+    values = mapOf(
+        "FRONT" to listOf(
+            WoundResponse(
+                type = "FRONT",
+                area = "area",
+                wounds = listOf("wounds")
+            )
+        )
+    ),
     wounds = listOf("wounds"),
     burningLevel = listOf("burningLevel"),
     section = "",

@@ -32,7 +32,6 @@ import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
 import com.skgtecnologia.sisem.ui.dropdown.DropDownComponent
 import com.skgtecnologia.sisem.ui.humanbody.HumanBodyComponent
-import com.skgtecnologia.sisem.ui.humanbody.view.HumanBodyViewComponent
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedsSelectorComponent
 import com.valkiria.uicomponents.action.AddReportUiAction
 import com.valkiria.uicomponents.action.AuthCardsUiAction
@@ -78,7 +77,6 @@ import com.valkiria.uicomponents.components.footer.FooterBodyUiModel
 import com.valkiria.uicomponents.components.footer.mapToSection
 import com.valkiria.uicomponents.components.header.HeaderUiModel
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUiModel
-import com.valkiria.uicomponents.components.humanbody.HumanBodyViewUiModel
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckComponent
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
 import com.valkiria.uicomponents.components.inventorysearch.InventorySearchComponent
@@ -329,12 +327,6 @@ private fun LazyListScope.handleBodyRows(
                     HumanBodyComponent(model) { values ->
                         onAction(GenericUiAction.HumanBodyAction(model.identifier, values))
                     }
-                }
-            }
-
-            is HumanBodyViewUiModel -> if (model.visibility) {
-                item(key = model.identifier) {
-                    HumanBodyViewComponent(model)
                 }
             }
 
