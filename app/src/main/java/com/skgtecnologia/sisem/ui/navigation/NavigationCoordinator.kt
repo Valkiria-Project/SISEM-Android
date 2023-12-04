@@ -172,8 +172,8 @@ fun incidentToNextStep(
             AphNavigationRoute.MedicalHistoryViewScreen.route + "/${model.patientAph}"
         )
 
-        model.isStretcherRetention -> navController.navigate(
-            MainNavigationRoute.StretcherViewScreen.route
+        model.stretcherRetentionAph != null -> navController.navigate(
+            MainNavigationRoute.StretcherViewScreen.route + "/${model.stretcherRetentionAph}"
         )
     }
 }

@@ -62,9 +62,9 @@ class IncidentViewModel @Inject constructor(
         )
     }
 
-    fun navigateToStretcherRetention() {
+    fun navigateToStretcherRetention(identifier: String) {
         uiState = uiState.copy(
-            navigationModel = IncidentNavigationModel(isStretcherRetention = true)
+            navigationModel = IncidentNavigationModel(stretcherRetentionAph = identifier)
         )
     }
 

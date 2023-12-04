@@ -337,7 +337,8 @@ private fun NavGraphBuilder.mainGraph(
         }
 
         composable(
-            route = MainNavigationRoute.StretcherViewScreen.route
+            route = MainNavigationRoute.StretcherViewScreen.route + "/{$ID_APH}",
+            arguments = listOf(navArgument(ID_APH) { type = NavType.IntType })
         ) {
             StretcherRetentionViewScreen(
                 modifier = modifier
