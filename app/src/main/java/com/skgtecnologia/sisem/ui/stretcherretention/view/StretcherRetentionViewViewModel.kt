@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
@@ -11,6 +12,7 @@ import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.stretcherretention.usecases.GetStretcherRetentionViewScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
@@ -24,6 +26,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StretcherRetentionViewViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val logoutCurrentUser: LogoutCurrentUser,
     private val getStretcherRetentionViewScreen: GetStretcherRetentionViewScreen
 ) : ViewModel() {
@@ -33,6 +36,8 @@ class StretcherRetentionViewViewModel @Inject constructor(
     var uiState by mutableStateOf(StretcherRetentionViewUiState())
         private set
 
+    private val idAph: Int? = savedStateHandle[NavigationArgument.ID_APH]
+
     var chipSelectionValues = mutableStateMapOf<String, ChipSelectionItemUiModel>()
     var fieldsValues = mutableStateMapOf<String, InputUiModel>()
 
@@ -41,8 +46,7 @@ class StretcherRetentionViewViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch {
-            // FIXME: remove the hardcoded id
-            getStretcherRetentionViewScreen.invoke(idAph = "14")
+            getStretcherRetentionViewScreen.invoke(idAph = idAph.toString())
                 .onSuccess { stretcherRetentionViewScreen ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(

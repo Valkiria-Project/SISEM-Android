@@ -80,7 +80,7 @@ fun handleAction(uiAction: UiAction, viewModel: IncidentViewModel) {
     when (uiAction) {
         is GenericUiAction.InfoCardAction -> {
             when {
-                uiAction.isPill -> viewModel.navigateToStretcherRetention()
+                uiAction.isPill -> viewModel.navigateToStretcherRetention(uiAction.identifier)
                 uiAction.patient != null -> viewModel.navigateToAphView(uiAction.patient.orEmpty())
             }
         }
