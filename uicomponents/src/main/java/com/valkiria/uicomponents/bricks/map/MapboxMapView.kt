@@ -44,7 +44,6 @@ import com.mapbox.navigation.base.route.NavigationRoute
 import com.mapbox.navigation.base.route.NavigationRouterCallback
 import com.mapbox.navigation.base.route.RouterFailure
 import com.mapbox.navigation.base.route.RouterOrigin
-import com.mapbox.navigation.core.MapboxNavigation
 import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
 import com.mapbox.navigation.dropin.NavigationView
 import com.valkiria.uicomponents.R
@@ -58,10 +57,9 @@ import timber.log.Timber
 
 private const val MAP_ZOOM = 16.0
 
-@Suppress("LongMethod", "LongParameterList")
+@Suppress("LongMethod", "LongParameterList", "MagicNumber")
 @Composable
 fun MapboxMapView(
-    mapBoxNavigation: MapboxNavigation?,
     coordinates: Pair<Double, Double>,
     incident: IncidentUiModel?,
     drawerState: DrawerState,
@@ -90,16 +88,17 @@ fun MapboxMapView(
         sheetPeekHeight = if (incident != null) 140.dp else 0.dp
     ) { innerPadding ->
         Box(modifier.padding(innerPadding)) {
-            val destinationPoint = Point.fromLngLat(-74.0711485, 4.6963453)
-            if (incident != null) {
-                MapboxNavigationAndroidView(
-                    incident, locationPoint, destinationPoint, marker, modifier
-                )
-            } else {
-                MapboxMapAndroidView(
-                    incident, locationPoint, destinationPoint, marker, modifier
-                )
-            }
+//            val destinationPoint = Point.fromLngLat(-74.0711485, 4.6963453)
+//            if (incident != null) {
+//                val accessToken = stringResource(id = R.string.mapbox_access_token)
+//                MapboxNavigationAndroidView(
+//                    locationPoint, destinationPoint, marker, modifier, accessToken
+//                )
+//            } else {
+            MapboxMapAndroidView(
+                locationPoint, marker, modifier
+            )
+//            }
 
             IconButton(
                 onClick = {
@@ -154,9 +153,7 @@ fun MapboxMapView(
 
 @Composable
 private fun MapboxMapAndroidView(
-    incident: IncidentUiModel?,
     locationPoint: Point,
-    destinationPoint: Point,
     marker: Bitmap?,
     modifier: Modifier
 ) {
@@ -196,15 +193,16 @@ private fun MapboxMapAndroidView(
     )
 }
 
+@Suppress("LongParameterList", "UnusedPrivateMember")
 @Composable
 private fun MapboxNavigationAndroidView(
-    incident: IncidentUiModel?,
     locationPoint: Point,
     destinationPoint: Point,
     marker: Bitmap?,
-    modifier: Modifier
+    modifier: Modifier,
+    accessToken: String
 ) {
-    var pointAnnotationManager: PointAnnotationManager? by remember {
+    val pointAnnotationManager: PointAnnotationManager? by remember {
         mutableStateOf(null)
     }
 
@@ -212,7 +210,7 @@ private fun MapboxNavigationAndroidView(
         factory = { context ->
             NavigationView(
                 context = context,
-                accessToken = "sk.eyJ1Ijoic2lzZW0iLCJhIjoiY2xwa2l5bmxmMDB0NDJrankxeG4yZWowMSJ9.o6RJNwx7MDzeUDturbT1LA"
+                accessToken = accessToken
             ).also { navigationView ->
                 MapboxNavigationApp.current()!!.requestRoutes(
                     routeOptions = RouteOptions

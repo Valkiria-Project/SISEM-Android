@@ -15,7 +15,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.AphNavigationRoute
@@ -57,10 +56,7 @@ fun MapScreen(
             onLogout()
         }
     ) {
-        val mapBoxNavigation = MapboxNavigationApp.current()
-
         MapboxMapView(
-            mapBoxNavigation = mapBoxNavigation,
             coordinates = viewModel.uiState.location,
             incident = viewModel.uiState.incident,
             drawerState = drawerState,
