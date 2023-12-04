@@ -62,11 +62,7 @@ fun MedicalHistoryViewScreen(
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
-            ) { uiAction ->
-                if (uiAction is HeaderUiAction.GoBack) {
-                    viewModel.navigateBack()
-                }
-            }
+            )
         }
 
         BodySection(
@@ -114,6 +110,8 @@ private fun handleAction(uiAction: UiAction, viewModel: MedicalHistoryViewViewMo
         }
 
         is GenericUiAction.StepperAction -> viewModel.sendMedicalHistoryView()
+
+        is HeaderUiAction.GoBack -> viewModel.navigateBack()
 
         else -> Timber.d("no-op")
     }

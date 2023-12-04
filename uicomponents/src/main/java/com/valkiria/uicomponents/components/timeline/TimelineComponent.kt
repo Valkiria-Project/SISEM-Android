@@ -12,13 +12,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.drawscope.withTransform
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextUiModel
 import com.valkiria.uicomponents.components.label.toTextStyle
+import com.valkiria.uicomponents.utlis.DefType
+import com.valkiria.uicomponents.utlis.getResourceIdByName
+
+private const val FOUR = 4
+private const val TWO = 2
 
 @Composable
 fun TimelineComponent(
@@ -27,11 +37,19 @@ fun TimelineComponent(
     Column(
         modifier = uiModel.modifier
     ) {
-        uiModel.items.forEach { timelineItem ->
+        uiModel.items.forEachIndexed { index, timelineItem ->
+            val position = when (index) {
+                0 -> TimelinePosition.FIRST
+                uiModel.items.lastIndex -> TimelinePosition.LAST
+                else -> TimelinePosition.MIDDLE
+            }
+
             TimelineNode(
+                position = position,
                 timelineItem = timelineItem
             ) {
                 DetailInfoView(
+                    modifier = it,
                     timelineItem = timelineItem
                 )
             }
@@ -41,41 +59,82 @@ fun TimelineComponent(
 
 @Composable
 private fun TimelineNode(
+    position: TimelinePosition,
     timelineItem: TimelineItemUiModel,
+    contentStartOffset: Dp = 48.dp,
+    spacerBetweenNodes: Dp = 32.dp,
     content: @Composable BoxScope.(modifier: Modifier) -> Unit
 ) {
+    val iconResourceId = LocalContext.current.getResourceIdByName(
+        timelineItem.icon.orEmpty(), DefType.DRAWABLE
+    )
+
+    val iconPainter = iconResourceId?.let { painterResource(id = it) }
+
     Box(
-        modifier = Modifier.wrapContentSize()
+        modifier = Modifier
+            .wrapContentSize()
+            .drawBehind {
+                val circleRadiusInPx = 8.dp.toPx()
+                if (position != TimelinePosition.LAST && iconResourceId == null) {
+                    drawCircle(
+                        color = Color(parseColor(timelineItem.color)),
+                        radius = circleRadiusInPx,
+                        center = Offset(circleRadiusInPx, circleRadiusInPx)
+                    )
+                }
+
+                iconPainter?.let { painter ->
+                    this.withTransform(
+                        transformBlock = {
+                            translate(
+                                left = circleRadiusInPx - painter.intrinsicSize.width / 2f,
+                                top = circleRadiusInPx - painter.intrinsicSize.height / 2f
+                            )
+                        },
+                        drawBlock = {
+                            this.drawIntoCanvas {
+                                with(painter) {
+                                    draw(
+                                        intrinsicSize,
+                                        colorFilter = ColorFilter.tint(
+                                            Color(parseColor(timelineItem.color))
+                                        )
+                                    )
+                                }
+                            }
+                        }
+                    )
+                }
+
+                if (position != TimelinePosition.LAST) {
+                    drawLine(
+                        color = Color(parseColor(timelineItem.color)),
+                        start = Offset(circleRadiusInPx, circleRadiusInPx * FOUR),
+                        end = Offset(circleRadiusInPx, size.height - (circleRadiusInPx * TWO)),
+                        strokeWidth = 2.dp.toPx()
+                    )
+                }
+            }
     ) {
         content(
             Modifier
-                .padding(start = 16.dp)
-                .drawBehind {
-                    drawCircle(
-                        color = Color(parseColor(timelineItem.color)),
-                        radius = 8.dp.toPx()
-                    )
-                    drawLine(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color(parseColor(timelineItem.color)),
-                                Color(parseColor(timelineItem.color)),
-                            )
-                        ),
-                        start = Offset(8.dp.toPx(), 16.dp.toPx()),
-                        end = Offset(8.dp.toPx(), size.height),
-                        strokeWidth = 3.dp.toPx()
-                    )
-                }
+                .padding(
+                    start = contentStartOffset,
+                    bottom = if (position == TimelinePosition.LAST) 0.dp else spacerBetweenNodes
+                )
         )
     }
 }
 
 @Composable
 private fun DetailInfoView(
+    modifier: Modifier,
     timelineItem: TimelineItemUiModel
 ) {
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         Text(
             text = timelineItem.title.text,
             style = timelineItem.title.textStyle.toTextStyle()
@@ -104,7 +163,7 @@ fun TimelineComponentPreview() {
                         textStyle = TextStyle.HEADLINE_5
                     ),
                     color = "#FF42A4",
-                    icon = null
+                    icon = "ic_alert"
                 ),
                 TimelineItemUiModel(
                     title = TextUiModel(
@@ -117,6 +176,18 @@ fun TimelineComponentPreview() {
                     ),
                     color = "#FF42A4",
                     icon = null
+                ),
+                TimelineItemUiModel(
+                    title = TextUiModel(
+                        text = "Title 1",
+                        textStyle = TextStyle.HEADLINE_5
+                    ),
+                    description = TextUiModel(
+                        text = "Title 1",
+                        textStyle = TextStyle.HEADLINE_5
+                    ),
+                    color = "#FF42A4",
+                    icon = "ic_ambulance"
                 )
             ),
             arrangement = Arrangement.Center,
