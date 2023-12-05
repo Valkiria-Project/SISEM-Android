@@ -20,7 +20,6 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -57,6 +56,7 @@ import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
 import com.mapbox.navigation.dropin.NavigationView
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.action.GenericUiAction.NotificationAction
+import com.valkiria.uicomponents.bricks.notification.NotificationRowView
 import com.valkiria.uicomponents.bricks.notification.NotificationUiModel
 import com.valkiria.uicomponents.bricks.notification.OnNotificationHandler
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
@@ -177,7 +177,7 @@ fun MapboxMapView(
                         verticalArrangement = Arrangement.Top
                     ) {
                         notifications?.forEach { notificationUiModel ->
-                            Text(text = notificationUiModel.title)
+                            NotificationRowView(notificationUiModel)
                         }
                     }
                 }
