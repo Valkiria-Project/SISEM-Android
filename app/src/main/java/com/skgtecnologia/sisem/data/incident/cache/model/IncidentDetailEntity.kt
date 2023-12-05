@@ -20,7 +20,7 @@ data class IncidentDetailEntity(
     @ColumnInfo(name = "doctor_auth_name") val doctorAuthName: String
 )
 
-fun IncidentDetailEntity.mapToDomain(): IncidentUiDetailModel = with(this) {
+fun IncidentDetailEntity.mapToUi(): IncidentUiDetailModel = with(this) {
     IncidentUiDetailModel(
         id = id,
         code = code,
@@ -29,7 +29,7 @@ fun IncidentDetailEntity.mapToDomain(): IncidentUiDetailModel = with(this) {
         addressReferencePoint = addressReferencePoint,
         premierOneDate = premierOneDate,
         premierOneHour = premierOneHour,
-        incidentType = incidentType.mapToDomain(),
+        incidentType = incidentType.mapToUi(),
         doctorAuthName = doctorAuthName
     )
 }

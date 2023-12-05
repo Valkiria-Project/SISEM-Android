@@ -25,4 +25,7 @@
     <string name="date_picker_cancel">Cancelar</string>
     <string name="time_box_hour">Hora</string>
     <string name="time_box_minutes">Minutos</string>
+
+    <!-- Notifications -->
+    <string name="notifications_title">Notificaciones</string>
 </resources>
