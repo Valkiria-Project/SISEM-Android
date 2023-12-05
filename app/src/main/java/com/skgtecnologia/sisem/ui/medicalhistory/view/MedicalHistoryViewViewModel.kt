@@ -155,6 +155,8 @@ class MedicalHistoryViewViewModel @Inject constructor(
     }
 
     fun sendMedicalHistoryView() {
-        // FIXME: add logic ??
+        uiState = uiState.copy(
+            navigationModel = MedicalHistoryViewNavigationModel(sendMedical = true)
+        )
     }
 }

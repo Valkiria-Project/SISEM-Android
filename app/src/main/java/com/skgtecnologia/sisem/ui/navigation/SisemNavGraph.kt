@@ -53,6 +53,7 @@ import com.skgtecnologia.sisem.ui.report.addreport.AddReportRoleScreen
 import com.skgtecnologia.sisem.ui.report.addreport.AddReportScreen
 import com.skgtecnologia.sisem.ui.report.media.ImagesConfirmationScreen
 import com.skgtecnologia.sisem.ui.report.media.ReportCameraScreen
+import com.skgtecnologia.sisem.ui.sendemail.SendEmailScreen
 import com.skgtecnologia.sisem.ui.signature.init.InitSignatureScreen
 import com.skgtecnologia.sisem.ui.signature.view.SignatureScreen
 import com.skgtecnologia.sisem.ui.stretcherretention.create.StretcherRetentionScreen
@@ -354,6 +355,16 @@ private fun NavGraphBuilder.mainGraph(
         ) {
             PreOperationalViewScreen { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = MainNavigationRoute.SendEmailScreen.route
+        ) {
+            SendEmailScreen(
+                modifier = modifier
+            ) {
+                navigateToNextStep(navController, it)
             }
         }
     }
