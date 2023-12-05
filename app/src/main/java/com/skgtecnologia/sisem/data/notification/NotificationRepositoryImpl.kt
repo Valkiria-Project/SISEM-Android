@@ -6,8 +6,10 @@ import com.skgtecnologia.sisem.data.incident.remote.IncidentRemoteDataSource
 import com.skgtecnologia.sisem.data.notification.cache.NotificationCacheDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.domain.notification.repository.NotificationRepository
+import com.valkiria.uicomponents.bricks.notification.NotificationUiModel
 import com.valkiria.uicomponents.bricks.notification.model.IncidentAssignedNotification
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
@@ -40,4 +42,7 @@ class NotificationRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override fun observeNotifications(): Flow<List<NotificationUiModel>?> =
+        notificationCacheDataSource.observeNotifications()
 }

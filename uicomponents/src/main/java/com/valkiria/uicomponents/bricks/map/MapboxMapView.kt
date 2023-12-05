@@ -3,9 +3,15 @@ package com.valkiria.uicomponents.bricks.map
 import android.graphics.Bitmap
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons.Outlined
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Notifications
@@ -14,6 +20,7 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,6 +35,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.viewinterop.NoOpUpdate
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.core.graphics.drawable.toBitmap
 import com.mapbox.api.directions.v5.models.RouteOptions
 import com.mapbox.geojson.Point
@@ -48,6 +57,7 @@ import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
 import com.mapbox.navigation.dropin.NavigationView
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.action.GenericUiAction.NotificationAction
+import com.valkiria.uicomponents.bricks.notification.NotificationUiModel
 import com.valkiria.uicomponents.bricks.notification.OnNotificationHandler
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import com.valkiria.uicomponents.components.incident.IncidentContent
@@ -62,6 +72,7 @@ private const val MAP_ZOOM = 16.0
 fun MapboxMapView(
     coordinates: Pair<Double, Double>,
     incident: IncidentUiModel?,
+    notifications: List<NotificationUiModel>?,
     drawerState: DrawerState,
     notificationData: NotificationData?,
     modifier: Modifier = Modifier,
@@ -75,8 +86,9 @@ fun MapboxMapView(
         AppCompatResources.getDrawable(context, R.drawable.ic_ambulance_marker)?.toBitmap()
     }
 
-    val scope = rememberCoroutineScope()
     val scaffoldState = rememberBottomSheetScaffoldState()
+    val scope = rememberCoroutineScope()
+    var showNotificationsDialog by remember { mutableStateOf(false) }
 
     BottomSheetScaffold(
         sheetContent = {
@@ -123,7 +135,7 @@ fun MapboxMapView(
 
             IconButton(
                 onClick = {
-                    // FIXME: Navigate to notifications screen / Drawer
+                    showNotificationsDialog = true
                 },
                 modifier = Modifier
                     .padding(12.dp)
@@ -145,6 +157,29 @@ fun MapboxMapView(
                 if (it.isDismiss.not()) {
                     // FIXME: Navigate to MapScreen if is type INCIDENT_ASSIGNED
                     Timber.d("Navigate to MapScreen")
+                }
+            }
+
+            if (showNotificationsDialog) {
+                Dialog(
+                    onDismissRequest = { showNotificationsDialog = false },
+                    properties = DialogProperties(usePlatformDefaultWidth = false)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(MaterialTheme.colorScheme.background.copy(alpha = 0.8f))
+                            .clickable(
+                                enabled = false,
+                                onClick = {}
+                            )
+                            .verticalScroll(rememberScrollState()),
+                        verticalArrangement = Arrangement.Top
+                    ) {
+                        notifications?.forEach { notificationUiModel ->
+                            Text(text = notificationUiModel.title)
+                        }
+                    }
                 }
             }
         }

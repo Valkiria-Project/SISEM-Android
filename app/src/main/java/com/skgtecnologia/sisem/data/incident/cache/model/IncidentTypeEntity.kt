@@ -12,7 +12,7 @@ data class IncidentTypeEntity(
     @ColumnInfo(name = "code") val code: String
 )
 
-fun IncidentTypeEntity.mapToDomain(): IncidentUiTypeModel = with(this) {
+fun IncidentTypeEntity.mapToUi(): IncidentUiTypeModel = with(this) {
     IncidentUiTypeModel(
         id = id,
         code = code
