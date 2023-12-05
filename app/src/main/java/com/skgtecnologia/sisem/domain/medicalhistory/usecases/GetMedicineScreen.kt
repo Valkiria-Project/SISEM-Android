@@ -11,7 +11,7 @@ class GetMedicineScreen @Inject constructor(
 ) {
 
     @CheckResult
-    suspend operator fun invoke(): Result<ScreenModel> = resultOf {
-        medicalHistoryRepository.getMedicineScreen()
+    suspend operator fun invoke(serial: String): Result<ScreenModel> = resultOf {
+        medicalHistoryRepository.getMedicineScreen(serial = serial)
     }
 }

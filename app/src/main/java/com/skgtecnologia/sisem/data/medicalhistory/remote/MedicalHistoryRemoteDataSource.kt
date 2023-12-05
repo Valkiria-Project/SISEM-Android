@@ -39,10 +39,12 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
         it.mapToDomain()
     }
 
-    suspend fun getMedicineScreen(): Result<ScreenModel> = apiCall {
+    suspend fun getMedicineScreen(serial: String): Result<ScreenModel> = apiCall {
         medicalHistoryApi.getMedicineScreen(
             screenBody = ScreenBody(
-                params = Params()
+                params = Params(
+                    serial = serial
+                )
             )
         )
     }.mapResult {
