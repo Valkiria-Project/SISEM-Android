@@ -14,7 +14,7 @@ data class ResourceDetailEntity(
     @ColumnInfo(name = "ic_transit_agency") val icTransitAgency: String
 )
 
-fun ResourceDetailEntity.mapToDomain(): ResourceUiDetailModel = with(this) {
+fun ResourceDetailEntity.mapToUi(): ResourceUiDetailModel = with(this) {
     ResourceUiDetailModel(
         id = id,
         code = code,

@@ -24,11 +24,11 @@ data class IncidentEntity(
     @ColumnInfo(name = "is_active") val isActive: Boolean
 )
 
-fun IncidentEntity.mapToDomain(): IncidentUiModel = with(this) {
+fun IncidentEntity.mapToUi(): IncidentUiModel = with(this) {
     IncidentUiModel(
-        incident = incident.mapToDomain(),
-        patients = patients.map { it.mapToDomain() },
-        resources = resources.map { it.mapToDomain() },
+        incident = incident.mapToUi(),
+        patients = patients.map { it.mapToUi() },
+        resources = resources.map { it.mapToUi() },
         transmiRequests = transmiRequests?.map {
             getTransmiNotificationDataByType(it)
         },

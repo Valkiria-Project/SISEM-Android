@@ -59,6 +59,7 @@ fun MapScreen(
         MapboxMapView(
             coordinates = viewModel.uiState.location,
             incident = viewModel.uiState.incident,
+            notifications = viewModel.uiState.notifications,
             drawerState = drawerState,
             notificationData = notificationData,
             modifier = modifier.fillMaxSize(),

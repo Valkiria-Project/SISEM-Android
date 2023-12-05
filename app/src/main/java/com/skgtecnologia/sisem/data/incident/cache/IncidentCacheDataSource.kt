@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.data.incident.cache
 import androidx.annotation.CheckResult
 import com.skgtecnologia.sisem.data.incident.cache.dao.IncidentDao
 import com.skgtecnologia.sisem.data.incident.cache.model.mapToCache
-import com.skgtecnologia.sisem.data.incident.cache.model.mapToDomain
+import com.skgtecnologia.sisem.data.incident.cache.model.mapToUi
 import com.valkiria.uicomponents.components.incident.model.IncidentUiModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -22,7 +22,7 @@ class IncidentCacheDataSource @Inject constructor(
     @CheckResult
     fun observeActiveIncident(): Flow<IncidentUiModel?> = incidentDao.observeActiveIncident()
         .map {
-            it?.mapToDomain()
+            it?.mapToUi()
         }
         .catch { throwable ->
             error("error observing the active Incident ${throwable.localizedMessage}")
