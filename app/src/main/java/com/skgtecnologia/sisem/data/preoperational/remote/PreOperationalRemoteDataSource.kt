@@ -12,11 +12,11 @@ import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
-import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import okhttp3.MultipartBody
+import javax.inject.Inject
 
 private const val FINDING_FILE_NAME = "images"
 
@@ -74,7 +74,9 @@ class PreOperationalRemoteDataSource @Inject constructor(
                 findingValues = findings,
                 inventoryValues = inventoryValues,
                 fieldsValues = fieldsValues,
-                novelties = novelties.map { it.mapToBody() }
+                novelties = novelties
+                    .filter { it.images.isEmpty() }
+                    .map { it.mapToBody() }
             )
         )
     }
