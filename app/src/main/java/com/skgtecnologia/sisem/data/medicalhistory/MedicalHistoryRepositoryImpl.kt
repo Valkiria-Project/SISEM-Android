@@ -5,6 +5,7 @@ import com.skgtecnologia.sisem.data.medicalhistory.remote.MedicalHistoryRemoteDa
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.domain.medicalhistory.MedicalHistoryRepository
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
@@ -40,7 +41,8 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
         chipOptionsValues: Map<String, List<String>>,
         imageButtonSectionValues: Map<String, String>,
         vitalSigns: Map<String, Map<String, String>>,
-        infoCardButtonValues: List<Map<String, String>>
+        infoCardButtonValues: List<Map<String, String>>,
+        images: List<ImageModel>?
     ) = medicalHistoryRemoteDataSource.sendMedicalHistory(
         idTurn = authCacheDataSource.observeAccessToken().first()?.turn?.id.toString(),
         idAph = idAph,
@@ -55,7 +57,12 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
         imageButtonSectionValues = imageButtonSectionValues,
         vitalSigns = vitalSigns,
         infoCardButtonValues = infoCardButtonValues
-    ).getOrThrow()
+    ).onSuccess {
+        images?.let { medicalHistoryRemoteDataSource.saveAphFiles(idAph, it).getOrThrow() }
+    }.getOrThrow()
+
+    override suspend fun saveAphFiles(idAph: String, images: List<ImageModel>) =
+        medicalHistoryRemoteDataSource.saveAphFiles(idAph, images).getOrThrow()
 
     override suspend fun getMedicalHistoryViewScreen(idAph: String): ScreenModel =
         medicalHistoryRemoteDataSource.getMedicalHistoryViewScreen(
