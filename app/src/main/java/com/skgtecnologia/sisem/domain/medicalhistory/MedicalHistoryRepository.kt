@@ -9,7 +9,7 @@ interface MedicalHistoryRepository {
 
     suspend fun getVitalSignsScreen(): ScreenModel
 
-    suspend fun getMedicineScreen(): ScreenModel
+    suspend fun getMedicineScreen(serial: String): ScreenModel
 
     @Suppress("LongParameterList")
     suspend fun sendMedicalHistory(

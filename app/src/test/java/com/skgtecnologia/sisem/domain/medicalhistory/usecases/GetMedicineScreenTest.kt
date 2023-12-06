@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.domain.medicalhistory.usecases
 
+import com.skgtecnologia.sisem.commons.ANDROID_ID
 import com.skgtecnologia.sisem.domain.medicalhistory.MedicalHistoryRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -26,18 +27,18 @@ class GetMedicineScreenTest {
 
     @Test
     fun `when getMedicineScreen is success`() = runTest {
-        coEvery { medicalHistoryRepository.getMedicineScreen() } returns mockk()
+        coEvery { medicalHistoryRepository.getMedicineScreen(ANDROID_ID) } returns mockk()
 
-        val result = getMedicineScreen()
+        val result = getMedicineScreen(ANDROID_ID)
 
         Assert.assertEquals(true, result.isSuccess)
     }
 
     @Test
     fun `when getMedicineScreen is failure`() = runTest {
-        coEvery { medicalHistoryRepository.getMedicineScreen() } throws Exception()
+        coEvery { medicalHistoryRepository.getMedicineScreen(ANDROID_ID) } throws Exception()
 
-        val result = getMedicineScreen()
+        val result = getMedicineScreen(ANDROID_ID)
 
         Assert.assertEquals(true, result.isFailure)
     }

@@ -1,8 +1,10 @@
 package com.skgtecnologia.sisem.ui.medicalhistory.medicine
 
+import com.skgtecnologia.sisem.commons.ANDROID_ID
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.emptyScreenModel
+import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.BuildMedicineInformation
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicineScreen
 import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
@@ -29,27 +31,34 @@ class MedicineViewModelTest {
     @MockK
     private lateinit var getMedicineScreen: GetMedicineScreen
 
+    @MockK
+    private lateinit var androidIdProvider: AndroidIdProvider
+
     private lateinit var viewModel: MedicineViewModel
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
+
+        every { androidIdProvider.getAndroidId() } returns ANDROID_ID
     }
 
     @Test
     fun `when getMedicineScreen is success`() = runTest {
-        coEvery { getMedicineScreen.invoke() } returns Result.success(emptyScreenModel)
+        coEvery { getMedicineScreen.invoke(any()) } returns Result.success(emptyScreenModel)
 
-        viewModel = MedicineViewModel(buildMedicineInformation, getMedicineScreen)
+        viewModel =
+            MedicineViewModel(buildMedicineInformation, getMedicineScreen, androidIdProvider)
 
         Assert.assertEquals(emptyScreenModel, viewModel.uiState.screenModel)
     }
 
     @Test
     fun `when getMedicineScreen is failure`() = runTest {
-        coEvery { getMedicineScreen.invoke() } returns Result.failure(Throwable())
+        coEvery { getMedicineScreen.invoke(any()) } returns Result.failure(Throwable())
 
-        viewModel = MedicineViewModel(buildMedicineInformation, getMedicineScreen)
+        viewModel =
+            MedicineViewModel(buildMedicineInformation, getMedicineScreen, androidIdProvider)
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.infoEvent?.title)
     }
@@ -59,10 +68,11 @@ class MedicineViewModelTest {
         val identifier = "identifier"
         val identifier2 = "identifier2"
         val values = emptyMap<String, String>()
-        coEvery { getMedicineScreen.invoke() } returns Result.success(emptyScreenModel)
+        coEvery { getMedicineScreen.invoke(any()) } returns Result.success(emptyScreenModel)
         every { buildMedicineInformation.invoke(any(), any(), any(), any()) } returns values
 
-        viewModel = MedicineViewModel(buildMedicineInformation, getMedicineScreen)
+        viewModel =
+            MedicineViewModel(buildMedicineInformation, getMedicineScreen, androidIdProvider)
         viewModel.fieldsValues[identifier] = InputUiModel(
             identifier = identifier,
             updatedValue = identifier,
@@ -89,9 +99,10 @@ class MedicineViewModelTest {
 
     @Test
     fun `when consumeInfoEvent is called`() = runTest {
-        coEvery { getMedicineScreen.invoke() } returns Result.success(emptyScreenModel)
+        coEvery { getMedicineScreen.invoke(any()) } returns Result.success(emptyScreenModel)
 
-        viewModel = MedicineViewModel(buildMedicineInformation, getMedicineScreen)
+        viewModel =
+            MedicineViewModel(buildMedicineInformation, getMedicineScreen, androidIdProvider)
         viewModel.consumeInfoEvent()
 
         Assert.assertEquals(null, viewModel.uiState.infoEvent)
@@ -99,9 +110,10 @@ class MedicineViewModelTest {
 
     @Test
     fun `when consumeNavigationEvent is called`() = runTest {
-        coEvery { getMedicineScreen.invoke() } returns Result.success(emptyScreenModel)
+        coEvery { getMedicineScreen.invoke(any()) } returns Result.success(emptyScreenModel)
 
-        viewModel = MedicineViewModel(buildMedicineInformation, getMedicineScreen)
+        viewModel =
+            MedicineViewModel(buildMedicineInformation, getMedicineScreen, androidIdProvider)
         viewModel.consumeNavigationEvent()
 
         Assert.assertEquals(null, viewModel.uiState.navigationModel)
@@ -109,9 +121,10 @@ class MedicineViewModelTest {
 
     @Test
     fun `when navigateBack is called`() = runTest {
-        coEvery { getMedicineScreen.invoke() } returns Result.success(emptyScreenModel)
+        coEvery { getMedicineScreen.invoke(any()) } returns Result.success(emptyScreenModel)
 
-        viewModel = MedicineViewModel(buildMedicineInformation, getMedicineScreen)
+        viewModel =
+            MedicineViewModel(buildMedicineInformation, getMedicineScreen, androidIdProvider)
         viewModel.navigateBack()
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.goBack)
