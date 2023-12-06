@@ -66,10 +66,9 @@ fun ChipSelectionComponent(
 
                         val viewsVisibility = mutableMapOf<String, Boolean>()
                         uiModel.selectionVisibility?.forEach {
-                            viewsVisibility[it.key] = it.value.equals(
-                                id,
-                                ignoreCase = true
-                            )
+                            val visibility =
+                                it.value.find { value -> value.equals(id, ignoreCase = true) }
+                            viewsVisibility[it.key] = visibility != null
                         }
 
                         onAction(uiModel.identifier, chipSelection, isSelection, viewsVisibility)
