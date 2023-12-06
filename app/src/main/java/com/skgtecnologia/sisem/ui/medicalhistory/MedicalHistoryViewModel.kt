@@ -202,7 +202,7 @@ class MedicalHistoryViewModel @Inject constructor(
                     }
                 }
 
-            /**observeOperationConfig.invoke()
+            observeOperationConfig.invoke()
                 .onSuccess { operationConfig ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
@@ -215,7 +215,7 @@ class MedicalHistoryViewModel @Inject constructor(
                             errorEvent = throwable.mapToUi()
                         )
                     }
-                }*/
+                }
         }
     }
 

@@ -9,7 +9,6 @@ import retrofit2.http.Body
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
-import retrofit2.http.Path
 
 interface MedicalHistoryApi {
 
@@ -28,7 +27,7 @@ interface MedicalHistoryApi {
     @Multipart
     @POST("aph/files")
     suspend fun saveAphFiles(
-        @Path("id_aph") idAph: String,
+        @Part("id_aph") idAph: Long,
         @Part files: List<MultipartBody.Part>
     ): Response<Unit>
 
