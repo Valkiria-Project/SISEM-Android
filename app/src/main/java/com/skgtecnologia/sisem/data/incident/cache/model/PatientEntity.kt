@@ -14,7 +14,7 @@ data class PatientEntity(
     @ColumnInfo(name = "is_pending_aph") val isPendingAph: Boolean
 )
 
-fun PatientEntity.mapToDomain(): PatientUiModel = with(this) {
+fun PatientEntity.mapToUi(): PatientUiModel = with(this) {
     PatientUiModel(
         id = id,
         fullName = fullName,

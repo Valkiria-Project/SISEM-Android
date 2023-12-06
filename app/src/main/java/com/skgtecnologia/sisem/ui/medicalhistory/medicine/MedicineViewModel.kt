@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.BuildMedicineInformation
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicineScreen
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
@@ -22,7 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MedicineViewModel @Inject constructor(
     private val buildMedicineInformation: BuildMedicineInformation,
-    private val getMedicineScreen: GetMedicineScreen
+    private val getMedicineScreen: GetMedicineScreen,
+    androidIdProvider: AndroidIdProvider
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -40,7 +42,7 @@ class MedicineViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch {
-            getMedicineScreen.invoke()
+            getMedicineScreen.invoke(serial = androidIdProvider.getAndroidId())
                 .onSuccess {
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(

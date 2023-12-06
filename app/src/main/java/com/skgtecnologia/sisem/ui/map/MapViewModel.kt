@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.skgtecnologia.sisem.domain.incident.usecases.ObserveActiveIncident
+import com.skgtecnologia.sisem.domain.notification.usecases.ObserveNotifications
 import com.skgtecnologia.sisem.ui.commons.extensions.locationFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MapViewModel @Inject constructor(
     fusedLocationClient: FusedLocationProviderClient,
-    observeActiveIncident: ObserveActiveIncident
+    observeActiveIncident: ObserveActiveIncident,
+    observeNotifications: ObserveNotifications
 ) : ViewModel() {
 
     var uiState by mutableStateOf(MapUiState())
@@ -52,6 +54,18 @@ class MapViewModel @Inject constructor(
                     location = location.longitude to location.latitude
                 )
             }
+            .launchIn(viewModelScope)
+
+        observeNotifications.invoke()
+            .flowOn(Dispatchers.IO)
+            .filterNotNull()
+            .onEach {
+                Timber.d("Observed notifications size is ${it.size}")
+                uiState = uiState.copy(
+                    notifications = it
+                )
+            }
+            .catch { Timber.wtf("Error observing notifications ${it.localizedMessage}") }
             .launchIn(viewModelScope)
     }
 }

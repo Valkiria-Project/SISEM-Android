@@ -26,8 +26,8 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
     override suspend fun getVitalSignsScreen(): ScreenModel =
         medicalHistoryRemoteDataSource.getVitalSignsScreen().getOrThrow()
 
-    override suspend fun getMedicineScreen(): ScreenModel =
-        medicalHistoryRemoteDataSource.getMedicineScreen().getOrThrow()
+    override suspend fun getMedicineScreen(serial: String): ScreenModel =
+        medicalHistoryRemoteDataSource.getMedicineScreen(serial).getOrThrow()
 
     override suspend fun sendMedicalHistory(
         idAph: String,

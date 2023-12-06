@@ -14,11 +14,11 @@ data class ResourceEntity(
     @Embedded(prefix = "resource_") val resource: ResourceDetailEntity
 )
 
-fun ResourceEntity.mapToDomain(): ResourceUiModel = with(this) {
+fun ResourceEntity.mapToUi(): ResourceUiModel = with(this) {
     ResourceUiModel(
         id = id,
         resourceId = resourceId,
-        resource = resource.mapToDomain()
+        resource = resource.mapToUi()
     )
 }
 

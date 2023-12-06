@@ -16,7 +16,7 @@ data class ChipSelectionResponse(
     @Json(name = "title") val title: TextResponse?,
     @Json(name = "items") val items: List<ChipSelectionItemResponse>?,
     @Json(name = "selected") val selected: String?,
-    @Json(name = "selection_visibility") val selectionVisibility: Map<String, String>?,
+    @Json(name = "selection_visibility") val selectionVisibility: Map<String, List<String>>?,
     @Json(name = "visibility") val visibility: Boolean?,
     @Json(name = "required") val required: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
