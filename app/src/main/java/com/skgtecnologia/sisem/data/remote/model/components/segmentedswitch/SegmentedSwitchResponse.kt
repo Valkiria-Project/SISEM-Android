@@ -16,7 +16,7 @@ data class SegmentedSwitchResponse(
     @Json(name = "text_style") val textStyle: TextStyle?,
     @Json(name = "options") val options: List<OptionResponse>?,
     @Json(name = "selected") val selected: Boolean?,
-    @Json(name = "selection_visibility") val selectionVisibility: Map<String, String>?,
+    @Json(name = "selection_visibility") val selectionVisibility: Map<String, List<String>>?,
     @Json(name = "visibility") val visibility: Boolean?,
     @Json(name = "required") val required: Boolean?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,

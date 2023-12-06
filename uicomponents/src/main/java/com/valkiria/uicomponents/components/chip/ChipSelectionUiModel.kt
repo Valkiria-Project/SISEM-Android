@@ -11,7 +11,7 @@ data class ChipSelectionUiModel(
     val title: TextUiModel?,
     val items: List<ChipSelectionItemUiModel>,
     val selected: String? = null,
-    val selectionVisibility: Map<String, String>?,
+    val selectionVisibility: Map<String, List<String>>?,
     val visibility: Boolean = true,
     val required: Boolean = false,
     val arrangement: Arrangement.Horizontal,
