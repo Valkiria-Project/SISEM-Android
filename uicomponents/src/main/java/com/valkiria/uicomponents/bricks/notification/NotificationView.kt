@@ -230,9 +230,8 @@ private fun NotificationViewRender(
                             style = MaterialTheme.typography.bodyMedium
                         )
                     } else {
-                        // FIXME: Hardcoded text
                         Text(
-                            text = "16:55",
+                            text = uiModel.timeStamp,
                             modifier = Modifier.weight(1f),
                             color = Color(parseColor("#AFAFAF")),
                             textAlign = TextAlign.End,
