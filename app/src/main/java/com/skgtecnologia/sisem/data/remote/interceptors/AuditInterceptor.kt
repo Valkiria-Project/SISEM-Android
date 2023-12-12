@@ -3,8 +3,6 @@ package com.skgtecnologia.sisem.data.remote.interceptors
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.ui.commons.extensions.locationFlow
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
@@ -16,6 +14,8 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import timber.log.Timber
+import javax.inject.Inject
+import javax.inject.Singleton
 
 private const val HTTP_CLIENT_VERSION_HEADER = "User-Agent"
 private const val CLIENT_VERSION = "sisem/Android/" + BuildConfig.VERSION_NAME
@@ -34,7 +34,7 @@ class AuditInterceptor @Inject constructor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
             .newBuilder()
-            .addHeader(HTTP_CLIENT_VERSION_HEADER, CLIENT_VERSION)
+            .header(HTTP_CLIENT_VERSION_HEADER, CLIENT_VERSION)
             .withCurrentLocation()
             .withCurrentIPAddress()
             .build()
@@ -59,7 +59,7 @@ class AuditInterceptor @Inject constructor(
             UNAVAILABLE_LOCATION
         }
 
-        this@withCurrentLocation.addHeader(
+        this@withCurrentLocation.header(
             HTTP_LOCATION_HEADER, formattedLocation
         )
     }
@@ -80,7 +80,7 @@ class AuditInterceptor @Inject constructor(
             }
         }.getOrNull() ?: UNAVAILABLE_IP_ADDRESS
 
-        this@withCurrentIPAddress.addHeader(
+        this@withCurrentIPAddress.header(
             IP_ADDRESS_HEADER, ipAddress
         )
     }
