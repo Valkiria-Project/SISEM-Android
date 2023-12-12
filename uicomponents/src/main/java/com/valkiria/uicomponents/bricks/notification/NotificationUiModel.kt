@@ -18,6 +18,7 @@ import com.valkiria.uicomponents.bricks.notification.model.SupportRequestNotific
 import com.valkiria.uicomponents.bricks.notification.model.TransmiNotification
 import com.valkiria.uicomponents.bricks.notification.model.TransmilenioAuthorizationNotification
 import com.valkiria.uicomponents.bricks.notification.model.TransmilenioDeniedNotification
+import com.valkiria.uicomponents.utlis.TimeUtils.getFormattedLocalTimeAsString
 import java.util.UUID
 
 data class NotificationUiModel(
@@ -27,10 +28,12 @@ data class NotificationUiModel(
     val title: String,
     val description: String? = null,
     val contentLeft: String? = null,
-    val contentRight: String? = null
+    val contentRight: String? = null,
+    val timeStamp: String
 )
-
+@Suppress("LongMethod")
 fun NotificationData.mapToUi(): NotificationUiModel {
+    val timeStamp = getFormattedLocalTimeAsString(time)
     return when (this) {
         is IncidentAssignedNotification -> NotificationUiModel(
             icon = INCIDENT_ASSIGNED.icon,
@@ -38,7 +41,8 @@ fun NotificationData.mapToUi(): NotificationUiModel {
             title = INCIDENT_ASSIGNED.title,
             description = this.cru,
             contentLeft = this.address,
-            contentRight = this.hour
+            contentRight = this.hour,
+            timeStamp = timeStamp
         )
 
         is TransmilenioAuthorizationNotification -> NotificationUiModel(
@@ -47,26 +51,30 @@ fun NotificationData.mapToUi(): NotificationUiModel {
             title = TRANSMILENIO_AUTHORIZATION.title,
             description = TRANSMILENIO_AUTHORIZATION.descriptionDecorator
                 .plus(this.authorizationNumber),
-            contentLeft = TRANSMILENIO_AUTHORIZATION.contentLeftDecorator.plus(this.authorizes)
+            contentLeft = TRANSMILENIO_AUTHORIZATION.contentLeftDecorator.plus(this.authorizes),
+            timeStamp = timeStamp
         )
 
         is TransmilenioDeniedNotification -> NotificationUiModel(
             icon = TRANSMILENIO_DENIED.icon,
             iconColor = TRANSMILENIO_DENIED.iconColor,
-            title = TRANSMILENIO_DENIED.title
+            title = TRANSMILENIO_DENIED.title,
+            timeStamp = timeStamp
         )
 
         is NoPreOperationalGeneratedCrueNotification -> NotificationUiModel(
             icon = NO_PRE_OPERATIONAL_GENERATED_CRUE.icon,
             iconColor = NO_PRE_OPERATIONAL_GENERATED_CRUE.iconColor,
-            title = NO_PRE_OPERATIONAL_GENERATED_CRUE.title
+            title = NO_PRE_OPERATIONAL_GENERATED_CRUE.title,
+            timeStamp = timeStamp
         )
 
         is SupportRequestNotification -> NotificationUiModel(
             icon = SUPPORT_REQUEST_ON_THE_WAY.icon,
             iconColor = SUPPORT_REQUEST_ON_THE_WAY.iconColor,
             title = SUPPORT_REQUEST_ON_THE_WAY.title,
-            description = this.resourceTypeCode
+            description = this.resourceTypeCode,
+            timeStamp = timeStamp
         )
 
         is IpsPatientTransferredNotification -> NotificationUiModel(
@@ -74,20 +82,23 @@ fun NotificationData.mapToUi(): NotificationUiModel {
             iconColor = IPS_PATIENT_TRANSFERRED.iconColor,
             title = IPS_PATIENT_TRANSFERRED.title,
             description = this.headquartersName,
-            contentLeft = this.headquartersAddress
+            contentLeft = this.headquartersAddress,
+            timeStamp = timeStamp
         )
 
         is StretcherRetentionEnableNotification -> NotificationUiModel(
             icon = STRETCHER_RETENTION_ENABLE.icon,
             iconColor = STRETCHER_RETENTION_ENABLE.iconColor,
-            title = STRETCHER_RETENTION_ENABLE.title
+            title = STRETCHER_RETENTION_ENABLE.title,
+            timeStamp = timeStamp
         )
 
         is ClosingAPHNotification -> NotificationUiModel(
             icon = CLOSING_OF_APH.icon,
             iconColor = CLOSING_OF_APH.iconColor,
             title = CLOSING_OF_APH.title.plus(this.consecutiveNumber),
-            description = this.updateTimeObservationsAttachments
+            description = this.updateTimeObservationsAttachments,
+            timeStamp = timeStamp
         )
 
         is TransmiNotification -> error("Invalid Transmi Notification Type")

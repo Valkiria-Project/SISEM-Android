@@ -8,6 +8,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.time.LocalDateTime
+import java.time.LocalTime
 
 @Suppress("TooManyFunctions")
 class CacheConverters {
@@ -107,5 +108,15 @@ class CacheConverters {
     @TypeConverter
     fun stringToLocalDateTime(value: String): LocalDateTime {
         return LocalDateTime.parse(value)
+    }
+
+    @TypeConverter
+    fun localTimeToString(value: LocalTime): String {
+        return value.toString()
+    }
+
+    @TypeConverter
+    fun stringToLocalTime(value: String): LocalTime {
+        return LocalTime.parse(value)
     }
 }

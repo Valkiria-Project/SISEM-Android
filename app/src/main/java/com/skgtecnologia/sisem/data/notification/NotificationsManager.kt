@@ -12,9 +12,9 @@ import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.ui.MainActivity
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import com.valkiria.uicomponents.bricks.notification.model.getNotificationDataByType
+import timber.log.Timber
 import java.time.Instant
 import javax.inject.Inject
-import timber.log.Timber
 
 private const val CHANNEL_ID = "notifications"
 private const val CHANNEL_NAME = "Notificaciones"

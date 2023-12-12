@@ -7,10 +7,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -38,7 +42,6 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.toTextStyle
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
-import timber.log.Timber
 
 private val ContentBackground = Modifier.background(color = Color(parseColor("#2B3139")))
 
@@ -47,31 +50,43 @@ fun IncidentContent(
     incidentUiModel: IncidentUiModel,
     onAction: (idAph: Int) -> Unit
 ) {
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 20.dp, end = 20.dp)
     ) {
-        IncidentHeader(
-            incidentUiModel.incident.codeSisem,
-            incidentUiModel.incident.incidentType.code
-        )
-
-        IncidentDetails(
-            incidentUiModel.incident.address,
-            incidentUiModel.incident.premierOneDate,
-            incidentUiModel.incident.premierOneHour
-        )
-
-        IncidentLocationDescription(incidentUiModel.incident.addressReferencePoint)
-
-        IncidentResources(incidentUiModel.resources)
-
-        incidentUiModel.transmiRequests?.let { transmiNotifications ->
-            IncidentTransmilenioRequest(transmiNotifications)
+        item(key = "INCIDENT_HEADER") {
+            IncidentHeader(
+                incidentUiModel.incident.codeSisem,
+                incidentUiModel.incident.incidentType.code
+            )
         }
 
-        IncidentFooter(incidentUiModel.patients, onAction)
+        item(key = "INCIDENT_DETAILS") {
+            IncidentDetails(
+                incidentUiModel.incident.address,
+                incidentUiModel.incident.premierOneDate,
+                incidentUiModel.incident.premierOneHour
+            )
+        }
+
+        item(key = "INCIDENT_LOCATION") {
+            IncidentLocationDescription(incidentUiModel.incident.addressReferencePoint)
+        }
+
+        item(key = "INCIDENT_RESOURCES") {
+            IncidentResources(incidentUiModel.resources)
+        }
+
+        incidentUiModel.transmiRequests?.let { transmiNotifications ->
+            item(key = "INCIDENT_TRANSMI_REQUESTS") {
+                IncidentTransmilenioRequest(transmiNotifications)
+            }
+        }
+
+        item(key = "INCIDENT_PATIENTS") {
+            IncidentFooter(incidentUiModel.patients, onAction)
+        }
     }
 }
 
@@ -268,7 +283,7 @@ private fun IncidentResource(resource: ResourceUiModel) {
 @Suppress("LongMethod", "MagicNumber")
 @Composable
 private fun IncidentTransmilenioRequest(transmiRequests: List<TransmiNotification>) {
-    transmiRequests.forEach {
+    transmiRequests.forEach { transmiNotification ->
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -316,76 +331,98 @@ private fun IncidentTransmilenioRequest(transmiRequests: List<TransmiNotificatio
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        modifier = Modifier.padding(start = 26.dp, end = 6.dp),
-                        text = "No 987798",
+                        modifier = Modifier.padding(start = 26.dp, end = 8.dp),
+                        text = when (transmiNotification) {
+                            is TransmilenioAuthorizationNotification -> stringResource(
+                                id = R.string.incident_transmi_auth_number,
+                                transmiNotification.authorizationNumber
+                            )
+
+                            is TransmilenioDeniedNotification -> stringResource(
+                                id = R.string.incident_transmi_auth_number,
+                                transmiNotification.authorizationNumber
+                            )
+
+                            else -> error("Invalid TransmiNotification")
+                        },
                         color = Color.White,
-                        style = TextStyle.HEADLINE_6.toTextStyle()
+                        style = TextStyle.HEADLINE_6.toTextStyle().copy(
+                            fontWeight = FontWeight.SemiBold
+                        )
                     )
 
-                    Text(
-                        text = "|",
-                        style = TextStyle.HEADLINE_4.toTextStyle(),
-                        color = Color.White,
-                    )
+                    if (transmiNotification is TransmilenioDeniedNotification) {
+                        Divider(
+                            color = Color.White,
+                            modifier = Modifier
+                                .height(25.dp)
+                                .width(1.dp)
+                        )
 
+                        Text(
+                            modifier = Modifier.padding(start = 8.dp),
+                            text = stringResource(id = R.string.incident_transmi_auth_denied),
+                            color = Color(parseColor("#F55757")),
+                            style = TextStyle.HEADLINE_6.toTextStyle().copy(
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold
+                            ),
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 1
+                        )
+                    }
+                }
+
+                if (transmiNotification is TransmilenioAuthorizationNotification) {
                     Text(
-                        modifier = Modifier.padding(start = 2.dp),
-                        text = "No hay respuesta",
+                        modifier = Modifier.padding(start = 26.dp),
+                        text = stringResource(
+                            id = R.string.incident_transmi_authorizes,
+                            transmiNotification.authorizes
+                        ),
                         color = Color.White,
                         style = TextStyle.HEADLINE_6.toTextStyle(),
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1
                     )
-                }
 
-                Text(
-                    modifier = Modifier.padding(start = 26.dp),
-                    text = "Autoriza: Juan Correa algo",
-                    color = Color.White,
-                    style = TextStyle.HEADLINE_6.toTextStyle(),
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1
-                )
-
-                Row(
-                    modifier = Modifier
-                        .padding(top = 10.dp)
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
+                    Row(
                         modifier = Modifier
-                            .padding(start = 26.dp, end = 2.dp)
-                            .fillMaxWidth(0.60f),
-                        text = "Trayecto Perdomo a Reicaurte",
-                        color = Color.White,
-                        style = TextStyle.HEADLINE_6.toTextStyle()
-                    )
+                            .padding(top = 10.dp)
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .padding(start = 26.dp, end = 2.dp)
+                                .fillMaxWidth(0.60f),
+                            text = stringResource(
+                                id = R.string.incident_transmi_journey,
+                                transmiNotification.journey
+                            ),
+                            color = Color.White,
+                            style = TextStyle.HEADLINE_6.toTextStyle()
+                        )
 
-                    Text(
-                        text = "|",
-                        style = TextStyle.HEADLINE_3.toTextStyle(),
-                        color = Color.White,
-                    )
+                        Divider(
+                            color = Color.White,
+                            modifier = Modifier
+                                .height(25.dp)
+                                .width(1.dp)
+                        )
 
-                    Text(
-                        modifier = Modifier.padding(start = 2.dp),
-                        text = "Autorizado",
-                        color = Color(parseColor("#3CF2DD")),
-                        style = TextStyle.HEADLINE_6.toTextStyle(),
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1
-                    )
-                }
-            }
-
-            when (it) {
-                is TransmilenioAuthorizationNotification -> {
-                    Timber.d(("FIXME"))
-                }
-
-                is TransmilenioDeniedNotification -> {
-                    Timber.d(("FIXME"))
+                        Text(
+                            modifier = Modifier.padding(start = 8.dp),
+                            text = stringResource(id = R.string.incident_transmi_auth_approved),
+                            color = Color(parseColor("#3CF2DD")),
+                            style = TextStyle.HEADLINE_6.toTextStyle().copy(
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold
+                            ),
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 1
+                        )
+                    }
                 }
             }
         }

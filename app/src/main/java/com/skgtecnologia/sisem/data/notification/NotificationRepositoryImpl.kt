@@ -9,8 +9,10 @@ import com.skgtecnologia.sisem.domain.notification.repository.NotificationReposi
 import com.valkiria.uicomponents.bricks.notification.NotificationUiModel
 import com.valkiria.uicomponents.bricks.notification.model.IncidentAssignedNotification
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
+import com.valkiria.uicomponents.bricks.notification.model.TransmiNotification
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import timber.log.Timber
 import javax.inject.Inject
 
 class NotificationRepositoryImpl @Inject constructor(
@@ -24,22 +26,42 @@ class NotificationRepositoryImpl @Inject constructor(
     override suspend fun storeNotification(notification: NotificationData) {
         notificationCacheDataSource.storeNotification(notification)
 
-        if (notification is IncidentAssignedNotification) {
-            incidentRemoteDataSource.getIncidentInfo(
-                idIncident = notification.incidentNumber,
-                idTurn = authCacheDataSource.observeAccessToken()
-                    .first()
-                    ?.turn
-                    ?.id
-                    ?.toString()
-                    .orEmpty(),
-                codeVehicle = operationCacheDataSource.observeOperationConfig()
-                    .first()
-                    ?.vehicleCode
-                    .orEmpty()
-            ).onSuccess {
-                incidentCacheDataSource.storeIncident(it)
+        when (notification) {
+            is IncidentAssignedNotification -> handleIncidentAssignedNotification(notification)
+            is TransmiNotification -> handleTransmiNotification(notification)
+            else -> Timber.d("no-op")
+        }
+    }
+
+    private suspend fun handleIncidentAssignedNotification(
+        notification: IncidentAssignedNotification
+    ) {
+        incidentRemoteDataSource.getIncidentInfo(
+            idIncident = notification.incidentNumber,
+            idTurn = authCacheDataSource.observeAccessToken()
+                .first()
+                ?.turn
+                ?.id
+                ?.toString()
+                .orEmpty(),
+            codeVehicle = operationCacheDataSource.observeOperationConfig()
+                .first()
+                ?.vehicleCode
+                .orEmpty()
+        ).onSuccess {
+            incidentCacheDataSource.storeIncident(it)
+        }
+    }
+
+    private suspend fun handleTransmiNotification(notification: TransmiNotification) {
+        val incident = incidentCacheDataSource.observeActiveIncident().first()
+
+        if (incident?.id != null) {
+            val transmiRequests = buildList {
+                incident.transmiRequests?.let { addAll(it) }
+                add(notification)
             }
+            incidentCacheDataSource.updateTransmiStatus(incident.id!!, transmiRequests)
         }
     }
 

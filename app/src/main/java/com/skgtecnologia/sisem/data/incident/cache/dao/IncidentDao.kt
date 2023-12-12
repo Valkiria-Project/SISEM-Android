@@ -13,6 +13,15 @@ interface IncidentDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertIncident(incidentEntity: IncidentEntity): Long
 
+    @Query(
+        """
+            UPDATE incident
+            SET transmi_requests = :transmiRequests
+            WHERE id = :incidentId
+             """
+    )
+    suspend fun updateTransmiStatus(incidentId: Long, transmiRequests: List<Map<String, String>>)
+
     @Query("SELECT * FROM incident WHERE is_active = :isActive LIMIT 1")
     fun observeActiveIncident(isActive: Boolean = true): Flow<IncidentEntity?>
 }

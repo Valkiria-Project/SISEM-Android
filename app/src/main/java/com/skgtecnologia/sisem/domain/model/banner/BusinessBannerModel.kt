@@ -5,13 +5,16 @@ package com.skgtecnologia.sisem.domain.model.banner
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
 import com.skgtecnologia.sisem.domain.inventory.model.TransferReturnIdentifiers
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddFindingIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
+import com.skgtecnologia.sisem.ui.theme.montserratFontFamily
 import com.valkiria.uicomponents.components.button.ButtonSize
 import com.valkiria.uicomponents.components.button.ButtonStyle
 import com.valkiria.uicomponents.components.button.ButtonUiModel
@@ -180,6 +183,11 @@ fun preOperationalConfirmationBanner(zone: String): BannerModel = BannerModel(
             label = "CANCELAR",
             style = ButtonStyle.LOUD,
             textStyle = TextStyle.HEADLINE_5,
+            composeTextStyle = androidx.compose.ui.text.TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = montserratFontFamily
+            ),
             onClick = OnClick.DISMISS,
             size = ButtonSize.DEFAULT,
             arrangement = Arrangement.Center,
@@ -195,6 +203,11 @@ fun preOperationalConfirmationBanner(zone: String): BannerModel = BannerModel(
             label = "GUARDAR",
             style = ButtonStyle.LOUD,
             textStyle = TextStyle.HEADLINE_5,
+            composeTextStyle = androidx.compose.ui.text.TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = montserratFontFamily
+            ),
             onClick = OnClick.DISMISS,
             size = ButtonSize.DEFAULT,
             arrangement = Arrangement.Center,

@@ -26,6 +26,7 @@ data class IncidentEntity(
 
 fun IncidentEntity.mapToUi(): IncidentUiModel = with(this) {
     IncidentUiModel(
+        id = id,
         incident = incident.mapToUi(),
         patients = patients.map { it.mapToUi() },
         resources = resources.map { it.mapToUi() },
