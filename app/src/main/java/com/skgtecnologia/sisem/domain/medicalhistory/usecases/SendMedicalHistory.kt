@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.domain.medicalhistory.usecases
 import androidx.annotation.CheckResult
 import com.skgtecnologia.sisem.commons.extensions.resultOf
 import com.skgtecnologia.sisem.domain.medicalhistory.MedicalHistoryRepository
+import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 import javax.inject.Inject
 
@@ -24,7 +25,8 @@ class SendMedicalHistory @Inject constructor(
         chipOptionsValues: Map<String, List<String>>,
         imageButtonSectionValues: Map<String, String>,
         vitalSigns: Map<String, Map<String, String>>,
-        infoCardButtonValues: List<Map<String, String>>
+        infoCardButtonValues: List<Map<String, String>>,
+        images: List<ImageModel>?
     ): Result<Unit> = resultOf {
         medicalHistoryRepository.sendMedicalHistory(
             idAph,
@@ -38,7 +40,8 @@ class SendMedicalHistory @Inject constructor(
             chipOptionsValues,
             imageButtonSectionValues,
             vitalSigns,
-            infoCardButtonValues
+            infoCardButtonValues,
+            images
         )
     }
 }

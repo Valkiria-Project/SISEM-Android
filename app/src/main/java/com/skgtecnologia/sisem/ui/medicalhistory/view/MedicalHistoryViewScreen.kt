@@ -1,10 +1,13 @@
 package com.skgtecnologia.sisem.ui.medicalhistory.view
 
+import android.content.Context
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -18,6 +21,8 @@ import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.media.MediaAction
+import com.valkiria.uicomponents.extensions.storeUriAsFileToCache
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -27,6 +32,8 @@ fun MedicalHistoryViewScreen(
     photoTaken: Boolean = false,
     onNavigation: (stretcherRetentionViewNavigationModel: NavigationModel?) -> Unit
 ) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     val viewModel = hiltViewModel<MedicalHistoryViewViewModel>()
     val uiState = viewModel.uiState
 
@@ -75,7 +82,7 @@ fun MedicalHistoryViewScreen(
                 }
                 .padding(top = 20.dp)
         ) { uiAction ->
-            handleAction(uiAction, viewModel)
+            handleAction(uiAction, viewModel, context, scope)
         }
     }
 
@@ -90,7 +97,12 @@ fun MedicalHistoryViewScreen(
     OnLoadingHandler(uiState.isLoading, modifier)
 }
 
-private fun handleAction(uiAction: UiAction, viewModel: MedicalHistoryViewViewModel) {
+private fun handleAction(
+    uiAction: UiAction,
+    viewModel: MedicalHistoryViewViewModel,
+    context: Context,
+    scope: CoroutineScope
+) {
     when (uiAction) {
         is GenericUiAction.InputAction -> {}
 
@@ -109,7 +121,17 @@ private fun handleAction(uiAction: UiAction, viewModel: MedicalHistoryViewViewMo
             )
         }
 
-        is GenericUiAction.StepperAction -> viewModel.sendMedicalHistoryView()
+        is GenericUiAction.StepperAction -> {
+            scope.launch {
+                val images = viewModel.uiState.selectedMediaUris.map { uri ->
+                    context.storeUriAsFileToCache(
+                        uri,
+                        viewModel.uiState.operationConfig?.maxFileSizeKb
+                    )
+                }
+                viewModel.sendMedicalHistoryView(images)
+            }
+        }
 
         is HeaderUiAction.GoBack -> viewModel.navigateBack()
 

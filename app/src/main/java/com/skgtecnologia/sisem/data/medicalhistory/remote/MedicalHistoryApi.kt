@@ -3,9 +3,12 @@ package com.skgtecnologia.sisem.data.medicalhistory.remote
 import com.skgtecnologia.sisem.data.medicalhistory.remote.model.MedicalHistoryBody
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenResponse
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 
 interface MedicalHistoryApi {
 
@@ -20,6 +23,13 @@ interface MedicalHistoryApi {
 
     @POST("aph")
     suspend fun sendMedicalHistory(@Body medicalHistoryBody: MedicalHistoryBody): Response<Unit>
+
+    @Multipart
+    @POST("aph/files")
+    suspend fun saveAphFiles(
+        @Part("id_aph") idAph: Long,
+        @Part files: List<MultipartBody.Part>
+    ): Response<Unit>
 
     @POST("screen/aph-view")
     suspend fun getMedicalHistoryViewScreen(@Body screenBody: ScreenBody): Response<ScreenResponse>

@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.domain.medicalhistory
 
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 
 interface MedicalHistoryRepository {
@@ -24,8 +25,11 @@ interface MedicalHistoryRepository {
         chipOptionsValues: Map<String, List<String>>,
         imageButtonSectionValues: Map<String, String>,
         vitalSigns: Map<String, Map<String, String>>,
-        infoCardButtonValues: List<Map<String, String>>
+        infoCardButtonValues: List<Map<String, String>>,
+        images: List<ImageModel>?
     )
+
+    suspend fun saveAphFiles(idAph: String, images: List<ImageModel>)
 
     suspend fun getMedicalHistoryViewScreen(idAph: String): ScreenModel
 }

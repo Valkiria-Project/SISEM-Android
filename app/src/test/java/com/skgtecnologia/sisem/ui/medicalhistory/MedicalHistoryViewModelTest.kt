@@ -97,6 +97,7 @@ class MedicalHistoryViewModelTest {
         MockKAnnotations.init(this)
 
         every { androidIdProvider.getAndroidId() } returns ANDROID_ID
+        coEvery { observeOperationConfig.invoke() } returns mockk()
     }
 
     @Test
@@ -754,6 +755,7 @@ class MedicalHistoryViewModelTest {
                 any(),
                 any(),
                 any(),
+                any(),
                 any()
             )
         } returns Result.success(Unit)
@@ -766,7 +768,7 @@ class MedicalHistoryViewModelTest {
             observeOperationConfig = observeOperationConfig,
             stringProvider = stringProvider
         )
-        viewModel.sendMedicalHistory()
+        viewModel.sendMedicalHistory(listOf())
 
         Assert.assertEquals(MEDICAL_APH_BANNER_TITLE, viewModel.uiState.infoEvent?.title)
     }
@@ -789,6 +791,7 @@ class MedicalHistoryViewModelTest {
                 any(),
                 any(),
                 any(),
+                any(),
                 any()
             )
         } returns Result.failure(Throwable())
@@ -801,7 +804,7 @@ class MedicalHistoryViewModelTest {
             observeOperationConfig = observeOperationConfig,
             stringProvider = stringProvider
         )
-        viewModel.sendMedicalHistory()
+        viewModel.sendMedicalHistory(listOf())
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.errorEvent?.title)
     }

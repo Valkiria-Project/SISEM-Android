@@ -27,6 +27,7 @@ import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
 import com.skgtecnologia.sisem.ui.preoperational.create.PreOpNavigationModel
 import com.skgtecnologia.sisem.ui.preoperational.view.PreOpViewNavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
+import com.skgtecnologia.sisem.ui.sendemail.SendEmailNavigationModel
 import com.skgtecnologia.sisem.ui.signature.init.InitSignatureNavigationModel
 import com.skgtecnologia.sisem.ui.signature.view.SignatureNavigationModel
 import com.skgtecnologia.sisem.ui.stretcherretention.create.StretcherRetentionNavigationModel
@@ -80,6 +81,7 @@ fun navigateToNextStep(
     is PreOpViewNavigationModel -> preOpViewToNextStep(navController, navigationModel)
     is PreOpNavigationModel -> preOpToNextStep(navController, navigationModel)
     is ReportNavigationModel -> reportToNextStep(navController, navigationModel)
+    is SendEmailNavigationModel -> sendEmailToNextStep(navController, navigationModel)
     is SignatureNavigationModel -> signatureToNextStep(navController, navigationModel)
     is SignaturePadNavigationModel -> signaturePadToNextStep(navController, navigationModel)
     is PreStretcherRetentionNavigationModel ->
@@ -279,6 +281,10 @@ private fun medicalHistoryViewToNextStep(
     when {
         model.back -> navController.popBackStack()
 
+        model.sendMedical != null -> navController.navigate(
+            AphNavigationRoute.SendEmailScreen.route + "/${model.sendMedical}"
+        )
+
         model.showCamera -> navController.navigate(AphNavigationRoute.CameraScreen.route)
 
         model.photoTaken -> with(navController) {
@@ -387,6 +393,16 @@ private fun reportToNextStep(
                     inclusive = true
                 }
             }
+    }
+}
+
+fun sendEmailToNextStep(
+    navController: NavHostController,
+    model: SendEmailNavigationModel
+) {
+    when {
+        model.back -> navController.popBackStack()
+        model.send -> navController.navigate(NavigationGraph.Main.route)
     }
 }
 

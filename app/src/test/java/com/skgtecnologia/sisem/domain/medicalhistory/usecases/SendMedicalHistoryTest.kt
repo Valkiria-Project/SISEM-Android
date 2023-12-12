@@ -39,6 +39,7 @@ class SendMedicalHistoryTest {
                 any(),
                 any(),
                 any(),
+                any(),
                 any()
             )
         } returns Unit
@@ -55,7 +56,8 @@ class SendMedicalHistoryTest {
             chipOptionsValues = mapOf(),
             imageButtonSectionValues = mapOf(),
             vitalSigns = mapOf(),
-            infoCardButtonValues = listOf()
+            infoCardButtonValues = listOf(),
+            images = listOf()
         )
 
         Assert.assertEquals(true, result.isSuccess)
@@ -66,6 +68,7 @@ class SendMedicalHistoryTest {
         coEvery {
             medicalHistoryRepository.sendMedicalHistory(
                 ID_APH.toString(),
+                any(),
                 any(),
                 any(),
                 any(),
@@ -92,7 +95,8 @@ class SendMedicalHistoryTest {
             chipOptionsValues = mapOf(),
             imageButtonSectionValues = mapOf(),
             vitalSigns = mapOf(),
-            infoCardButtonValues = listOf()
+            infoCardButtonValues = listOf(),
+            images = listOf()
         )
 
         Assert.assertEquals(true, result.isFailure)

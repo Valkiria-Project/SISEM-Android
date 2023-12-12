@@ -363,3 +363,10 @@ fun confirmTransferReturn(): BannerModel = BannerModel(
         )
     )
 )
+
+fun sendEmailScreenSuccessBanner(): BannerModel = BannerModel(
+    icon = "ic_alert",
+    iconColor = "#42A4FA",
+    title = "Éxito",
+    description = "Correo enviado exitosamente"
+)
