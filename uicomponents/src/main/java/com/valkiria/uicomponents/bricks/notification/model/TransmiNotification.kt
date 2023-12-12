@@ -26,14 +26,14 @@ fun getTransmiNotificationDataByType(
 
     return when (notificationType) {
         NotificationType.TRANSMILENIO_AUTHORIZATION -> TransmilenioAuthorizationNotification(
-            dateTime= notificationDateTime,
+            dateTime = notificationDateTime,
             authorizationNumber = notificationDataMap[AUTHORIZATION_NUMBER].orEmpty(),
             authorizes = notificationDataMap[AUTHORIZES].orEmpty(),
             journey = notificationDataMap[JOURNEY].orEmpty()
         )
 
         NotificationType.TRANSMILENIO_DENIED -> TransmilenioDeniedNotification(
-            dateTime= notificationDateTime,
+            dateTime = notificationDateTime,
             authorizationNumber = notificationDataMap[AUTHORIZATION_NUMBER_DENIED].orEmpty()
         )
 
