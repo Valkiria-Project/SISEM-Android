@@ -78,7 +78,6 @@ fun HeaderSection(
                     imageVector = ImageVector.vectorResource(id = rightIconResourceId),
                     contentDescription = null,
                     modifier = Modifier
-                        .clickable { onAction(HeaderUiAction.RightAction) }
                         .padding(end = 12.dp)
                         .size(24.dp),
                     tint = MaterialTheme.colorScheme.primary

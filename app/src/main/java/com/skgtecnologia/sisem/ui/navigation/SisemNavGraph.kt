@@ -357,16 +357,6 @@ private fun NavGraphBuilder.mainGraph(
                 navigateToNextStep(navController, navigationModel)
             }
         }
-
-        composable(
-            route = MainNavigationRoute.SendEmailScreen.route
-        ) {
-            SendEmailScreen(
-                modifier = modifier
-            ) {
-                navigateToNextStep(navController, it)
-            }
-        }
     }
 }
 
@@ -439,6 +429,17 @@ private fun NavGraphBuilder.aphGraph(
         ) {
             MedicineScreen(modifier = modifier) { navigationModel ->
                 navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = AphNavigationRoute.SendEmailScreen.route + "/{$ID_APH}",
+            arguments = listOf(navArgument(ID_APH) { type = NavType.IntType })
+        ) {
+            SendEmailScreen(
+                modifier = modifier
+            ) {
+                navigateToNextStep(navController, it)
             }
         }
 

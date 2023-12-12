@@ -121,7 +121,6 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
 
 sealed class HeaderUiAction : UiAction {
     data object GoBack : HeaderUiAction()
-    data object RightAction : HeaderUiAction()
 }
 
 sealed class FooterUiAction(open val identifier: String) : UiAction {

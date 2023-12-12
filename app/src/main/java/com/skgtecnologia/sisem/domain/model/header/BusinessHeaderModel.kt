@@ -92,14 +92,3 @@ fun emptyStretcherRetentionHeader(): HeaderUiModel = HeaderUiModel(
     leftIcon = "ic_back",
     modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 20.dp)
 )
-
-fun sendEmailHeader(): HeaderUiModel = HeaderUiModel(
-    identifier = "SEND_EMAIL_HEADER",
-    title = TextUiModel(
-        text = "",
-        textStyle = TextStyle.HEADLINE_1
-    ),
-    leftIcon = "ic_close",
-    rightIcon = "ic_send",
-    modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 20.dp)
-)

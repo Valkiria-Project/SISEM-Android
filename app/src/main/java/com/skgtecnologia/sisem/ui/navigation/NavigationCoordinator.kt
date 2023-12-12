@@ -281,7 +281,9 @@ private fun medicalHistoryViewToNextStep(
     when {
         model.back -> navController.popBackStack()
 
-        model.sendMedical -> navController.navigate(MainNavigationRoute.SendEmailScreen.route)
+        model.sendMedical != null -> navController.navigate(
+            AphNavigationRoute.SendEmailScreen.route + "/${model.sendMedical}"
+        )
 
         model.showCamera -> navController.navigate(AphNavigationRoute.CameraScreen.route)
 

@@ -179,7 +179,7 @@ class MedicalHistoryViewViewModel @Inject constructor(
         if (images.isEmpty()) {
             uiState = uiState.copy(
                 isLoading = false,
-                navigationModel = MedicalHistoryViewNavigationModel(sendMedical = true)
+                navigationModel = MedicalHistoryViewNavigationModel(sendMedical = idAph)
             )
         } else {
             job?.cancel()
@@ -196,7 +196,7 @@ class MedicalHistoryViewViewModel @Inject constructor(
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
                             isLoading = false,
-                            navigationModel = MedicalHistoryViewNavigationModel(sendMedical = true)
+                            navigationModel = MedicalHistoryViewNavigationModel(sendMedical = idAph)
                         )
                     }
                 }.onFailure { throwable ->
