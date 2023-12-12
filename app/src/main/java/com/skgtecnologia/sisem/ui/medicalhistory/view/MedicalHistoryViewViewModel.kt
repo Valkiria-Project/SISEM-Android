@@ -10,7 +10,10 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryViewScreen
+import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SaveAphFiles
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
+import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
+import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.valkiria.uicomponents.action.UiAction
@@ -21,13 +24,16 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class MedicalHistoryViewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val logoutCurrentUser: LogoutCurrentUser,
-    private val getMedicalHistoryViewScreen: GetMedicalHistoryViewScreen
+    private val getMedicalHistoryViewScreen: GetMedicalHistoryViewScreen,
+    private val observeOperationConfig: ObserveOperationConfig,
+    private val saveAphFiles: SaveAphFiles
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -60,6 +66,21 @@ class MedicalHistoryViewViewModel @Inject constructor(
                         )
                     }
                 }
+
+            observeOperationConfig.invoke()
+                .onSuccess { operationConfig ->
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            operationConfig = operationConfig
+                        )
+                    }
+                }.onFailure { throwable ->
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            errorEvent = throwable.mapToUi()
+                        )
+                    }
+                }
         }
     }
 
@@ -86,7 +107,7 @@ class MedicalHistoryViewViewModel @Inject constructor(
 
     private fun consumeShownError() {
         uiState = uiState.copy(
-            infoEvent = null
+            errorEvent = null
         )
     }
 
@@ -154,7 +175,40 @@ class MedicalHistoryViewViewModel @Inject constructor(
         )
     }
 
-    fun sendMedicalHistoryView() {
-        // FIXME: add logic ??
+    fun sendMedicalHistoryView(images: List<File>) {
+        if (images.isEmpty()) {
+            uiState = uiState.copy(
+                isLoading = false,
+                navigationModel = MedicalHistoryViewNavigationModel(sendMedical = idAph)
+            )
+        } else {
+            job?.cancel()
+            job = viewModelScope.launch {
+                saveAphFiles.invoke(
+                    idAph = idAph.toString(),
+                    images = images.mapIndexed { index, image ->
+                        ImageModel(
+                            fileName = "Img_$idAph" + "_$index.jpg",
+                            file = image
+                        )
+                    }
+                ).onSuccess {
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            navigationModel = MedicalHistoryViewNavigationModel(sendMedical = idAph)
+                        )
+                    }
+                }.onFailure { throwable ->
+                    Timber.wtf(throwable, "This is a failure")
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            errorEvent = throwable.mapToUi()
+                        )
+                    }
+                }
+            }
+        }
     }
 }

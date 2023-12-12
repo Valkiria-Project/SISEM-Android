@@ -66,6 +66,7 @@ import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.banner.medicalHistorySuccess
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
+import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
@@ -105,6 +106,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.io.File
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -195,6 +197,21 @@ class MedicalHistoryViewModel @Inject constructor(
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
                             isLoading = false,
+                            errorEvent = throwable.mapToUi()
+                        )
+                    }
+                }
+
+            observeOperationConfig.invoke()
+                .onSuccess { operationConfig ->
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            operationConfig = operationConfig
+                        )
+                    }
+                }.onFailure { throwable ->
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
                             errorEvent = throwable.mapToUi()
                         )
                     }
@@ -589,44 +606,29 @@ class MedicalHistoryViewModel @Inject constructor(
     }
 
     private fun updateWithdrawalWitness() {
-        job?.cancel()
-        job = viewModelScope.launch {
-            observeOperationConfig.invoke()
-                .onSuccess { operationModel ->
-                    val updatedBody = updateBodyModel(
-                        uiModels = uiState.screenModel?.body,
-                        identifier = WITHDRAWAL_DECLARATION_KEY,
-                        updater = { model ->
-                            if (model is RichLabelUiModel) {
-                                model.copy(
-                                    text = getWithdrawalWitnessText(
-                                        patient = fieldsValues.getPatientName(),
-                                        document = fieldsValues.getPatientDocument(),
-                                        code = operationModel.vehicleCode.orEmpty()
-                                    )
-                                )
-                            } else {
-                                model
-                            }
-                        }
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = WITHDRAWAL_DECLARATION_KEY,
+            updater = { model ->
+                if (model is RichLabelUiModel) {
+                    model.copy(
+                        text = getWithdrawalWitnessText(
+                            patient = fieldsValues.getPatientName(),
+                            document = fieldsValues.getPatientDocument(),
+                            code = uiState.operationConfig?.vehicleCode.orEmpty()
+                        )
                     )
+                } else {
+                    model
+                }
+            }
+        )
 
-                    withContext(Dispatchers.Main) {
-                        uiState = uiState.copy(
-                            screenModel = uiState.screenModel?.copy(
-                                body = updatedBody
-                            )
-                        )
-                    }
-                }
-                .onFailure { throwable ->
-                    withContext(Dispatchers.Main) {
-                        uiState = uiState.copy(
-                            errorEvent = throwable.mapToUi()
-                        )
-                    }
-                }
-        }
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
     }
 
     private fun SnapshotStateMap<String, InputUiModel>.getPatientName(): String =
@@ -1022,7 +1024,7 @@ class MedicalHistoryViewModel @Inject constructor(
         return ((now.toEpochDay() - fur.toEpochDay()) / WEEK_DAYS).toString()
     }
 
-    fun sendMedicalHistory() {
+    fun sendMedicalHistory(images: List<File>) {
         uiState = uiState.copy(
             isLoading = true,
             validateFields = true
@@ -1042,7 +1044,13 @@ class MedicalHistoryViewModel @Inject constructor(
                 chipOptionsValues = chipOptionValues,
                 imageButtonSectionValues = imageButtonSectionValues,
                 vitalSigns = vitalSignsValues,
-                infoCardButtonValues = medicineValues
+                infoCardButtonValues = medicineValues,
+                images = images.mapIndexed { index, image ->
+                    ImageModel(
+                        fileName = "Img_$idAph" + "_$index.jpg",
+                        file = image
+                    )
+                }
             ).onSuccess {
                 withContext(Dispatchers.Main) {
                     uiState = uiState.copy(

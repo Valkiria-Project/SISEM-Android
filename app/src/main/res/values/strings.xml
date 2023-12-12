@@ -179,4 +179,10 @@
         de tal manera que admito la realización de maniobras de reanimación o su finalización, de acuerdo con el criterio médico y a la patología del paciente.
         He tenido la oportunidad de hacer todas las preguntas pertinentes para aclarar mis dudas y se me han respondido de manera clara y suficiente.
     </string>
+
+    <!-- Send Email Screen -->
+    <string name="send_email_body">Asunto  Registro de atención Prehospitalaria</string>
+    <string name="send_email_from">De   notificacionessisem@saludcapital.gov.co</string>
+    <string name="send_email_content">Contenido</string>
+    <string name="send_email_content_pdf">RegistroAPH.pdf</string>
 </resources>
