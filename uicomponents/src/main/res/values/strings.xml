@@ -19,6 +19,12 @@
     <!-- Incident -->
     <string name="incident_support_request_title">Solicitud de apoyo</string>
     <string name="incident_transmi_lane_request_title">Carril de transmilenio</string>
+    <string name="incident_transmi_auth_number">No %1$s</string>
+    <string name="incident_transmi_auth_separator"> | </string>
+    <string name="incident_transmi_auth_denied">No autorizado</string>
+    <string name="incident_transmi_authorizes">Autoriza: %1$s</string>
+    <string name="incident_transmi_journey">Trayecto: %1$s</string>
+    <string name="incident_transmi_auth_approved">Autorizado</string>
 
     <!-- Date / Time picker -->
     <string name="date_picker_select">Seleccionar</string>
