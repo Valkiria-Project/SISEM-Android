@@ -9,6 +9,7 @@ import com.valkiria.uicomponents.bricks.notification.model.NotificationType.SUPP
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_AUTHORIZATION
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_DENIED
 import timber.log.Timber
+import java.time.LocalDateTime
 
 // NOTIFICATION_TYPE
 const val NOTIFICATION_TYPE_KEY = "notification_type"
@@ -36,16 +37,23 @@ private const val UPDATE_TIME_OBSERVATIONS = "update_time_observations_and_attac
 
 sealed interface NotificationData {
     val notificationType: NotificationType
+    val dateTime: LocalDateTime
 }
 
-fun getNotificationDataByType(notificationDataMap: Map<String, String>): NotificationData? {
+fun getNotificationDataByType(
+    notificationDataMap: Map<String, String>,
+    dateTime: LocalDateTime? = null
+): NotificationData? {
     val notificationType = NotificationType.from(
         notificationDataMap[NOTIFICATION_TYPE_KEY].orEmpty()
     )
     Timber.d("notificationType ${notificationType?.title}")
 
+    val notificationDateTime = dateTime ?: LocalDateTime.now()
+
     return when (notificationType) {
         INCIDENT_ASSIGNED -> IncidentAssignedNotification(
+            dateTime = notificationDateTime,
             cru = notificationDataMap[CRU].orEmpty(),
             incidentNumber = notificationDataMap[INCIDENT_NUMBER].orEmpty(),
             incidentType = notificationDataMap[INCIDENT_TYPE].orEmpty(),
@@ -57,29 +65,38 @@ fun getNotificationDataByType(notificationDataMap: Map<String, String>): Notific
         )
 
         TRANSMILENIO_AUTHORIZATION -> TransmilenioAuthorizationNotification(
+            dateTime = notificationDateTime,
             authorizationNumber = notificationDataMap[AUTHORIZATION_NUMBER].orEmpty(),
             authorizes = notificationDataMap[AUTHORIZES].orEmpty(),
             journey = notificationDataMap[JOURNEY].orEmpty()
         )
 
         TRANSMILENIO_DENIED -> TransmilenioDeniedNotification(
+            dateTime = notificationDateTime,
             authorizationNumber = notificationDataMap[AUTHORIZATION_NUMBER_DENIED].orEmpty()
         )
 
-        NO_PRE_OPERATIONAL_GENERATED_CRUE -> NoPreOperationalGeneratedCrueNotification()
+        NO_PRE_OPERATIONAL_GENERATED_CRUE -> NoPreOperationalGeneratedCrueNotification(
+            dateTime = notificationDateTime
+        )
 
         SUPPORT_REQUEST_ON_THE_WAY -> SupportRequestNotification(
+            dateTime = notificationDateTime,
             resourceTypeCode = notificationDataMap[RESOURCE_TYPE_AND_CODE].orEmpty()
         )
 
         IPS_PATIENT_TRANSFERRED -> IpsPatientTransferredNotification(
+            dateTime = notificationDateTime,
             headquartersName = notificationDataMap[HEADQUARTERS_NAME].orEmpty(),
             headquartersAddress = notificationDataMap[HEADQUARTERS_ADDRESS].orEmpty()
         )
 
-        STRETCHER_RETENTION_ENABLE -> StretcherRetentionEnableNotification()
+        STRETCHER_RETENTION_ENABLE -> StretcherRetentionEnableNotification(
+            dateTime = notificationDateTime
+        )
 
         CLOSING_OF_APH -> ClosingAPHNotification(
+            dateTime = notificationDateTime,
             consecutiveNumber = notificationDataMap[CONSECUTIVE_NUMBER].orEmpty(),
             updateTimeObservationsAttachments = notificationDataMap[UPDATE_TIME_OBSERVATIONS]
                 .orEmpty()
