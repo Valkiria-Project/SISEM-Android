@@ -7,22 +7,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
-import com.skgtecnologia.sisem.domain.auth.usecases.Logout
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
+import com.skgtecnologia.sisem.domain.operation.usecases.LogoutTurn
 import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltViewModel
 class MenuViewModel @Inject constructor(
     private val getAllAccessTokens: GetAllAccessTokens,
     private val observeOperationConfig: ObserveOperationConfig,
-    private val logout: Logout
+    private val logoutTurn: LogoutTurn
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -57,7 +57,7 @@ class MenuViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch {
-            logout.invoke(username = username)
+            logoutTurn.invoke(username = username)
                 .onSuccess {
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
