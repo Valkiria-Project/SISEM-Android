@@ -15,4 +15,20 @@ class OperationRemoteDataSource @Inject constructor(
     }.mapResult {
         it.mapToDomain()
     }
+
+    suspend fun logoutTurn(
+        username: String,
+        idTurn: String,
+        idEmployed: String,
+        vehicleCode: String
+    ): Result<String> = apiCall {
+        operationApi.logoutTurn(
+            username = username,
+            idTurn = idTurn,
+            idEmployed = idEmployed,
+            vehicleCode = vehicleCode
+        )
+    }.mapResult {
+        it.message
+    }
 }

@@ -7,5 +7,7 @@ interface OperationRepository {
 
     suspend fun getOperationConfig(serial: String): OperationModel
 
+    suspend fun logoutTurn(username: String): String
+
     suspend fun observeOperationConfig(): Flow<OperationModel?>
 }

@@ -19,6 +19,9 @@ interface AccessTokenDao {
     @Query("SELECT * FROM access_token")
     suspend fun getAllAccessTokens(): List<AccessTokenEntity>
 
+    @Query("SELECT * FROM access_token WHERE user_name = :username")
+    suspend fun getAccessTokenByUsername(username: String): AccessTokenEntity
+
     @Query(
         """
             UPDATE access_token

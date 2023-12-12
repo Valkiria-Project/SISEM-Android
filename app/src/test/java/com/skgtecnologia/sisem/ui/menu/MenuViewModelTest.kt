@@ -4,9 +4,9 @@ import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
-import com.skgtecnologia.sisem.domain.auth.usecases.Logout
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.skgtecnologia.sisem.domain.authcards.model.VehicleConfigModel
+import com.skgtecnologia.sisem.domain.operation.usecases.LogoutTurn
 import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -33,7 +33,7 @@ class MenuViewModelTest {
     private lateinit var observeOperationConfig: ObserveOperationConfig
 
     @MockK
-    private lateinit var logout: Logout
+    private lateinit var logoutTurn: LogoutTurn
 
     private lateinit var viewModel: MenuViewModel
 
@@ -49,7 +49,7 @@ class MenuViewModelTest {
         viewModel = MenuViewModel(
             getAllAccessTokens = getAllAccessTokens,
             observeOperationConfig = observeOperationConfig,
-            logout = logout
+            logoutTurn = logoutTurn
         )
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.errorModel?.title)
@@ -68,7 +68,7 @@ class MenuViewModelTest {
         viewModel = MenuViewModel(
             getAllAccessTokens = getAllAccessTokens,
             observeOperationConfig = observeOperationConfig,
-            logout = logout
+            logoutTurn = logoutTurn
         )
 
         Assert.assertEquals(vehicleConfigModel, viewModel.uiState.vehicleConfig)
@@ -84,7 +84,7 @@ class MenuViewModelTest {
         viewModel = MenuViewModel(
             getAllAccessTokens = getAllAccessTokens,
             observeOperationConfig = observeOperationConfig,
-            logout = logout
+            logoutTurn = logoutTurn
         )
 
         Assert.assertEquals(null, viewModel.uiState.accessTokenModelList)
@@ -100,12 +100,12 @@ class MenuViewModelTest {
         }
         coEvery { getAllAccessTokens.invoke() } returns Result.success(accessTokens)
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationConfig)
-        coEvery { logout.invoke(USERNAME) } returns Result.success("")
+        coEvery { logoutTurn.invoke(USERNAME) } returns Result.success("")
 
         viewModel = MenuViewModel(
             getAllAccessTokens = getAllAccessTokens,
             observeOperationConfig = observeOperationConfig,
-            logout = logout
+            logoutTurn = logoutTurn
         )
 
         viewModel.logout(USERNAME)
@@ -122,12 +122,12 @@ class MenuViewModelTest {
         }
         coEvery { getAllAccessTokens.invoke() } returns Result.success(accessTokens)
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationConfig)
-        coEvery { logout.invoke(USERNAME) } returns Result.failure(Throwable())
+        coEvery { logoutTurn.invoke(USERNAME) } returns Result.failure(Throwable())
 
         viewModel = MenuViewModel(
             getAllAccessTokens = getAllAccessTokens,
             observeOperationConfig = observeOperationConfig,
-            logout = logout
+            logoutTurn = logoutTurn
         )
 
         viewModel.logout(USERNAME)
@@ -148,7 +148,7 @@ class MenuViewModelTest {
         viewModel = MenuViewModel(
             getAllAccessTokens = getAllAccessTokens,
             observeOperationConfig = observeOperationConfig,
-            logout = logout
+            logoutTurn = logoutTurn
         )
 
         viewModel.consumeErrorEvent()
