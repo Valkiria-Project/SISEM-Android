@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R.drawable
@@ -226,6 +227,14 @@ private fun NotificationViewRender(
                             text = uiModel.contentRight,
                             modifier = Modifier.padding(start = 4.dp),
                             color = Color.White,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    } else {
+                        Text(
+                            text = uiModel.timeStamp,
+                            modifier = Modifier.weight(1f),
+                            color = Color(parseColor("#AFAFAF")),
+                            textAlign = TextAlign.End,
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }

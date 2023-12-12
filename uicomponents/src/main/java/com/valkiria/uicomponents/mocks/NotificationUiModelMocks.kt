@@ -9,7 +9,8 @@ fun getAssignedIncidentNotificationUiModel(): NotificationUiModel {
         title = "Incidente Asignado",
         description = "CRU-12345678-22",
         contentLeft = "Kra 45 #43-21",
-        contentRight = "11 Min"
+        contentRight = "11 Min",
+        timeStamp = "16:55"
     )
 }
 
@@ -19,6 +20,7 @@ fun getTransmilenioAuthNotificationUiModel(): NotificationUiModel {
         iconColor = "#3CF2DD",
         title = "Carril de Transmilenio autorizado",
         description = "No. 12345678-22",
-        contentLeft = "Autoriza Juan Correa"
+        contentLeft = "Autoriza Juan Correa",
+        timeStamp = "16:55"
     )
 }

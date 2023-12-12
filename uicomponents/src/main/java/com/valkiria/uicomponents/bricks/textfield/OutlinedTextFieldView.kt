@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -72,7 +73,14 @@ fun OutlinedTextFieldView(
         isError = inputError != null,
         keyboardOptions = uiModel.keyboardOptions,
         singleLine = uiModel.singleLine,
-        minLines = uiModel.minLines
+        minLines = uiModel.minLines,
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            focusedTrailingIconColor = Color.White,
+            unfocusedBorderColor = Color.White,
+            unfocusedLabelColor = Color.White,
+            unfocusedTrailingIconColor = Color.White
+        )
     )
 }
 
