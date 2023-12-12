@@ -1,8 +1,11 @@
 package com.skgtecnologia.sisem.ui.medicalhistory
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.GenericUiAction
@@ -15,6 +18,8 @@ import com.valkiria.uicomponents.components.media.MediaAction
 import com.valkiria.uicomponents.components.media.MediaAction.Camera
 import com.valkiria.uicomponents.components.media.MediaAction.Gallery
 import com.valkiria.uicomponents.components.media.MediaAction.MediaFile
+import com.valkiria.uicomponents.extensions.storeUriAsFileToCache
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -29,6 +34,8 @@ fun MedicalHistoryScreen(
     photoTaken: Boolean = false,
     onNavigation: (medicalHistoryNavigationModel: NavigationModel?) -> Unit
 ) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState.navigationModel) {
@@ -70,7 +77,7 @@ fun MedicalHistoryScreen(
         body = uiState.screenModel?.body,
         validateFields = uiState.validateFields
     ) { uiAction ->
-        handleAction(uiAction, viewModel)
+        handleAction(uiAction, viewModel, context, scope)
     }
 
     OnBannerHandler(uiModel = uiState.infoEvent) {
@@ -87,7 +94,9 @@ fun MedicalHistoryScreen(
 @Suppress("ComplexMethod", "LongMethod")
 fun handleAction(
     uiAction: UiAction,
-    viewModel: MedicalHistoryViewModel
+    viewModel: MedicalHistoryViewModel,
+    context: Context,
+    scope: CoroutineScope
 ) {
     when (uiAction) {
         is GenericUiAction.ChipOptionAction -> viewModel.handleChipOptionAction(uiAction)
@@ -129,7 +138,17 @@ fun handleAction(
 
         is GenericUiAction.SliderAction -> viewModel.handleSliderAction(uiAction)
 
-        is StepperAction -> viewModel.sendMedicalHistory()
+        is StepperAction -> {
+            scope.launch {
+                val images = viewModel.uiState.selectedMediaUris.map { uri ->
+                    context.storeUriAsFileToCache(
+                        uri,
+                        viewModel.uiState.operationConfig?.maxFileSizeKb
+                    )
+                }
+                viewModel.sendMedicalHistory(images)
+            }
+        }
 
         else -> Timber.d("no-op")
     }
