@@ -27,7 +27,8 @@ class IncidentCacheDataSource @Inject constructor(
     ) {
         incidentDao.updateTransmiStatus(
             incidentId,
-            transmiNotifications.map { getTransmiNotificationRawDataByType(it) })
+            transmiNotifications.map { getTransmiNotificationRawDataByType(it) }
+        )
     }
 
     @CheckResult
