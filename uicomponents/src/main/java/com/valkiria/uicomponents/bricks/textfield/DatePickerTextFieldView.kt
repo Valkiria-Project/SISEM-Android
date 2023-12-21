@@ -155,6 +155,7 @@ fun DatePickerTextFieldView(
                     Text(stringResource(string.date_picker_cancel))
                 }
             },
+            colors = DatePickerDefaults.colors()
         ) {
             DatePicker(
                 state = pickerState,
