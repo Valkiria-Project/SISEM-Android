@@ -151,7 +151,7 @@ fun MediaActionsComponent(
                             .padding(8.dp)
                     )
                 ) {
-                    val mimeTypes = arrayOf("*/*")
+                    val mimeTypes = arrayOf("application/pdf","image/*")
                     multipleMediaFilePickerLauncher.launch(mimeTypes)
                 }
             }
