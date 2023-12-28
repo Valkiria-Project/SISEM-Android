@@ -28,7 +28,7 @@ class OperationRepositoryImpl @Inject constructor(
             authCacheDataSource.retrieveAccessTokenByUsername(username).userId.toString()
         val code = operationCacheDataSource.observeOperationConfig().first()?.vehicleCode.orEmpty()
 
-        // TODO: Persist the new turn returned updating the users
+        // FIXME: Persist the new turn returned updating the users
         return operationRemoteDataSource.logoutTurn(
             username = username,
             idTurn = turnId,
