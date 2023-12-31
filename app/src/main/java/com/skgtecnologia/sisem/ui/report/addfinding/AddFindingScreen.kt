@@ -182,11 +182,7 @@ private fun getFindingsDescriptionModel() = TextFieldUiModel(
     charLimit = 600,
     validations = listOf(
         ValidationUiModel(
-            regex = "^(?!\\s*$).+",
-            message = "El campo no debe estar vacío"
-        ),
-        ValidationUiModel(
-            regex = "^(?!.*[^,.:A-Za-z0-9 A-zÀ-ú\\r\\n].*).+",
+            regex = "^(?!\\s+\$)[\\s\\p{L}\\p{N},.:]*\$",
             message = "El campo no debe tener caracteres especiales"
         )
     ),
