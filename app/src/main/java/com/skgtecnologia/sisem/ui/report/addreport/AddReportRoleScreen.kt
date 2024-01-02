@@ -69,7 +69,7 @@ fun AddReportRoleScreen(
     }
 
     OnBannerHandler(uiState.errorModel) {
-        viewModel.handleShownError()
+        viewModel.handleEvent(it)
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)

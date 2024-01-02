@@ -74,7 +74,7 @@ fun emptyStretcherRetentionMessage(): LabelUiModel = LabelUiModel(
 
 fun sendEmailLabels(
     text: String,
-    textColor: String = "#3D3F42"
+    textColor: String = "#77797E"
 ): LabelUiModel = LabelUiModel(
     identifier = "FROM_SEND_EMAIL",
     text = text,

@@ -3,17 +3,12 @@ package com.skgtecnologia.sisem.ui.menu.items
 import android.content.Context
 import androidx.annotation.DrawableRes
 import com.skgtecnologia.sisem.R
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.CertificationsScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.DeviceAuthScreen
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.DrivingGuideScreen
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.HCEUDCScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.IncidentScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.InitSignatureScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.InventoryScreen
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.NotificationsScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.PreStretcherRetentionScreen
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.PreoperationalMainScreen
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.ShiftScreen
 import com.skgtecnologia.sisem.ui.navigation.NavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.ReportNavigationRoute
 import com.valkiria.uicomponents.R.drawable
@@ -43,41 +38,51 @@ private fun getDrawerItems(context: Context) = listOf(
         context.getString(R.string.drawer_inventory),
         drawable.ic_inventory
     ),
+    /* FIXME: Revert later
     DrawerMenuItemModel(
         NotificationsScreen,
         context.getString(R.string.drawer_notifications),
         drawable.ic_notification
     ),
+    */
+    /* FIXME: Revert later
     DrawerMenuItemModel(
         DrivingGuideScreen,
         context.getString(R.string.drawer_guides),
         drawable.ic_folder
     ),
+    */
+    /* FIXME: Revert later
     DrawerMenuItemModel(
         CertificationsScreen,
         context.getString(R.string.drawer_certifications),
         drawable.ic_certifications
     ),
+    */
     DrawerMenuItemModel(
         ReportNavigationRoute.AddReportRoleScreen,
         context.getString(R.string.drawer_novelties),
         drawable.ic_news
     ),
+    /* FIXME: Revert later
     DrawerMenuItemModel(
         ShiftScreen,
         context.getString(R.string.drawer_turn_shift),
         drawable.ic_shift
     ),
+    */
     DrawerMenuItemModel(
         PreoperationalMainScreen,
         context.getString(R.string.drawer_pre_operational),
         drawable.ic_check
     ),
+    /* FIXME: Revert later
     DrawerMenuItemModel(
         HCEUDCScreen,
         context.getString(R.string.drawer_hceud),
         drawable.ic_hceud
     ),
+    */
     DrawerMenuItemModel(
         PreStretcherRetentionScreen,
         context.getString(R.string.drawer_stretcher_retention),

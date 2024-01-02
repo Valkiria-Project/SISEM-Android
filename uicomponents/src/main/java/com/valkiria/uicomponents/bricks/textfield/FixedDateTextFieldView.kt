@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -80,7 +82,14 @@ fun FixedDateTextFieldView(
                     contentDescription = null
                 )
             }
-        }
+        },
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            focusedTrailingIconColor = Color.White,
+            unfocusedBorderColor = Color.White,
+            unfocusedLabelColor = Color.White,
+            unfocusedTrailingIconColor = Color.White
+        )
     )
 }
 
