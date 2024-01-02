@@ -95,13 +95,8 @@ fun MediaActionsComponent(
         horizontalAlignment = Alignment.Start
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 20.dp,
-                    end = 20.dp,
-                ),
-            horizontalArrangement = Arrangement.Start
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
         ) {
             ImageButtonView(
                 uiModel = ImageButtonUiModel(
@@ -111,7 +106,7 @@ fun MediaActionsComponent(
                         id = string.media_action_take_picture_label
                     ),
                     textStyle = TextStyle.HEADLINE_6,
-                    size = 81.dp,
+                    size = 72.dp,
                     alignment = Alignment.CenterHorizontally,
                     modifier = Modifier
                         .padding(8.dp)
@@ -128,7 +123,7 @@ fun MediaActionsComponent(
                         id = string.media_action_select_pictures
                     ),
                     textStyle = TextStyle.HEADLINE_6,
-                    size = 81.dp,
+                    size = 72.dp,
                     alignment = Alignment.CenterHorizontally,
                     modifier = Modifier
                         .padding(8.dp)
@@ -150,13 +145,13 @@ fun MediaActionsComponent(
                             id = string.media_action_select_files
                         ),
                         textStyle = TextStyle.HEADLINE_6,
-                        size = 81.dp,
+                        size = 72.dp,
                         alignment = Alignment.CenterHorizontally,
                         modifier = Modifier
                             .padding(8.dp)
                     )
                 ) {
-                    val mimeTypes = arrayOf("*/*")
+                    val mimeTypes = arrayOf("application/pdf", "image/*")
                     multipleMediaFilePickerLauncher.launch(mimeTypes)
                 }
             }

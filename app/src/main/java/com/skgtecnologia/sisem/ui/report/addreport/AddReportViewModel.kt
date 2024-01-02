@@ -5,8 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
+import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.report.usecases.GetAddReportScreen
+import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
+import com.valkiria.uicomponents.action.UiAction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -17,7 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddReportViewModel @Inject constructor(
-    private val getAddReportScreen: GetAddReportScreen
+    private val getAddReportScreen: GetAddReportScreen,
+    private val logoutCurrentUser: LogoutCurrentUser,
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -50,7 +55,21 @@ class AddReportViewModel @Inject constructor(
         }
     }
 
-    fun consumeErrorEvent() {
+    fun handleEvent(uiAction: UiAction) {
+        consumeShownError()
+
+        uiAction.handleAuthorizationErrorEvent {
+            job?.cancel()
+            job = viewModelScope.launch {
+                logoutCurrentUser.invoke()
+                    .onSuccess {
+                        UnauthorizedEventHandler.publishUnauthorizedEvent()
+                    }
+            }
+        }
+    }
+
+    private fun consumeShownError() {
         uiState = uiState.copy(
             errorModel = null
         )
