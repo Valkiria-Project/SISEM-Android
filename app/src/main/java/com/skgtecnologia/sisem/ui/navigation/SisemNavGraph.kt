@@ -73,7 +73,7 @@ fun SisemNavGraph(
 
         UnauthorizedEventHandler.subscribeUnauthorizedEvent { appEvent ->
             if (appEvent == AppEvent.UNAUTHORIZED_SESSION) {
-                navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
+                navController.navigate(AuthNavigationRoute.LoginScreen.route) {
                     popUpTo(NavigationGraph.Main.route) {
                         inclusive = true
                     }
