@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.data.incident.cache.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.valkiria.uicomponents.components.incident.model.IncidentUiTypeModel
+import com.valkiria.uicomponents.components.incident.model.IncidentTypeUiModel
 
 @Entity(tableName = "incident_type")
 data class IncidentTypeEntity(
@@ -12,14 +12,14 @@ data class IncidentTypeEntity(
     @ColumnInfo(name = "code") val code: String
 )
 
-fun IncidentTypeEntity.mapToUi(): IncidentUiTypeModel = with(this) {
-    IncidentUiTypeModel(
+fun IncidentTypeEntity.mapToUi(): IncidentTypeUiModel = with(this) {
+    IncidentTypeUiModel(
         id = id,
         code = code
     )
 }
 
-fun IncidentUiTypeModel.mapToCache(): IncidentTypeEntity = with(this) {
+fun IncidentTypeUiModel.mapToCache(): IncidentTypeEntity = with(this) {
     IncidentTypeEntity(
         id = id,
         code = code

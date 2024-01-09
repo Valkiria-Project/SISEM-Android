@@ -35,13 +35,20 @@ import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.bricks.notification.model.TransmiNotification
 import com.valkiria.uicomponents.bricks.notification.model.TransmilenioAuthorizationNotification
 import com.valkiria.uicomponents.bricks.notification.model.TransmilenioDeniedNotification
+import com.valkiria.uicomponents.components.incident.model.IncidentDetailUiModel
+import com.valkiria.uicomponents.components.incident.model.IncidentPriority
+import com.valkiria.uicomponents.components.incident.model.IncidentTypeUiModel
 import com.valkiria.uicomponents.components.incident.model.IncidentUiModel
 import com.valkiria.uicomponents.components.incident.model.PatientUiModel
+import com.valkiria.uicomponents.components.incident.model.ResourceDetailUiModel
 import com.valkiria.uicomponents.components.incident.model.ResourceUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.toTextStyle
 import com.valkiria.uicomponents.utlis.DefType
+import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDateFromUTC
+import com.valkiria.uicomponents.utlis.TimeUtils.getLocalTimeAsString
 import com.valkiria.uicomponents.utlis.getResourceIdByName
+import timber.log.Timber
 
 private val ContentBackground = Modifier.background(color = Color(parseColor("#2B3139")))
 
@@ -57,6 +64,7 @@ fun IncidentContent(
     ) {
         item(key = "INCIDENT_HEADER") {
             IncidentHeader(
+                incidentUiModel.incidentPriority,
                 incidentUiModel.incident.codeSisem,
                 incidentUiModel.incident.incidentType.code
             )
@@ -91,7 +99,7 @@ fun IncidentContent(
 }
 
 @Composable
-private fun IncidentHeader(codeSisem: String, code: String) {
+private fun IncidentHeader(incidentPriority: IncidentPriority?, codeSisem: String, code: String) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
@@ -101,7 +109,7 @@ private fun IncidentHeader(codeSisem: String, code: String) {
                 .padding(8.dp)
                 .size(10.dp),
             painter = painterResource(id = R.drawable.ic_circle),
-            tint = Color(parseColor("#BE392F")),
+            tint = incidentPriority?.color ?: IncidentPriority.MEDIUM.color,
             contentDescription = null
         )
 
@@ -146,6 +154,7 @@ private fun IncidentDetails(address: String, premierOneDate: String, premierOneH
             text = address,
             color = Color.White,
             style = TextStyle.HEADLINE_4.toTextStyle().copy(
+                fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold
             )
         )
@@ -153,16 +162,20 @@ private fun IncidentDetails(address: String, premierOneDate: String, premierOneH
         Icon(
             modifier = Modifier
                 .padding(end = 6.dp)
-                .size(28.dp),
+                .size(28.dp)
+                .padding(2.dp),
             painter = painterResource(id = R.drawable.ic_chronometer),
             tint = MaterialTheme.colorScheme.primary,
             contentDescription = null
         )
 
         Text(
-            text = premierOneDate.plus(" ").plus(premierOneHour),
+            text = getLocalDateFromUTC(premierOneDate)
+                .plus("\n")
+                .plus(getLocalTimeAsString(premierOneHour)),
             color = Color.White,
             style = TextStyle.HEADLINE_4.toTextStyle().copy(
+                fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold
             )
         )
@@ -483,6 +496,61 @@ private fun IncidentPatient(patientUiModel: PatientUiModel, onAction: (idAph: In
 @Preview(showBackground = false)
 @Composable
 fun IncidentContentPreview() {
-    // FIXME: Create mock
-//    IncidentContent(it)
+    val incidentUiModel = IncidentUiModel(
+        id = 1,
+        incident = IncidentDetailUiModel(
+            id = 27,
+            code = "00122305",
+            codeSisem = "CRU-12345678-22",
+            address = "Kra 45 #43-21",
+            addressReferencePoint =
+            "Frente a la estación de Transmilenio de la 106, persona no identificada.",
+            premierOneDate = "2023-12-01T00:00:00",
+            premierOneHour = "16:34:48",
+            incidentType = IncidentTypeUiModel(
+                id = 1,
+                code = "906"
+            ),
+            doctorAuthName = "Ricardo Grajales"
+        ),
+        patients = listOf(
+            PatientUiModel(
+                id = 49,
+                idAph = 110,
+                fullName = "Carolina Restrepo"
+            ),
+            PatientUiModel(
+                id = 50,
+                idAph = 111,
+                fullName = "Luis Villada"
+            )
+        ),
+        resources = listOf(
+            ResourceUiModel(
+                id = 237,
+                resourceId = 359,
+                resource = ResourceDetailUiModel(
+                    id = 359,
+                    code = "00122305",
+                    name = "Policía",
+                    icTransitAgency = "ic_police"
+                )
+            ),
+            ResourceUiModel(
+                id = 238,
+                resourceId = 360,
+                resource = ResourceDetailUiModel(
+                    id = 360,
+                    code = "00122305",
+                    name = "Bomberos",
+                    icTransitAgency = "ic_firefighter"
+                )
+            )
+        ),
+        incidentPriority = IncidentPriority.LOW
+    )
+
+    IncidentContent(incidentUiModel) {
+        Timber.d("Footer action clicked")
+    }
 }

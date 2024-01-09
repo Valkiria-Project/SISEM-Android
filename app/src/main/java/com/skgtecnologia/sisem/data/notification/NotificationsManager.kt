@@ -6,11 +6,13 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
+import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.ui.MainActivity
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType
 import com.valkiria.uicomponents.bricks.notification.model.getNotificationDataByType
 import timber.log.Timber
 import java.time.Instant
@@ -22,7 +24,18 @@ private const val CHANNEL_NAME = "Notificaciones"
 class NotificationsManager @Inject constructor(private val context: Context) {
 
     fun buildNotificationData(notificationDataMap: Map<String, String>): NotificationData? {
-        val intent = Intent(context, MainActivity::class.java)
+        val notificationData = getNotificationDataByType(notificationDataMap)
+
+        val intent = Intent(context, MainActivity::class.java).apply {
+            if (notificationData?.notificationType == NotificationType.INCIDENT_ASSIGNED) {
+                val bundle = Bundle()
+                notificationDataMap.forEach {
+                    bundle.putString(it.key, it.value)
+                }
+
+                putExtras(bundle)
+            }
+        }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
         val pendingIntent = PendingIntent.getActivity(
@@ -31,8 +44,6 @@ class NotificationsManager @Inject constructor(private val context: Context) {
             intent,
             PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
         )
-
-        val notificationData = getNotificationDataByType(notificationDataMap)
 
         return notificationData?.also {
             sendNotification(it, pendingIntent)

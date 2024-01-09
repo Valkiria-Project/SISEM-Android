@@ -32,7 +32,7 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/SplashScreenTheme"
-            tools:ignore="LockedOrientationActivity">
+            tools:ignore="DiscouragedApi,LockedOrientationActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,7 +47,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.SISEM"
             android:windowSoftInputMode="adjustResize"
-            tools:ignore="LockedOrientationActivity" />
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
 
         <service
             android:name=".data.notification.MessagingService"

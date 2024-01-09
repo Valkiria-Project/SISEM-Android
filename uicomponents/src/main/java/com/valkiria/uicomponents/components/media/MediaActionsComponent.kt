@@ -108,8 +108,9 @@ fun MediaActionsComponent(
                     textStyle = TextStyle.HEADLINE_6,
                     size = 72.dp,
                     alignment = Alignment.CenterHorizontally,
+                    backgroundColor = "#3F4145",
                     modifier = Modifier
-                        .padding(8.dp)
+                        .padding(4.dp)
                 )
             ) {
                 onAction(uiModel.identifier, Camera)
@@ -125,8 +126,9 @@ fun MediaActionsComponent(
                     textStyle = TextStyle.HEADLINE_6,
                     size = 72.dp,
                     alignment = Alignment.CenterHorizontally,
+                    backgroundColor = "#3F4145",
                     modifier = Modifier
-                        .padding(8.dp)
+                        .padding(4.dp)
                 )
             ) {
                 multiplePhotoPickerLauncher.launch(
@@ -147,8 +149,9 @@ fun MediaActionsComponent(
                         textStyle = TextStyle.HEADLINE_6,
                         size = 72.dp,
                         alignment = Alignment.CenterHorizontally,
+                        backgroundColor = "#3F4145",
                         modifier = Modifier
-                            .padding(8.dp)
+                            .padding(4.dp)
                     )
                 ) {
                     val mimeTypes = arrayOf("application/pdf", "image/*")

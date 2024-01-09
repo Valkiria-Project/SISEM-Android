@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.valkiria.uicomponents.components.incident.model.IncidentUiDetailModel
+import com.valkiria.uicomponents.components.incident.model.IncidentDetailUiModel
 
 @Entity(tableName = "incident_detail")
 data class IncidentDetailEntity(
@@ -20,8 +20,8 @@ data class IncidentDetailEntity(
     @ColumnInfo(name = "doctor_auth_name") val doctorAuthName: String
 )
 
-fun IncidentDetailEntity.mapToUi(): IncidentUiDetailModel = with(this) {
-    IncidentUiDetailModel(
+fun IncidentDetailEntity.mapToUi(): IncidentDetailUiModel = with(this) {
+    IncidentDetailUiModel(
         id = id,
         code = code,
         codeSisem = codeSisem,
@@ -34,7 +34,7 @@ fun IncidentDetailEntity.mapToUi(): IncidentUiDetailModel = with(this) {
     )
 }
 
-fun IncidentUiDetailModel.mapToCache(): IncidentDetailEntity = with(this) {
+fun IncidentDetailUiModel.mapToCache(): IncidentDetailEntity = with(this) {
     IncidentDetailEntity(
         id = id,
         code = code,

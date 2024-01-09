@@ -18,6 +18,7 @@ import com.valkiria.uicomponents.bricks.notification.model.SupportRequestNotific
 import com.valkiria.uicomponents.bricks.notification.model.TransmiNotification
 import com.valkiria.uicomponents.bricks.notification.model.TransmilenioAuthorizationNotification
 import com.valkiria.uicomponents.bricks.notification.model.TransmilenioDeniedNotification
+import com.valkiria.uicomponents.components.incident.model.IncidentPriority
 import com.valkiria.uicomponents.utlis.TimeUtils.getFormattedLocalTimeAsString
 import java.util.UUID
 
@@ -27,21 +28,24 @@ data class NotificationUiModel(
     val iconColor: String,
     val title: String,
     val description: String? = null,
-    val contentLeft: String? = null,
-    val contentRight: String? = null,
+    val content: String? = null,
+    val date: String? = null,
+    val time: String? = null,
     val timeStamp: String
 )
+
 @Suppress("LongMethod")
 fun NotificationData.mapToUi(): NotificationUiModel {
     val timeStamp = getFormattedLocalTimeAsString(time)
     return when (this) {
         is IncidentAssignedNotification -> NotificationUiModel(
             icon = INCIDENT_ASSIGNED.icon,
-            iconColor = INCIDENT_ASSIGNED.iconColor,
+            iconColor = IncidentPriority.getPriority(incidentPriority).stringColor,
             title = INCIDENT_ASSIGNED.title,
             description = this.cru,
-            contentLeft = this.address,
-            contentRight = this.hour,
+            content = this.address,
+            date = this.incidentDate,
+            time = this.hour,
             timeStamp = timeStamp
         )
 
@@ -51,7 +55,7 @@ fun NotificationData.mapToUi(): NotificationUiModel {
             title = TRANSMILENIO_AUTHORIZATION.title,
             description = TRANSMILENIO_AUTHORIZATION.descriptionDecorator
                 .plus(this.authorizationNumber),
-            contentLeft = TRANSMILENIO_AUTHORIZATION.contentLeftDecorator.plus(this.authorizes),
+            content = TRANSMILENIO_AUTHORIZATION.contentLeftDecorator.plus(this.authorizes),
             timeStamp = timeStamp
         )
 
@@ -82,7 +86,7 @@ fun NotificationData.mapToUi(): NotificationUiModel {
             iconColor = IPS_PATIENT_TRANSFERRED.iconColor,
             title = IPS_PATIENT_TRANSFERRED.title,
             description = this.headquartersName,
-            contentLeft = this.headquartersAddress,
+            content = this.headquartersAddress,
             timeStamp = timeStamp
         )
 

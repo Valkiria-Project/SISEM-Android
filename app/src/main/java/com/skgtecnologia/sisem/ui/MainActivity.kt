@@ -14,6 +14,7 @@ import com.skgtecnologia.sisem.ui.navigation.SisemNavGraph
 import com.skgtecnologia.sisem.ui.navigation.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.theme.SisemTheme
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 const val STARTUP_NAVIGATION_MODEL = "STARTUP_NAVIGATION_MODEL"
 
@@ -45,10 +46,19 @@ class MainActivity : ComponentActivity() {
 
         MapboxNavigationApp.current()?.registerLocationObserver(locationObserver)
 
+        handlePushNotification()
+
         setContent {
             SisemTheme {
                 SisemNavGraph(startupNavigationModel)
             }
+        }
+    }
+
+    private fun handlePushNotification() {
+        Timber.d("handlePushNotification")
+        intent.extras?.also {
+            Timber.d("Background notification ${it.getString("incident_number")}")
         }
     }
 
@@ -59,9 +69,14 @@ class MainActivity : ComponentActivity() {
     }
 
     companion object {
-        fun launchMainActivity(packageContext: Context, model: StartupNavigationModel?) {
+        fun launchMainActivity(
+            packageContext: Context,
+            model: StartupNavigationModel?,
+            bundle: Bundle?
+        ) {
             val intent = Intent(packageContext, MainActivity::class.java).apply {
                 putExtra(STARTUP_NAVIGATION_MODEL, model)
+                bundle?.let { putExtras(it) }
             }
 
             packageContext.startActivity(intent)

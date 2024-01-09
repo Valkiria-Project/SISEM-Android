@@ -4,9 +4,10 @@ import com.valkiria.uicomponents.bricks.notification.model.TransmiNotification
 
 data class IncidentUiModel(
     val id: Long? = null,
-    val incident: IncidentUiDetailModel,
+    val incident: IncidentDetailUiModel,
     val patients: List<PatientUiModel>,
     val resources: List<ResourceUiModel>,
+    val incidentPriority: IncidentPriority? = null,
     val transmiRequests: List<TransmiNotification>? = null,
     val isActive: Boolean = true
 )
