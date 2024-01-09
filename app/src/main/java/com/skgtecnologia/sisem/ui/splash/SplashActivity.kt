@@ -43,7 +43,8 @@ class SplashActivity : ComponentActivity() {
 
                         launchMainActivity(
                             this@SplashActivity,
-                            startupUiState.startupNavigationModel
+                            startupUiState.startupNavigationModel,
+                            intent.extras
                         )
                         finish()
                     }

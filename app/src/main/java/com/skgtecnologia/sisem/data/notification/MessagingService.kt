@@ -5,12 +5,12 @@ import com.google.firebase.messaging.RemoteMessage
 import com.skgtecnologia.sisem.domain.notification.usecases.StoreNotification
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MessagingService : FirebaseMessagingService() {
