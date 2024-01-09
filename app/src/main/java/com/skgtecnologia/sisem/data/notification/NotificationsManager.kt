@@ -15,6 +15,7 @@ import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType
 import com.valkiria.uicomponents.bricks.notification.model.getNotificationDataByType
 import timber.log.Timber
+import java.time.Instant
 import javax.inject.Inject
 
 private const val CHANNEL_ID = "notifications"
@@ -27,10 +28,9 @@ class NotificationsManager @Inject constructor(private val context: Context) {
 
         val intent = Intent(context, MainActivity::class.java).apply {
             if (notificationData?.notificationType == NotificationType.INCIDENT_ASSIGNED) {
-                val bundle = Bundle().apply {
-                    notificationDataMap.forEach {
-                        putString(it.key, it.value)
-                    }
+                val bundle = Bundle()
+                notificationDataMap.forEach {
+                    bundle.putString(it.key, it.value)
                 }
 
                 putExtras(bundle)
@@ -73,6 +73,6 @@ class NotificationsManager @Inject constructor(private val context: Context) {
         )
         notificationManager.createNotificationChannel(channel)
 
-//        notificationManager.notify(Instant.now().hashCode(), notificationBuilder.build())
+        notificationManager.notify(Instant.now().hashCode(), notificationBuilder.build())
     }
 }

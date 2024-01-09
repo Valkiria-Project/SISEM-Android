@@ -503,7 +503,8 @@ fun IncidentContentPreview() {
             code = "00122305",
             codeSisem = "CRU-12345678-22",
             address = "Kra 45 #43-21",
-            addressReferencePoint = "Frente a la estación de Transmilenio de la 106, persona no identificada.",
+            addressReferencePoint =
+            "Frente a la estación de Transmilenio de la 106, persona no identificada.",
             premierOneDate = "2023-12-01T00:00:00",
             premierOneHour = "16:34:48",
             incidentType = IncidentTypeUiModel(
