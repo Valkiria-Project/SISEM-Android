@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R.drawable
 import com.valkiria.uicomponents.action.GenericUiAction.NotificationAction
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.INCIDENT_ASSIGNED
-import com.valkiria.uicomponents.mocks.getTransmilenioAuthNotificationUiModel
+import com.valkiria.uicomponents.mocks.getAssignedIncidentNotificationUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import kotlinx.coroutines.delay
@@ -182,7 +182,7 @@ private fun NotificationViewRender(
                 }
             }
 
-            uiModel.contentLeft?.let {
+            uiModel.content?.let {
                 Row(
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -201,7 +201,7 @@ private fun NotificationViewRender(
                     }
 
                     Text(
-                        text = uiModel.contentLeft,
+                        text = uiModel.content,
                         modifier = if (uiModel.title == INCIDENT_ASSIGNED.title) {
                             Modifier.padding(start = 4.dp)
                         } else {
@@ -211,25 +211,7 @@ private fun NotificationViewRender(
                         style = MaterialTheme.typography.bodyMedium
                     )
 
-                    if (uiModel.title == INCIDENT_ASSIGNED.title && uiModel.contentRight != null) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(
-                                id = drawable.ic_chronometer
-                            ),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .padding(start = 4.dp)
-                                .size(24.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-
-                        Text(
-                            text = uiModel.contentRight,
-                            modifier = Modifier.padding(start = 4.dp),
-                            color = Color.White,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    } else {
+                    if (uiModel.title != INCIDENT_ASSIGNED.title) {
                         Text(
                             text = uiModel.timeStamp,
                             modifier = Modifier.weight(1f),
@@ -238,6 +220,51 @@ private fun NotificationViewRender(
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
+                }
+            }
+
+            if (uiModel.title == INCIDENT_ASSIGNED.title) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(
+                            id = drawable.ic_calendar
+                        ),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(start = 48.dp)
+                            .size(24.dp)
+                            .padding(2.dp),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+
+                    Text(
+                        text = uiModel.date.orEmpty(),
+                        modifier = Modifier.padding(start = 4.dp),
+                        color = Color.White,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+
+                    Icon(
+                        imageVector = ImageVector.vectorResource(
+                            id = drawable.ic_clock
+                        ),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .size(24.dp)
+                            .padding(2.dp),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+
+                    Text(
+                        text = uiModel.time.orEmpty(),
+                        modifier = Modifier.padding(start = 4.dp),
+                        color = Color.White,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
                 }
             }
         }
@@ -249,7 +276,7 @@ private fun NotificationViewRender(
 fun NotificationViewPreview() {
     Column(modifier = Modifier.background(Color.White)) {
         NotificationView(
-            uiModel = getTransmilenioAuthNotificationUiModel(),
+            uiModel = getAssignedIncidentNotificationUiModel(),
             onAction = { identifier -> Timber.d("Closed $identifier") }
         )
     }

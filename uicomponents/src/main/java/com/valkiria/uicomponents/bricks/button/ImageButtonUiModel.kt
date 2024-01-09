@@ -15,5 +15,6 @@ class ImageButtonUiModel(
     val textStyle: TextStyle?,
     val size: Dp = 48.dp,
     val alignment: Horizontal,
-    val modifier: Modifier
+    val backgroundColor: String? = null,
+    val modifier: Modifier = Modifier
 )

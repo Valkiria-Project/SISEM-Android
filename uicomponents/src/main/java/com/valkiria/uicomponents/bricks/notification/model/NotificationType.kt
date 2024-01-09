@@ -10,7 +10,7 @@ enum class NotificationType(
     INCIDENT_ASSIGNED(
         title = "Incidente Asignado",
         icon = "ic_assigned_incident",
-        iconColor = "#3CF2DD"
+        iconColor = ""
     ),
     TRANSMILENIO_AUTHORIZATION(
         title = "Carril de Transmilenio autorizado",

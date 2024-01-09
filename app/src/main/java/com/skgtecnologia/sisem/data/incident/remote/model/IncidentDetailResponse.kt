@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.data.incident.remote.model
 
-import com.valkiria.uicomponents.components.incident.model.IncidentUiDetailModel
+import com.valkiria.uicomponents.components.incident.model.IncidentDetailUiModel
 import com.squareup.moshi.Json
 
 data class IncidentDetailResponse(
@@ -15,7 +15,7 @@ data class IncidentDetailResponse(
     @Json(name = "doctor_auth_name") val doctorAuthName: String
 )
 
-fun IncidentDetailResponse.mapToUi(): IncidentUiDetailModel = IncidentUiDetailModel(
+fun IncidentDetailResponse.mapToUi(): IncidentDetailUiModel = IncidentDetailUiModel(
     id = id,
     code = code,
     codeSisem = codeSisem,

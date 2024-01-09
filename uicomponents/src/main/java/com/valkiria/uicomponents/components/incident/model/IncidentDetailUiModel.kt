@@ -1,6 +1,6 @@
 package com.valkiria.uicomponents.components.incident.model
 
-data class IncidentUiDetailModel(
+data class IncidentDetailUiModel(
     val id: Int,
     val code: String,
     val codeSisem: String,
@@ -8,6 +8,6 @@ data class IncidentUiDetailModel(
     val addressReferencePoint: String,
     val premierOneDate: String,
     val premierOneHour: String,
-    val incidentType: IncidentUiTypeModel,
+    val incidentType: IncidentTypeUiModel,
     val doctorAuthName: String
 )

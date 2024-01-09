@@ -10,6 +10,7 @@ import com.valkiria.uicomponents.bricks.notification.NotificationUiModel
 import com.valkiria.uicomponents.bricks.notification.model.IncidentAssignedNotification
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import com.valkiria.uicomponents.bricks.notification.model.TransmiNotification
+import com.valkiria.uicomponents.components.incident.model.IncidentPriority
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import timber.log.Timber
@@ -49,7 +50,10 @@ class NotificationRepositoryImpl @Inject constructor(
                 ?.vehicleCode
                 .orEmpty()
         ).onSuccess {
-            incidentCacheDataSource.storeIncident(it)
+            val incident = it.copy(
+                incidentPriority = IncidentPriority.getPriority(notification.incidentPriority)
+            )
+            incidentCacheDataSource.storeIncident(incident)
         }
     }
 
