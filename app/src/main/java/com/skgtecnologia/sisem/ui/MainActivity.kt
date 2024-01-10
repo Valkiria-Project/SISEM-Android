@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
         intent.extras?.also {
             /**
              * FIXME: Improve logic and persist the notification using the use case that also
-             * gets the incident info
+             *  gets the incident info
              */
             Timber.d("Background notification ${it.getString("incident_number")}")
             Timber.d("Background notification ${it.getString("incident_date")}")
