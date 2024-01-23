@@ -97,6 +97,7 @@ import com.valkiria.uicomponents.components.signature.SignatureUiModel
 import com.valkiria.uicomponents.components.slider.SliderUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.utlis.DATE_PATTERN
 import com.valkiria.uicomponents.utlis.HOURS_MINUTES_24_HOURS_PATTERN
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDate
 import com.valkiria.uicomponents.utlis.WEEK_DAYS
@@ -116,6 +117,8 @@ import javax.inject.Inject
 private const val SAVED_VITAL_SIGNS_COLOR = "#3cf2dd"
 private const val TEMPERATURE_SYMBOL = "°C"
 private const val GLUCOMETRY_SYMBOL = "mg/dL"
+private const val SEVEN_DAYS = 7L
+private const val NINE_MONTHS = 9L
 
 // FIXME: Split into use cases
 @Suppress("LargeClass", "TooManyFunctions", "LongMethod", "ComplexMethod")
@@ -653,8 +656,9 @@ class MedicalHistoryViewModel @Inject constructor(
         val updatedBody = uiState.screenModel?.body?.map {
             when {
                 (it is LabelUiModel && it.identifier == PREGNANT_FUR_KEY) -> {
+                    val estimatedDueDate = calculateEstimatedDueDate()
                     val temporalFurModel = it.copy(
-                        text = fieldsValues[FUR_KEY]?.updatedValue.orEmpty()
+                        text = estimatedDueDate
                     )
 
                     temporalFurModel
@@ -679,6 +683,17 @@ class MedicalHistoryViewModel @Inject constructor(
                 body = updatedBody
             )
         )
+    }
+
+    private fun calculateEstimatedDueDate(): String {
+        val fur = fieldsValues[FUR_KEY]?.updatedValue.orEmpty()
+        val furDate = LocalDate.parse(
+            fur,
+            DateTimeFormatter.ofPattern(DATE_PATTERN)
+        ).plusDays(SEVEN_DAYS)
+        val estimatedDueDate = furDate.plusMonths(NINE_MONTHS)
+
+        return estimatedDueDate?.format(DateTimeFormatter.ofPattern(DATE_PATTERN)).orEmpty()
     }
 
     fun handleSegmentedSwitchAction(segmentedSwitchAction: GenericUiAction.SegmentedSwitchAction) {
