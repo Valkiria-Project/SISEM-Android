@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
+import com.skgtecnologia.sisem.domain.deviceauth.usecases.GetDeviceType
 import com.skgtecnologia.sisem.domain.inventory.model.InventoryType
 import com.skgtecnologia.sisem.domain.inventory.usecases.GetInventoryViewScreen
 import com.skgtecnologia.sisem.domain.inventory.usecases.SaveTransferReturn
@@ -39,12 +40,17 @@ import timber.log.Timber
 import javax.inject.Inject
 
 private const val CANT_EXISTS_KEY = "KEY_CANT_EXISTS"
+private const val VEHICLE_CODE_KEY = "KEY_VEHICLE_CODE"
+private const val VEHICLE_TYPE_KEY = "KEY_VEHICLE_TYPE"
+private const val CODE_LIMIT = 4
+private const val DEVICE_TYPE_TEXT = "<font color=\"#FFFFFF\"><b>%s</b></font>"
 
 @Suppress("TooManyFunctions")
 @HiltViewModel
 class InventoryViewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getInventoryViewScreen: GetInventoryViewScreen,
+    private val getDeviceType: GetDeviceType,
     private val saveTransferReturn: SaveTransferReturn,
     private val logoutCurrentUser: LogoutCurrentUser,
     androidIdProvider: AndroidIdProvider
@@ -181,6 +187,53 @@ class InventoryViewViewModel @Inject constructor(
                 body = updatedBody
             )
         )
+
+        if (
+            inputAction.identifier == VEHICLE_CODE_KEY &&
+            inputAction.updatedValue.length == CODE_LIMIT
+        ) {
+            getDeviceType(inputAction.updatedValue)
+        }
+    }
+
+    private fun getDeviceType(code: String) {
+        uiState = uiState.copy(isLoading = true)
+
+        job?.cancel()
+        job = viewModelScope.launch {
+            getDeviceType.invoke(code).onSuccess { deviceModel ->
+                withContext(Dispatchers.Main) {
+                    val updatedBody = updateBodyModel(
+                        uiModels = uiState.screenModel?.body,
+                        identifier = VEHICLE_TYPE_KEY,
+                        updater = { model ->
+                            if (model is RichLabelUiModel) {
+                                model.copy(
+                                    text = String.format(DEVICE_TYPE_TEXT, deviceModel.message)
+                                )
+                            } else {
+                                model
+                            }
+                        }
+                    )
+
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        screenModel = uiState.screenModel?.copy(
+                            body = updatedBody
+                        )
+                    )
+                }
+            }.onFailure { throwable ->
+                Timber.wtf(throwable, "This is a failure")
+                withContext(Dispatchers.Main) {
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        errorModel = throwable.mapToUi()
+                    )
+                }
+            }
+        }
     }
 
     private fun updateComponentVisibility(
