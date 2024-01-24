@@ -687,13 +687,10 @@ class MedicalHistoryViewModel @Inject constructor(
 
     private fun calculateEstimatedDueDate(): String {
         val fur = fieldsValues[FUR_KEY]?.updatedValue.orEmpty()
-        val furDate = LocalDate.parse(
-            fur,
-            DateTimeFormatter.ofPattern(DATE_PATTERN)
-        ).plusDays(SEVEN_DAYS)
+        val furDate = getLocalDate(fur).plusDays(SEVEN_DAYS)
         val estimatedDueDate = furDate.plusMonths(NINE_MONTHS)
 
-        return estimatedDueDate?.format(DateTimeFormatter.ofPattern(DATE_PATTERN)).orEmpty()
+        return estimatedDueDate.format(DateTimeFormatter.ofPattern(DATE_PATTERN))
     }
 
     fun handleSegmentedSwitchAction(segmentedSwitchAction: GenericUiAction.SegmentedSwitchAction) {
