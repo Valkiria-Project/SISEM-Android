@@ -8,6 +8,7 @@ import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.commons.uiAction
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
+import com.skgtecnologia.sisem.domain.deviceauth.usecases.GetDeviceType
 import com.skgtecnologia.sisem.domain.inventory.model.InventoryType
 import com.skgtecnologia.sisem.domain.inventory.usecases.GetInventoryViewScreen
 import com.skgtecnologia.sisem.domain.inventory.usecases.SaveTransferReturn
@@ -29,6 +30,10 @@ class InventoryViewViewModelTest {
 
     @MockK
     lateinit var getInventoryViewScreen: GetInventoryViewScreen
+
+
+    @MockK
+    lateinit var getDeviceType: GetDeviceType
 
     @MockK
     lateinit var logoutCurrentUser: LogoutCurrentUser
@@ -61,6 +66,7 @@ class InventoryViewViewModelTest {
         viewModel = InventoryViewViewModel(
             savedStateHandle = savedStateHandle,
             getInventoryViewScreen = getInventoryViewScreen,
+            getDeviceType = getDeviceType,
             saveTransferReturn = saveTransferReturn,
             logoutCurrentUser = logoutCurrentUser,
             androidIdProvider = androidIdProvider
@@ -76,6 +82,7 @@ class InventoryViewViewModelTest {
         viewModel = InventoryViewViewModel(
             savedStateHandle = savedStateHandle,
             getInventoryViewScreen = getInventoryViewScreen,
+            getDeviceType = getDeviceType,
             saveTransferReturn = saveTransferReturn,
             logoutCurrentUser = logoutCurrentUser,
             androidIdProvider = androidIdProvider
@@ -91,6 +98,7 @@ class InventoryViewViewModelTest {
         viewModel = InventoryViewViewModel(
             savedStateHandle = savedStateHandle,
             getInventoryViewScreen = getInventoryViewScreen,
+            getDeviceType = getDeviceType,
             saveTransferReturn = saveTransferReturn,
             logoutCurrentUser = logoutCurrentUser,
             androidIdProvider = androidIdProvider
@@ -108,6 +116,7 @@ class InventoryViewViewModelTest {
         viewModel = InventoryViewViewModel(
             savedStateHandle = savedStateHandle,
             getInventoryViewScreen = getInventoryViewScreen,
+            getDeviceType = getDeviceType,
             saveTransferReturn = saveTransferReturn,
             logoutCurrentUser = logoutCurrentUser,
             androidIdProvider = androidIdProvider
@@ -127,6 +136,7 @@ class InventoryViewViewModelTest {
         viewModel = InventoryViewViewModel(
             savedStateHandle = savedStateHandle,
             getInventoryViewScreen = getInventoryViewScreen,
+            getDeviceType = getDeviceType,
             saveTransferReturn = saveTransferReturn,
             logoutCurrentUser = logoutCurrentUser,
             androidIdProvider = androidIdProvider
@@ -147,6 +157,7 @@ class InventoryViewViewModelTest {
         viewModel = InventoryViewViewModel(
             savedStateHandle = savedStateHandle,
             getInventoryViewScreen = getInventoryViewScreen,
+            getDeviceType = getDeviceType,
             saveTransferReturn = saveTransferReturn,
             logoutCurrentUser = logoutCurrentUser,
             androidIdProvider = androidIdProvider
