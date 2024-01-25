@@ -31,7 +31,6 @@ class InventoryViewViewModelTest {
     @MockK
     lateinit var getInventoryViewScreen: GetInventoryViewScreen
 
-
     @MockK
     lateinit var getDeviceType: GetDeviceType
 
