@@ -13,8 +13,10 @@ import com.mapbox.navigation.core.trip.session.LocationObserver
 import com.skgtecnologia.sisem.ui.navigation.SisemNavGraph
 import com.skgtecnologia.sisem.ui.navigation.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.theme.SisemTheme
+import com.valkiria.uicomponents.bricks.notification.model.IncidentAssignedNotification
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import java.time.LocalTime
 
 const val STARTUP_NAVIGATION_MODEL = "STARTUP_NAVIGATION_MODEL"
 
@@ -58,7 +60,26 @@ class MainActivity : ComponentActivity() {
     private fun handlePushNotification() {
         Timber.d("handlePushNotification")
         intent.extras?.also {
+            /**
+             * FIXME: Improve logic and persist the notification using the use case that also
+             *  gets the incident info
+             */
             Timber.d("Background notification ${it.getString("incident_number")}")
+            Timber.d("Background notification ${it.getString("incident_date")}")
+
+            val notificationData = IncidentAssignedNotification(
+                time = LocalTime.now(),
+                cru = it.getString("CRU").orEmpty(),
+                incidentNumber = it.getString("incident_number").orEmpty(),
+                incidentType = it.getString("incident_date").orEmpty(),
+                incidentPriority = it.getString("incident_priority").orEmpty(),
+                incidentDate = it.getString("incident_date").orEmpty(),
+                address = it.getString("address").orEmpty(),
+                hour = it.getString("hour").orEmpty(),
+                geolocation = it.getString("geolocation").orEmpty()
+            )
+
+            Timber.d("Background notification $notificationData")
         }
     }
 

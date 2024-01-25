@@ -8,6 +8,7 @@ import com.skgtecnologia.sisem.data.remote.model.screen.Params
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
 import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
 import com.skgtecnologia.sisem.domain.deviceauth.model.AssociateDeviceModel
+import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceModel
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import javax.inject.Inject
 
@@ -37,6 +38,12 @@ class DeviceAuthRemoteDataSource @Inject constructor(
                 disassociateDevice = disassociateDevice
             )
         )
+    }.mapResult {
+        it.mapToDomain()
+    }
+
+    suspend fun getDeviceType(code: String): Result<DeviceModel> = apiCall {
+        deviceAuthApi.getDeviceType(code)
     }.mapResult {
         it.mapToDomain()
     }
