@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.domain.deviceauth
 
 import com.skgtecnologia.sisem.domain.deviceauth.model.AssociateDeviceModel
+import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceModel
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 
 interface DeviceAuthRepository {
@@ -12,4 +13,6 @@ interface DeviceAuthRepository {
         code: String,
         disassociateDevice: Boolean
     ): AssociateDeviceModel
+
+    suspend fun getDeviceType(code: String): DeviceModel
 }
