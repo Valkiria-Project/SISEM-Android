@@ -52,7 +52,7 @@ fun DatePickerTextFieldView(
     onAction: (id: String, updatedValue: String, fieldValidated: Boolean, required: Boolean) -> Unit
 ) {
     var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-        mutableStateOf(TextFieldValue(""))
+        mutableStateOf(TextFieldValue(uiModel.text))
     }
 
     val inputError = remember(text, validateFields) {
