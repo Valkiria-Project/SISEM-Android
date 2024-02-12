@@ -17,8 +17,8 @@ android {
         applicationId = "com.skgtecnologia.sisem"
         minSdk = 30
         targetSdk = 34
-        versionCode = 26
-        versionName = "0.18.0"
+        versionCode = 27
+        versionName = "0.19.0"
         setProperty("archivesBaseName", "$applicationId-v$versionName($versionCode)")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -66,16 +66,17 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
-        freeCompilerArgs += listOf(
-            "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
-            "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
-            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
-            "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi",
-            "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
-            "-opt-in=com.google.accompanist.permissions.ExperimentalPermissionsApi",
-            "-opt-in=kotlin.contracts.ExperimentalContracts",
-            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
-        )
+        freeCompilerArgs +=
+            listOf(
+                "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+                "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
+                "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+                "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi",
+                "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
+                "-opt-in=com.google.accompanist.permissions.ExperimentalPermissionsApi",
+                "-opt-in=kotlin.contracts.ExperimentalContracts",
+                "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            )
     }
     packaging {
         resources {
