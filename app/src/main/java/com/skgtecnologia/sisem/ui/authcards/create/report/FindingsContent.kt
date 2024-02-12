@@ -9,9 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
-import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.skgtecnologia.sisem.domain.model.header.findingsHeader
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
+import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.bricks.chip.SuggestionChipView
 
 @Composable
@@ -26,7 +26,7 @@ fun FindingsContent(chipSection: ChipSectionUiModel) {
 
     FlowRow(
         modifier = Modifier
-            .padding(top = 8.dp)
+            .padding(start = 20.dp, top = 8.dp, end = 20.dp)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
