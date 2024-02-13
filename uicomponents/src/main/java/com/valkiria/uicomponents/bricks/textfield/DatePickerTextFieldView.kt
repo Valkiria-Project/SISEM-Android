@@ -14,6 +14,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
@@ -35,7 +36,7 @@ import com.valkiria.uicomponents.R.string
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.mocks.getPreOpDriverAuxGuardianTextFieldUiModel
-import com.valkiria.uicomponents.utlis.TimeUtils.getEpochMillis
+import com.valkiria.uicomponents.utlis.TimeUtils
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDate
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDateInMillis
 import java.time.Instant
@@ -118,7 +119,25 @@ fun DatePickerTextFieldView(
 
     if (showDialog) {
         val pickerState = rememberDatePickerState(
-            initialSelectedDateMillis = getLocalDateInMillis(selectedDate)
+            initialSelectedDateMillis = getLocalDateInMillis(selectedDate),
+            selectableDates = object : SelectableDates {
+                override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                    return if (uiModel.maxDate != null) {
+                        val maxDate = uiModel.maxDate.substringBefore(DATE_TIME_DELIMITER)
+
+                        if (uiModel.minDate == null) {
+                            utcTimeMillis < TimeUtils.getEpochMillis(maxDate)
+                        } else {
+                            val minDate = uiModel.minDate.substringBefore(DATE_TIME_DELIMITER)
+                            utcTimeMillis in TimeUtils.getEpochMillis(minDate)..TimeUtils.getEpochMillis(
+                                maxDate
+                            )
+                        }
+                    } else {
+                        true
+                    }
+                }
+            }
         )
         DatePickerDialog(
             onDismissRequest = {
@@ -159,20 +178,6 @@ fun DatePickerTextFieldView(
         ) {
             DatePicker(
                 state = pickerState,
-                dateValidator = { timestamp ->
-                    if (uiModel.maxDate != null) {
-                        val maxDate = uiModel.maxDate.substringBefore(DATE_TIME_DELIMITER)
-
-                        if (uiModel.minDate == null) {
-                            timestamp < getEpochMillis(maxDate)
-                        } else {
-                            val minDate = uiModel.minDate.substringBefore(DATE_TIME_DELIMITER)
-                            timestamp in getEpochMillis(minDate)..getEpochMillis(maxDate)
-                        }
-                    } else {
-                        true
-                    }
-                },
                 colors = DatePickerDefaults.colors(
                     titleContentColor = Color.White,
                     headlineContentColor = Color.White,
