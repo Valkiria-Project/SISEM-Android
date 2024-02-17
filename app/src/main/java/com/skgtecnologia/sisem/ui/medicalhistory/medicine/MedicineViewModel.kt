@@ -10,6 +10,7 @@ import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.BuildMedicineInformation
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicineScreen
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
+import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
@@ -48,11 +49,12 @@ class MedicineViewModel @Inject constructor(
         job?.cancel()
         job = viewModelScope.launch {
             getMedicineScreen.invoke(serial = androidIdProvider.getAndroidId())
-                .onSuccess {
+                .onSuccess { medicinesScreenModel ->
+                    medicinesScreenModel.getFormInitialValues()
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
                             isLoading = false,
-                            screenModel = it
+                            screenModel = medicinesScreenModel
                         )
                     }
                 }.onFailure { throwable ->
@@ -63,6 +65,19 @@ class MedicineViewModel @Inject constructor(
                         )
                     }
                 }
+        }
+    }
+
+    private fun ScreenModel.getFormInitialValues() {
+        this.body.forEach { bodyRowModel ->
+            when (bodyRowModel) {
+                is TextFieldUiModel -> fieldsValues[bodyRowModel.identifier] = InputUiModel(
+                    identifier = bodyRowModel.identifier,
+                    updatedValue = bodyRowModel.text,
+                    fieldValidated = bodyRowModel.text.isNotEmpty(),
+                    required = bodyRowModel.required
+                )
+            }
         }
     }
 
