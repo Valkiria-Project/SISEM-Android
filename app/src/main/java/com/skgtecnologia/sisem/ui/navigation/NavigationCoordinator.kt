@@ -45,7 +45,7 @@ fun getAppStartDestination(model: StartupNavigationModel?): String {
         NavigationGraph.Auth.route
     } else when {
         model.isAdmin && !model.vehicleCode.isNullOrEmpty() -> NavigationGraph.Main.route
-        model.isTurnStarted -> NavigationGraph.Main.route
+        model.isTurnStarted && !model.requiresPreOperational -> NavigationGraph.Main.route
         else -> NavigationGraph.Auth.route
     }
 }

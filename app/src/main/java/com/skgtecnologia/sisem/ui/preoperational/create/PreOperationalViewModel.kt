@@ -27,6 +27,7 @@ import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
 import com.valkiria.uicomponents.components.finding.FindingUiModel
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
+import com.valkiria.uicomponents.components.textfield.TextFieldStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -137,9 +138,13 @@ class PreOperationalViewModel @Inject constructor(
                 }
 
                 is TextFieldUiModel -> {
+                    val fieldValidated = bodyRowModel.style == TextFieldStyle.DATE_PICKER
+                            && bodyRowModel.text.isNotEmpty()
+
                     fieldsValues[bodyRowModel.identifier] = InputUiModel(
                         bodyRowModel.identifier,
-                        bodyRowModel.text
+                        bodyRowModel.text,
+                        fieldValidated
                     )
                 }
             }
