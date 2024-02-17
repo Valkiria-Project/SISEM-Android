@@ -19,7 +19,7 @@ import com.valkiria.uicomponents.bricks.notification.model.TransmiNotification
 import com.valkiria.uicomponents.bricks.notification.model.TransmilenioAuthorizationNotification
 import com.valkiria.uicomponents.bricks.notification.model.TransmilenioDeniedNotification
 import com.valkiria.uicomponents.components.incident.model.IncidentPriority
-import com.valkiria.uicomponents.utlis.TimeUtils.getFormattedLocalTimeAsString
+import com.valkiria.uicomponents.utlis.TimeUtils.getLocalTimeAsString
 import java.util.UUID
 
 data class NotificationUiModel(
@@ -36,7 +36,8 @@ data class NotificationUiModel(
 
 @Suppress("LongMethod")
 fun NotificationData.mapToUi(): NotificationUiModel {
-    val timeStamp = getFormattedLocalTimeAsString(time)
+    val timeStamp = getLocalTimeAsString(time)
+
     return when (this) {
         is IncidentAssignedNotification -> NotificationUiModel(
             icon = INCIDENT_ASSIGNED.icon,

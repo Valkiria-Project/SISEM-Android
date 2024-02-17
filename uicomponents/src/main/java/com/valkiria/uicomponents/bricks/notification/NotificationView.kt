@@ -47,7 +47,6 @@ import com.valkiria.uicomponents.utlis.getResourceIdByName
 import kotlinx.coroutines.delay
 import timber.log.Timber
 
-val DismissThreshold = 150.dp
 const val DISMISS_DELAY = 800L
 
 @Composable
