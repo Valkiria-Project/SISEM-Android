@@ -129,9 +129,9 @@ fun DatePickerTextFieldView(
                             utcTimeMillis < TimeUtils.getEpochMillis(maxDate)
                         } else {
                             val minDate = uiModel.minDate.substringBefore(DATE_TIME_DELIMITER)
-                            utcTimeMillis in TimeUtils.getEpochMillis(minDate)..TimeUtils.getEpochMillis(
-                                maxDate
-                            )
+                            val minMillis = TimeUtils.getEpochMillis(minDate)
+                            val maxMillis = TimeUtils.getEpochMillis(maxDate)
+                            utcTimeMillis in minMillis..maxMillis
                         }
                     } else {
                         true

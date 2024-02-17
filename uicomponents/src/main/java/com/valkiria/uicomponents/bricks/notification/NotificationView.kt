@@ -57,7 +57,9 @@ fun NotificationView(
     var show by remember { mutableStateOf(true) }
     val dismissState = rememberSwipeToDismissBoxState(
         confirmValueChange = {
-            if (it == SwipeToDismissBoxValue.EndToStart || it == SwipeToDismissBoxValue.StartToEnd) {
+            if (it == SwipeToDismissBoxValue.EndToStart
+                || it == SwipeToDismissBoxValue.StartToEnd
+            ) {
                 show = false
                 true
             } else false
