@@ -12,6 +12,7 @@ const val HOURS_MINUTES_SECONDS_24_HOURS_PATTERN = "HH:mm:ss"
 const val HOURS_MINUTES_24_HOURS_PATTERN = "HH:mm"
 const val HOURS_MINUTES_12_HOURS_PATTERN = "hh:mm a"
 const val DATE_PATTERN = "dd/MM/yyyy"
+const val DATE_TIME_PATTERN = "dd/MM/yyyy - HH : mm"
 const val UTC_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss"
 const val WEEK_DAYS = 7
 
