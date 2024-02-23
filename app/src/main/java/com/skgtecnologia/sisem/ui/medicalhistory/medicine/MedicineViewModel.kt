@@ -145,6 +145,13 @@ class MedicineViewModel @Inject constructor(
             updater = { model ->
                 if (model is DropDownUiModel) {
                     model.copy(selected = dropDownAction.name)
+
+                } else if (model is TextFieldUiModel && model.identifier == "") {
+                    model.copy(
+                        validations = listOf(
+
+                        )
+                    )
                 } else {
                     model
                 }
