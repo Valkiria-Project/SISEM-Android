@@ -48,7 +48,7 @@ fun DigitsTextFieldView(
                 text.toFailedValidation(validations, true) == null
             )
         },
-        modifier = Modifier.size(56.dp),
+        modifier = Modifier.size(64.dp),
         textStyle = style,
         supportingText = {
             if (inputError != null) {

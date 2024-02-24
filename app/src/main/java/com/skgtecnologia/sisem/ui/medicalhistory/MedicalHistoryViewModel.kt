@@ -98,7 +98,7 @@ import com.valkiria.uicomponents.components.slider.SliderUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.utlis.DATE_PATTERN
-import com.valkiria.uicomponents.utlis.HOURS_MINUTES_24_HOURS_PATTERN
+import com.valkiria.uicomponents.utlis.HOURS_MINUTES_SECONDS_24_HOURS_PATTERN
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDate
 import com.valkiria.uicomponents.utlis.WEEK_DAYS
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -901,7 +901,7 @@ class MedicalHistoryViewModel @Inject constructor(
                     pill = PillUiModel(
                         title = TextUiModel(
                             text = LocalDateTime.now().format(
-                                DateTimeFormatter.ofPattern(HOURS_MINUTES_24_HOURS_PATTERN)
+                                DateTimeFormatter.ofPattern(HOURS_MINUTES_SECONDS_24_HOURS_PATTERN)
                             ),
                             textStyle = TextStyle.BUTTON_1
                         ),
@@ -942,9 +942,9 @@ class MedicalHistoryViewModel @Inject constructor(
                     addAll(bodyRow.medicines)
                     add(buildMedicine(medicine))
                 }.sortedWith(
-                    compareByDescending<InfoCardUiModel> { it.date?.text }
-                        .thenByDescending { it.title.text }
-                )
+                    compareByDescending { it.date?.text }
+                ).reversed()
+
                 bodyRow.copy(
                     medicines = medicines
                 )

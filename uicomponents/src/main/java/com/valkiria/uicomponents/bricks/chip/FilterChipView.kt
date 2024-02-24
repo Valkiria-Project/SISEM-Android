@@ -47,10 +47,15 @@ fun FilterChipView(
         ),
         border = if (isError) {
             FilterChipDefaults.filterChipBorder(
-                borderColor = MaterialTheme.colorScheme.error
+                enabled = true,
+                selected = isSelected,
+                borderColor = MaterialTheme.colorScheme.error,
             )
         } else {
-            FilterChipDefaults.filterChipBorder()
+            FilterChipDefaults.filterChipBorder(
+                enabled = true,
+                selected = isSelected,
+            )
         }
     )
 }

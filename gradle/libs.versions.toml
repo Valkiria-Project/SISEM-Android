@@ -35,6 +35,7 @@ mapbox-navigation = "2.10.1"
 mapbox-navigation-dropin = "2.17.6"
 mockk = "1.12.2"
 moshi = "1.15.0"
+# Do not upgrade this version, unless new navigation strategy for back and forth navigation is implemented
 navigation-compose = "2.7.4"
 okhttp-bom = "4.12.0"
 paparazzi = "1.3.1"

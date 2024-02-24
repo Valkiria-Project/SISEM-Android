@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.valkiria.uicomponents.R.drawable
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.INCIDENT_ASSIGNED
-import com.valkiria.uicomponents.mocks.getAssignedIncidentNotificationUiModel
+import com.valkiria.uicomponents.mocks.getTransmilenioAuthNotificationUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import timber.log.Timber
@@ -127,6 +127,16 @@ private fun NotificationViewRender(
                             fontWeight = FontWeight.Medium
                         )
                     )
+
+                    if (uiModel.title != INCIDENT_ASSIGNED.title && uiModel.content == null) {
+                        Text(
+                            text = uiModel.timeStamp,
+                            modifier = Modifier.weight(1f),
+                            color = Color(parseColor("#AFAFAF")),
+                            textAlign = TextAlign.End,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
                 }
             }
 
@@ -161,6 +171,16 @@ private fun NotificationViewRender(
                             fontWeight = FontWeight.Medium
                         )
                     )
+
+                    if (uiModel.title != INCIDENT_ASSIGNED.title) {
+                        Text(
+                            text = uiModel.timeStamp,
+                            modifier = Modifier.weight(1f),
+                            color = Color(parseColor("#AFAFAF")),
+                            textAlign = TextAlign.End,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
                 }
             }
 
@@ -225,7 +245,8 @@ private fun NotificationViewRender(
 fun NotificationRowViewPreview() {
     Column(modifier = Modifier.background(Color.White)) {
         NotificationRowView(
-            uiModel = getAssignedIncidentNotificationUiModel()
+//            uiModel = getAssignedIncidentNotificationUiModel()
+            uiModel = getTransmilenioAuthNotificationUiModel()
         )
     }
 }

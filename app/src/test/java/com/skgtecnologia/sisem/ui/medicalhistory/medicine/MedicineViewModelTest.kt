@@ -7,9 +7,8 @@ import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.BuildMedicineInformation
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicineScreen
+import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
-import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
-import com.valkiria.uicomponents.components.textfield.InputUiModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
@@ -73,25 +72,35 @@ class MedicineViewModelTest {
 
         viewModel =
             MedicineViewModel(buildMedicineInformation, getMedicineScreen, androidIdProvider)
-        viewModel.fieldsValues[identifier] = InputUiModel(
+        val inputAction = GenericUiAction.InputAction(
             identifier = identifier,
             updatedValue = identifier,
-            fieldValidated = true
+            fieldValidated = true,
+            required = false
         )
-        viewModel.dropDownValue.value = DropDownInputUiModel(
+        viewModel.handleInputAction(inputAction)
+        val dropDownAction = GenericUiAction.DropDownAction(
             identifier = identifier,
             id = identifier,
             name = identifier,
-            fieldValidated = true
+            quantity = 2,
+            fieldValidated = true,
         )
-        viewModel.chipValues[identifier] = ChipSelectionItemUiModel(
-            id = identifier,
-            name = identifier,
+        viewModel.handleDropDownAction(dropDownAction)
+        val chipSelectionAction = GenericUiAction.ChipSelectionAction(
+            identifier = identifier,
+            chipSelectionItemUiModel = ChipSelectionItemUiModel(identifier2, identifier2),
+            status = true,
+            viewsVisibility = mapOf()
         )
-        viewModel.chipValues[identifier2] = ChipSelectionItemUiModel(
-            id = identifier2,
-            name = identifier2,
+        viewModel.handleChipSelectionAction(chipSelectionAction)
+        val chipSelectionAction2 = GenericUiAction.ChipSelectionAction(
+            identifier = identifier2,
+            chipSelectionItemUiModel = ChipSelectionItemUiModel(identifier, identifier),
+            status = true,
+            viewsVisibility = mapOf()
         )
+        viewModel.handleChipSelectionAction(chipSelectionAction2)
         viewModel.saveMedicine()
 
         Assert.assertEquals(values, viewModel.uiState.navigationModel?.values)
