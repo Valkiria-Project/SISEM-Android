@@ -47,6 +47,7 @@ fun SignatureComponent(
                 .asImageBitmap(), // FIXME: Temporal hack
             contentDescription = uiModel.signature,
             contentScale = ContentScale.Crop,
+            alpha = 1f,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(150.dp)

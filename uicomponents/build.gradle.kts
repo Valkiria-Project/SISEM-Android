@@ -53,6 +53,7 @@ dependencies {
     // Android
     implementation(libs.activity.compose)
     implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.material)
 
     // Compose
