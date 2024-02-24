@@ -17,12 +17,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.DismissValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SwipeToDismiss
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDismissState
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -47,7 +47,6 @@ import com.valkiria.uicomponents.utlis.getResourceIdByName
 import kotlinx.coroutines.delay
 import timber.log.Timber
 
-val DismissThreshold = 150.dp
 const val DISMISS_DELAY = 800L
 
 @Composable
@@ -56,13 +55,15 @@ fun NotificationView(
     onAction: (notificationAction: NotificationAction) -> Unit
 ) {
     var show by remember { mutableStateOf(true) }
-    val dismissState = rememberDismissState(
+    val dismissState = rememberSwipeToDismissBoxState(
         confirmValueChange = {
-            if (it == DismissValue.DismissedToStart || it == DismissValue.DismissedToEnd) {
+            if (it == SwipeToDismissBoxValue.EndToStart ||
+                it == SwipeToDismissBoxValue.StartToEnd
+            ) {
                 show = false
                 true
             } else false
-        }, positionalThreshold = { DismissThreshold.toPx() }
+        }
     )
 
     LaunchedEffect(show) {
@@ -90,16 +91,15 @@ fun NotificationView(
         AnimatedVisibility(
             show, exit = fadeOut(spring())
         ) {
-            SwipeToDismiss(
+            SwipeToDismissBox(
                 state = dismissState,
                 modifier = Modifier,
-                background = {
+                backgroundContent = {
                     Color.Transparent
-                },
-                dismissContent = {
-                    NotificationViewRender(uiModel, iconResourceId, onAction)
                 }
-            )
+            ) {
+                NotificationViewRender(uiModel, iconResourceId, onAction)
+            }
         }
     }
 }

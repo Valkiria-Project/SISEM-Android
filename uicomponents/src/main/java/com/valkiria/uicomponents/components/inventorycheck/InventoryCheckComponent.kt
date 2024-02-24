@@ -1,6 +1,7 @@
 package com.valkiria.uicomponents.components.inventorycheck
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -45,7 +46,8 @@ fun InventoryCheckComponent(
                 Column(
                     modifier = Modifier
                         .weight(FORTY_PERCENT_WEIGHT),
-                    horizontalAlignment = Alignment.Start
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.Top
                 ) {
                     RichLabelComponent(uiModel = checkItemUiModel.name)
                 }

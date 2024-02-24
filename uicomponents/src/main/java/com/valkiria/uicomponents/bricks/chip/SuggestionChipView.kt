@@ -1,10 +1,10 @@
 package com.valkiria.uicomponents.bricks.chip
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SuggestionChip
-import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -39,8 +39,9 @@ fun SuggestionChipView(
             )
         },
         shape = RoundedCornerShape(20.dp),
-        border = SuggestionChipDefaults.suggestionChipBorder(
-            borderColor = MaterialTheme.colorScheme.primary
+        border = BorderStroke(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.primary
         )
     )
 }

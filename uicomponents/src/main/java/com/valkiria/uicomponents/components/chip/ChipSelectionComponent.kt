@@ -58,7 +58,10 @@ fun ChipSelectionComponent(
                 FilterChipView(
                     id = chipSelection.id,
                     text = chipSelection.name,
-                    isSelected = (chipSelection.name == selected.value),
+                    isSelected = (
+                        chipSelection.name == selected.value ||
+                            chipSelection.id == selected.value
+                        ),
                     textStyle = TextStyle.BUTTON_1,
                     isError = isError,
                     onAction = { id, text, isSelection ->

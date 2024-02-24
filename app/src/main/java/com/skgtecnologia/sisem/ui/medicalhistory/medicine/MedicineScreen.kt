@@ -17,8 +17,6 @@ import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
-import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
-import com.valkiria.uicomponents.components.textfield.InputUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -88,28 +86,15 @@ fun handleAction(
     viewModel: MedicineViewModel
 ) {
     when (uiAction) {
-        is GenericUiAction.DropDownAction ->
-            viewModel.dropDownValue.value = DropDownInputUiModel(
-                uiAction.identifier,
-                uiAction.id,
-                uiAction.name,
-                uiAction.quantity,
-                uiAction.fieldValidated
-            )
+        is GenericUiAction.ButtonAction -> viewModel.saveMedicine()
 
-        is GenericUiAction.InputAction ->
-            viewModel.fieldsValues[uiAction.identifier] = InputUiModel(
-                uiAction.identifier,
-                uiAction.updatedValue,
-                uiAction.fieldValidated
-            )
+        is GenericUiAction.ChipSelectionAction -> viewModel.handleChipSelectionAction(uiAction)
+
+        is GenericUiAction.DropDownAction -> viewModel.handleDropDownAction(uiAction)
+
+        is GenericUiAction.InputAction -> viewModel.handleInputAction(uiAction)
 
         is GenericUiAction.TimePickerAction -> viewModel.timePickerValue.value = uiAction.value
-
-        is GenericUiAction.ChipSelectionAction ->
-            viewModel.chipValues[uiAction.identifier] = uiAction.chipSelectionItemUiModel
-
-        is GenericUiAction.ButtonAction -> viewModel.saveMedicine()
 
         else -> Timber.d("no-op")
     }

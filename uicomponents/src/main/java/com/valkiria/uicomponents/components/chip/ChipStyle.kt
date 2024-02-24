@@ -2,6 +2,7 @@ package com.valkiria.uicomponents.components.chip
 
 import android.graphics.Color.parseColor
 import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.AssistChipDefaults.assistChipBorder
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -30,11 +31,13 @@ fun ChipStyle.toChipColors() = when (this) {
 
 @Composable
 fun ChipStyle.toChipBorder() = when (this) {
-    ChipStyle.PRIMARY -> AssistChipDefaults.assistChipBorder(
+    ChipStyle.PRIMARY -> assistChipBorder(
+        true,
         borderColor = MaterialTheme.colorScheme.primary
     )
 
-    ChipStyle.SECONDARY -> AssistChipDefaults.assistChipBorder(
+    ChipStyle.SECONDARY -> assistChipBorder(
+        true,
         borderColor = Color(parseColor(SECONDARY_CONTAINER_COLOR))
     )
 }
