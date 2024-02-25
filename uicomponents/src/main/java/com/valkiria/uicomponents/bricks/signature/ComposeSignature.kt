@@ -75,6 +75,7 @@ fun ComposeSignature(
         ),
     ) {
         Column(modifier = Modifier.fillMaxHeight()) {
+
             viewModel.setPathState(PathState(Path(), drawColor.value, drawBrush.value))
 
             val signatureBitmap = captureBitmap {
