@@ -744,19 +744,19 @@ class MedicalHistoryViewModelTest {
         )
         coEvery {
             sendMedicalHistory.invoke(
-                ID_APH.toString(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any()
+                idAph = ID_APH.toString(),
+                humanBodyValues = any(),
+                segmentedValues = any(),
+                signatureValues = any(),
+                fieldsValue = any(),
+                sliderValues = any(),
+                dropDownValues = any(),
+                chipSelectionValues = any(),
+                chipOptionsValues = any(),
+                imageButtonSectionValues = any(),
+                vitalSigns = any(),
+                infoCardButtonValues = any(),
+                images = any()
             )
         } returns Result.success(Unit)
 

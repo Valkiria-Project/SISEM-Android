@@ -223,7 +223,7 @@ class MedicalHistoryViewModel @Inject constructor(
         }
     }
 
-    @Suppress("ComplexMethod")
+    @Suppress("ComplexMethod", "NestedBlockDepth")
     private fun ScreenModel.getFormInitialValues() {
         this.body.forEach { bodyRowModel ->
             when (bodyRowModel) {
@@ -318,7 +318,7 @@ class MedicalHistoryViewModel @Inject constructor(
                 chipOption.remove(chipOptionAction.chipOptionUiModel)
 
             chipOption != null &&
-                    chipOption.contains(chipOptionAction.chipOptionUiModel).not() -> {
+                chipOption.contains(chipOptionAction.chipOptionUiModel).not() -> {
                 chipOption.add(chipOptionAction.chipOptionUiModel)
             }
 
@@ -518,7 +518,7 @@ class MedicalHistoryViewModel @Inject constructor(
                                 options = it.options.map { imageButtonUiModel ->
                                     imageButtonUiModel.copy(
                                         selected = imageButtonUiModel.identifier ==
-                                                imageButtonAction.itemIdentifier
+                                            imageButtonAction.itemIdentifier
                                     )
                                 }
                             )
@@ -664,9 +664,9 @@ class MedicalHistoryViewModel @Inject constructor(
 
     private fun SnapshotStateMap<String, InputUiModel>.getPatientName(): String =
         this[FIRST_NAME_KEY]?.updatedValue.orEmpty() + " " +
-                this[SECOND_NAME_KEY]?.updatedValue.orEmpty() + " " +
-                this[LASTNAME_KEY]?.updatedValue.orEmpty() + " " +
-                this[SECOND_LASTNAME_KEY]?.updatedValue.orEmpty()
+            this[SECOND_NAME_KEY]?.updatedValue.orEmpty() + " " +
+            this[LASTNAME_KEY]?.updatedValue.orEmpty() + " " +
+            this[SECOND_LASTNAME_KEY]?.updatedValue.orEmpty()
 
     private fun SnapshotStateMap<String, InputUiModel>.getPatientDocument(): String =
         this[DOCUMENT_KEY]?.updatedValue.orEmpty()
@@ -1064,6 +1064,7 @@ class MedicalHistoryViewModel @Inject constructor(
         return ((now.toEpochDay() - fur.toEpochDay()) / WEEK_DAYS).toString()
     }
 
+    @Suppress("ComplexCondition")
     fun sendMedicalHistory(images: List<File>) {
         uiState = uiState.copy(
             isLoading = true,
@@ -1117,7 +1118,9 @@ class MedicalHistoryViewModel @Inject constructor(
                     sliderValues = sliderValues,
                     dropDownValues = dropDownValues.mapValues { it.value.id },
                     chipSelectionValues = chipSelectionValues.mapValues { it.value.id },
-                    chipOptionsValues = chipOptionValues.mapValues { it.value.map { chipOption -> chipOption.id } },
+                    chipOptionsValues = chipOptionValues.mapValues {
+                        it.value.map { chipOption -> chipOption.id }
+                    },
                     imageButtonSectionValues = imageButtonSectionValues,
                     vitalSigns = vitalSignsValues,
                     infoCardButtonValues = medicineValues,
