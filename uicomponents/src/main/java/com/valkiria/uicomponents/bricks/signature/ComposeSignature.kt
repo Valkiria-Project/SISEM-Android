@@ -45,11 +45,11 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.drawToBitmap
 import androidx.lifecycle.viewmodel.compose.viewModel
 
+@Suppress("LongParameterList", "MagicNumber")
 @Composable
 fun ComposeSignature(
     modifier: Modifier = Modifier,
     signaturePadColor: Color = Color(0xFFEEEEEE),
-    signaturePadHeight: Dp = 500.dp,
     signatureColor: Color = Color.Black,
     signaturePadCardElevation: Dp = 4.dp,
     signatureThickness: Float = 10f,
@@ -117,6 +117,7 @@ fun ComposeSignature(
     }
 }
 
+@Suppress("LongParameterList")
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DrawingCanvas(
