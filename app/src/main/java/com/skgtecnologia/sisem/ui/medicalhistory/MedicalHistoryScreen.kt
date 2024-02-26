@@ -27,7 +27,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-@Suppress("LongParameterList")
+@Suppress("LongMethod", "LongParameterList")
 @Composable
 fun MedicalHistoryScreen(
     viewModel: MedicalHistoryViewModel,
@@ -89,7 +89,11 @@ fun MedicalHistoryScreen(
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
-            )
+            ) { uiAction ->
+                if (uiAction is HeaderUiAction.GoBack) {
+                    viewModel.goBack()
+                }
+            }
         }
 
         BodySection(
@@ -130,8 +134,6 @@ fun handleAction(
         is GenericUiAction.ChipSelectionAction -> viewModel.handleChipSelectionAction(uiAction)
 
         is GenericUiAction.DropDownAction -> viewModel.handleDropDownAction(uiAction)
-
-        is HeaderUiAction.GoBack -> viewModel.goBack()
 
         is GenericUiAction.HumanBodyAction -> viewModel.handleHumanBodyAction(uiAction)
 
