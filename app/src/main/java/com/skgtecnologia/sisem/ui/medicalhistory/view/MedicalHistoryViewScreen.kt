@@ -26,6 +26,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+@Suppress("LongMethod")
 @Composable
 fun MedicalHistoryViewScreen(
     modifier: Modifier = Modifier,
@@ -69,7 +70,11 @@ fun MedicalHistoryViewScreen(
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
-            )
+            ) { uiAction ->
+                if (uiAction is HeaderUiAction.GoBack) {
+                    viewModel.goBack()
+                }
+            }
         }
 
         BodySection(
@@ -132,8 +137,6 @@ private fun handleAction(
                 viewModel.sendMedicalHistoryView(images)
             }
         }
-
-        is HeaderUiAction.GoBack -> viewModel.navigateBack()
 
         else -> Timber.d("no-op")
     }

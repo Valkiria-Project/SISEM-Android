@@ -15,7 +15,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.joelkanyi.composesignature.ComposeSignature
 import com.skgtecnologia.sisem.R.string
 import com.skgtecnologia.sisem.domain.medicalhistory.model.MedicalHistoryIdentifier
 import com.skgtecnologia.sisem.domain.model.header.signaturePadHeader
@@ -23,12 +22,14 @@ import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.bricks.button.ButtonView
+import com.valkiria.uicomponents.bricks.signature.ComposeSignature
 import com.valkiria.uicomponents.components.button.ButtonSize
 import com.valkiria.uicomponents.components.button.ButtonStyle
 import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.extensions.encodeAsBase64
+import timber.log.Timber
 
 @Suppress("LongMethod")
 @Composable
@@ -61,7 +62,6 @@ fun SignaturePadScreen(
                 .fillMaxWidth()
                 .padding(16.dp),
             signaturePadColor = MaterialTheme.colorScheme.background,
-            signaturePadHeight = 400.dp,
             signatureColor = MaterialTheme.colorScheme.onBackground,
             signatureThickness = 10f,
             completeComponent = { onClick ->
@@ -107,12 +107,16 @@ fun SignaturePadScreen(
                 }
             },
             onComplete = { signatureBitmap ->
-                bitmap = signatureBitmap
-                onNavigation(
-                    SignaturePadNavigationModel(
-                        signature = signatureBitmap.encodeAsBase64()
+                if (signatureBitmap != null) {
+                    bitmap = signatureBitmap
+                    onNavigation(
+                        SignaturePadNavigationModel(
+                            signature = signatureBitmap.encodeAsBase64()
+                        )
                     )
-                )
+                } else {
+                    Timber.d("Signature is null")
+                }
             },
             onClear = {
                 bitmap = null
