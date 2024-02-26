@@ -270,7 +270,8 @@ class MedicalHistoryViewModel @Inject constructor(
                             dropDownValues[bodyRowModel.identifier] = DropDownInputUiModel(
                                 bodyRowModel.identifier,
                                 it.id,
-                                it.name
+                                it.name,
+                                fieldValidated = true
                             )
                         } ?: run {
                             dropDownValues[bodyRowModel.identifier] = DropDownInputUiModel()
@@ -1083,7 +1084,7 @@ class MedicalHistoryViewModel @Inject constructor(
                 it.value.map { chipOption ->
                     chipOption.selected
                 }
-            }.map {
+            }.filter {
                 it.value.contains(true)
             }
 
