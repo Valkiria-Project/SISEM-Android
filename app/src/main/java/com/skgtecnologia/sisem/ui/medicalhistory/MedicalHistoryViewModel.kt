@@ -77,6 +77,7 @@ import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.button.ImageButtonSectionUiModel
 import com.valkiria.uicomponents.components.card.InfoCardUiModel
 import com.valkiria.uicomponents.components.card.PillUiModel
+import com.valkiria.uicomponents.components.chip.ChipOptionUiModel
 import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
 import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
 import com.valkiria.uicomponents.components.chip.ChipSelectionUiModel
@@ -169,7 +170,7 @@ class MedicalHistoryViewModel @Inject constructor(
     private var temporalMedsSelector by mutableStateOf("")
     private var temporalSignature by mutableStateOf("")
 
-    private var chipOptionValues = mutableStateMapOf<String, MutableList<String>>()
+    private var chipOptionValues = mutableStateMapOf<String, MutableList<ChipOptionUiModel>>()
     private var chipSelectionValues = mutableStateMapOf<String, ChipSelectionItemUiModel>()
     private var dropDownValues = mutableStateMapOf<String, DropDownInputUiModel>()
     private var fieldsValues = mutableStateMapOf<String, InputUiModel>()
@@ -222,36 +223,60 @@ class MedicalHistoryViewModel @Inject constructor(
         }
     }
 
-    @Suppress("ComplexMethod")
+    @Suppress("ComplexMethod", "NestedBlockDepth")
     private fun ScreenModel.getFormInitialValues() {
         this.body.forEach { bodyRowModel ->
             when (bodyRowModel) {
                 is ChipOptionsUiModel -> {
                     val selectedOptions = bodyRowModel.items
                         .filter { it.selected }
-                        .map { it.id }
 
-                    if (selectedOptions.isEmpty().not()) {
-                        chipOptionValues[bodyRowModel.identifier] = selectedOptions.toMutableList()
+                    if (bodyRowModel.required || selectedOptions.isEmpty().not()) {
+                        bodyRowModel.items.forEach { chipOption ->
+                            chipOptionValues[bodyRowModel.identifier] =
+                                mutableListOf(
+                                    ChipOptionUiModel(
+                                        id = chipOption.id,
+                                        name = chipOption.name,
+                                        selected = chipOption.selected
+                                    )
+                                )
+                        }
                     }
                 }
 
-                is ChipSelectionUiModel -> bodyRowModel.selected?.let {
-                    bodyRowModel.items.find {
-                        it.id == bodyRowModel.selected
-                    }?.also {
-                        chipSelectionValues[bodyRowModel.identifier] = it
+                is ChipSelectionUiModel -> {
+                    if (bodyRowModel.required || !bodyRowModel.selected.isNullOrEmpty()) {
+                        bodyRowModel.items.find {
+                            it.id == bodyRowModel.selected
+                        }?.also {
+                            chipSelectionValues[bodyRowModel.identifier] =
+                                it.copy(isSelected = true)
+                        } ?: run {
+                            chipSelectionValues[bodyRowModel.identifier] = ChipSelectionItemUiModel(
+                                id = bodyRowModel.identifier,
+                                name = bodyRowModel.identifier,
+                                isSelected = false
+                            )
+                        }
                     }
                 }
 
-                is DropDownUiModel -> bodyRowModel.items.find {
-                    it.id == bodyRowModel.selected
-                }?.also {
-                    dropDownValues[bodyRowModel.identifier] = DropDownInputUiModel(
-                        bodyRowModel.identifier,
-                        it.id,
-                        it.name
-                    )
+                is DropDownUiModel -> {
+                    if (bodyRowModel.required || bodyRowModel.selected.isNotEmpty()) {
+                        bodyRowModel.items.find {
+                            it.id == bodyRowModel.selected
+                        }?.also {
+                            dropDownValues[bodyRowModel.identifier] = DropDownInputUiModel(
+                                bodyRowModel.identifier,
+                                it.id,
+                                it.name,
+                                fieldValidated = true
+                            )
+                        } ?: run {
+                            dropDownValues[bodyRowModel.identifier] = DropDownInputUiModel()
+                        }
+                    }
                 }
 
                 is SegmentedSwitchUiModel ->
@@ -260,12 +285,16 @@ class MedicalHistoryViewModel @Inject constructor(
                 is SliderUiModel ->
                     sliderValues[bodyRowModel.identifier] = bodyRowModel.selected.toString()
 
-                is TextFieldUiModel -> fieldsValues[bodyRowModel.identifier] = InputUiModel(
-                    identifier = bodyRowModel.identifier,
-                    updatedValue = bodyRowModel.text,
-                    fieldValidated = bodyRowModel.text.isNotEmpty(),
-                    required = bodyRowModel.required
-                )
+                is TextFieldUiModel -> {
+                    if (bodyRowModel.required || bodyRowModel.text.isNotEmpty()) {
+                        fieldsValues[bodyRowModel.identifier] = InputUiModel(
+                            identifier = bodyRowModel.identifier,
+                            updatedValue = bodyRowModel.text,
+                            fieldValidated = bodyRowModel.text.isNotEmpty(),
+                            required = bodyRowModel.required
+                        )
+                    }
+                }
 
                 is InfoCardUiModel -> if (bodyRowModel.identifier == INITIAL_VITAL_SIGNS) {
                     initialVitalSignsTas = bodyRowModel.chipSection?.listText?.texts?.find {
@@ -286,16 +315,16 @@ class MedicalHistoryViewModel @Inject constructor(
         var chipOption = chipOptionValues[chipOptionAction.identifier]
 
         when {
-            chipOption != null && chipOption.contains(chipOptionAction.chipOptionUiModel.id) ->
-                chipOption.remove(chipOptionAction.chipOptionUiModel.id)
+            chipOption != null && chipOption.contains(chipOptionAction.chipOptionUiModel) ->
+                chipOption.remove(chipOptionAction.chipOptionUiModel)
 
             chipOption != null &&
-                chipOption.contains(chipOptionAction.chipOptionUiModel.id).not() -> {
-                chipOption.add(chipOptionAction.chipOptionUiModel.id)
+                chipOption.contains(chipOptionAction.chipOptionUiModel).not() -> {
+                chipOption.add(chipOptionAction.chipOptionUiModel)
             }
 
             else -> {
-                chipOption = mutableListOf(chipOptionAction.chipOptionUiModel.id)
+                chipOption = mutableListOf(chipOptionAction.chipOptionUiModel)
             }
         }
 
@@ -309,7 +338,7 @@ class MedicalHistoryViewModel @Inject constructor(
                     model.copy(
                         items = model.items.map {
                             if (it.id == chipOptionAction.chipOptionUiModel.id &&
-                                chipOption.contains(chipOptionAction.chipOptionUiModel.id)
+                                chipOption.contains(chipOptionAction.chipOptionUiModel)
                             ) {
                                 it.copy(selected = chipOptionAction.chipOptionUiModel.selected)
                             } else {
@@ -332,7 +361,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
     fun handleChipSelectionAction(chipSelectionAction: GenericUiAction.ChipSelectionAction) {
         chipSelectionValues[chipSelectionAction.identifier] =
-            chipSelectionAction.chipSelectionItemUiModel
+            chipSelectionAction.chipSelectionItemUiModel.copy(isSelected = true)
 
         if (glasgowIdentifier.contains(chipSelectionAction.identifier)) {
             updateGlasgow()
@@ -1036,49 +1065,93 @@ class MedicalHistoryViewModel @Inject constructor(
         return ((now.toEpochDay() - fur.toEpochDay()) / WEEK_DAYS).toString()
     }
 
+    @Suppress("ComplexCondition")
     fun sendMedicalHistory(images: List<File>) {
         uiState = uiState.copy(
             isLoading = true,
             validateFields = true
         )
 
-        job?.cancel()
-        job = viewModelScope.launch {
-            sendMedicalHistory.invoke(
-                idAph = idAph.toString(),
-                humanBodyValues = humanBodyValues,
-                segmentedValues = segmentedValues,
-                signatureValues = signatureValues,
-                fieldsValue = fieldsValues.mapValues { it.value.updatedValue },
-                sliderValues = sliderValues,
-                dropDownValues = dropDownValues.mapValues { it.value.id },
-                chipSelectionValues = chipSelectionValues.mapValues { it.value.id },
-                chipOptionsValues = chipOptionValues,
-                imageButtonSectionValues = imageButtonSectionValues,
-                vitalSigns = vitalSignsValues,
-                infoCardButtonValues = medicineValues,
-                images = images.mapIndexed { index, image ->
-                    ImageModel(
-                        fileName = "Img_$idAph" + "_$index.jpg",
-                        file = image
-                    )
+        val areValidFields = fieldsValues
+            .mapValues {
+                it.value.fieldValidated
+            }
+            .containsValue(false)
+            .not()
+
+        val areValidChipOptions = chipOptionValues
+            .mapValues {
+                it.value.map { chipOption ->
+                    chipOption.selected
                 }
-            ).onSuccess {
-                withContext(Dispatchers.Main) {
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        infoEvent = medicalHistorySuccess().mapToUi()
-                    )
-                }
-            }.onFailure { throwable ->
-                Timber.wtf(throwable, "This is a failure")
-                withContext(Dispatchers.Main) {
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        errorEvent = throwable.mapToUi()
-                    )
+            }.filter {
+                it.value.contains(true)
+            }
+
+        val areValidChipSelections = chipSelectionValues
+            .mapValues {
+                it.value.isSelected
+            }
+            .containsValue(false)
+            .not()
+
+        val areValidDropDowns = dropDownValues
+            .mapValues {
+                it.value.fieldValidated
+            }
+            .containsValue(false)
+            .not()
+
+        if (
+            areValidFields &&
+            areValidChipOptions.isNotEmpty() &&
+            areValidChipSelections &&
+            areValidDropDowns
+        ) {
+            job?.cancel()
+            job = viewModelScope.launch {
+                sendMedicalHistory.invoke(
+                    idAph = idAph.toString(),
+                    humanBodyValues = humanBodyValues,
+                    segmentedValues = segmentedValues,
+                    signatureValues = signatureValues,
+                    fieldsValue = fieldsValues.mapValues { it.value.updatedValue },
+                    sliderValues = sliderValues,
+                    dropDownValues = dropDownValues.mapValues { it.value.id },
+                    chipSelectionValues = chipSelectionValues.mapValues { it.value.id },
+                    chipOptionsValues = chipOptionValues.mapValues {
+                        it.value.map { chipOption -> chipOption.id }
+                    },
+                    imageButtonSectionValues = imageButtonSectionValues,
+                    vitalSigns = vitalSignsValues,
+                    infoCardButtonValues = medicineValues,
+                    images = images.mapIndexed { index, image ->
+                        ImageModel(
+                            fileName = "Img_$idAph" + "_$index.jpg",
+                            file = image
+                        )
+                    }
+                ).onSuccess {
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            infoEvent = medicalHistorySuccess().mapToUi()
+                        )
+                    }
+                }.onFailure { throwable ->
+                    Timber.wtf(throwable, "This is a failure")
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            errorEvent = throwable.mapToUi()
+                        )
+                    }
                 }
             }
+        } else {
+            uiState = uiState.copy(
+                isLoading = false
+            )
         }
     }
 

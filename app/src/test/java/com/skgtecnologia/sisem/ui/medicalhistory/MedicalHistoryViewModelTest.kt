@@ -50,6 +50,7 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextUiModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
@@ -738,25 +739,413 @@ class MedicalHistoryViewModelTest {
     }
 
     @Test
-    fun `when sendMedicalHistory is success`() = runTest {
+    fun `when sendMedicalHistory is not valid fields`() = runTest {
         coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             emptyScreenModel
         )
+
+        viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
+            getMedicalHistoryScreen = getMedicalHistoryScreen,
+            logoutCurrentUser = logoutCurrentUser,
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
+        )
+        viewModel.sendMedicalHistory(listOf())
+
+        coVerify(exactly = 0) {
+            sendMedicalHistory.invoke(
+                idAph = any(),
+                humanBodyValues = any(),
+                segmentedValues = any(),
+                signatureValues = any(),
+                fieldsValue = any(),
+                sliderValues = any(),
+                dropDownValues = any(),
+                chipSelectionValues = any(),
+                chipOptionsValues = any(),
+                imageButtonSectionValues = any(),
+                vitalSigns = any(),
+                infoCardButtonValues = any(),
+                images = any()
+            )
+        }
+    }
+
+    @Test
+    fun `when sendMedicalHistory is required textField without data`() = runTest {
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
+            ScreenModel(
+                body = listOf(
+                    textFieldUiModelMock.copy(required = true, text = ""),
+                    chipOptionsUiModelMock.copy(required = true),
+                    chipSelectionUiModelMock.copy(required = true),
+                    dropDownUiModelMock.copy(required = true)
+                )
+            )
+        )
+
+        viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
+            getMedicalHistoryScreen = getMedicalHistoryScreen,
+            logoutCurrentUser = logoutCurrentUser,
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
+        )
+        viewModel.sendMedicalHistory(listOf())
+
+        coVerify(exactly = 0) {
+            sendMedicalHistory.invoke(
+                idAph = any(),
+                humanBodyValues = any(),
+                segmentedValues = any(),
+                signatureValues = any(),
+                fieldsValue = any(),
+                sliderValues = any(),
+                dropDownValues = any(),
+                chipSelectionValues = any(),
+                chipOptionsValues = any(),
+                imageButtonSectionValues = any(),
+                vitalSigns = any(),
+                infoCardButtonValues = any(),
+                images = any()
+            )
+        }
+    }
+
+    @Test
+    fun `when sendMedicalHistory is required chip options with selected null`() = runTest {
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
+            ScreenModel(
+                body = listOf(
+                    textFieldUiModelMock.copy(required = true, text = "text"),
+                    chipOptionsUiModelMock.copy(required = true),
+                    chipSelectionUiModelMock.copy(required = true, selected = null),
+                    dropDownUiModelMock.copy(required = true)
+                )
+            )
+        )
+
+        viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
+            getMedicalHistoryScreen = getMedicalHistoryScreen,
+            logoutCurrentUser = logoutCurrentUser,
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
+        )
+        viewModel.sendMedicalHistory(listOf())
+
+        coVerify(exactly = 0) {
+            sendMedicalHistory.invoke(
+                idAph = any(),
+                humanBodyValues = any(),
+                segmentedValues = any(),
+                signatureValues = any(),
+                fieldsValue = any(),
+                sliderValues = any(),
+                dropDownValues = any(),
+                chipSelectionValues = any(),
+                chipOptionsValues = any(),
+                imageButtonSectionValues = any(),
+                vitalSigns = any(),
+                infoCardButtonValues = any(),
+                images = any()
+            )
+        }
+    }
+
+    @Test
+    fun `when sendMedicalHistory is required chip selection with selected false`() = runTest {
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
+            ScreenModel(
+                body = listOf(
+                    textFieldUiModelMock.copy(required = true, text = "text"),
+                    chipOptionsUiModelMock.copy(
+                        required = true,
+                        items = chipOptionsUiModelMock.items.map { it.copy(selected = false) }
+                    ),
+                    chipSelectionUiModelMock.copy(required = true),
+                    dropDownUiModelMock.copy(required = true)
+                )
+            )
+        )
+
+        viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
+            getMedicalHistoryScreen = getMedicalHistoryScreen,
+            logoutCurrentUser = logoutCurrentUser,
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
+        )
+        viewModel.sendMedicalHistory(listOf())
+
+        coVerify(exactly = 0) {
+            sendMedicalHistory.invoke(
+                idAph = any(),
+                humanBodyValues = any(),
+                segmentedValues = any(),
+                signatureValues = any(),
+                fieldsValue = any(),
+                sliderValues = any(),
+                dropDownValues = any(),
+                chipSelectionValues = any(),
+                chipOptionsValues = any(),
+                imageButtonSectionValues = any(),
+                vitalSigns = any(),
+                infoCardButtonValues = any(),
+                images = any()
+            )
+        }
+    }
+
+    @Test
+    fun `when sendMedicalHistory is required dropdown without selected data`() = runTest {
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
+            ScreenModel(
+                body = listOf(
+                    textFieldUiModelMock.copy(required = true, text = "text"),
+                    chipOptionsUiModelMock.copy(
+                        required = true,
+                        items = chipOptionsUiModelMock.items.map { it.copy(selected = false) }
+                    ),
+                    chipSelectionUiModelMock.copy(required = true),
+                    dropDownUiModelMock.copy(required = true, selected = "")
+                )
+            )
+        )
+
+        viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
+            getMedicalHistoryScreen = getMedicalHistoryScreen,
+            logoutCurrentUser = logoutCurrentUser,
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
+        )
+        viewModel.sendMedicalHistory(listOf())
+
+        coVerify(exactly = 0) {
+            sendMedicalHistory.invoke(
+                idAph = any(),
+                humanBodyValues = any(),
+                segmentedValues = any(),
+                signatureValues = any(),
+                fieldsValue = any(),
+                sliderValues = any(),
+                dropDownValues = any(),
+                chipSelectionValues = any(),
+                chipOptionsValues = any(),
+                imageButtonSectionValues = any(),
+                vitalSigns = any(),
+                infoCardButtonValues = any(),
+                images = any()
+            )
+        }
+    }
+
+    @Test
+    fun `when sendMedicalHistory is not required textField with data`() = runTest {
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
+            ScreenModel(
+                body = listOf(
+                    textFieldUiModelMock.copy(required = false, text = "text"),
+                    chipOptionsUiModelMock.copy(required = true),
+                    chipSelectionUiModelMock.copy(required = true),
+                    dropDownUiModelMock.copy(required = true)
+                )
+            )
+        )
         coEvery {
             sendMedicalHistory.invoke(
-                ID_APH.toString(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any()
+                idAph = ID_APH.toString(),
+                humanBodyValues = any(),
+                segmentedValues = any(),
+                signatureValues = any(),
+                fieldsValue = any(),
+                sliderValues = any(),
+                dropDownValues = any(),
+                chipSelectionValues = any(),
+                chipOptionsValues = any(),
+                imageButtonSectionValues = any(),
+                vitalSigns = any(),
+                infoCardButtonValues = any(),
+                images = any()
+            )
+        } returns Result.success(Unit)
+
+        viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
+            getMedicalHistoryScreen = getMedicalHistoryScreen,
+            logoutCurrentUser = logoutCurrentUser,
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
+        )
+        viewModel.sendMedicalHistory(listOf())
+
+        Assert.assertEquals(MEDICAL_APH_BANNER_TITLE, viewModel.uiState.infoEvent?.title)
+    }
+
+    @Test
+    fun `when sendMedicalHistory is not required chip option`() = runTest {
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
+            ScreenModel(
+                body = listOf(
+                    textFieldUiModelMock.copy(required = true, text = "text"),
+                    chipOptionsUiModelMock.copy(required = false),
+                    chipSelectionUiModelMock.copy(required = true),
+                    dropDownUiModelMock.copy(required = true)
+                )
+            )
+        )
+        coEvery {
+            sendMedicalHistory.invoke(
+                idAph = ID_APH.toString(),
+                humanBodyValues = any(),
+                segmentedValues = any(),
+                signatureValues = any(),
+                fieldsValue = any(),
+                sliderValues = any(),
+                dropDownValues = any(),
+                chipSelectionValues = any(),
+                chipOptionsValues = any(),
+                imageButtonSectionValues = any(),
+                vitalSigns = any(),
+                infoCardButtonValues = any(),
+                images = any()
+            )
+        } returns Result.success(Unit)
+
+        viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
+            getMedicalHistoryScreen = getMedicalHistoryScreen,
+            logoutCurrentUser = logoutCurrentUser,
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
+        )
+        viewModel.sendMedicalHistory(listOf())
+
+        Assert.assertEquals(MEDICAL_APH_BANNER_TITLE, viewModel.uiState.infoEvent?.title)
+    }
+
+    @Test
+    fun `when sendMedicalHistory is not required chip selection`() = runTest {
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
+            ScreenModel(
+                body = listOf(
+                    textFieldUiModelMock.copy(required = true, text = "text"),
+                    chipOptionsUiModelMock.copy(required = true),
+                    chipSelectionUiModelMock.copy(required = false),
+                    dropDownUiModelMock.copy(required = true)
+                )
+            )
+        )
+        coEvery {
+            sendMedicalHistory.invoke(
+                idAph = ID_APH.toString(),
+                humanBodyValues = any(),
+                segmentedValues = any(),
+                signatureValues = any(),
+                fieldsValue = any(),
+                sliderValues = any(),
+                dropDownValues = any(),
+                chipSelectionValues = any(),
+                chipOptionsValues = any(),
+                imageButtonSectionValues = any(),
+                vitalSigns = any(),
+                infoCardButtonValues = any(),
+                images = any()
+            )
+        } returns Result.success(Unit)
+
+        viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
+            getMedicalHistoryScreen = getMedicalHistoryScreen,
+            logoutCurrentUser = logoutCurrentUser,
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
+        )
+        viewModel.sendMedicalHistory(listOf())
+
+        Assert.assertEquals(MEDICAL_APH_BANNER_TITLE, viewModel.uiState.infoEvent?.title)
+    }
+
+    @Test
+    fun `when sendMedicalHistory is not required dropdown`() = runTest {
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
+            ScreenModel(
+                body = listOf(
+                    textFieldUiModelMock.copy(required = true, text = "text"),
+                    chipOptionsUiModelMock.copy(required = true),
+                    chipSelectionUiModelMock.copy(required = true),
+                    dropDownUiModelMock.copy(required = false)
+                )
+            )
+        )
+        coEvery {
+            sendMedicalHistory.invoke(
+                idAph = ID_APH.toString(),
+                humanBodyValues = any(),
+                segmentedValues = any(),
+                signatureValues = any(),
+                fieldsValue = any(),
+                sliderValues = any(),
+                dropDownValues = any(),
+                chipSelectionValues = any(),
+                chipOptionsValues = any(),
+                imageButtonSectionValues = any(),
+                vitalSigns = any(),
+                infoCardButtonValues = any(),
+                images = any()
+            )
+        } returns Result.success(Unit)
+
+        viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
+            getMedicalHistoryScreen = getMedicalHistoryScreen,
+            logoutCurrentUser = logoutCurrentUser,
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
+        )
+        viewModel.sendMedicalHistory(listOf())
+
+        Assert.assertEquals(MEDICAL_APH_BANNER_TITLE, viewModel.uiState.infoEvent?.title)
+    }
+
+    @Test
+    fun `when sendMedicalHistory is success`() = runTest {
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
+            ScreenModel(
+                body = listOf(
+                    textFieldUiModelMock.copy(required = true, text = "text"),
+                    chipOptionsUiModelMock.copy(required = true),
+                    chipSelectionUiModelMock.copy(required = true),
+                    dropDownUiModelMock.copy(required = true)
+                )
+            )
+        )
+        coEvery {
+            sendMedicalHistory.invoke(
+                idAph = ID_APH.toString(),
+                humanBodyValues = any(),
+                segmentedValues = any(),
+                signatureValues = any(),
+                fieldsValue = any(),
+                sliderValues = any(),
+                dropDownValues = any(),
+                chipSelectionValues = any(),
+                chipOptionsValues = any(),
+                imageButtonSectionValues = any(),
+                vitalSigns = any(),
+                infoCardButtonValues = any(),
+                images = any()
             )
         } returns Result.success(Unit)
 
@@ -776,7 +1165,14 @@ class MedicalHistoryViewModelTest {
     @Test
     fun `when sendMedicalHistory is failure`() = runTest {
         coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
-            emptyScreenModel
+            ScreenModel(
+                body = listOf(
+                    textFieldUiModelMock.copy(required = true, text = "text"),
+                    chipOptionsUiModelMock.copy(required = true),
+                    chipSelectionUiModelMock.copy(required = true),
+                    dropDownUiModelMock.copy(required = true)
+                )
+            )
         )
         coEvery {
             sendMedicalHistory.invoke(
