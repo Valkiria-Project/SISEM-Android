@@ -1,13 +1,17 @@
 package com.skgtecnologia.sisem.ui.medicalhistory
 
 import android.content.Context
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
+import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.GenericUiAction.StepperAction
 import com.valkiria.uicomponents.action.HeaderUiAction
@@ -23,7 +27,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-@Suppress("LongParameterList")
+@Suppress("LongMethod", "LongParameterList")
 @Composable
 fun MedicalHistoryScreen(
     viewModel: MedicalHistoryViewModel,
@@ -73,11 +77,37 @@ fun MedicalHistoryScreen(
         }
     }
 
-    BodySection(
-        body = uiState.screenModel?.body,
-        validateFields = uiState.validateFields
-    ) { uiAction ->
-        handleAction(uiAction, viewModel, context, scope)
+    ConstraintLayout(
+        modifier = modifier.fillMaxSize()
+    ) {
+        val (header, body) = createRefs()
+        uiState.screenModel?.header?.let {
+            HeaderSection(
+                headerUiModel = it,
+                modifier = modifier.constrainAs(header) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+            ) { uiAction ->
+                if (uiAction is HeaderUiAction.GoBack) {
+                    viewModel.goBack()
+                }
+            }
+        }
+
+        BodySection(
+            body = uiState.screenModel?.body,
+            modifier = modifier
+                .constrainAs(body) {
+                    top.linkTo(header.bottom)
+                    bottom.linkTo(parent.bottom)
+                    height = Dimension.fillToConstraints
+                },
+            validateFields = uiState.validateFields
+        ) { uiAction ->
+            handleAction(uiAction, viewModel, context, scope)
+        }
     }
 
     OnBannerHandler(uiModel = uiState.infoEvent) {
@@ -104,8 +134,6 @@ fun handleAction(
         is GenericUiAction.ChipSelectionAction -> viewModel.handleChipSelectionAction(uiAction)
 
         is GenericUiAction.DropDownAction -> viewModel.handleDropDownAction(uiAction)
-
-        is HeaderUiAction.GoBack -> viewModel.goBack()
 
         is GenericUiAction.HumanBodyAction -> viewModel.handleHumanBodyAction(uiAction)
 
