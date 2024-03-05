@@ -36,7 +36,6 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -49,7 +48,6 @@ fun ComposeSignature(
     modifier: Modifier = Modifier,
     signaturePadColor: Color = Color(0xFFEEEEEE),
     signatureColor: Color = Color.Black,
-    signaturePadCardElevation: Dp = 4.dp,
     signatureThickness: Float = 10f,
     hasAlpha: Boolean = false,
     completeComponent: @Composable (onClick: () -> Unit) -> Unit,
@@ -62,16 +60,6 @@ fun ComposeSignature(
     val drawColor = remember { mutableStateOf(signatureColor) }
     val drawBrush = remember { mutableStateOf(signatureThickness) }
 
-//    Card(
-//        modifier = modifier
-//            .wrapContentWidth()
-//            .wrapContentHeight(),
-//        shape = RoundedCornerShape(8.dp),
-//        colors = CardDefaults.cardColors(containerColor = signaturePadColor),
-//        elevation = CardDefaults.cardElevation(
-//            defaultElevation = signaturePadCardElevation,
-//        ),
-//    ) {
     Column(
         modifier = modifier
             .wrapContentWidth()
@@ -124,7 +112,6 @@ fun ComposeSignature(
             }
         }
     }
-//    }
 }
 
 @Suppress("LongParameterList")
