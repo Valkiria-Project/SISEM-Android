@@ -319,7 +319,7 @@ class MedicalHistoryViewModel @Inject constructor(
                 chipOption.remove(chipOptionAction.chipOptionUiModel)
 
             chipOption != null &&
-                chipOption.contains(chipOptionAction.chipOptionUiModel).not() -> {
+                    chipOption.contains(chipOptionAction.chipOptionUiModel).not() -> {
                 chipOption.add(chipOptionAction.chipOptionUiModel)
             }
 
@@ -519,7 +519,7 @@ class MedicalHistoryViewModel @Inject constructor(
                                 options = it.options.map { imageButtonUiModel ->
                                     imageButtonUiModel.copy(
                                         selected = imageButtonUiModel.identifier ==
-                                            imageButtonAction.itemIdentifier
+                                                imageButtonAction.itemIdentifier
                                     )
                                 }
                             )
@@ -665,9 +665,9 @@ class MedicalHistoryViewModel @Inject constructor(
 
     private fun SnapshotStateMap<String, InputUiModel>.getPatientName(): String =
         this[FIRST_NAME_KEY]?.updatedValue.orEmpty() + " " +
-            this[SECOND_NAME_KEY]?.updatedValue.orEmpty() + " " +
-            this[LASTNAME_KEY]?.updatedValue.orEmpty() + " " +
-            this[SECOND_LASTNAME_KEY]?.updatedValue.orEmpty()
+                this[SECOND_NAME_KEY]?.updatedValue.orEmpty() + " " +
+                this[LASTNAME_KEY]?.updatedValue.orEmpty() + " " +
+                this[SECOND_LASTNAME_KEY]?.updatedValue.orEmpty()
 
     private fun SnapshotStateMap<String, InputUiModel>.getPatientDocument(): String =
         this[DOCUMENT_KEY]?.updatedValue.orEmpty()
@@ -1074,6 +1074,9 @@ class MedicalHistoryViewModel @Inject constructor(
 
         val areValidFields = fieldsValues
             .mapValues {
+                if (!it.value.fieldValidated) {
+                    Timber.d("Field ${it.key} is not validated")
+                }
                 it.value.fieldValidated
             }
             .containsValue(false)
@@ -1082,6 +1085,9 @@ class MedicalHistoryViewModel @Inject constructor(
         val areValidChipOptions = chipOptionValues
             .mapValues {
                 it.value.map { chipOption ->
+                    if (!chipOption.selected) {
+                        Timber.d("ChipOption ${it.key} with ${chipOption.id} is not selected")
+                    }
                     chipOption.selected
                 }
             }.filter {
@@ -1090,6 +1096,9 @@ class MedicalHistoryViewModel @Inject constructor(
 
         val areValidChipSelections = chipSelectionValues
             .mapValues {
+                if (!it.value.isSelected) {
+                    Timber.d("ChipSelection ${it.key} is not selected")
+                }
                 it.value.isSelected
             }
             .containsValue(false)
@@ -1097,6 +1106,9 @@ class MedicalHistoryViewModel @Inject constructor(
 
         val areValidDropDowns = dropDownValues
             .mapValues {
+                if (!it.value.fieldValidated) {
+                    Timber.d("DropDown ${it.key} is not validated")
+                }
                 it.value.fieldValidated
             }
             .containsValue(false)
