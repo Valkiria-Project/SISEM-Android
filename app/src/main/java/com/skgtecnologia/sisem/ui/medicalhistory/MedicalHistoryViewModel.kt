@@ -1083,6 +1083,9 @@ class MedicalHistoryViewModel @Inject constructor(
 
         val areValidFields = fieldsValues
             .mapValues {
+                if (!it.value.fieldValidated) {
+                    Timber.d("Field ${it.key} is not validated")
+                }
                 it.value.fieldValidated
             }
             .containsValue(false)
@@ -1091,6 +1094,9 @@ class MedicalHistoryViewModel @Inject constructor(
         val areValidChipOptions = chipOptionValues
             .mapValues {
                 it.value.map { chipOption ->
+                    if (!chipOption.selected) {
+                        Timber.d("ChipOption ${it.key} with ${chipOption.id} is not selected")
+                    }
                     chipOption.selected
                 }
             }.filter {
@@ -1099,6 +1105,9 @@ class MedicalHistoryViewModel @Inject constructor(
 
         val areValidChipSelections = chipSelectionValues
             .mapValues {
+                if (!it.value.isSelected) {
+                    Timber.d("ChipSelection ${it.key} is not selected")
+                }
                 it.value.isSelected
             }
             .containsValue(false)
@@ -1106,6 +1115,9 @@ class MedicalHistoryViewModel @Inject constructor(
 
         val areValidDropDowns = dropDownValues
             .mapValues {
+                if (!it.value.fieldValidated) {
+                    Timber.d("DropDown ${it.key} is not validated")
+                }
                 it.value.fieldValidated
             }
             .containsValue(false)
