@@ -49,6 +49,7 @@ import timber.log.Timber
 
 const val DISMISS_DELAY = 800L
 
+@androidx.compose.material3.ExperimentalMaterial3Api
 @Composable
 fun NotificationView(
     uiModel: NotificationUiModel,

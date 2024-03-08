@@ -37,6 +37,7 @@ private const val COLOR_8 = "#815359"
 private const val COLOR_9 = "#8A3C47"
 private const val COLOR_10 = "#862936"
 
+@androidx.compose.material3.ExperimentalMaterial3Api
 @Composable
 fun SliderComponent(
     uiModel: SliderUiModel,

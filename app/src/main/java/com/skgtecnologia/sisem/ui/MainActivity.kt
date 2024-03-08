@@ -5,11 +5,13 @@ import android.content.Intent
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
 import com.mapbox.navigation.core.trip.session.LocationMatcherResult
 import com.mapbox.navigation.core.trip.session.LocationObserver
+import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.ui.navigation.SisemNavGraph
 import com.skgtecnologia.sisem.ui.navigation.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.theme.SisemTheme
@@ -37,6 +39,14 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Prevent Screenshots on all build types but debug
+        if (BuildConfig.BUILD_TYPE != "debug") {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE
+            )
+        }
 
         val startupNavigationModel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(
