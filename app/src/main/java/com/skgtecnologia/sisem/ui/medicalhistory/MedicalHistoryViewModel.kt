@@ -330,7 +330,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
         chipOptionValues[chipOptionAction.identifier] = chipOption.toMutableList()
 
-        val updatedBody = updateBodyModel(
+        var updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
             identifier = chipOptionAction.identifier,
             updater = { model ->
@@ -351,6 +351,15 @@ class MedicalHistoryViewModel @Inject constructor(
                 }
             }
         )
+
+        chipOptionAction.chipOptionUiModel.viewsVisibility?.forEach { viewsVisibility ->
+            updateBodyModel(
+                uiModels = updatedBody,
+                identifier = viewsVisibility.key
+            ) { model ->
+                updateComponentVisibility(model, viewsVisibility)
+            }.also { body -> updatedBody = body }
+        }
 
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(

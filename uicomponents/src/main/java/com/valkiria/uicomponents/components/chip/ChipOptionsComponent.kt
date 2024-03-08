@@ -46,12 +46,28 @@ fun ChipOptionsComponent(
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             uiModel.items.forEach { chipOption ->
+                val viewsVisibility = mutableMapOf<String, Boolean>()
+                uiModel.selectionVisibility?.entries?.forEach { entry ->
+                    entry.value.find { it == chipOption.id }?.let {
+                        viewsVisibility[entry.key] = chipOption.selected
+                    }
+                }
+
                 OptionChipView(
                     text = chipOption.name,
                     isSelected = chipOption.selected,
                     textStyle = TextStyle.BUTTON_1,
                     onAction = { isSelection ->
-                        val updatedChipOption = chipOption.copy(selected = isSelection)
+                        uiModel.selectionVisibility?.entries?.forEach { entry ->
+                            entry.value.find { it == chipOption.id }?.let {
+                                viewsVisibility[entry.key] = isSelection
+                            }
+                        }
+                        val updatedChipOption = chipOption.copy(
+                            selected = isSelection,
+                            viewsVisibility = viewsVisibility
+                        )
+
                         onAction(uiModel.identifier, updatedChipOption)
                     }
                 )
