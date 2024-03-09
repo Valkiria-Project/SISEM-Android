@@ -955,7 +955,9 @@ class MedicalHistoryViewModelTest {
                     textFieldUiModelMock.copy(required = false, text = "text"),
                     chipOptionsUiModelMock.copy(required = true),
                     chipSelectionUiModelMock.copy(required = true),
-                    dropDownUiModelMock.copy(required = true)
+                    dropDownUiModelMock.copy(required = true),
+                    signatureUiModelMock.copy(required = true),
+                    imageButtonSectionUiModelMock.copy(required = true, selected = "selected")
                 )
             )
         )
@@ -998,7 +1000,9 @@ class MedicalHistoryViewModelTest {
                     textFieldUiModelMock.copy(required = true, text = "text"),
                     chipOptionsUiModelMock.copy(required = false),
                     chipSelectionUiModelMock.copy(required = true),
-                    dropDownUiModelMock.copy(required = true)
+                    dropDownUiModelMock.copy(required = true),
+                    signatureUiModelMock.copy(required = true),
+                    imageButtonSectionUiModelMock.copy(required = true, selected = "selected")
                 )
             )
         )
@@ -1041,7 +1045,9 @@ class MedicalHistoryViewModelTest {
                     textFieldUiModelMock.copy(required = true, text = "text"),
                     chipOptionsUiModelMock.copy(required = true),
                     chipSelectionUiModelMock.copy(required = false),
-                    dropDownUiModelMock.copy(required = true)
+                    dropDownUiModelMock.copy(required = true),
+                    signatureUiModelMock.copy(required = true),
+                    imageButtonSectionUiModelMock.copy(required = true, selected = "selected")
                 )
             )
         )
@@ -1084,7 +1090,99 @@ class MedicalHistoryViewModelTest {
                     textFieldUiModelMock.copy(required = true, text = "text"),
                     chipOptionsUiModelMock.copy(required = true),
                     chipSelectionUiModelMock.copy(required = true),
-                    dropDownUiModelMock.copy(required = false)
+                    dropDownUiModelMock.copy(required = false),
+                    signatureUiModelMock.copy(required = true),
+                    imageButtonSectionUiModelMock.copy(required = true, selected = "selected")
+                )
+            )
+        )
+        coEvery {
+            sendMedicalHistory.invoke(
+                idAph = ID_APH.toString(),
+                humanBodyValues = any(),
+                segmentedValues = any(),
+                signatureValues = any(),
+                fieldsValue = any(),
+                sliderValues = any(),
+                dropDownValues = any(),
+                chipSelectionValues = any(),
+                chipOptionsValues = any(),
+                imageButtonSectionValues = any(),
+                vitalSigns = any(),
+                infoCardButtonValues = any(),
+                images = any()
+            )
+        } returns Result.success(Unit)
+
+        viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
+            getMedicalHistoryScreen = getMedicalHistoryScreen,
+            logoutCurrentUser = logoutCurrentUser,
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
+        )
+        viewModel.sendMedicalHistory(listOf())
+
+        Assert.assertEquals(MEDICAL_APH_BANNER_TITLE, viewModel.uiState.infoEvent?.title)
+    }
+
+    @Test
+    fun `when sendMedicalHistory is not required signature`() = runTest {
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
+            ScreenModel(
+                body = listOf(
+                    textFieldUiModelMock.copy(required = true, text = "text"),
+                    chipOptionsUiModelMock.copy(required = true),
+                    chipSelectionUiModelMock.copy(required = true),
+                    dropDownUiModelMock.copy(required = true),
+                    signatureUiModelMock.copy(required = false),
+                    imageButtonSectionUiModelMock.copy(required = true, selected = "selected")
+                )
+            )
+        )
+        coEvery {
+            sendMedicalHistory.invoke(
+                idAph = ID_APH.toString(),
+                humanBodyValues = any(),
+                segmentedValues = any(),
+                signatureValues = any(),
+                fieldsValue = any(),
+                sliderValues = any(),
+                dropDownValues = any(),
+                chipSelectionValues = any(),
+                chipOptionsValues = any(),
+                imageButtonSectionValues = any(),
+                vitalSigns = any(),
+                infoCardButtonValues = any(),
+                images = any()
+            )
+        } returns Result.success(Unit)
+
+        viewModel = MedicalHistoryViewModel(
+            savedStateHandle = savedStateHandle,
+            getMedicalHistoryScreen = getMedicalHistoryScreen,
+            logoutCurrentUser = logoutCurrentUser,
+            sendMedicalHistory = sendMedicalHistory,
+            observeOperationConfig = observeOperationConfig,
+            stringProvider = stringProvider
+        )
+        viewModel.sendMedicalHistory(listOf())
+
+        Assert.assertEquals(MEDICAL_APH_BANNER_TITLE, viewModel.uiState.infoEvent?.title)
+    }
+
+    @Test
+    fun `when sendMedicalHistory is not required imageButtonSection`() = runTest {
+        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
+            ScreenModel(
+                body = listOf(
+                    textFieldUiModelMock.copy(required = true, text = "text"),
+                    chipOptionsUiModelMock.copy(required = true),
+                    chipSelectionUiModelMock.copy(required = true),
+                    dropDownUiModelMock.copy(required = true),
+                    signatureUiModelMock.copy(required = true),
+                    imageButtonSectionUiModelMock.copy(required = false)
                 )
             )
         )
@@ -1127,7 +1225,9 @@ class MedicalHistoryViewModelTest {
                     textFieldUiModelMock.copy(required = true, text = "text"),
                     chipOptionsUiModelMock.copy(required = true),
                     chipSelectionUiModelMock.copy(required = true),
-                    dropDownUiModelMock.copy(required = true)
+                    dropDownUiModelMock.copy(required = true),
+                    signatureUiModelMock.copy(required = true),
+                    imageButtonSectionUiModelMock.copy(required = true, selected = "selected")
                 )
             )
         )
@@ -1170,7 +1270,9 @@ class MedicalHistoryViewModelTest {
                     textFieldUiModelMock.copy(required = true, text = "text"),
                     chipOptionsUiModelMock.copy(required = true),
                     chipSelectionUiModelMock.copy(required = true),
-                    dropDownUiModelMock.copy(required = true)
+                    dropDownUiModelMock.copy(required = true),
+                    signatureUiModelMock.copy(required = true),
+                    imageButtonSectionUiModelMock.copy(required = true, selected = "selected")
                 )
             )
         )

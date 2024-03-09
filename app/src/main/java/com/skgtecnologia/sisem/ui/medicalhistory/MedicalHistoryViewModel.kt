@@ -282,6 +282,11 @@ class MedicalHistoryViewModel @Inject constructor(
                 is SegmentedSwitchUiModel ->
                     segmentedValues[bodyRowModel.identifier] = bodyRowModel.selected
 
+                is SignatureUiModel ->
+                    if (bodyRowModel.required || !bodyRowModel.signature.isNullOrEmpty()) {
+                        signatureValues[bodyRowModel.identifier] = bodyRowModel.signature.orEmpty()
+                    }
+
                 is SliderUiModel ->
                     sliderValues[bodyRowModel.identifier] = bodyRowModel.selected.toString()
 
@@ -293,6 +298,13 @@ class MedicalHistoryViewModel @Inject constructor(
                             fieldValidated = bodyRowModel.text.isNotEmpty(),
                             required = bodyRowModel.required
                         )
+                    }
+                }
+
+                is ImageButtonSectionUiModel -> {
+                    if (bodyRowModel.required || !bodyRowModel.selected.isNullOrEmpty()) {
+                        imageButtonSectionValues[bodyRowModel.identifier] =
+                            bodyRowModel.selected.orEmpty()
                     }
                 }
 
@@ -315,13 +327,15 @@ class MedicalHistoryViewModel @Inject constructor(
         var chipOption = chipOptionValues[chipOptionAction.identifier]
 
         when {
-            chipOption != null && chipOption.contains(chipOptionAction.chipOptionUiModel) ->
+            chipOption != null && chipOption.find {
+                it.id == chipOptionAction.chipOptionUiModel.id
+            } != null ->
                 chipOption.remove(chipOptionAction.chipOptionUiModel)
 
-            chipOption != null &&
-                chipOption.contains(chipOptionAction.chipOptionUiModel).not() -> {
+            chipOption != null && chipOption.find {
+                it.id == chipOptionAction.chipOptionUiModel.id
+            } == null ->
                 chipOption.add(chipOptionAction.chipOptionUiModel)
-            }
 
             else -> {
                 chipOption = mutableListOf(chipOptionAction.chipOptionUiModel)
@@ -337,9 +351,7 @@ class MedicalHistoryViewModel @Inject constructor(
                 if (model is ChipOptionsUiModel) {
                     model.copy(
                         items = model.items.map {
-                            if (it.id == chipOptionAction.chipOptionUiModel.id &&
-                                chipOption.contains(chipOptionAction.chipOptionUiModel)
-                            ) {
+                            if (it.id == chipOptionAction.chipOptionUiModel.id) {
                                 it.copy(selected = chipOptionAction.chipOptionUiModel.selected)
                             } else {
                                 it
@@ -523,12 +535,13 @@ class MedicalHistoryViewModel @Inject constructor(
             updater = { model ->
                 if (model is ImageButtonSectionUiModel) {
                     model.copy(
+                        selected = imageButtonAction.itemIdentifier,
                         options = model.options.map {
                             it.copy(
                                 options = it.options.map { imageButtonUiModel ->
                                     imageButtonUiModel.copy(
                                         selected = imageButtonUiModel.identifier ==
-                                            imageButtonAction.itemIdentifier
+                                                imageButtonAction.itemIdentifier
                                     )
                                 }
                             )
@@ -674,9 +687,9 @@ class MedicalHistoryViewModel @Inject constructor(
 
     private fun SnapshotStateMap<String, InputUiModel>.getPatientName(): String =
         this[FIRST_NAME_KEY]?.updatedValue.orEmpty() + " " +
-            this[SECOND_NAME_KEY]?.updatedValue.orEmpty() + " " +
-            this[LASTNAME_KEY]?.updatedValue.orEmpty() + " " +
-            this[SECOND_LASTNAME_KEY]?.updatedValue.orEmpty()
+                this[SECOND_NAME_KEY]?.updatedValue.orEmpty() + " " +
+                this[LASTNAME_KEY]?.updatedValue.orEmpty() + " " +
+                this[SECOND_LASTNAME_KEY]?.updatedValue.orEmpty()
 
     private fun SnapshotStateMap<String, InputUiModel>.getPatientDocument(): String =
         this[DOCUMENT_KEY]?.updatedValue.orEmpty()
@@ -780,12 +793,17 @@ class MedicalHistoryViewModel @Inject constructor(
     ) = when (model) {
         is ChipOptionsUiModel -> {
             if (viewsVisibility.value) {
-                model.copy(visibility = viewsVisibility.value)
+                chipOptionValues[viewsVisibility.key] = mutableListOf()
+                model.copy(
+                    visibility = viewsVisibility.value,
+                    required = true
+                )
             } else {
                 chipOptionValues.remove(viewsVisibility.key)
                 model.copy(
                     items = model.items.map { item -> item.copy(selected = false) },
-                    visibility = viewsVisibility.value
+                    visibility = viewsVisibility.value,
+                    required = false
                 )
             }
         }
@@ -859,12 +877,17 @@ class MedicalHistoryViewModel @Inject constructor(
 
         is SignatureUiModel -> {
             if (viewsVisibility.value) {
-                model.copy(visibility = viewsVisibility.value)
+                signatureValues[viewsVisibility.key] = ""
+                model.copy(
+                    visibility = viewsVisibility.value,
+                    required = true
+                )
             } else {
                 signatureValues.remove(viewsVisibility.key)
                 model.copy(
                     signature = null,
-                    visibility = viewsVisibility.value
+                    visibility = viewsVisibility.value,
+                    required = false
                 )
             }
         }
@@ -883,12 +906,21 @@ class MedicalHistoryViewModel @Inject constructor(
 
         is TextFieldUiModel -> {
             if (viewsVisibility.value) {
-                model.copy(visibility = viewsVisibility.value)
+                fieldsValues[viewsVisibility.key] = InputUiModel(
+                    identifier = model.identifier,
+                    updatedValue = model.text,
+                    required = true
+                )
+                model.copy(
+                    visibility = viewsVisibility.value,
+                    required = true
+                )
             } else {
                 fieldsValues.remove(viewsVisibility.key)
                 model.copy(
                     text = "",
-                    visibility = viewsVisibility.value
+                    visibility = viewsVisibility.value,
+                    required = false
                 )
             }
         }
@@ -1123,11 +1155,33 @@ class MedicalHistoryViewModel @Inject constructor(
             .containsValue(false)
             .not()
 
+        val areValidSignatures = signatureValues
+            .mapValues {
+                if (it.value.isEmpty()) {
+                    Timber.d("Signature ${it.key} is not validated")
+                }
+                it.value.isNotEmpty()
+            }
+            .containsValue(false)
+            .not()
+
+        val areValidImageButtonSection = imageButtonSectionValues
+            .mapValues {
+                if (it.value.isEmpty()) {
+                    Timber.d("ImageButtonSection ${it.key} is not validated")
+                }
+                it.value.isNotEmpty()
+            }
+            .containsValue(false)
+            .not()
+
         if (
             areValidFields &&
             areValidChipOptions.isNotEmpty() &&
             areValidChipSelections &&
-            areValidDropDowns
+            areValidDropDowns &&
+            areValidSignatures &&
+            areValidImageButtonSection
         ) {
             job?.cancel()
             job = viewModelScope.launch {

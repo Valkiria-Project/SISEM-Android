@@ -44,6 +44,7 @@ fun ImageButtonComponent(
 @Composable
 fun ImageButtonView(
     uiModel: ImageButtonUiModel,
+    isError: Boolean = false,
     onAction: (id: String) -> Unit
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
@@ -82,7 +83,11 @@ fun ImageButtonView(
                 modifier = Modifier.padding(vertical = 12.dp),
                 painter = painterResource(it),
                 contentDescription = null,
-                tint = tint
+                tint = if (isError) {
+                    MaterialTheme.colorScheme.error
+                } else {
+                    tint
+                }
             )
         }
 
@@ -92,7 +97,11 @@ fun ImageButtonView(
                 text = it.text,
                 textAlign = TextAlign.Center,
                 style = it.textStyle.toTextStyle(),
-                color = textColor
+                color = if (isError) {
+                    MaterialTheme.colorScheme.error
+                } else {
+                    textColor
+                }
             )
         }
     }
