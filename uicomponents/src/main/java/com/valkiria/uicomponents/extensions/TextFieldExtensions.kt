@@ -4,7 +4,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 
 private const val QUANTITY_MESSAGE = "La cantidad que se está registrando" +
-        " es mayor a la cantidad en inventario."
+    " es mayor a la cantidad en inventario."
 
 fun TextFieldValue.toFailedValidation(
     validations: List<ValidationUiModel>,
@@ -15,8 +15,8 @@ fun TextFieldValue.toFailedValidation(
         return null
     }
 
-    if (quantity != null) {
-        return runCatching {
+    return if (quantity != null) {
+        runCatching {
             text.toInt()
         }.fold(
             onSuccess = {
@@ -35,11 +35,9 @@ fun TextFieldValue.toFailedValidation(
                 }
             }
         )
+    } else {
+        validations.find {
+            text.matches(it.regex.toRegex()).not()
+        }
     }
-
-    val invalidRegex = validations.find {
-        text.matches(it.regex.toRegex()).not()
-    }
-
-    return invalidRegex
 }

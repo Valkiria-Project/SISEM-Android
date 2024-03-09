@@ -161,7 +161,7 @@ class MedicineViewModel @Inject constructor(
             } else {
                 model
             }
-        }.also { body -> updatedBody = body}
+        }.also { body -> updatedBody = body }
 
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(

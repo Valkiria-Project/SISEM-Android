@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.toTextStyle
 
+@Suppress("LongParameterList")
 @Composable
 fun OptionChipView(
     text: String,
