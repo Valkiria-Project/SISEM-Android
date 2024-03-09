@@ -29,7 +29,11 @@ fun TextFieldValue.toFailedValidation(
                     null
                 }
             },
-            onFailure = { null }
+            onFailure = {
+                validations.find {
+                    text.matches(it.regex.toRegex()).not()
+                }
+            }
         )
     }
 
