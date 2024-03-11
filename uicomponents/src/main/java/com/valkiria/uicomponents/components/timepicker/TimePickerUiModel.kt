@@ -11,6 +11,7 @@ data class TimePickerUiModel(
     val title: TextUiModel,
     val hour: TextUiModel,
     val minute: TextUiModel,
+    val date: String? = null,
     val visibility: Boolean = true,
     val required: Boolean = false,
     val arrangement: Arrangement.Horizontal,

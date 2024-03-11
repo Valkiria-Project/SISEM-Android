@@ -58,4 +58,14 @@ object TimeUtils {
         .atStartOfDay(ZoneId.of(AMERICA_BOGOTA_TIME_ZONE))
         .toInstant()
         .toEpochMilli()
+
+    fun getLocalTimeFromHhMmString(timeStringValue: String): LocalTime = LocalTime.parse(
+        timeStringValue,
+        DateTimeFormatter.ofPattern(HOURS_MINUTES_24_HOURS_PATTERN)
+    )
+
+    fun isSameDay(dateStringValue: String): Boolean {
+        val localDate = getLocalDate(dateStringValue)
+        return localDate.isEqual(LocalDate.now())
+    }
 }
