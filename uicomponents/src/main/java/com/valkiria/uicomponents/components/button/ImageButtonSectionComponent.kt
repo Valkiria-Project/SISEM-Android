@@ -30,7 +30,15 @@ fun ImageButtonSectionComponent(
     Column(
         modifier = uiModel.modifier.fillMaxWidth(),
     ) {
-        uiModel.options.forEach { option ->
+        uiModel.options.map { option ->
+            option.copy(
+                options = option.options.map { imageButtonUiModel ->
+                    imageButtonUiModel.copy(
+                        selected = uiModel.selected == imageButtonUiModel.identifier
+                    )
+                }
+            )
+        }.forEach { option ->
             ImageButtonOptionView(
                 uiModel = option,
                 isError = isError,
