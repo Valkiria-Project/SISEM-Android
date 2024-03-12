@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -16,14 +17,20 @@ import com.valkiria.uicomponents.bricks.chip.OptionChipView
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.extensions.toFailedValidation
 import com.valkiria.uicomponents.mocks.getPreOperationalChipOptionsUiModel
 import timber.log.Timber
 
 @Composable
 fun ChipOptionsComponent(
     uiModel: ChipOptionsUiModel,
+    validateFields: Boolean = false,
     onAction: (id: String, option: ChipOptionUiModel) -> Unit
 ) {
+    val isError = remember(uiModel.items, validateFields) {
+        uiModel.items.toFailedValidation(validateFields)
+    }
+
     Column(
         modifier = uiModel.modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Top
@@ -57,6 +64,7 @@ fun ChipOptionsComponent(
                     text = chipOption.name,
                     isSelected = chipOption.selected,
                     textStyle = TextStyle.BUTTON_1,
+                    isError = isError,
                     onAction = { isSelection ->
                         uiModel.selectionVisibility?.entries?.forEach { entry ->
                             entry.value.find { it == chipOption.id }?.let {
