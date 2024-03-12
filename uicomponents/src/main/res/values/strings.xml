@@ -33,4 +33,7 @@
 
     <!-- Notifications -->
     <string name="notifications_title">Notificaciones</string>
+    
+    <!-- TimePicket -->
+    <string name="time_picker_title">Seleccione una hora</string>
 </resources>

@@ -19,12 +19,16 @@ import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
 import com.valkiria.uicomponents.components.dropdown.DropDownUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.components.timepicker.TimePickerUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+
+private const val APPLICATION_DATE_KEY = "KEY_APPLICATION_DATE"
+private const val APPLICATION_TIME_KEY = "KEY_APPLICATION_TIME"
 
 @HiltViewModel
 class MedicineViewModel @Inject constructor(
@@ -111,7 +115,7 @@ class MedicineViewModel @Inject constructor(
             inputAction.required
         )
 
-        val updatedBody = updateBodyModel(
+        var updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
             identifier = inputAction.identifier,
             updater = { model ->
@@ -122,6 +126,20 @@ class MedicineViewModel @Inject constructor(
                 }
             }
         )
+
+        if (inputAction.identifier == APPLICATION_DATE_KEY) {
+            updateBodyModel(
+                uiModels = updatedBody,
+                identifier = APPLICATION_TIME_KEY,
+                updater = { model ->
+                    if (model is TimePickerUiModel) {
+                        model.copy(date = inputAction.updatedValue)
+                    } else {
+                        model
+                    }
+                }
+            ).also { body -> updatedBody = body }
+        }
 
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(
