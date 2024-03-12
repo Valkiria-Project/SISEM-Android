@@ -40,7 +40,12 @@ fun MenuHeaderComponent(
     menuItemsPersonal: List<CrewMemberMenuItemModel>,
     onLogout: (CrewMemberMenuItemModel) -> Unit
 ) {
-    val color = vehicleConfig?.statusColor ?: "#FFFFFF"
+    val color = runCatching {
+        Color(parseColor(vehicleConfig?.statusColor))
+    }.fold(
+        onSuccess = { it },
+        onFailure = { Color(parseColor("#FFFFFF")) }
+    )
 
     Column(modifier = modifier) {
         Row {
@@ -51,7 +56,7 @@ fun MenuHeaderComponent(
                     .padding(start = 33.dp, top = 30.dp, bottom = 10.dp)
                     .width(64.096.dp)
                     .height(54.342.dp),
-                tint = Color(parseColor(color))
+                tint = color
             )
             Column {
                 Text(
@@ -65,7 +70,7 @@ fun MenuHeaderComponent(
                         fontWeight = FontWeight.Bold,
                         lineHeight = 28.sp,
                         letterSpacing = (2).sp,
-                        color = Color(parseColor(color))
+                        color = color
                     )
                 )
                 Text(
@@ -74,7 +79,7 @@ fun MenuHeaderComponent(
                         start = 20.dp
                     ),
                     style = HEADLINE_5.toTextStyle(),
-                    color = Color(parseColor(color))
+                    color = color
                 )
             }
         }

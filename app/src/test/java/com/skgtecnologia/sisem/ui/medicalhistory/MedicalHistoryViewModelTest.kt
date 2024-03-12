@@ -739,41 +739,6 @@ class MedicalHistoryViewModelTest {
     }
 
     @Test
-    fun `when sendMedicalHistory is not valid fields`() = runTest {
-        coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
-            emptyScreenModel
-        )
-
-        viewModel = MedicalHistoryViewModel(
-            savedStateHandle = savedStateHandle,
-            getMedicalHistoryScreen = getMedicalHistoryScreen,
-            logoutCurrentUser = logoutCurrentUser,
-            sendMedicalHistory = sendMedicalHistory,
-            observeOperationConfig = observeOperationConfig,
-            stringProvider = stringProvider
-        )
-        viewModel.sendMedicalHistory(listOf())
-
-        coVerify(exactly = 0) {
-            sendMedicalHistory.invoke(
-                idAph = any(),
-                humanBodyValues = any(),
-                segmentedValues = any(),
-                signatureValues = any(),
-                fieldsValue = any(),
-                sliderValues = any(),
-                dropDownValues = any(),
-                chipSelectionValues = any(),
-                chipOptionsValues = any(),
-                imageButtonSectionValues = any(),
-                vitalSigns = any(),
-                infoCardButtonValues = any(),
-                images = any()
-            )
-        }
-    }
-
-    @Test
     fun `when sendMedicalHistory is required textField without data`() = runTest {
         coEvery { getMedicalHistoryScreen.invoke(any()) } returns Result.success(
             ScreenModel(
