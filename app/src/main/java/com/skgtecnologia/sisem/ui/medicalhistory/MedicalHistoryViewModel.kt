@@ -808,9 +808,9 @@ class MedicalHistoryViewModel @Inject constructor(
 
         is ChipSelectionUiModel -> {
             if (viewsVisibility.value) {
-                chipSelectionValues[viewsVisibility.key] = model.items.first {
+                chipSelectionValues[viewsVisibility.key] = model.items.firstOrNull {
                     it.isSelected
-                }
+                } ?:run { ChipSelectionItemUiModel() }
                 model.copy(visibility = viewsVisibility.value)
             } else {
                 chipSelectionValues.remove(viewsVisibility.key)
