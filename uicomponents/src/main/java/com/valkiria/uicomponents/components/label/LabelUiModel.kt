@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.BodyRowType
 
-private const val DEFAULT_TEXT_COLOR = "#FFFFFF"
+const val DEFAULT_TEXT_COLOR = "#FFFFFF"
 
 data class LabelUiModel(
     override val identifier: String,

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -21,24 +22,34 @@ import com.valkiria.uicomponents.components.button.ButtonSize
 import com.valkiria.uicomponents.components.button.ButtonStyle
 import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.button.OnClick
+import com.valkiria.uicomponents.components.label.DEFAULT_TEXT_COLOR
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextUiModel
 import com.valkiria.uicomponents.extensions.decodeAsBase64Bitmap
+import com.valkiria.uicomponents.extensions.toFailedValidation
 import timber.log.Timber
+
+const val ERROR_COLOR = "#FFF55757"
 
 @Composable
 fun SignatureComponent(
     uiModel: SignatureUiModel,
+    validateFields: Boolean = false,
     onAction: (id: String) -> Unit
 ) {
+    val isError = remember(uiModel.signature, validateFields) {
+        uiModel.signature.toFailedValidation(validateFields)
+    }
+
     if (uiModel.signature.isNullOrBlank()) {
         LabelComponent(
             uiModel = LabelUiModel(
                 identifier = uiModel.identifier.plus(uiModel.signatureLabel.text),
                 text = uiModel.signatureLabel.text,
                 textStyle = uiModel.signatureLabel.textStyle,
+                textColor = if (isError) ERROR_COLOR else DEFAULT_TEXT_COLOR
             ),
             modifier = uiModel.modifier
         )

@@ -17,12 +17,14 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.toTextStyle
 
+@Suppress("LongParameterList")
 @Composable
 fun OptionChipView(
     text: String,
     isSelected: Boolean,
     textStyle: TextStyle,
     modifier: Modifier = Modifier,
+    isError: Boolean = false,
     onAction: (isSelection: Boolean) -> Unit
 ) {
     var selected by remember { mutableStateOf(isSelected) }
@@ -48,6 +50,18 @@ fun OptionChipView(
         shape = RoundedCornerShape(20.dp),
         colors = FilterChipDefaults.filterChipColors(
             selectedContainerColor = MaterialTheme.colorScheme.primary
-        )
+        ),
+        border = if (isError) {
+            FilterChipDefaults.filterChipBorder(
+                enabled = true,
+                selected = isSelected,
+                borderColor = MaterialTheme.colorScheme.error,
+            )
+        } else {
+            FilterChipDefaults.filterChipBorder(
+                enabled = true,
+                selected = isSelected,
+            )
+        }
     )
 }

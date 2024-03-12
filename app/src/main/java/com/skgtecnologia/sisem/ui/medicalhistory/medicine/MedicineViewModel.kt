@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
+import com.skgtecnologia.sisem.domain.medicalhistory.model.QUANTITY_USED_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.BuildMedicineInformation
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicineScreen
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
@@ -157,7 +158,7 @@ class MedicineViewModel @Inject constructor(
             dropDownAction.fieldValidated
         )
 
-        val updatedBody = updateBodyModel(
+        var updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
             identifier = dropDownAction.identifier,
             updater = { model ->
@@ -168,6 +169,17 @@ class MedicineViewModel @Inject constructor(
                 }
             }
         )
+
+        updateBodyModel(
+            uiModels = updatedBody,
+            identifier = QUANTITY_USED_KEY
+        ) { model ->
+            if (model is TextFieldUiModel) {
+                model.copy(quantity = dropDownAction.quantity)
+            } else {
+                model
+            }
+        }.also { body -> updatedBody = body }
 
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(

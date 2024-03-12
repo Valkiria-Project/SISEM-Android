@@ -209,7 +209,10 @@ private fun LazyListScope.handleBodyRows(
 
             is ChipOptionsUiModel -> if (model.visibility) {
                 item(key = model.identifier) {
-                    ChipOptionsComponent(uiModel = model) { id, chipOptionItem ->
+                    ChipOptionsComponent(
+                        uiModel = model,
+                        validateFields = validateFields
+                    ) { id, chipOptionItem ->
                         onAction(
                             GenericUiAction.ChipOptionAction(
                                 identifier = id,
@@ -332,7 +335,10 @@ private fun LazyListScope.handleBodyRows(
 
             is ImageButtonSectionUiModel -> if (model.visibility) {
                 item(key = model.identifier) {
-                    ImageButtonSectionComponent(model) { id, itemId ->
+                    ImageButtonSectionComponent(
+                        uiModel = model,
+                        validateFields = validateFields
+                    ) { id, itemId ->
                         onAction(
                             GenericUiAction.ImageButtonAction(
                                 identifier = id,
@@ -454,7 +460,10 @@ private fun LazyListScope.handleBodyRows(
 
             is SignatureUiModel -> if (model.visibility) {
                 item(key = model.identifier) {
-                    SignatureComponent(uiModel = model) { id ->
+                    SignatureComponent(
+                        uiModel = model,
+                        validateFields = validateFields
+                    ) { id ->
                         onAction(GenericUiAction.SignatureAction(identifier = id))
                     }
                 }

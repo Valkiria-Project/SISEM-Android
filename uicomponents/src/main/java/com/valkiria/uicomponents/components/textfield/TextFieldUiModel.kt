@@ -26,6 +26,7 @@ data class TextFieldUiModel(
     val singleLine: Boolean = true,
     val minLines: Int = 1,
     val text: String = "",
+    val quantity: Int? = null,
     val arrangement: Arrangement.Horizontal,
     val modifier: Modifier = Modifier
 ) : BodyRowModel {

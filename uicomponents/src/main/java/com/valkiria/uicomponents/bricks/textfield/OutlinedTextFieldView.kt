@@ -34,7 +34,7 @@ fun OutlinedTextFieldView(
     }
 
     val inputError = remember(text, validateFields) {
-        text.toFailedValidation(uiModel.validations, validateFields)
+        text.toFailedValidation(uiModel.validations, validateFields, uiModel.quantity)
     }
 
     OutlinedTextField(

@@ -22,7 +22,7 @@ data class SignatureResponse(
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {
 
-    override val type: BodyRowType = BodyRowType.SEGMENTED_SWITCH
+    override val type: BodyRowType = BodyRowType.SIGNATURE
 
     override fun mapToUi(): SignatureUiModel = SignatureUiModel(
         identifier = identifier ?: error("Signature identifier cannot be null"),
