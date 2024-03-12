@@ -253,11 +253,7 @@ class MedicalHistoryViewModel @Inject constructor(
                             chipSelectionValues[bodyRowModel.identifier] =
                                 it.copy(isSelected = true)
                         } ?: run {
-                            chipSelectionValues[bodyRowModel.identifier] = ChipSelectionItemUiModel(
-                                id = bodyRowModel.identifier,
-                                name = bodyRowModel.identifier,
-                                isSelected = false
-                            )
+                            chipSelectionValues[bodyRowModel.identifier] = ChipSelectionItemUiModel()
                         }
                     }
                 }
@@ -793,7 +789,9 @@ class MedicalHistoryViewModel @Inject constructor(
     ) = when (model) {
         is ChipOptionsUiModel -> {
             if (viewsVisibility.value) {
-                chipOptionValues[viewsVisibility.key] = mutableListOf()
+                chipOptionValues[viewsVisibility.key] = model.items.filter {
+                    it.selected
+                }.toMutableList()
                 model.copy(
                     visibility = viewsVisibility.value,
                     required = true
@@ -810,6 +808,9 @@ class MedicalHistoryViewModel @Inject constructor(
 
         is ChipSelectionUiModel -> {
             if (viewsVisibility.value) {
+                chipSelectionValues[viewsVisibility.key] = model.items.first {
+                    it.isSelected
+                }
                 model.copy(visibility = viewsVisibility.value)
             } else {
                 chipSelectionValues.remove(viewsVisibility.key)
@@ -1131,9 +1132,12 @@ class MedicalHistoryViewModel @Inject constructor(
                     }
                     chipOption.selected
                 }
-            }.filter {
+            }
+            .mapValues {
                 it.value.contains(true)
             }
+            .containsValue(false)
+            .not()
 
         val areValidChipSelections = chipSelectionValues
             .mapValues {
@@ -1177,7 +1181,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
         if (
             areValidFields &&
-            areValidChipOptions.isNotEmpty() &&
+            areValidChipOptions &&
             areValidChipSelections &&
             areValidDropDowns &&
             areValidSignatures &&
