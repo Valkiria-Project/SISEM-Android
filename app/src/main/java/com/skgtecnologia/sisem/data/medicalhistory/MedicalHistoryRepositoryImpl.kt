@@ -42,7 +42,7 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
         imageButtonSectionValues: Map<String, String>,
         vitalSigns: Map<String, Map<String, String>>,
         infoCardButtonValues: List<Map<String, String>>,
-        images: List<ImageModel>?
+        images: List<ImageModel>
     ) = medicalHistoryRemoteDataSource.sendMedicalHistory(
         idTurn = authCacheDataSource.observeAccessToken().first()?.turn?.id.toString(),
         idAph = idAph,
@@ -58,7 +58,9 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
         vitalSigns = vitalSigns,
         infoCardButtonValues = infoCardButtonValues
     ).onSuccess {
-        images?.let { medicalHistoryRemoteDataSource.saveAphFiles(idAph, it).getOrThrow() }
+        if (images.isNotEmpty()) {
+            medicalHistoryRemoteDataSource.saveAphFiles(idAph, images).getOrThrow()
+        }
     }.getOrThrow()
 
     override suspend fun saveAphFiles(idAph: String, images: List<ImageModel>) =

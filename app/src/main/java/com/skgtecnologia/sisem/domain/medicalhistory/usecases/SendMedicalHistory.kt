@@ -26,7 +26,7 @@ class SendMedicalHistory @Inject constructor(
         imageButtonSectionValues: Map<String, String>,
         vitalSigns: Map<String, Map<String, String>>,
         infoCardButtonValues: List<Map<String, String>>,
-        images: List<ImageModel>?
+        images: List<ImageModel>
     ): Result<Unit> = resultOf {
         medicalHistoryRepository.sendMedicalHistory(
             idAph,

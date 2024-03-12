@@ -231,7 +231,9 @@ class MedicalHistoryViewModel @Inject constructor(
                     val selectedOptions = bodyRowModel.items
                         .filter { it.selected }
 
-                    if (bodyRowModel.required || selectedOptions.isEmpty().not()) {
+                    if ((bodyRowModel.required && bodyRowModel.visibility) ||
+                        selectedOptions.isEmpty().not()
+                    ) {
                         bodyRowModel.items.forEach { chipOption ->
                             chipOptionValues[bodyRowModel.identifier] =
                                 mutableListOf(
@@ -246,24 +248,25 @@ class MedicalHistoryViewModel @Inject constructor(
                 }
 
                 is ChipSelectionUiModel -> {
-                    if (bodyRowModel.required || !bodyRowModel.selected.isNullOrEmpty()) {
+                    if ((bodyRowModel.required && bodyRowModel.visibility) ||
+                        !bodyRowModel.selected.isNullOrEmpty()
+                    ) {
                         bodyRowModel.items.find {
-                            it.id == bodyRowModel.selected
+                            it.id == bodyRowModel.selected || it.name == bodyRowModel.selected
                         }?.also {
                             chipSelectionValues[bodyRowModel.identifier] =
                                 it.copy(isSelected = true)
                         } ?: run {
-                            chipSelectionValues[bodyRowModel.identifier] = ChipSelectionItemUiModel(
-                                id = bodyRowModel.identifier,
-                                name = bodyRowModel.identifier,
-                                isSelected = false
-                            )
+                            chipSelectionValues[bodyRowModel.identifier] =
+                                ChipSelectionItemUiModel()
                         }
                     }
                 }
 
                 is DropDownUiModel -> {
-                    if (bodyRowModel.required || bodyRowModel.selected.isNotEmpty()) {
+                    if ((bodyRowModel.required && bodyRowModel.visibility) ||
+                        bodyRowModel.selected.isNotEmpty()
+                    ) {
                         bodyRowModel.items.find {
                             it.id == bodyRowModel.selected
                         }?.also {
@@ -283,7 +286,9 @@ class MedicalHistoryViewModel @Inject constructor(
                     segmentedValues[bodyRowModel.identifier] = bodyRowModel.selected
 
                 is SignatureUiModel ->
-                    if (bodyRowModel.required || !bodyRowModel.signature.isNullOrEmpty()) {
+                    if ((bodyRowModel.required && bodyRowModel.visibility) ||
+                        !bodyRowModel.signature.isNullOrEmpty()
+                    ) {
                         signatureValues[bodyRowModel.identifier] = bodyRowModel.signature.orEmpty()
                     }
 
@@ -291,7 +296,9 @@ class MedicalHistoryViewModel @Inject constructor(
                     sliderValues[bodyRowModel.identifier] = bodyRowModel.selected.toString()
 
                 is TextFieldUiModel -> {
-                    if (bodyRowModel.required || bodyRowModel.text.isNotEmpty()) {
+                    if ((bodyRowModel.required && bodyRowModel.visibility) ||
+                        bodyRowModel.text.isNotEmpty()
+                    ) {
                         fieldsValues[bodyRowModel.identifier] = InputUiModel(
                             identifier = bodyRowModel.identifier,
                             updatedValue = bodyRowModel.text,
@@ -302,7 +309,9 @@ class MedicalHistoryViewModel @Inject constructor(
                 }
 
                 is ImageButtonSectionUiModel -> {
-                    if (bodyRowModel.required || !bodyRowModel.selected.isNullOrEmpty()) {
+                    if ((bodyRowModel.required && bodyRowModel.visibility) ||
+                        !bodyRowModel.selected.isNullOrEmpty()
+                    ) {
                         imageButtonSectionValues[bodyRowModel.identifier] =
                             bodyRowModel.selected.orEmpty()
                     }
@@ -787,13 +796,18 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
+    @Suppress("NestedBlockDepth")
     private fun updateComponentVisibility(
         model: BodyRowModel,
         viewsVisibility: Map.Entry<String, Boolean>
     ) = when (model) {
         is ChipOptionsUiModel -> {
             if (viewsVisibility.value) {
-                chipOptionValues[viewsVisibility.key] = mutableListOf()
+                if (model.required) {
+                    chipOptionValues[viewsVisibility.key] = model.items.filter {
+                        it.selected
+                    }.toMutableList()
+                }
                 model.copy(
                     visibility = viewsVisibility.value,
                     required = true
@@ -810,6 +824,11 @@ class MedicalHistoryViewModel @Inject constructor(
 
         is ChipSelectionUiModel -> {
             if (viewsVisibility.value) {
+                if (model.required) {
+                    chipSelectionValues[viewsVisibility.key] = model.items.firstOrNull {
+                        it.isSelected
+                    } ?: run { ChipSelectionItemUiModel() }
+                }
                 model.copy(visibility = viewsVisibility.value)
             } else {
                 chipSelectionValues.remove(viewsVisibility.key)
@@ -824,6 +843,13 @@ class MedicalHistoryViewModel @Inject constructor(
 
         is DropDownUiModel -> {
             if (viewsVisibility.value) {
+                if (model.required) {
+                    dropDownValues[viewsVisibility.key] = DropDownInputUiModel(
+                        identifier = model.identifier,
+                        id = model.selected,
+                        fieldValidated = model.selected.isNotEmpty()
+                    )
+                }
                 model.copy(visibility = viewsVisibility.value)
             } else {
                 dropDownValues.remove(viewsVisibility.key)
@@ -877,7 +903,9 @@ class MedicalHistoryViewModel @Inject constructor(
 
         is SignatureUiModel -> {
             if (viewsVisibility.value) {
-                signatureValues[viewsVisibility.key] = ""
+                if (model.required) {
+                    signatureValues[viewsVisibility.key] = model.signature.orEmpty()
+                }
                 model.copy(
                     visibility = viewsVisibility.value,
                     required = true
@@ -906,11 +934,13 @@ class MedicalHistoryViewModel @Inject constructor(
 
         is TextFieldUiModel -> {
             if (viewsVisibility.value) {
-                fieldsValues[viewsVisibility.key] = InputUiModel(
-                    identifier = model.identifier,
-                    updatedValue = model.text,
-                    required = true
-                )
+                if (model.required) {
+                    fieldsValues[viewsVisibility.key] = InputUiModel(
+                        identifier = model.identifier,
+                        updatedValue = model.text,
+                        required = true
+                    )
+                }
                 model.copy(
                     visibility = viewsVisibility.value,
                     required = true
@@ -1131,9 +1161,12 @@ class MedicalHistoryViewModel @Inject constructor(
                     }
                     chipOption.selected
                 }
-            }.filter {
+            }
+            .mapValues {
                 it.value.contains(true)
             }
+            .containsValue(false)
+            .not()
 
         val areValidChipSelections = chipSelectionValues
             .mapValues {
@@ -1177,7 +1210,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
         if (
             areValidFields &&
-            areValidChipOptions.isNotEmpty() &&
+            areValidChipOptions &&
             areValidChipSelections &&
             areValidDropDowns &&
             areValidSignatures &&
