@@ -83,13 +83,6 @@ fun MediaActionsComponent(
                         onFailure = { null }
                     )
                 }.toMap()
-
-//                selectedMedia = uiModel.selectedMediaUris.associateWith { uri ->
-//                    context.storeUriAsFileToCache(
-//                        uri,
-//                        uiModel.maxFileSizeKb ?: MAX_MB_DECIMAL_STRING
-//                    )
-//                }
             }
         }
     }
