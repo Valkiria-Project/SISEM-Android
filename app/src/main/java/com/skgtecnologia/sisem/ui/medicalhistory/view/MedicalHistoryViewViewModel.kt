@@ -150,13 +150,11 @@ class MedicalHistoryViewViewModel @Inject constructor(
         )
     }
 
-    fun removeMediaActionsImage(selectedMedia: Uri) {
+    fun removeMediaActionsImage(selectedMediaIndex: Int) {
         val updatedSelectedMedia = buildList {
             addAll(uiState.selectedMediaUris)
 
-            removeIf { uri ->
-                selectedMedia.toString() == uri.toString()
-            }
+            removeAt(selectedMediaIndex)
         }
 
         val updatedBody = uiState.screenModel?.body?.map { model ->

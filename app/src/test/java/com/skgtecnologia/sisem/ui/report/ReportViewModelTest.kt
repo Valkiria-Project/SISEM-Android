@@ -50,7 +50,7 @@ class ReportViewModelTest {
 
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
 
-        Assert.assertEquals(operationModel, viewModel.uiState.operationModel)
+        Assert.assertEquals(operationModel, viewModel.uiState.operationConfig)
     }
 
     @Test
