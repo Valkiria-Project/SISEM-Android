@@ -21,12 +21,12 @@ import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.domain.report.usecases.SendReport
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.io.File
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
+import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 @HiltViewModel
@@ -48,15 +48,15 @@ class ReportViewModel @Inject constructor(
     var currentImage by mutableIntStateOf(0)
 
     private fun getImageLimit(isFromPreOperational: Boolean) = if (isFromPreOperational.not()) {
-        uiState.operationModel?.numImgNovelty ?: 0
+        uiState.operationConfig?.numImgNovelty ?: 0
     } else {
-        when (uiState.operationModel?.operationRole) {
+        when (uiState.operationConfig?.operationRole) {
             OperationRole.AUXILIARY_AND_OR_TAPH ->
-                uiState.operationModel?.numImgPreoperationalAux ?: 0
+                uiState.operationConfig?.numImgPreoperationalAux ?: 0
 
-            OperationRole.DRIVER -> uiState.operationModel?.numImgPreoperationalDriver ?: 0
+            OperationRole.DRIVER -> uiState.operationConfig?.numImgPreoperationalDriver ?: 0
             OperationRole.LEAD_APH -> 0
-            OperationRole.MEDIC_APH -> uiState.operationModel?.numImgPreoperationalDoctor ?: 0
+            OperationRole.MEDIC_APH -> uiState.operationConfig?.numImgPreoperationalDoctor ?: 0
             null -> 0
         }
     }
@@ -70,7 +70,7 @@ class ReportViewModel @Inject constructor(
                 .onSuccess { operationModel ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
-                            operationModel = operationModel,
+                            operationConfig = operationModel,
                             isLoading = false
                         )
                     }

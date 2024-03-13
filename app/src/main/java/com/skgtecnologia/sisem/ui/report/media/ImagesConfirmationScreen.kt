@@ -46,10 +46,10 @@ import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.extensions.decodeAsBitmap
 import com.valkiria.uicomponents.extensions.storeUriAsFileToCache
-import kotlin.random.Random
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.random.Random
 
 @Suppress("LongMethod", "MagicNumber")
 @androidx.compose.foundation.ExperimentalFoundationApi
@@ -193,11 +193,15 @@ private fun handleAction(
 
             ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name -> {
                 coroutineScope.launch {
-
-                    val images = viewModel.uiState.selectedImageUris.map { uri ->
-                        context.storeUriAsFileToCache(
-                            uri,
-                            viewModel.uiState.operationModel?.maxFileSizeKb
+                    val images = viewModel.uiState.selectedImageUris.mapNotNull { uri ->
+                        runCatching {
+                            context.storeUriAsFileToCache(
+                                uri,
+                                viewModel.uiState.operationConfig?.maxFileSizeKb
+                            )
+                        }.fold(
+                            onSuccess = { it },
+                            onFailure = { null }
                         )
                     }
 

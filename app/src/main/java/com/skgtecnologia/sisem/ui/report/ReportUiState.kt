@@ -6,7 +6,7 @@ import com.valkiria.uicomponents.bricks.banner.BannerUiModel
 
 data class ReportUiState(
     val selectedImageUris: List<Uri> = listOf(),
-    val operationModel: OperationModel? = null,
+    val operationConfig: OperationModel? = null,
     val successInfoModel: BannerUiModel? = null,
     val cancelInfoModel: BannerUiModel? = null,
     val confirmInfoModel: BannerUiModel? = null,
