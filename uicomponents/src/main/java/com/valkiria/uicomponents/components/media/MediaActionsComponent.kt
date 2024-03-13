@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
@@ -46,7 +47,6 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 private const val ROUNDED_CORNER_SHAPE_PERCENTAGE = 90
-private const val THIRTY_MB_DECIMAL_STRING = "30_000_00"
 
 @Suppress("LongMethod")
 @Composable
@@ -56,7 +56,7 @@ fun MediaActionsComponent(
     mediaActionsIndex: Int = 0,
     onAction: (id: String, mediaAction: MediaAction) -> Unit
 ) {
-    var selectedMedia by remember { mutableStateOf(mapOf<Uri, File>()) }
+    var selectedMedia by remember { mutableStateOf(mapOf<Int, File>()) }
     val context = LocalContext.current
 
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
@@ -72,9 +72,17 @@ fun MediaActionsComponent(
     LaunchedEffect(uiModel.selectedMediaUris) {
         launch {
             if (uiModel.selectedMediaUris.isNotEmpty()) {
-                selectedMedia = uiModel.selectedMediaUris.associateWith { uri ->
-                    context.storeUriAsFileToCache(uri, THIRTY_MB_DECIMAL_STRING)
-                }
+                selectedMedia = uiModel.selectedMediaUris.mapIndexedNotNull { index, uri ->
+                    runCatching {
+                        context.storeUriAsFileToCache(
+                            uri,
+                            uiModel.maxFileSizeKb
+                        )
+                    }.fold(
+                        onSuccess = { index to it },
+                        onFailure = { null }
+                    )
+                }.toMap()
             }
         }
     }
@@ -196,6 +204,8 @@ fun MediaActionsComponent(
                             uiModel = LabelUiModel(
                                 identifier = media.component2().absolutePath,
                                 text = media.component2().name,
+                                overflow = TextOverflow.Ellipsis,
+                                maxLines = 1,
                                 textStyle = TextStyle.HEADLINE_6,
                                 rightIcon = stringResource(string.trash_icon),
                                 arrangement = Arrangement.Start,
@@ -221,7 +231,7 @@ sealed class MediaAction {
     data object Camera : MediaAction()
     data class Gallery(val uris: List<Uri>) : MediaAction()
     data class MediaFile(val uris: List<Uri>) : MediaAction()
-    data class RemoveFile(val uri: Uri) : MediaAction()
+    data class RemoveFile(val index: Int) : MediaAction()
 }
 
 @Preview

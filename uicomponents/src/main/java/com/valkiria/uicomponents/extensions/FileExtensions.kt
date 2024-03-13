@@ -14,6 +14,7 @@ import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.size
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
@@ -21,9 +22,7 @@ import java.io.FileOutputStream
 
 const val CONTENT_URI_SCHEME = "content"
 const val BITMAP_COMPRESS_QUALITY = 80
-const val ONE_MB_DECIMAL = 1_000_00L
-const val ONE_MB_BINARY = 1_048_576L
-const val FALLBACK_MB_BINARY_FILE_SIZE = 2_097_152L
+const val FALLBACK_FILE_SIZE = 2_000_000L
 
 fun Bitmap.encodeAsBase64(): String {
     val output = ByteArrayOutputStream()
@@ -62,20 +61,18 @@ suspend fun Context.storeUriAsFileToCache(uri: Uri, maxFileSizeKb: String? = nul
         fileContents?.close()
     }
 
+    if (file.length() > getImageAllowedSize(maxFileSizeKb)) {
+        Timber.d("${file.length()} is larger than ${getImageAllowedSize(maxFileSizeKb)}")
+        error("The file size is larger than the allowed")
+    }
+
     return Compressor.compress(context = this, imageFile = file) {
         size(getImageAllowedSize(maxFileSizeKb))
     }
 }
 
-private fun getImageAllowedSize(maxFileSizeKb: String?): Long {
-    val fileSize = maxFileSizeKb.orEmpty().toLongOrNull()
-
-    return if (fileSize != null) {
-        ONE_MB_BINARY.times(fileSize / ONE_MB_DECIMAL)
-    } else {
-        FALLBACK_MB_BINARY_FILE_SIZE
-    }
-}
+private fun getImageAllowedSize(maxFileSizeKb: String?): Long =
+    maxFileSizeKb.orEmpty().toLongOrNull() ?: FALLBACK_FILE_SIZE
 
 private fun ContentResolver.getFileName(fileUri: Uri): String {
     val returnCursor = query(fileUri, null, null, null, null)

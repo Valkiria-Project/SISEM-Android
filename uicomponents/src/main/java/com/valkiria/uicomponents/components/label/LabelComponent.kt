@@ -45,6 +45,8 @@ fun LabelComponent(
                 .weight(1f)
                 .padding(end = 12.dp),
             color = Color(parseColor(uiModel.textColor)),
+            overflow = uiModel.overflow,
+            maxLines = uiModel.maxLines,
             style = uiModel.textStyle.toTextStyle()
         )
 

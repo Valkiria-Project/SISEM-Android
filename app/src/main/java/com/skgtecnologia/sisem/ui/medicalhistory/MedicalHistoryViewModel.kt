@@ -187,9 +187,34 @@ class MedicalHistoryViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch {
+            observeOperationConfig.invoke()
+                .onSuccess { operationConfig ->
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            operationConfig = operationConfig
+                        )
+                    }
+                }.onFailure { throwable ->
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            errorEvent = throwable.mapToUi()
+                        )
+                    }
+                }
+
             getMedicalHistoryScreen.invoke(idAph = idAph.toString())
                 .onSuccess { medicalHistoryScreenModel ->
                     medicalHistoryScreenModel.getFormInitialValues()
+
+//                    val updatedBody = medicalHistoryScreenModel.body.map { model ->
+//                        if (model is MediaActionsUiModel) {
+//                            model.copy(
+//                                maxFileSizeKb = uiState.operationConfig?.maxFileSizeKb
+//                            )
+//                        } else {
+//                            model
+//                        }
+//                    }
 
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
@@ -201,21 +226,6 @@ class MedicalHistoryViewModel @Inject constructor(
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
                             isLoading = false,
-                            errorEvent = throwable.mapToUi()
-                        )
-                    }
-                }
-
-            observeOperationConfig.invoke()
-                .onSuccess { operationConfig ->
-                    withContext(Dispatchers.Main) {
-                        uiState = uiState.copy(
-                            operationConfig = operationConfig
-                        )
-                    }
-                }.onFailure { throwable ->
-                    withContext(Dispatchers.Main) {
-                        uiState = uiState.copy(
                             errorEvent = throwable.mapToUi()
                         )
                     }
@@ -1312,13 +1322,11 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
-    fun removeMediaActionsImage(selectedMedia: Uri) {
+    fun removeMediaActionsImage(selectedMediaIndex: Int) {
         val updatedSelectedMedia = buildList {
             addAll(uiState.selectedMediaUris)
 
-            removeIf { uri ->
-                selectedMedia.toString() == uri.toString()
-            }
+            removeAt(selectedMediaIndex)
         }
 
         val updatedBody = uiState.screenModel?.body?.map { model ->

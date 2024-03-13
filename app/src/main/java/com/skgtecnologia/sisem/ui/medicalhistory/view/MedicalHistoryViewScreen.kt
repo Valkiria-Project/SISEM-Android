@@ -122,16 +122,21 @@ private fun handleAction(
             )
 
             is MediaAction.RemoveFile -> viewModel.removeMediaActionsImage(
-                (uiAction.mediaAction as MediaAction.RemoveFile).uri
+                (uiAction.mediaAction as MediaAction.RemoveFile).index
             )
         }
 
         is GenericUiAction.StepperAction -> {
             scope.launch {
-                val images = viewModel.uiState.selectedMediaUris.map { uri ->
-                    context.storeUriAsFileToCache(
-                        uri,
-                        viewModel.uiState.operationConfig?.maxFileSizeKb
+                val images = viewModel.uiState.selectedMediaUris.mapNotNull { uri ->
+                    runCatching {
+                        context.storeUriAsFileToCache(
+                            uri,
+                            viewModel.uiState.operationConfig?.maxFileSizeKb
+                        )
+                    }.fold(
+                        onSuccess = { it },
+                        onFailure = { null }
                     )
                 }
                 viewModel.sendMedicalHistoryView(images)

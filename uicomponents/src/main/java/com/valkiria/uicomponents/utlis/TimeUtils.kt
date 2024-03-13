@@ -27,10 +27,15 @@ object TimeUtils {
         DateTimeFormatter.ofPattern(DATE_PATTERN)
     )
 
-    fun getLocalDateFromUTC(dateStringValue: String): String = LocalDate.parse(
-        dateStringValue,
-        DateTimeFormatter.ofPattern(UTC_DATE_PATTERN)
-    ).format(DateTimeFormatter.ofPattern(DATE_PATTERN))
+    fun getLocalDateFromUTC(dateStringValue: String): String = runCatching {
+        LocalDate.parse(
+            dateStringValue,
+            DateTimeFormatter.ofPattern(UTC_DATE_PATTERN)
+        ).format(DateTimeFormatter.ofPattern(DATE_PATTERN))
+    }.fold(
+        onSuccess = { it },
+        onFailure = { dateStringValue.substringBefore("T") }
+    )
 
     fun getLocalTimeAsString(
         timeStringValue: String,
