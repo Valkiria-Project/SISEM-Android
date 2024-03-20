@@ -17,8 +17,8 @@ android {
         applicationId = "com.skgtecnologia.sisem"
         minSdk = 30
         targetSdk = 34
-        versionCode = 33
-        versionName = "1.4.0"
+        versionCode = 35
+        versionName = "1.5.1"
         setProperty("archivesBaseName", "$applicationId-v$versionName($versionCode)")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -41,9 +41,10 @@ android {
         }
         create("preProd") {
             initWith(getByName("debug"))
+            isDebuggable = true
             applicationIdSuffix = ".preProd"
-            buildConfigField("String", "AUTH_BASE_URL", "\"https://test.emergencias-sisem.co/preprod/\"")
-            buildConfigField("String", "BASE_URL", "\"https://test.emergencias-sisem.co/preprod/v1/\"")
+            buildConfigField("String", "AUTH_BASE_URL", "\"https://test.emergencias-sisem.co/preprod/sisem-api/\"")
+            buildConfigField("String", "BASE_URL", "\"https://test.emergencias-sisem.co/preprod/sisem-api/v1/\"")
         }
         release {
             isMinifyEnabled = false
