@@ -107,6 +107,8 @@ dependencies {
     implementation(libs.material3.window.size)
     implementation(libs.material.icons.extended)
 
+    implementation(libs.circuit.foundation)
+
     // Compose performance
     implementation(libs.kotlinx.collections.immutable)
 
