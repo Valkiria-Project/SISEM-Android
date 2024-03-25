@@ -58,7 +58,7 @@ fun NotificationRowView(
     }
 }
 
-@Suppress("LongMethod")
+@Suppress("ComplexMethod", "LongMethod")
 @Composable
 private fun NotificationViewRender(
     uiModel: NotificationUiModel,
@@ -115,7 +115,9 @@ private fun NotificationViewRender(
                     )
                 )
 
-                if (isNotIncidentAssigned && uiModel.description == null && uiModel.content == null) {
+                if (isNotIncidentAssigned && uiModel.description == null &&
+                    uiModel.content == null
+                ) {
                     Text(
                         text = uiModel.timeStamp,
                         modifier = Modifier.wrapContentWidth(),
@@ -126,7 +128,6 @@ private fun NotificationViewRender(
                 }
             }
 
-
             uiModel.description?.let {
                 Row(
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 2.dp),
@@ -135,9 +136,13 @@ private fun NotificationViewRender(
                     Text(
                         text = uiModel.description,
                         modifier = if (uiModel.title == INCIDENT_ASSIGNED.title) {
-                            Modifier.padding(start = 48.dp).weight(1f)
+                            Modifier
+                                .padding(start = 48.dp)
+                                .weight(1f)
                         } else {
-                            Modifier.padding(start = 42.dp).weight(1f)
+                            Modifier
+                                .padding(start = 42.dp)
+                                .weight(1f)
                         },
                         color = Color.White,
                         style = MaterialTheme.typography.bodyLarge.copy(
@@ -179,9 +184,13 @@ private fun NotificationViewRender(
                     Text(
                         text = uiModel.content,
                         modifier = if (uiModel.title == INCIDENT_ASSIGNED.title) {
-                            Modifier.padding(start = 4.dp).weight(1f)
+                            Modifier
+                                .padding(start = 4.dp)
+                                .weight(1f)
                         } else {
-                            Modifier.padding(start = 42.dp).weight(1f)
+                            Modifier
+                                .padding(start = 42.dp)
+                                .weight(1f)
                         },
                         color = Color.White,
                         style = MaterialTheme.typography.bodyMedium.copy(
