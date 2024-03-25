@@ -106,7 +106,7 @@ fun NotificationView(
     }
 }
 
-@Suppress("LongMethod")
+@Suppress("ComplexMethod", "LongMethod")
 @Composable
 private fun NotificationViewRender(
     uiModel: NotificationUiModel,
