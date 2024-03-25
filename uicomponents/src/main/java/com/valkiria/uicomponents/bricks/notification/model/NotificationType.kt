@@ -48,6 +48,11 @@ enum class NotificationType(
         title = "Cierre del registro APH ",
         icon = "ic_hceud",
         iconColor = "#42A4FA"
+    ),
+    UPDATE_VEHICLE_STATUS(
+        title = "Actualización de estado del vehículo",
+        icon = "ic_ambulance",
+        iconColor = "#42A4FA"
     );
 
     companion object {

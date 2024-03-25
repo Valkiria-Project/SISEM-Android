@@ -8,6 +8,7 @@ import com.valkiria.uicomponents.bricks.notification.model.NotificationType.STRE
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.SUPPORT_REQUEST_ON_THE_WAY
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_AUTHORIZATION
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_DENIED
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.UPDATE_VEHICLE_STATUS
 import timber.log.Timber
 import java.time.LocalTime
 
@@ -102,6 +103,10 @@ fun getNotificationDataByType(
                 .orEmpty()
         )
 
+        UPDATE_VEHICLE_STATUS -> UpdateVehicleStatusNotification(
+            time = notificationTime,
+        )
+
         else -> null
     }
 }
@@ -155,6 +160,10 @@ fun getNotificationRawDataByType(notificationData: NotificationData): Map<String
             NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
             CONSECUTIVE_NUMBER to notificationData.consecutiveNumber,
             UPDATE_TIME_OBSERVATIONS to notificationData.updateTimeObservationsAttachments
+        )
+
+        is UpdateVehicleStatusNotification -> mapOf(
+            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
         )
 
         is TransmiNotification -> mapOf()
