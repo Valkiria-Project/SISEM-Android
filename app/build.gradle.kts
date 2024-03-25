@@ -41,9 +41,10 @@ android {
         }
         create("preProd") {
             initWith(getByName("debug"))
+            isDebuggable = true
             applicationIdSuffix = ".preProd"
-            buildConfigField("String", "AUTH_BASE_URL", "\"https://test.emergencias-sisem.co/preprod/\"")
-            buildConfigField("String", "BASE_URL", "\"https://test.emergencias-sisem.co/preprod/v1/\"")
+            buildConfigField("String", "AUTH_BASE_URL", "\"https://test.emergencias-sisem.co/preprod/sisem-api/\"")
+            buildConfigField("String", "BASE_URL", "\"https://test.emergencias-sisem.co/preprod/sisem-api/v1/\"")
         }
         release {
             isMinifyEnabled = false
