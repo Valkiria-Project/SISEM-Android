@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -105,13 +106,17 @@ fun NotificationView(
     }
 }
 
-@Suppress("LongMethod")
+@Suppress("ComplexMethod", "LongMethod")
 @Composable
 private fun NotificationViewRender(
     uiModel: NotificationUiModel,
     iconResourceId: Int?,
     onAction: (notificationAction: NotificationAction) -> Unit
 ) {
+    val isNotIncidentAssigned = remember {
+        uiModel.title != INCIDENT_ASSIGNED.title
+    }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -139,7 +144,7 @@ private fun NotificationViewRender(
             Row(
                 modifier = Modifier.padding(horizontal = 20.dp),
                 horizontalArrangement = Arrangement.SpaceAround,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.Bottom
             ) {
                 iconResourceId?.let {
                     Icon(
@@ -157,36 +162,63 @@ private fun NotificationViewRender(
                         tint = Color(parseColor(uiModel.iconColor))
                     )
                 }
+
                 Text(
                     text = uiModel.title,
                     modifier = Modifier.weight(1f),
                     color = Color.White,
                     style = MaterialTheme.typography.headlineMedium
                 )
+
+                if (isNotIncidentAssigned && uiModel.description == null &&
+                    uiModel.content == null
+                ) {
+                    Text(
+                        text = uiModel.timeStamp,
+                        modifier = Modifier.wrapContentWidth(),
+                        color = Color(parseColor("#AFAFAF")),
+                        textAlign = TextAlign.End,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
             }
 
             uiModel.description?.let {
                 Row(
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.Bottom
                 ) {
                     Text(
                         text = uiModel.description,
                         modifier = if (uiModel.title == INCIDENT_ASSIGNED.title) {
-                            Modifier.padding(start = 48.dp)
+                            Modifier
+                                .padding(start = 48.dp)
+                                .weight(1f)
                         } else {
-                            Modifier.padding(start = 42.dp)
+                            Modifier
+                                .padding(start = 42.dp)
+                                .weight(1f)
                         },
                         color = Color.White,
                         style = MaterialTheme.typography.bodyLarge
                     )
+
+                    if (isNotIncidentAssigned && uiModel.content == null) {
+                        Text(
+                            text = uiModel.timeStamp,
+                            modifier = Modifier.wrapContentWidth(),
+                            color = Color(parseColor("#AFAFAF")),
+                            textAlign = TextAlign.End,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
                 }
             }
 
             uiModel.content?.let {
                 Row(
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.Bottom
                 ) {
                     if (uiModel.title == INCIDENT_ASSIGNED.title) {
                         Icon(
@@ -204,18 +236,22 @@ private fun NotificationViewRender(
                     Text(
                         text = uiModel.content,
                         modifier = if (uiModel.title == INCIDENT_ASSIGNED.title) {
-                            Modifier.padding(start = 4.dp)
+                            Modifier
+                                .padding(start = 4.dp)
+                                .weight(1f)
                         } else {
-                            Modifier.padding(start = 42.dp)
+                            Modifier
+                                .padding(start = 42.dp)
+                                .weight(1f)
                         },
                         color = Color.White,
                         style = MaterialTheme.typography.bodyMedium
                     )
 
-                    if (uiModel.title != INCIDENT_ASSIGNED.title) {
+                    if (isNotIncidentAssigned) {
                         Text(
                             text = uiModel.timeStamp,
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier.wrapContentWidth(),
                             color = Color(parseColor("#AFAFAF")),
                             textAlign = TextAlign.End,
                             style = MaterialTheme.typography.bodyMedium
