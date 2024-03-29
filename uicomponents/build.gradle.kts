@@ -32,7 +32,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
+        kotlinCompilerExtensionVersion = "1.5.4"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -43,8 +43,10 @@ android {
         freeCompilerArgs += listOf(
             "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
-            "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi"
-        )
+            "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
+            "-P",
+            "plugin:androidx.compose.compiler.plugins.kotlin:experimentalStrongSkipping=true",
+            )
     }
 }
 
