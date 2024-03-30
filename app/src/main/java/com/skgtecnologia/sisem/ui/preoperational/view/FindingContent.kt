@@ -23,6 +23,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.ui.authcards.create.report.PagerIndicator
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
+import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.bricks.banner.finding.FindingDetailUiModel
 import com.valkiria.uicomponents.bricks.banner.finding.FindingsDetailUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
@@ -33,7 +34,8 @@ import com.valkiria.uicomponents.extensions.decodeAsBase64Bitmap
 fun FindingDetailContent(
     model: FindingsDetailUiModel
 ) {
-    HeaderSection(headerUiModel = model.header)
+    val headerUiModel = model.header.copy(leftIcon = null)
+    HeaderSection(headerUiModel = headerUiModel)
 
     Text(
         modifier = Modifier.padding(start = 20.dp, top = 20.dp),
