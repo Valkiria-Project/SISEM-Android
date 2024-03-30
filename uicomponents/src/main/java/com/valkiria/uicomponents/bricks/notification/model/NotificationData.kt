@@ -1,5 +1,6 @@
 package com.valkiria.uicomponents.bricks.notification.model
 
+import android.os.Bundle
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.CLOSING_OF_APH
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.INCIDENT_ASSIGNED
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.IPS_PATIENT_TRANSFERRED
@@ -10,13 +11,14 @@ import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRAN
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_DENIED
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.UPDATE_VEHICLE_STATUS
 import timber.log.Timber
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 // NOTIFICATION_TYPE
 const val NOTIFICATION_TYPE_KEY = "notification_type"
 
 // INCIDENT_ASSIGNED
-private const val CRU = "CRU"
+const val CRU = "CRU"
 private const val INCIDENT_NUMBER = "incident_number"
 private const val INCIDENT_TYPE = "incident_type"
 private const val INCIDENT_PRIORITY = "incident_priority"
@@ -39,11 +41,13 @@ private const val UPDATE_TIME_OBSERVATIONS = "update_time_observations_and_attac
 sealed interface NotificationData {
     val notificationType: NotificationType
     val time: LocalTime
+    val dateTime: LocalDateTime
 }
 
 fun getNotificationDataByType(
     notificationDataMap: Map<String, String>,
-    time: LocalTime? = null
+    time: LocalTime? = null,
+    dateTime: LocalDateTime? = null
 ): NotificationData? {
     val notificationType = NotificationType.from(
         notificationDataMap[NOTIFICATION_TYPE_KEY].orEmpty()
@@ -51,10 +55,12 @@ fun getNotificationDataByType(
     Timber.d("notificationType ${notificationType?.title}")
 
     val notificationTime = time ?: LocalTime.now()
+    val notificationDateTime = dateTime ?: LocalDateTime.now()
 
     return when (notificationType) {
         INCIDENT_ASSIGNED -> IncidentAssignedNotification(
             time = notificationTime,
+            dateTime = notificationDateTime,
             cru = notificationDataMap[CRU].orEmpty(),
             incidentNumber = notificationDataMap[INCIDENT_NUMBER].orEmpty(),
             incidentType = notificationDataMap[INCIDENT_TYPE].orEmpty(),
@@ -67,6 +73,7 @@ fun getNotificationDataByType(
 
         TRANSMILENIO_AUTHORIZATION -> TransmilenioAuthorizationNotification(
             time = notificationTime,
+            dateTime = notificationDateTime,
             authorizationNumber = notificationDataMap[AUTHORIZATION_NUMBER].orEmpty(),
             authorizes = notificationDataMap[AUTHORIZES].orEmpty(),
             journey = notificationDataMap[JOURNEY].orEmpty()
@@ -74,30 +81,36 @@ fun getNotificationDataByType(
 
         TRANSMILENIO_DENIED -> TransmilenioDeniedNotification(
             time = notificationTime,
+            dateTime = notificationDateTime,
             authorizationNumber = notificationDataMap[AUTHORIZATION_NUMBER_DENIED].orEmpty()
         )
 
         NO_PRE_OPERATIONAL_GENERATED_CRUE -> NoPreOperationalGeneratedCrueNotification(
-            time = notificationTime
+            time = notificationTime,
+            dateTime = notificationDateTime,
         )
 
         SUPPORT_REQUEST_ON_THE_WAY -> SupportRequestNotification(
             time = notificationTime,
+            dateTime = notificationDateTime,
             resourceTypeCode = notificationDataMap[RESOURCE_TYPE_AND_CODE].orEmpty()
         )
 
         IPS_PATIENT_TRANSFERRED -> IpsPatientTransferredNotification(
             time = notificationTime,
+            dateTime = notificationDateTime,
             headquartersName = notificationDataMap[HEADQUARTERS_NAME].orEmpty(),
             headquartersAddress = notificationDataMap[HEADQUARTERS_ADDRESS].orEmpty()
         )
 
         STRETCHER_RETENTION_ENABLE -> StretcherRetentionEnableNotification(
-            time = notificationTime
+            time = notificationTime,
+            dateTime = notificationDateTime,
         )
 
         CLOSING_OF_APH -> ClosingAPHNotification(
             time = notificationTime,
+            dateTime = notificationDateTime,
             consecutiveNumber = notificationDataMap[CONSECUTIVE_NUMBER].orEmpty(),
             updateTimeObservationsAttachments = notificationDataMap[UPDATE_TIME_OBSERVATIONS]
                 .orEmpty()
@@ -105,6 +118,90 @@ fun getNotificationDataByType(
 
         UPDATE_VEHICLE_STATUS -> UpdateVehicleStatusNotification(
             time = notificationTime,
+            dateTime = notificationDateTime,
+        )
+
+        else -> null
+    }
+}
+
+fun getNotificationDataByType(
+    notificationDataBundle: Bundle,
+    time: LocalTime? = null,
+    dateTime: LocalDateTime? = null
+): NotificationData? {
+    val notificationType = NotificationType.from(
+        notificationDataBundle.getString(NOTIFICATION_TYPE_KEY).orEmpty()
+    )
+    Timber.d("notificationType ${notificationType?.title}")
+
+    val notificationTime = time ?: LocalTime.now()
+    val notificationDateTime = dateTime ?: LocalDateTime.now()
+
+    return when (notificationType) {
+        INCIDENT_ASSIGNED -> IncidentAssignedNotification(
+            time = notificationTime,
+            dateTime = notificationDateTime,
+            cru = notificationDataBundle.getString(CRU).orEmpty(),
+            incidentNumber = notificationDataBundle.getString(INCIDENT_NUMBER).orEmpty(),
+            incidentType = notificationDataBundle.getString(INCIDENT_TYPE).orEmpty(),
+            incidentPriority = notificationDataBundle.getString(INCIDENT_PRIORITY).orEmpty(),
+            incidentDate = notificationDataBundle.getString(INCIDENT_DATE).orEmpty(),
+            address = notificationDataBundle.getString(ADDRESS).orEmpty(),
+            hour = notificationDataBundle.getString(HOUR).orEmpty(),
+            geolocation = notificationDataBundle.getString(GEOLOCATION).orEmpty()
+        )
+
+        TRANSMILENIO_AUTHORIZATION -> TransmilenioAuthorizationNotification(
+            time = notificationTime,
+            dateTime = notificationDateTime,
+            authorizationNumber = notificationDataBundle.getString(AUTHORIZATION_NUMBER).orEmpty(),
+            authorizes = notificationDataBundle.getString(AUTHORIZES).orEmpty(),
+            journey = notificationDataBundle.getString(JOURNEY).orEmpty()
+        )
+
+        TRANSMILENIO_DENIED -> TransmilenioDeniedNotification(
+            time = notificationTime,
+            dateTime = notificationDateTime,
+            authorizationNumber = notificationDataBundle.getString(AUTHORIZATION_NUMBER_DENIED)
+                .orEmpty()
+        )
+
+        NO_PRE_OPERATIONAL_GENERATED_CRUE -> NoPreOperationalGeneratedCrueNotification(
+            time = notificationTime,
+            dateTime = notificationDateTime,
+        )
+
+        SUPPORT_REQUEST_ON_THE_WAY -> SupportRequestNotification(
+            time = notificationTime,
+            dateTime = notificationDateTime,
+            resourceTypeCode = notificationDataBundle.getString(RESOURCE_TYPE_AND_CODE).orEmpty()
+        )
+
+        IPS_PATIENT_TRANSFERRED -> IpsPatientTransferredNotification(
+            time = notificationTime,
+            dateTime = notificationDateTime,
+            headquartersName = notificationDataBundle.getString(HEADQUARTERS_NAME).orEmpty(),
+            headquartersAddress = notificationDataBundle.getString(HEADQUARTERS_ADDRESS).orEmpty()
+        )
+
+        STRETCHER_RETENTION_ENABLE -> StretcherRetentionEnableNotification(
+            time = notificationTime,
+            dateTime = notificationDateTime,
+        )
+
+        CLOSING_OF_APH -> ClosingAPHNotification(
+            time = notificationTime,
+            dateTime = notificationDateTime,
+            consecutiveNumber = notificationDataBundle.getString(CONSECUTIVE_NUMBER).orEmpty(),
+            updateTimeObservationsAttachments = notificationDataBundle.getString(
+                UPDATE_TIME_OBSERVATIONS
+            ).orEmpty()
+        )
+
+        UPDATE_VEHICLE_STATUS -> UpdateVehicleStatusNotification(
+            time = notificationTime,
+            dateTime = notificationDateTime,
         )
 
         else -> null
