@@ -23,6 +23,7 @@ import com.valkiria.uicomponents.bricks.notification.model.CRU
 import com.valkiria.uicomponents.bricks.notification.model.IncidentAssignedNotification
 import com.valkiria.uicomponents.bricks.notification.model.getNotificationDataByType
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.time.LocalTime
@@ -89,6 +90,7 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             getNotificationDataByType(bundle)?.also { notificationData ->
                 storeNotification.invoke(notificationData)
+                delay(500)
                 NotificationEventHandler.publishNotificationEvent(notificationData)
             }
         }
