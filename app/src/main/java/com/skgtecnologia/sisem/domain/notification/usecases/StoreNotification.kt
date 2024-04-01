@@ -9,7 +9,7 @@ class StoreNotification @Inject constructor(
     private val notificationRepository: NotificationRepository
 ) {
 
-    suspend fun invoke(notification: NotificationData): Result<Unit> = resultOf {
+    suspend operator fun invoke(notification: NotificationData): Result<Unit> = resultOf {
         notificationRepository.storeNotification(notification)
     }
 }

@@ -4,10 +4,8 @@ import com.valkiria.uicomponents.bricks.notification.model.NotificationType.CLOS
 import java.time.LocalDateTime
 import java.time.LocalTime
 
-data class ClosingAPHNotification(
+data class UpdateVehicleStatusNotification(
     override val notificationType: NotificationType = CLOSING_OF_APH,
     override val time: LocalTime,
     override val dateTime: LocalDateTime,
-    val consecutiveNumber: String,
-    val updateTimeObservationsAttachments: String
 ) : NotificationData

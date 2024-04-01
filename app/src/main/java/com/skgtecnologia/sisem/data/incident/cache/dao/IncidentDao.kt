@@ -22,6 +22,6 @@ interface IncidentDao {
     )
     suspend fun updateTransmiStatus(incidentId: Long, transmiRequests: List<Map<String, String>>)
 
-    @Query("SELECT * FROM incident WHERE is_active = :isActive LIMIT 1")
+    @Query("SELECT * FROM incident WHERE is_active = :isActive ORDER BY id ASC LIMIT 1")
     fun observeActiveIncident(isActive: Boolean = true): Flow<IncidentEntity?>
 }

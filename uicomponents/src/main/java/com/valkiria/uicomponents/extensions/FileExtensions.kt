@@ -61,17 +61,18 @@ suspend fun Context.storeUriAsFileToCache(uri: Uri, maxFileSizeKb: String? = nul
         fileContents?.close()
     }
 
-    if (file.length() > getImageAllowedSize(maxFileSizeKb)) {
-        Timber.d("${file.length()} is larger than ${getImageAllowedSize(maxFileSizeKb)}")
-        error("The file size is larger than the allowed")
+    if (file.length() > getFilleAllowedSize(maxFileSizeKb)) {
+        val allowedFileSize = getFilleAllowedSize(maxFileSizeKb)
+        Timber.d("${file.length()} is larger than $allowedFileSize")
+        error("The file size ${file.length()} is larger than the allowed $allowedFileSize")
     }
 
     return Compressor.compress(context = this, imageFile = file) {
-        size(getImageAllowedSize(maxFileSizeKb))
+        size(getFilleAllowedSize(maxFileSizeKb))
     }
 }
 
-private fun getImageAllowedSize(maxFileSizeKb: String?): Long =
+private fun getFilleAllowedSize(maxFileSizeKb: String?): Long =
     maxFileSizeKb.orEmpty().toLongOrNull() ?: FALLBACK_FILE_SIZE
 
 private fun ContentResolver.getFileName(fileUri: Uri): String {

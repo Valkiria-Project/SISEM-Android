@@ -197,7 +197,7 @@ private fun handleAction(
                         runCatching {
                             context.storeUriAsFileToCache(
                                 uri,
-                                viewModel.uiState.operationConfig?.maxFileSizeKb
+                                "30000000"
                             )
                         }.fold(
                             onSuccess = { it },

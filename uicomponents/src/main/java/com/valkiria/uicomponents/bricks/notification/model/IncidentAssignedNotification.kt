@@ -1,11 +1,13 @@
 package com.valkiria.uicomponents.bricks.notification.model
 
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.INCIDENT_ASSIGNED
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 data class IncidentAssignedNotification(
     override val notificationType: NotificationType = INCIDENT_ASSIGNED,
     override val time: LocalTime,
+    override val dateTime: LocalDateTime,
     val cru: String,
     val incidentNumber: String,
     val incidentType: String,
