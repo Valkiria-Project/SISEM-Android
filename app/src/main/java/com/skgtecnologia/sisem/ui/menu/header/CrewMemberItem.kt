@@ -4,9 +4,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -47,7 +47,7 @@ fun CrewMemberItem(item: CrewMemberMenuItemModel, onClick: () -> Unit) {
 
         Column(
             modifier = Modifier
-                .padding(start = 20.dp)
+                .padding(start = 20.dp, end = 8.dp)
                 .weight(0.6f),
             verticalArrangement = Arrangement.Center
         ) {
@@ -55,13 +55,13 @@ fun CrewMemberItem(item: CrewMemberMenuItemModel, onClick: () -> Unit) {
                 text = item.name,
                 textAlign = TextAlign.Start,
                 style = TextStyle.HEADLINE_7.toTextStyle(),
-                modifier = Modifier.height(20.dp)
+                modifier = Modifier.wrapContentHeight()
             )
             Text(
                 text = item.specialtyAndDocument,
                 textAlign = TextAlign.Start,
                 style = TextStyle.BUTTON_1.toTextStyle(),
-                modifier = Modifier.height(20.dp)
+                modifier = Modifier.wrapContentHeight()
             )
         }
 
@@ -69,7 +69,7 @@ fun CrewMemberItem(item: CrewMemberMenuItemModel, onClick: () -> Unit) {
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_logout),
             contentDescription = null,
             modifier = Modifier
-                .padding(end = 20.dp)
+                .padding(end = 4.dp)
                 .clickable {
                     onClick.invoke()
                 },

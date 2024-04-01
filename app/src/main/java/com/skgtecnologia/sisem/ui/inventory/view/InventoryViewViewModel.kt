@@ -39,7 +39,10 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
+private const val INITIAL_QUANTITY = "0"
 private const val CANT_EXISTS_KEY = "KEY_CANT_EXISTS"
+private const val CANT_RETURN = "KEY_CANT_RETURN"
+private const val CANT_TRANSFER = "KEY_CANT_TRANSFER"
 private const val VEHICLE_CODE_KEY = "KEY_VEHICLE_CODE"
 private const val VEHICLE_TYPE_KEY = "KEY_VEHICLE_TYPE"
 private const val CODE_LIMIT = 4
@@ -107,12 +110,44 @@ class InventoryViewViewModel @Inject constructor(
 
         var updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
-            identifier = chipSelectionAction.identifier,
+            identifiers = listOf(
+                chipSelectionAction.identifier,
+                CANT_EXISTS_KEY,
+                CANT_RETURN,
+                CANT_TRANSFER
+            ),
             updater = { model ->
-                if (model is ChipSelectionUiModel) {
-                    model.copy(selected = chipSelectionAction.chipSelectionItemUiModel.name)
-                } else {
-                    model
+                when (model) {
+                    is ChipSelectionUiModel -> {
+                        model.copy(selected = chipSelectionAction.chipSelectionItemUiModel.name)
+                    }
+
+                    is LabelUiModel -> {
+                        labelValue[CANT_EXISTS_KEY] = INITIAL_QUANTITY
+                        model.copy(text = INITIAL_QUANTITY)
+                    }
+
+                    is TextFieldUiModel -> {
+                        fieldsValues[CANT_TRANSFER] = fieldsValues[CANT_TRANSFER]?.copy(
+                            updatedValue = INITIAL_QUANTITY
+                        ) ?: InputUiModel(
+                            identifier = CANT_TRANSFER,
+                            updatedValue = INITIAL_QUANTITY
+                        )
+
+                        fieldsValues[CANT_RETURN] = fieldsValues[CANT_RETURN]?.copy(
+                            updatedValue = INITIAL_QUANTITY
+                        ) ?: InputUiModel(
+                            identifier = CANT_RETURN,
+                            updatedValue = INITIAL_QUANTITY
+                        )
+
+                        model.copy(text = INITIAL_QUANTITY)
+                    }
+
+                    else -> {
+                        model
+                    }
                 }
             }
         )

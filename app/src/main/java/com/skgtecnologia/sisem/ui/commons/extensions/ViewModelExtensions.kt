@@ -33,3 +33,17 @@ fun <T : BodyRowModel> updateBodyModel(
         }
     }
 }
+
+fun <T : BodyRowModel> updateBodyModel(
+    uiModels: List<T>?,
+    identifiers: List<String>,
+    updater: (T) -> T
+): List<T> {
+    return uiModels.orEmpty().map {
+        if (identifiers.contains(it.identifier)) {
+            updater(it)
+        } else {
+            it
+        }
+    }
+}

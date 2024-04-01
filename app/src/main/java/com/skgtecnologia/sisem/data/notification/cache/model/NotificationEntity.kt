@@ -8,6 +8,7 @@ import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType
 import com.valkiria.uicomponents.bricks.notification.model.getNotificationDataByType
 import com.valkiria.uicomponents.bricks.notification.model.getNotificationRawDataByType
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 @Entity(
@@ -20,17 +21,19 @@ data class NotificationEntity(
     var id: Long = 0,
     @ColumnInfo(name = "notificationType") val notificationType: NotificationType,
     @ColumnInfo(name = "time") val time: LocalTime,
+    @ColumnInfo(name = "dateTime") val dateTime: LocalDateTime,
     @ColumnInfo(name = "data") val data: Map<String, String>
 )
 
 fun NotificationEntity.mapToDomain(): NotificationData? = with(this) {
-    getNotificationDataByType(this.data, this.time)
+    getNotificationDataByType(this.data, this.time, this.dateTime)
 }
 
 fun NotificationData.mapToCache(): NotificationEntity = with(this) {
     NotificationEntity(
         notificationType = this.notificationType,
         time = time,
+        dateTime = dateTime,
         data = getNotificationRawDataByType(this)
     )
 }

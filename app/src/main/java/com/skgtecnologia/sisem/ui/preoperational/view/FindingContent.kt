@@ -33,7 +33,8 @@ import com.valkiria.uicomponents.extensions.decodeAsBase64Bitmap
 fun FindingDetailContent(
     model: FindingsDetailUiModel
 ) {
-    HeaderSection(headerUiModel = model.header)
+    val headerUiModel = model.header.copy(leftIcon = null)
+    HeaderSection(headerUiModel = headerUiModel)
 
     Text(
         modifier = Modifier.padding(start = 20.dp, top = 20.dp),

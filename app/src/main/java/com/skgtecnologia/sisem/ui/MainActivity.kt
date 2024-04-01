@@ -8,22 +8,34 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.lifecycle.lifecycleScope
 import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
 import com.mapbox.navigation.core.trip.session.LocationMatcherResult
 import com.mapbox.navigation.core.trip.session.LocationObserver
 import com.skgtecnologia.sisem.BuildConfig
+import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
+import com.skgtecnologia.sisem.data.notification.NotificationsManager
+import com.skgtecnologia.sisem.domain.notification.usecases.StoreNotification
 import com.skgtecnologia.sisem.ui.navigation.SisemNavGraph
 import com.skgtecnologia.sisem.ui.navigation.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.theme.SisemTheme
-import com.valkiria.uicomponents.bricks.notification.model.IncidentAssignedNotification
+import com.valkiria.uicomponents.bricks.notification.model.getNotificationDataByType
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.time.LocalTime
+import javax.inject.Inject
 
 const val STARTUP_NAVIGATION_MODEL = "STARTUP_NAVIGATION_MODEL"
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var storeNotification: StoreNotification
+
+    @Inject
+    lateinit var notificationsManager: NotificationsManager
 
     private var lastLocation: Location? = null
 
@@ -58,7 +70,9 @@ class MainActivity : ComponentActivity() {
 
         MapboxNavigationApp.current()?.registerLocationObserver(locationObserver)
 
-        handlePushNotification()
+        intent.extras?.also { bundle ->
+            handlePushNotification(bundle)
+        }
 
         setContent {
             SisemTheme {
@@ -67,29 +81,16 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun handlePushNotification() {
+    @Suppress("MagicNumber")
+    private fun handlePushNotification(bundle: Bundle) {
         Timber.d("handlePushNotification")
-        intent.extras?.also {
-            /**
-             * FIXME: Improve logic and persist the notification using the use case that also
-             *  gets the incident info
-             */
-            Timber.d("Background notification ${it.getString("incident_number")}")
-            Timber.d("Background notification ${it.getString("incident_date")}")
 
-            val notificationData = IncidentAssignedNotification(
-                time = LocalTime.now(),
-                cru = it.getString("CRU").orEmpty(),
-                incidentNumber = it.getString("incident_number").orEmpty(),
-                incidentType = it.getString("incident_date").orEmpty(),
-                incidentPriority = it.getString("incident_priority").orEmpty(),
-                incidentDate = it.getString("incident_date").orEmpty(),
-                address = it.getString("address").orEmpty(),
-                hour = it.getString("hour").orEmpty(),
-                geolocation = it.getString("geolocation").orEmpty()
-            )
-
-            Timber.d("Background notification $notificationData")
+        lifecycleScope.launch {
+            getNotificationDataByType(bundle)?.also { notificationData ->
+                storeNotification.invoke(notificationData)
+                delay(500)
+                NotificationEventHandler.publishNotificationEvent(notificationData)
+            }
         }
     }
 

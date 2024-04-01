@@ -13,11 +13,13 @@ import com.valkiria.uicomponents.bricks.notification.model.NotificationType.STRE
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.SUPPORT_REQUEST_ON_THE_WAY
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_AUTHORIZATION
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_DENIED
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.UPDATE_VEHICLE_STATUS
 import com.valkiria.uicomponents.bricks.notification.model.StretcherRetentionEnableNotification
 import com.valkiria.uicomponents.bricks.notification.model.SupportRequestNotification
 import com.valkiria.uicomponents.bricks.notification.model.TransmiNotification
 import com.valkiria.uicomponents.bricks.notification.model.TransmilenioAuthorizationNotification
 import com.valkiria.uicomponents.bricks.notification.model.TransmilenioDeniedNotification
+import com.valkiria.uicomponents.bricks.notification.model.UpdateVehicleStatusNotification
 import com.valkiria.uicomponents.components.incident.model.IncidentPriority
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalTimeAsString
 import java.util.UUID
@@ -103,6 +105,13 @@ fun NotificationData.mapToUi(): NotificationUiModel {
             iconColor = CLOSING_OF_APH.iconColor,
             title = CLOSING_OF_APH.title.plus(this.consecutiveNumber),
             description = this.updateTimeObservationsAttachments,
+            timeStamp = timeStamp
+        )
+
+        is UpdateVehicleStatusNotification -> NotificationUiModel(
+            icon = UPDATE_VEHICLE_STATUS.icon,
+            iconColor = UPDATE_VEHICLE_STATUS.iconColor,
+            title = UPDATE_VEHICLE_STATUS.title,
             timeStamp = timeStamp
         )
 

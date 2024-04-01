@@ -58,7 +58,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
+        kotlinCompilerExtensionVersion = "1.5.4"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -77,6 +77,8 @@ android {
                 "-opt-in=com.google.accompanist.permissions.ExperimentalPermissionsApi",
                 "-opt-in=kotlin.contracts.ExperimentalContracts",
                 "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                "-P",
+                "plugin:androidx.compose.compiler.plugins.kotlin:experimentalStrongSkipping=true",
             )
     }
     packaging {

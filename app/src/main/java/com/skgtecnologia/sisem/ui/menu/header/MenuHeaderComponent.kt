@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -123,7 +123,7 @@ fun MenuHeaderComponent(
             )
         }
 
-        Divider(
+        HorizontalDivider(
             modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 20.dp),
             color = MaterialTheme.colorScheme.primary
         )
@@ -143,7 +143,7 @@ fun MenuHeaderComponent(
             }
         }
 
-        Divider(
+        HorizontalDivider(
             modifier = Modifier.padding(start = 33.dp, end = 33.dp, top = 15.dp),
             color = MaterialTheme.colorScheme.primary
         )

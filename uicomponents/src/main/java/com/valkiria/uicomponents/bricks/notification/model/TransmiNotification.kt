@@ -1,6 +1,7 @@
 package com.valkiria.uicomponents.bricks.notification.model
 
 import timber.log.Timber
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 // TRANSMILENIO_AUTHORIZATION
@@ -15,25 +16,29 @@ interface TransmiNotification : NotificationData
 
 fun getTransmiNotificationDataByType(
     notificationDataMap: Map<String, String>,
-    dateTime: LocalTime? = null
+    time: LocalTime? = null,
+    dateTime: LocalDateTime? = null,
 ): TransmiNotification {
     val notificationType = NotificationType.from(
         notificationDataMap[NOTIFICATION_TYPE_KEY].orEmpty()
     )
     Timber.d("transmiNotificationType ${notificationType?.title}")
 
-    val notificationDateTime = dateTime ?: LocalTime.now()
+    val notificationTime = time ?: LocalTime.now()
+    val notificationDateTime = dateTime ?: LocalDateTime.now()
 
     return when (notificationType) {
         NotificationType.TRANSMILENIO_AUTHORIZATION -> TransmilenioAuthorizationNotification(
-            time = notificationDateTime,
+            time = notificationTime,
+            dateTime = notificationDateTime,
             authorizationNumber = notificationDataMap[AUTHORIZATION_NUMBER].orEmpty(),
             authorizes = notificationDataMap[AUTHORIZES].orEmpty(),
             journey = notificationDataMap[JOURNEY].orEmpty()
         )
 
         NotificationType.TRANSMILENIO_DENIED -> TransmilenioDeniedNotification(
-            time = notificationDateTime,
+            time = notificationTime,
+            dateTime = notificationDateTime,
             authorizationNumber = notificationDataMap[AUTHORIZATION_NUMBER_DENIED].orEmpty()
         )
 
