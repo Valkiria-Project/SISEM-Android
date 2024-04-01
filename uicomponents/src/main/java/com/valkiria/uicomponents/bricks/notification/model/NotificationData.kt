@@ -44,6 +44,7 @@ sealed interface NotificationData {
     val dateTime: LocalDateTime
 }
 
+@Suppress("LongMethod")
 fun getNotificationDataByType(
     notificationDataMap: Map<String, String>,
     time: LocalTime? = null,
@@ -125,6 +126,7 @@ fun getNotificationDataByType(
     }
 }
 
+@Suppress("LongMethod")
 fun getNotificationDataByType(
     notificationDataBundle: Bundle,
     time: LocalTime? = null,

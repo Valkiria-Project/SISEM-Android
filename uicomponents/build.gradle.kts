@@ -46,7 +46,7 @@ android {
             "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
             "-P",
             "plugin:androidx.compose.compiler.plugins.kotlin:experimentalStrongSkipping=true",
-            )
+        )
     }
 }
 

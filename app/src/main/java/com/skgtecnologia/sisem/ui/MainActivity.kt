@@ -19,14 +19,11 @@ import com.skgtecnologia.sisem.domain.notification.usecases.StoreNotification
 import com.skgtecnologia.sisem.ui.navigation.SisemNavGraph
 import com.skgtecnologia.sisem.ui.navigation.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.theme.SisemTheme
-import com.valkiria.uicomponents.bricks.notification.model.CRU
-import com.valkiria.uicomponents.bricks.notification.model.IncidentAssignedNotification
 import com.valkiria.uicomponents.bricks.notification.model.getNotificationDataByType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.time.LocalTime
 import javax.inject.Inject
 
 const val STARTUP_NAVIGATION_MODEL = "STARTUP_NAVIGATION_MODEL"
@@ -84,6 +81,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @Suppress("MagicNumber")
     private fun handlePushNotification(bundle: Bundle) {
         Timber.d("handlePushNotification")
 

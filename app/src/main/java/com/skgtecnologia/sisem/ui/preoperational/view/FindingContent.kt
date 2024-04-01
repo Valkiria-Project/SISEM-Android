@@ -23,7 +23,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.ui.authcards.create.report.PagerIndicator
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
-import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.bricks.banner.finding.FindingDetailUiModel
 import com.valkiria.uicomponents.bricks.banner.finding.FindingsDetailUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
