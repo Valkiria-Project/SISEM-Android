@@ -45,6 +45,7 @@ import androidx.compose.ui.viewinterop.NoOpUpdate
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.graphics.drawable.toBitmap
+import com.mapbox.api.directions.v5.DirectionsCriteria
 import com.mapbox.api.directions.v5.models.RouteOptions
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
@@ -61,6 +62,7 @@ import com.mapbox.navigation.base.route.NavigationRouterCallback
 import com.mapbox.navigation.base.route.RouterFailure
 import com.mapbox.navigation.base.route.RouterOrigin
 import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
+import com.mapbox.navigation.dropin.EmptyBinder
 import com.mapbox.navigation.dropin.NavigationView
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.action.GenericUiAction.NotificationAction
@@ -108,17 +110,18 @@ fun MapboxMapView(
         sheetPeekHeight = if (incident != null) 140.dp else 0.dp
     ) { innerPadding ->
         Box(modifier.padding(innerPadding)) {
-//            val destinationPoint = Point.fromLngLat(-74.0711485, 4.6963453)
-//            if (incident != null) {
-//                val accessToken = stringResource(id = R.string.mapbox_access_token)
-//                MapboxNavigationAndroidView(
-//                    locationPoint, destinationPoint, marker, modifier, accessToken
-//                )
-//            } else {
-            MapboxMapAndroidView(
-                locationPoint, marker, modifier
-            )
-//            }
+            val destinationPoint = Point.fromLngLat(-74.0711485, 4.6963453)
+//            val destinationPoint = Point.fromLngLat(incident?.incident.address, 4.6963453)
+            if (incident != null) {
+                val accessToken = stringResource(id = R.string.mapbox_access_token)
+                MapboxNavigationAndroidView(
+                    locationPoint, destinationPoint, marker, modifier, accessToken
+                )
+            } else {
+                MapboxMapAndroidView(
+                    locationPoint, marker, modifier
+                )
+            }
 
             IconButton(
                 onClick = {
@@ -236,13 +239,36 @@ private fun MapboxNavigationAndroidView(
                 context = context,
                 accessToken = accessToken
             ).also { navigationView ->
+                navigationView.customizeViewOptions {
+                    enableMapLongClickIntercept = false
+                }
+                navigationView.customizeViewBinders {
+                    maneuverBinder = EmptyBinder()
+                    speedLimitBinder = EmptyBinder()
+                    actionToggleAudioButtonBinder = EmptyBinder()
+                    actionButtonsBinder = EmptyBinder()
+                }
+
+                val defaultAnnotations = listOf(
+                    DirectionsCriteria.ANNOTATION_DURATION,
+                )
+
                 MapboxNavigationApp.current()!!.requestRoutes(
                     routeOptions = RouteOptions
                         .builder()
-                        .applyDefaultNavigationOptions()
+//                        .applyDefaultNavigationOptions()
+                        .annotationsList(defaultAnnotations)
+                        .continueStraight(true)
+                        .enableRefresh(true)
+                        .profile(DirectionsCriteria.PROFILE_DRIVING_TRAFFIC)
+                        .overview(DirectionsCriteria.OVERVIEW_FULL)
+                        .steps(true)
+                        .roundaboutExits(false)
+                        .voiceInstructions(false)
+                        .bannerInstructions(false)
 //                        .applyLanguageAndVoiceUnitOptions(this)
                         .coordinatesList(listOf(locationPoint, destinationPoint))
-                        .alternatives(true)
+                        .alternatives(false)
                         .build(),
                     callback = object : NavigationRouterCallback {
                         override fun onCanceled(
@@ -265,7 +291,7 @@ private fun MapboxNavigationAndroidView(
                         ) {
                             Timber.d("NavigationRouterCallback onRoutesReady")
 
-                            navigationView.api.routeReplayEnabled(true)
+//                            navigationView.api.routeReplayEnabled(true)
                             navigationView.api.startActiveGuidance(routes)
                         }
                     }
