@@ -5,9 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
+import com.skgtecnologia.sisem.domain.operation.usecases.GetOperationConfig
 import com.skgtecnologia.sisem.domain.operation.usecases.LogoutTurn
 import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,9 +22,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MenuViewModel @Inject constructor(
+    private val androidIdProvider: AndroidIdProvider,
     private val getAllAccessTokens: GetAllAccessTokens,
+    private val getOperationConfig: GetOperationConfig,
+    private val logoutTurn: LogoutTurn,
     private val observeOperationConfig: ObserveOperationConfig,
-    private val logoutTurn: LogoutTurn
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -99,6 +103,27 @@ class MenuViewModel @Inject constructor(
                     )
                 }
             }
+    }
+
+    fun getOperationConfig() {
+        job?.cancel()
+        job = viewModelScope.launch {
+            getOperationConfig.invoke(androidIdProvider.getAndroidId())
+                .onSuccess { operationModel ->
+                    uiState = uiState.copy(
+                        vehicleConfig = operationModel.vehicleConfig,
+                        isLoading = false
+                    )
+                }
+                .onFailure { throwable ->
+                    Timber.wtf(throwable, "This is a failure")
+
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        errorModel = throwable.mapToUi()
+                    )
+                }
+        }
     }
 
     fun consumeErrorEvent() {
