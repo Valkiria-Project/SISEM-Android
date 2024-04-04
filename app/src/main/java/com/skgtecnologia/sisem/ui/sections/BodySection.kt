@@ -19,7 +19,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
@@ -112,6 +116,7 @@ import com.valkiria.uicomponents.components.timepicker.TimePickerComponent
 import com.valkiria.uicomponents.components.timepicker.TimePickerUiModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Suppress("ComplexMethod", "LongMethod")
 @Composable
@@ -133,8 +138,22 @@ fun BodySection(
                 modifier
             }
 
+            val nestedScrollConnection = remember {
+                object : NestedScrollConnection {
+                    override fun onPreScroll(
+                        available: Offset,
+                        source: NestedScrollSource
+                    ): Offset {
+                        val delta = available.y
+                        Timber.d("onPreScroll $delta")
+                        // called when you scroll the content
+                        return Offset.Zero
+                    }
+                }
+            }
+
             LazyColumn(
-                modifier = updatedModifier,
+                modifier = updatedModifier.nestedScroll(nestedScrollConnection),
                 state = listState,
                 contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Top),

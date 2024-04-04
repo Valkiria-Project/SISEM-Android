@@ -51,7 +51,10 @@ fun MenuDrawer(
                 vehicleConfig = uiState.vehicleConfig,
                 crewMenuItems = crewMenuItems,
                 menuItems = getDrawerMenuItemList(LocalContext.current, isAdmin),
-                onMenuItemClick = { onClick(it) },
+                onMenuItemClick = {
+                    viewModel.getOperationConfig()
+                    onClick(it)
+                },
                 onLogout = { viewModel.logout(it.username) }
             )
         },
