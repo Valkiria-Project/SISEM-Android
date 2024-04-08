@@ -85,6 +85,7 @@ fun HumanBodyBackComponent(
                             HumanBodyUi(
                                 type = HumanBodyType.BACK.name,
                                 area = selectedBackArea.name,
+                                areaName = selectedBackArea.name,
                                 wounds = wounds
                             )
                         )

@@ -104,7 +104,7 @@ fun WoundCard(
             Text(
                 modifier = Modifier
                     .padding(bottom = 10.dp),
-                text = humanBodyUi.area,
+                text = humanBodyUi.areaName,
                 style = TextStyle.HEADLINE_4.toTextStyle(),
             )
 
@@ -127,11 +127,13 @@ fun HumanBodyViewComponentPreview() {
                 HumanBodyUi(
                     type = "FRONT",
                     area = "HEAD",
+                    areaName = "Cabeza",
                     wounds = listOf("Herida 1", "Herida 2")
                 ),
                 HumanBodyUi(
                     type = "FRONT",
                     area = "RIGHT_FOREARM",
+                    areaName = "Antebrazo Derecho",
                     wounds = listOf("Herida 1", "Herida 2")
                 )
             )
