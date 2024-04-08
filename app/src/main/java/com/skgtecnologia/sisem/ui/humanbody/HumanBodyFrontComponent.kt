@@ -85,6 +85,7 @@ fun HumanBodyFrontComponent(
                             HumanBodyUi(
                                 type = HumanBodyType.FRONT.name,
                                 area = selectedFrontArea.name,
+                                areaName = selectedFrontArea.name,
                                 wounds = wounds
                             )
                         )

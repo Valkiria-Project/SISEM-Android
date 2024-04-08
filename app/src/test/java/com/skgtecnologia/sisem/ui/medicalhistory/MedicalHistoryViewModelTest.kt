@@ -439,6 +439,7 @@ class MedicalHistoryViewModelTest {
                 values = HumanBodyUi(
                     type = HumanBodyType.FRONT.name,
                     area = FrontArea.ABDOMEN.name,
+                    areaName = FrontArea.ABDOMEN.name,
                     wounds = listOf("wound1", "wound2")
                 )
             )
@@ -449,6 +450,7 @@ class MedicalHistoryViewModelTest {
                 values = HumanBodyUi(
                     type = HumanBodyType.FRONT.name,
                     area = FrontArea.ABDOMEN.name,
+                    areaName = FrontArea.ABDOMEN.name,
                     wounds = listOf("wound1", "wound2")
                 )
             )

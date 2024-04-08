@@ -417,6 +417,7 @@ val humanBodyResponseMock = HumanBodyResponse(
             WoundResponse(
                 type = "FRONT",
                 area = "area",
+                areaName = "areaName",
                 wounds = listOf("wounds")
             )
         )

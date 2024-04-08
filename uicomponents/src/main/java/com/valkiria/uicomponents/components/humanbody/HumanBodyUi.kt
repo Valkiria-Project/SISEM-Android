@@ -3,6 +3,7 @@ package com.valkiria.uicomponents.components.humanbody
 data class HumanBodyUi(
     val type: String,
     val area: String,
+    val areaName: String,
     val wounds: List<String>
 )
 
