@@ -49,13 +49,15 @@ fun HumanBodyBackViewComponentPreview() {
     HumanBodyBackViewComponent(
         wounds = listOf(
             HumanBodyUi(
-                area = "HEAD",
                 type = "BACK",
+                area = "HEAD",
+                areaName = "Cabeza",
                 wounds = listOf("Herida 1", "Herida 2")
             ),
             HumanBodyUi(
-                area = "BACK",
                 type = "BACK",
+                area = "BACK",
+                areaName = "Espalda",
                 wounds = listOf("Herida 1", "Herida 2")
             )
         )
