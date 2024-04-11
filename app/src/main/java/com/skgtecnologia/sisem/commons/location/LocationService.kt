@@ -29,7 +29,7 @@ private const val LOCATION_INTERVAL = 5000L
 class LocationService : Service() {
 
     @Inject
-    private lateinit var locationProvider: LocationProvider
+    lateinit var locationProvider: LocationProvider
 
     private val serviceJob = SupervisorJob()
     private val serviceScope = CoroutineScope(Dispatchers.IO + serviceJob)
