@@ -75,9 +75,7 @@ fun AuthCardsScreen(
 
     if (arePermissionsGranted(notificationsPermissionState, fineLocationPermissionState)) {
         AuthCardsScreenRender(viewModel, modifier, onNavigation)
-    }
 
-    if (arePermissionsGranted(notificationsPermissionState, fineLocationPermissionState)) {
         OnNotificationHandler(notificationData) {
             notificationData = null
             if (it.isDismiss.not()) {
