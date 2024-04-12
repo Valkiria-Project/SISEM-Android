@@ -34,6 +34,7 @@
 
         <service
             android:name=".commons.location.LocationService"
+            android:exported="false"
             android:foregroundServiceType="location"
             tools:ignore="ForegroundServicePermission" />
 

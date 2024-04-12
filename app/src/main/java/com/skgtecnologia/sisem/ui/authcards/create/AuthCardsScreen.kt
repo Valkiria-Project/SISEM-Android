@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.authcards.create
 
 import android.Manifest
+import android.content.Intent
 import android.os.Build
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -12,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -20,6 +22,8 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
+import com.skgtecnologia.sisem.commons.location.ACTION_START
+import com.skgtecnologia.sisem.commons.location.LocationService
 import com.skgtecnologia.sisem.ui.authcards.create.report.FindingsContent
 import com.skgtecnologia.sisem.ui.authcards.create.report.ReportDetailContent
 import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
@@ -74,6 +78,11 @@ fun AuthCardsScreen(
     }
 
     if (arePermissionsGranted(notificationsPermissionState, fineLocationPermissionState)) {
+        Intent(LocalContext.current.applicationContext, LocationService::class.java).apply {
+            action = ACTION_START
+            LocalContext.current.startService(this)
+        }
+
         AuthCardsScreenRender(viewModel, modifier, onNavigation)
 
         OnNotificationHandler(notificationData) {

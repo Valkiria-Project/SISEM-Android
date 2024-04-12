@@ -9,8 +9,8 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
+import com.skgtecnologia.sisem.commons.extensions.validateOrThrow
 import com.skgtecnologia.sisem.commons.extensions.hasLocationPermission
-import com.skgtecnologia.sisem.commons.extensions.throwIf
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -26,7 +26,7 @@ class DefaultLocationProvider(
     @SuppressLint("MissingPermission")
     override fun getLocationUpdates(interval: Long): Flow<Location> {
         return callbackFlow {
-            throwIf(!context.hasLocationPermission()) {
+            validateOrThrow(context.hasLocationPermission()) {
                 LocationProvider.LocationException("Missing location permissions")
             }
 
@@ -36,7 +36,7 @@ class DefaultLocationProvider(
             val isNetworkEnabled =
                 locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
 
-            throwIf(!isGpsEnabled && !isNetworkEnabled) {
+            validateOrThrow(isGpsEnabled && isNetworkEnabled) {
                 LocationProvider.LocationException("GPS is disabled")
             }
 

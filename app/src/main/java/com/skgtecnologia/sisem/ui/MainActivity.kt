@@ -72,10 +72,6 @@ class MainActivity : ComponentActivity() {
         }
 
         MapboxNavigationApp.current()?.registerLocationObserver(locationObserver)
-        Intent(applicationContext, LocationService::class.java).apply {
-            action = ACTION_START
-            startService(this)
-        }
 
         intent.extras?.also { bundle ->
             handlePushNotification(bundle)
