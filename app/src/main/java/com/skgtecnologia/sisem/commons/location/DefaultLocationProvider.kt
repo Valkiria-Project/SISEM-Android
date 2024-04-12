@@ -9,12 +9,14 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.Priority
 import com.skgtecnologia.sisem.commons.extensions.validateOrThrow
 import com.skgtecnologia.sisem.commons.extensions.hasLocationPermission
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 private const val MIN_UPDATE_DISTANCE_METERS = 50f
 
@@ -44,12 +46,14 @@ class DefaultLocationProvider(
                 .setMinUpdateIntervalMillis(interval)
                 .setMaxUpdateDelayMillis(interval)
                 .setMinUpdateDistanceMeters(MIN_UPDATE_DISTANCE_METERS)
+                .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
                 .build()
 
             val locationCallback = object : LocationCallback() {
                 override fun onLocationResult(result: LocationResult) {
                     super.onLocationResult(result)
 
+                    Timber.d("Location result: ${result.lastLocation}")
                     result.locations.lastOrNull()?.let { location ->
                         launch { send(location) }
                     }
