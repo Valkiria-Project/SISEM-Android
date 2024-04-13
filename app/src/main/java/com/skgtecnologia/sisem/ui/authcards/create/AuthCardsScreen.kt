@@ -10,7 +10,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -167,7 +166,7 @@ private fun arePermissionsGranted(
         true
     } else {
         notificationsPermissionState.status.isGranted &&
-                fineLocationPermissionState.status.isGranted
+            fineLocationPermissionState.status.isGranted
     }
 }
 
