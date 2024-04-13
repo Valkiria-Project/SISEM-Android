@@ -9,6 +9,7 @@ import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.domain.location.usecases.UpdateLocation
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +32,9 @@ class LocationService : Service() {
 
     @Inject
     lateinit var locationProvider: LocationProvider
+
+    @Inject
+    lateinit var updateLocation: UpdateLocation
 
     private val serviceJob = SupervisorJob()
     private val serviceScope = CoroutineScope(Dispatchers.IO + serviceJob)
@@ -75,6 +79,8 @@ class LocationService : Service() {
                 )
 
                 notificationManager.notify(1, updatedNotification.build())
+                // TODO: Send the updated location data
+                updateLocation.invoke()
             }
             .launchIn(serviceScope)
 
