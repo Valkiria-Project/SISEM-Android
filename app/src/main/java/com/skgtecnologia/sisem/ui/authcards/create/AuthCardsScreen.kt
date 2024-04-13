@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.ui.authcards.create
 
 import android.Manifest
-import android.content.Intent
 import android.os.Build
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -14,7 +13,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -23,9 +21,6 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
-import com.skgtecnologia.sisem.commons.location.ACTION_START
-import com.skgtecnologia.sisem.commons.location.ACTION_STOP
-import com.skgtecnologia.sisem.commons.location.LocationService
 import com.skgtecnologia.sisem.ui.authcards.create.report.FindingsContent
 import com.skgtecnologia.sisem.ui.authcards.create.report.ReportDetailContent
 import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
@@ -49,7 +44,6 @@ fun AuthCardsScreen(
 ) {
     val viewModel = hiltViewModel<AuthCardsViewModel>()
     val uiState = viewModel.uiState
-    val context = LocalContext.current
 
     var notificationData by remember { mutableStateOf<NotificationData?>(null) }
     NotificationEventHandler.subscribeNotificationEvent {
@@ -66,15 +60,6 @@ fun AuthCardsScreen(
     val fineLocationPermissionState: PermissionState =
         rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
 
-    val permissionsGranted by rememberSaveable {
-        mutableStateOf(
-            arePermissionsGranted(
-                notificationsPermissionState,
-                fineLocationPermissionState
-            )
-        )
-    }
-
     LaunchedEffect(notificationsPermissionState?.status) {
         if (notificationsPermissionState?.status?.isGranted == false &&
             !notificationsPermissionState.status.shouldShowRationale
@@ -89,14 +74,7 @@ fun AuthCardsScreen(
         }
     }
 
-    LaunchedEffect(permissionsGranted) {
-        Intent(context.applicationContext, LocationService::class.java).apply {
-            action = ACTION_START
-            context.startService(this)
-        }
-    }
-
-    if (permissionsGranted) {
+    if (arePermissionsGranted(notificationsPermissionState, fineLocationPermissionState)) {
         AuthCardsScreenRender(viewModel, modifier, onNavigation)
 
         OnNotificationHandler(notificationData) {
