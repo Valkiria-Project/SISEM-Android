@@ -1,5 +1,3 @@
-@file:Suppress("TooGenericExceptionCaught", "RethrowCaughtException")
-
 package com.skgtecnologia.sisem.commons.extensions
 
 import android.Manifest

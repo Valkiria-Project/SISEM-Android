@@ -32,12 +32,14 @@ android {
             isDebuggable = true
             buildConfigField("String", "AUTH_BASE_URL", "\"https://test.emergencias-sisem.co/dev/sisem-api/\"")
             buildConfigField("String", "BASE_URL", "\"https://test.emergencias-sisem.co/dev/sisem-api/v1/\"")
+            buildConfigField("String", "LOCATION_URL", "\"https://test.emergencias-sisem.co/dev/sisem-location-api/v1/\"")
         }
         create("staging") {
             initWith(getByName("debug"))
             applicationIdSuffix = ".debugStaging"
             buildConfigField("String", "AUTH_BASE_URL", "\"https://test.emergencias-sisem.co/qa/sisem-api/\"")
             buildConfigField("String", "BASE_URL", "\"https://test.emergencias-sisem.co/qa/sisem-api/v1/\"")
+            buildConfigField("String", "LOCATION_URL", "\"https://test.emergencias-sisem.co/qa/sisem-location-api/v1/\"")
         }
         create("preProd") {
             initWith(getByName("debug"))
@@ -45,12 +47,14 @@ android {
             applicationIdSuffix = ".preProd"
             buildConfigField("String", "AUTH_BASE_URL", "\"https://test.emergencias-sisem.co/preprod/sisem-api/\"")
             buildConfigField("String", "BASE_URL", "\"https://test.emergencias-sisem.co/preprod/sisem-api/v1/\"")
+            buildConfigField("String", "LOCATION_URL", "\"https://test.emergencias-sisem.co/preprod/sisem-location-api/v1/\"")
         }
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("String", "AUTH_BASE_URL", "\"http://34.74.218.181/sisem-api/\"")
             buildConfigField("String", "BASE_URL", "\"http://34.74.218.181/sisem-api/v1/\"")
+            buildConfigField("String", "LOCATION_URL", "\"http://34.74.218.181/sisem-location-api/v1/\"")
         }
     }
     buildFeatures {
