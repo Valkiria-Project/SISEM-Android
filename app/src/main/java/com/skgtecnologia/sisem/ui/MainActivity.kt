@@ -74,8 +74,6 @@ class MainActivity : ComponentActivity() {
 
         MapboxNavigationApp.current()?.registerLocationObserver(locationObserver)
         if (hasLocationPermission()) {
-            // TODO: Finish this for the first time that we do not have permissions
-            // TODO: This requires authentication
             Intent(applicationContext, LocationService::class.java).apply {
                 action = ACTION_START
                 startService(this)

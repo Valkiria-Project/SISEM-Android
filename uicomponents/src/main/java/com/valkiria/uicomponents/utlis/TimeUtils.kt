@@ -17,6 +17,7 @@ const val DATE_TIME_PATTERN = "dd/MM/yyyy - HH : mm"
 const val UTC_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss"
 const val WEEK_DAYS = 7
 
+@Suppress("TooManyFunctions")
 object TimeUtils {
 
     fun getLocalDateTime(instant: Instant): LocalDateTime {
