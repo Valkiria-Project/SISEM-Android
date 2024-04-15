@@ -14,7 +14,7 @@ import retrofit2.Retrofit
 object LocationNetworkModule {
 
     @Provides
-    internal fun providesIncidentApi(
+    internal fun providesLocationApi(
         @BearerAuthentication retrofit: Retrofit
     ): LocationApi = retrofit.create(LocationApi::class.java)
 }
