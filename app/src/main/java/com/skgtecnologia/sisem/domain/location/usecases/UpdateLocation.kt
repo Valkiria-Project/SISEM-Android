@@ -8,7 +8,7 @@ class UpdateLocation @Inject constructor(
     private val locationRepository: LocationRepository
 ) {
 
-    suspend operator fun invoke(): Result<Unit> = resultOf {
-        locationRepository.updateLocation()
+    suspend operator fun invoke(latitude: Double, longitude: Double): Result<Unit> = resultOf {
+        locationRepository.updateLocation(latitude, longitude)
     }
 }

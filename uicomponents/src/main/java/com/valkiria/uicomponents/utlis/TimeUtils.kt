@@ -2,6 +2,7 @@ package com.valkiria.uicomponents.utlis
 
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -17,6 +18,10 @@ const val UTC_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss"
 const val WEEK_DAYS = 7
 
 object TimeUtils {
+
+    fun getLocalDateTime(instant: Instant): LocalDateTime {
+        return instant.atZone(ZoneId.of(AMERICA_BOGOTA_TIME_ZONE)).toLocalDateTime()
+    }
 
     fun getLocalDate(instant: Instant): LocalDate {
         return instant.atZone(ZoneId.of(AMERICA_BOGOTA_TIME_ZONE)).toLocalDate()

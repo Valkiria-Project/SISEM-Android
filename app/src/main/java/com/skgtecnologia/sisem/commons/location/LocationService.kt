@@ -79,8 +79,7 @@ class LocationService : Service() {
                 )
 
                 notificationManager.notify(1, updatedNotification.build())
-                // TODO: Send the updated location data
-                updateLocation.invoke()
+                updateLocation.invoke(location.latitude, location.longitude)
             }
             .launchIn(serviceScope)
 
