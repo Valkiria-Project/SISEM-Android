@@ -14,6 +14,10 @@ import com.mapbox.navigation.core.trip.session.LocationMatcherResult
 import com.mapbox.navigation.core.trip.session.LocationObserver
 import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
+import com.skgtecnologia.sisem.commons.extensions.hasLocationPermission
+import com.skgtecnologia.sisem.commons.location.ACTION_START
+import com.skgtecnologia.sisem.commons.location.ACTION_STOP
+import com.skgtecnologia.sisem.commons.location.LocationService
 import com.skgtecnologia.sisem.data.notification.NotificationsManager
 import com.skgtecnologia.sisem.domain.notification.usecases.StoreNotification
 import com.skgtecnologia.sisem.ui.navigation.SisemNavGraph
@@ -69,6 +73,12 @@ class MainActivity : ComponentActivity() {
         }
 
         MapboxNavigationApp.current()?.registerLocationObserver(locationObserver)
+        if (hasLocationPermission()) {
+            Intent(applicationContext, LocationService::class.java).apply {
+                action = ACTION_START
+                startService(this)
+            }
+        }
 
         intent.extras?.also { bundle ->
             handlePushNotification(bundle)
@@ -98,6 +108,10 @@ class MainActivity : ComponentActivity() {
         super.onDestroy()
 
         MapboxNavigationApp.current()?.unregisterLocationObserver(locationObserver)
+        Intent(applicationContext, LocationService::class.java).apply {
+            action = ACTION_STOP
+            startService(this)
+        }
     }
 
     companion object {

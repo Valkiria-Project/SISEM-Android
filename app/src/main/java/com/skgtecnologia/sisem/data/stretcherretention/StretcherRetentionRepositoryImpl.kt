@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.data.stretcherretention
 
-import com.skgtecnologia.sisem.commons.extensions.check
+import com.skgtecnologia.sisem.commons.extensions.validateOrThrow
 import com.skgtecnologia.sisem.data.incident.cache.IncidentCacheDataSource
 import com.skgtecnologia.sisem.data.stretcherretention.remote.StretcherRetentionRemoteDataSource
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
@@ -16,7 +16,7 @@ class StretcherRetentionRepositoryImpl @Inject constructor(
 
     override suspend fun getPreStretcherRetentionScreen(): ScreenModel {
         val incidentId = incidentCacheDataSource.observeActiveIncident().first()?.incident?.id
-        check(incidentId != null) { StretchRetentionErrors.NoIncidentId }
+        validateOrThrow(incidentId != null) { StretchRetentionErrors.NoIncidentId }
 
         return stretcherRetentionRemoteDataSource.getPreStretcherRetentionScreen(
             idIncident = incidentId.toString()

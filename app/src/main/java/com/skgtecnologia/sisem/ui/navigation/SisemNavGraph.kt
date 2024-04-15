@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.ui.navigation
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -18,6 +19,8 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.skgtecnologia.sisem.commons.communication.AppEvent
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
+import com.skgtecnologia.sisem.commons.location.ACTION_START
+import com.skgtecnologia.sisem.commons.location.LocationService
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.ui.authcards.create.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.authcards.view.AuthCardViewScreen
@@ -28,6 +31,7 @@ import com.skgtecnologia.sisem.ui.forgotpassword.ForgotPasswordScreen
 import com.skgtecnologia.sisem.ui.incident.IncidentScreen
 import com.skgtecnologia.sisem.ui.inventory.InventoryScreen
 import com.skgtecnologia.sisem.ui.inventory.view.InventoryViewScreen
+import com.skgtecnologia.sisem.ui.login.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.map.MapScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryScreen
@@ -125,6 +129,14 @@ private fun NavGraphBuilder.authGraph(
             LoginScreen(
                 modifier = modifier
             ) { navigationModel ->
+                with(navigationModel as LoginNavigationModel) {
+                    if (isTurnComplete && requiresPreOperational.not()) {
+                        Intent(context.applicationContext, LocationService::class.java).apply {
+                            action = ACTION_START
+                            context.startService(this)
+                        }
+                    }
+                }
                 navigateToNextStep(navController, navigationModel)
             }
         }
