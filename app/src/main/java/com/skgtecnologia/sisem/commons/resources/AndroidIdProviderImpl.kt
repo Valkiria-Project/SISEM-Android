@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.commons.resources
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.provider.Settings
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -8,11 +9,11 @@ import javax.inject.Inject
 
 private const val FILE_NAME = "android_id"
 
-@Suppress("UnusedPrivateMember")
 class AndroidIdProviderImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : AndroidIdProvider {
 
+    @SuppressLint("HardwareIds")
     override fun getAndroidId(): String {
         var androidId: String
 
@@ -23,10 +24,10 @@ class AndroidIdProviderImpl @Inject constructor(
         }
 
         if (androidId.isEmpty()) {
-            androidId = Settings
-                .Secure
+            androidId = Settings.Secure
                 .getString(context.contentResolver, Settings.Secure.ANDROID_ID)
                 .orEmpty()
+
             context.openFileOutput(FILE_NAME, Context.MODE_PRIVATE).use { output ->
                 output.write(androidId.toByteArray())
             }

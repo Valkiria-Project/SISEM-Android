@@ -1,6 +1,11 @@
 <resources>
     <string name="default_notification_channel_id">notifications</string>
 
+    <!-- Location tracking -->
+    <string name="location_tracking_title">Seguimiento de ubicación activado</string>
+    <string name="location_tracking_content">…</string>
+    <string name="location_tracking_content_update">%1$s, %2$s</string>
+
     <!-- CTA's -->
     <string name="cancel_cta">CANCELAR</string>
     <string name="erase_cta">BORRAR</string>
