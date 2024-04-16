@@ -34,7 +34,7 @@ class LoginTest {
 
     @Test
     fun `when authenticate is success`() = runTest {
-        val accessToken =  mockk<AccessTokenModel>()
+        val accessToken = mockk<AccessTokenModel>()
         coEvery { authRepository.authenticate(any(), any()) } returns accessToken
         coEvery { accessToken.copy(configPreoperational = any()) } returns accessToken
         coEvery { observeOperationConfig.invoke() } returns mockk<Result<OperationModel>>()
