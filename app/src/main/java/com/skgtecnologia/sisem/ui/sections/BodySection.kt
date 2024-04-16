@@ -118,6 +118,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+private const val FILTERS_SCROLL_OFFSET = -120
+
 @Suppress("ComplexMethod", "LongMethod")
 @Composable
 fun BodySection(
@@ -297,7 +299,10 @@ private fun LazyListScope.handleBodyRows(
                             }
 
                             if (contentHeader >= 0) {
-                                listState.animateScrollToItem(index = contentHeader)
+                                listState.animateScrollToItem(
+                                    index = contentHeader,
+                                    scrollOffset = FILTERS_SCROLL_OFFSET
+                                )
                             }
                         }
                     }
