@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -140,22 +141,8 @@ fun BodySection(
                 modifier
             }
 
-            val nestedScrollConnection = remember {
-                object : NestedScrollConnection {
-                    override fun onPreScroll(
-                        available: Offset,
-                        source: NestedScrollSource
-                    ): Offset {
-                        val delta = available.y
-                        Timber.d("onPreScroll $delta")
-                        // called when you scroll the content
-                        return Offset.Zero
-                    }
-                }
-            }
-
             LazyColumn(
-                modifier = updatedModifier.nestedScroll(nestedScrollConnection),
+                modifier = updatedModifier,
                 state = listState,
                 contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Top),
@@ -168,6 +155,17 @@ fun BodySection(
                     validateFields = validateFields,
                     onAction = onAction
                 )
+            }
+
+            val firstItemVisible by remember {
+                derivedStateOf {
+                    listState.firstVisibleItemIndex == 0
+                }
+            }
+            if (!firstItemVisible) {
+                Timber.d("Top item is not visible")
+            } else {
+                Timber.d("Top item is visible")
             }
 
             stickyFooter?.let { model ->
