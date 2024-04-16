@@ -4,6 +4,9 @@ import com.skgtecnologia.sisem.commons.PASSWORD
 import com.skgtecnologia.sisem.commons.USERNAME
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
+import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
+import com.skgtecnologia.sisem.domain.operation.OperationRepository
+import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -18,18 +21,24 @@ class LoginTest {
     @MockK
     private lateinit var authRepository: AuthRepository
 
+    @MockK
+    private lateinit var observeOperationConfig: ObserveOperationConfig
+
     private lateinit var login: Login
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
 
-        login = Login(authRepository)
+        login = Login(authRepository, observeOperationConfig)
     }
 
     @Test
     fun `when authenticate is success`() = runTest {
-        coEvery { authRepository.authenticate(any(), any()) } returns mockk<AccessTokenModel>()
+        val accessToken =  mockk<AccessTokenModel>()
+        coEvery { authRepository.authenticate(any(), any()) } returns accessToken
+        coEvery { accessToken.copy(configPreoperational = any()) } returns accessToken
+        coEvery { observeOperationConfig.invoke() } returns mockk<Result<OperationModel>>()
 
         val result = login(USERNAME, PASSWORD)
 
