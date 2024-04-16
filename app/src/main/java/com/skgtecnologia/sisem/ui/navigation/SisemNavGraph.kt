@@ -31,7 +31,6 @@ import com.skgtecnologia.sisem.ui.forgotpassword.ForgotPasswordScreen
 import com.skgtecnologia.sisem.ui.incident.IncidentScreen
 import com.skgtecnologia.sisem.ui.inventory.InventoryScreen
 import com.skgtecnologia.sisem.ui.inventory.view.InventoryViewScreen
-import com.skgtecnologia.sisem.ui.login.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.map.MapScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryScreen
@@ -129,15 +128,15 @@ private fun NavGraphBuilder.authGraph(
             LoginScreen(
                 modifier = modifier
             ) { navigationModel ->
-                with(navigationModel as LoginNavigationModel) {
+                with(navigationModel) {
                     if (isTurnComplete && requiresPreOperational.not()) {
                         Intent(context.applicationContext, LocationService::class.java).apply {
                             action = ACTION_START
                             context.startService(this)
                         }
                     }
+                    navigate(navController)
                 }
-                navigateToNextStep(navController, navigationModel)
             }
         }
 
