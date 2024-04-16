@@ -5,7 +5,6 @@ import com.skgtecnologia.sisem.commons.USERNAME
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
-import com.skgtecnologia.sisem.domain.operation.OperationRepository
 import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery

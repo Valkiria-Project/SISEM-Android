@@ -7,7 +7,6 @@ import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.auth.model.PreOperationalModel
 import com.skgtecnologia.sisem.domain.auth.model.TurnModel
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
-import com.skgtecnologia.sisem.domain.authcards.model.VehicleConfigModel
 import com.skgtecnologia.sisem.domain.operation.model.PreoperationalStatus
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
