@@ -23,6 +23,8 @@ data class IncidentEntity(
     @ColumnInfo(name = "resources") val resources: List<ResourceEntity>,
     @ColumnInfo(name = "incident_priority") val incidentPriority: IncidentPriority?,
     @ColumnInfo(name = "transmi_requests") val transmiRequests: List<Map<String, String>>?,
+    @ColumnInfo(name = "latitude") val latitude: Double?,
+    @ColumnInfo(name = "longitude") val longitude: Double?,
     @ColumnInfo(name = "is_active") val isActive: Boolean
 )
 
@@ -36,6 +38,8 @@ fun IncidentEntity.mapToUi(): IncidentUiModel = with(this) {
             getTransmiNotificationDataByType(it)
         },
         incidentPriority = incidentPriority,
+        latitude = latitude,
+        longitude = longitude,
         isActive = isActive
     )
 }
@@ -47,6 +51,8 @@ fun IncidentUiModel.mapToCache(): IncidentEntity = with(this) {
         resources = resources.map { it.mapToCache() },
         transmiRequests = transmiRequests?.map { getTransmiNotificationRawDataByType(it) },
         incidentPriority = incidentPriority,
+        latitude = latitude,
+        longitude = longitude,
         isActive = isActive
     )
 }

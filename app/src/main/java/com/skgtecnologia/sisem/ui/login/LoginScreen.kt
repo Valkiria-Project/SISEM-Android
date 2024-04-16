@@ -14,7 +14,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.model.toLegalContentModel
 import com.skgtecnologia.sisem.ui.login.legal.LegalContent
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.LoginUiAction
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
@@ -33,7 +32,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    onNavigation: (loginNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (loginNavigationModel: LoginNavigationModel) -> Unit
 ) {
     val viewModel = hiltViewModel<LoginViewModel>()
     val uiState = viewModel.uiState
@@ -91,7 +90,7 @@ fun LoginScreen(
     OnBannerHandler(uiState.warning) {
         viewModel.consumeNavigationEvent()
         viewModel.consumeWarningEvent()
-        onNavigation(uiState.navigationModel)
+        uiState.navigationModel?.let { navigationModel -> onNavigation(navigationModel) }
     }
 
     OnBannerHandler(uiState.errorModel) {

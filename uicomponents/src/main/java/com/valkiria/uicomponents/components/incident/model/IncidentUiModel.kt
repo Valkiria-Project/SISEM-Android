@@ -9,5 +9,7 @@ data class IncidentUiModel(
     val resources: List<ResourceUiModel>,
     val incidentPriority: IncidentPriority? = null,
     val transmiRequests: List<TransmiNotification>? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
     val isActive: Boolean = true
 )

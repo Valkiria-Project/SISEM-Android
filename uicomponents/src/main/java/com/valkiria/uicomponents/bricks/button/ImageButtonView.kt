@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,7 +35,10 @@ fun ImageButtonView(
         modifier = uiModel.modifier
             .then(
                 if (uiModel.backgroundColor != null) {
-                    Modifier.background(Color(parseColor(uiModel.backgroundColor)))
+                    Modifier.background(
+                        color = Color(parseColor(uiModel.backgroundColor)),
+                        shape = uiModel.backgroundShape
+                    )
                 } else {
                     Modifier
                 }
@@ -76,6 +80,7 @@ fun ImageButtonViewPreview() {
             size = 72.dp,
             alignment = Alignment.CenterHorizontally,
             backgroundColor = "#3F4145",
+            backgroundShape = RoundedCornerShape(10.dp),
             modifier = Modifier
                 .padding(8.dp)
         )
