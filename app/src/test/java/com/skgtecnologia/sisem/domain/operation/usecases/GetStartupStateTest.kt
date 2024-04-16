@@ -7,6 +7,7 @@ import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.auth.model.PreOperationalModel
 import com.skgtecnologia.sisem.domain.auth.model.TurnModel
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
+import com.skgtecnologia.sisem.domain.operation.model.PreoperationalStatus
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
@@ -52,8 +53,10 @@ class GetStartupStateTest {
         }
         val operationConfig = mockk<OperationModel> {
             every { vehicleCode } returns CODE
+            every { vehicleConfig?.preoperational } returns PreoperationalStatus.SI.value
         }
         coEvery { authRepository.observeCurrentAccessToken() } returns flow { emit(accessToken) }
+        coEvery { accessToken.copy(configPreoperational = any()) } returns accessToken
         coEvery { observeOperationConfig() } returns Result.success(operationConfig)
 
         val result = getStartupState()

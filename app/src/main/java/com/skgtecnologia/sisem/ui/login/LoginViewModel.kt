@@ -105,7 +105,8 @@ class LoginViewModel @Inject constructor(
                                 LoginNavigationModel(
                                     isAdmin = isAdmin,
                                     isTurnComplete = turn?.isComplete == true,
-                                    requiresPreOperational = preoperational?.status == true,
+                                    requiresPreOperational =
+                                    preoperational?.status == true && configPreoperational,
                                     preOperationRole = OperationRole.getRoleByName(role),
                                     requiresDeviceAuth = code.isEmpty()
                                 )
@@ -120,7 +121,8 @@ class LoginViewModel @Inject constructor(
                                         isWarning = true,
                                         isAdmin = isAdmin,
                                         isTurnComplete = turn?.isComplete == true,
-                                        requiresPreOperational = preoperational?.status == true,
+                                        requiresPreOperational =
+                                        preoperational?.status == true && configPreoperational,
                                         preOperationRole = OperationRole.getRoleByName(role),
                                         requiresDeviceAuth = code.isEmpty()
                                     )

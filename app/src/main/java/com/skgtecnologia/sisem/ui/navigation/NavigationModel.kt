@@ -1,3 +1,10 @@
 package com.skgtecnologia.sisem.ui.navigation
 
-interface NavigationModel
+import androidx.navigation.NavHostController
+import timber.log.Timber
+
+interface NavigationModel {
+
+    fun navigate(navController: NavHostController): Unit =
+        Timber.d("Navigate with: $this")
+}

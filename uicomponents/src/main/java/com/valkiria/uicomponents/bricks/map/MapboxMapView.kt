@@ -109,10 +109,9 @@ fun MapboxMapView(
         sheetPeekHeight = if (incident != null) 140.dp else 0.dp
     ) { innerPadding ->
         Box(modifier.padding(innerPadding)) {
-            val destinationPoint = Point.fromLngLat(-74.0711485, 4.6963453)
-//            val destinationPoint = Point.fromLngLat(incident?.incident.address, 4.6963453)
-            if (incident != null) {
+            if (incident?.latitude != null && incident.longitude != null) {
                 val accessToken = stringResource(id = R.string.mapbox_access_token)
+                val destinationPoint = Point.fromLngLat(incident.longitude, incident.latitude)
                 MapboxNavigationAndroidView(
                     locationPoint, destinationPoint, marker, modifier, accessToken
                 )
