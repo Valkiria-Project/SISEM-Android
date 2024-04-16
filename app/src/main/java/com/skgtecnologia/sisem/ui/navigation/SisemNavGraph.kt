@@ -294,7 +294,7 @@ private fun NavGraphBuilder.mainGraph(
             route = MainNavigationRoute.PreoperationalMainScreen.route
         ) {
             AuthCardViewScreen { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
+                navigationModel.navigate(navController)
             }
         }
 

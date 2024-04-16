@@ -3,13 +3,11 @@
 package com.skgtecnologia.sisem.ui.navigation
 
 import androidx.navigation.NavHostController
-import com.skgtecnologia.sisem.ui.authcards.view.AuthCardViewNavigationModel
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthNavigationModel
 import com.skgtecnologia.sisem.ui.forgotpassword.ForgotPasswordNavigationModel
 import com.skgtecnologia.sisem.ui.incident.IncidentNavigationModel
 import com.skgtecnologia.sisem.ui.inventory.InventoryNavigationModel
 import com.skgtecnologia.sisem.ui.inventory.view.InventoryViewNavigationModel
-import com.skgtecnologia.sisem.ui.login.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadNavigationModel
@@ -21,7 +19,6 @@ import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.PHOTO_TAKEN
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ROLE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
 import com.skgtecnologia.sisem.ui.preoperational.create.PreOpNavigationModel
@@ -63,7 +60,6 @@ fun navigateToNextStep(
     navigationModel: NavigationModel?,
     onNavigationFallback: () -> Unit = {}
 ) = when (navigationModel) {
-    is AuthCardViewNavigationModel -> authCardViewNextStep(navController, navigationModel)
     is DeviceAuthNavigationModel ->
         deviceAuthToNextStep(navController, navigationModel, onNavigationFallback)
 
@@ -72,7 +68,6 @@ fun navigateToNextStep(
     is InitSignatureNavigationModel -> initSignatureToNextStep(navController, navigationModel)
     is InventoryNavigationModel -> inventoryToNextStep(navController, navigationModel)
     is InventoryViewNavigationModel -> inventoryViewToNextStep(navController, navigationModel)
-    is LoginNavigationModel -> loginToNextStep(navController, navigationModel)
     is MedicalHistoryNavigationModel -> medicalHistoryToNextStep(navController, navigationModel)
     is MedicalHistoryViewNavigationModel ->
         medicalHistoryViewToNextStep(navController, navigationModel)
@@ -95,21 +90,6 @@ fun navigateToNextStep(
 
     is VitalSignsNavigationModel -> vitalSignsToNextStep(navController, navigationModel)
     else -> {}
-}
-
-fun authCardViewNextStep(
-    navController: NavHostController,
-    model: AuthCardViewNavigationModel
-) {
-    when {
-        model.back -> navController.popBackStack()
-
-        model.role != null -> {
-            navController.navigate(
-                MainNavigationRoute.PreOperationalViewScreen.route + "?$ROLE=${model.role.name}"
-            )
-        }
-    }
 }
 
 private fun deviceAuthToNextStep(
@@ -211,41 +191,6 @@ fun inventoryViewToNextStep(
     when {
         model.back -> navController.popBackStack()
     }
-}
-
-private fun loginToNextStep(
-    navController: NavHostController,
-    model: LoginNavigationModel
-) = when {
-    model.isWarning -> navController.navigate(AuthNavigationRoute.ChangePasswordScreen.route)
-    model.isAdmin && model.requiresDeviceAuth ->
-        navController.navigate("${AuthNavigationRoute.DeviceAuthScreen.route}/$LOGIN")
-
-    model.isAdmin && !model.requiresDeviceAuth ->
-        navController.navigate(NavigationGraph.Main.route) {
-            popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
-                inclusive = true
-            }
-        }
-
-    model.isTurnComplete && model.requiresPreOperational.not() ->
-        navController.navigate(NavigationGraph.Main.route) {
-            popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
-                inclusive = true
-            }
-        }
-
-    model.requiresPreOperational -> {
-        navController.navigate(AuthNavigationRoute.PreOperationalScreen.route) {
-            popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
-                inclusive = true
-            }
-        }
-    }
-
-    model.forgotPassword -> navController.navigate(AuthNavigationRoute.ForgotPasswordScreen.route)
-
-    else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route)
 }
 
 private fun medicalHistoryToNextStep(

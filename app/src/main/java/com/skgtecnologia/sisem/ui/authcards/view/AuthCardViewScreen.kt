@@ -12,7 +12,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.GenericUiAction
@@ -28,7 +27,7 @@ import timber.log.Timber
 @Composable
 fun AuthCardViewScreen(
     modifier: Modifier = Modifier,
-    onNavigation: (preOpViewNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (authCardViewNavigationModel: AuthCardViewNavigationModel) -> Unit
 ) {
     val viewModel = hiltViewModel<AuthCardViewViewModel>()
     val uiState = viewModel.uiState
