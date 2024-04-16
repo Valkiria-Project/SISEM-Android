@@ -117,6 +117,7 @@ fun MediaActionsComponent(
                     size = 72.dp,
                     alignment = Alignment.CenterHorizontally,
                     backgroundColor = "#3F4145",
+                    backgroundShape = RoundedCornerShape(10.dp),
                     modifier = Modifier
                         .padding(4.dp)
                 )
@@ -135,6 +136,7 @@ fun MediaActionsComponent(
                     size = 72.dp,
                     alignment = Alignment.CenterHorizontally,
                     backgroundColor = "#3F4145",
+                    backgroundShape = RoundedCornerShape(10.dp),
                     modifier = Modifier
                         .padding(4.dp)
                 )
@@ -158,6 +160,7 @@ fun MediaActionsComponent(
                         size = 72.dp,
                         alignment = Alignment.CenterHorizontally,
                         backgroundColor = "#3F4145",
+                        backgroundShape = RoundedCornerShape(10.dp),
                         modifier = Modifier
                             .padding(4.dp)
                     )
