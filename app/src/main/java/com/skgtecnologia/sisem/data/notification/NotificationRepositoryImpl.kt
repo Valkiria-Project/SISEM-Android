@@ -50,8 +50,11 @@ class NotificationRepositoryImpl @Inject constructor(
                 ?.vehicleCode
                 .orEmpty()
         ).onSuccess {
+            val (longitude, latitude) = notification.geolocation.split(",")
             val incident = it.copy(
-                incidentPriority = IncidentPriority.getPriority(notification.incidentPriority)
+                incidentPriority = IncidentPriority.getPriority(notification.incidentPriority),
+                latitude = latitude.toDoubleOrNull(),
+                longitude = longitude.toDoubleOrNull()
             )
             incidentCacheDataSource.storeIncident(incident)
         }
