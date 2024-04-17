@@ -157,16 +157,7 @@ fun BodySection(
                 )
             }
 
-            val firstItemVisible by remember {
-                derivedStateOf {
-                    listState.firstVisibleItemIndex == 0
-                }
-            }
-            if (!firstItemVisible) {
-                Timber.d("Top item is not visible")
-            } else {
-                Timber.d("Top item is visible")
-            }
+            HandleListScroll(listState)
 
             stickyFooter?.let { model ->
                 Column(
@@ -197,6 +188,21 @@ fun BodySection(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun HandleListScroll(listState: LazyListState) {
+    val firstItemVisible by remember {
+        derivedStateOf {
+            listState.firstVisibleItemIndex == 0
+        }
+    }
+
+    if (!firstItemVisible) {
+        Timber.d("Top item is not visible")
+    } else {
+        Timber.d("Top item is visible")
     }
 }
 
