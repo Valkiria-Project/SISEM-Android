@@ -171,7 +171,6 @@ class PreOperationalViewModel @Inject constructor(
         )
     }
 
-
     fun handleFindingAction(findingAction: GenericUiAction.FindingAction) {
         findingValues[findingAction.identifier] = findingAction.status
 
