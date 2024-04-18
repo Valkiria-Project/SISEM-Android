@@ -24,6 +24,7 @@ import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
+import com.valkiria.uicomponents.components.chip.FiltersUiModel
 import com.valkiria.uicomponents.components.finding.FindingUiModel
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
@@ -149,6 +150,25 @@ class PreOperationalViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun handleFiltersAction(filtersAction: GenericUiAction.FiltersAction) {
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            updater = { model ->
+                if (model is FiltersUiModel) {
+                    model.copy(selected = filtersAction.identifier)
+                } else {
+                    model
+                }
+            }
+        )
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
     }
 
     fun handleFindingAction(findingAction: GenericUiAction.FindingAction) {
