@@ -30,13 +30,14 @@ fun FiltersComponent(
     uiModel: FiltersUiModel,
     onAction: (text: String, isSelection: Boolean) -> Unit
 ) {
+    val scrollState = rememberScrollState()
     var selected by rememberSaveable(uiModel.selected) {
         mutableStateOf(uiModel.selected)
     }
 
     Row(
         modifier = Modifier
-            .horizontalScroll(rememberScrollState())
+            .horizontalScroll(scrollState)
             .fillMaxWidth()
             .height(60.dp)
             .background(color = MaterialTheme.colorScheme.background),
@@ -44,10 +45,12 @@ fun FiltersComponent(
         verticalAlignment = Alignment.CenterVertically
     ) {
         uiModel.options.forEach { chipText ->
+            val isSelected = chipText == selected
+
             FilterChipView(
                 id = "",
                 text = chipText,
-                isSelected = (chipText == selected),
+                isSelected = isSelected,
                 textStyle = TextStyle.BUTTON_1,
                 modifier = Modifier.padding(horizontal = 8.dp),
                 onAction = { _, text, isSelection ->
