@@ -97,7 +97,7 @@ private fun handleAction(
 
         is GenericUiAction.ChipSelectionAction -> viewModel.handleChipSelectionAction(uiAction)
 
-        is GenericUiAction.InputAction ->viewModel.handleInputAction(uiAction)
+        is GenericUiAction.InputAction -> viewModel.handleInputAction(uiAction)
 
         else -> Timber.d("no-op")
     }

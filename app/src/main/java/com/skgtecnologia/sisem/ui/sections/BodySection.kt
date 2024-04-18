@@ -16,15 +16,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
@@ -54,6 +51,7 @@ import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.NewsUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.BodyRowModel
+import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.button.ImageButtonSectionComponent
@@ -157,7 +155,7 @@ fun BodySection(
                 )
             }
 
-            HandleListScroll(listState)
+            listState.HandleListScroll(body, onAction)
 
             stickyFooter?.let { model ->
                 Column(
@@ -192,17 +190,37 @@ fun BodySection(
 }
 
 @Composable
-private fun HandleListScroll(listState: LazyListState) {
-    val firstItemVisible by remember {
+private fun LazyListState.HandleListScroll(
+    body: List<BodyRowModel>,
+    onAction: (actionInput: UiAction) -> Unit
+) {
+    if (body.none { it.type == BodyRowType.FILTERS }) {
+        return
+    }
+
+    val headers by remember {
+        val headersFromBody = body
+            .filter { it.type == BodyRowType.HEADER }
+            .map { it.identifier }
+        Timber.d("headersFromBody: $headersFromBody")
+        mutableStateOf(headersFromBody)
+    }
+
+    val firstVisibleSection by remember {
         derivedStateOf {
-            listState.firstVisibleItemIndex == 0
+            val section = layoutInfo.visibleItemsInfo.firstOrNull {
+                it.key in headers
+            }
+            val header = body
+                .filterIsInstance<HeaderUiModel>()
+                .find { it.identifier == section?.key }
+            Timber.d("Section is: ${header?.title?.text}")
+            header
         }
     }
 
-    if (!firstItemVisible) {
-        Timber.d("Top item is not visible")
-    } else {
-        Timber.d("Top item is visible")
+    firstVisibleSection?.title?.text?.let {
+        onAction(GenericUiAction.FiltersAction(identifier = it))
     }
 }
 

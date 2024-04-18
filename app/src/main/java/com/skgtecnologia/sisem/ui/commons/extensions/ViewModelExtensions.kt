@@ -22,6 +22,15 @@ inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
 
 fun <T : BodyRowModel> updateBodyModel(
     uiModels: List<T>?,
+    updater: (T) -> T
+): List<T> {
+    return uiModels.orEmpty().map {
+        updater(it)
+    }
+}
+
+fun <T : BodyRowModel> updateBodyModel(
+    uiModels: List<T>?,
     identifier: String,
     updater: (T) -> T
 ): List<T> {
