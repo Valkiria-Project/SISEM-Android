@@ -290,7 +290,7 @@ class StretcherRetentionViewModel @Inject constructor(
         )
     }
 
-    @Suppress("NestedBlockDepth")
+    @Suppress("LongMethod", "NestedBlockDepth")
     private fun updateComponentVisibility(
         model: BodyRowModel,
         viewsVisibility: Map.Entry<String, Boolean>
