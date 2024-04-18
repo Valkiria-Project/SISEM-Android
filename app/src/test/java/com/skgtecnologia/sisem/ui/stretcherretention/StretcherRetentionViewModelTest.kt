@@ -2,7 +2,6 @@ package com.skgtecnologia.sisem.ui.stretcherretention
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.SavedStateHandle
 import com.skgtecnologia.sisem.commons.ANDROID_ID
@@ -18,9 +17,7 @@ import com.skgtecnologia.sisem.domain.stretcherretention.usecases.GetStretcherRe
 import com.skgtecnologia.sisem.domain.stretcherretention.usecases.SaveStretcherRetention
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.skgtecnologia.sisem.ui.stretcherretention.create.StretcherRetentionViewModel
-import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
-import com.valkiria.uicomponents.components.textfield.InputUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -181,9 +178,6 @@ class StretcherRetentionViewModelTest {
             saveStretcherRetention
         )
 
-        viewModel.fieldsValues = mutableStateMapOf("test" to InputUiModel("test", "test", true))
-        viewModel.chipSelectionValues =
-            mutableStateMapOf("test" to ChipSelectionItemUiModel("test", "test"))
         viewModel.saveRetention()
 
         Assert.assertEquals(BANNER_TITLE, viewModel.uiState.successEvent?.title)
@@ -203,9 +197,6 @@ class StretcherRetentionViewModelTest {
             saveStretcherRetention
         )
 
-        viewModel.fieldsValues = mutableStateMapOf("test" to InputUiModel("test", "test", true))
-        viewModel.chipSelectionValues =
-            mutableStateMapOf("test" to ChipSelectionItemUiModel("test", "test"))
         viewModel.saveRetention()
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.infoEvent?.title)
