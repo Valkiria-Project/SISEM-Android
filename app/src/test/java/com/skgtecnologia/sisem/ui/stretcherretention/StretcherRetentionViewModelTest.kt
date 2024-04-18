@@ -149,7 +149,7 @@ class StretcherRetentionViewModelTest {
     }
 
     @Test
-    fun `when navigateBack is called clear successEvent and navigate back`() = runTest {
+    fun `when goBack is called clear successEvent and navigate back`() = runTest {
         coEvery { getStretcherRetentionScreen.invoke(any()) } returns Result.success(
             emptyScreenModel
         )
@@ -161,7 +161,7 @@ class StretcherRetentionViewModelTest {
             saveStretcherRetention
         )
 
-        viewModel.navigateBack()
+        viewModel.gpBack()
 
         Assert.assertEquals(null, viewModel.uiState.successEvent)
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.back)
