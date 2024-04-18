@@ -9,6 +9,7 @@ data class FiltersUiModel(
     override val identifier: String,
     val options: List<String>,
     val textStyle: TextStyle,
+    val selected: String = "",
     val visibility: Boolean = true,
     val required: Boolean = false,
     val modifier: Modifier = Modifier

@@ -37,6 +37,10 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
         val fieldValidated: Boolean
     ) : GenericUiAction(identifier)
 
+    data class FiltersAction(
+        override val identifier: String
+    ) : GenericUiAction(identifier)
+
     data class FindingAction(
         override val identifier: String,
         val status: Boolean,

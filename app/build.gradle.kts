@@ -17,8 +17,8 @@ android {
         applicationId = "com.skgtecnologia.sisem"
         minSdk = 30
         targetSdk = 34
-        versionCode = 40
-        versionName = "1.6.0"
+        versionCode = 42
+        versionName = "1.7.0"
         setProperty("archivesBaseName", "$applicationId-v$versionName($versionCode)")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

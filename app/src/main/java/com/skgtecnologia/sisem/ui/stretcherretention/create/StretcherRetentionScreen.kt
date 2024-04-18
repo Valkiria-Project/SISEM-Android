@@ -17,7 +17,6 @@ import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
-import com.valkiria.uicomponents.components.textfield.InputUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -55,7 +54,7 @@ fun StretcherRetentionScreen(
                 }
             ) { uiAction ->
                 if (uiAction is HeaderUiAction.GoBack) {
-                    viewModel.navigateBack()
+                    viewModel.gpBack()
                 }
             }
         }
@@ -80,7 +79,7 @@ fun StretcherRetentionScreen(
     }
 
     OnBannerHandler(uiModel = uiState.successEvent) {
-        viewModel.navigateBack()
+        viewModel.gpBack()
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)
@@ -93,15 +92,11 @@ private fun handleAction(
     when (uiAction) {
         is GenericUiAction.ButtonAction -> viewModel.saveRetention()
 
-        is GenericUiAction.ChipSelectionAction ->
-            viewModel.chipSelectionValues[uiAction.identifier] = uiAction.chipSelectionItemUiModel
+        is GenericUiAction.ChipOptionAction -> viewModel.handleChipOptionAction(uiAction)
 
-        is GenericUiAction.InputAction ->
-            viewModel.fieldsValues[uiAction.identifier] = InputUiModel(
-                uiAction.identifier,
-                uiAction.updatedValue,
-                uiAction.fieldValidated
-            )
+        is GenericUiAction.ChipSelectionAction -> viewModel.handleChipSelectionAction(uiAction)
+
+        is GenericUiAction.InputAction -> viewModel.handleInputAction(uiAction)
 
         else -> Timber.d("no-op")
     }

@@ -13,17 +13,15 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
@@ -53,6 +51,7 @@ import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.NewsUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.BodyRowModel
+import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.button.ButtonComponent
 import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.button.ImageButtonSectionComponent
@@ -118,6 +117,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+private const val FILTERS_SCROLL_OFFSET = -120
+
 @Suppress("ComplexMethod", "LongMethod")
 @Composable
 fun BodySection(
@@ -138,22 +139,8 @@ fun BodySection(
                 modifier
             }
 
-            val nestedScrollConnection = remember {
-                object : NestedScrollConnection {
-                    override fun onPreScroll(
-                        available: Offset,
-                        source: NestedScrollSource
-                    ): Offset {
-                        val delta = available.y
-                        Timber.d("onPreScroll $delta")
-                        // called when you scroll the content
-                        return Offset.Zero
-                    }
-                }
-            }
-
             LazyColumn(
-                modifier = updatedModifier.nestedScroll(nestedScrollConnection),
+                modifier = updatedModifier,
                 state = listState,
                 contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Top),
@@ -167,6 +154,8 @@ fun BodySection(
                     onAction = onAction
                 )
             }
+
+            listState.HandleListScroll(body, onAction)
 
             stickyFooter?.let { model ->
                 Column(
@@ -197,6 +186,41 @@ fun BodySection(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun LazyListState.HandleListScroll(
+    body: List<BodyRowModel>,
+    onAction: (actionInput: UiAction) -> Unit
+) {
+    if (body.none { it.type == BodyRowType.FILTERS }) {
+        return
+    }
+
+    val headers by remember {
+        val headersFromBody = body
+            .filter { it.type == BodyRowType.HEADER }
+            .map { it.identifier }
+        Timber.d("headersFromBody: $headersFromBody")
+        mutableStateOf(headersFromBody)
+    }
+
+    val firstVisibleSection by remember {
+        derivedStateOf {
+            val section = layoutInfo.visibleItemsInfo.firstOrNull {
+                it.key in headers
+            }
+            val header = body
+                .filterIsInstance<HeaderUiModel>()
+                .find { it.identifier == section?.key }
+            Timber.d("Section is: ${header?.title?.text}")
+            header
+        }
+    }
+
+    firstVisibleSection?.title?.text?.let {
+        onAction(GenericUiAction.FiltersAction(identifier = it))
     }
 }
 
@@ -297,7 +321,10 @@ private fun LazyListScope.handleBodyRows(
                             }
 
                             if (contentHeader >= 0) {
-                                listState.animateScrollToItem(index = contentHeader)
+                                listState.animateScrollToItem(
+                                    index = contentHeader,
+                                    scrollOffset = FILTERS_SCROLL_OFFSET
+                                )
                             }
                         }
                     }
