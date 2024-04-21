@@ -29,7 +29,7 @@ data class DropDownResponse(
         identifier = identifier ?: error("DropDown identifier cannot be null"),
         label = label ?: error("DropDown label cannot be null"),
         items = items?.map { it.mapToUi() } ?: error("DropDown items cannot be null"),
-        selected = selected.orEmpty(),
+        selected = items.find { it.id.equals(selected, true) }?.name ?: selected.orEmpty(),
         header = header?.mapToUi() ?: error("DropDown header cannot be null"),
         section = section,
         visibility = visibility ?: true,
