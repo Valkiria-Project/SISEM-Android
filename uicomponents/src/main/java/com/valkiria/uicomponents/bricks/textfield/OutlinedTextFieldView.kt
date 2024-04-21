@@ -47,7 +47,7 @@ fun OutlinedTextFieldView(
                 onAction(
                     uiModel.identifier,
                     updatedValue.text,
-                    text.toFailedValidation(uiModel.validations, true) == null,
+                    text.toFailedValidation(uiModel.validations, true, uiModel.quantity) == null,
                     uiModel.required
                 )
             }
