@@ -81,6 +81,7 @@ import com.valkiria.uicomponents.components.chip.ChipOptionUiModel
 import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
 import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
 import com.valkiria.uicomponents.components.chip.ChipSelectionUiModel
+import com.valkiria.uicomponents.components.chip.FiltersUiModel
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListUiModel
 import com.valkiria.uicomponents.components.dropdown.DropDownInputUiModel
 import com.valkiria.uicomponents.components.dropdown.DropDownUiModel
@@ -522,6 +523,25 @@ class MedicalHistoryViewModel @Inject constructor(
             updater = { model ->
                 if (model is DropDownUiModel) {
                     model.copy(selected = dropDownAction.name)
+                } else {
+                    model
+                }
+            }
+        )
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
+    fun handleFiltersAction(filtersAction: GenericUiAction.FiltersAction) {
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            updater = { model ->
+                if (model is FiltersUiModel) {
+                    model.copy(selected = filtersAction.identifier)
                 } else {
                     model
                 }

@@ -199,9 +199,15 @@ private fun LazyListState.HandleListScroll(
     }
 
     val headers by remember {
+        val filtersComponent = body
+            .filterIsInstance<FiltersUiModel>()
+            .firstOrNull()
+
         val headersFromBody = body
-            .filter { it.type == BodyRowType.HEADER }
+            .filterIsInstance<HeaderUiModel>()
+            .filter { filtersComponent?.options?.contains(it.title.text) == true }
             .map { it.identifier }
+
         Timber.d("headersFromBody: $headersFromBody")
         mutableStateOf(headersFromBody)
     }
