@@ -57,11 +57,11 @@ fun DropDownContent(
         )
 
         var text by rememberSaveable {
-            mutableStateOf(itemList.find { it.id == defaultSelected }?.name.orEmpty())
+            mutableStateOf(itemList.find { it.name == defaultSelected }?.name.orEmpty())
         }
 
         var selectedItem by remember {
-            mutableStateOf(itemList.find { it.id == defaultSelected })
+            mutableStateOf(itemList.find { it.name == defaultSelected })
         }
 
         OutlinedTextField(
@@ -159,7 +159,7 @@ fun DropDownContent(
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
-                .padding(20.dp)
+                .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 40.dp)
                 .fillMaxWidth()
         ) {
             Text(
