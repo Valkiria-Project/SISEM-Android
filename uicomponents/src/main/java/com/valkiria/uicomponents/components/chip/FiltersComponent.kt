@@ -11,8 +11,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -23,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.bricks.chip.FilterChipView
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.mocks.getPreOperationalFiltersUiModel
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @Composable
@@ -31,8 +34,23 @@ fun FiltersComponent(
     onAction: (text: String, isSelection: Boolean) -> Unit
 ) {
     val listState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
     var selected by rememberSaveable(uiModel.selected) {
         mutableStateOf(uiModel.selected)
+    }
+
+    LaunchedEffect(selected) {
+        scope.launch {
+            val selectedFilter = uiModel.options.indexOfFirst {
+                it == selected
+            }
+
+            if (selectedFilter >= 0) {
+                listState.animateScrollToItem(
+                    index = selectedFilter
+                )
+            }
+        }
     }
 
     LazyRow(
