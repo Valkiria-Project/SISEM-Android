@@ -135,6 +135,8 @@ fun handleAction(
 
         is GenericUiAction.DropDownAction -> viewModel.handleDropDownAction(uiAction)
 
+        is GenericUiAction.FiltersAction -> viewModel.handleFiltersAction(uiAction)
+
         is GenericUiAction.HumanBodyAction -> viewModel.handleHumanBodyAction(uiAction)
 
         is GenericUiAction.ImageButtonAction -> viewModel.handleImageButtonAction(uiAction)

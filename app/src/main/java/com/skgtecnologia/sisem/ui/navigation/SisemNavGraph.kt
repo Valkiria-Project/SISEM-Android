@@ -190,7 +190,9 @@ private fun NavGraphBuilder.authGraph(
             ChangePasswordScreen(
                 modifier = modifier,
                 onNavigation = { navigationModel ->
-                    navigateToNextStep(navController, navigationModel)
+                    with(navigationModel) {
+                        navigate(navController)
+                    }
                 },
                 onCancel = { navController.navigateUp() }
             )

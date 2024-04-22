@@ -15,8 +15,11 @@ import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
+import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
+import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
+import com.valkiria.uicomponents.components.chip.FiltersUiModel
 import com.valkiria.uicomponents.components.media.MediaActionsUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -84,36 +87,22 @@ class MedicalHistoryViewViewModel @Inject constructor(
         }
     }
 
-    fun consumeNavigationEvent() {
-        uiState = uiState.copy(
-            isLoading = false,
-            navigationModel = null
-        )
-    }
-
-    fun handleEvent(uiAction: UiAction) {
-        consumeShownError()
-
-        uiAction.handleAuthorizationErrorEvent {
-            job?.cancel()
-            job = viewModelScope.launch {
-                logoutCurrentUser.invoke()
-                    .onSuccess {
-                        UnauthorizedEventHandler.publishUnauthorizedEvent()
-                    }
+    fun handleFiltersAction(filtersAction: GenericUiAction.FiltersAction) {
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            updater = { model ->
+                if (model is FiltersUiModel) {
+                    model.copy(selected = filtersAction.identifier)
+                } else {
+                    model
+                }
             }
-        }
-    }
-
-    private fun consumeShownError() {
-        uiState = uiState.copy(
-            errorEvent = null
         )
-    }
 
-    fun goBack() {
         uiState = uiState.copy(
-            navigationModel = MedicalHistoryViewNavigationModel(back = true)
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
         )
     }
 
@@ -208,5 +197,38 @@ class MedicalHistoryViewViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun consumeNavigationEvent() {
+        uiState = uiState.copy(
+            isLoading = false,
+            navigationModel = null
+        )
+    }
+
+    fun handleEvent(uiAction: UiAction) {
+        consumeShownError()
+
+        uiAction.handleAuthorizationErrorEvent {
+            job?.cancel()
+            job = viewModelScope.launch {
+                logoutCurrentUser.invoke()
+                    .onSuccess {
+                        UnauthorizedEventHandler.publishUnauthorizedEvent()
+                    }
+            }
+        }
+    }
+
+    private fun consumeShownError() {
+        uiState = uiState.copy(
+            errorEvent = null
+        )
+    }
+
+    fun goBack() {
+        uiState = uiState.copy(
+            navigationModel = MedicalHistoryViewNavigationModel(back = true)
+        )
     }
 }

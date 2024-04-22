@@ -13,9 +13,12 @@ import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreenView
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
+import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ROLE
+import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.finding.FindingsDetailUiModel
+import com.valkiria.uicomponents.components.chip.FiltersUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -71,6 +74,37 @@ class PreOperationalViewViewModel @Inject constructor(
         }
     }
 
+    fun showFindings(findingDetail: FindingsDetailUiModel?) {
+        uiState = uiState.copy(
+            findingDetail = findingDetail
+        )
+    }
+
+    fun handleShownFindingBottomSheet() {
+        uiState = uiState.copy(
+            findingDetail = null
+        )
+    }
+
+    fun handleFiltersAction(filtersAction: GenericUiAction.FiltersAction) {
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            updater = { model ->
+                if (model is FiltersUiModel) {
+                    model.copy(selected = filtersAction.identifier)
+                } else {
+                    model
+                }
+            }
+        )
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
     fun goBack() {
         uiState = uiState.copy(
             navigationModel = PreOpViewNavigationModel(back = true)
@@ -101,18 +135,6 @@ class PreOperationalViewViewModel @Inject constructor(
     private fun consumeShownError() {
         uiState = uiState.copy(
             errorModel = null
-        )
-    }
-
-    fun handleShownFindingBottomSheet() {
-        uiState = uiState.copy(
-            findingDetail = null
-        )
-    }
-
-    fun showFindings(findingDetail: FindingsDetailUiModel?) {
-        uiState = uiState.copy(
-            findingDetail = findingDetail
         )
     }
 }

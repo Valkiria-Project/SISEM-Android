@@ -93,6 +93,8 @@ private fun handleAction(
     when (uiAction) {
         is GenericUiAction.FindingAction -> viewModel.showFindings(uiAction.findingDetail)
 
+        is GenericUiAction.FiltersAction -> viewModel.handleFiltersAction(uiAction)
+
         is HeaderUiAction.GoBack -> viewModel.goBack()
 
         else -> Timber.d("no-op")
