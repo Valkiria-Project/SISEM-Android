@@ -10,7 +10,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.changepassword.model.ChangePasswordIdentifier
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
+import com.skgtecnologia.sisem.ui.login.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ChangePasswordScreen(
     modifier: Modifier = Modifier,
-    onNavigation: (loginNavigationModel: NavigationModel?) -> Unit,
+    onNavigation: (loginNavigationModel: LoginNavigationModel) -> Unit,
     onCancel: () -> Unit
 ) {
     val viewModel = hiltViewModel<ChangePasswordViewModel>()
@@ -86,7 +86,11 @@ fun ChangePasswordScreen(
 
     OnBannerHandler(uiModel = uiState.successInfoModel) {
         viewModel.consumeChangePasswordEvent()
-        onNavigation(uiState.loginNavigationModel)
+        uiState.loginNavigationModel?.let { loginNavigationModel ->
+            onNavigation(
+                loginNavigationModel
+            )
+        }
     }
 
     OnBannerHandler(uiModel = uiState.errorModel) {

@@ -149,7 +149,7 @@ fun BodySection(
                 handleBodyRows(
                     body = body,
                     listState = listState,
-                    coroutineScope = scope,
+                    scope = scope,
                     validateFields = validateFields,
                     onAction = onAction
                 )
@@ -199,9 +199,15 @@ private fun LazyListState.HandleListScroll(
     }
 
     val headers by remember {
+        val filtersComponent = body
+            .filterIsInstance<FiltersUiModel>()
+            .firstOrNull()
+
         val headersFromBody = body
-            .filter { it.type == BodyRowType.HEADER }
+            .filterIsInstance<HeaderUiModel>()
+            .filter { filtersComponent?.options?.contains(it.title.text) == true }
             .map { it.identifier }
+
         Timber.d("headersFromBody: $headersFromBody")
         mutableStateOf(headersFromBody)
     }
@@ -232,7 +238,7 @@ private fun getStickyFooter(body: List<BodyRowModel>): StepperUiModel? = body
 private fun LazyListScope.handleBodyRows(
     body: List<BodyRowModel>,
     listState: LazyListState,
-    coroutineScope: CoroutineScope,
+    scope: CoroutineScope,
     validateFields: Boolean,
     onAction: (actionInput: UiAction) -> Unit
 ) {
@@ -315,7 +321,7 @@ private fun LazyListScope.handleBodyRows(
             is FiltersUiModel -> if (model.visibility) {
                 stickyHeader(key = model.identifier) {
                     FiltersComponent(uiModel = model) { selected, _ ->
-                        coroutineScope.launch {
+                        scope.launch {
                             val contentHeader = body.indexOfFirst {
                                 it is HeaderUiModel && it.title.text == selected
                             }

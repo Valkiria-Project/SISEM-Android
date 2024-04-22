@@ -109,6 +109,8 @@ private fun handleAction(
     scope: CoroutineScope
 ) {
     when (uiAction) {
+        is GenericUiAction.FiltersAction -> viewModel.handleFiltersAction(uiAction)
+
         is GenericUiAction.InputAction -> {}
 
         is GenericUiAction.MediaItemAction -> when (uiAction.mediaAction) {
