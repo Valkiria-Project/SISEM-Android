@@ -26,7 +26,7 @@ val montserratFontFamily = FontFamily(
 val Typography = Typography(
     displayLarge = TextStyle(
         fontSize = 25.sp,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Bold,
         fontFamily = montserratFontFamily
     ),
     displayMedium = TextStyle(
