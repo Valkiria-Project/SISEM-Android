@@ -23,7 +23,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -45,6 +44,7 @@ import com.valkiria.uicomponents.components.label.ListTextUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextUiModel
 import com.valkiria.uicomponents.components.label.toTextStyle
+import com.valkiria.uicomponents.extensions.shadow
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 
@@ -71,9 +71,11 @@ fun InfoCardComponent(
         modifier = uiModel.modifier
             .fillMaxWidth()
             .shadow(
-                elevation = 25.dp,
-                ambientColor = Color.Black,
-                spotColor = Color.Black
+                borderRadius = 20.dp,
+                offsetX = 15.dp,
+                offsetY = 15.dp,
+                spread = 10.dp,
+                blurRadius = 10.dp,
             ),
         shape = RoundedCornerShape(20.dp),
     ) {
