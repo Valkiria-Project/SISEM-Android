@@ -65,6 +65,11 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontFamily = montserratFontFamily
     ),
+    bodyMedium = TextStyle(
+        fontSize = 16.sp,
+        fontWeight = FontWeight.SemiBold,
+        fontFamily = montserratFontFamily
+    ),
     labelLarge = TextStyle(
         fontSize = 13.sp,
         fontWeight = FontWeight.Normal,
