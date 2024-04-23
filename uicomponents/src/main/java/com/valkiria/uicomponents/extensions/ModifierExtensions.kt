@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+@Suppress("LongParameterList")
 fun Modifier.shadow(
     color: Color = Color.Black,
     borderRadius: Dp = 0.dp,
