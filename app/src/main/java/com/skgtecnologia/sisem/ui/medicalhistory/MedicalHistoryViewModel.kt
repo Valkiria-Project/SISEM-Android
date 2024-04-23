@@ -279,7 +279,7 @@ class MedicalHistoryViewModel @Inject constructor(
                         bodyRowModel.selected.isNotEmpty()
                     ) {
                         bodyRowModel.items.find {
-                            it.id == bodyRowModel.selected
+                            it.name.equals(bodyRowModel.selected, true)
                         }?.also {
                             dropDownValues[bodyRowModel.identifier] = DropDownInputUiModel(
                                 bodyRowModel.identifier,

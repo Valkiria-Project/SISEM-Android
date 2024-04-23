@@ -124,7 +124,7 @@ val dropDownUiModelMock = DropDownUiModel(
     items = listOf(
         DropDownItemUiModel(
             id = "identifier",
-            name = "text"
+            name = "name"
         )
     ),
     header = HeaderUiModel(
@@ -136,7 +136,7 @@ val dropDownUiModelMock = DropDownUiModel(
         arrangement = Arrangement.Start,
         modifier = Modifier
     ),
-    selected = "identifier",
+    selected = "name",
     section = null,
     arrangement = Arrangement.Start,
     modifier = Modifier
