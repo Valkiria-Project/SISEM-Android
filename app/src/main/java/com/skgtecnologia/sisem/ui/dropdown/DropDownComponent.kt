@@ -90,7 +90,7 @@ fun DropDownComponent(
                 )
             },
             supportingText = {
-                if (validateFields) {
+                if (validateFields && uiModel.required) {
                     Text(
                         text = text.toFailedValidation(
                             listOf(
