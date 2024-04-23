@@ -26,7 +26,7 @@ val montserratFontFamily = FontFamily(
 val Typography = Typography(
     displayLarge = TextStyle(
         fontSize = 25.sp,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Bold,
         fontFamily = montserratFontFamily
     ),
     displayMedium = TextStyle(
@@ -63,6 +63,11 @@ val Typography = Typography(
     bodyLarge = TextStyle(
         fontSize = 14.sp,
         fontWeight = FontWeight.Normal,
+        fontFamily = montserratFontFamily
+    ),
+    bodyMedium = TextStyle(
+        fontSize = 16.sp,
+        fontWeight = FontWeight.SemiBold,
         fontFamily = montserratFontFamily
     ),
     labelLarge = TextStyle(

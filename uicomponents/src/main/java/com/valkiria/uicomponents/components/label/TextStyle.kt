@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 
 enum class TextStyle {
     BODY_1,
+    BODY_2,
     BUTTON_1,
     BUTTON_2,
     HEADLINE_1,
@@ -19,9 +20,6 @@ enum class TextStyle {
 
 @Composable
 fun TextStyle?.toTextStyle() = when (this) {
-    TextStyle.BODY_1 -> MaterialTheme.typography.bodyLarge
-    TextStyle.BUTTON_1 -> MaterialTheme.typography.labelLarge
-    TextStyle.BUTTON_2 -> MaterialTheme.typography.labelMedium
     TextStyle.HEADLINE_1 -> MaterialTheme.typography.displayLarge
     TextStyle.HEADLINE_2 -> MaterialTheme.typography.displayMedium
     TextStyle.HEADLINE_3 -> MaterialTheme.typography.displaySmall
@@ -30,5 +28,9 @@ fun TextStyle?.toTextStyle() = when (this) {
     TextStyle.HEADLINE_6 -> MaterialTheme.typography.titleLarge
     TextStyle.HEADLINE_7 -> MaterialTheme.typography.titleMedium
     TextStyle.HEADLINE_8 -> MaterialTheme.typography.titleSmall
+    TextStyle.BODY_1 -> MaterialTheme.typography.bodyLarge
+    TextStyle.BODY_2 -> MaterialTheme.typography.bodyMedium
+    TextStyle.BUTTON_2 -> MaterialTheme.typography.labelMedium
+    TextStyle.BUTTON_1 -> MaterialTheme.typography.labelLarge
     else -> MaterialTheme.typography.bodyLarge
 }
