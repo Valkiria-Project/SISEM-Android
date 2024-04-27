@@ -21,7 +21,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun authenticate(username: String, password: String): AccessTokenModel {
         val code = operationCacheDataSource.observeOperationConfig().first()?.vehicleCode.orEmpty()
-        val turn = authCacheDataSource.observeAccessToken().first() ?.turn
+        val turn = authCacheDataSource.observeAccessToken().first()?.turn
         val turnId = turn?.id?.toString()
 
         return authRemoteDataSource.authenticate(

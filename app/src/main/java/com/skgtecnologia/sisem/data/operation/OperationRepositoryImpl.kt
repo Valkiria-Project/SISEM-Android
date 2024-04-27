@@ -22,8 +22,8 @@ class OperationRepositoryImpl @Inject constructor(
             }.getOrThrow()
 
     override suspend fun logoutTurn(username: String): String {
-        val turn = authCacheDataSource.observeAccessToken().first()?.turn
-        val turnId = turn?.id?.toString().orEmpty()
+        val turnId = authCacheDataSource.observeAccessToken()
+            .first()?.turn?.id?.toString().orEmpty()
         val idEmployed =
             authCacheDataSource.retrieveAccessTokenByUsername(username).userId.toString()
         val code = operationCacheDataSource.observeOperationConfig().first()?.vehicleCode.orEmpty()

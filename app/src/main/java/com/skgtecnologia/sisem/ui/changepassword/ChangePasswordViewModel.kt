@@ -171,7 +171,7 @@ class ChangePasswordViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch {
-            onCancel()
+            onCancel.invoke()
                 .onSuccess {
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
