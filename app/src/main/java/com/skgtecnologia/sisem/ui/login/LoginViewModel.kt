@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.ui.login
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
@@ -11,18 +12,25 @@ import com.skgtecnologia.sisem.domain.auth.usecases.Login
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
+import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.chip.ChipUiModel
+import com.valkiria.uicomponents.components.slider.SliderUiModel
+import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import javax.inject.Inject
+
+private const val LOGIN_EMAIL_IDENTIFIER = "LOGIN_EMAIL"
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val getLoginScreen: GetLoginScreen,
     private val login: Login,
     androidIdProvider: AndroidIdProvider
@@ -32,6 +40,8 @@ class LoginViewModel @Inject constructor(
 
     var uiState by mutableStateOf(LoginUiState())
         private set
+
+    private val previousUsername: String? = savedStateHandle[NavigationArgument.USERNAME]
 
     private var code by mutableStateOf("")
     var username by mutableStateOf("")
@@ -47,6 +57,7 @@ class LoginViewModel @Inject constructor(
             getLoginScreen.invoke(androidIdProvider.getAndroidId())
                 .onSuccess { loginScreenModel ->
                     loginScreenModel.body.toVehicleCode()
+                    handlePreviousUsername()
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
                             screenModel = loginScreenModel,
@@ -70,6 +81,26 @@ class LoginViewModel @Inject constructor(
         code = filterIsInstance<ChipUiModel>()
             .firstOrNull { it.text.isNotBlank() }
             ?.text.orEmpty()
+    }
+
+    private fun handlePreviousUsername() {
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = LOGIN_EMAIL_IDENTIFIER,
+            updater = { model ->
+                if (model is TextFieldUiModel && previousUsername?.isNotBlank() == true) {
+                    model.copy(text = previousUsername)
+                } else {
+                    model
+                }
+            }
+        )
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
     }
 
     fun forgotPassword() {

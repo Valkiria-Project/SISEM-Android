@@ -48,6 +48,7 @@ import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.PHOTO_TAKEN
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ROLE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.USERNAME
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
 import com.skgtecnologia.sisem.ui.preoperational.create.PreOperationalScreen
 import com.skgtecnologia.sisem.ui.preoperational.view.PreOperationalViewScreen
@@ -75,8 +76,10 @@ fun SisemNavGraph(
         val context = LocalContext.current
 
         UnauthorizedEventHandler.subscribeUnauthorizedEvent { appEvent ->
-            if (appEvent == AppEvent.UNAUTHORIZED_SESSION) {
-                navController.navigate(AuthNavigationRoute.LoginScreen.route) {
+            if (appEvent is AppEvent.UnauthorizedSession) {
+                navController.navigate(
+                    "${AuthNavigationRoute.LoginScreen.route}/${appEvent.username}"
+                ) {
                     popUpTo(NavigationGraph.Main.route) {
                         inclusive = true
                     }
@@ -123,7 +126,14 @@ private fun NavGraphBuilder.authGraph(
         }
 
         composable(
-            route = AuthNavigationRoute.LoginScreen.route
+            route = AuthNavigationRoute.LoginScreen.route +
+                    "?$USERNAME={$USERNAME}",
+            arguments = listOf(
+                navArgument(USERNAME) {
+                    type = NavType.StringType
+                    nullable = true
+                }
+            )
         ) {
             LoginScreen(
                 modifier = modifier

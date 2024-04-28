@@ -15,22 +15,25 @@ class OperationRepositoryImpl @Inject constructor(
     private val operationRemoteDataSource: OperationRemoteDataSource
 ) : OperationRepository {
 
-    override suspend fun getOperationConfig(serial: String): OperationModel =
-        operationRemoteDataSource.getOperationConfig(serial)
+    override suspend fun getOperationConfig(serial: String): OperationModel {
+        val turnId = authCacheDataSource.observeAccessToken()
+            .first()?.turn?.id?.toString().orEmpty()
+
+        return operationRemoteDataSource.getOperationConfig(serial, turnId)
             .onSuccess {
                 operationCacheDataSource.storeOperationConfig(it)
             }.getOrThrow()
+    }
 
     override suspend fun logoutTurn(username: String): String {
         val turnId = authCacheDataSource.observeAccessToken()
             .first()?.turn?.id?.toString().orEmpty()
-        val idEmployed =
-            authCacheDataSource.retrieveAccessTokenByUsername(username).userId.toString()
+        val idEmployed = authCacheDataSource.retrieveAccessTokenByUsername(username)
+            .userId.toString()
         val code = operationCacheDataSource.observeOperationConfig().first()?.vehicleCode.orEmpty()
 
         // FIXME: Persist the new turn returned updating the users
         return operationRemoteDataSource.logoutTurn(
-            username = username,
             idTurn = turnId,
             idEmployed = idEmployed,
             vehicleCode = code
