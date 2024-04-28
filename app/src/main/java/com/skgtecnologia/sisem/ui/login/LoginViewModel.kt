@@ -16,7 +16,6 @@ import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.chip.ChipUiModel
-import com.valkiria.uicomponents.components.slider.SliderUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +27,7 @@ import javax.inject.Inject
 
 private const val LOGIN_EMAIL_IDENTIFIER = "LOGIN_EMAIL"
 
+@Suppress("TooManyFunctions")
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
@@ -84,11 +84,15 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun handlePreviousUsername() {
+        if (previousUsername.isNullOrBlank()) {
+            return
+        }
+
         val updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
             identifier = LOGIN_EMAIL_IDENTIFIER,
             updater = { model ->
-                if (model is TextFieldUiModel && previousUsername?.isNotBlank() == true) {
+                if (model is TextFieldUiModel) {
                     model.copy(text = previousUsername)
                 } else {
                     model
