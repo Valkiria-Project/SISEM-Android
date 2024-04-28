@@ -17,7 +17,7 @@ class OperationRepositoryImpl @Inject constructor(
 
     override suspend fun getOperationConfig(serial: String): OperationModel {
         val turnId = authCacheDataSource.observeAccessToken()
-            .first()?.turn?.id?.toString().orEmpty()
+            .first()?.turn?.id?.toString()
 
         return operationRemoteDataSource.getOperationConfig(serial, turnId)
             .onSuccess {

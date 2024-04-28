@@ -12,7 +12,7 @@ interface OperationApi {
     @GET("config")
     suspend fun getConfig(
         @Query("serial") serial: String,
-        @Query("idTurn") idTurn: String
+        @Query("idTurn") idTurn: String? = null
     ): Response<OperationResponse>
 
     @GET(BuildConfig.AUTH_BASE_URL.plus("auth/logout"))
