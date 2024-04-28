@@ -127,7 +127,7 @@ private fun NavGraphBuilder.authGraph(
 
         composable(
             route = AuthNavigationRoute.LoginScreen.route +
-                    "?$USERNAME={$USERNAME}",
+                "?$USERNAME={$USERNAME}",
             arguments = listOf(
                 navArgument(USERNAME) {
                     type = NavType.StringType
