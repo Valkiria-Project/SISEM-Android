@@ -126,6 +126,7 @@ private const val NINE_MONTHS = 9L
 private const val PATIENT_DOCUMENT_TYPE_IDENTIFIER = "KEY_DOCUMENT_TYPE"
 private const val RESPONSIBLE_DOCUMENT_TYPE_IDENTIFIER = "KEY_DOCUMENT_TYPE_RESPONSIBLE"
 private const val PATIENT_DOCUMENT_IDENTIFIER = "KEY_DOCUMENT"
+private const val RESPONSIBLE_DOCUMENT_IDENTIFIER = "KEY_DOCUMENT_RESPONSIBLE"
 private const val CC_ID_TYPE = "CC"
 private const val CE_ID_TYPE = "CE"
 private const val CD_ID_TYPE = "CD"
@@ -473,7 +474,9 @@ class MedicalHistoryViewModel @Inject constructor(
     private fun updatePatientDocumentInputType(id: String) = updateBodyModel(
         uiModels = uiState.screenModel?.body,
         updater = { model ->
-            if (model is TextFieldUiModel && model.identifier == PATIENT_DOCUMENT_IDENTIFIER) {
+            if (model is TextFieldUiModel && (model.identifier == PATIENT_DOCUMENT_IDENTIFIER ||
+                        model.identifier == RESPONSIBLE_DOCUMENT_IDENTIFIER)
+            ) {
                 model.copy(keyboardOptions = updateKeyboardOptions(id))
             } else {
                 model
