@@ -227,27 +227,27 @@ class MedicalHistoryViewModel @Inject constructor(
                 .onSuccess { medicalHistoryScreenModel ->
                     medicalHistoryScreenModel.getFormInitialValues()
 
-//                    medic
-//                    if (bodyRowModel.identifier == PATIENT_DOCUMENT_TYPE_IDENTIFIER) {
-//                        updatedBody = updatePatientDocumentInputType(
-//                            chipSelectionAction.chipSelectionItemUiModel.id
-//                        )
-//                    }
-
-//                    val updatedBody = medicalHistoryScreenModel.body.map { model ->
-//                        if (model is MediaActionsUiModel) {
-//                            model.copy(
-//                                maxFileSizeKb = uiState.operationConfig?.maxFileSizeKb
-//                            )
-//                        } else {
-//                            model
-//                        }
-//                    }
+                    var updatedBody = medicalHistoryScreenModel.body
+                    if (chipSelectionValues.containsKey(PATIENT_DOCUMENT_TYPE_IDENTIFIER)) {
+                        updatedBody = updatePatientDocumentInputType(
+                            chipSelectionValues[PATIENT_DOCUMENT_TYPE_IDENTIFIER]?.id.orEmpty(),
+                            PATIENT_DOCUMENT_IDENTIFIER,
+                            updatedBody
+                        )
+                    } else if (chipSelectionValues.containsKey(RESPONSIBLE_DOCUMENT_TYPE_IDENTIFIER)) {
+                        updatedBody = updatePatientDocumentInputType(
+                            chipSelectionValues[RESPONSIBLE_DOCUMENT_TYPE_IDENTIFIER]?.id.orEmpty(),
+                            RESPONSIBLE_DOCUMENT_IDENTIFIER,
+                            updatedBody
+                        )
+                    }
 
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
                             isLoading = false,
-                            screenModel = medicalHistoryScreenModel
+                            screenModel = medicalHistoryScreenModel.copy(
+                                body = updatedBody
+                            )
                         )
                     }
                 }.onFailure { throwable ->
@@ -456,11 +456,17 @@ class MedicalHistoryViewModel @Inject constructor(
             }.also { body -> updatedBody = body }
         }
 
-        if (chipSelectionAction.identifier == PATIENT_DOCUMENT_TYPE_IDENTIFIER ||
-            chipSelectionAction.identifier == RESPONSIBLE_DOCUMENT_TYPE_IDENTIFIER
-        ) {
+        if (chipSelectionAction.identifier == PATIENT_DOCUMENT_TYPE_IDENTIFIER) {
             updatedBody = updatePatientDocumentInputType(
-                chipSelectionAction.chipSelectionItemUiModel.id
+                chipSelectionValues[PATIENT_DOCUMENT_TYPE_IDENTIFIER]?.id.orEmpty(),
+                PATIENT_DOCUMENT_IDENTIFIER,
+                updatedBody
+            )
+        } else if (chipSelectionAction.identifier == RESPONSIBLE_DOCUMENT_TYPE_IDENTIFIER) {
+            updatedBody = updatePatientDocumentInputType(
+                chipSelectionValues[RESPONSIBLE_DOCUMENT_TYPE_IDENTIFIER]?.id.orEmpty(),
+                RESPONSIBLE_DOCUMENT_IDENTIFIER,
+                updatedBody
             )
         }
 
@@ -471,12 +477,14 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
-    private fun updatePatientDocumentInputType(id: String) = updateBodyModel(
-        uiModels = uiState.screenModel?.body,
+    private fun updatePatientDocumentInputType(
+        id: String,
+        identifier: String,
+        uiModels: List<BodyRowModel>? = uiState.screenModel?.body
+    ) = updateBodyModel(
+        uiModels = uiModels,
         updater = { model ->
-            if (model is TextFieldUiModel && (model.identifier == PATIENT_DOCUMENT_IDENTIFIER ||
-                        model.identifier == RESPONSIBLE_DOCUMENT_IDENTIFIER)
-            ) {
+            if (model is TextFieldUiModel && model.identifier == identifier) {
                 model.copy(keyboardOptions = updateKeyboardOptions(id))
             } else {
                 model
