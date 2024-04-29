@@ -31,6 +31,15 @@ interface AccessTokenDao {
     )
     suspend fun updatePreOperationalStatus(role: String, status: Boolean)
 
+    @Query(
+        """
+            UPDATE access_token
+            SET turn_id = :turnId
+            WHERE turn_id = :previousTurn
+             """
+    )
+    suspend fun updateTurn(turnId: String, previousTurn: String)
+
     @Query("DELETE FROM access_token")
     suspend fun deleteAccessToken()
 

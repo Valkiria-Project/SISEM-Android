@@ -42,6 +42,10 @@ class AuthCacheDataSource @Inject constructor(
         accessTokenDao.updatePreOperationalStatus(role, status)
     }
 
+    suspend fun updateTurn(turnId: String, previousTurn: String) {
+        accessTokenDao.updateTurn(turnId, previousTurn)
+    }
+
     suspend fun deleteAccessToken() {
         accessTokenDao.deleteAccessToken()
     }

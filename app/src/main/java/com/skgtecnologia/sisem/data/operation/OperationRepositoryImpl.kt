@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.data.operation
 
+import com.skgtecnologia.sisem.commons.extensions.mapResult
 import com.skgtecnologia.sisem.data.auth.cache.AuthCacheDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.data.operation.remote.OperationRemoteDataSource
@@ -32,7 +33,6 @@ class OperationRepositoryImpl @Inject constructor(
             .userId.toString()
         val code = operationCacheDataSource.observeOperationConfig().first()?.vehicleCode.orEmpty()
 
-        // FIXME: Persist the new turn returned updating the users
         return operationRemoteDataSource.logoutTurn(
             idTurn = turnId,
             idEmployed = idEmployed,
@@ -48,6 +48,10 @@ class OperationRepositoryImpl @Inject constructor(
                     )
                 )
             }
+        }.mapResult {idTurn ->
+            authCacheDataSource.updateTurn(idTurn, turnId)
+
+            idTurn
         }.getOrThrow()
     }
 

@@ -63,6 +63,7 @@ import com.skgtecnologia.sisem.ui.signature.view.SignatureScreen
 import com.skgtecnologia.sisem.ui.stretcherretention.create.StretcherRetentionScreen
 import com.skgtecnologia.sisem.ui.stretcherretention.pre.PreStretcherRetentionScreen
 import com.skgtecnologia.sisem.ui.stretcherretention.view.StretcherRetentionViewScreen
+import timber.log.Timber
 
 @Composable
 fun SisemNavGraph(
@@ -77,6 +78,7 @@ fun SisemNavGraph(
 
         UnauthorizedEventHandler.subscribeUnauthorizedEvent { appEvent ->
             if (appEvent is AppEvent.UnauthorizedSession) {
+                Timber.d("Username is: ${appEvent.username}")
                 navController.navigate(
                     AuthNavigationRoute.LoginScreen.route + "?$USERNAME=${appEvent.username}"
                 ) {

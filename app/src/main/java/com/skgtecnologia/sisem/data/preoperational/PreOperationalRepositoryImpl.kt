@@ -90,7 +90,10 @@ class PreOperationalRepositoryImpl @Inject constructor(
         }.getOrThrow()
     }
 
-    private suspend fun fetchPreOperational(androidId: String, accessToken: Flow<AccessTokenModel?>): ScreenModel {
+    private suspend fun fetchPreOperational(
+        androidId: String,
+        accessToken: Flow<AccessTokenModel?>
+    ): ScreenModel {
         return preOperationalRemoteDataSource.getPreOperationalScreen(
             role = checkNotNull(OperationRole.getRoleByName(accessToken.first()?.role.orEmpty())),
             androidId = androidId,
