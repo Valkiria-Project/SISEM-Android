@@ -771,7 +771,7 @@ class MedicalHistoryViewModel @Inject constructor(
                         text = getWithdrawalWitnessText(
                             patient = fieldsValues.getPatientName(),
                             document = fieldsValues.getPatientDocument(),
-                            code = uiState.operationConfig?.vehicleCode.orEmpty()
+                            code = uiState.operationConfig?.vehicleConfig?.typeResource.orEmpty()
                         )
                     )
                 } else {
