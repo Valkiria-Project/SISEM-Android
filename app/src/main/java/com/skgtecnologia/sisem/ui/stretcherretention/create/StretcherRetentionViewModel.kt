@@ -250,8 +250,8 @@ class StretcherRetentionViewModel @Inject constructor(
             job?.cancel()
             job = viewModelScope.launch {
                 logoutCurrentUser.invoke()
-                    .onSuccess {
-                        UnauthorizedEventHandler.publishUnauthorizedEvent()
+                    .onSuccess { username ->
+                        UnauthorizedEventHandler.publishUnauthorizedEvent(username)
                     }
             }
         }

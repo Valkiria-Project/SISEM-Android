@@ -16,5 +16,6 @@ data class OperationModel(
     val vehicleCode: String?,
     val vehicleConfig: VehicleConfigModel?,
     val operationRole: OperationRole? = null,
-    val maxFileSizeKb: String
+    val maxFileSizeKb: String,
+    val preoperationalExec: Map<String, Boolean>
 )

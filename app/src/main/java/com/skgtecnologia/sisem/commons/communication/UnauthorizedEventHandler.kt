@@ -7,9 +7,9 @@ import kotlinx.coroutines.launch
 
 internal object UnauthorizedEventHandler {
 
-    fun publishUnauthorizedEvent() {
+    fun publishUnauthorizedEvent(username: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            EventBus.publish(AppEvent.UNAUTHORIZED_SESSION)
+            EventBus.publish(AppEvent.UnauthorizedSession(username))
         }
     }
 
@@ -22,6 +22,6 @@ internal object UnauthorizedEventHandler {
     }
 }
 
-enum class AppEvent {
-    UNAUTHORIZED_SESSION
+sealed class AppEvent {
+    data class UnauthorizedSession(val username: String) : AppEvent()
 }

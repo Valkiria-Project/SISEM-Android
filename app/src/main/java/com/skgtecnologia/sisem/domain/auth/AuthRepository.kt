@@ -15,6 +15,8 @@ interface AuthRepository {
 
     suspend fun getAllAccessTokens(): List<AccessTokenModel>
 
+    suspend fun getTokenByRole(role: String): AccessTokenModel?
+
     suspend fun logout(username: String): String
 
     suspend fun logoutCurrentUser(): String

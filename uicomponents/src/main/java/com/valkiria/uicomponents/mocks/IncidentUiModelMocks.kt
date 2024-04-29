@@ -30,12 +30,14 @@ fun getIncidentAssignedModel(): IncidentUiModel {
             PatientUiModel(
                 id = 49,
                 idAph = 110,
-                fullName = "Carolina Restrepo"
+                fullName = "Carolina Restrepo",
+                disabled = false
             ),
             PatientUiModel(
                 id = 50,
                 idAph = 111,
-                fullName = "Luis Villada"
+                fullName = "Luis Villada",
+                disabled = true
             )
         ),
         resources = listOf(

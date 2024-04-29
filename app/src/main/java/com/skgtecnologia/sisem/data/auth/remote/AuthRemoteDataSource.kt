@@ -40,6 +40,6 @@ class AuthRemoteDataSource @Inject constructor(
     suspend fun logout(username: String): Result<String> = apiCall {
         authApi.logout(username = username)
     }.mapResult {
-        it.message
+        username
     }
 }

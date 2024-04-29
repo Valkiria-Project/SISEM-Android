@@ -2,12 +2,14 @@ package com.skgtecnologia.sisem.domain.medicalhistory.usecases
 
 import androidx.annotation.CheckResult
 import com.skgtecnologia.sisem.commons.extensions.resultOf
+import com.skgtecnologia.sisem.domain.incident.IncidentRepository
 import com.skgtecnologia.sisem.domain.medicalhistory.MedicalHistoryRepository
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 import javax.inject.Inject
 
 class SendMedicalHistory @Inject constructor(
+    private val incidentRepository: IncidentRepository,
     private val medicalHistoryRepository: MedicalHistoryRepository
 ) {
 
@@ -43,5 +45,7 @@ class SendMedicalHistory @Inject constructor(
             infoCardButtonValues,
             images
         )
+    }.onSuccess {
+        incidentRepository.getIncident()
     }
 }
