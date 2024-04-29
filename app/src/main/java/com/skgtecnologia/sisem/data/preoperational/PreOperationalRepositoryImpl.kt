@@ -6,11 +6,11 @@ import com.skgtecnologia.sisem.data.preoperational.remote.PreOperationalRemoteDa
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import com.skgtecnologia.sisem.domain.operation.model.PreoperationalStatus
 import com.skgtecnologia.sisem.domain.preoperational.PreOperationalRepository
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
-import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 import kotlinx.coroutines.flow.first
+import javax.inject.Inject
 
 class PreOperationalRepositoryImpl @Inject constructor(
     private val authCacheDataSource: AuthCacheDataSource,
@@ -19,7 +19,7 @@ class PreOperationalRepositoryImpl @Inject constructor(
 ) : PreOperationalRepository {
 
     override suspend fun getPreOperationalScreen(androidId: String): ScreenModel {
-        val accessToken = checkNotNull(authCacheDataSource.observeAccessToken())
+        val accessToken = checkNotNull(authCacheDataSource.observeAccessToken().first())
 
         return fetchPreOperational(androidId, accessToken)
     }
@@ -39,12 +39,16 @@ class PreOperationalRepositoryImpl @Inject constructor(
         androidId: String,
         role: OperationRole
     ): ScreenModel {
-        val accessToken = checkNotNull(authCacheDataSource.observeAccessToken())
-        val preOpConfig = operationCacheDataSource.observeOperationConfig()
-            .first()?.preoperationalExec.orEmpty()
+        val accessToken = checkNotNull(authCacheDataSource.retrieveAccessTokenByRole(role.name))
+        val config = operationCacheDataSource.observeOperationConfig().first()
+        val configPreoperational = PreoperationalStatus.getStatusByName(
+            config?.vehicleConfig?.preoperational.orEmpty()
+        ) == PreoperationalStatus.NO
+        val preOpExecution = config?.preoperationalExec.orEmpty()
 
-        // WHOPS: Perform correct logic
-        return if (preOpConfig.containsKey("HOLA")) {
+        return if (
+            configPreoperational && preOpExecution.containsKey(accessToken.userId.toString())
+        ) {
             fetchPreOperational(androidId, accessToken)
         } else {
             preOperationalRemoteDataSource.getPreOperationalScreenView(
@@ -52,7 +56,7 @@ class PreOperationalRepositoryImpl @Inject constructor(
                 androidId = androidId,
                 vehicleCode = operationCacheDataSource.observeOperationConfig()
                     .first()?.vehicleCode.orEmpty(),
-                idTurn = accessToken.first()?.turn?.id?.toString().orEmpty()
+                idTurn = accessToken.turn?.id?.toString().orEmpty()
             ).getOrThrow()
         }
     }
@@ -92,14 +96,14 @@ class PreOperationalRepositoryImpl @Inject constructor(
 
     private suspend fun fetchPreOperational(
         androidId: String,
-        accessToken: Flow<AccessTokenModel?>
+        accessToken: AccessTokenModel?
     ): ScreenModel {
         return preOperationalRemoteDataSource.getPreOperationalScreen(
-            role = checkNotNull(OperationRole.getRoleByName(accessToken.first()?.role.orEmpty())),
+            role = checkNotNull(OperationRole.getRoleByName(accessToken?.role.orEmpty())),
             androidId = androidId,
             vehicleCode = operationCacheDataSource.observeOperationConfig()
                 .first()?.vehicleCode.orEmpty(),
-            idTurn = accessToken.first()?.turn?.id?.toString().orEmpty()
+            idTurn = accessToken?.turn?.id?.toString().orEmpty()
         ).getOrThrow()
     }
 }
