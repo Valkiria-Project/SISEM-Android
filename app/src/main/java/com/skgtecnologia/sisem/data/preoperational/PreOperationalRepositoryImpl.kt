@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.data.preoperational
 
+import androidx.compose.ui.text.toLowerCase
 import com.skgtecnologia.sisem.data.auth.cache.AuthCacheDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.data.preoperational.remote.PreOperationalRemoteDataSource
@@ -10,6 +11,7 @@ import com.skgtecnologia.sisem.domain.operation.model.PreoperationalStatus
 import com.skgtecnologia.sisem.domain.preoperational.PreOperationalRepository
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import kotlinx.coroutines.flow.first
+import java.util.Locale
 import javax.inject.Inject
 
 class PreOperationalRepositoryImpl @Inject constructor(
@@ -39,7 +41,9 @@ class PreOperationalRepositoryImpl @Inject constructor(
         androidId: String,
         role: OperationRole
     ): ScreenModel {
-        val accessToken = checkNotNull(authCacheDataSource.retrieveAccessTokenByRole(role.name))
+        val accessToken = checkNotNull(
+            authCacheDataSource.retrieveAccessTokenByRole(role.name.lowercase())
+        )
         val config = operationCacheDataSource.observeOperationConfig().first()
         val configPreoperational = PreoperationalStatus.getStatusByName(
             config?.vehicleConfig?.preoperational.orEmpty()
@@ -47,7 +51,7 @@ class PreOperationalRepositoryImpl @Inject constructor(
         val preOpExecution = config?.preoperationalExec.orEmpty()
 
         return if (
-            configPreoperational && preOpExecution.containsKey(accessToken.userId.toString())
+            configPreoperational && !preOpExecution.containsKey(accessToken.userId.toString())
         ) {
             fetchPreOperational(androidId, accessToken)
         } else {
