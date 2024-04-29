@@ -114,7 +114,7 @@ fun DropDownComponent(
                         message = stringResource(id = R.string.field_empty_validation_message)
                     )
                 ),
-                validateFields
+                validateFields && uiModel.required
             ) != null,
             maxLines = 1
         )
