@@ -38,21 +38,24 @@ class AccessTokenInterceptor @Inject constructor(
 
     private fun Request.signedRequest(): Request? = runBlocking {
         when {
-            url.toString().contains(ASSISTANT_PRE_OP) -> authRepository
-                .getTokenByRole(OperationRole.AUXILIARY_AND_OR_TAPH.name.lowercase())
-                ?.let { token ->
-                    signWithToken(token.accessToken)
-                }
+            url.toString().contains(ASSISTANT_PRE_OP) ->
+                authRepository
+                    .getTokenByRole(OperationRole.AUXILIARY_AND_OR_TAPH.name.lowercase())
+                    ?.let { token ->
+                        signWithToken(token.accessToken)
+                    }
 
-            url.toString().contains(DOCTOR_PRE_OP) -> authRepository
-                .getTokenByRole(OperationRole.MEDIC_APH.name.lowercase())?.let { token ->
-                    signWithToken(token.accessToken)
-                }
+            url.toString().contains(DOCTOR_PRE_OP) ->
+                authRepository
+                    .getTokenByRole(OperationRole.MEDIC_APH.name.lowercase())?.let { token ->
+                        signWithToken(token.accessToken)
+                    }
 
-            url.toString().contains(DRIVER_PRE_OP) -> authRepository
-                .getTokenByRole(OperationRole.DRIVER.name.lowercase())?.let { token ->
-                    signWithToken(token.accessToken)
-                }
+            url.toString().contains(DRIVER_PRE_OP) ->
+                authRepository
+                    .getTokenByRole(OperationRole.DRIVER.name.lowercase())?.let { token ->
+                        signWithToken(token.accessToken)
+                    }
 
             else -> authRepository.getLastToken()?.let { accessToken ->
                 signWithToken(accessToken)

@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.data.preoperational
 
-import androidx.compose.ui.text.toLowerCase
 import com.skgtecnologia.sisem.data.auth.cache.AuthCacheDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.data.preoperational.remote.PreOperationalRemoteDataSource
@@ -11,7 +10,6 @@ import com.skgtecnologia.sisem.domain.operation.model.PreoperationalStatus
 import com.skgtecnologia.sisem.domain.preoperational.PreOperationalRepository
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import kotlinx.coroutines.flow.first
-import java.util.Locale
 import javax.inject.Inject
 
 class PreOperationalRepositoryImpl @Inject constructor(
