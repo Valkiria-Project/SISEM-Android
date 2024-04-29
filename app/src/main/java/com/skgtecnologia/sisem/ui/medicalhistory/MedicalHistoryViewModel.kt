@@ -234,7 +234,9 @@ class MedicalHistoryViewModel @Inject constructor(
                             PATIENT_DOCUMENT_IDENTIFIER,
                             updatedBody
                         )
-                    } else if (chipSelectionValues.containsKey(RESPONSIBLE_DOCUMENT_TYPE_IDENTIFIER)) {
+                    } else if (
+                        chipSelectionValues.containsKey(RESPONSIBLE_DOCUMENT_TYPE_IDENTIFIER)
+                    ) {
                         updatedBody = updatePatientDocumentInputType(
                             chipSelectionValues[RESPONSIBLE_DOCUMENT_TYPE_IDENTIFIER]?.id.orEmpty(),
                             RESPONSIBLE_DOCUMENT_IDENTIFIER,
