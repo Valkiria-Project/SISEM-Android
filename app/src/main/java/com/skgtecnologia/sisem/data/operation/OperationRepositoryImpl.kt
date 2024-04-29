@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.data.operation
 
+import com.skgtecnologia.sisem.commons.extensions.mapResult
 import com.skgtecnologia.sisem.data.auth.cache.AuthCacheDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.data.operation.remote.OperationRemoteDataSource
@@ -15,23 +16,25 @@ class OperationRepositoryImpl @Inject constructor(
     private val operationRemoteDataSource: OperationRemoteDataSource
 ) : OperationRepository {
 
-    override suspend fun getOperationConfig(serial: String): OperationModel =
-        operationRemoteDataSource.getOperationConfig(serial)
+    override suspend fun getOperationConfig(serial: String): OperationModel {
+        val turnId = authCacheDataSource.observeAccessToken()
+            .first()?.turn?.id?.toString()
+
+        return operationRemoteDataSource.getOperationConfig(serial, turnId)
             .onSuccess {
                 operationCacheDataSource.storeOperationConfig(it)
             }.getOrThrow()
+    }
 
     override suspend fun logoutTurn(username: String): String {
-        val turn = authCacheDataSource.observeAccessToken().first()?.turn
-        val turnId = turn?.id?.toString().orEmpty()
-        val idEmployed =
-            authCacheDataSource.retrieveAccessTokenByUsername(username).userId.toString()
+        val previousTurnId = authCacheDataSource.observeAccessToken()
+            .first()?.turn?.id?.toString().orEmpty()
+        val idEmployed = authCacheDataSource.retrieveAccessTokenByUsername(username)
+            .userId.toString()
         val code = operationCacheDataSource.observeOperationConfig().first()?.vehicleCode.orEmpty()
 
-        // FIXME: Persist the new turn returned updating the users
         return operationRemoteDataSource.logoutTurn(
-            username = username,
-            idTurn = turnId,
+            idTurn = previousTurnId,
             idEmployed = idEmployed,
             vehicleCode = code
         ).onSuccess {
@@ -45,6 +48,10 @@ class OperationRepositoryImpl @Inject constructor(
                     )
                 )
             }
+        }.mapResult { turnId ->
+            authCacheDataSource.updateTurn(turnId, previousTurnId)
+
+            turnId
         }.getOrThrow()
     }
 

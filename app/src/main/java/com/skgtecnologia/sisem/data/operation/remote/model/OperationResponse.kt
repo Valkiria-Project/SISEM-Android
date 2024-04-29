@@ -18,7 +18,8 @@ data class OperationResponse(
     @Json(name = "status") val status: Boolean?,
     @Json(name = "vehicle_code") val vehicleCode: String?,
     @Json(name = "vehicle_config") val vehicleConfig: VehicleConfigResponse?,
-    @Json(name = "max_file_size_kb") val maxFileSizeKb: String?
+    @Json(name = "max_file_size_kb") val maxFileSizeKb: String?,
+    @Json(name = "preoperational_exec") val preoperationalExec: Map<String, Boolean>?
 )
 
 fun OperationResponse.mapToDomain(): OperationModel = OperationModel(
@@ -38,5 +39,6 @@ fun OperationResponse.mapToDomain(): OperationModel = OperationModel(
     status = status ?: error("Config status cannot be null"),
     vehicleCode = vehicleCode,
     vehicleConfig = vehicleConfig?.mapToDomain(),
-    maxFileSizeKb = maxFileSizeKb ?: error("Config maxFileSizeKb cannot be null")
+    maxFileSizeKb = maxFileSizeKb ?: error("Config maxFileSizeKb cannot be null"),
+    preoperationalExec = preoperationalExec ?: emptyMap()
 )

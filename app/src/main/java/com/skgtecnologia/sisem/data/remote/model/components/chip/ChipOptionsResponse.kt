@@ -18,6 +18,7 @@ data class ChipOptionsResponse(
     @Json(name = "required") val required: Boolean?,
     @Json(name = "visibility") val visibility: Boolean?,
     @Json(name = "selection_visibility") val selectionVisibility: Map<String, List<String>>?,
+    @Json(name = "deselection_visibility") val deselectionVisibility: Map<String, List<String>>?,
     @Json(name = "arrangement") val arrangement: Arrangement.Horizontal?,
     @Json(name = "margins") val modifier: Modifier?
 ) : BodyRowResponse {

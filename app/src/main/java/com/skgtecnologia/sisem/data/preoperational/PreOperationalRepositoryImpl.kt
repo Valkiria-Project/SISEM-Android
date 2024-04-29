@@ -4,11 +4,13 @@ import com.skgtecnologia.sisem.data.auth.cache.AuthCacheDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.data.preoperational.remote.PreOperationalRemoteDataSource
 import com.skgtecnologia.sisem.di.operation.OperationRole
+import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import com.skgtecnologia.sisem.domain.operation.model.PreoperationalStatus
 import com.skgtecnologia.sisem.domain.preoperational.PreOperationalRepository
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
-import javax.inject.Inject
 import kotlinx.coroutines.flow.first
+import javax.inject.Inject
 
 class PreOperationalRepositoryImpl @Inject constructor(
     private val authCacheDataSource: AuthCacheDataSource,
@@ -17,15 +19,9 @@ class PreOperationalRepositoryImpl @Inject constructor(
 ) : PreOperationalRepository {
 
     override suspend fun getPreOperationalScreen(androidId: String): ScreenModel {
-        val accessToken = checkNotNull(authCacheDataSource.observeAccessToken())
+        val accessToken = checkNotNull(authCacheDataSource.observeAccessToken().first())
 
-        return preOperationalRemoteDataSource.getPreOperationalScreen(
-            role = checkNotNull(OperationRole.getRoleByName(accessToken.first()?.role.orEmpty())),
-            androidId = androidId,
-            vehicleCode = operationCacheDataSource.observeOperationConfig()
-                .first()?.vehicleCode.orEmpty(),
-            idTurn = accessToken.first()?.turn?.id?.toString().orEmpty()
-        ).getOrThrow()
+        return fetchPreOperational(androidId, accessToken)
     }
 
     override suspend fun getAuthCardViewScreen(androidId: String): ScreenModel {
@@ -43,15 +39,28 @@ class PreOperationalRepositoryImpl @Inject constructor(
         androidId: String,
         role: OperationRole
     ): ScreenModel {
-        val accessToken = checkNotNull(authCacheDataSource.observeAccessToken())
+        val accessToken = checkNotNull(
+            authCacheDataSource.retrieveAccessTokenByRole(role.name.lowercase())
+        )
+        val config = operationCacheDataSource.observeOperationConfig().first()
+        val configPreoperational = PreoperationalStatus.getStatusByName(
+            config?.vehicleConfig?.preoperational.orEmpty()
+        ) == PreoperationalStatus.NO
+        val preOpExecution = config?.preoperationalExec.orEmpty()
 
-        return preOperationalRemoteDataSource.getPreOperationalScreenView(
-            role = role,
-            androidId = androidId,
-            vehicleCode = operationCacheDataSource.observeOperationConfig()
-                .first()?.vehicleCode.orEmpty(),
-            idTurn = accessToken.first()?.turn?.id?.toString().orEmpty()
-        ).getOrThrow()
+        return if (
+            configPreoperational && !preOpExecution.containsKey(accessToken.userId.toString())
+        ) {
+            fetchPreOperational(androidId, accessToken)
+        } else {
+            preOperationalRemoteDataSource.getPreOperationalScreenView(
+                role = role,
+                androidId = androidId,
+                vehicleCode = operationCacheDataSource.observeOperationConfig()
+                    .first()?.vehicleCode.orEmpty(),
+                idTurn = accessToken.turn?.id?.toString().orEmpty()
+            ).getOrThrow()
+        }
     }
 
     override suspend fun getRole(): OperationRole = checkNotNull(
@@ -85,5 +94,18 @@ class PreOperationalRepositoryImpl @Inject constructor(
                 novelties = novelties
             )
         }.getOrThrow()
+    }
+
+    private suspend fun fetchPreOperational(
+        androidId: String,
+        accessToken: AccessTokenModel?
+    ): ScreenModel {
+        return preOperationalRemoteDataSource.getPreOperationalScreen(
+            role = checkNotNull(OperationRole.getRoleByName(accessToken?.role.orEmpty())),
+            androidId = androidId,
+            vehicleCode = operationCacheDataSource.observeOperationConfig()
+                .first()?.vehicleCode.orEmpty(),
+            idTurn = accessToken?.turn?.id?.toString().orEmpty()
+        ).getOrThrow()
     }
 }

@@ -95,6 +95,7 @@ class PreOperationalRepositoryImplTest {
             }
         }
         coEvery { authCacheDataSource.observeAccessToken() } returns flow { emit(accessTokenModel) }
+        coEvery { authCacheDataSource.retrieveAccessTokenByRole(any()) } returns accessTokenModel
         coEvery { operationCacheDataSource.observeOperationConfig() } returns flow { emit(null) }
         coEvery {
             preOperationalRemoteDataSource.getPreOperationalScreenView(

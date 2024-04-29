@@ -6,11 +6,13 @@ import com.squareup.moshi.Json
 data class PatientResponse(
     @Json(name = "id") val id: Int,
     @Json(name = "full_name") val fullName: String,
-    @Json(name = "id_aph") val idAph: Int
+    @Json(name = "id_aph") val idAph: Int,
+    @Json(name = "disabled") val disabled: Boolean
 )
 
 fun PatientResponse.mapToUi(): PatientUiModel = PatientUiModel(
     id = id,
     fullName = fullName,
-    idAph = idAph
+    idAph = idAph,
+    disabled = disabled
 )

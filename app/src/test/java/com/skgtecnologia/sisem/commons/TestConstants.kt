@@ -386,7 +386,8 @@ val chipOptionsResponseMock = ChipOptionsResponse(
     visibility = true,
     arrangement = Arrangement.Start,
     modifier = Modifier,
-    selectionVisibility = null
+    selectionVisibility = null,
+    deselectionVisibility = null
 )
 
 val chipSelectionResponseMock = ChipSelectionResponse(
@@ -403,6 +404,7 @@ val chipSelectionResponseMock = ChipSelectionResponse(
     ),
     selected = "selected",
     selectionVisibility = mapOf(),
+    deselectionVisibility = mapOf(),
     visibility = true,
     required = false,
     arrangement = Arrangement.Start,

@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.domain.medicalhistory.usecases
 
 import com.skgtecnologia.sisem.commons.ID_APH
+import com.skgtecnologia.sisem.domain.incident.IncidentRepository
 import com.skgtecnologia.sisem.domain.medicalhistory.MedicalHistoryRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -13,6 +14,9 @@ import org.junit.Test
 class SendMedicalHistoryTest {
 
     @MockK
+    private lateinit var incidentRepository: IncidentRepository
+
+    @MockK
     private lateinit var medicalHistoryRepository: MedicalHistoryRepository
 
     private lateinit var sendMedicalHistory: SendMedicalHistory
@@ -21,7 +25,7 @@ class SendMedicalHistoryTest {
     fun setUp() {
         MockKAnnotations.init(this)
 
-        sendMedicalHistory = SendMedicalHistory(medicalHistoryRepository)
+        sendMedicalHistory = SendMedicalHistory(incidentRepository, medicalHistoryRepository)
     }
 
     @Test
@@ -42,6 +46,10 @@ class SendMedicalHistoryTest {
                 any(),
                 any()
             )
+        } returns Unit
+
+        coEvery {
+            incidentRepository.getIncident()
         } returns Unit
 
         val result = sendMedicalHistory(

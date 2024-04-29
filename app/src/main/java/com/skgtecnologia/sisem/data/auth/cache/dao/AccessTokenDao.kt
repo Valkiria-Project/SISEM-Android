@@ -22,6 +22,9 @@ interface AccessTokenDao {
     @Query("SELECT * FROM access_token WHERE user_name = :username")
     suspend fun getAccessTokenByUsername(username: String): AccessTokenEntity
 
+    @Query("SELECT * FROM access_token WHERE role = :role")
+    suspend fun getAccessTokenByRole(role: String): AccessTokenEntity
+
     @Query(
         """
             UPDATE access_token
@@ -30,6 +33,15 @@ interface AccessTokenDao {
              """
     )
     suspend fun updatePreOperationalStatus(role: String, status: Boolean)
+
+    @Query(
+        """
+            UPDATE access_token
+            SET turn_id = :turnId
+            WHERE turn_id = :previousTurnId
+             """
+    )
+    suspend fun updateTurn(turnId: String, previousTurnId: String)
 
     @Query("DELETE FROM access_token")
     suspend fun deleteAccessToken()

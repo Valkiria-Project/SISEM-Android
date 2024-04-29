@@ -68,5 +68,6 @@ object NavigationArgument {
     const val REVERT_FINDING = "revert_finding"
     const val ROLE = "role"
     const val SIGNATURE = "signature"
+    const val USERNAME = "username"
     const val VITAL_SIGNS = "vital_signs"
 }

@@ -125,8 +125,8 @@ class PreOperationalViewViewModel @Inject constructor(
             job?.cancel()
             job = viewModelScope.launch(Dispatchers.IO) {
                 logoutCurrentUser.invoke()
-                    .onSuccess {
-                        UnauthorizedEventHandler.publishUnauthorizedEvent()
+                    .onSuccess { username ->
+                        UnauthorizedEventHandler.publishUnauthorizedEvent(username)
                     }
             }
         }
