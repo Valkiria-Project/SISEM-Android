@@ -27,14 +27,14 @@ class OperationRepositoryImpl @Inject constructor(
     }
 
     override suspend fun logoutTurn(username: String): String {
-        val turnId = authCacheDataSource.observeAccessToken()
+        val previousTurnId = authCacheDataSource.observeAccessToken()
             .first()?.turn?.id?.toString().orEmpty()
         val idEmployed = authCacheDataSource.retrieveAccessTokenByUsername(username)
             .userId.toString()
         val code = operationCacheDataSource.observeOperationConfig().first()?.vehicleCode.orEmpty()
 
         return operationRemoteDataSource.logoutTurn(
-            idTurn = turnId,
+            idTurn = previousTurnId,
             idEmployed = idEmployed,
             vehicleCode = code
         ).onSuccess {
@@ -48,10 +48,10 @@ class OperationRepositoryImpl @Inject constructor(
                     )
                 )
             }
-        }.mapResult {idTurn ->
-            authCacheDataSource.updateTurn(idTurn, turnId)
+        }.mapResult { turnId ->
+            authCacheDataSource.updateTurn(turnId, previousTurnId)
 
-            idTurn
+            turnId
         }.getOrThrow()
     }
 

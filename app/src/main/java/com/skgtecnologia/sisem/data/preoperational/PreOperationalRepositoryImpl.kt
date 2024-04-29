@@ -43,7 +43,7 @@ class PreOperationalRepositoryImpl @Inject constructor(
         val preOpConfig = operationCacheDataSource.observeOperationConfig()
             .first()?.preoperationalExec.orEmpty()
 
-        // TODO: Perform correct logic
+        // WHOPS: Perform correct logic
         return if (preOpConfig.containsKey("HOLA")) {
             fetchPreOperational(androidId, accessToken)
         } else {

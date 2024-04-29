@@ -19,7 +19,7 @@ data class OperationResponse(
     @Json(name = "vehicle_code") val vehicleCode: String?,
     @Json(name = "vehicle_config") val vehicleConfig: VehicleConfigResponse?,
     @Json(name = "max_file_size_kb") val maxFileSizeKb: String?,
-    @Json(name = "preoperational_exec") val preoperationalExec:  Map<String, Boolean>?
+    @Json(name = "preoperational_exec") val preoperationalExec: Map<String, Boolean>?
 )
 
 fun OperationResponse.mapToDomain(): OperationModel = OperationModel(

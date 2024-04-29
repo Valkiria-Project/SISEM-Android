@@ -5,7 +5,6 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
-import com.skgtecnologia.sisem.domain.authcards.model.VehicleConfigModel
 
 @Entity(tableName = "operation")
 data class OperationEntity(

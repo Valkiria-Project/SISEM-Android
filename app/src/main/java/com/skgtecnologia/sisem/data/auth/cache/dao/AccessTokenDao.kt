@@ -35,10 +35,10 @@ interface AccessTokenDao {
         """
             UPDATE access_token
             SET turn_id = :turnId
-            WHERE turn_id = :previousTurn
+            WHERE turn_id = :previousTurnId
              """
     )
-    suspend fun updateTurn(turnId: String, previousTurn: String)
+    suspend fun updateTurn(turnId: String, previousTurnId: String)
 
     @Query("DELETE FROM access_token")
     suspend fun deleteAccessToken()

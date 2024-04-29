@@ -471,7 +471,7 @@ private fun IncidentPatient(patientUiModel: PatientUiModel, onAction: (idAph: In
         horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
         Button(
-            onClick = { onAction(patientUiModel.idAph) },
+            onClick = { if (patientUiModel.disabled.not()) onAction(patientUiModel.idAph) },
             modifier = Modifier
                 .weight(1f)
                 .padding(end = 8.dp)
@@ -491,13 +491,15 @@ private fun IncidentPatient(patientUiModel: PatientUiModel, onAction: (idAph: In
             )
         }
 
-        Button(
-            onClick = { /*TODO*/ }
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_email),
-                contentDescription = null
-            )
+        if (patientUiModel.disabled) {
+            Button(
+                onClick = { /*TODO*/ }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_email),
+                    contentDescription = null
+                )
+            }
         }
     }
 }

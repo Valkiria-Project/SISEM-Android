@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.ui.medicalhistory
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
@@ -10,6 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -121,6 +123,23 @@ private const val TEMPERATURE_SYMBOL = "°C"
 private const val GLUCOMETRY_SYMBOL = "mg/dL"
 private const val SEVEN_DAYS = 7L
 private const val NINE_MONTHS = 9L
+private const val PATIENT_DOCUMENT_TYPE_IDENTIFIER = "KEY_DOCUMENT_TYPE"
+private const val RESPONSIBLE_DOCUMENT_TYPE_IDENTIFIER = "KEY_DOCUMENT_TYPE_RESPONSIBLE"
+private const val PATIENT_DOCUMENT_IDENTIFIER = "KEY_DOCUMENT"
+private const val CC_ID_TYPE = "CC"
+private const val CE_ID_TYPE = "CE"
+private const val CD_ID_TYPE = "CD"
+private const val PA_ID_TYPE = "PA"
+private const val SC_ID_TYPE = "SC"
+private const val PTP_ID_TYPE = "PTP"
+private const val PEP_ID_TYPE = "PEP"
+private const val RC_ID_TYPE = "RC"
+private const val TI_ID_TYPE = "TI"
+private const val NUIP_ID_TYPE = "NUIP"
+private const val ASI_ID_TYPE = "ASI"
+private const val MSI_ID_TYPE = "MSI"
+private const val TE_ID_TYPE = "TE"
+private const val EP_ID_TYPE = "EP"
 
 // FIXME: Split into use cases
 @Suppress("LargeClass", "TooManyFunctions", "LongMethod", "ComplexMethod")
@@ -206,6 +225,13 @@ class MedicalHistoryViewModel @Inject constructor(
             getMedicalHistoryScreen.invoke(idAph = idAph.toString())
                 .onSuccess { medicalHistoryScreenModel ->
                     medicalHistoryScreenModel.getFormInitialValues()
+
+//                    medic
+//                    if (bodyRowModel.identifier == PATIENT_DOCUMENT_TYPE_IDENTIFIER) {
+//                        updatedBody = updatePatientDocumentInputType(
+//                            chipSelectionAction.chipSelectionItemUiModel.id
+//                        )
+//                    }
 
 //                    val updatedBody = medicalHistoryScreenModel.body.map { model ->
 //                        if (model is MediaActionsUiModel) {
@@ -429,6 +455,14 @@ class MedicalHistoryViewModel @Inject constructor(
             }.also { body -> updatedBody = body }
         }
 
+        if (chipSelectionAction.identifier == PATIENT_DOCUMENT_TYPE_IDENTIFIER ||
+            chipSelectionAction.identifier == RESPONSIBLE_DOCUMENT_TYPE_IDENTIFIER
+        ) {
+            updatedBody = updatePatientDocumentInputType(
+                chipSelectionAction.chipSelectionItemUiModel.id
+            )
+        }
+
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(
                 body = updatedBody
@@ -436,7 +470,36 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
-    @Suppress("MagicNumber", "ComplexMethod")
+    private fun updatePatientDocumentInputType(id: String) = updateBodyModel(
+        uiModels = uiState.screenModel?.body,
+        updater = { model ->
+            if (model is TextFieldUiModel && model.identifier == PATIENT_DOCUMENT_IDENTIFIER) {
+                model.copy(keyboardOptions = updateKeyboardOptions(id))
+            } else {
+                model
+            }
+        }
+    )
+
+    private fun updateKeyboardOptions(id: String) = when (id) {
+        CC_ID_TYPE -> KeyboardOptions(keyboardType = KeyboardType.Number)
+        CE_ID_TYPE -> KeyboardOptions(keyboardType = KeyboardType.Text)
+        CD_ID_TYPE -> KeyboardOptions(keyboardType = KeyboardType.Text)
+        PA_ID_TYPE -> KeyboardOptions(keyboardType = KeyboardType.Text)
+        SC_ID_TYPE -> KeyboardOptions(keyboardType = KeyboardType.Text)
+        PTP_ID_TYPE -> KeyboardOptions(keyboardType = KeyboardType.Text)
+        PEP_ID_TYPE -> KeyboardOptions(keyboardType = KeyboardType.Text)
+        RC_ID_TYPE -> KeyboardOptions(keyboardType = KeyboardType.Number)
+        TI_ID_TYPE -> KeyboardOptions(keyboardType = KeyboardType.Number)
+        NUIP_ID_TYPE -> KeyboardOptions(keyboardType = KeyboardType.Number)
+        ASI_ID_TYPE -> KeyboardOptions(keyboardType = KeyboardType.Text)
+        MSI_ID_TYPE -> KeyboardOptions(keyboardType = KeyboardType.Text)
+        TE_ID_TYPE -> KeyboardOptions(keyboardType = KeyboardType.Text)
+        EP_ID_TYPE -> KeyboardOptions(keyboardType = KeyboardType.Text)
+        else -> KeyboardOptions(keyboardType = KeyboardType.Text)
+    }
+
+    @Suppress("ComplexMethod", "MagicNumber")
     private fun updateGlasgow() {
         val mro = chipSelectionValues[GLASGOW_MRO_KEY]?.name?.substring(0, 1)?.toIntOrNull() ?: 0
         val mrv = chipSelectionValues[GLASGOW_MRV_KEY]?.name?.substring(0, 1)?.toIntOrNull() ?: 0
