@@ -880,17 +880,13 @@ class MedicalHistoryViewModel @Inject constructor(
             }
         )
 
-        val viewsVisibility =
-            if (
-                segmentedSwitchAction.identifier == ACCEPT_TRANSFER_KEY &&
-                !segmentedSwitchAction.status
-            ) {
-                segmentedSwitchAction.viewsVisibility.map { entry ->
-                    entry.key to true
-                }.toMap()
-            } else {
-                segmentedSwitchAction.viewsVisibility
-            }
+        val viewsVisibility = if (segmentedSwitchAction.identifier == ACCEPT_TRANSFER_KEY) {
+            segmentedSwitchAction.viewsVisibility.map { entry ->
+                entry.key to !segmentedSwitchAction.status
+            }.toMap()
+        } else {
+            segmentedSwitchAction.viewsVisibility
+        }
 
         viewsVisibility.forEach { viewVisibility ->
             updateBodyModel(
