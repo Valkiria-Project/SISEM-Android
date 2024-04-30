@@ -6,12 +6,18 @@ private const val VEHICLE_CODE = "<Codigo>"
 private const val RESPONSIBLE = "<Responsable>"
 private const val RESPONSIBLE_DOCUMENT_TYPE = "<TipoDocumento>"
 private const val RESPONSIBLE_DOCUMENT = "<Documento>"
+private const val WITHDRAWAL_TYPE = "<TipoRetiro>"
+
+private const val TRANSFER = "TRASLADO"
+private const val ASSESSMENT = "VALORACION"
+private const val TRANSFER_TEXT = "EL TRASLADO EN EL VEHÍCULO DE EMERGENCIA"
+private const val ASSESSMENT_TEXT = "LA VALORACIÓN EN EL VEHICULO DE EMERGENCIA"
 
 private const val WITHDRAWAL_WITNESS_TEXT =
     "<p color=\"#FFFFFF\" align=\"justify\"><font color=\"#FFFFFF\">Obrando en representación" +
         " y/o tutor del paciente <b>$PATIENT</b> identificado con documento de identidad" +
         " <b>$DOCUMENT</b> <br>En forma LIBRE, ESPONTÁNEA Y VOLUNTARIAMENTE MANIFIESTO MI" +
-        " NEGATIVA A ACEPTAR QUE SE REALICE EL TRASLADO EN EL VEHÍCULO DE EMERGENCIA" +
+        " NEGATIVA A ACEPTAR QUE SE REALICE $WITHDRAWAL_TYPE" +
         " <b>$VEHICLE_CODE.</b> <br>Se me explicó clara y detalladamente que puede presentar" +
         " riesgos y posibles complicaciones para la salud en general de mi representado al" +
         " no ser valorado y trasladado. <br>En consecuencia, <b>NO AUTORIZO</b> la" +
@@ -30,11 +36,23 @@ private const val WITHDRAWAL_RESPONSIBLE_TEXT =
         " Identificado" + " con <b>$RESPONSIBLE_DOCUMENT_TYPE</b> número " +
         "<b>$RESPONSIBLE_DOCUMENT</b> expedida en.</font></p>"
 
-fun getWithdrawalWitnessText(patient: String, document: String, code: String): String =
+fun getWithdrawalWitnessText(
+    patient: String,
+    document: String,
+    code: String,
+    withdrawalType: String?
+): String =
     WITHDRAWAL_WITNESS_TEXT
         .replace(PATIENT, patient)
         .replace(DOCUMENT, document)
         .replace(VEHICLE_CODE, code)
+        .replace(WITHDRAWAL_TYPE, getWithdrawalTypeText(withdrawalType))
+
+private fun getWithdrawalTypeText(withdrawalType: String?) = when (withdrawalType) {
+    TRANSFER -> TRANSFER_TEXT
+    ASSESSMENT -> ASSESSMENT_TEXT
+    else -> TRANSFER_TEXT
+}
 
 fun getWithdrawalResponsibleText(
     responsible: String,

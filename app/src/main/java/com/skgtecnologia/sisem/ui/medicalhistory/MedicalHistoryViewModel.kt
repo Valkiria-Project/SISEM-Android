@@ -60,6 +60,7 @@ import com.skgtecnologia.sisem.domain.medicalhistory.model.TAS_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.TEMPERATURE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_DECLARATION_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_RESPONSIBLE_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_TYPE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.getWithdrawalResponsibleText
 import com.skgtecnologia.sisem.domain.medicalhistory.model.getWithdrawalWitnessText
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryScreen
@@ -437,6 +438,10 @@ class MedicalHistoryViewModel @Inject constructor(
             updateGlasgow()
         }
 
+        if (chipSelectionAction.identifier == WITHDRAWAL_TYPE_KEY) {
+            updateWithdrawalWitness(chipSelectionAction.chipSelectionItemUiModel.id)
+        }
+
         var updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
             identifier = chipSelectionAction.identifier,
@@ -774,7 +779,7 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
-    private fun updateWithdrawalWitness() {
+    private fun updateWithdrawalWitness(withdrawalType: String? = null) {
         val updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
             identifier = WITHDRAWAL_DECLARATION_KEY,
@@ -784,7 +789,8 @@ class MedicalHistoryViewModel @Inject constructor(
                         text = getWithdrawalWitnessText(
                             patient = fieldsValues.getPatientName(),
                             document = fieldsValues.getPatientDocument(),
-                            code = uiState.operationConfig?.vehicleConfig?.typeResource.orEmpty()
+                            code = uiState.operationConfig?.vehicleConfig?.typeResource.orEmpty(),
+                            withdrawalType = withdrawalType
                         )
                     )
                 } else {
