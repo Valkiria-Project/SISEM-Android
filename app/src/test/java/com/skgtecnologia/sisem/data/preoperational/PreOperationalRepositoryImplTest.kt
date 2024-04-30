@@ -52,7 +52,7 @@ class PreOperationalRepositoryImplTest {
         }
         coEvery { authCacheDataSource.observeAccessToken() } returns flow { emit(accessTokenModel) }
         coEvery {
-            authCacheDataSource.retrieveAccessTokenByRole(DRIVER_ROLE)
+            authCacheDataSource.retrieveAccessTokenByRole(DRIVER_ROLE.lowercase())
         } returns accessTokenModel
         coEvery { operationCacheDataSource.observeOperationConfig() } returns flow { emit(null) }
         coEvery {
