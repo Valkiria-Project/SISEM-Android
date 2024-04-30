@@ -1,6 +1,8 @@
 package com.skgtecnologia.sisem.ui.preoperational.create
 
+import androidx.lifecycle.SavedStateHandle
 import com.skgtecnologia.sisem.commons.ANDROID_ID
+import com.skgtecnologia.sisem.commons.DRIVER_ROLE
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.chipOptionsUiModelMock
@@ -10,6 +12,7 @@ import com.skgtecnologia.sisem.commons.inventoryCheckUiModelMock
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.commons.textFieldUiModelMock
 import com.skgtecnologia.sisem.commons.uiAction
+import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.skgtecnologia.sisem.domain.authcards.model.VehicleConfigModel
@@ -19,6 +22,7 @@ import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
 import com.skgtecnologia.sisem.ui.login.LoginNavigationModel
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.valkiria.uicomponents.action.GenericUiAction
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -57,6 +61,9 @@ class PreOperationalViewModelTest {
     @MockK
     private lateinit var sendPreOperational: SendPreOperational
 
+    private val savedStateHandle =
+        SavedStateHandle(mapOf(NavigationArgument.ROLE to OperationRole.DRIVER.name))
+
     private lateinit var viewModel: PreOperationalViewModel
 
     @Before
@@ -78,9 +85,12 @@ class PreOperationalViewModelTest {
         )
         val operationModel = mockk<OperationModel>()
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
-        coEvery { getPreOperationalScreen.invoke(any()) } returns Result.success(screenModel)
+        coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
+            screenModel
+        )
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -98,9 +108,12 @@ class PreOperationalViewModelTest {
         runTest {
             val operationModel = mockk<OperationModel>()
             coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
-            coEvery { getPreOperationalScreen.invoke(any()) } returns Result.failure(Throwable())
+            coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.failure(
+                Throwable()
+            )
 
             viewModel = PreOperationalViewModel(
+                savedStateHandle,
                 androidIdProvider,
                 getLoginNavigationModel,
                 getPreOperationalScreen,
@@ -118,11 +131,12 @@ class PreOperationalViewModelTest {
     fun `when observeOperationConfig is failure and getPreOperationalScreen is success`() =
         runTest {
             coEvery { observeOperationConfig.invoke() } returns Result.failure(Throwable())
-            coEvery { getPreOperationalScreen.invoke(any()) } returns Result.success(
+            coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
                 emptyScreenModel
             )
 
             viewModel = PreOperationalViewModel(
+                savedStateHandle,
                 androidIdProvider,
                 getLoginNavigationModel,
                 getPreOperationalScreen,
@@ -139,9 +153,12 @@ class PreOperationalViewModelTest {
     @Test
     fun `when observeOperationConfig and getPreOperationalScreen are failure`() = runTest {
         coEvery { observeOperationConfig.invoke() } returns Result.failure(Throwable())
-        coEvery { getPreOperationalScreen.invoke(any()) } returns Result.failure(Throwable())
+        coEvery {
+            getPreOperationalScreen.invoke(DRIVER_ROLE, any())
+        } returns Result.failure(Throwable())
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -166,9 +183,12 @@ class PreOperationalViewModelTest {
         val identifier = "identifier"
         val operationModel = mockk<OperationModel>()
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
-        coEvery { getPreOperationalScreen.invoke(any()) } returns Result.success(screenModel)
+        coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
+            screenModel
+        )
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -200,9 +220,12 @@ class PreOperationalViewModelTest {
         val identifier = "identifier"
         val operationModel = mockk<OperationModel>()
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
-        coEvery { getPreOperationalScreen.invoke(any()) } returns Result.success(screenModel)
+        coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
+            screenModel
+        )
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -233,9 +256,12 @@ class PreOperationalViewModelTest {
         val identifier = "identifier"
         val operationModel = mockk<OperationModel>()
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
-        coEvery { getPreOperationalScreen.invoke(any()) } returns Result.success(screenModel)
+        coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
+            screenModel
+        )
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -267,9 +293,12 @@ class PreOperationalViewModelTest {
         val identifier = "identifier"
         val operationModel = mockk<OperationModel>()
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
-        coEvery { getPreOperationalScreen.invoke(any()) } returns Result.success(screenModel)
+        coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
+            screenModel
+        )
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -300,9 +329,12 @@ class PreOperationalViewModelTest {
             every { vehicleConfig } returns vehicleConfigModel
         }
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
-        coEvery { getPreOperationalScreen.invoke(any()) } returns Result.success(emptyScreenModel)
+        coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
+            emptyScreenModel
+        )
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -326,9 +358,12 @@ class PreOperationalViewModelTest {
         )
         val operationModel = mockk<OperationModel>()
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
-        coEvery { getPreOperationalScreen.invoke(any()) } returns Result.success(screenModel)
+        coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
+            screenModel
+        )
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -349,13 +384,16 @@ class PreOperationalViewModelTest {
             every { isTurnComplete } returns true
         }
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
-        coEvery { getPreOperationalScreen.invoke(any()) } returns Result.success(emptyScreenModel)
+        coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
+            emptyScreenModel
+        )
         coEvery { sendPreOperational.invoke(any(), any(), any(), any()) } returns Result.success(
             Unit
         )
         coEvery { getLoginNavigationModel.invoke() } returns Result.success(loginNavigationModel)
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -373,13 +411,16 @@ class PreOperationalViewModelTest {
     fun `when sendPreOperational is success and getLoginNavigationModel failure`() = runTest {
         val operationModel = mockk<OperationModel>()
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
-        coEvery { getPreOperationalScreen.invoke(any()) } returns Result.success(emptyScreenModel)
+        coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
+            emptyScreenModel
+        )
         coEvery { sendPreOperational.invoke(any(), any(), any(), any()) } returns Result.success(
             Unit
         )
         coEvery { getLoginNavigationModel.invoke() } returns Result.failure(IllegalStateException())
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -397,12 +438,15 @@ class PreOperationalViewModelTest {
     fun `when sendPreOperational is failure`() = runTest {
         val operationModel = mockk<OperationModel>()
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
-        coEvery { getPreOperationalScreen.invoke(any()) } returns Result.success(emptyScreenModel)
+        coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
+            emptyScreenModel
+        )
         coEvery { sendPreOperational.invoke(any(), any(), any(), any()) } returns Result.failure(
             IllegalStateException()
         )
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -420,9 +464,12 @@ class PreOperationalViewModelTest {
     fun `when consumeNavigationEvent is called`() = runTest {
         val operationModel = mockk<OperationModel>()
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
-        coEvery { getPreOperationalScreen.invoke(any()) } returns Result.success(emptyScreenModel)
+        coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
+            emptyScreenModel
+        )
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -440,10 +487,13 @@ class PreOperationalViewModelTest {
     fun `when consumeInfoEvent is called`() = runTest {
         val operationModel = mockk<OperationModel>()
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
-        coEvery { getPreOperationalScreen.invoke(any()) } returns Result.success(emptyScreenModel)
+        coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
+            emptyScreenModel
+        )
         coEvery { logoutCurrentUser.invoke() } returns Result.success("")
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,

@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.data.preoperational
 
+import com.skgtecnologia.sisem.commons.DRIVER_ROLE
 import com.skgtecnologia.sisem.commons.SERIAL
 import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.data.auth.cache.AuthCacheDataSource
@@ -50,6 +51,9 @@ class PreOperationalRepositoryImplTest {
             }
         }
         coEvery { authCacheDataSource.observeAccessToken() } returns flow { emit(accessTokenModel) }
+        coEvery {
+            authCacheDataSource.retrieveAccessTokenByRole(DRIVER_ROLE)
+        } returns accessTokenModel
         coEvery { operationCacheDataSource.observeOperationConfig() } returns flow { emit(null) }
         coEvery {
             preOperationalRemoteDataSource.getPreOperationalScreen(
@@ -60,7 +64,7 @@ class PreOperationalRepositoryImplTest {
             )
         } returns Result.success(emptyScreenModel)
 
-        val result = preOperationalRepositoryImpl.getPreOperationalScreen(SERIAL)
+        val result = preOperationalRepositoryImpl.getPreOperationalScreen(DRIVER_ROLE, SERIAL)
 
         Assert.assertEquals(emptyScreenModel, result)
     }

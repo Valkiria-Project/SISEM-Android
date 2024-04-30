@@ -12,21 +12,23 @@ import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalViewIdentifier
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetAuthCardViewScreen
+import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalPending
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.valkiria.uicomponents.action.UiAction
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltViewModel
 class AuthCardViewViewModel @Inject constructor(
     private val androidIdProvider: AndroidIdProvider,
-    private val logoutCurrentUser: LogoutCurrentUser,
-    private val getAuthCardViewScreen: GetAuthCardViewScreen
+    private val getAuthCardViewScreen: GetAuthCardViewScreen,
+    private val getPreOperationalPending: GetPreOperationalPending,
+    private val logoutCurrentUser: LogoutCurrentUser
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -68,9 +70,19 @@ class AuthCardViewViewModel @Inject constructor(
 
     fun navigate(identifier: String) {
         runCatching {
-            uiState = uiState.copy(
-                navigationModel = AuthCardViewNavigationModel(role = identifier.identifierToRole())
-            )
+            val role = identifier.identifierToRole()
+            job?.cancel()
+            job = viewModelScope.launch {
+                getPreOperationalPending.invoke(role)
+                    .onSuccess { requiresPreOperational ->
+                        uiState = uiState.copy(
+                            navigationModel = AuthCardViewNavigationModel(
+                                role = role,
+                                isPendingPreOperational = requiresPreOperational
+                            )
+                        )
+                    }
+            }
         }.onFailure {
             uiState = uiState.copy(
                 errorModel = it.mapToUi()

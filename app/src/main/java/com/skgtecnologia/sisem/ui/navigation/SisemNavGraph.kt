@@ -179,7 +179,14 @@ private fun NavGraphBuilder.authGraph(
         }
 
         composable(
-            route = AuthNavigationRoute.PreOperationalScreen.route
+            route = AuthNavigationRoute.PreOperationalScreen.route +
+                    "?$ROLE={$ROLE}",
+            arguments = listOf(
+                navArgument(ROLE) {
+                    type = NavType.StringType
+                    nullable = true
+                }
+            )
         ) { navBackStackEntry ->
             val revertFinding = navBackStackEntry.savedStateHandle.get<Boolean>(REVERT_FINDING)
             navBackStackEntry.savedStateHandle.remove<Boolean>(REVERT_FINDING)
