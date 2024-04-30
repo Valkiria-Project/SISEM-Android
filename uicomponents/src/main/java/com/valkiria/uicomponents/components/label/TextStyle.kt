@@ -30,7 +30,7 @@ fun TextStyle?.toTextStyle() = when (this) {
     TextStyle.HEADLINE_8 -> MaterialTheme.typography.titleSmall
     TextStyle.BODY_1 -> MaterialTheme.typography.bodyLarge
     TextStyle.BODY_2 -> MaterialTheme.typography.bodyMedium
-    TextStyle.BUTTON_2 -> MaterialTheme.typography.labelMedium
     TextStyle.BUTTON_1 -> MaterialTheme.typography.labelLarge
+    TextStyle.BUTTON_2 -> MaterialTheme.typography.labelMedium
     else -> MaterialTheme.typography.bodyLarge
 }
