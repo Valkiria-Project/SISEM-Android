@@ -18,7 +18,8 @@ class PreOperationalRepositoryImpl @Inject constructor(
 ) : PreOperationalRepository {
 
     override suspend fun getPreOperationalScreen(
-        roleName: String?, androidId: String
+        roleName: String?,
+        androidId: String
     ): ScreenModel {
         val accessToken = if (roleName != null) {
             checkNotNull(authCacheDataSource.retrieveAccessTokenByRole(roleName.lowercase()))
