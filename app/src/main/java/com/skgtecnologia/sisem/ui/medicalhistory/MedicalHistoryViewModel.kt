@@ -58,6 +58,7 @@ import com.skgtecnologia.sisem.domain.medicalhistory.model.SECOND_LASTNAME_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.SECOND_NAME_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.TAS_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.TEMPERATURE_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WHO_WITHDRAWAL_RESPONSIBLE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_DECLARATION_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_RESPONSIBLE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_TYPE_KEY
@@ -186,6 +187,11 @@ class MedicalHistoryViewModel @Inject constructor(
         DOCUMENT_KEY,
         RESPONSIBLE_NAME_KEY,
         RESPONSIBLE_DOCUMENT_NUMBER_KEY
+    )
+
+    private val withdrawalIdentifiers = listOf(
+        WITHDRAWAL_TYPE_KEY,
+        WHO_WITHDRAWAL_RESPONSIBLE_KEY
     )
 
     private var temporalInfoCard by mutableStateOf("")
@@ -438,8 +444,10 @@ class MedicalHistoryViewModel @Inject constructor(
             updateGlasgow()
         }
 
-        if (chipSelectionAction.identifier == WITHDRAWAL_TYPE_KEY) {
+        if (withdrawalIdentifiers.contains(chipSelectionAction.identifier)) {
+            updatePatientName()
             updateWithdrawalWitness(chipSelectionAction.chipSelectionItemUiModel.id)
+            updateWithdrawalResponsible()
         }
 
         var updatedBody = updateBodyModel(
