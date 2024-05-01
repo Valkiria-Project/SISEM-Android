@@ -39,12 +39,20 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
-private const val INITIAL_QUANTITY = "0"
+const val ELEMENT_TYPE_KEY = "KEY_ELEMENT_TYPE"
+const val MOV_TYPE_KEY = "KEY_MOV_TYPE"
+
 private const val CANT_EXISTS_KEY = "KEY_CANT_EXISTS"
-private const val CANT_RETURN = "KEY_CANT_RETURN"
-private const val CANT_TRANSFER = "KEY_CANT_TRANSFER"
+private const val GENERIC_INS_NAME_KEY = "KEY_GENERIC_INS_NAME"
+private const val GENERIC_MED_NAME_KEY = "KEY_GENERIC_MED_NAME"
+private const val CANT_TRANSFER_KEY = "KEY_CANT_TRANSFER"
 private const val VEHICLE_CODE_KEY = "KEY_VEHICLE_CODE"
 private const val VEHICLE_TYPE_KEY = "KEY_VEHICLE_TYPE"
+private const val CANT_RETURN_KEY = "KEY_CANT_RETURN"
+private const val SUPPLIES = "INSUMO"
+private const val MEDICATION = "MEDICATION"
+private const val TRANSFER = "TRANSFER"
+private const val RETURN = "RETURN"
 private const val CODE_LIMIT = 4
 private const val DEVICE_TYPE_TEXT = "<font color=\"#FFFFFF\"><b>%s</b></font>"
 
@@ -70,6 +78,78 @@ class InventoryViewViewModel @Inject constructor(
     private var fieldsValues = mutableStateMapOf<String, InputUiModel>()
     private var dropDownValue = mutableStateMapOf<String, DropDownInputUiModel>()
     private var labelValue = mutableStateMapOf<String, String>()
+
+    private val suppliesMap = mapOf(
+        GENERIC_INS_NAME_KEY to true,
+        GENERIC_MED_NAME_KEY to false,
+        CANT_EXISTS_KEY to true
+    )
+
+    private val medMap = mapOf(
+        GENERIC_INS_NAME_KEY to false,
+        GENERIC_MED_NAME_KEY to true,
+        CANT_EXISTS_KEY to true
+    )
+
+    private val transferMap = mapOf(
+        GENERIC_INS_NAME_KEY to false,
+        GENERIC_MED_NAME_KEY to false,
+        CANT_EXISTS_KEY to true,
+        CANT_TRANSFER_KEY to true,
+        VEHICLE_CODE_KEY to true,
+        VEHICLE_TYPE_KEY to true,
+        CANT_RETURN_KEY to false
+    )
+
+    private val returnMap = mapOf(
+        GENERIC_INS_NAME_KEY to false,
+        GENERIC_MED_NAME_KEY to false,
+        CANT_EXISTS_KEY to true,
+        CANT_TRANSFER_KEY to false,
+        VEHICLE_CODE_KEY to false,
+        VEHICLE_TYPE_KEY to false,
+        CANT_RETURN_KEY to true
+    )
+
+    private val transferSuppliesMap = mapOf(
+        GENERIC_INS_NAME_KEY to true,
+        GENERIC_MED_NAME_KEY to false,
+        CANT_EXISTS_KEY to true,
+        CANT_TRANSFER_KEY to true,
+        VEHICLE_CODE_KEY to true,
+        VEHICLE_TYPE_KEY to true,
+        CANT_RETURN_KEY to false
+    )
+
+    private val transferMedMap = mapOf(
+        GENERIC_INS_NAME_KEY to false,
+        GENERIC_MED_NAME_KEY to true,
+        CANT_EXISTS_KEY to true,
+        CANT_TRANSFER_KEY to true,
+        VEHICLE_CODE_KEY to true,
+        VEHICLE_TYPE_KEY to true,
+        CANT_RETURN_KEY to false
+    )
+
+    private val returnSuppliesMap = mapOf(
+        GENERIC_INS_NAME_KEY to true,
+        GENERIC_MED_NAME_KEY to false,
+        CANT_EXISTS_KEY to true,
+        CANT_TRANSFER_KEY to false,
+        VEHICLE_CODE_KEY to false,
+        VEHICLE_TYPE_KEY to false,
+        CANT_RETURN_KEY to true
+    )
+
+    private val returnMedMap = mapOf(
+        GENERIC_INS_NAME_KEY to false,
+        GENERIC_MED_NAME_KEY to true,
+        CANT_EXISTS_KEY to true,
+        CANT_TRANSFER_KEY to false,
+        VEHICLE_CODE_KEY to false,
+        VEHICLE_TYPE_KEY to false,
+        CANT_RETURN_KEY to true
+    )
 
     init {
         val inventoryType = InventoryType.from(inventoryName.orEmpty())
@@ -104,55 +184,54 @@ class InventoryViewViewModel @Inject constructor(
         }
     }
 
+    @Suppress("ComplexMethod")
     fun handleChipSelectionAction(chipSelectionAction: GenericUiAction.ChipSelectionAction) {
         chipSelectionValues[chipSelectionAction.identifier] =
             chipSelectionAction.chipSelectionItemUiModel
 
         var updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
-            identifiers = listOf(
-                chipSelectionAction.identifier,
-                CANT_EXISTS_KEY,
-                CANT_RETURN,
-                CANT_TRANSFER
-            ),
+            identifier = chipSelectionAction.identifier,
             updater = { model ->
-                when (model) {
-                    is ChipSelectionUiModel -> {
-                        model.copy(selected = chipSelectionAction.chipSelectionItemUiModel.name)
-                    }
-
-                    is LabelUiModel -> {
-                        labelValue[CANT_EXISTS_KEY] = INITIAL_QUANTITY
-                        model.copy(text = INITIAL_QUANTITY)
-                    }
-
-                    is TextFieldUiModel -> {
-                        fieldsValues[CANT_TRANSFER] = fieldsValues[CANT_TRANSFER]?.copy(
-                            updatedValue = INITIAL_QUANTITY
-                        ) ?: InputUiModel(
-                            identifier = CANT_TRANSFER,
-                            updatedValue = INITIAL_QUANTITY
-                        )
-
-                        fieldsValues[CANT_RETURN] = fieldsValues[CANT_RETURN]?.copy(
-                            updatedValue = INITIAL_QUANTITY
-                        ) ?: InputUiModel(
-                            identifier = CANT_RETURN,
-                            updatedValue = INITIAL_QUANTITY
-                        )
-
-                        model.copy(text = INITIAL_QUANTITY)
-                    }
-
-                    else -> {
-                        model
-                    }
+                if (model is ChipSelectionUiModel) {
+                    model.copy(selected = chipSelectionAction.chipSelectionItemUiModel.name)
+                } else {
+                    model
                 }
             }
         )
 
-        chipSelectionAction.viewsVisibility.forEach { viewsVisibility ->
+        if (chipSelectionAction.identifier == MOV_TYPE_KEY) {
+            chipSelectionValues.remove(ELEMENT_TYPE_KEY)
+            updateBodyModel(
+                uiModels = updatedBody,
+                identifier = ELEMENT_TYPE_KEY,
+                updater = { model ->
+                    if (model is ChipSelectionUiModel) {
+                        model.copy(selected = null)
+                    } else {
+                        model
+                    }
+                }
+            ).also { body -> updatedBody = body }
+        }
+
+        val movType = chipSelectionValues[MOV_TYPE_KEY]
+        val chipId = chipSelectionAction.chipSelectionItemUiModel.id
+
+        val viewVisibility = when {
+            movType == null && chipId == SUPPLIES -> suppliesMap
+            movType == null && chipId == MEDICATION -> medMap
+            movType?.id == TRANSFER && chipId == TRANSFER -> transferMap
+            movType?.id == TRANSFER && chipId == SUPPLIES -> transferSuppliesMap
+            movType?.id == TRANSFER && chipId == MEDICATION -> transferMedMap
+            movType?.id == RETURN && chipId == RETURN -> returnMap
+            movType?.id == RETURN && chipId == SUPPLIES -> returnSuppliesMap
+            movType?.id == RETURN && chipId == MEDICATION -> returnMedMap
+            else -> emptyMap()
+        }
+
+        viewVisibility.forEach { viewsVisibility ->
             updateBodyModel(
                 uiModels = updatedBody,
                 identifier = viewsVisibility.key
@@ -279,19 +358,23 @@ class InventoryViewViewModel @Inject constructor(
 
         is DropDownUiModel -> {
             if (viewsVisibility.value) {
-                model.copy(visibility = viewsVisibility.value)
+                dropDownValue[viewsVisibility.key] = DropDownInputUiModel(viewsVisibility.key)
             } else {
                 dropDownValue.remove(viewsVisibility.key)
-                model.copy(
-                    selected = "",
-                    visibility = viewsVisibility.value
-                )
             }
+            model.copy(
+                selected = "",
+                required = viewsVisibility.value,
+                visibility = viewsVisibility.value
+            )
         }
 
-        is LabelUiModel -> model.copy(visibility = viewsVisibility.value)
+        is LabelUiModel -> model.copy(text = "0")
 
-        is RichLabelUiModel -> model.copy(visibility = viewsVisibility.value)
+        is RichLabelUiModel -> model.copy(
+            text = "",
+            visibility = viewsVisibility.value
+        )
 
         is TextFieldUiModel -> {
             if (viewsVisibility.value) {
@@ -299,14 +382,13 @@ class InventoryViewViewModel @Inject constructor(
                     identifier = viewsVisibility.key,
                     updatedValue = ""
                 )
-                model.copy(visibility = viewsVisibility.value)
             } else {
                 fieldsValues.remove(viewsVisibility.key)
-                model.copy(
-                    text = "",
-                    visibility = viewsVisibility.value
-                )
             }
+            model.copy(
+                text = "",
+                visibility = viewsVisibility.value
+            )
         }
 
         else -> model
