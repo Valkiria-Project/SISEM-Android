@@ -387,7 +387,15 @@ class PreOperationalViewModelTest {
         coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
             emptyScreenModel
         )
-        coEvery { sendPreOperational.invoke(any(), any(), any(), any()) } returns Result.success(
+        coEvery {
+            sendPreOperational.invoke(
+                DRIVER_ROLE,
+                any(),
+                any(),
+                any(),
+                any()
+            )
+        } returns Result.success(
             Unit
         )
         coEvery { getLoginNavigationModel.invoke() } returns Result.success(loginNavigationModel)
@@ -414,7 +422,11 @@ class PreOperationalViewModelTest {
         coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
             emptyScreenModel
         )
-        coEvery { sendPreOperational.invoke(any(), any(), any(), any()) } returns Result.success(
+        coEvery {
+            sendPreOperational.invoke(
+                DRIVER_ROLE, any(), any(), any(), any()
+            )
+        } returns Result.success(
             Unit
         )
         coEvery { getLoginNavigationModel.invoke() } returns Result.failure(IllegalStateException())
@@ -441,7 +453,11 @@ class PreOperationalViewModelTest {
         coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
             emptyScreenModel
         )
-        coEvery { sendPreOperational.invoke(any(), any(), any(), any()) } returns Result.failure(
+        coEvery {
+            sendPreOperational.invoke(
+                DRIVER_ROLE, any(), any(), any(), any()
+            )
+        } returns Result.failure(
             IllegalStateException()
         )
 

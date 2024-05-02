@@ -31,8 +31,9 @@ class AccessTokenAuthenticator @Inject constructor(
 
             val token = runBlocking {
                 when {
-                    url.toString().contains(ASSISTANT_PRE_OP) -> authRepository
-                        .getTokenByRole(OperationRole.AUXILIARY_AND_OR_TAPH.name.lowercase())
+                    url.toString().contains(ASSISTANT_PRE_OP) ->
+                        authRepository
+                            .getTokenByRole(OperationRole.AUXILIARY_AND_OR_TAPH.name.lowercase())
 
                     url.toString().contains(DOCTOR_PRE_OP) ->
                         authRepository
@@ -42,7 +43,6 @@ class AccessTokenAuthenticator @Inject constructor(
                         authRepository.getTokenByRole(OperationRole.DRIVER.name.lowercase())
 
                     else -> authRepository.observeCurrentAccessToken().first()
-
                 }
             }
 

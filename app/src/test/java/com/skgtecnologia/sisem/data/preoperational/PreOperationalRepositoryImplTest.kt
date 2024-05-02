@@ -138,6 +138,9 @@ class PreOperationalRepositoryImplTest {
         }
         coEvery { authCacheDataSource.observeAccessToken() } returns flow { emit(accessTokenModel) }
         coEvery {
+            authCacheDataSource.retrieveAccessTokenByRole(any())
+        } returns accessTokenModel
+        coEvery {
             preOperationalRemoteDataSource.sendPreOperational(
                 any(),
                 any(),
@@ -157,7 +160,7 @@ class PreOperationalRepositoryImplTest {
         } returns Result.success(Unit)
 
         preOperationalRepositoryImpl.sendPreOperational(
-            ,
+            DRIVER_ROLE,
             findings = emptyMap(),
             inventoryValues = emptyMap(),
             fieldsValues = emptyMap(),
