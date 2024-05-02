@@ -11,7 +11,8 @@ class GetPreOperationalScreen @Inject constructor(
 ) {
 
     @CheckResult
-    suspend operator fun invoke(roleName: String?, androidId: String): Result<ScreenModel> = resultOf {
-        preOperationalRepository.getPreOperationalScreen(roleName, androidId)
-    }
+    suspend operator fun invoke(roleName: String?, androidId: String): Result<ScreenModel> =
+        resultOf {
+            preOperationalRepository.getPreOperationalScreen(roleName, androidId)
+        }
 }

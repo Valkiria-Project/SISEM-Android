@@ -180,7 +180,7 @@ private fun NavGraphBuilder.authGraph(
 
         composable(
             route = AuthNavigationRoute.PreOperationalScreen.route +
-                    "?$ROLE={$ROLE}",
+                "?$ROLE={$ROLE}",
             arguments = listOf(
                 navArgument(ROLE) {
                     type = NavType.StringType

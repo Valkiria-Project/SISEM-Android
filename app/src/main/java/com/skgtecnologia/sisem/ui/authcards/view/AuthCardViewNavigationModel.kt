@@ -19,13 +19,13 @@ data class AuthCardViewNavigationModel(
         when {
             back -> navController.popBackStack()
 
-            role != null && !isPendingPreOperational-> {
+            role != null && !isPendingPreOperational -> {
                 navController.navigate(
                     MainNavigationRoute.PreOperationalViewScreen.route + "?$ROLE=${role.name}"
                 )
             }
 
-            role != null && isPendingPreOperational-> {
+            role != null && isPendingPreOperational -> {
                 navController.navigate(
                     AuthNavigationRoute.PreOperationalScreen.route + "?$ROLE=${role.name}"
                 )
