@@ -58,8 +58,10 @@ import com.skgtecnologia.sisem.domain.medicalhistory.model.SECOND_LASTNAME_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.SECOND_NAME_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.TAS_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.TEMPERATURE_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WHO_WITHDRAWAL_RESPONSIBLE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_DECLARATION_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_RESPONSIBLE_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_TYPE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.getWithdrawalResponsibleText
 import com.skgtecnologia.sisem.domain.medicalhistory.model.getWithdrawalWitnessText
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryScreen
@@ -185,6 +187,11 @@ class MedicalHistoryViewModel @Inject constructor(
         DOCUMENT_KEY,
         RESPONSIBLE_NAME_KEY,
         RESPONSIBLE_DOCUMENT_NUMBER_KEY
+    )
+
+    private val withdrawalIdentifiers = listOf(
+        WITHDRAWAL_TYPE_KEY,
+        WHO_WITHDRAWAL_RESPONSIBLE_KEY
     )
 
     private var temporalInfoCard by mutableStateOf("")
@@ -435,6 +442,12 @@ class MedicalHistoryViewModel @Inject constructor(
 
         if (glasgowIdentifier.contains(chipSelectionAction.identifier)) {
             updateGlasgow()
+        }
+
+        if (withdrawalIdentifiers.contains(chipSelectionAction.identifier)) {
+            updatePatientName()
+            updateWithdrawalWitness(chipSelectionAction.chipSelectionItemUiModel.id)
+            updateWithdrawalResponsible()
         }
 
         var updatedBody = updateBodyModel(
@@ -774,7 +787,7 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
-    private fun updateWithdrawalWitness() {
+    private fun updateWithdrawalWitness(withdrawalType: String? = null) {
         val updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
             identifier = WITHDRAWAL_DECLARATION_KEY,
@@ -784,7 +797,8 @@ class MedicalHistoryViewModel @Inject constructor(
                         text = getWithdrawalWitnessText(
                             patient = fieldsValues.getPatientName(),
                             document = fieldsValues.getPatientDocument(),
-                            code = uiState.operationConfig?.vehicleConfig?.typeResource.orEmpty()
+                            code = uiState.operationConfig?.vehicleConfig?.typeResource.orEmpty(),
+                            withdrawalType = withdrawalType
                         )
                     )
                 } else {
@@ -874,17 +888,13 @@ class MedicalHistoryViewModel @Inject constructor(
             }
         )
 
-        val viewsVisibility =
-            if (
-                segmentedSwitchAction.identifier == ACCEPT_TRANSFER_KEY &&
-                !segmentedSwitchAction.status
-            ) {
-                segmentedSwitchAction.viewsVisibility.map { entry ->
-                    entry.key to true
-                }.toMap()
-            } else {
-                segmentedSwitchAction.viewsVisibility
-            }
+        val viewsVisibility = if (segmentedSwitchAction.identifier == ACCEPT_TRANSFER_KEY) {
+            segmentedSwitchAction.viewsVisibility.map { entry ->
+                entry.key to !segmentedSwitchAction.status
+            }.toMap()
+        } else {
+            segmentedSwitchAction.viewsVisibility
+        }
 
         viewsVisibility.forEach { viewVisibility ->
             updateBodyModel(
