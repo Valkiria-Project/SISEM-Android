@@ -41,3 +41,39 @@ fun TextFieldValue.toFailedValidation(
         }
     }
 }
+
+fun String.toFailedValidation(
+    validations: List<ValidationUiModel>,
+    validateFields: Boolean = true,
+    quantity: Int? = null
+): ValidationUiModel? {
+    if (validateFields.not()) {
+        return null
+    }
+
+    return if (quantity != null) {
+        runCatching {
+            this.toInt()
+        }.fold(
+            onSuccess = {
+                if (it > quantity) {
+                    ValidationUiModel(
+                        message = QUANTITY_MESSAGE,
+                        regex = ""
+                    )
+                } else {
+                    null
+                }
+            },
+            onFailure = {
+                validations.find {
+                    this.matches(it.regex.toRegex()).not()
+                }
+            }
+        )
+    } else {
+        validations.find {
+            this.matches(it.regex.toRegex()).not()
+        }
+    }
+}

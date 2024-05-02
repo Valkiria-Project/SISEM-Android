@@ -34,6 +34,8 @@ import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
 import com.skgtecnologia.sisem.ui.dropdown.DropDownComponent
 import com.skgtecnologia.sisem.ui.humanbody.HumanBodyComponent
+import com.skgtecnologia.sisem.ui.inventory.view.ELEMENT_TYPE_KEY
+import com.skgtecnologia.sisem.ui.inventory.view.MOV_TYPE_KEY
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedsSelectorComponent
 import com.valkiria.uicomponents.action.AddReportUiAction
 import com.valkiria.uicomponents.action.AuthCardsUiAction
@@ -66,6 +68,7 @@ import com.valkiria.uicomponents.components.chip.ChipComponent
 import com.valkiria.uicomponents.components.chip.ChipOptionsComponent
 import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
 import com.valkiria.uicomponents.components.chip.ChipSelectionComponent
+import com.valkiria.uicomponents.components.chip.ChipSelectionComponent2
 import com.valkiria.uicomponents.components.chip.ChipSelectionUiModel
 import com.valkiria.uicomponents.components.chip.ChipUiModel
 import com.valkiria.uicomponents.components.chip.FiltersComponent
@@ -118,6 +121,11 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 private const val FILTERS_SCROLL_OFFSET = -120
+
+private val transferReturnIdentifier = listOf(
+    MOV_TYPE_KEY,
+    ELEMENT_TYPE_KEY
+)
 
 @Suppress("ComplexMethod", "LongMethod")
 @Composable
@@ -274,18 +282,34 @@ private fun LazyListScope.handleBodyRows(
 
             is ChipSelectionUiModel -> if (model.visibility) {
                 item(key = model.identifier) {
-                    ChipSelectionComponent(
-                        uiModel = model,
-                        validateFields = validateFields
-                    ) { id, chipSelectionItem, isSelection, viewsVisibility ->
-                        onAction(
-                            GenericUiAction.ChipSelectionAction(
-                                identifier = id,
-                                chipSelectionItemUiModel = chipSelectionItem,
-                                status = isSelection,
-                                viewsVisibility = viewsVisibility
+                    if (transferReturnIdentifier.contains(model.identifier)) {
+                        ChipSelectionComponent2(
+                            uiModel = model,
+                            validateFields = validateFields
+                        ) { id, chipSelectionItem, isSelection, viewsVisibility ->
+                            onAction(
+                                GenericUiAction.ChipSelectionAction(
+                                    identifier = id,
+                                    chipSelectionItemUiModel = chipSelectionItem,
+                                    status = isSelection,
+                                    viewsVisibility = viewsVisibility
+                                )
                             )
-                        )
+                        }
+                    } else {
+                        ChipSelectionComponent(
+                            uiModel = model,
+                            validateFields = validateFields
+                        ) { id, chipSelectionItem, isSelection, viewsVisibility ->
+                            onAction(
+                                GenericUiAction.ChipSelectionAction(
+                                    identifier = id,
+                                    chipSelectionItemUiModel = chipSelectionItem,
+                                    status = isSelection,
+                                    viewsVisibility = viewsVisibility
+                                )
+                            )
+                        }
                     }
                 }
             }
