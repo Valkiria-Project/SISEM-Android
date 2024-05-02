@@ -21,12 +21,20 @@ import com.valkiria.uicomponents.bricks.textfield.DatePickerTextFieldView
 import com.valkiria.uicomponents.bricks.textfield.FilledTextFieldView
 import com.valkiria.uicomponents.bricks.textfield.FixedDateTextFieldView
 import com.valkiria.uicomponents.bricks.textfield.OutlinedTextFieldView
+import com.valkiria.uicomponents.bricks.textfield.OutlinedTextFieldView2
 import com.valkiria.uicomponents.mocks.getLoginUserTextFieldUiModel
 import com.valkiria.uicomponents.mocks.getPreOpDriverVehicleKMTextFieldUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import timber.log.Timber
 
+private val transfersReturnIdentifiers = listOf(
+    "KEY_CANT_TRANSFER",
+    "KEY_CANT_RETURN",
+    "KEY_VEHICLE_CODE"
+)
+
+@Suppress("LongMethod")
 @Composable
 fun TextFieldComponent(
     uiModel: TextFieldUiModel,
@@ -79,12 +87,22 @@ fun TextFieldComponent(
                 onAction(InputUiModel(id, updatedValue, fieldValidated, required))
             }
 
-            TextFieldStyle.OUTLINED -> OutlinedTextFieldView(
-                uiModel = uiModel,
-                validateFields = shouldValidateFields
-            ) { id, updatedValue, fieldValidated, required ->
-                onAction(InputUiModel(id, updatedValue, fieldValidated, required))
-            }
+            TextFieldStyle.OUTLINED ->
+                if (transfersReturnIdentifiers.contains(uiModel.identifier)) {
+                    OutlinedTextFieldView2(
+                        uiModel = uiModel,
+                        validateFields = shouldValidateFields
+                    ) { id, updatedValue, fieldValidated, required ->
+                        onAction(InputUiModel(id, updatedValue, fieldValidated, required))
+                    }
+                } else {
+                    OutlinedTextFieldView(
+                        uiModel = uiModel,
+                        validateFields = shouldValidateFields
+                    ) { id, updatedValue, fieldValidated, required ->
+                        onAction(InputUiModel(id, updatedValue, fieldValidated, required))
+                    }
+                }
         }
     }
 }
