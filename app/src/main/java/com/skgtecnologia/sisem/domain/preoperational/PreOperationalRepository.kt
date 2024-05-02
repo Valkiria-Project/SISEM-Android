@@ -20,6 +20,7 @@ interface PreOperationalRepository {
     suspend fun getRole(): OperationRole
 
     suspend fun sendPreOperational(
+        roleName: String?,
         findings: Map<String, Boolean>,
         inventoryValues: Map<String, Int>,
         fieldsValues: Map<String, String>,

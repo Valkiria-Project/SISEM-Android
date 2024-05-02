@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.data.remote.interceptors
 
 import com.skgtecnologia.sisem.data.remote.extensions.isUnauthorized
 import com.skgtecnologia.sisem.data.remote.extensions.signWithToken
+import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import kotlinx.coroutines.flow.first
@@ -25,12 +26,28 @@ class AccessTokenAuthenticator @Inject constructor(
     override fun authenticate(route: Route?, response: Response): Request? {
         return if (response.isUnauthorized() && retryCount < MAX_ATTEMPTS) {
             retryCount++
-            val currentToken = runBlocking {
-                authRepository.observeCurrentAccessToken().first()
+
+            val url = response.request.url
+
+            val token = runBlocking {
+                when {
+                    url.toString().contains(ASSISTANT_PRE_OP) -> authRepository
+                        .getTokenByRole(OperationRole.AUXILIARY_AND_OR_TAPH.name.lowercase())
+
+                    url.toString().contains(DOCTOR_PRE_OP) ->
+                        authRepository
+                            .getTokenByRole(OperationRole.MEDIC_APH.name.lowercase())
+
+                    url.toString().contains(DRIVER_PRE_OP) ->
+                        authRepository.getTokenByRole(OperationRole.DRIVER.name.lowercase())
+
+                    else -> authRepository.observeCurrentAccessToken().first()
+
+                }
             }
 
-            currentToken?.accessToken?.let {
-                response.createSignedRequest(currentToken)
+            token?.accessToken?.let {
+                response.createSignedRequest(token)
             }
         } else {
             retryCount = 0

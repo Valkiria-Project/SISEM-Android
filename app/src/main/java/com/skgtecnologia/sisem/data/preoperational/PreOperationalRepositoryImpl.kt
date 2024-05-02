@@ -53,12 +53,9 @@ class PreOperationalRepositoryImpl @Inject constructor(
         )
 
         val config = operationCacheDataSource.observeOperationConfig().first()
-        val configPreoperational = PreoperationalStatus.getStatusByName(
-            config?.vehicleConfig?.preoperational.orEmpty()
-        ) == PreoperationalStatus.NO
         val preOpExecution = config?.preoperationalExec.orEmpty()
 
-        return configPreoperational && !preOpExecution.containsKey(accessToken.userId.toString())
+        return !preOpExecution.containsKey(accessToken.userId.toString())
     }
 
     override suspend fun getPreOperationalViewScreen(
@@ -85,12 +82,17 @@ class PreOperationalRepositoryImpl @Inject constructor(
     )
 
     override suspend fun sendPreOperational(
+        roleName: String?,
         findings: Map<String, Boolean>,
         inventoryValues: Map<String, Int>,
         fieldsValues: Map<String, String>,
         novelties: List<Novelty>
     ) {
-        val accessToken = checkNotNull(authCacheDataSource.observeAccessToken().first())
+        val accessToken = if (roleName != null) {
+            checkNotNull(authCacheDataSource.retrieveAccessTokenByRole(roleName.lowercase()))
+        } else {
+            checkNotNull(authCacheDataSource.observeAccessToken().first())
+        }
         val role = checkNotNull(OperationRole.getRoleByName(accessToken.role))
         val idTurn = accessToken.turn?.id?.toString().orEmpty()
 

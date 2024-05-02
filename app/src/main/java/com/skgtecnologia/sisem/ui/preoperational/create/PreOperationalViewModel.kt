@@ -330,6 +330,7 @@ class PreOperationalViewModel @Inject constructor(
         job?.cancel()
         job = viewModelScope.launch {
             sendPreOperational.invoke(
+                roleName,
                 findingValues.toMap(),
                 inventoryValues.mapValues { it.value.updatedValue.toInt() },
                 fieldsValues.mapValues { it.value.updatedValue },

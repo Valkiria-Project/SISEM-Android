@@ -12,12 +12,14 @@ class SendPreOperational @Inject constructor(
 
     @CheckResult
     suspend operator fun invoke(
+        roleName: String?,
         findings: Map<String, Boolean>,
         inventoryValues: Map<String, Int>,
         fieldsValues: Map<String, String>,
         novelties: List<Novelty>
     ): Result<Unit> = resultOf {
         preOperationalRepository.sendPreOperational(
+            roleName,
             findings,
             inventoryValues,
             fieldsValues,

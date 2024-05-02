@@ -27,6 +27,7 @@ class SendPreOperationalTest {
     fun `when sendPreOperational is success`() = runTest {
         coEvery {
             preOperationalRepository.sendPreOperational(
+                ,
                 any(),
                 any(),
                 any(),
@@ -48,6 +49,7 @@ class SendPreOperationalTest {
     fun `when sendPreOperational is failure`() = runTest {
         coEvery {
             preOperationalRepository.sendPreOperational(
+                ,
                 any(),
                 any(),
                 any(),

@@ -157,6 +157,7 @@ class PreOperationalRepositoryImplTest {
         } returns Result.success(Unit)
 
         preOperationalRepositoryImpl.sendPreOperational(
+            ,
             findings = emptyMap(),
             inventoryValues = emptyMap(),
             fieldsValues = emptyMap(),
