@@ -67,18 +67,49 @@ class PreOperationalRemoteDataSource @Inject constructor(
         fieldsValues: Map<String, String>,
         novelties: List<Novelty>
     ): Result<Unit> = apiCall {
-        preOperationalApi.sendPreOperational(
-            savePreOperationalBody = SavePreOperationalBody(
-                type = role.name,
-                idTurn = idTurn.toInt(),
-                findingValues = findings,
-                inventoryValues = inventoryValues,
-                fieldsValues = fieldsValues,
-                novelties = novelties
-                    .filter { it.images.isEmpty() }
-                    .map { it.mapToBody() }
+        when (role) {
+            OperationRole.AUXILIARY_AND_OR_TAPH -> preOperationalApi.sendAuxPreOperational(
+                savePreOperationalBody = SavePreOperationalBody(
+                    type = role.name,
+                    idTurn = idTurn.toInt(),
+                    findingValues = findings,
+                    inventoryValues = inventoryValues,
+                    fieldsValues = fieldsValues,
+                    novelties = novelties
+                        .filter { it.images.isEmpty() }
+                        .map { it.mapToBody() }
+                )
             )
-        )
+
+            OperationRole.DRIVER -> preOperationalApi.sendDriverPreOperational(
+                savePreOperationalBody = SavePreOperationalBody(
+                    type = role.name,
+                    idTurn = idTurn.toInt(),
+                    findingValues = findings,
+                    inventoryValues = inventoryValues,
+                    fieldsValues = fieldsValues,
+                    novelties = novelties
+                        .filter { it.images.isEmpty() }
+                        .map { it.mapToBody() }
+                )
+            )
+
+            OperationRole.MEDIC_APH -> preOperationalApi.sendDoctorPreOperational(
+                savePreOperationalBody = SavePreOperationalBody(
+                    type = role.name,
+                    idTurn = idTurn.toInt(),
+                    findingValues = findings,
+                    inventoryValues = inventoryValues,
+                    fieldsValues = fieldsValues,
+                    novelties = novelties
+                        .filter { it.images.isEmpty() }
+                        .map { it.mapToBody() }
+                )
+            )
+
+            OperationRole.LEAD_APH ->
+                throw IllegalArgumentException("Lead APH role not supported")
+        }
     }
 
     suspend fun sendFindings(

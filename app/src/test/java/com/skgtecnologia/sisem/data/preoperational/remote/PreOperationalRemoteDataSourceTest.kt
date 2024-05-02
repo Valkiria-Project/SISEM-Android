@@ -132,7 +132,7 @@ class PreOperationalRemoteDataSourceTest {
 
     @Test
     fun `when sendPreOperational is success`() = runTest {
-        coEvery { preOperationalApi.sendPreOperational(any()) } returns Response.success(Unit)
+        coEvery { preOperationalApi.sendAuxPreOperational(any()) } returns Response.success(Unit)
 
         val result = preOperationalRemoteDataSource.sendPreOperational(
             role = OperationRole.AUXILIARY_AND_OR_TAPH,
@@ -148,7 +148,7 @@ class PreOperationalRemoteDataSourceTest {
 
     @Test
     fun `when sendPreOperational is failure`() = runTest {
-        coEvery { preOperationalApi.sendPreOperational(any()) } returns Response.error(
+        coEvery { preOperationalApi.sendDriverPreOperational(any()) } returns Response.error(
             400,
             "".toResponseBody()
         )

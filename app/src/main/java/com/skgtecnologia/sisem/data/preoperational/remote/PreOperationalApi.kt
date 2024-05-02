@@ -11,6 +11,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 
+@Suppress("TooManyFunctions")
 interface PreOperationalApi {
 
     @POST("screen/pre-operational-assistant")
@@ -18,18 +19,28 @@ interface PreOperationalApi {
         @Body screenBody: ScreenBody
     ): Response<ScreenResponse>
 
+    @POST("preoperational/pre-operational-assistant")
+    suspend fun sendAuxPreOperational(
+        @Body savePreOperationalBody: SavePreOperationalBody
+    ): Response<Unit>
+
     @POST("screen/pre-operational-doctor")
     suspend fun getDoctorPreOperationalScreen(
         @Body screenBody: ScreenBody
     ): Response<ScreenResponse>
+
+    @POST("preoperational/pre-operational-doctor")
+    suspend fun sendDoctorPreOperational(
+        @Body savePreOperationalBody: SavePreOperationalBody
+    ): Response<Unit>
 
     @POST("screen/pre-operational-driver")
     suspend fun getDriverPreOperationalScreen(
         @Body screenBody: ScreenBody
     ): Response<ScreenResponse>
 
-    @POST("preoperational")
-    suspend fun sendPreOperational(
+    @POST("preoperational/pre-operational-driver")
+    suspend fun sendDriverPreOperational(
         @Body savePreOperationalBody: SavePreOperationalBody
     ): Response<Unit>
 
