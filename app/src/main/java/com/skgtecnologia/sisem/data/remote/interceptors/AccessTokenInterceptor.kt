@@ -12,10 +12,6 @@ import java.net.ConnectException
 import javax.inject.Inject
 import javax.inject.Singleton
 
-private const val ASSISTANT_PRE_OP = "pre-operational-assistant"
-private const val DOCTOR_PRE_OP = "pre-operational-doctor"
-private const val DRIVER_PRE_OP = "pre-operational-driver"
-
 @Singleton
 class AccessTokenInterceptor @Inject constructor(
     private val authRepository: AuthRepository

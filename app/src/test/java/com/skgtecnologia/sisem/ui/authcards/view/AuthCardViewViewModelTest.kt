@@ -10,6 +10,7 @@ import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalViewIdentifier
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetAuthCardViewScreen
+import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalPending
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
@@ -34,6 +35,9 @@ class AuthCardViewViewModelTest {
     @MockK
     private lateinit var getAuthCardViewScreen: GetAuthCardViewScreen
 
+    @MockK
+    private lateinit var getPreOperationalPending: GetPreOperationalPending
+
     private lateinit var viewModel: AuthCardViewViewModel
 
     @Before
@@ -49,8 +53,9 @@ class AuthCardViewViewModelTest {
 
         viewModel = AuthCardViewViewModel(
             androidIdProvider,
-            logoutCurrentUser,
-            getAuthCardViewScreen
+            getAuthCardViewScreen,
+            getPreOperationalPending,
+            logoutCurrentUser
         )
 
         Assert.assertEquals(emptyScreenModel, viewModel.uiState.screenModel)
@@ -64,8 +69,9 @@ class AuthCardViewViewModelTest {
 
         viewModel = AuthCardViewViewModel(
             androidIdProvider,
-            logoutCurrentUser,
-            getAuthCardViewScreen
+            getAuthCardViewScreen,
+            getPreOperationalPending,
+            logoutCurrentUser
         )
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.errorModel?.title)
@@ -77,8 +83,9 @@ class AuthCardViewViewModelTest {
 
         viewModel = AuthCardViewViewModel(
             androidIdProvider,
-            logoutCurrentUser,
-            getAuthCardViewScreen
+            getAuthCardViewScreen,
+            getPreOperationalPending,
+            logoutCurrentUser
         )
         viewModel.goBack()
 
@@ -89,11 +96,13 @@ class AuthCardViewViewModelTest {
     fun `when call navigate with assistant navigationModel role is assistant`() =
         runTest {
             coEvery { getAuthCardViewScreen.invoke(any()) } returns Result.success(emptyScreenModel)
+            coEvery { getPreOperationalPending.invoke(any()) } returns Result.success(true)
 
             viewModel = AuthCardViewViewModel(
                 androidIdProvider,
-                logoutCurrentUser,
-                getAuthCardViewScreen
+                getAuthCardViewScreen,
+                getPreOperationalPending,
+                logoutCurrentUser
             )
             viewModel.navigate(PreOperationalViewIdentifier.CREW_MEMBER_CARD_ASSISTANT.name)
 
@@ -107,11 +116,13 @@ class AuthCardViewViewModelTest {
     fun `when call navigate with driver navigationModel role is driver`() =
         runTest {
             coEvery { getAuthCardViewScreen.invoke(any()) } returns Result.success(emptyScreenModel)
+            coEvery { getPreOperationalPending.invoke(any()) } returns Result.success(true)
 
             viewModel = AuthCardViewViewModel(
                 androidIdProvider,
-                logoutCurrentUser,
-                getAuthCardViewScreen
+                getAuthCardViewScreen,
+                getPreOperationalPending,
+                logoutCurrentUser
             )
             viewModel.navigate(PreOperationalViewIdentifier.CREW_MEMBER_CARD_DRIVER.name)
 
@@ -125,11 +136,13 @@ class AuthCardViewViewModelTest {
     fun `when call navigate with doctor navigationModel role is doctor`() =
         runTest {
             coEvery { getAuthCardViewScreen.invoke(any()) } returns Result.success(emptyScreenModel)
+            coEvery { getPreOperationalPending.invoke(any()) } returns Result.success(true)
 
             viewModel = AuthCardViewViewModel(
                 androidIdProvider,
-                logoutCurrentUser,
-                getAuthCardViewScreen
+                getAuthCardViewScreen,
+                getPreOperationalPending,
+                logoutCurrentUser
             )
             viewModel.navigate(PreOperationalViewIdentifier.CREW_MEMBER_CARD_DOCTOR.name)
 
@@ -145,8 +158,9 @@ class AuthCardViewViewModelTest {
 
         viewModel = AuthCardViewViewModel(
             androidIdProvider,
-            logoutCurrentUser,
-            getAuthCardViewScreen
+            getAuthCardViewScreen,
+            getPreOperationalPending,
+            logoutCurrentUser
         )
         viewModel.navigate("other")
 
@@ -160,8 +174,9 @@ class AuthCardViewViewModelTest {
 
         viewModel = AuthCardViewViewModel(
             androidIdProvider,
-            logoutCurrentUser,
-            getAuthCardViewScreen
+            getAuthCardViewScreen,
+            getPreOperationalPending,
+            logoutCurrentUser
         )
         viewModel.consumeNavigationEvent()
 
@@ -176,8 +191,9 @@ class AuthCardViewViewModelTest {
 
         viewModel = AuthCardViewViewModel(
             androidIdProvider,
-            logoutCurrentUser,
-            getAuthCardViewScreen
+            getAuthCardViewScreen,
+            getPreOperationalPending,
+            logoutCurrentUser
         )
         viewModel.handleEvent(uiAction)
 

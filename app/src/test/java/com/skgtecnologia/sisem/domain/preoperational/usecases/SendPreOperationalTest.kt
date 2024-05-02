@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.domain.preoperational.usecases
 
+import com.skgtecnologia.sisem.commons.DRIVER_ROLE
 import com.skgtecnologia.sisem.domain.preoperational.PreOperationalRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -27,6 +28,7 @@ class SendPreOperationalTest {
     fun `when sendPreOperational is success`() = runTest {
         coEvery {
             preOperationalRepository.sendPreOperational(
+                DRIVER_ROLE,
                 any(),
                 any(),
                 any(),
@@ -35,6 +37,7 @@ class SendPreOperationalTest {
         } returns Unit
 
         val result = sendPreOperational(
+            DRIVER_ROLE,
             mapOf(),
             mapOf(),
             mapOf(),
@@ -48,6 +51,7 @@ class SendPreOperationalTest {
     fun `when sendPreOperational is failure`() = runTest {
         coEvery {
             preOperationalRepository.sendPreOperational(
+                DRIVER_ROLE,
                 any(),
                 any(),
                 any(),
@@ -56,6 +60,7 @@ class SendPreOperationalTest {
         } throws Exception()
 
         val result = sendPreOperational(
+            DRIVER_ROLE,
             mapOf(),
             mapOf(),
             mapOf(),

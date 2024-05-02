@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.domain.preoperational.usecases
 
+import com.skgtecnologia.sisem.commons.DRIVER_ROLE
 import com.skgtecnologia.sisem.commons.SERIAL
 import com.skgtecnologia.sisem.domain.preoperational.PreOperationalRepository
 import io.mockk.MockKAnnotations
@@ -27,18 +28,25 @@ class GetPreOperationalScreenTest {
 
     @Test
     fun `when getPreOperationalScreen is success`() = runTest {
-        coEvery { preOperationalRepository.getPreOperationalScreen(any()) } returns mockk()
+        coEvery {
+            preOperationalRepository.getPreOperationalScreen(DRIVER_ROLE, any())
+        } returns mockk()
 
-        val result = getPreOperationalScreen.invoke(SERIAL)
+        val result = getPreOperationalScreen.invoke(DRIVER_ROLE, SERIAL)
 
         Assert.assertEquals(true, result.isSuccess)
     }
 
     @Test
     fun `when getPreOperationalScreen is failure`() = runTest {
-        coEvery { preOperationalRepository.getPreOperationalScreen(any()) } throws Exception()
+        coEvery {
+            preOperationalRepository.getPreOperationalScreen(
+                DRIVER_ROLE,
+                any()
+            )
+        } throws Exception()
 
-        val result = getPreOperationalScreen.invoke(SERIAL)
+        val result = getPreOperationalScreen.invoke(DRIVER_ROLE, SERIAL)
 
         Assert.assertEquals(true, result.isFailure)
     }
