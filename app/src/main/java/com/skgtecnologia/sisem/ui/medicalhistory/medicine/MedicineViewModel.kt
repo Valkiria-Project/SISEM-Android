@@ -83,8 +83,9 @@ class MedicineViewModel @Inject constructor(
                     required = bodyRowModel.required
                 )
 
-                is TimePickerUiModel -> timePickerValue.value =
-                    "${bodyRowModel.hour.text} : ${bodyRowModel.minute.text}"
+                is TimePickerUiModel ->
+                    timePickerValue.value =
+                        "${bodyRowModel.hour.text} : ${bodyRowModel.minute.text}"
             }
         }
     }
