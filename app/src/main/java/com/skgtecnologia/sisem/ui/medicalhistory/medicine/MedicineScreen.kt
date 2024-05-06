@@ -94,7 +94,7 @@ fun handleAction(
 
         is GenericUiAction.InputAction -> viewModel.handleInputAction(uiAction)
 
-        is GenericUiAction.TimePickerAction -> viewModel.timePickerValue.value = uiAction.value
+        is GenericUiAction.TimePickerAction -> viewModel.handleTimePickerAction(uiAction)
 
         else -> Timber.d("no-op")
     }

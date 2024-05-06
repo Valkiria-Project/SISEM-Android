@@ -46,7 +46,7 @@ class MedicineViewModel @Inject constructor(
     private var chipValues = mutableStateMapOf<String, ChipSelectionItemUiModel>()
     private var fieldsValues = mutableStateMapOf<String, InputUiModel>()
     private var dropDownValue = mutableStateOf(DropDownInputUiModel())
-    var timePickerValue = mutableStateOf("")
+    private var timePickerValue = mutableStateOf("")
 
     init {
         uiState = uiState.copy(isLoading = true)
@@ -82,6 +82,10 @@ class MedicineViewModel @Inject constructor(
                     fieldValidated = bodyRowModel.text.isNotEmpty(),
                     required = bodyRowModel.required
                 )
+
+                is TimePickerUiModel ->
+                    timePickerValue.value =
+                        "${bodyRowModel.hour.text} : ${bodyRowModel.minute.text}"
             }
         }
     }
@@ -180,6 +184,31 @@ class MedicineViewModel @Inject constructor(
                 model
             }
         }.also { body -> updatedBody = body }
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
+    fun handleTimePickerAction(timePickerAction: GenericUiAction.TimePickerAction) {
+        timePickerValue.value = "${timePickerAction.hour} : ${timePickerAction.minute}"
+
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = timePickerAction.identifier,
+            updater = { model ->
+                if (model is TimePickerUiModel) {
+                    model.copy(
+                        hour = model.hour.copy(text = timePickerAction.hour),
+                        minute = model.minute.copy(text = timePickerAction.minute)
+                    )
+                } else {
+                    model
+                }
+            }
+        )
 
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(
