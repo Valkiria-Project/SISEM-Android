@@ -24,7 +24,8 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
         override val identifier: String,
         val chipSelectionItemUiModel: ChipSelectionItemUiModel,
         val status: Boolean,
-        val viewsVisibility: Map<String, Boolean>
+        val viewsVisibility: Map<String, Boolean>,
+        val viewsInvisibility: Map<String, Boolean>
     ) : GenericUiAction(identifier)
 
     data object DismissAction : GenericUiAction(identifier = DISMISS_IDENTIFIER)
