@@ -44,10 +44,8 @@ import com.valkiria.uicomponents.utlis.TimeUtils.isSameDay
 @Composable
 fun TimePickerComponent(
     uiModel: TimePickerUiModel,
-    onAction: (id: String, value: String) -> Unit
+    onAction: (id: String, hour: String, minutes: String) -> Unit
 ) {
-    onAction(uiModel.identifier, "${uiModel.hour.text} : ${uiModel.minute.text}")
-
     var showDialog by remember { mutableStateOf(false) }
     var showError by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
@@ -104,7 +102,11 @@ fun TimePickerComponent(
         )
 
         TimePickerDialog(
-            onDismissRequest = { showDialog = false },
+            onDismissRequest = {
+                showDialog = false
+                showError = false
+                errorMessage = ""
+            },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -133,7 +135,7 @@ fun TimePickerComponent(
                                 minute = uiModel.minute.copy(text = pickerMinute)
 
                                 showDialog = false
-                                onAction(uiModel.identifier, "$pickerHour : $pickerMinute")
+                                onAction(uiModel.identifier, pickerHour, pickerMinute)
                             }
                         } ?: run {
                             showError = true
@@ -145,9 +147,15 @@ fun TimePickerComponent(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDialog = false }) {
-                Text(stringResource(R.string.date_picker_cancel))
-            }
+                TextButton(
+                    onClick = {
+                        showDialog = false
+                        showError = false
+                        errorMessage = ""
+                    }
+                ) {
+                    Text(stringResource(R.string.date_picker_cancel))
+                }
             },
             showError = showError,
             errorMessage = errorMessage
@@ -270,6 +278,6 @@ fun TimePickerComponentPreview() {
                 textStyle = TextStyle.HEADLINE_1
             )
         ),
-        onAction = { _, _ -> }
+        onAction = { _, _, _ -> }
     )
 }

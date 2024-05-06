@@ -585,8 +585,14 @@ private fun LazyListScope.handleBodyRows(
 
             is TimePickerUiModel -> if (model.visibility) {
                 item(key = model.identifier) {
-                    TimePickerComponent(uiModel = model) { id, time ->
-                        onAction(GenericUiAction.TimePickerAction(identifier = id, value = time))
+                    TimePickerComponent(uiModel = model) { id, hour, minute ->
+                        onAction(
+                            GenericUiAction.TimePickerAction(
+                                identifier = id,
+                                hour = hour,
+                                minute = minute
+                            )
+                        )
                     }
                 }
             }
