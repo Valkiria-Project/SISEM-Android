@@ -119,7 +119,8 @@ sealed class GenericUiAction(open val identifier: String) : UiAction {
 
     data class TimePickerAction(
         override val identifier: String,
-        val value: String
+        val hour: String,
+        val minute: String
     ) : GenericUiAction(identifier)
 }
 
