@@ -301,7 +301,11 @@ private fun LazyListScope.handleBodyRows(
                         ChipSelectionComponent(
                             uiModel = model,
                             validateFields = validateFields
-                        ) { id, chipSelectionItem, isSelection, viewsVisibility, viewsInvisibility ->
+                        ) { id,
+                            chipSelectionItem,
+                            isSelection,
+                            viewsVisibility,
+                            viewsInvisibility ->
                             onAction(
                                 GenericUiAction.ChipSelectionAction(
                                     identifier = id,

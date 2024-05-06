@@ -91,14 +91,16 @@ class MedicineViewModelTest {
             identifier = identifier,
             chipSelectionItemUiModel = ChipSelectionItemUiModel(identifier2, identifier2),
             status = true,
-            viewsVisibility = mapOf()
+            viewsVisibility = mapOf(),
+            viewsInvisibility = mapOf()
         )
         viewModel.handleChipSelectionAction(chipSelectionAction)
         val chipSelectionAction2 = GenericUiAction.ChipSelectionAction(
             identifier = identifier2,
             chipSelectionItemUiModel = ChipSelectionItemUiModel(identifier, identifier),
             status = true,
-            viewsVisibility = mapOf()
+            viewsVisibility = mapOf(),
+            viewsInvisibility = mapOf()
         )
         viewModel.handleChipSelectionAction(chipSelectionAction2)
         viewModel.saveMedicine()

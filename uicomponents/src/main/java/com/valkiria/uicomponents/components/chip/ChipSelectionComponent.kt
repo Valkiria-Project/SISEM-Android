@@ -18,6 +18,7 @@ import com.valkiria.uicomponents.extensions.toFailedValidation
 
 private const val NO = "NO"
 
+@Suppress("LongMethod")
 @Composable
 fun ChipSelectionComponent(
     uiModel: ChipSelectionUiModel,
