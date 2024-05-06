@@ -39,8 +39,8 @@ fun SignatureComponent(
     validateFields: Boolean = false,
     onAction: (id: String) -> Unit
 ) {
-    val isError = remember(uiModel.signature, validateFields) {
-        uiModel.signature.toFailedValidation(validateFields)
+    val isError = remember(uiModel.signature, validateFields, uiModel.required) {
+        uiModel.signature.toFailedValidation(validateFields && uiModel.required)
     }
 
     if (uiModel.signature.isNullOrBlank()) {

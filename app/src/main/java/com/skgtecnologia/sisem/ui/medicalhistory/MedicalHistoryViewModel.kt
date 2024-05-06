@@ -129,6 +129,9 @@ private const val PATIENT_DOCUMENT_TYPE_IDENTIFIER = "KEY_DOCUMENT_TYPE"
 private const val RESPONSIBLE_DOCUMENT_TYPE_IDENTIFIER = "KEY_DOCUMENT_TYPE_RESPONSIBLE"
 private const val PATIENT_DOCUMENT_IDENTIFIER = "KEY_DOCUMENT"
 private const val RESPONSIBLE_DOCUMENT_IDENTIFIER = "KEY_DOCUMENT_RESPONSIBLE"
+private const val SIGN_PERSON_CHARGE_W_KEY = "KEY_SIGN_PERSON_CHARGE_W"
+private const val WITHDRAWAL_REPONSIBLE_REFUSE_SIGN_KEY = "KEY_WITHDRAWAL_REPONSIBLE_REFUSE_SIGN"
+private const val NO = "NO"
 private const val CC_ID_TYPE = "CC"
 private const val CE_ID_TYPE = "CE"
 private const val CD_ID_TYPE = "CD"
@@ -450,6 +453,10 @@ class MedicalHistoryViewModel @Inject constructor(
             updateWithdrawalResponsible()
         }
 
+        if (chipSelectionAction.identifier == WITHDRAWAL_REPONSIBLE_REFUSE_SIGN_KEY) {
+            updateResponsibleSignature(chipSelectionAction.chipSelectionItemUiModel)
+        }
+
         var updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
             identifier = chipSelectionAction.identifier,
@@ -484,6 +491,26 @@ class MedicalHistoryViewModel @Inject constructor(
                 updatedBody
             )
         }
+
+        uiState = uiState.copy(
+            screenModel = uiState.screenModel?.copy(
+                body = updatedBody
+            )
+        )
+    }
+
+    private fun updateResponsibleSignature(chipSelectionItemUiModel: ChipSelectionItemUiModel) {
+        val updatedBody = updateBodyModel(
+            uiModels = uiState.screenModel?.body,
+            identifier = SIGN_PERSON_CHARGE_W_KEY,
+            updater = { model ->
+                if (model is SignatureUiModel && model.identifier == SIGN_PERSON_CHARGE_W_KEY) {
+                    model.copy(required = chipSelectionItemUiModel.name.equals(NO, true))
+                } else {
+                    model
+                }
+            }
+        )
 
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(
