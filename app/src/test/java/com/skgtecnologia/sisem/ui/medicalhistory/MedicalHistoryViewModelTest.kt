@@ -290,6 +290,7 @@ class MedicalHistoryViewModelTest {
                 IDENTIFIER,
                 chipSelectionItemUiModel,
                 true,
+                mapOf(),
                 mapOf()
             )
         )
@@ -327,6 +328,7 @@ class MedicalHistoryViewModelTest {
                 identifier,
                 chipSelectionItemUiModel,
                 true,
+                mapOf(),
                 mapOf()
             )
         )
@@ -379,6 +381,7 @@ class MedicalHistoryViewModelTest {
                 identifier,
                 chipSelectionItemUiModel,
                 true,
+                mapOf(),
                 mapOf()
             )
         )

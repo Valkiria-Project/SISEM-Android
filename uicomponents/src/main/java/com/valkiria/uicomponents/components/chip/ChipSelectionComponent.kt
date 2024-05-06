@@ -16,6 +16,9 @@ import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.extensions.toFailedValidation
 
+private const val NO = "NO"
+
+@Suppress("LongMethod")
 @Composable
 fun ChipSelectionComponent(
     uiModel: ChipSelectionUiModel,
@@ -24,7 +27,8 @@ fun ChipSelectionComponent(
         id: String,
         selectionItem: ChipSelectionItemUiModel,
         isSelection: Boolean,
-        viewsVisibility: Map<String, Boolean>
+        viewsVisibility: Map<String, Boolean>,
+        viewsInvisibility: Map<String, Boolean>
     ) -> Unit
 ) {
     val selected = remember { mutableStateOf(uiModel.selected) }
@@ -74,7 +78,22 @@ fun ChipSelectionComponent(
                             viewsVisibility[it.key] = visibility != null
                         }
 
-                        onAction(uiModel.identifier, chipSelection, isSelection, viewsVisibility)
+                        val viewsInvisibility = mutableMapOf<String, Boolean>()
+                        if (text.equals(NO, true)) {
+                            uiModel.deselectionVisibility?.forEach {
+                                val invisibility =
+                                    it.value.find { value -> value.equals(id, ignoreCase = true) }
+                                viewsInvisibility[it.key] = invisibility == null
+                            }
+                        }
+
+                        onAction(
+                            uiModel.identifier,
+                            chipSelection,
+                            isSelection,
+                            viewsVisibility,
+                            viewsInvisibility
+                        )
                     }
                 )
             }

@@ -115,6 +115,7 @@ val chipSelectionUiModelMock = ChipSelectionUiModel(
     ),
     selected = "identifier",
     selectionVisibility = mapOf(),
+    deselectionVisibility = mapOf(),
     arrangement = Arrangement.Start,
     modifier = Modifier
 )

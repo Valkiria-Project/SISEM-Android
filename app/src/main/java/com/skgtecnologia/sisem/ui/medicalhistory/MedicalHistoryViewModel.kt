@@ -478,6 +478,15 @@ class MedicalHistoryViewModel @Inject constructor(
             }.also { body -> updatedBody = body }
         }
 
+        chipSelectionAction.viewsInvisibility.forEach { viewsInvisibility ->
+            updateBodyModel(
+                uiModels = updatedBody,
+                identifier = viewsInvisibility.key
+            ) { model ->
+                updateComponentVisibility(model, viewsInvisibility)
+            }.also { body -> updatedBody = body }
+        }
+
         if (chipSelectionAction.identifier == PATIENT_DOCUMENT_TYPE_IDENTIFIER) {
             updatedBody = updatePatientDocumentInputType(
                 chipSelectionValues[PATIENT_DOCUMENT_TYPE_IDENTIFIER]?.id.orEmpty(),

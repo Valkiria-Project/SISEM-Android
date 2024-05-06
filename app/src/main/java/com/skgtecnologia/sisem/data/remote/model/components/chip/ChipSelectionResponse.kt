@@ -32,6 +32,7 @@ data class ChipSelectionResponse(
         items = items?.map { it.mapToUi() } ?: error("ChipSelection items cannot be null"),
         selected = selected,
         selectionVisibility = selectionVisibility,
+        deselectionVisibility = deselectionVisibility,
         visibility = visibility ?: true,
         required = required ?: false,
         arrangement = arrangement ?: Arrangement.Center,
