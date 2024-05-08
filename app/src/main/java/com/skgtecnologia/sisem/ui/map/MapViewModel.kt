@@ -57,15 +57,15 @@ class MapViewModel @Inject constructor(
             .launchIn(viewModelScope)
 
         observeNotifications.invoke()
-            .flowOn(Dispatchers.IO)
-            .filterNotNull()
-            .onEach {
+            ?.flowOn(Dispatchers.IO)
+            ?.filterNotNull()
+            ?.onEach {
                 Timber.d("Observed notifications size is ${it.size}")
                 uiState = uiState.copy(
                     notifications = it
                 )
             }
-            .catch { Timber.wtf("Error observing notifications ${it.localizedMessage}") }
-            .launchIn(viewModelScope)
+            ?.catch { Timber.wtf("Error observing notifications ${it.localizedMessage}") }
+            ?.launchIn(viewModelScope)
     }
 }
