@@ -23,7 +23,7 @@ interface AccessTokenDao {
     suspend fun getAccessTokenByUsername(username: String): AccessTokenEntity
 
     @Query("SELECT * FROM access_token WHERE role = :role")
-    suspend fun getAccessTokenByRole(role: String): AccessTokenEntity
+    suspend fun getAccessTokenByRole(role: String): AccessTokenEntity?
 
     @Query(
         """
