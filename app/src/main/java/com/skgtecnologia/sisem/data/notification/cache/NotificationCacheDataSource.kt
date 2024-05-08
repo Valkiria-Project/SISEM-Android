@@ -6,7 +6,6 @@ import com.skgtecnologia.sisem.data.notification.cache.model.mapToCache
 import com.skgtecnologia.sisem.data.notification.cache.model.mapToDomain
 import com.valkiria.uicomponents.bricks.notification.NotificationUiModel
 import com.valkiria.uicomponents.bricks.notification.mapToUi
-import com.valkiria.uicomponents.bricks.notification.model.ClosingAPHNotification
 import com.valkiria.uicomponents.bricks.notification.model.IncidentAssignedNotification
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import kotlinx.coroutines.Dispatchers
