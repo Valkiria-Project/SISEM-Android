@@ -28,7 +28,7 @@ class MenuViewModel @Inject constructor(
     private val getOperationConfig: GetOperationConfig,
     private val logout: Logout,
     private val logoutTurn: LogoutTurn,
-    private val observeOperationConfig: ObserveOperationConfig,
+    private val observeOperationConfig: ObserveOperationConfig
 ) : ViewModel() {
 
     private var job: Job? = null
