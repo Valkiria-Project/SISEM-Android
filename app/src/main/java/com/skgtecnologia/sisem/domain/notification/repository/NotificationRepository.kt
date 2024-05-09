@@ -8,5 +8,5 @@ interface NotificationRepository {
 
     suspend fun storeNotification(notification: NotificationData)
 
-    fun observeNotifications(): Flow<List<NotificationUiModel>?>
+    fun observeNotifications(): Flow<List<NotificationUiModel>?>?
 }

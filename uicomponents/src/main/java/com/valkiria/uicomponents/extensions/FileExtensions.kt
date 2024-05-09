@@ -22,7 +22,7 @@ import java.io.FileOutputStream
 
 const val CONTENT_URI_SCHEME = "content"
 const val BITMAP_COMPRESS_QUALITY = 80
-const val FALLBACK_FILE_SIZE = 2_000_000L
+const val FALLBACK_FILE_SIZE = 30_000_000L
 
 fun Bitmap.encodeAsBase64(): String {
     val output = ByteArrayOutputStream()
@@ -61,18 +61,18 @@ suspend fun Context.storeUriAsFileToCache(uri: Uri, maxFileSizeKb: String? = nul
         fileContents?.close()
     }
 
-    if (file.length() > getFilleAllowedSize(maxFileSizeKb)) {
-        val allowedFileSize = getFilleAllowedSize(maxFileSizeKb)
+    val allowedFileSize = getFileAllowedSize(maxFileSizeKb)
+    if (file.length() > allowedFileSize) {
         Timber.d("${file.length()} is larger than $allowedFileSize")
         error("The file size ${file.length()} is larger than the allowed $allowedFileSize")
     }
 
     return Compressor.compress(context = this, imageFile = file) {
-        size(getFilleAllowedSize(maxFileSizeKb))
+        size(getFileAllowedSize(maxFileSizeKb))
     }
 }
 
-private fun getFilleAllowedSize(maxFileSizeKb: String?): Long =
+private fun getFileAllowedSize(maxFileSizeKb: String?): Long =
     maxFileSizeKb.orEmpty().toLongOrNull() ?: FALLBACK_FILE_SIZE
 
 private fun ContentResolver.getFileName(fileUri: Uri): String {

@@ -459,7 +459,9 @@ private fun IncidentFooter(patients: List<PatientUiModel>, onAction: (idAph: Int
             .fillMaxWidth()
     ) {
         patients.forEach { patientUiModel ->
-            IncidentPatient(patientUiModel, onAction)
+            if (patientUiModel.disabled.not()) {
+                IncidentPatient(patientUiModel, onAction)
+            }
         }
     }
 }
@@ -491,15 +493,13 @@ private fun IncidentPatient(patientUiModel: PatientUiModel, onAction: (idAph: In
             )
         }
 
-        if (patientUiModel.disabled) {
-            Button(
-                onClick = { /*TODO*/ }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_email),
-                    contentDescription = null
-                )
-            }
+        Button(
+            onClick = { /*TODO*/ }
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_email),
+                contentDescription = null
+            )
         }
     }
 }
