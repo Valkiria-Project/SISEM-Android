@@ -19,7 +19,7 @@ const val NOTIFICATION_TYPE_KEY = "notification_type"
 
 // INCIDENT_ASSIGNED
 const val CRU = "CRU"
-private const val INCIDENT_NUMBER = "incident_number"
+const val INCIDENT_NUMBER = "incident_number"
 private const val INCIDENT_TYPE = "incident_type"
 private const val INCIDENT_PRIORITY = "incident_priority"
 private const val INCIDENT_DATE = "incident_date"

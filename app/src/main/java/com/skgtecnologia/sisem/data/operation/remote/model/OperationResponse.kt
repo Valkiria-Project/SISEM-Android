@@ -4,6 +4,9 @@ import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
+/*TODO*/
+private const val MAX_FILE_SIZE_KB = "30000000"
+
 @JsonClass(generateAdapter = true)
 data class OperationResponse(
     @Json(name = "preoperational_time") val preoperationalTime: Long?,
@@ -39,6 +42,6 @@ fun OperationResponse.mapToDomain(): OperationModel = OperationModel(
     status = status ?: error("Config status cannot be null"),
     vehicleCode = vehicleCode,
     vehicleConfig = vehicleConfig?.mapToDomain(),
-    maxFileSizeKb = maxFileSizeKb ?: error("Config maxFileSizeKb cannot be null"),
+    maxFileSizeKb = MAX_FILE_SIZE_KB ?: error("Config maxFileSizeKb cannot be null"),
     preoperationalExec = preoperationalExec ?: emptyMap()
 )

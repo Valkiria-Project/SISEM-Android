@@ -11,6 +11,6 @@ class ObserveNotifications @Inject constructor(
 ) {
 
     @CheckResult
-    operator fun invoke(): Flow<List<NotificationUiModel>?> =
+    operator fun invoke(): Flow<List<NotificationUiModel>?>? =
         notificationsRepository.observeNotifications()
 }

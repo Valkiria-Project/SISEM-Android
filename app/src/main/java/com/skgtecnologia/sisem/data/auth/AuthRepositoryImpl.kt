@@ -85,7 +85,7 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun getAllAccessTokens(): List<AccessTokenModel> =
         authCacheDataSource.retrieveAllAccessTokens()
 
-    override suspend fun getTokenByRole(role: String): AccessTokenModel =
+    override suspend fun getTokenByRole(role: String): AccessTokenModel? =
         authCacheDataSource.retrieveAccessTokenByRole(role)
 
     override suspend fun logout(username: String): String =

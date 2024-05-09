@@ -7,6 +7,7 @@ import com.skgtecnologia.sisem.data.notification.cache.NotificationCacheDataSour
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.domain.notification.repository.NotificationRepository
 import com.valkiria.uicomponents.bricks.notification.NotificationUiModel
+import com.valkiria.uicomponents.bricks.notification.model.ClosingAPHNotification
 import com.valkiria.uicomponents.bricks.notification.model.IncidentAssignedNotification
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import com.valkiria.uicomponents.bricks.notification.model.TransmiNotification
@@ -28,9 +29,38 @@ class NotificationRepositoryImpl @Inject constructor(
         notificationCacheDataSource.storeNotification(notification)
 
         when (notification) {
+            is ClosingAPHNotification -> handleClosingAPHNotificationNotification()
             is IncidentAssignedNotification -> handleIncidentAssignedNotification(notification)
             is TransmiNotification -> handleTransmiNotification(notification)
             else -> Timber.d("no-op")
+        }
+    }
+
+    private suspend fun handleClosingAPHNotificationNotification() {
+        val currentIncidentNotification = checkNotNull(
+            notificationCacheDataSource.getActiveIncidentNotification()?.first()
+        )
+        val currentIncident = checkNotNull(incidentCacheDataSource.observeActiveIncident().first())
+
+        incidentRemoteDataSource.getIncidentInfo(
+            idIncident = currentIncidentNotification.incidentNumber,
+            idTurn = authCacheDataSource.observeAccessToken()
+                .first()
+                ?.turn
+                ?.id
+                ?.toString()
+                .orEmpty(),
+            codeVehicle = operationCacheDataSource.observeOperationConfig()
+                .first()
+                ?.vehicleCode
+                .orEmpty()
+        ).onSuccess {
+            val updatedIncident = it.copy(
+                incidentPriority = currentIncident.incidentPriority,
+                latitude = currentIncident.latitude,
+                longitude = currentIncident.longitude
+            )
+            incidentCacheDataSource.storeIncident(updatedIncident)
         }
     }
 
@@ -72,6 +102,6 @@ class NotificationRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun observeNotifications(): Flow<List<NotificationUiModel>?> =
+    override fun observeNotifications(): Flow<List<NotificationUiModel>?>? =
         notificationCacheDataSource.observeNotifications()
 }

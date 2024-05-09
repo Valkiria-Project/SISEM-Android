@@ -27,15 +27,27 @@ class NotificationsManager @Inject constructor(private val context: Context) {
         val notificationData = getNotificationDataByType(notificationDataMap)
 
         val intent = Intent(context, MainActivity::class.java).apply {
-            if (notificationData?.notificationType == NotificationType.INCIDENT_ASSIGNED) {
-                val bundle = Bundle()
-                notificationDataMap.forEach {
-                    bundle.putString(it.key, it.value)
+            when {
+                notificationData?.notificationType == NotificationType.INCIDENT_ASSIGNED -> {
+                    val bundle = Bundle()
+                    notificationDataMap.forEach {
+                        bundle.putString(it.key, it.value)
+                    }
+
+                    putExtras(bundle)
                 }
 
-                putExtras(bundle)
+                notificationData?.notificationType == NotificationType.CLOSING_OF_APH -> {
+                    val bundle = Bundle()
+                    notificationDataMap.forEach {
+                        bundle.putString(it.key, it.value)
+                    }
+
+                    putExtras(bundle)
+                }
             }
         }
+
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
         val pendingIntent = PendingIntent.getActivity(
