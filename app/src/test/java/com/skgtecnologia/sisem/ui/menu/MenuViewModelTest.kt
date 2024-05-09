@@ -5,6 +5,7 @@ import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
+import com.skgtecnologia.sisem.domain.auth.usecases.Logout
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.skgtecnologia.sisem.domain.authcards.model.VehicleConfigModel
 import com.skgtecnologia.sisem.domain.operation.usecases.GetOperationConfig
@@ -41,6 +42,9 @@ class MenuViewModelTest {
     private lateinit var observeOperationConfig: ObserveOperationConfig
 
     @MockK
+    private lateinit var logout: Logout
+
+    @MockK
     private lateinit var logoutTurn: LogoutTurn
 
     private lateinit var viewModel: MenuViewModel
@@ -59,6 +63,7 @@ class MenuViewModelTest {
             getAllAccessTokens = getAllAccessTokens,
             getOperationConfig = getOperationConfig,
             observeOperationConfig = observeOperationConfig,
+            logout = logout,
             logoutTurn = logoutTurn
         )
 
@@ -80,6 +85,7 @@ class MenuViewModelTest {
             getAllAccessTokens = getAllAccessTokens,
             getOperationConfig = getOperationConfig,
             observeOperationConfig = observeOperationConfig,
+            logout = logout,
             logoutTurn = logoutTurn
         )
 
@@ -98,6 +104,7 @@ class MenuViewModelTest {
             getAllAccessTokens = getAllAccessTokens,
             getOperationConfig = getOperationConfig,
             observeOperationConfig = observeOperationConfig,
+            logout = logout,
             logoutTurn = logoutTurn
         )
 
@@ -121,6 +128,7 @@ class MenuViewModelTest {
             getAllAccessTokens = getAllAccessTokens,
             getOperationConfig = getOperationConfig,
             observeOperationConfig = observeOperationConfig,
+            logout = logout,
             logoutTurn = logoutTurn
         )
 
@@ -145,6 +153,7 @@ class MenuViewModelTest {
             getAllAccessTokens = getAllAccessTokens,
             getOperationConfig = getOperationConfig,
             observeOperationConfig = observeOperationConfig,
+            logout = logout,
             logoutTurn = logoutTurn
         )
 
@@ -168,6 +177,7 @@ class MenuViewModelTest {
             getAllAccessTokens = getAllAccessTokens,
             getOperationConfig = getOperationConfig,
             observeOperationConfig = observeOperationConfig,
+            logout = logout,
             logoutTurn = logoutTurn
         )
 
