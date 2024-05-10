@@ -1227,6 +1227,7 @@ class MedicalHistoryViewModel @Inject constructor(
             color = "#3E4146"
         ),
         date = null,
+        time = null,
         chipSection = ChipSectionUiModel(
             title = TextUiModel(
                 text = "Especificaciones",
