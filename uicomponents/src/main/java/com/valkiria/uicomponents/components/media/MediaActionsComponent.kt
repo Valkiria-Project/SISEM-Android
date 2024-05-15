@@ -1,6 +1,5 @@
 package com.valkiria.uicomponents.components.media
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,11 +22,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,9 +39,6 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.media.MediaAction.Camera
 import com.valkiria.uicomponents.components.media.MediaAction.Gallery
 import com.valkiria.uicomponents.components.media.MediaAction.MediaFile
-import com.valkiria.uicomponents.extensions.storeUriAsFileToCache
-import kotlinx.coroutines.launch
-import java.io.File
 
 private const val ROUNDED_CORNER_SHAPE_PERCENTAGE = 90
 
@@ -56,36 +50,19 @@ fun MediaActionsComponent(
     mediaActionsIndex: Int = 0,
     onAction: (id: String, mediaAction: MediaAction) -> Unit
 ) {
-    var selectedMedia by remember { mutableStateOf(mapOf<Int, File>()) }
-    val context = LocalContext.current
+    val selectedMedia by remember(uiModel.selectedMediaUris) {
+        mutableStateOf(uiModel.selectedMediaUris)
+    }
 
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
-        onResult = { uris -> onAction(uiModel.identifier, Gallery(uris)) }
+        onResult = { uris -> onAction(uiModel.identifier, Gallery(uris.map { it.toString() })) }
     )
 
     val multipleMediaFilePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenMultipleDocuments(),
-        onResult = { uris -> onAction(uiModel.identifier, MediaFile(uris)) }
+        onResult = { uris -> onAction(uiModel.identifier, MediaFile(uris.map { it.toString() })) }
     )
-
-    LaunchedEffect(uiModel.selectedMediaUris) {
-        launch {
-            if (uiModel.selectedMediaUris.isNotEmpty()) {
-                selectedMedia = uiModel.selectedMediaUris.mapIndexedNotNull { index, uri ->
-                    runCatching {
-                        context.storeUriAsFileToCache(
-                            uri,
-                            uiModel.maxFileSizeKb
-                        )
-                    }.fold(
-                        onSuccess = { index to it },
-                        onFailure = { null }
-                    )
-                }.toMap()
-            }
-        }
-    }
 
     LaunchedEffect(selectedMedia) {
         listState.animateScrollToItem(
@@ -171,7 +148,7 @@ fun MediaActionsComponent(
             }
         }
 
-        if (uiModel.withinForm && selectedMedia.isNotEmpty()) {
+        if (uiModel.withinForm && (selectedMedia.isNotEmpty())) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -205,8 +182,8 @@ fun MediaActionsComponent(
                     ) {
                         LabelComponent(
                             uiModel = LabelUiModel(
-                                identifier = media.component2().absolutePath,
-                                text = media.component2().name,
+                                identifier = media,
+                                text = media,
                                 overflow = TextOverflow.Ellipsis,
                                 maxLines = 1,
                                 textStyle = TextStyle.HEADLINE_6,
@@ -221,7 +198,8 @@ fun MediaActionsComponent(
                                     .padding(horizontal = 20.dp, vertical = 4.dp)
                             )
                         ) { id ->
-                            onAction(id, MediaAction.RemoveFile(media.component1()))
+                            val fileIndex = selectedMedia.indexOf(id)
+                            onAction(id, MediaAction.RemoveFile(fileIndex))
                         }
                     }
                 }
@@ -232,8 +210,8 @@ fun MediaActionsComponent(
 
 sealed class MediaAction {
     data object Camera : MediaAction()
-    data class Gallery(val uris: List<Uri>) : MediaAction()
-    data class MediaFile(val uris: List<Uri>) : MediaAction()
+    data class Gallery(val uris: List<String>) : MediaAction()
+    data class MediaFile(val uris: List<String>) : MediaAction()
     data class RemoveFile(val index: Int) : MediaAction()
 }
 
@@ -245,9 +223,9 @@ fun MediaActionsPreview() {
             uiModel = MediaActionsUiModel(
                 withinForm = true,
                 selectedMediaUris = listOf(
-                    Uri.parse("10.jpg"),
-                    Uri.parse("20.jpg")
-                )
+                    "APH_FILE_254_1000076492.jpg",
+                    "APH_FILE_254_1000076490.jpg"
+                ),
             ),
             listState = rememberLazyListState(),
             mediaActionsIndex = 1

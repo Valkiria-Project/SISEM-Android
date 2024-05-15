@@ -14,6 +14,7 @@ data class InfoCardUiModel(
     val title: TextUiModel,
     val pill: PillUiModel? = null,
     val date: TextUiModel?,
+    val time: TextUiModel?,
     val chipSection: ChipSectionUiModel?,
     val reportsDetail: ReportsDetailUiModel?,
     val visibility: Boolean = true,

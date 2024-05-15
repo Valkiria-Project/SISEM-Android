@@ -14,7 +14,7 @@ converter-moshi = "2.11.0"
 core-ktx = "1.13.1"
 core-splashscreen = "1.0.1"
 core-testing = "2.2.0"
-desugar_jdk_libs = "2.0.4"
+desugar-jdk-libs = "2.0.4"
 detekt = "1.17.0"
 espresso-core = "3.5.1"
 firebase-bom = "33.0.0"
@@ -69,7 +69,7 @@ compose-html = { module = "com.github.ireward:compose-html", version.ref = "comp
 compressor = { module = "id.zelory:compressor", version.ref = "compressor" }
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converter-moshi" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
-desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
+desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx" }

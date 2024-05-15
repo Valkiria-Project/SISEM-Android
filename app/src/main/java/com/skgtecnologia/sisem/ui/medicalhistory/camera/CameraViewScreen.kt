@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.report.media
+package com.skgtecnologia.sisem.ui.medicalhistory.camera
 
 import android.Manifest
 import android.content.Context
@@ -39,20 +39,19 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.ui.commons.utils.CameraUtils
 import com.skgtecnologia.sisem.ui.commons.utils.MediaStoreUtils
+import com.skgtecnologia.sisem.ui.medicalhistory.view.MedicalHistoryViewViewModel
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
-import com.skgtecnologia.sisem.ui.report.ReportViewModel
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.concurrent.Executors
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
-import kotlinx.coroutines.launch
-import timber.log.Timber
 
-@com.google.accompanist.permissions.ExperimentalPermissionsApi
 @Composable
-fun ReportCameraScreen(
+fun CameraViewScreen(
+    viewModel: MedicalHistoryViewViewModel,
     modifier: Modifier = Modifier,
-    viewModel: ReportViewModel,
-    onNavigation: (reportNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (medicalHistoryNavigationModel: NavigationModel?) -> Unit
 ) {
     val uiState = viewModel.uiState
 
@@ -73,15 +72,15 @@ fun ReportCameraScreen(
 
     if (cameraPermission.isGranted) {
         Timber.d("Show Camera")
-        CameraPreview(viewModel, modifier)
+        CameraViewPreview(viewModel, modifier)
     } else if (cameraPermission.shouldShowRationale) {
         Timber.d("Show rationale")
     }
 }
 
 @Composable
-private fun CameraPreview(
-    viewModel: ReportViewModel,
+private fun CameraViewPreview(
+    viewModel: MedicalHistoryViewViewModel,
     modifier: Modifier
 ) {
     val context = LocalContext.current
@@ -133,7 +132,7 @@ private fun CameraPreview(
                             }
 
                             if (savedUri != null) {
-                                viewModel.onPhotoTaken(savedUri.toString())
+                                viewModel.onPhotoTaken(savedUri)
                             }
                         }
                     }

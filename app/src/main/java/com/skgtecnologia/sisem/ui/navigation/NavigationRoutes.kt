@@ -40,6 +40,7 @@ sealed class MainNavigationRoute(override val route: String) : NavigationRoute(r
 
 sealed class AphNavigationRoute(override val route: String) : NavigationRoute(route) {
     data object CameraScreen : MainNavigationRoute("camera_screen")
+    data object CameraViewScreen : MainNavigationRoute("camera_view_screen")
     data object MedicalHistoryScreen : MainNavigationRoute("medical_history_screen")
     data object MedicalHistoryViewScreen : MainNavigationRoute("medical_history_view_screen")
     data object MedicineScreen : MainNavigationRoute("medicine_screen")

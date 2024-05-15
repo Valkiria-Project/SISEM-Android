@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.core.net.toUri
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
@@ -173,7 +174,7 @@ fun handleAction(
                 val images = viewModel.uiState.selectedMediaUris.mapNotNull { uri ->
                     runCatching {
                         context.storeUriAsFileToCache(
-                            uri,
+                            uri.toUri(),
                             viewModel.uiState.operationConfig?.maxFileSizeKb
                         )
                     }.fold(

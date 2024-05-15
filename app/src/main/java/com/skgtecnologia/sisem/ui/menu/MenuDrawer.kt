@@ -55,7 +55,13 @@ fun MenuDrawer(
                     viewModel.getOperationConfig()
                     onClick(it)
                 },
-                onLogout = { viewModel.logout(it.username) }
+                onLogout = {
+                    if (isAdmin == true) {
+                        viewModel.logoutAdmin(it.username)
+                    } else {
+                        viewModel.logout(it.username)
+                    }
+                }
             )
         },
         drawerState = drawerState,
