@@ -35,6 +35,7 @@ import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.map.MapScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.camera.CameraScreen
+import com.skgtecnologia.sisem.ui.medicalhistory.camera.CameraViewScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.view.MedicalHistoryViewScreen
@@ -449,6 +450,17 @@ private fun NavGraphBuilder.aphGraph(
             route = AphNavigationRoute.CameraScreen.route
         ) { navBackStackEntry ->
             CameraScreen(
+                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
+                modifier = modifier
+            ) { navigationModel ->
+                navigateToNextStep(navController, navigationModel)
+            }
+        }
+
+        composable(
+            route = AphNavigationRoute.CameraViewScreen.route
+        ) { navBackStackEntry ->
+            CameraViewScreen(
                 viewModel = navBackStackEntry.sharedViewModel(navController = navController),
                 modifier = modifier
             ) { navigationModel ->

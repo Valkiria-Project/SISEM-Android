@@ -16,6 +16,7 @@ import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
+import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
@@ -114,6 +115,20 @@ class MedicalHistoryViewViewModel @Inject constructor(
     fun showCamera() {
         uiState = uiState.copy(
             navigationModel = MedicalHistoryViewNavigationModel(showCamera = true)
+        )
+    }
+
+    fun onPhotoTaken(savedUri: Uri) {
+        val updatedSelectedMedia = buildList {
+            addAll(uiState.selectedMediaUris)
+            add(savedUri.toString())
+        }
+
+        uiState = uiState.copy(
+            selectedMediaUris = updatedSelectedMedia,
+            navigationModel = MedicalHistoryViewNavigationModel(
+                photoTaken = true
+            )
         )
     }
 
