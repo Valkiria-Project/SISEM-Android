@@ -15,10 +15,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.skgtecnologia.sisem.commons.communication.IncidentEventHandler
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.AphNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.NavigationRoute
+import com.valkiria.uicomponents.bricks.banner.BannerUiModel
 import com.valkiria.uicomponents.bricks.map.MapboxMapView
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import timber.log.Timber
@@ -42,6 +44,11 @@ fun MapScreen(
         notificationData = it
     }
 
+    var incidentErrorData by remember { mutableStateOf<BannerUiModel?>(null) }
+    IncidentEventHandler.subscribeIncidentErrorEvent {
+        incidentErrorData = it
+    }
+
     BackHandler {
         Timber.d("Close the App")
         (context as ComponentActivity).finish()
@@ -62,9 +69,13 @@ fun MapScreen(
             notifications = viewModel.uiState.notifications,
             drawerState = drawerState,
             notificationData = notificationData,
+            incidentErrorData = incidentErrorData,
             modifier = modifier.fillMaxSize(),
             onNotificationAction = {
                 notificationData = null
+            },
+            onIncidentErrorAction = {
+                incidentErrorData = null
             }
         ) { idAph ->
             Timber.d("Navigate to APH with Id APH $idAph")
