@@ -39,7 +39,6 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.ui.commons.utils.CameraUtils
 import com.skgtecnologia.sisem.ui.commons.utils.MediaStoreUtils
-import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryViewModel
 import com.skgtecnologia.sisem.ui.medicalhistory.view.MedicalHistoryViewViewModel
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import kotlinx.coroutines.launch

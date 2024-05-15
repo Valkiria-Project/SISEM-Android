@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.ui.report
 
-import android.net.Uri
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.di.operation.OperationRole
@@ -276,7 +275,7 @@ class ReportViewModelTest {
 
     @Test
     fun `when updateSelectedImages is called with isFromPreOperational false`() = runTest {
-        val selectedImages = listOf(mockk<Uri>(), mockk<Uri>())
+        val selectedImages = listOf(mockk<String>(), mockk<String>())
         val operationModel = mockk<OperationModel> {
             every { numImgNovelty } returns 1
         }
@@ -290,7 +289,7 @@ class ReportViewModelTest {
 
     @Test
     fun `when updateSelectedImages with isFromPreOperational true and auxiliary`() = runTest {
-        val selectedImages = listOf(mockk<Uri>(), mockk<Uri>())
+        val selectedImages = listOf(mockk<String>(), mockk<String>())
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns OperationRole.AUXILIARY_AND_OR_TAPH
             every { numImgPreoperationalAux } returns 1
@@ -305,7 +304,7 @@ class ReportViewModelTest {
 
     @Test
     fun `when updateSelectedImages with isFromPreOperational true and driver`() = runTest {
-        val selectedImages = listOf(mockk<Uri>(), mockk<Uri>())
+        val selectedImages = listOf(mockk<String>(), mockk<String>())
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns OperationRole.DRIVER
             every { numImgPreoperationalDriver } returns 1
@@ -320,7 +319,7 @@ class ReportViewModelTest {
 
     @Test
     fun `when updateSelectedImages with isFromPreOperational true and lead aph`() = runTest {
-        val selectedImages = listOf(mockk<Uri>(), mockk<Uri>())
+        val selectedImages = listOf(mockk<String>(), mockk<String>())
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns OperationRole.LEAD_APH
         }
@@ -334,7 +333,7 @@ class ReportViewModelTest {
 
     @Test
     fun `when updateSelectedImages with isFromPreOperational true and medic aph`() = runTest {
-        val selectedImages = listOf(mockk<Uri>(), mockk<Uri>())
+        val selectedImages = listOf(mockk<String>(), mockk<String>())
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns OperationRole.MEDIC_APH
             every { numImgPreoperationalDoctor } returns 1
@@ -349,7 +348,7 @@ class ReportViewModelTest {
 
     @Test
     fun `when updateSelectedImages with isFromPreOperational true and null role`() = runTest {
-        val selectedImages = listOf(mockk<Uri>(), mockk<Uri>())
+        val selectedImages = listOf(mockk<String>(), mockk<String>())
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns null
         }
@@ -363,7 +362,7 @@ class ReportViewModelTest {
 
     @Test
     fun `when removeCurrentImage is called`() = runTest {
-        val selectedImages = listOf(mockk<Uri>())
+        val selectedImages = listOf(mockk<String>())
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns OperationRole.MEDIC_APH
             every { numImgPreoperationalDoctor } returns 1
@@ -404,7 +403,7 @@ class ReportViewModelTest {
 
     @Test
     fun `when onPhotoTaken is called with one uri`() = runTest {
-        val selectedImages = listOf(mockk<Uri>())
+        val selectedImages = listOf(mockk<String>())
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns OperationRole.MEDIC_APH
             every { numImgPreoperationalDoctor } returns 1
@@ -421,7 +420,7 @@ class ReportViewModelTest {
 
     @Test
     fun `when onPhotoTaken is called with two uris`() = runTest {
-        val selectedImages = listOf(mockk<Uri>(), mockk<Uri>())
+        val selectedImages = listOf(mockk<String>(), mockk<String>())
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns OperationRole.MEDIC_APH
             every { numImgPreoperationalDoctor } returns 2

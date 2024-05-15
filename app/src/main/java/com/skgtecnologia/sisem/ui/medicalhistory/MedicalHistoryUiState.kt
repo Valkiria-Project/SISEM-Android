@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.ui.medicalhistory
 
-import android.net.Uri
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.valkiria.uicomponents.bricks.banner.BannerUiModel

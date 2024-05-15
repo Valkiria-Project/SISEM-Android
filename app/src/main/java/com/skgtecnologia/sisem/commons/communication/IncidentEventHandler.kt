@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.commons.communication
 
 import com.valkiria.uicomponents.bricks.banner.BannerUiModel
-import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
