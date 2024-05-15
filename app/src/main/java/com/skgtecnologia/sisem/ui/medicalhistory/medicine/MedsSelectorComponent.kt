@@ -78,6 +78,7 @@ fun MedsSelectorComponentPreview() {
                         color = "#3E4146"
                     ),
                     date = null,
+                    time = null,
                     chipSection = ChipSectionUiModel(
                         title = TextUiModel(
                             text = "Especificaciones",

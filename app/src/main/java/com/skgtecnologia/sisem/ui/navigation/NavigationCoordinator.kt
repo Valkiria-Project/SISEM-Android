@@ -230,8 +230,7 @@ private fun medicalHistoryViewToNextStep(
             AphNavigationRoute.SendEmailScreen.route + "/${model.sendMedical}"
         )
 
-        model.showCamera -> navController.navigate(AphNavigationRoute.CameraScreen.route)
-
+        model.showCamera -> navController.navigate(AphNavigationRoute.CameraViewScreen.route)
         model.photoTaken -> with(navController) {
             popBackStack()
 

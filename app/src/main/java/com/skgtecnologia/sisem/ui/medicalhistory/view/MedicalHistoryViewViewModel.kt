@@ -56,6 +56,10 @@ class MedicalHistoryViewViewModel @Inject constructor(
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
                             screenModel = medicalHistoryViewScreen,
+                            selectedMediaUris = medicalHistoryViewScreen.body
+                                .filterIsInstance<MediaActionsUiModel>()
+                                .first()
+                                .selectedMediaUris,
                             isLoading = false
                         )
                     }
@@ -112,7 +116,21 @@ class MedicalHistoryViewViewModel @Inject constructor(
         )
     }
 
-    fun updateMediaActions(selectedMedia: List<Uri>? = null) {
+    fun onPhotoTaken(savedUri: Uri) {
+        val updatedSelectedMedia = buildList {
+            addAll(uiState.selectedMediaUris)
+            add(savedUri.toString())
+        }
+
+        uiState = uiState.copy(
+            selectedMediaUris = updatedSelectedMedia,
+            navigationModel = MedicalHistoryViewNavigationModel(
+                photoTaken = true
+            )
+        )
+    }
+
+    fun updateMediaActions(selectedMedia: List<String>? = null) {
         val updatedSelectedMedia = buildList {
             addAll(uiState.selectedMediaUris)
 

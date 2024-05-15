@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
+import com.skgtecnologia.sisem.domain.auth.usecases.Logout
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.operation.usecases.GetOperationConfig
 import com.skgtecnologia.sisem.domain.operation.usecases.LogoutTurn
@@ -25,8 +26,9 @@ class MenuViewModel @Inject constructor(
     private val androidIdProvider: AndroidIdProvider,
     private val getAllAccessTokens: GetAllAccessTokens,
     private val getOperationConfig: GetOperationConfig,
+    private val logout: Logout,
     private val logoutTurn: LogoutTurn,
-    private val observeOperationConfig: ObserveOperationConfig,
+    private val observeOperationConfig: ObserveOperationConfig
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -62,6 +64,33 @@ class MenuViewModel @Inject constructor(
         job?.cancel()
         job = viewModelScope.launch {
             logoutTurn.invoke(username = username)
+                .onSuccess {
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            isLogout = true
+                        )
+                    }
+                }
+                .onFailure { throwable ->
+                    Timber.wtf(throwable, "This is a failure")
+
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            errorModel = throwable.mapToUi()
+                        )
+                    }
+                }
+        }
+    }
+
+    fun logoutAdmin(username: String) {
+        uiState = uiState.copy(isLoading = true)
+
+        job?.cancel()
+        job = viewModelScope.launch {
+            logout.invoke(username = username)
                 .onSuccess {
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(

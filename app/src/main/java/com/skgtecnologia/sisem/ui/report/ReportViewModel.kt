@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.ui.report
 
-import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -263,7 +262,7 @@ class ReportViewModel @Inject constructor(
     // endregion
 
     // region ImageConfirmation
-    fun updateSelectedImages(selectedImages: List<Uri>, isFromPreOperational: Boolean) {
+    fun updateSelectedImages(selectedImages: List<String>, isFromPreOperational: Boolean) {
         val updateSelectedImages = buildList {
 
             addAll(uiState.selectedImageUris)
@@ -310,7 +309,7 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    fun onPhotoTaken(savedUri: Uri) {
+    fun onPhotoTaken(savedUri: String) {
         val updatedSelectedImages = buildList {
             addAll(uiState.selectedImageUris)
 

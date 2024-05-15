@@ -209,6 +209,10 @@ val infoCardUiModelMock = InfoCardUiModel(
         text = "text",
         textStyle = TextStyle.BODY_1
     ),
+    time = TextUiModel(
+        text = "text",
+        textStyle = TextStyle.BODY_1
+    ),
     chipSection = null,
     reportsDetail = null,
     arrangement = Arrangement.Start,
@@ -465,6 +469,10 @@ val infoCardResponseMock = InfoCardResponse(
         leftIcon = null
     ),
     date = TextResponse(
+        text = "text",
+        textStyle = TextStyle.BODY_1
+    ),
+    time = TextResponse(
         text = "text",
         textStyle = TextStyle.BODY_1
     ),

@@ -1,10 +1,12 @@
 package com.skgtecnologia.sisem.data.notification
 
+import com.skgtecnologia.sisem.commons.communication.IncidentEventHandler
 import com.skgtecnologia.sisem.data.auth.cache.AuthCacheDataSource
 import com.skgtecnologia.sisem.data.incident.cache.IncidentCacheDataSource
 import com.skgtecnologia.sisem.data.incident.remote.IncidentRemoteDataSource
 import com.skgtecnologia.sisem.data.notification.cache.NotificationCacheDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
+import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.notification.repository.NotificationRepository
 import com.valkiria.uicomponents.bricks.notification.NotificationUiModel
 import com.valkiria.uicomponents.bricks.notification.model.ClosingAPHNotification
@@ -87,6 +89,8 @@ class NotificationRepositoryImpl @Inject constructor(
                 longitude = longitude.toDoubleOrNull()
             )
             incidentCacheDataSource.storeIncident(incident)
+        }.onFailure {
+            IncidentEventHandler.publishIncidentErrorEvent(it.mapToUi())
         }
     }
 

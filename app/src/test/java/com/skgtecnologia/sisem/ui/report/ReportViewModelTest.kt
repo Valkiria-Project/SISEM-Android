@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.ui.report
 
-import android.net.Uri
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.di.operation.OperationRole
@@ -130,7 +129,13 @@ class ReportViewModelTest {
 
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
         viewModel.isValidDescription = true
-        viewModel.updateSelectedImages(listOf(mockk()), false)
+        viewModel.updateSelectedImages(
+            listOf(
+                "APH_FILE_254_1000076492.jpg",
+                "APH_FILE_254_1000076490.jpg"
+            ),
+            false
+        )
         viewModel.saveFinding()
 
         Assert.assertEquals(null, viewModel.uiState.confirmInfoModel)
@@ -219,7 +224,13 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
         viewModel.isValidDescription = true
         viewModel.isValidTopic = true
-        viewModel.updateSelectedImages(listOf(mockk()), false)
+        viewModel.updateSelectedImages(
+            listOf(
+                "APH_FILE_254_1000076492.jpg",
+                "APH_FILE_254_1000076490.jpg"
+            ),
+            false
+        )
         viewModel.saveReport()
 
         Assert.assertEquals(null, viewModel.uiState.confirmInfoModel)
@@ -276,7 +287,10 @@ class ReportViewModelTest {
 
     @Test
     fun `when updateSelectedImages is called with isFromPreOperational false`() = runTest {
-        val selectedImages = listOf(mockk<Uri>(), mockk<Uri>())
+        val selectedImages = listOf(
+            "APH_FILE_254_1000076492.jpg",
+            "APH_FILE_254_1000076490.jpg"
+        )
         val operationModel = mockk<OperationModel> {
             every { numImgNovelty } returns 1
         }
@@ -290,7 +304,10 @@ class ReportViewModelTest {
 
     @Test
     fun `when updateSelectedImages with isFromPreOperational true and auxiliary`() = runTest {
-        val selectedImages = listOf(mockk<Uri>(), mockk<Uri>())
+        val selectedImages = listOf(
+            "APH_FILE_254_1000076492.jpg",
+            "APH_FILE_254_1000076490.jpg"
+        )
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns OperationRole.AUXILIARY_AND_OR_TAPH
             every { numImgPreoperationalAux } returns 1
@@ -305,7 +322,10 @@ class ReportViewModelTest {
 
     @Test
     fun `when updateSelectedImages with isFromPreOperational true and driver`() = runTest {
-        val selectedImages = listOf(mockk<Uri>(), mockk<Uri>())
+        val selectedImages = listOf(
+            "APH_FILE_254_1000076492.jpg",
+            "APH_FILE_254_1000076490.jpg"
+        )
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns OperationRole.DRIVER
             every { numImgPreoperationalDriver } returns 1
@@ -320,7 +340,10 @@ class ReportViewModelTest {
 
     @Test
     fun `when updateSelectedImages with isFromPreOperational true and lead aph`() = runTest {
-        val selectedImages = listOf(mockk<Uri>(), mockk<Uri>())
+        val selectedImages = listOf(
+            "APH_FILE_254_1000076492.jpg",
+            "APH_FILE_254_1000076490.jpg"
+        )
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns OperationRole.LEAD_APH
         }
@@ -334,7 +357,10 @@ class ReportViewModelTest {
 
     @Test
     fun `when updateSelectedImages with isFromPreOperational true and medic aph`() = runTest {
-        val selectedImages = listOf(mockk<Uri>(), mockk<Uri>())
+        val selectedImages = listOf(
+            "APH_FILE_254_1000076492.jpg",
+            "APH_FILE_254_1000076490.jpg"
+        )
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns OperationRole.MEDIC_APH
             every { numImgPreoperationalDoctor } returns 1
@@ -349,7 +375,10 @@ class ReportViewModelTest {
 
     @Test
     fun `when updateSelectedImages with isFromPreOperational true and null role`() = runTest {
-        val selectedImages = listOf(mockk<Uri>(), mockk<Uri>())
+        val selectedImages = listOf(
+            "APH_FILE_254_1000076492.jpg",
+            "APH_FILE_254_1000076490.jpg"
+        )
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns null
         }
@@ -363,7 +392,10 @@ class ReportViewModelTest {
 
     @Test
     fun `when removeCurrentImage is called`() = runTest {
-        val selectedImages = listOf(mockk<Uri>())
+        val selectedImages = listOf(
+            "APH_FILE_254_1000076492.jpg",
+            "APH_FILE_254_1000076490.jpg"
+        )
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns OperationRole.MEDIC_APH
             every { numImgPreoperationalDoctor } returns 1
@@ -404,7 +436,10 @@ class ReportViewModelTest {
 
     @Test
     fun `when onPhotoTaken is called with one uri`() = runTest {
-        val selectedImages = listOf(mockk<Uri>())
+        val selectedImages = listOf(
+            "APH_FILE_254_1000076492.jpg",
+            "APH_FILE_254_1000076490.jpg"
+        )
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns OperationRole.MEDIC_APH
             every { numImgPreoperationalDoctor } returns 1
@@ -414,14 +449,17 @@ class ReportViewModelTest {
 
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
         viewModel.updateSelectedImages(selectedImages, true)
-        viewModel.onPhotoTaken(mockk())
+        viewModel.onPhotoTaken("APH_FILE_254_1000076492.jpg")
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.photoTaken)
     }
 
     @Test
     fun `when onPhotoTaken is called with two uris`() = runTest {
-        val selectedImages = listOf(mockk<Uri>(), mockk<Uri>())
+        val selectedImages = listOf(
+            "APH_FILE_254_1000076492.jpg",
+            "APH_FILE_254_1000076490.jpg"
+        )
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns OperationRole.MEDIC_APH
             every { numImgPreoperationalDoctor } returns 2
@@ -431,7 +469,7 @@ class ReportViewModelTest {
 
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
         viewModel.updateSelectedImages(selectedImages, true)
-        viewModel.onPhotoTaken(mockk())
+        viewModel.onPhotoTaken("APH_FILE_254_1000076492.jpg")
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.photoTaken)
         Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.infoEvent?.title)

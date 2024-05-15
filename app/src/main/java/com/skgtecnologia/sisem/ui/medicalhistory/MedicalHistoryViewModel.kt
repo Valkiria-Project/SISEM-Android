@@ -1227,6 +1227,7 @@ class MedicalHistoryViewModel @Inject constructor(
             color = "#3E4146"
         ),
         date = null,
+        time = null,
         chipSection = ChipSectionUiModel(
             title = TextUiModel(
                 text = "Especificaciones",
@@ -1426,7 +1427,7 @@ class MedicalHistoryViewModel @Inject constructor(
     fun onPhotoTaken(savedUri: Uri) {
         val updatedSelectedMedia = buildList {
             addAll(uiState.selectedMediaUris)
-            add(savedUri)
+            add(savedUri.toString())
         }
 
         uiState = uiState.copy(
@@ -1437,7 +1438,7 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
-    fun updateMediaActions(selectedMedia: List<Uri>? = null) {
+    fun updateMediaActions(selectedMedia: List<String>? = null) {
         val updatedSelectedMedia = buildList {
             addAll(uiState.selectedMediaUris)
 

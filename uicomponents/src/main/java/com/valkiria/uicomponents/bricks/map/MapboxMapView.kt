@@ -65,6 +65,8 @@ import com.mapbox.navigation.dropin.EmptyBinder
 import com.mapbox.navigation.dropin.NavigationView
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.action.GenericUiAction.NotificationAction
+import com.valkiria.uicomponents.bricks.banner.BannerUiModel
+import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.notification.NotificationRowView
 import com.valkiria.uicomponents.bricks.notification.NotificationUiModel
 import com.valkiria.uicomponents.bricks.notification.OnNotificationHandler
@@ -84,8 +86,10 @@ fun MapboxMapView(
     notifications: List<NotificationUiModel>?,
     drawerState: DrawerState,
     notificationData: NotificationData?,
+    incidentErrorData: BannerUiModel?,
     modifier: Modifier = Modifier,
     onNotificationAction: (notificationAction: NotificationAction) -> Unit,
+    onIncidentErrorAction: () -> Unit,
     onAction: (idAph: Int) -> Unit
 ) {
     val context = LocalContext.current
@@ -171,6 +175,10 @@ fun MapboxMapView(
 
             NotificationsRenderer(showNotificationsDialog, notifications) {
                 showNotificationsDialog = false
+            }
+
+            OnBannerHandler(uiModel = incidentErrorData) {
+                onIncidentErrorAction()
             }
         }
     }

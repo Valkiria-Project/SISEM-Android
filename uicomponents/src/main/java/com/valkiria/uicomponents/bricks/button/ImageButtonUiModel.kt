@@ -15,7 +15,7 @@ class ImageButtonUiModel(
     @DrawableRes val iconResId: Int,
     val label: String?,
     val textStyle: TextStyle?,
-    val size: Dp = 48.dp,
+    val size: Dp = 42.dp,
     val alignment: Horizontal,
     val backgroundColor: String? = null,
     val backgroundShape: Shape = RectangleShape,

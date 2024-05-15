@@ -207,7 +207,7 @@ fun InfoCardComponent(
                         )
 
                         Text(
-                            text = uiModel.date.text.split(" - ").firstOrNull().orEmpty(),
+                            text = uiModel.date.text,
                             style = uiModel.date.textStyle.toTextStyle(),
                             modifier = Modifier.padding(end = 12.dp),
                         )
@@ -222,8 +222,8 @@ fun InfoCardComponent(
                         )
 
                         Text(
-                            text = uiModel.date.text.split(" - ").lastOrNull().orEmpty(),
-                            style = uiModel.date.textStyle.toTextStyle(),
+                            text = uiModel.time?.text.orEmpty(),
+                            style = uiModel.time?.textStyle.toTextStyle(),
                         )
                     }
                 }
@@ -376,7 +376,11 @@ fun InfoCardComponentPreview() {
                 leftIcon = "ic_aux"
             ),
             date = TextUiModel(
-                text = "10:30",
+                text = "09/05/2024",
+                textStyle = TextStyle.HEADLINE_4
+            ),
+            time = TextUiModel(
+                text = "13:39:13",
                 textStyle = TextStyle.HEADLINE_4
             ),
             chipSection = ChipSectionUiModel(
@@ -444,7 +448,11 @@ fun InfoCardComponentPreview2() {
             ),
             pill = null,
             date = TextUiModel(
-                text = "10:30",
+                text = "09/05/2024",
+                textStyle = TextStyle.HEADLINE_4
+            ),
+            time = TextUiModel(
+                text = "13:39:13",
                 textStyle = TextStyle.HEADLINE_4
             ),
             chipSection = ChipSectionUiModel(

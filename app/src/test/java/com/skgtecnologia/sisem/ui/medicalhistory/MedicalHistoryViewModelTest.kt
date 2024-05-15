@@ -1361,7 +1361,12 @@ class MedicalHistoryViewModelTest {
             observeOperationConfig = observeOperationConfig,
             stringProvider = stringProvider
         )
-        viewModel.updateMediaActions(listOf(mockk()))
+        viewModel.updateMediaActions(
+            listOf(
+                "APH_FILE_254_1000076492.jpg",
+                "APH_FILE_254_1000076490.jpg"
+            )
+        )
 
         Assert.assertNotNull(viewModel.uiState.screenModel)
     }
