@@ -8,7 +8,7 @@ import com.valkiria.uicomponents.bricks.banner.BannerUiModel
 data class MedicalHistoryViewUiState(
     val screenModel: ScreenModel? = null,
     val operationConfig: OperationModel? = null,
-    val selectedMediaUris: List<Uri> = listOf(),
+    val selectedMediaUris: List<String> = listOf(),
     val isLoading: Boolean = false,
     val infoEvent: BannerUiModel? = null,
     val errorEvent: BannerUiModel? = null,

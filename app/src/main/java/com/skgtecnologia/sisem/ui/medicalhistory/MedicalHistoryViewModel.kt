@@ -1427,7 +1427,7 @@ class MedicalHistoryViewModel @Inject constructor(
     fun onPhotoTaken(savedUri: Uri) {
         val updatedSelectedMedia = buildList {
             addAll(uiState.selectedMediaUris)
-            add(savedUri)
+            add(savedUri.toString())
         }
 
         uiState = uiState.copy(
@@ -1438,7 +1438,7 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
-    fun updateMediaActions(selectedMedia: List<Uri>? = null) {
+    fun updateMediaActions(selectedMedia: List<String>? = null) {
         val updatedSelectedMedia = buildList {
             addAll(uiState.selectedMediaUris)
 

@@ -20,6 +20,7 @@ import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.chip.FiltersUiModel
+import com.valkiria.uicomponents.components.media.MediaActionsComponent
 import com.valkiria.uicomponents.components.media.MediaActionsUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -56,6 +57,10 @@ class MedicalHistoryViewViewModel @Inject constructor(
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
                             screenModel = medicalHistoryViewScreen,
+                            selectedMediaUris = medicalHistoryViewScreen.body
+                                .filterIsInstance<MediaActionsUiModel>()
+                                .first()
+                                .selectedMediaUris,
                             isLoading = false
                         )
                     }
@@ -112,7 +117,7 @@ class MedicalHistoryViewViewModel @Inject constructor(
         )
     }
 
-    fun updateMediaActions(selectedMedia: List<Uri>? = null) {
+    fun updateMediaActions(selectedMedia: List<String>? = null) {
         val updatedSelectedMedia = buildList {
             addAll(uiState.selectedMediaUris)
 

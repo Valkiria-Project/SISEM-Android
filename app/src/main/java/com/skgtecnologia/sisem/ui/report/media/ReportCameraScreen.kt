@@ -133,7 +133,7 @@ private fun CameraPreview(
                             }
 
                             if (savedUri != null) {
-                                viewModel.onPhotoTaken(savedUri)
+                                viewModel.onPhotoTaken(savedUri.toString())
                             }
                         }
                     }

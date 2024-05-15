@@ -5,7 +5,7 @@ import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.valkiria.uicomponents.bricks.banner.BannerUiModel
 
 data class ReportUiState(
-    val selectedImageUris: List<Uri> = listOf(),
+    val selectedImageUris: List<String> = listOf(),
     val operationConfig: OperationModel? = null,
     val successInfoModel: BannerUiModel? = null,
     val cancelInfoModel: BannerUiModel? = null,

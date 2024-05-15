@@ -25,6 +25,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.header.imagesConfirmationHeader
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
@@ -158,7 +159,7 @@ fun ImagesConfirmationScreen(
         }
 
         val bitmaps = viewModel.uiState.selectedImageUris.map { uri ->
-            uri.decodeAsBitmap(LocalContext.current.contentResolver)
+            uri.toUri().decodeAsBitmap(LocalContext.current.contentResolver)
         }
 
         ImagesPager(pagerState = pagerState, images = bitmaps)
@@ -196,7 +197,7 @@ private fun handleAction(
                     val images = viewModel.uiState.selectedImageUris.mapNotNull { uri ->
                         runCatching {
                             context.storeUriAsFileToCache(
-                                uri,
+                                uri.toUri(),
                                 "30000000"
                             )
                         }.fold(

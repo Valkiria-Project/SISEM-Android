@@ -9,7 +9,7 @@ import com.valkiria.uicomponents.components.BodyRowType.MEDIA_ACTIONS
 data class MediaActionsUiModel(
     override val identifier: String = "MEDIA_ACTIONS",
     val withinForm: Boolean = false,
-    val selectedMediaUris: List<Uri> = listOf(),
+    val selectedMediaUris: List<String> = listOf(),
     val visibility: Boolean = true,
     val required: Boolean = false,
     val maxFileSizeKb: String? = "30000000",
