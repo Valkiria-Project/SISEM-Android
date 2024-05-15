@@ -1,6 +1,5 @@
 package com.valkiria.uicomponents.components.media
 
-import android.net.Uri
 import androidx.compose.ui.Modifier
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.BodyRowType

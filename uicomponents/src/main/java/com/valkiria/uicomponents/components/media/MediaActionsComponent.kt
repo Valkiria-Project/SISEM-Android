@@ -1,6 +1,5 @@
 package com.valkiria.uicomponents.components.media
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,7 +22,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -52,7 +50,9 @@ fun MediaActionsComponent(
     mediaActionsIndex: Int = 0,
     onAction: (id: String, mediaAction: MediaAction) -> Unit
 ) {
-    val selectedMedia by remember(uiModel.selectedMediaUris) { mutableStateOf(uiModel.selectedMediaUris) }
+    val selectedMedia by remember(uiModel.selectedMediaUris) {
+        mutableStateOf(uiModel.selectedMediaUris)
+    }
 
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
