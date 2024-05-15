@@ -133,7 +133,8 @@ class ReportViewModelTest {
             listOf(
                 "APH_FILE_254_1000076492.jpg",
                 "APH_FILE_254_1000076490.jpg"
-            ), false
+            ),
+            false
         )
         viewModel.saveFinding()
 
@@ -227,7 +228,8 @@ class ReportViewModelTest {
             listOf(
                 "APH_FILE_254_1000076492.jpg",
                 "APH_FILE_254_1000076490.jpg"
-            ), false
+            ),
+            false
         )
         viewModel.saveReport()
 
@@ -355,7 +357,7 @@ class ReportViewModelTest {
 
     @Test
     fun `when updateSelectedImages with isFromPreOperational true and medic aph`() = runTest {
-        val selectedImages =  listOf(
+        val selectedImages = listOf(
             "APH_FILE_254_1000076492.jpg",
             "APH_FILE_254_1000076490.jpg"
         )
@@ -373,7 +375,7 @@ class ReportViewModelTest {
 
     @Test
     fun `when updateSelectedImages with isFromPreOperational true and null role`() = runTest {
-        val selectedImages =  listOf(
+        val selectedImages = listOf(
             "APH_FILE_254_1000076492.jpg",
             "APH_FILE_254_1000076490.jpg"
         )
@@ -390,7 +392,7 @@ class ReportViewModelTest {
 
     @Test
     fun `when removeCurrentImage is called`() = runTest {
-        val selectedImages =  listOf(
+        val selectedImages = listOf(
             "APH_FILE_254_1000076492.jpg",
             "APH_FILE_254_1000076490.jpg"
         )
