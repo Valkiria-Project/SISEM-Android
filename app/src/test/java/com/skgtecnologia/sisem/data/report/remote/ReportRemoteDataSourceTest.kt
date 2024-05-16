@@ -11,6 +11,7 @@ import com.skgtecnologia.sisem.commons.imageButtonSectionResponseMock
 import com.skgtecnologia.sisem.commons.imageModelMock
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenResponse
 import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
+import com.skgtecnologia.sisem.di.operation.OperationRole
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -91,22 +92,27 @@ class ReportRemoteDataSourceTest {
 
     @Test
     fun `when sendReport is success`() = runTest {
-        coEvery { reportApi.sendReport(any(), any(), any(), any()) } returns Response.success(Unit)
+        coEvery { reportApi.sendDriverReport(any(), any(), any(), any()) } returns Response.success(
+            Unit
+        )
 
-        val result = reportRemoteDataSource.sendReport(TOPIC, DESCRIPTION, emptyList(), TURN_ID)
+        val result = reportRemoteDataSource.sendReport(
+            TOPIC, DESCRIPTION, emptyList(), OperationRole.DRIVER, TURN_ID
+        )
 
         Assert.assertEquals(true, result.isSuccess)
     }
 
     @Test
     fun `when sendReport is failure`() = runTest {
-        coEvery { reportApi.sendReport(any(), any(), any(), any()) } returns Response.error(
+        coEvery { reportApi.sendAuxReport(any(), any(), any(), any()) } returns Response.error(
             400,
             "".toResponseBody()
         )
 
-        val result =
-            reportRemoteDataSource.sendReport(TOPIC, DESCRIPTION, listOf(imageModelMock), TURN_ID)
+        val result = reportRemoteDataSource.sendReport(
+            TOPIC, DESCRIPTION, listOf(imageModelMock), OperationRole.AUXILIARY_AND_OR_TAPH, TURN_ID
+        )
 
         Assert.assertEquals(true, result.isFailure)
     }

@@ -567,7 +567,7 @@ private fun NavGraphBuilder.reportGraph(
                 modifier = modifier,
                 onNavigation = { roleName ->
                     navController.navigate(
-                        ReportNavigationRoute.AddReportScreen.route + "?$ROLE=${roleName}"
+                        ReportNavigationRoute.AddReportScreen.route + "?$ROLE=$roleName"
                     )
                 },
                 onCancel = {

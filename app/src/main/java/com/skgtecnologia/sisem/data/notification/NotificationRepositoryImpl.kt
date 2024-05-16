@@ -113,7 +113,7 @@ class NotificationRepositoryImpl @Inject constructor(
     }
 
     private suspend fun handleTransmiNotification(notification: TransmiNotification) {
-        val incident =  checkNotNull(incidentCacheDataSource.observeActiveIncident().first())
+        val incident = checkNotNull(incidentCacheDataSource.observeActiveIncident().first())
 
         if (incident.id != null) {
             val transmiRequests = buildList {
