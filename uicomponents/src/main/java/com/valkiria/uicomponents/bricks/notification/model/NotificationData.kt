@@ -250,7 +250,8 @@ fun getNotificationRawDataByType(notificationData: NotificationData): Map<String
         is IpsPatientTransferredNotification -> mapOf(
             NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
             HEADQUARTERS_NAME to notificationData.headquartersName,
-            HEADQUARTERS_ADDRESS to notificationData.headquartersAddress
+            HEADQUARTERS_ADDRESS to notificationData.headquartersAddress,
+            GEOLOCATION to notificationData.geolocation.orEmpty()
         )
 
         is StretcherRetentionEnableNotification -> mapOf(

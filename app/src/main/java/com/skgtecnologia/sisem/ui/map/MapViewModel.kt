@@ -35,7 +35,7 @@ class MapViewModel @Inject constructor(
             .flowOn(Dispatchers.IO)
             .filterNotNull()
             .onEach {
-                Timber.d("Observed incident with id ${it?.incident?.id}")
+                Timber.d("Observed incident with id ${it.incident.id}")
                 uiState = uiState.copy(
                     incident = it
                 )
