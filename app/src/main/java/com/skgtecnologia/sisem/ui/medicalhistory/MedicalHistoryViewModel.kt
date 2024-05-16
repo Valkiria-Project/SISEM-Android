@@ -131,6 +131,7 @@ private const val PATIENT_DOCUMENT_IDENTIFIER = "KEY_DOCUMENT"
 private const val RESPONSIBLE_DOCUMENT_IDENTIFIER = "KEY_DOCUMENT_RESPONSIBLE"
 private const val SIGN_PERSON_CHARGE_W_KEY = "KEY_SIGN_PERSON_CHARGE_W"
 private const val WITHDRAWAL_REPONSIBLE_REFUSE_SIGN_KEY = "KEY_WITHDRAWAL_REPONSIBLE_REFUSE_SIGN"
+private const val TIME_KEY = "TIME"
 private const val NO = "NO"
 private const val CC_ID_TYPE = "CC"
 private const val CE_ID_TYPE = "CE"
@@ -1133,12 +1134,6 @@ class MedicalHistoryViewModel @Inject constructor(
     }
 
     fun updateVitalSignsInfoCard(values: Map<String, String>) {
-        vitalSignsValues[temporalInfoCard] = values
-
-        if (temporalInfoCard == INITIAL_VITAL_SIGNS) {
-            updateGlasgow()
-        }
-
         val list = values.map {
             when (it.key) {
                 TEMPERATURE_KEY -> "${it.key} ${it.value} $TEMPERATURE_SYMBOL"
@@ -1147,14 +1142,24 @@ class MedicalHistoryViewModel @Inject constructor(
             }
         }
 
+        vitalSignsValues[temporalInfoCard] = values.plus(
+            mapOf(
+                TIME_KEY to LocalDateTime.now().format(
+                    DateTimeFormatter.ofPattern(HOURS_MINUTES_SECONDS_24_HOURS_PATTERN)
+                )
+            )
+        )
+
+        if (temporalInfoCard == INITIAL_VITAL_SIGNS) {
+            updateGlasgow()
+        }
+
         val updatedBody = uiState.screenModel?.body?.map { bodyRowModel ->
             if (bodyRowModel is InfoCardUiModel && bodyRowModel.identifier == temporalInfoCard) {
                 bodyRowModel.copy(
                     pill = PillUiModel(
                         title = TextUiModel(
-                            text = LocalDateTime.now().format(
-                                DateTimeFormatter.ofPattern(HOURS_MINUTES_SECONDS_24_HOURS_PATTERN)
-                            ),
+                            text = vitalSignsValues[temporalInfoCard]?.get(TIME_KEY).orEmpty(),
                             textStyle = TextStyle.BUTTON_1
                         ),
                         color = SAVED_VITAL_SIGNS_COLOR
