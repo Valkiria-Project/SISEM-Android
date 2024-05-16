@@ -21,6 +21,7 @@ import com.valkiria.uicomponents.components.dropdown.DropDownUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.timepicker.TimePickerUiModel
+import com.valkiria.uicomponents.utlis.TimeUtils.isSameDay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -47,6 +48,12 @@ class MedicineViewModel @Inject constructor(
     private var fieldsValues = mutableStateMapOf<String, InputUiModel>()
     private var dropDownValue = mutableStateOf(DropDownInputUiModel())
     private var timePickerValue = mutableStateOf("")
+
+    private var initialTimeValue = GenericUiAction.TimePickerAction(
+        hour = "00",
+        minute = "00",
+        identifier = APPLICATION_TIME_KEY
+    )
 
     init {
         uiState = uiState.copy(isLoading = true)
@@ -83,9 +90,15 @@ class MedicineViewModel @Inject constructor(
                     required = bodyRowModel.required
                 )
 
-                is TimePickerUiModel ->
+                is TimePickerUiModel -> {
+                    initialTimeValue = GenericUiAction.TimePickerAction(
+                        hour = bodyRowModel.hour.text,
+                        minute = bodyRowModel.minute.text,
+                        identifier = bodyRowModel.identifier
+                    )
                     timePickerValue.value =
                         "${bodyRowModel.hour.text} : ${bodyRowModel.minute.text}"
+                }
             }
         }
     }
@@ -137,10 +150,22 @@ class MedicineViewModel @Inject constructor(
                 uiModels = updatedBody,
                 identifier = APPLICATION_TIME_KEY,
                 updater = { model ->
-                    if (model is TimePickerUiModel) {
-                        model.copy(date = inputAction.updatedValue)
-                    } else {
-                        model
+                    when {
+                        model is TimePickerUiModel && isSameDay(inputAction.updatedValue) -> {
+                            timePickerValue.value =
+                                "${initialTimeValue.hour} : ${initialTimeValue.minute}"
+
+                            model.copy(
+                                date = inputAction.updatedValue,
+                                hour = model.hour.copy(text = initialTimeValue.hour),
+                                minute = model.minute.copy(text = initialTimeValue.minute)
+                            )
+                        }
+
+                        model is TimePickerUiModel && !isSameDay(inputAction.updatedValue) ->
+                            model.copy(date = inputAction.updatedValue)
+
+                        else -> model
                     }
                 }
             ).also { body -> updatedBody = body }

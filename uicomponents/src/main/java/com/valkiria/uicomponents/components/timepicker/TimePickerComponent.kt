@@ -49,8 +49,8 @@ fun TimePickerComponent(
     var showDialog by remember { mutableStateOf(false) }
     var showError by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
-    var hour by remember { mutableStateOf(uiModel.hour) }
-    var minute by remember { mutableStateOf(uiModel.minute) }
+    var hour = uiModel.hour
+    var minute = uiModel.minute
 
     Row(
         modifier = uiModel.modifier
