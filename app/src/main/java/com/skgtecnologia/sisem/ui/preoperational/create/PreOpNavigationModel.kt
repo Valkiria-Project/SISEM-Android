@@ -26,7 +26,7 @@ data class PreOpNavigationModel(
             isNewFindingEvent ->
                 navController.navigate(
                     ReportNavigationRoute.AddFindingScreen.route +
-                        "?${NavigationArgument.FINDING_ID}=${findingId}"
+                        "?${NavigationArgument.FINDING_ID}=$findingId"
                 )
 
             else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
