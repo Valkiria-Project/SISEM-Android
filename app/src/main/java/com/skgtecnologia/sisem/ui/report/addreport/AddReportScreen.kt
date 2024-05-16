@@ -133,13 +133,13 @@ fun AddReportScreen(
 
         addReportUiState.screenModel?.footer?.let {
             FooterSection(footerModel = it) { uiAction ->
-                handleFooterAction(uiAction, viewModel)
+                handleFooterAction(uiAction, viewModel, addReportViewModel.roleName.orEmpty())
             }
         }
     }
 
     OnBannerHandler(uiState.confirmInfoModel) {
-        handleFooterAction(it, viewModel)
+        handleFooterAction(it, viewModel, addReportViewModel.roleName.orEmpty())
     }
 
     OnBannerHandler(uiState.successInfoModel) {
@@ -147,7 +147,7 @@ fun AddReportScreen(
     }
 
     OnBannerHandler(uiState.cancelInfoModel) {
-        handleFooterAction(it, viewModel)
+        handleFooterAction(it, viewModel, addReportViewModel.roleName.orEmpty())
     }
 
     OnBannerHandler(addReportUiState.errorModel) {
@@ -166,12 +166,13 @@ fun AddReportScreen(
 
 private fun handleFooterAction(
     uiAction: UiAction,
-    viewModel: ReportViewModel
+    viewModel: ReportViewModel,
+    roleName: String
 ) {
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
             AddReportIdentifier.ADD_REPORT_ENTRY_CANCEL_BUTTON.name -> viewModel.cancelReport()
-            AddReportIdentifier.SEND_REPORT_ENTRY_SEND_BUTTON.name -> viewModel.saveReport()
+            AddReportIdentifier.SEND_REPORT_ENTRY_SEND_BUTTON.name -> viewModel.saveReport(roleName)
 
             AddReportIdentifier.ADD_REPORT_CANCEL_BANNER.name -> viewModel.consumeNavigationEvent()
             AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name ->

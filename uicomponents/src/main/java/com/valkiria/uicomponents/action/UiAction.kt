@@ -178,7 +178,7 @@ sealed class ChangePasswordUiAction : UiAction {
 }
 
 sealed class NewsUiAction : UiAction {
-    data object NewsStepOneOnChipClick : NewsUiAction()
+    data class NewsStepOneOnChipClick(val role: String) : NewsUiAction()
 }
 
 sealed class AddReportUiAction : UiAction {

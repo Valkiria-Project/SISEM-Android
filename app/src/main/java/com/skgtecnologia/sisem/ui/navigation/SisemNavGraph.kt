@@ -565,8 +565,10 @@ private fun NavGraphBuilder.reportGraph(
         ) {
             AddReportRoleScreen(
                 modifier = modifier,
-                onNavigation = {
-                    navController.navigate(ReportNavigationRoute.AddReportScreen.route)
+                onNavigation = { roleName ->
+                    navController.navigate(
+                        ReportNavigationRoute.AddReportScreen.route + "?$ROLE=${roleName}"
+                    )
                 },
                 onCancel = {
                     navController.navigate(NavigationGraph.Main.route) {
@@ -579,7 +581,14 @@ private fun NavGraphBuilder.reportGraph(
         }
 
         composable(
-            route = ReportNavigationRoute.AddReportScreen.route,
+            route = ReportNavigationRoute.AddReportScreen.route +
+                "?$ROLE={$ROLE}",
+            arguments = listOf(
+                navArgument(ROLE) {
+                    type = NavType.StringType
+                    nullable = true
+                }
+            )
         ) { navBackStackEntry ->
             AddReportScreen(
                 viewModel = navBackStackEntry.sharedViewModel(navController = navController),

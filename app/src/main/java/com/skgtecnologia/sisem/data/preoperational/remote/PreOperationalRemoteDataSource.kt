@@ -107,8 +107,7 @@ class PreOperationalRemoteDataSource @Inject constructor(
                 )
             )
 
-            OperationRole.LEAD_APH ->
-                throw IllegalArgumentException("Lead APH role not supported")
+            OperationRole.LEAD_APH -> throw IllegalArgumentException("Lead APH role not supported")
         }
     }
 
@@ -133,20 +132,55 @@ class PreOperationalRemoteDataSource @Inject constructor(
     ) {
         if (novelty.images.isNotEmpty()) {
             apiCall {
-                preOperationalApi.sendFinding(
-                    type = role.name.createRequestBody(),
-                    idPreoperational = novelty.idPreoperational.createRequestBody(),
-                    idTurn = idTurn.createRequestBody(),
-                    novelty = novelty.novelty.createRequestBody(),
-                    images = novelty.images.map { imageModel ->
-                        val requestFile = imageModel.file.createRequestBody()
-                        MultipartBody.Part.createFormData(
-                            FINDING_FILE_NAME,
-                            imageModel.file.name,
-                            requestFile
-                        )
-                    }
-                )
+                when (role) {
+                    OperationRole.AUXILIARY_AND_OR_TAPH -> preOperationalApi.sendAuxFinding(
+                        type = role.name.createRequestBody(),
+                        idPreoperational = novelty.idPreoperational.createRequestBody(),
+                        idTurn = idTurn.createRequestBody(),
+                        novelty = novelty.novelty.createRequestBody(),
+                        images = novelty.images.map { imageModel ->
+                            val requestFile = imageModel.file.createRequestBody()
+                            MultipartBody.Part.createFormData(
+                                FINDING_FILE_NAME,
+                                imageModel.file.name,
+                                requestFile
+                            )
+                        }
+                    )
+
+                    OperationRole.DRIVER -> preOperationalApi.sendDriverFinding(
+                        type = role.name.createRequestBody(),
+                        idPreoperational = novelty.idPreoperational.createRequestBody(),
+                        idTurn = idTurn.createRequestBody(),
+                        novelty = novelty.novelty.createRequestBody(),
+                        images = novelty.images.map { imageModel ->
+                            val requestFile = imageModel.file.createRequestBody()
+                            MultipartBody.Part.createFormData(
+                                FINDING_FILE_NAME,
+                                imageModel.file.name,
+                                requestFile
+                            )
+                        }
+                    )
+
+                    OperationRole.MEDIC_APH -> preOperationalApi.sendDoctorFinding(
+                        type = role.name.createRequestBody(),
+                        idPreoperational = novelty.idPreoperational.createRequestBody(),
+                        idTurn = idTurn.createRequestBody(),
+                        novelty = novelty.novelty.createRequestBody(),
+                        images = novelty.images.map { imageModel ->
+                            val requestFile = imageModel.file.createRequestBody()
+                            MultipartBody.Part.createFormData(
+                                FINDING_FILE_NAME,
+                                imageModel.file.name,
+                                requestFile
+                            )
+                        }
+                    )
+
+                    OperationRole.LEAD_APH ->
+                        throw IllegalArgumentException("Lead APH role not supported")
+                }
             }
         }
     }

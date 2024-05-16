@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.authcards.model.AuthCardsIdentifier
 import com.skgtecnologia.sisem.domain.changepassword.model.ChangePasswordIdentifier
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
@@ -645,11 +646,27 @@ private fun HandleChipRows(
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
-        AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_ASSISTANT.name,
-        AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DOCTOR.name,
+        AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_ASSISTANT.name -> ChipComponent(
+            uiModel = model,
+            onAction = {
+                onAction(
+                    NewsUiAction.NewsStepOneOnChipClick(OperationRole.AUXILIARY_AND_OR_TAPH.name)
+                )
+            }
+        )
+
+        AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DOCTOR.name -> ChipComponent(
+            uiModel = model,
+            onAction = {
+                onAction(NewsUiAction.NewsStepOneOnChipClick(OperationRole.MEDIC_APH.name))
+            }
+        )
+
         AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DRIVER.name -> ChipComponent(
             uiModel = model,
-            onAction = { onAction(NewsUiAction.NewsStepOneOnChipClick) }
+            onAction = {
+                onAction(NewsUiAction.NewsStepOneOnChipClick(OperationRole.DRIVER.name))
+            }
         )
 
         else -> ChipComponent(

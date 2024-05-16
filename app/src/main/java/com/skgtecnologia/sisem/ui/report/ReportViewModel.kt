@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.di.operation.OperationRole
@@ -19,6 +20,7 @@ import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.domain.report.usecases.SendReport
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -188,7 +190,7 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    fun saveReport() {
+    fun saveReport(roleName: String) {
         val (confirmInfoModel, navigationModel) = if (
             isValidTopic && isValidDescription && uiState.selectedImageUris.isEmpty()
         ) {
@@ -203,6 +205,7 @@ class ReportViewModel @Inject constructor(
         }
 
         uiState = uiState.copy(
+            roleName = roleName,
             confirmInfoModel = confirmInfoModel,
             validateFields = true,
             navigationModel = navigationModel
@@ -229,6 +232,7 @@ class ReportViewModel @Inject constructor(
         job?.cancel()
         job = viewModelScope.launch {
             sendReport.invoke(
+                roleName = uiState.roleName,
                 topic = topic,
                 description = description,
                 images = images.mapIndexed { index, image ->

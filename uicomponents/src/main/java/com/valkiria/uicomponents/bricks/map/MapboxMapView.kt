@@ -113,6 +113,7 @@ fun MapboxMapView(
         sheetPeekHeight = if (incident != null) 140.dp else 0.dp
     ) { innerPadding ->
         Box(modifier.padding(innerPadding)) {
+            // FIXME: launched effect to react upon lat and long changes?
             if (incident?.latitude != null && incident.longitude != null) {
                 val accessToken = stringResource(id = R.string.mapbox_access_token)
                 val destinationPoint = Point.fromLngLat(incident.longitude, incident.latitude)
