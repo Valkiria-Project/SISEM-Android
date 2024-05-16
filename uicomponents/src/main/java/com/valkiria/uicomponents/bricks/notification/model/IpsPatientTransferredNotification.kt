@@ -9,5 +9,6 @@ data class IpsPatientTransferredNotification(
     override val time: LocalTime,
     override val dateTime: LocalDateTime,
     val headquartersName: String,
-    val headquartersAddress: String
+    val headquartersAddress: String,
+    val geolocation: String?
 ) : NotificationData

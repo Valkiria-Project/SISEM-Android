@@ -11,6 +11,7 @@ import com.skgtecnologia.sisem.domain.notification.repository.NotificationReposi
 import com.valkiria.uicomponents.bricks.notification.NotificationUiModel
 import com.valkiria.uicomponents.bricks.notification.model.ClosingAPHNotification
 import com.valkiria.uicomponents.bricks.notification.model.IncidentAssignedNotification
+import com.valkiria.uicomponents.bricks.notification.model.IpsPatientTransferredNotification
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import com.valkiria.uicomponents.bricks.notification.model.TransmiNotification
 import com.valkiria.uicomponents.components.incident.model.IncidentPriority
@@ -33,6 +34,9 @@ class NotificationRepositoryImpl @Inject constructor(
         when (notification) {
             is ClosingAPHNotification -> handleClosingAPHNotificationNotification()
             is IncidentAssignedNotification -> handleIncidentAssignedNotification(notification)
+            is IpsPatientTransferredNotification ->
+                handleIpsPatientTransferredNotification(notification)
+
             is TransmiNotification -> handleTransmiNotification(notification)
             else -> Timber.d("no-op")
         }
@@ -92,6 +96,12 @@ class NotificationRepositoryImpl @Inject constructor(
         }.onFailure {
             IncidentEventHandler.publishIncidentErrorEvent(it.mapToUi())
         }
+    }
+
+    private suspend fun handleIpsPatientTransferredNotification(
+        notification: IpsPatientTransferredNotification
+    ) {
+        val currentIncident = checkNotNull(incidentCacheDataSource.observeActiveIncident().first())
     }
 
     private suspend fun handleTransmiNotification(notification: TransmiNotification) {

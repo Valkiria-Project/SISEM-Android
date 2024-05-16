@@ -159,7 +159,7 @@ private fun NavGraphBuilder.authGraph(
             ForgotPasswordScreen(
                 modifier = modifier,
                 onNavigation = { navigationModel ->
-                    navigateToNextStep(navController, navigationModel)
+                    navigationModel.navigate(navController)
                 }
             )
         }
@@ -173,8 +173,12 @@ private fun NavGraphBuilder.authGraph(
                 from = it.arguments?.getString(NavigationArgument.FROM).orEmpty(),
                 modifier = modifier
             ) { navigationModel ->
-                navigateToNextStep(navController, navigationModel) {
-                    (context as Activity).finish()
+                with(navigationModel) {
+                    if (isCancel && from != MAIN) {
+                        if (!navController.popBackStack()) (context as Activity).finish()
+                    } else {
+                        navigationModel.navigate(navController)
+                    }
                 }
             }
         }
@@ -200,7 +204,7 @@ private fun NavGraphBuilder.authGraph(
                 novelty = novelty,
                 revertFinding = revertFinding
             ) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
+                navigationModel.navigate(navController)
             }
         }
 
@@ -256,7 +260,7 @@ private fun NavGraphBuilder.mainGraph(
             IncidentScreen(
                 modifier = modifier
             ) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
+                navigationModel.navigate(navController)
             }
         }
 
@@ -266,7 +270,7 @@ private fun NavGraphBuilder.mainGraph(
             InventoryScreen(
                 modifier = modifier
             ) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
+                navigationModel.navigate(navController)
             }
         }
 
@@ -278,7 +282,7 @@ private fun NavGraphBuilder.mainGraph(
             InventoryViewScreen(
                 modifier = modifier
             ) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
+                navigationModel.navigate(navController)
             }
         }
 
@@ -330,7 +334,7 @@ private fun NavGraphBuilder.mainGraph(
             route = MainNavigationRoute.InitSignatureScreen.route
         ) {
             InitSignatureScreen(modifier = modifier) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
+                navigationModel.navigate(navController)
             }
         }
 
@@ -345,7 +349,7 @@ private fun NavGraphBuilder.mainGraph(
                 modifier = modifier,
                 signature = signature
             ) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
+                navigationModel.navigate(navController)
             }
         }
 
@@ -354,8 +358,8 @@ private fun NavGraphBuilder.mainGraph(
         ) {
             PreStretcherRetentionScreen(
                 modifier = modifier
-            ) {
-                navigateToNextStep(navController, it)
+            ) { navigationModel ->
+                navigationModel.navigate(navController)
             }
         }
 
@@ -365,8 +369,8 @@ private fun NavGraphBuilder.mainGraph(
         ) {
             StretcherRetentionScreen(
                 modifier = modifier
-            ) {
-                navigateToNextStep(navController, it)
+            ) { navigationModel ->
+                navigationModel.navigate(navController)
             }
         }
 
@@ -376,8 +380,8 @@ private fun NavGraphBuilder.mainGraph(
         ) {
             StretcherRetentionViewScreen(
                 modifier = modifier
-            ) {
-                navigateToNextStep(navController, it)
+            ) { navigationModel ->
+                navigationModel.navigate(navController)
             }
         }
 
@@ -387,7 +391,7 @@ private fun NavGraphBuilder.mainGraph(
             arguments = listOf(navArgument(ROLE) { type = NavType.StringType })
         ) {
             PreOperationalViewScreen { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
+                navigationModel.navigate(navController)
             }
         }
     }
@@ -427,7 +431,7 @@ private fun NavGraphBuilder.aphGraph(
                 signature = signature,
                 photoTaken = photoTaken == true
             ) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
+                navigationModel.navigate(navController)
             }
         }
 
@@ -442,7 +446,7 @@ private fun NavGraphBuilder.aphGraph(
                 modifier = modifier,
                 photoTaken = photoTaken == true
             ) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
+                navigationModel.navigate(navController)
             }
         }
 
@@ -453,7 +457,7 @@ private fun NavGraphBuilder.aphGraph(
                 viewModel = navBackStackEntry.sharedViewModel(navController = navController),
                 modifier = modifier
             ) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
+                navigationModel.navigate(navController)
             }
         }
 
@@ -464,7 +468,7 @@ private fun NavGraphBuilder.aphGraph(
                 viewModel = navBackStackEntry.sharedViewModel(navController = navController),
                 modifier = modifier
             ) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
+                navigationModel.navigate(navController)
             }
         }
 
@@ -472,7 +476,7 @@ private fun NavGraphBuilder.aphGraph(
             route = AphNavigationRoute.MedicineScreen.route
         ) {
             MedicineScreen(modifier = modifier) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
+                navigationModel.navigate(navController)
             }
         }
 
@@ -482,8 +486,8 @@ private fun NavGraphBuilder.aphGraph(
         ) {
             SendEmailScreen(
                 modifier = modifier
-            ) {
-                navigateToNextStep(navController, it)
+            ) { navigationModel ->
+                navigationModel.navigate(navController)
             }
         }
 
@@ -491,7 +495,7 @@ private fun NavGraphBuilder.aphGraph(
             route = AphNavigationRoute.SignaturePadScreen.route
         ) {
             SignaturePadScreen(modifier = modifier) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
+                navigationModel.navigate(navController)
             }
         }
 
@@ -499,7 +503,7 @@ private fun NavGraphBuilder.aphGraph(
             route = AphNavigationRoute.VitalSignsScreen.route
         ) {
             VitalSignsScreen(modifier = modifier) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
+                navigationModel.navigate(navController)
             }
         }
     }
@@ -527,7 +531,7 @@ private fun NavGraphBuilder.reportGraph(
                     .orEmpty(),
                 modifier = modifier
             ) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
+                navigationModel.navigate(navController)
             }
         }
 
@@ -538,7 +542,7 @@ private fun NavGraphBuilder.reportGraph(
                 modifier = modifier,
                 viewModel = navBackStackEntry.sharedViewModel(navController = navController)
             ) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
+                navigationModel.navigate(navController)
             }
         }
 
@@ -552,7 +556,7 @@ private fun NavGraphBuilder.reportGraph(
                 from = navBackStackEntry.arguments?.getString(NavigationArgument.FROM).orEmpty(),
                 modifier = modifier
             ) { navigationModel ->
-                navigateToNextStep(navController, navigationModel)
+                navigationModel.navigate(navController)
             }
         }
 
@@ -580,7 +584,7 @@ private fun NavGraphBuilder.reportGraph(
             AddReportScreen(
                 viewModel = navBackStackEntry.sharedViewModel(navController = navController),
                 onNavigation = { navigationModel ->
-                    navigateToNextStep(navController, navigationModel)
+                    navigationModel.navigate(navController)
                 }
             )
         }

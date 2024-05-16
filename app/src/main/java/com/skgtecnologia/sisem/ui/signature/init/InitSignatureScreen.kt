@@ -10,7 +10,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.signature.model.SignatureIdentifier
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
@@ -28,7 +27,7 @@ import timber.log.Timber
 @Composable
 fun InitSignatureScreen(
     modifier: Modifier = Modifier,
-    onNavigation: (initSignatureNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (initSignatureNavigationModel: InitSignatureNavigationModel) -> Unit
 ) {
     val viewModel = hiltViewModel<InitSignatureViewModel>()
     val uiState = viewModel.uiState

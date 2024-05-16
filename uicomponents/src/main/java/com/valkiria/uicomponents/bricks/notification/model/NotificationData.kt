@@ -101,7 +101,8 @@ fun getNotificationDataByType(
             time = notificationTime,
             dateTime = notificationDateTime,
             headquartersName = notificationDataMap[HEADQUARTERS_NAME].orEmpty(),
-            headquartersAddress = notificationDataMap[HEADQUARTERS_ADDRESS].orEmpty()
+            headquartersAddress = notificationDataMap[HEADQUARTERS_ADDRESS].orEmpty(),
+            geolocation = notificationDataMap[GEOLOCATION].orEmpty()
         )
 
         STRETCHER_RETENTION_ENABLE -> StretcherRetentionEnableNotification(
@@ -184,7 +185,8 @@ fun getNotificationDataByType(
             time = notificationTime,
             dateTime = notificationDateTime,
             headquartersName = notificationDataBundle.getString(HEADQUARTERS_NAME).orEmpty(),
-            headquartersAddress = notificationDataBundle.getString(HEADQUARTERS_ADDRESS).orEmpty()
+            headquartersAddress = notificationDataBundle.getString(HEADQUARTERS_ADDRESS).orEmpty(),
+            geolocation = notificationDataBundle.getString(GEOLOCATION).orEmpty()
         )
 
         STRETCHER_RETENTION_ENABLE -> StretcherRetentionEnableNotification(

@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R.string
 import com.skgtecnologia.sisem.domain.medicalhistory.model.MedicalHistoryIdentifier
 import com.skgtecnologia.sisem.domain.model.header.signaturePadHeader
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.bricks.button.ButtonView
@@ -35,7 +34,7 @@ import timber.log.Timber
 @Composable
 fun SignaturePadScreen(
     modifier: Modifier = Modifier,
-    onNavigation: (signaturePadNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (signaturePadNavigationModel: SignaturePadNavigationModel) -> Unit
 ) {
     Column(modifier.fillMaxSize()) {
         var bitmap: Bitmap? by remember {

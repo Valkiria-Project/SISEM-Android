@@ -10,7 +10,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.core.net.toUri
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.GenericUiAction
@@ -37,7 +36,7 @@ fun MedicalHistoryScreen(
     medicine: Map<String, String>?,
     signature: String?,
     photoTaken: Boolean = false,
-    onNavigation: (medicalHistoryNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (medicalHistoryNavigationModel: MedicalHistoryNavigationModel) -> Unit
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()

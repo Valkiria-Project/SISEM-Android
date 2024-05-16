@@ -12,7 +12,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.HeaderUiAction
@@ -28,7 +27,7 @@ import timber.log.Timber
 @Composable
 fun PreOperationalViewScreen(
     modifier: Modifier = Modifier,
-    onNavigation: (preOpByRoleNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (preOpByRoleNavigationModel: PreOpViewNavigationModel) -> Unit
 ) {
     val viewModel = hiltViewModel<PreOperationalViewViewModel>()
     val uiState = viewModel.uiState

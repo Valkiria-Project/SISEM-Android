@@ -20,7 +20,7 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.label.addFilesHint
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
+import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
@@ -51,7 +51,7 @@ private const val DESCRIPTION_INPUT_MIN_LINES = 3
 fun AddReportScreen(
     viewModel: ReportViewModel,
     modifier: Modifier = Modifier,
-    onNavigation: (addReportNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (addReportNavigationModel: ReportNavigationModel) -> Unit
 ) {
     val addReportViewModel = hiltViewModel<AddReportViewModel>()
     val uiState = viewModel.uiState
@@ -143,7 +143,7 @@ fun AddReportScreen(
     }
 
     OnBannerHandler(uiState.successInfoModel) {
-        onNavigation(uiState.navigationModel)
+        uiState.navigationModel?.let { it1 -> onNavigation(it1) }
     }
 
     OnBannerHandler(uiState.cancelInfoModel) {

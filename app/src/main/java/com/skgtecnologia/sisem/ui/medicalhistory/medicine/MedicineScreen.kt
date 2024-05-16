@@ -9,7 +9,6 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.GenericUiAction
@@ -23,7 +22,7 @@ import timber.log.Timber
 @Composable
 fun MedicineScreen(
     modifier: Modifier = Modifier,
-    onNavigation: (medicineNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (medicineNavigationModel: MedicineNavigationModel) -> Unit
 ) {
     val viewModel = hiltViewModel<MedicineViewModel>()
     val uiState = viewModel.uiState
@@ -32,7 +31,7 @@ fun MedicineScreen(
         launch {
             with(uiState.navigationModel) {
                 if (this?.goBack == true || this?.values != null) {
-                    onNavigation(uiState.navigationModel)
+                    uiState.navigationModel?.let { onNavigation(it) }
                     viewModel.consumeNavigationEvent()
                 }
             }
