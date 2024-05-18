@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.valkiria.uicomponents.commons.NO
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.toTextStyle
 import com.valkiria.uicomponents.mocks.getDeviceAuthSegmentedSwitchUiModel
@@ -32,7 +33,12 @@ import com.valkiria.uicomponents.mocks.getDeviceAuthSegmentedSwitchUiModel
 @Composable
 fun SegmentedSwitchComponent(
     uiModel: SegmentedSwitchUiModel,
-    onAction: (id: String, status: Boolean, viewsVisibility: Map<String, Boolean>) -> Unit
+    onAction: (
+        id: String,
+        status: Boolean,
+        viewsVisibility: Map<String, Boolean>,
+        viewsInvisibility: Map<String, Boolean>
+    ) -> Unit
 ) {
     val items = uiModel.options.map { it.text }
     var selectedIndex by rememberSaveable(uiModel.selected) {
@@ -81,7 +87,19 @@ fun SegmentedSwitchComponent(
                             viewsVisibility[it.key] = index == 0
                         }
 
-                        onAction(uiModel.identifier, index == 0, viewsVisibility)
+                        val viewsInvisibility = mutableMapOf<String, Boolean>()
+                        if (uiModel.text.equals(NO, true)) {
+                            uiModel.deselectionVisibility?.forEach {
+                                viewsInvisibility[it.key] = index == 1
+                            }
+                        }
+
+                        onAction(
+                            uiModel.identifier,
+                            index == 0,
+                            viewsVisibility,
+                            viewsInvisibility
+                        )
                     },
                     shape = when (index) {
                         /**
@@ -146,6 +164,6 @@ fun SegmentedSwitchComponent(
 fun SegmentedSwitchComponentPreview() {
     SegmentedSwitchComponent(
         uiModel = getDeviceAuthSegmentedSwitchUiModel(),
-        onAction = { _, _, _ -> }
+        onAction = { _, _, _, _ -> }
     )
 }

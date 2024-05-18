@@ -529,12 +529,15 @@ private fun LazyListScope.handleBodyRows(
 
             is SegmentedSwitchUiModel -> if (model.visibility) {
                 item(key = model.identifier) {
-                    SegmentedSwitchComponent(uiModel = model) { id, status, viewsVisibility ->
+                    SegmentedSwitchComponent(
+                        uiModel = model
+                    ) { id, status, viewsVisibility, viewsInvisibility ->
                         onAction(
                             GenericUiAction.SegmentedSwitchAction(
                                 identifier = id,
                                 status = status,
-                                viewsVisibility = viewsVisibility
+                                viewsVisibility = viewsVisibility,
+                                viewsInvisibility = viewsInvisibility
                             )
                         )
                     }

@@ -333,6 +333,27 @@ class MedicalHistoryViewModel @Inject constructor(
                     }
                 }
 
+                is ImageButtonSectionUiModel -> {
+                    if ((bodyRowModel.required && bodyRowModel.visibility) ||
+                        !bodyRowModel.selected.isNullOrEmpty()
+                    ) {
+                        imageButtonSectionValues[bodyRowModel.identifier] =
+                            bodyRowModel.selected.orEmpty()
+                    }
+                }
+
+                is InfoCardUiModel -> if (bodyRowModel.identifier == INITIAL_VITAL_SIGNS) {
+                    initialVitalSignsTas = bodyRowModel.chipSection?.listText?.texts?.find {
+                        it.startsWith(TAS_KEY)
+                    }?.substringAfter(TAS_KEY)?.trim()?.toInt() ?: 0
+
+                    initialVitalSignsFc = bodyRowModel.chipSection?.listText?.texts?.find {
+                        it.startsWith(FC_KEY)
+                    }?.substringAfter(FC_KEY)?.trim()?.toInt() ?: 0
+                } else {
+                    vitalSignsChipSection = bodyRowModel.chipSection
+                }
+
                 is SegmentedSwitchUiModel ->
                     segmentedValues[bodyRowModel.identifier] = bodyRowModel.selected
 
@@ -357,27 +378,6 @@ class MedicalHistoryViewModel @Inject constructor(
                             required = bodyRowModel.required
                         )
                     }
-                }
-
-                is ImageButtonSectionUiModel -> {
-                    if ((bodyRowModel.required && bodyRowModel.visibility) ||
-                        !bodyRowModel.selected.isNullOrEmpty()
-                    ) {
-                        imageButtonSectionValues[bodyRowModel.identifier] =
-                            bodyRowModel.selected.orEmpty()
-                    }
-                }
-
-                is InfoCardUiModel -> if (bodyRowModel.identifier == INITIAL_VITAL_SIGNS) {
-                    initialVitalSignsTas = bodyRowModel.chipSection?.listText?.texts?.find {
-                        it.startsWith(TAS_KEY)
-                    }?.substringAfter(TAS_KEY)?.trim()?.toInt() ?: 0
-
-                    initialVitalSignsFc = bodyRowModel.chipSection?.listText?.texts?.find {
-                        it.startsWith(FC_KEY)
-                    }?.substringAfter(FC_KEY)?.trim()?.toInt() ?: 0
-                } else {
-                    vitalSignsChipSection = bodyRowModel.chipSection
                 }
             }
         }
