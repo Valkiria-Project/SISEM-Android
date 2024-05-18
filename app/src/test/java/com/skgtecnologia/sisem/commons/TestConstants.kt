@@ -200,7 +200,7 @@ val infoCardUiModelMock = InfoCardUiModel(
     ),
     pill = PillUiModel(
         title = TextUiModel(
-            text = "text",
+            text = "18/05/2023 - 12 : 44",
             textStyle = TextStyle.BODY_1
         ),
         color = "color"
