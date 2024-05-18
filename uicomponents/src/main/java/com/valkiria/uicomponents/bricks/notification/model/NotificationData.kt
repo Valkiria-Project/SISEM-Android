@@ -1,15 +1,7 @@
 package com.valkiria.uicomponents.bricks.notification.model
 
 import android.os.Bundle
-import com.valkiria.uicomponents.bricks.notification.model.NotificationType.CLOSING_OF_APH
-import com.valkiria.uicomponents.bricks.notification.model.NotificationType.INCIDENT_ASSIGNED
-import com.valkiria.uicomponents.bricks.notification.model.NotificationType.IPS_PATIENT_TRANSFERRED
-import com.valkiria.uicomponents.bricks.notification.model.NotificationType.NO_PRE_OPERATIONAL_GENERATED_CRUE
-import com.valkiria.uicomponents.bricks.notification.model.NotificationType.STRETCHER_RETENTION_ENABLE
-import com.valkiria.uicomponents.bricks.notification.model.NotificationType.SUPPORT_REQUEST_ON_THE_WAY
-import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_AUTHORIZATION
-import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_DENIED
-import com.valkiria.uicomponents.bricks.notification.model.NotificationType.UPDATE_VEHICLE_STATUS
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.*
 import timber.log.Timber
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -142,6 +134,20 @@ fun getNotificationDataByType(
     val notificationDateTime = dateTime ?: LocalDateTime.now()
 
     return when (notificationType) {
+        AUTH_TIME -> AuthTimeNotification(
+            time = notificationTime,
+            dateTime = notificationDateTime,
+        )
+
+        CLOSING_OF_APH -> ClosingAPHNotification(
+            time = notificationTime,
+            dateTime = notificationDateTime,
+            consecutiveNumber = notificationDataBundle.getString(CONSECUTIVE_NUMBER).orEmpty(),
+            updateTimeObservationsAttachments = notificationDataBundle.getString(
+                UPDATE_TIME_OBSERVATIONS
+            ).orEmpty()
+        )
+
         INCIDENT_ASSIGNED -> IncidentAssignedNotification(
             time = notificationTime,
             dateTime = notificationDateTime,
@@ -153,6 +159,30 @@ fun getNotificationDataByType(
             address = notificationDataBundle.getString(ADDRESS).orEmpty(),
             hour = notificationDataBundle.getString(HOUR).orEmpty(),
             geolocation = notificationDataBundle.getString(GEOLOCATION).orEmpty()
+        )
+
+        IPS_PATIENT_TRANSFERRED -> IpsPatientTransferredNotification(
+            time = notificationTime,
+            dateTime = notificationDateTime,
+            headquartersName = notificationDataBundle.getString(HEADQUARTERS_NAME).orEmpty(),
+            headquartersAddress = notificationDataBundle.getString(HEADQUARTERS_ADDRESS).orEmpty(),
+            geolocation = notificationDataBundle.getString(GEOLOCATION).orEmpty()
+        )
+
+        NO_PRE_OPERATIONAL_GENERATED_CRUE -> NoPreOperationalGeneratedCrueNotification(
+            time = notificationTime,
+            dateTime = notificationDateTime,
+        )
+
+        STRETCHER_RETENTION_ENABLE -> StretcherRetentionEnableNotification(
+            time = notificationTime,
+            dateTime = notificationDateTime,
+        )
+
+        SUPPORT_REQUEST_ON_THE_WAY -> SupportRequestNotification(
+            time = notificationTime,
+            dateTime = notificationDateTime,
+            resourceTypeCode = notificationDataBundle.getString(RESOURCE_TYPE_AND_CODE).orEmpty()
         )
 
         TRANSMILENIO_AUTHORIZATION -> TransmilenioAuthorizationNotification(
@@ -170,50 +200,27 @@ fun getNotificationDataByType(
                 .orEmpty()
         )
 
-        NO_PRE_OPERATIONAL_GENERATED_CRUE -> NoPreOperationalGeneratedCrueNotification(
-            time = notificationTime,
-            dateTime = notificationDateTime,
-        )
-
-        SUPPORT_REQUEST_ON_THE_WAY -> SupportRequestNotification(
-            time = notificationTime,
-            dateTime = notificationDateTime,
-            resourceTypeCode = notificationDataBundle.getString(RESOURCE_TYPE_AND_CODE).orEmpty()
-        )
-
-        IPS_PATIENT_TRANSFERRED -> IpsPatientTransferredNotification(
-            time = notificationTime,
-            dateTime = notificationDateTime,
-            headquartersName = notificationDataBundle.getString(HEADQUARTERS_NAME).orEmpty(),
-            headquartersAddress = notificationDataBundle.getString(HEADQUARTERS_ADDRESS).orEmpty(),
-            geolocation = notificationDataBundle.getString(GEOLOCATION).orEmpty()
-        )
-
-        STRETCHER_RETENTION_ENABLE -> StretcherRetentionEnableNotification(
-            time = notificationTime,
-            dateTime = notificationDateTime,
-        )
-
-        CLOSING_OF_APH -> ClosingAPHNotification(
-            time = notificationTime,
-            dateTime = notificationDateTime,
-            consecutiveNumber = notificationDataBundle.getString(CONSECUTIVE_NUMBER).orEmpty(),
-            updateTimeObservationsAttachments = notificationDataBundle.getString(
-                UPDATE_TIME_OBSERVATIONS
-            ).orEmpty()
-        )
-
         UPDATE_VEHICLE_STATUS -> UpdateVehicleStatusNotification(
             time = notificationTime,
             dateTime = notificationDateTime,
         )
 
-        else -> null
+        null -> null
     }
 }
 
 fun getNotificationRawDataByType(notificationData: NotificationData): Map<String, String> {
     return when (notificationData) {
+        is AuthTimeNotification -> mapOf(
+            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
+        )
+
+        is ClosingAPHNotification -> mapOf(
+            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
+            CONSECUTIVE_NUMBER to notificationData.consecutiveNumber,
+            UPDATE_TIME_OBSERVATIONS to notificationData.updateTimeObservationsAttachments
+        )
+
         is IncidentAssignedNotification -> mapOf(
             NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
             CRU to notificationData.cru,
@@ -224,6 +231,26 @@ fun getNotificationRawDataByType(notificationData: NotificationData): Map<String
             ADDRESS to notificationData.address,
             HOUR to notificationData.hour,
             GEOLOCATION to notificationData.geolocation
+        )
+
+        is IpsPatientTransferredNotification -> mapOf(
+            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
+            HEADQUARTERS_NAME to notificationData.headquartersName,
+            HEADQUARTERS_ADDRESS to notificationData.headquartersAddress,
+            GEOLOCATION to notificationData.geolocation.orEmpty()
+        )
+
+        is NoPreOperationalGeneratedCrueNotification -> mapOf(
+            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name
+        )
+
+        is StretcherRetentionEnableNotification -> mapOf(
+            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name
+        )
+
+        is SupportRequestNotification -> mapOf(
+            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
+            RESOURCE_TYPE_AND_CODE to notificationData.resourceTypeCode
         )
 
         is TransmilenioAuthorizationNotification -> mapOf(
@@ -238,36 +265,10 @@ fun getNotificationRawDataByType(notificationData: NotificationData): Map<String
             AUTHORIZATION_NUMBER_DENIED to notificationData.authorizationNumber
         )
 
-        is NoPreOperationalGeneratedCrueNotification -> mapOf(
-            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name
-        )
-
-        is SupportRequestNotification -> mapOf(
-            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
-            RESOURCE_TYPE_AND_CODE to notificationData.resourceTypeCode
-        )
-
-        is IpsPatientTransferredNotification -> mapOf(
-            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
-            HEADQUARTERS_NAME to notificationData.headquartersName,
-            HEADQUARTERS_ADDRESS to notificationData.headquartersAddress,
-            GEOLOCATION to notificationData.geolocation.orEmpty()
-        )
-
-        is StretcherRetentionEnableNotification -> mapOf(
-            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name
-        )
-
-        is ClosingAPHNotification -> mapOf(
-            NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
-            CONSECUTIVE_NUMBER to notificationData.consecutiveNumber,
-            UPDATE_TIME_OBSERVATIONS to notificationData.updateTimeObservationsAttachments
-        )
+        is TransmiNotification -> mapOf()
 
         is UpdateVehicleStatusNotification -> mapOf(
             NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
         )
-
-        is TransmiNotification -> mapOf()
     }
 }
