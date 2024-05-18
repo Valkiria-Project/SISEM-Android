@@ -1,7 +1,16 @@
 package com.valkiria.uicomponents.bricks.notification.model
 
 import android.os.Bundle
-import com.valkiria.uicomponents.bricks.notification.model.NotificationType.*
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.AUTH_TIME
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.CLOSING_OF_APH
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.INCIDENT_ASSIGNED
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.IPS_PATIENT_TRANSFERRED
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.NO_PRE_OPERATIONAL_GENERATED_CRUE
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.STRETCHER_RETENTION_ENABLE
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.SUPPORT_REQUEST_ON_THE_WAY
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_AUTHORIZATION
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.TRANSMILENIO_DENIED
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.UPDATE_VEHICLE_STATUS
 import timber.log.Timber
 import java.time.LocalDateTime
 import java.time.LocalTime

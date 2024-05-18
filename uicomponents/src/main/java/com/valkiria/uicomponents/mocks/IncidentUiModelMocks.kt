@@ -1,7 +1,5 @@
 package com.valkiria.uicomponents.mocks
 
-import com.valkiria.uicomponents.bricks.notification.model.NotificationData
-import com.valkiria.uicomponents.bricks.notification.model.TransmiNotification
 import com.valkiria.uicomponents.bricks.notification.model.TransmilenioAuthorizationNotification
 import com.valkiria.uicomponents.components.incident.model.IncidentDetailUiModel
 import com.valkiria.uicomponents.components.incident.model.IncidentPriority
@@ -13,6 +11,7 @@ import com.valkiria.uicomponents.components.incident.model.ResourceUiModel
 import java.time.LocalDateTime
 import java.time.LocalTime
 
+@Suppress("LongMethod")
 fun getIncidentAssignedModel(): IncidentUiModel {
     return IncidentUiModel(
         id = 1,
