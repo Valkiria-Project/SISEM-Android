@@ -103,6 +103,7 @@ import com.valkiria.uicomponents.components.slider.SliderUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.utlis.DATE_PATTERN
+import com.valkiria.uicomponents.utlis.DATE_TIME_PATTERN
 import com.valkiria.uicomponents.utlis.HOURS_MINUTES_SECONDS_24_HOURS_PATTERN
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDate
 import com.valkiria.uicomponents.utlis.WEEK_DAYS
@@ -1190,8 +1191,13 @@ class MedicalHistoryViewModel @Inject constructor(
                     addAll(bodyRow.medicines)
                     add(buildMedicine(medicine))
                 }.sortedWith(
-                    compareByDescending { it.date?.text }
-                ).reversed()
+                    compareByDescending<InfoCardUiModel> {
+                        LocalDateTime.parse(
+                            it.pill?.title?.text,
+                            DateTimeFormatter.ofPattern(DATE_TIME_PATTERN)
+                        )
+                    }.thenByDescending { it.title.text }
+                )
 
                 bodyRow.copy(
                     medicines = medicines

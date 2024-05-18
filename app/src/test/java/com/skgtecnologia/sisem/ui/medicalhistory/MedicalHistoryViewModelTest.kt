@@ -23,6 +23,9 @@ import com.skgtecnologia.sisem.commons.textFieldUiModelMock
 import com.skgtecnologia.sisem.commons.uiAction
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ALIVE_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.APPLICATION_TIME_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.CODE_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.DATE_MEDICINE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.DURING_VITAL_SIGNS
 import com.skgtecnologia.sisem.domain.medicalhistory.model.FC_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.FUR_KEY
@@ -693,7 +696,13 @@ class MedicalHistoryViewModelTest {
             stringProvider = stringProvider
         )
         viewModel.showMedicineForm(IDENTIFIER)
-        viewModel.updateMedicineInfoCard(mapOf(IDENTIFIER to IDENTIFIER))
+        viewModel.updateMedicineInfoCard(
+            mapOf(
+                CODE_KEY to CODE_KEY,
+                DATE_MEDICINE_KEY to "13/11/2023",
+                APPLICATION_TIME_KEY to "13 : 00"
+            )
+        )
 
         Assert.assertNotNull(viewModel.uiState.screenModel)
     }
