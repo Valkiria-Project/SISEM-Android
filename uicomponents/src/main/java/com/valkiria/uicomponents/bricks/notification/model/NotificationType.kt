@@ -7,10 +7,40 @@ enum class NotificationType(
     val descriptionDecorator: String? = null,
     val contentLeftDecorator: String? = null
 ) {
+    AUTH_TIME(
+        title = "Tiempo de logueo menor al establecido",
+        icon = "ic_check",
+        iconColor = "#F55757"
+    ),
+    CLOSING_OF_APH(
+        title = "Cierre del registro APH ",
+        icon = "ic_hceud",
+        iconColor = "#42A4FA"
+    ),
     INCIDENT_ASSIGNED(
         title = "Incidente Asignado",
         icon = "ic_assigned_incident",
         iconColor = ""
+    ),
+    IPS_PATIENT_TRANSFERRED(
+        title = "Paciente traslado a IPS",
+        icon = "ic_user_2",
+        iconColor = "#42A4FA"
+    ),
+    NO_PRE_OPERATIONAL_GENERATED_CRUE(
+        title = "No se ha generado preoperacional para reportar al CRUE",
+        icon = "ic_check",
+        iconColor = "#F55757"
+    ),
+    STRETCHER_RETENTION_ENABLE(
+        title = "Retención de camilla habilitada",
+        icon = "ic_stretcher",
+        iconColor = "#42A4FA"
+    ),
+    SUPPORT_REQUEST_ON_THE_WAY(
+        title = "Solicitud de apoyo en camino",
+        icon = "ic_ambulance",
+        iconColor = "#42A4FA"
     ),
     TRANSMILENIO_AUTHORIZATION(
         title = "Carril de Transmilenio autorizado",
@@ -23,31 +53,6 @@ enum class NotificationType(
         title = "Carril de Transmilenio no autorizado",
         icon = "ic_road",
         iconColor = "#F55757"
-    ),
-    NO_PRE_OPERATIONAL_GENERATED_CRUE(
-        title = "No se ha generado preoperacional para reportar al CRUE",
-        icon = "ic_check",
-        iconColor = "#F55757"
-    ),
-    SUPPORT_REQUEST_ON_THE_WAY(
-        title = "Solicitud de apoyo en camino",
-        icon = "ic_ambulance",
-        iconColor = "#42A4FA"
-    ),
-    IPS_PATIENT_TRANSFERRED(
-        title = "Paciente traslado a IPS",
-        icon = "ic_user_2",
-        iconColor = "#42A4FA"
-    ),
-    STRETCHER_RETENTION_ENABLE(
-        title = "Retención de camilla habilitada",
-        icon = "ic_stretcher",
-        iconColor = "#42A4FA"
-    ),
-    CLOSING_OF_APH(
-        title = "Cierre del registro APH ",
-        icon = "ic_hceud",
-        iconColor = "#42A4FA"
     ),
     UPDATE_VEHICLE_STATUS(
         title = "Actualización de estado del vehículo",
