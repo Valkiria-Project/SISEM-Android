@@ -9,6 +9,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -246,9 +247,11 @@ private fun NavGraphBuilder.mainGraph(
                 },
                 onLogout = {
                     navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
-                        popUpTo(NavigationGraph.Main.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
                             inclusive = true
                         }
+
+                        launchSingleTop = true
                     }
                 }
             )
