@@ -18,6 +18,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -405,7 +406,7 @@ private fun IncidentTransmilenioRequest(transmiRequests: List<TransmiNotificatio
                         color = Color.White,
                         style = TextStyle.HEADLINE_6.toTextStyle(),
                         overflow = TextOverflow.Ellipsis,
-                        maxLines = 1
+                        maxLines = 2
                     )
 
                     Row(
@@ -417,7 +418,7 @@ private fun IncidentTransmilenioRequest(transmiRequests: List<TransmiNotificatio
                         Text(
                             modifier = Modifier
                                 .padding(start = 26.dp, end = 2.dp)
-                                .fillMaxWidth(0.60f),
+                                .weight(1f),
                             text = stringResource(
                                 id = R.string.incident_transmi_journey,
                                 transmiNotification.journey
@@ -426,11 +427,11 @@ private fun IncidentTransmilenioRequest(transmiRequests: List<TransmiNotificatio
                             style = TextStyle.HEADLINE_6.toTextStyle()
                         )
 
-                        Divider(
-                            color = Color.White,
+                        VerticalDivider(
                             modifier = Modifier
                                 .height(25.dp)
-                                .width(1.dp)
+                                .width(1.dp),
+                            color = Color.White
                         )
 
                         Text(
