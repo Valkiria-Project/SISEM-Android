@@ -6,7 +6,6 @@ import com.valkiria.uicomponents.bricks.notification.model.IncidentAssignedNotif
 import com.valkiria.uicomponents.bricks.notification.model.IpsPatientTransferredNotification
 import com.valkiria.uicomponents.bricks.notification.model.NoPreOperationalGeneratedCrueNotification
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
-import com.valkiria.uicomponents.bricks.notification.model.NotificationType
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.AUTH_TIME
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.CLOSING_OF_APH
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.INCIDENT_ASSIGNED

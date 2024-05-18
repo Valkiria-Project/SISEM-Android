@@ -73,7 +73,8 @@ fun getIncidentAssignedModel(): IncidentUiModel {
                 dateTime = LocalDateTime.now(),
                 authorizationNumber = "123",
                 authorizes = "Funcionario de Transmilenio",
-                journey = "Trayecto: campo abierto, info enviada desde sise web: dirección o geolocation"
+                journey = "Trayecto: campo abierto, " +
+                    "info enviada desde sise web: dirección o geolocation"
             )
         )
     )
