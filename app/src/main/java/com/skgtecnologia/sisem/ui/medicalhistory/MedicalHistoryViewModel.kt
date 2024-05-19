@@ -20,6 +20,7 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.StringProvider
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
+import com.skgtecnologia.sisem.domain.medicalhistory.model.ACCEPT_TRANSFER_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ADMINISTRATION_ROUTE
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ADMINISTRATION_ROUTE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ALIVE_KEY
@@ -31,6 +32,8 @@ import com.skgtecnologia.sisem.domain.medicalhistory.model.CODE
 import com.skgtecnologia.sisem.domain.medicalhistory.model.CODE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.DATE_MEDICINE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.DOCUMENT_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.DOCUMENT_TYPE_W_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.DOCUMENT_W_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.DOSE_UNIT_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.DURING_VITAL_SIGNS
 import com.skgtecnologia.sisem.domain.medicalhistory.model.END_VITAL_SIGNS
@@ -44,12 +47,16 @@ import com.skgtecnologia.sisem.domain.medicalhistory.model.GLASGOW_MRV_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.GLASGOW_RTS_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.GLASGOW_TOTAL_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.GLUCOMETRY_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.HEADER_WITHDRAWAL_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.INITIAL_VITAL_SIGNS
 import com.skgtecnologia.sisem.domain.medicalhistory.model.LASTNAME_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.PLACE_DOCUMENT_COMPANION_W_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.PLACE_DOCUMENT_RESPONSIBLE_W_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.PREGNANT_FUR_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.PREGNANT_WEEKS_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.QUANTITY_USED
 import com.skgtecnologia.sisem.domain.medicalhistory.model.QUANTITY_USED_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.RELATIONSHIIP_W_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.RESPONSIBLE_DOCUMENT_NUMBER_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.RESPONSIBLE_DOCUMENT_TYPE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.RESPONSIBLE_NAME_KEY
@@ -58,8 +65,15 @@ import com.skgtecnologia.sisem.domain.medicalhistory.model.SECOND_NAME_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.TAS_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.TEMPERATURE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WHO_WITHDRAWAL_RESPONSIBLE_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_CAUSES_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_COMPANION_RICH_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_CONSTANCY_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_DECLARATION_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_EXTRA_INFO_2_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_EXTRA_INFO_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_REPONSIBLE_NAME_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_RESPONSIBLE_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_STATEMENT_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_TYPE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.getWithdrawalResponsibleText
 import com.skgtecnologia.sisem.domain.medicalhistory.model.getWithdrawalWitnessText
@@ -196,6 +210,27 @@ class MedicalHistoryViewModel @Inject constructor(
     private val withdrawalIdentifiers = listOf(
         WITHDRAWAL_TYPE_KEY,
         WHO_WITHDRAWAL_RESPONSIBLE_KEY
+    )
+
+    private val allWithdrawalIdentifiers = mutableMapOf(
+        HEADER_WITHDRAWAL_KEY to false,
+        WITHDRAWAL_TYPE_KEY to false,
+        WITHDRAWAL_EXTRA_INFO_KEY to false,
+        WITHDRAWAL_STATEMENT_KEY to false,
+        WHO_WITHDRAWAL_RESPONSIBLE_KEY to false,
+        WITHDRAWAL_REPONSIBLE_NAME_KEY to false,
+        DOCUMENT_TYPE_W_KEY to false,
+        DOCUMENT_W_KEY to false,
+        PLACE_DOCUMENT_RESPONSIBLE_W_KEY to false,
+        RELATIONSHIIP_W_KEY to false,
+        WITHDRAWAL_COMPANION_RICH_KEY to false,
+        PLACE_DOCUMENT_COMPANION_W_KEY to false,
+        WITHDRAWAL_DECLARATION_KEY to false,
+        WITHDRAWAL_CAUSES_KEY to false,
+        WITHDRAWAL_CONSTANCY_KEY to false,
+        SIGN_PERSON_CHARGE_W_KEY to false,
+        WITHDRAWAL_EXTRA_INFO_2_KEY to false,
+        WITHDRAWAL_REPONSIBLE_REFUSE_SIGN_KEY to false
     )
 
     private var temporalInfoCard by mutableStateOf("")
@@ -383,36 +418,36 @@ class MedicalHistoryViewModel @Inject constructor(
         }
     }
 
-    fun handleChipOptionAction(chipOptionAction: GenericUiAction.ChipOptionAction) {
-        var chipOption = chipOptionValues[chipOptionAction.identifier]
+    fun handleChipOptionAction(action: GenericUiAction.ChipOptionAction) {
+        var chipOption = chipOptionValues[action.identifier]
 
         when {
             chipOption != null && chipOption.find {
-                it.id == chipOptionAction.chipOptionUiModel.id
+                it.id == action.chipOptionUiModel.id
             } != null ->
-                chipOption.removeIf { it.id == chipOptionAction.chipOptionUiModel.id }
+                chipOption.removeIf { it.id == action.chipOptionUiModel.id }
 
             chipOption != null && chipOption.find {
-                it.id == chipOptionAction.chipOptionUiModel.id
+                it.id == action.chipOptionUiModel.id
             } == null ->
-                chipOption.add(chipOptionAction.chipOptionUiModel)
+                chipOption.add(action.chipOptionUiModel)
 
             else -> {
-                chipOption = mutableListOf(chipOptionAction.chipOptionUiModel)
+                chipOption = mutableListOf(action.chipOptionUiModel)
             }
         }
 
-        chipOptionValues[chipOptionAction.identifier] = chipOption.toMutableList()
+        chipOptionValues[action.identifier] = chipOption.toMutableList()
 
         var updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
-            identifier = chipOptionAction.identifier,
+            identifier = action.identifier,
             updater = { model ->
                 if (model is ChipOptionsUiModel) {
                     model.copy(
                         items = model.items.map {
-                            if (it.id == chipOptionAction.chipOptionUiModel.id) {
-                                it.copy(selected = chipOptionAction.chipOptionUiModel.selected)
+                            if (it.id == action.chipOptionUiModel.id) {
+                                it.copy(selected = action.chipOptionUiModel.selected)
                             } else {
                                 it
                             }
@@ -424,7 +459,7 @@ class MedicalHistoryViewModel @Inject constructor(
             }
         )
 
-        chipOptionAction.chipOptionUiModel.viewsVisibility?.forEach { viewsVisibility ->
+        action.chipOptionUiModel.viewsVisibility?.forEach { viewsVisibility ->
             updateBodyModel(
                 uiModels = updatedBody,
                 identifier = viewsVisibility.key
@@ -440,37 +475,37 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
-    fun handleChipSelectionAction(chipSelectionAction: GenericUiAction.ChipSelectionAction) {
-        chipSelectionValues[chipSelectionAction.identifier] =
-            chipSelectionAction.chipSelectionItemUiModel.copy(isSelected = true)
+    fun handleChipSelectionAction(action: GenericUiAction.ChipSelectionAction) {
+        chipSelectionValues[action.identifier] =
+            action.chipSelectionItemUiModel.copy(isSelected = true)
 
-        if (glasgowIdentifier.contains(chipSelectionAction.identifier)) {
+        if (glasgowIdentifier.contains(action.identifier)) {
             updateGlasgow()
         }
 
-        if (withdrawalIdentifiers.contains(chipSelectionAction.identifier)) {
+        if (withdrawalIdentifiers.contains(action.identifier)) {
             updatePatientName()
-            updateWithdrawalWitness(chipSelectionAction.chipSelectionItemUiModel.id)
+            updateWithdrawalWitness(action.chipSelectionItemUiModel.id)
             updateWithdrawalResponsible()
         }
 
-        if (chipSelectionAction.identifier == WITHDRAWAL_REPONSIBLE_REFUSE_SIGN_KEY) {
-            updateResponsibleSignature(chipSelectionAction.chipSelectionItemUiModel)
+        if (action.identifier == WITHDRAWAL_REPONSIBLE_REFUSE_SIGN_KEY) {
+            updateResponsibleSignature(action.chipSelectionItemUiModel)
         }
 
         var updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
-            identifier = chipSelectionAction.identifier,
+            identifier = action.identifier,
             updater = { model ->
                 if (model is ChipSelectionUiModel) {
-                    model.copy(selected = chipSelectionAction.chipSelectionItemUiModel.name)
+                    model.copy(selected = action.chipSelectionItemUiModel.name)
                 } else {
                     model
                 }
             }
         )
 
-        chipSelectionAction.viewsVisibility.forEach { viewsVisibility ->
+        action.viewsVisibility.forEach { viewsVisibility ->
             updateBodyModel(
                 uiModels = updatedBody,
                 identifier = viewsVisibility.key
@@ -479,7 +514,7 @@ class MedicalHistoryViewModel @Inject constructor(
             }.also { body -> updatedBody = body }
         }
 
-        chipSelectionAction.viewsInvisibility.forEach { viewsInvisibility ->
+        action.viewsInvisibility.forEach { viewsInvisibility ->
             updateBodyModel(
                 uiModels = updatedBody,
                 identifier = viewsInvisibility.key
@@ -488,13 +523,13 @@ class MedicalHistoryViewModel @Inject constructor(
             }.also { body -> updatedBody = body }
         }
 
-        if (chipSelectionAction.identifier == PATIENT_DOCUMENT_TYPE_IDENTIFIER) {
+        if (action.identifier == PATIENT_DOCUMENT_TYPE_IDENTIFIER) {
             updatedBody = updatePatientDocumentInputType(
                 chipSelectionValues[PATIENT_DOCUMENT_TYPE_IDENTIFIER]?.id.orEmpty(),
                 PATIENT_DOCUMENT_IDENTIFIER,
                 updatedBody
             )
-        } else if (chipSelectionAction.identifier == RESPONSIBLE_DOCUMENT_TYPE_IDENTIFIER) {
+        } else if (action.identifier == RESPONSIBLE_DOCUMENT_TYPE_IDENTIFIER) {
             updatedBody = updatePatientDocumentInputType(
                 chipSelectionValues[RESPONSIBLE_DOCUMENT_TYPE_IDENTIFIER]?.id.orEmpty(),
                 RESPONSIBLE_DOCUMENT_IDENTIFIER,
@@ -634,21 +669,21 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
-    fun handleDropDownAction(dropDownAction: GenericUiAction.DropDownAction) {
-        dropDownValues[dropDownAction.identifier] = DropDownInputUiModel(
-            dropDownAction.identifier,
-            dropDownAction.id,
-            dropDownAction.name,
-            dropDownAction.quantity,
-            dropDownAction.fieldValidated
+    fun handleDropDownAction(action: GenericUiAction.DropDownAction) {
+        dropDownValues[action.identifier] = DropDownInputUiModel(
+            action.identifier,
+            action.id,
+            action.name,
+            action.quantity,
+            action.fieldValidated
         )
 
         val updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
-            identifier = dropDownAction.identifier,
+            identifier = action.identifier,
             updater = { model ->
                 if (model is DropDownUiModel) {
-                    model.copy(selected = dropDownAction.name)
+                    model.copy(selected = action.name)
                 } else {
                     model
                 }
@@ -662,12 +697,12 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
-    fun handleFiltersAction(filtersAction: GenericUiAction.FiltersAction) {
+    fun handleFiltersAction(action: GenericUiAction.FiltersAction) {
         val updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
             updater = { model ->
                 if (model is FiltersUiModel) {
-                    model.copy(selected = filtersAction.identifier)
+                    model.copy(selected = action.identifier)
                 } else {
                     model
                 }
@@ -681,32 +716,32 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
-    fun handleHumanBodyAction(humanBodyAction: GenericUiAction.HumanBodyAction) {
-        val humanBody = humanBodyValues.find { it.area == humanBodyAction.values.area }
+    fun handleHumanBodyAction(action: GenericUiAction.HumanBodyAction) {
+        val humanBody = humanBodyValues.find { it.area == action.values.area }
 
         if (humanBody != null) {
             humanBodyValues.remove(humanBody)
         } else {
-            humanBodyValues.add(humanBodyAction.values)
+            humanBodyValues.add(action.values)
         }
     }
 
-    fun handleImageButtonAction(imageButtonAction: GenericUiAction.ImageButtonAction) {
-        imageButtonSectionValues[imageButtonAction.identifier] = imageButtonAction.itemIdentifier
+    fun handleImageButtonAction(action: GenericUiAction.ImageButtonAction) {
+        imageButtonSectionValues[action.identifier] = action.itemIdentifier
 
         val updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
-            identifier = imageButtonAction.identifier,
+            identifier = action.identifier,
             updater = { model ->
                 if (model is ImageButtonSectionUiModel) {
                     model.copy(
-                        selected = imageButtonAction.itemIdentifier,
+                        selected = action.itemIdentifier,
                         options = model.options.map {
                             it.copy(
                                 options = it.options.map { imageButtonUiModel ->
                                     imageButtonUiModel.copy(
                                         selected = imageButtonUiModel.identifier ==
-                                            imageButtonAction.itemIdentifier
+                                            action.itemIdentifier
                                     )
                                 }
                             )
@@ -736,30 +771,30 @@ class MedicalHistoryViewModel @Inject constructor(
         }
     }
 
-    fun handleInputAction(inputAction: GenericUiAction.InputAction) {
-        fieldsValues[inputAction.identifier] = InputUiModel(
-            inputAction.identifier,
-            inputAction.updatedValue,
-            inputAction.fieldValidated,
-            inputAction.required
+    fun handleInputAction(action: GenericUiAction.InputAction) {
+        fieldsValues[action.identifier] = InputUiModel(
+            action.identifier,
+            action.updatedValue,
+            action.fieldValidated,
+            action.required
         )
 
-        if (patientNameIdentifiers.contains(inputAction.identifier)) {
+        if (patientNameIdentifiers.contains(action.identifier)) {
             updatePatientName()
             updateWithdrawalResponsible()
             updateWithdrawalWitness()
         }
 
-        if (inputAction.identifier == FUR_KEY) {
+        if (action.identifier == FUR_KEY) {
             updateFurAndGestationWeeks()
         }
 
         val updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
-            identifier = inputAction.identifier,
+            identifier = action.identifier,
             updater = { model ->
                 if (model is TextFieldUiModel) {
-                    model.copy(text = inputAction.updatedValue)
+                    model.copy(text = action.updatedValue)
                 } else {
                     model
                 }
@@ -910,22 +945,24 @@ class MedicalHistoryViewModel @Inject constructor(
         return estimatedDueDate.format(DateTimeFormatter.ofPattern(DATE_PATTERN))
     }
 
-    fun handleSegmentedSwitchAction(segmentedSwitchAction: GenericUiAction.SegmentedSwitchAction) {
-        segmentedValues[segmentedSwitchAction.identifier] = segmentedSwitchAction.status
+    fun handleSegmentedSwitchAction(action: GenericUiAction.SegmentedSwitchAction) {
+        segmentedValues[action.identifier] = action.status
 
         var updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
-            identifier = segmentedSwitchAction.identifier,
+            identifier = action.identifier,
             updater = { model ->
                 if (model is SegmentedSwitchUiModel) {
-                    model.copy(selected = segmentedSwitchAction.status)
+                    model.copy(selected = action.status)
                 } else {
                     model
                 }
             }
         )
 
-        segmentedSwitchAction.viewsVisibility.forEach { viewVisibility ->
+        updatedBody = updateAliveAndTransferVisibility(action, updatedBody)
+
+        action.viewsVisibility.forEach { viewVisibility ->
             updateBodyModel(
                 uiModels = updatedBody,
                 identifier = viewVisibility.key
@@ -939,6 +976,32 @@ class MedicalHistoryViewModel @Inject constructor(
                 body = updatedBody
             )
         )
+    }
+
+    private fun updateAliveAndTransferVisibility(
+        action: GenericUiAction.SegmentedSwitchAction,
+        updatedBody: List<BodyRowModel>
+    ): List<BodyRowModel> {
+        var transformedBody = updatedBody
+
+        if (action.identifier == ALIVE_KEY) {
+            val withdrawalVisibility = action.status && segmentedValues[ACCEPT_TRANSFER_KEY] == true
+
+            allWithdrawalIdentifiers.keys.forEach { key ->
+                allWithdrawalIdentifiers[key] = withdrawalVisibility
+            }
+
+            allWithdrawalIdentifiers.forEach { viewVisibility ->
+                updateBodyModel(
+                    uiModels = transformedBody,
+                    identifier = viewVisibility.key
+                ) { model ->
+                    updateComponentVisibility(model, viewVisibility)
+                }.also { body -> transformedBody = body }
+            }
+        }
+
+        return transformedBody
     }
 
     @Suppress("NestedBlockDepth")
@@ -1103,15 +1166,15 @@ class MedicalHistoryViewModel @Inject constructor(
         else -> model
     }
 
-    fun handleSliderAction(sliderAction: GenericUiAction.SliderAction) {
-        sliderValues[sliderAction.identifier] = sliderAction.value.toString()
+    fun handleSliderAction(action: GenericUiAction.SliderAction) {
+        sliderValues[action.identifier] = action.value.toString()
 
         val updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
-            identifier = sliderAction.identifier,
+            identifier = action.identifier,
             updater = { model ->
                 if (model is SliderUiModel) {
-                    model.copy(selected = sliderAction.value)
+                    model.copy(selected = action.value)
                 } else {
                     model
                 }
