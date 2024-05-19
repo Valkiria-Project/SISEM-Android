@@ -30,8 +30,8 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.header.imagesConfirmationHeader
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
 import com.skgtecnologia.sisem.ui.authcards.create.report.PagerIndicator
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.navigation.REPORT
+import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
@@ -59,7 +59,7 @@ fun ImagesConfirmationScreen(
     viewModel: ReportViewModel,
     from: String,
     modifier: Modifier = Modifier,
-    onNavigation: (imageSelectionNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (imageSelectionNavigationModel: ReportNavigationModel) -> Unit
 ) {
     val uiState = viewModel.uiState
     val context = LocalContext.current
@@ -85,7 +85,7 @@ fun ImagesConfirmationScreen(
                 if (navigationModel != null && successInfoModel == null &&
                     confirmInfoModel == null
                 ) {
-                    onNavigation(uiState.navigationModel)
+                    uiState.navigationModel?.let { onNavigation(it) }
                     viewModel.consumeNavigationEvent()
                 }
             }
@@ -170,7 +170,7 @@ fun ImagesConfirmationScreen(
     }
 
     OnBannerHandler(uiState.successInfoModel) {
-        onNavigation(uiState.navigationModel)
+        uiState.navigationModel?.let { it1 -> onNavigation(it1) }
     }
 
     OnBannerHandler(uiState.infoEvent) {

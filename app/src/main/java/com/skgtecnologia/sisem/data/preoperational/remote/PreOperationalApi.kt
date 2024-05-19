@@ -24,6 +24,16 @@ interface PreOperationalApi {
         @Body savePreOperationalBody: SavePreOperationalBody
     ): Response<Unit>
 
+    @Multipart
+    @POST("preoperational/novelty-assistant")
+    suspend fun sendAuxFinding(
+        @Part("type") type: RequestBody,
+        @Part("id_preoperational") idPreoperational: RequestBody,
+        @Part("id_turn") idTurn: RequestBody,
+        @Part("novelty") novelty: RequestBody,
+        @Part images: List<MultipartBody.Part>
+    ): Response<Unit>
+
     @POST("screen/pre-operational-doctor")
     suspend fun getDoctorPreOperationalScreen(
         @Body screenBody: ScreenBody
@@ -32,6 +42,16 @@ interface PreOperationalApi {
     @POST("preoperational/pre-operational-doctor")
     suspend fun sendDoctorPreOperational(
         @Body savePreOperationalBody: SavePreOperationalBody
+    ): Response<Unit>
+
+    @Multipart
+    @POST("preoperational/novelty-doctor")
+    suspend fun sendDoctorFinding(
+        @Part("type") type: RequestBody,
+        @Part("id_preoperational") idPreoperational: RequestBody,
+        @Part("id_turn") idTurn: RequestBody,
+        @Part("novelty") novelty: RequestBody,
+        @Part images: List<MultipartBody.Part>
     ): Response<Unit>
 
     @POST("screen/pre-operational-driver")
@@ -45,8 +65,8 @@ interface PreOperationalApi {
     ): Response<Unit>
 
     @Multipart
-    @POST("preoperational/novelty")
-    suspend fun sendFinding(
+    @POST("preoperational/novelty-driver")
+    suspend fun sendDriverFinding(
         @Part("type") type: RequestBody,
         @Part("id_preoperational") idPreoperational: RequestBody,
         @Part("id_turn") idTurn: RequestBody,

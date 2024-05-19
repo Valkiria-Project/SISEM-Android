@@ -131,6 +131,8 @@ class SignatureViewModel @Inject constructor(
                 logoutCurrentUser.invoke()
                     .onSuccess { username ->
                         UnauthorizedEventHandler.publishUnauthorizedEvent(username)
+                    }.onFailure {
+                        UnauthorizedEventHandler.publishUnauthorizedEvent(it.toString())
                     }
             }
         }

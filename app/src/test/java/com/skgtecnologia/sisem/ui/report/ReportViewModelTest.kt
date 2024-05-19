@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.ui.report
 
+import com.skgtecnologia.sisem.commons.DRIVER_ROLE
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.di.operation.OperationRole
@@ -195,7 +196,7 @@ class ReportViewModelTest {
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
 
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
-        viewModel.saveReport()
+        viewModel.saveReport(DRIVER_ROLE)
 
         Assert.assertEquals(null, viewModel.uiState.confirmInfoModel)
         Assert.assertEquals(null, viewModel.uiState.navigationModel)
@@ -209,7 +210,7 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
         viewModel.isValidDescription = true
         viewModel.isValidTopic = true
-        viewModel.saveReport()
+        viewModel.saveReport(DRIVER_ROLE)
 
         Assert.assertEquals(NOVELTY_BANNER_CONFIRM_TITLE, viewModel.uiState.confirmInfoModel?.title)
     }
@@ -231,7 +232,7 @@ class ReportViewModelTest {
             ),
             false
         )
-        viewModel.saveReport()
+        viewModel.saveReport(DRIVER_ROLE)
 
         Assert.assertEquals(null, viewModel.uiState.confirmInfoModel)
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.closeReport)
@@ -265,7 +266,7 @@ class ReportViewModelTest {
     fun `when confirmReportImages and sendReport is success`() = runTest {
         val operationModel = mockk<OperationModel>()
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
-        coEvery { sendReport.invoke(any(), any(), any()) } returns Result.success(Unit)
+        coEvery { sendReport.invoke(any(), any(), any(), any()) } returns Result.success(Unit)
 
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
         viewModel.confirmReportImages(listOf(mockk()))
@@ -277,7 +278,14 @@ class ReportViewModelTest {
     fun `when confirmReportImages and sendReport fails`() = runTest {
         val operationModel = mockk<OperationModel>()
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
-        coEvery { sendReport.invoke(any(), any(), any()) } returns Result.failure(Throwable())
+        coEvery {
+            sendReport.invoke(
+                any(),
+                any(),
+                any(),
+                any()
+            )
+        } returns Result.failure(Throwable())
 
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
         viewModel.confirmReportImages(listOf())

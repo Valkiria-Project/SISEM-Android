@@ -20,7 +20,6 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.StringProvider
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
-import com.skgtecnologia.sisem.domain.medicalhistory.model.ACCEPT_TRANSFER_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ADMINISTRATION_ROUTE
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ADMINISTRATION_ROUTE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ALIVE_KEY
@@ -334,6 +333,27 @@ class MedicalHistoryViewModel @Inject constructor(
                     }
                 }
 
+                is ImageButtonSectionUiModel -> {
+                    if ((bodyRowModel.required && bodyRowModel.visibility) ||
+                        !bodyRowModel.selected.isNullOrEmpty()
+                    ) {
+                        imageButtonSectionValues[bodyRowModel.identifier] =
+                            bodyRowModel.selected.orEmpty()
+                    }
+                }
+
+                is InfoCardUiModel -> if (bodyRowModel.identifier == INITIAL_VITAL_SIGNS) {
+                    initialVitalSignsTas = bodyRowModel.chipSection?.listText?.texts?.find {
+                        it.startsWith(TAS_KEY)
+                    }?.substringAfter(TAS_KEY)?.trim()?.toInt() ?: 0
+
+                    initialVitalSignsFc = bodyRowModel.chipSection?.listText?.texts?.find {
+                        it.startsWith(FC_KEY)
+                    }?.substringAfter(FC_KEY)?.trim()?.toInt() ?: 0
+                } else {
+                    vitalSignsChipSection = bodyRowModel.chipSection
+                }
+
                 is SegmentedSwitchUiModel ->
                     segmentedValues[bodyRowModel.identifier] = bodyRowModel.selected
 
@@ -359,27 +379,6 @@ class MedicalHistoryViewModel @Inject constructor(
                         )
                     }
                 }
-
-                is ImageButtonSectionUiModel -> {
-                    if ((bodyRowModel.required && bodyRowModel.visibility) ||
-                        !bodyRowModel.selected.isNullOrEmpty()
-                    ) {
-                        imageButtonSectionValues[bodyRowModel.identifier] =
-                            bodyRowModel.selected.orEmpty()
-                    }
-                }
-
-                is InfoCardUiModel -> if (bodyRowModel.identifier == INITIAL_VITAL_SIGNS) {
-                    initialVitalSignsTas = bodyRowModel.chipSection?.listText?.texts?.find {
-                        it.startsWith(TAS_KEY)
-                    }?.substringAfter(TAS_KEY)?.trim()?.toInt() ?: 0
-
-                    initialVitalSignsFc = bodyRowModel.chipSection?.listText?.texts?.find {
-                        it.startsWith(FC_KEY)
-                    }?.substringAfter(FC_KEY)?.trim()?.toInt() ?: 0
-                } else {
-                    vitalSignsChipSection = bodyRowModel.chipSection
-                }
             }
         }
     }
@@ -391,7 +390,7 @@ class MedicalHistoryViewModel @Inject constructor(
             chipOption != null && chipOption.find {
                 it.id == chipOptionAction.chipOptionUiModel.id
             } != null ->
-                chipOption.remove(chipOptionAction.chipOptionUiModel)
+                chipOption.removeIf { it.id == chipOptionAction.chipOptionUiModel.id }
 
             chipOption != null && chipOption.find {
                 it.id == chipOptionAction.chipOptionUiModel.id
@@ -926,15 +925,7 @@ class MedicalHistoryViewModel @Inject constructor(
             }
         )
 
-        val viewsVisibility = if (segmentedSwitchAction.identifier == ACCEPT_TRANSFER_KEY) {
-            segmentedSwitchAction.viewsVisibility.map { entry ->
-                entry.key to !segmentedSwitchAction.status
-            }.toMap()
-        } else {
-            segmentedSwitchAction.viewsVisibility
-        }
-
-        viewsVisibility.forEach { viewVisibility ->
+        segmentedSwitchAction.viewsVisibility.forEach { viewVisibility ->
             updateBodyModel(
                 uiModels = updatedBody,
                 identifier = viewVisibility.key
@@ -1508,6 +1499,8 @@ class MedicalHistoryViewModel @Inject constructor(
                 logoutCurrentUser.invoke()
                     .onSuccess { username ->
                         UnauthorizedEventHandler.publishUnauthorizedEvent(username)
+                    }.onFailure {
+                        UnauthorizedEventHandler.publishUnauthorizedEvent(it.toString())
                     }
             }
         }

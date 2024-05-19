@@ -27,8 +27,8 @@ class NotificationsManager @Inject constructor(private val context: Context) {
         val notificationData = getNotificationDataByType(notificationDataMap)
 
         val intent = Intent(context, MainActivity::class.java).apply {
-            when {
-                notificationData?.notificationType == NotificationType.INCIDENT_ASSIGNED -> {
+            when (notificationData?.notificationType) {
+                NotificationType.INCIDENT_ASSIGNED -> {
                     val bundle = Bundle()
                     notificationDataMap.forEach {
                         bundle.putString(it.key, it.value)
@@ -37,7 +37,7 @@ class NotificationsManager @Inject constructor(private val context: Context) {
                     putExtras(bundle)
                 }
 
-                notificationData?.notificationType == NotificationType.CLOSING_OF_APH -> {
+                NotificationType.IPS_PATIENT_TRANSFERRED -> {
                     val bundle = Bundle()
                     notificationDataMap.forEach {
                         bundle.putString(it.key, it.value)
@@ -45,6 +45,17 @@ class NotificationsManager @Inject constructor(private val context: Context) {
 
                     putExtras(bundle)
                 }
+
+                NotificationType.CLOSING_OF_APH -> {
+                    val bundle = Bundle()
+                    notificationDataMap.forEach {
+                        bundle.putString(it.key, it.value)
+                    }
+
+                    putExtras(bundle)
+                }
+
+                else -> Timber.d("no-op")
             }
         }
 

@@ -11,12 +11,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.bricks.chip.FilterChipView
+import com.valkiria.uicomponents.commons.NO
 import com.valkiria.uicomponents.components.label.LabelComponent
 import com.valkiria.uicomponents.components.label.LabelUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.extensions.toFailedValidation
-
-private const val NO = "NO"
 
 @Suppress("LongMethod")
 @Composable

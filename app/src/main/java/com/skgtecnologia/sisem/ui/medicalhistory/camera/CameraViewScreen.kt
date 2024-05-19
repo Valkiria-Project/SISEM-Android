@@ -39,8 +39,8 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.ui.commons.utils.CameraUtils
 import com.skgtecnologia.sisem.ui.commons.utils.MediaStoreUtils
+import com.skgtecnologia.sisem.ui.medicalhistory.view.MedicalHistoryViewNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.view.MedicalHistoryViewViewModel
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.Executors
@@ -51,7 +51,7 @@ import kotlin.coroutines.suspendCoroutine
 fun CameraViewScreen(
     viewModel: MedicalHistoryViewViewModel,
     modifier: Modifier = Modifier,
-    onNavigation: (medicalHistoryNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (medicalHistoryNavigationModel: MedicalHistoryViewNavigationModel) -> Unit
 ) {
     val uiState = viewModel.uiState
 

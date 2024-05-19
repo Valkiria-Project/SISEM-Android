@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.data.report
 
 import com.skgtecnologia.sisem.commons.DESCRIPTION
+import com.skgtecnologia.sisem.commons.DRIVER_ROLE
 import com.skgtecnologia.sisem.commons.SERIAL
 import com.skgtecnologia.sisem.commons.TOPIC
 import com.skgtecnologia.sisem.commons.emptyScreenModel
@@ -9,6 +10,7 @@ import com.skgtecnologia.sisem.data.report.remote.ReportRemoteDataSource
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
+import io.mockk.mockk
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
@@ -61,13 +63,17 @@ class ReportRepositoryImplTest {
                 any(),
                 any(),
                 any(),
+                any(),
                 any()
             )
         } returns Result.success(
             Unit
         )
+        coEvery { authCacheDataSource.retrieveAccessTokenByRole(any()) } returns mockk {
+            coEvery { role } returns DRIVER_ROLE
+        }
         coEvery { authCacheDataSource.observeAccessToken() } returns flow { emit(null) }
 
-        reportRepositoryImpl.sendReport(TOPIC, DESCRIPTION, emptyList())
+        reportRepositoryImpl.sendReport(DRIVER_ROLE, TOPIC, DESCRIPTION, emptyList())
     }
 }

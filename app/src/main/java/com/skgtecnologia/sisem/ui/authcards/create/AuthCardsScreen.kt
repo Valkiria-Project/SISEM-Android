@@ -2,6 +2,8 @@ package com.skgtecnologia.sisem.ui.authcards.create
 
 import android.Manifest
 import android.os.Build
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -12,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -41,12 +44,18 @@ fun AuthCardsScreen(
     modifier: Modifier = Modifier,
     onNavigation: (route: AuthNavigationRoute) -> Unit
 ) {
+    val context = LocalContext.current
     val viewModel = hiltViewModel<AuthCardsViewModel>()
     val uiState = viewModel.uiState
 
     var notificationData by remember { mutableStateOf<NotificationData?>(null) }
     NotificationEventHandler.subscribeNotificationEvent {
         notificationData = it
+    }
+
+    BackHandler {
+        Timber.d("Close the App")
+        (context as ComponentActivity).finish()
     }
 
     val notificationsPermissionState: PermissionState? =

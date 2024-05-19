@@ -14,7 +14,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.GenericUiAction
@@ -31,7 +30,7 @@ fun PreOperationalScreen(
     modifier: Modifier = Modifier,
     novelty: Novelty?,
     revertFinding: Boolean?,
-    onNavigation: (preOpNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (preOpNavigationModel: PreOpNavigationModel) -> Unit
 ) {
     val viewModel = hiltViewModel<PreOperationalViewModel>()
     val uiState = viewModel.uiState
@@ -46,7 +45,7 @@ fun PreOperationalScreen(
         launch {
             with(uiState.navigationModel) {
                 if (this?.isNewFindingEvent == true || this?.isTurnCompleteEvent != null) {
-                    onNavigation(uiState.navigationModel)
+                    uiState.navigationModel?.let { onNavigation(it) }
                     viewModel.consumeNavigationEvent()
                 }
             }

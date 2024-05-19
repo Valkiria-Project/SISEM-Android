@@ -22,7 +22,7 @@ import com.skgtecnologia.sisem.domain.model.header.addFindingHeader
 import com.skgtecnologia.sisem.domain.model.label.addFilesHint
 import com.skgtecnologia.sisem.domain.report.model.AddFindingIdentifier
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
+import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
@@ -54,7 +54,7 @@ fun AddFindingScreen(
     viewModel: ReportViewModel,
     findingId: String,
     modifier: Modifier = Modifier,
-    onNavigation: (findingsNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (findingsNavigationModel: ReportNavigationModel) -> Unit
 ) {
     val uiState = viewModel.uiState
 
@@ -154,7 +154,7 @@ fun AddFindingScreen(
     }
 
     OnBannerHandler(uiState.successInfoModel) {
-        onNavigation(uiState.navigationModel)
+        uiState.navigationModel?.let { it1 -> onNavigation(it1) }
     }
 
     OnBannerHandler(uiState.cancelInfoModel) {

@@ -8,7 +8,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.inventory.model.TransferReturnIdentifiers
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
@@ -25,7 +24,7 @@ import timber.log.Timber
 @Composable
 fun InventoryViewScreen(
     modifier: Modifier = Modifier,
-    onNavigation: (inventoryViewNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (inventoryViewNavigationModel: InventoryViewNavigationModel) -> Unit
 ) {
     val viewModel = hiltViewModel<InventoryViewViewModel>()
     val uiState = viewModel.uiState
