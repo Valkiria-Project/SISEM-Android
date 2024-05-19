@@ -39,19 +39,19 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.ui.commons.utils.CameraUtils
 import com.skgtecnologia.sisem.ui.commons.utils.MediaStoreUtils
+import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryViewModel
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.concurrent.Executors
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
-import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @Composable
 fun CameraScreen(
     viewModel: MedicalHistoryViewModel,
     modifier: Modifier = Modifier,
-    onNavigation: (medicalHistoryNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (medicalHistoryNavigationModel: MedicalHistoryNavigationModel) -> Unit
 ) {
     val uiState = viewModel.uiState
 

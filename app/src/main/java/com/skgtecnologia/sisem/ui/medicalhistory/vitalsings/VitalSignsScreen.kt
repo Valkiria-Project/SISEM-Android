@@ -9,7 +9,6 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.GenericUiAction
@@ -23,7 +22,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun VitalSignsScreen(
     modifier: Modifier = Modifier,
-    onNavigation: (vitalSignsNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (vitalSignsNavigationModel: VitalSignsNavigationModel) -> Unit
 ) {
     val viewModel = hiltViewModel<VitalSignsViewModel>()
     val uiState = viewModel.uiState
@@ -32,7 +31,7 @@ fun VitalSignsScreen(
         launch {
             with(uiState.navigationModel) {
                 if (this?.goBack == true || this?.values != null) {
-                    onNavigation(uiState.navigationModel)
+                    uiState.navigationModel?.let { onNavigation(it) }
                     viewModel.consumeNavigationEvent()
                 }
             }

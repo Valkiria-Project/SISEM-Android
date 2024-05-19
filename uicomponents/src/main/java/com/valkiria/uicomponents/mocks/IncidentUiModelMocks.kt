@@ -1,5 +1,6 @@
 package com.valkiria.uicomponents.mocks
 
+import com.valkiria.uicomponents.bricks.notification.model.TransmilenioAuthorizationNotification
 import com.valkiria.uicomponents.components.incident.model.IncidentDetailUiModel
 import com.valkiria.uicomponents.components.incident.model.IncidentPriority
 import com.valkiria.uicomponents.components.incident.model.IncidentTypeUiModel
@@ -7,7 +8,10 @@ import com.valkiria.uicomponents.components.incident.model.IncidentUiModel
 import com.valkiria.uicomponents.components.incident.model.PatientUiModel
 import com.valkiria.uicomponents.components.incident.model.ResourceDetailUiModel
 import com.valkiria.uicomponents.components.incident.model.ResourceUiModel
+import java.time.LocalDateTime
+import java.time.LocalTime
 
+@Suppress("LongMethod")
 fun getIncidentAssignedModel(): IncidentUiModel {
     return IncidentUiModel(
         id = 1,
@@ -62,6 +66,16 @@ fun getIncidentAssignedModel(): IncidentUiModel {
                 )
             )
         ),
-        incidentPriority = IncidentPriority.LOW
+        incidentPriority = IncidentPriority.LOW,
+        transmiRequests = listOf(
+            TransmilenioAuthorizationNotification(
+                time = LocalTime.now(),
+                dateTime = LocalDateTime.now(),
+                authorizationNumber = "123",
+                authorizes = "Funcionario de Transmilenio",
+                journey = "Trayecto: campo abierto, " +
+                    "info enviada desde sise web: dirección o geolocation"
+            )
+        )
     )
 }

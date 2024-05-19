@@ -10,7 +10,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
@@ -28,7 +27,7 @@ import timber.log.Timber
 fun DeviceAuthScreen(
     from: String,
     modifier: Modifier = Modifier,
-    onNavigation: (deviceAuthNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (deviceAuthNavigationModel: DeviceAuthNavigationModel) -> Unit
 ) {
     val viewModel = hiltViewModel<DeviceAuthViewModel>()
     viewModel.from = from

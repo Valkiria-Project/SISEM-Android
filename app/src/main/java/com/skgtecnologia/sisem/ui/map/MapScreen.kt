@@ -49,6 +49,12 @@ fun MapScreen(
         incidentErrorData = it
     }
 
+    val incident by remember(
+        viewModel.uiState.incident?.latitude to viewModel.uiState.incident?.longitude
+    ) {
+        mutableStateOf(viewModel.uiState.incident)
+    }
+
     BackHandler {
         Timber.d("Close the App")
         (context as ComponentActivity).finish()
@@ -65,7 +71,7 @@ fun MapScreen(
     ) {
         MapboxMapView(
             coordinates = viewModel.uiState.location,
-            incident = viewModel.uiState.incident,
+            incident = incident,
             notifications = viewModel.uiState.notifications,
             drawerState = drawerState,
             notificationData = notificationData,

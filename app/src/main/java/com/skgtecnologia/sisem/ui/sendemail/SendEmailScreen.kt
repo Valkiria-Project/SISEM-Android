@@ -26,7 +26,6 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.label.sendEmailContent
 import com.skgtecnologia.sisem.domain.model.label.sendEmailLabels
 import com.skgtecnologia.sisem.domain.model.textfield.sendEmailTextField
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import com.valkiria.uicomponents.bricks.textfield.OutlinedTextFieldView
@@ -38,7 +37,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SendEmailScreen(
     modifier: Modifier = Modifier,
-    onNavigation: (sendEmailNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (sendEmailNavigationModel: SendEmailNavigationModel) -> Unit
 ) {
     val context = LocalContext.current
     val viewModel = hiltViewModel<SendEmailViewModel>()

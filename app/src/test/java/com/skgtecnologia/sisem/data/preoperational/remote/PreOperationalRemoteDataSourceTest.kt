@@ -168,7 +168,7 @@ class PreOperationalRemoteDataSourceTest {
     @Test
     fun `when sendFindings is success`() = runTest {
         coEvery {
-            preOperationalApi.sendFinding(
+            preOperationalApi.sendAuxFinding(
                 any(),
                 any(),
                 any(),

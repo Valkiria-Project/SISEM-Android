@@ -188,7 +188,7 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    fun saveReport() {
+    fun saveReport(roleName: String) {
         val (confirmInfoModel, navigationModel) = if (
             isValidTopic && isValidDescription && uiState.selectedImageUris.isEmpty()
         ) {
@@ -203,6 +203,7 @@ class ReportViewModel @Inject constructor(
         }
 
         uiState = uiState.copy(
+            roleName = roleName,
             confirmInfoModel = confirmInfoModel,
             validateFields = true,
             navigationModel = navigationModel
@@ -229,6 +230,7 @@ class ReportViewModel @Inject constructor(
         job?.cancel()
         job = viewModelScope.launch {
             sendReport.invoke(
+                roleName = uiState.roleName,
                 topic = topic,
                 description = description,
                 images = images.mapIndexed { index, image ->

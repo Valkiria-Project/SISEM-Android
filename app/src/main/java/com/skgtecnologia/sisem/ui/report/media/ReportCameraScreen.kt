@@ -39,20 +39,20 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.ui.commons.utils.CameraUtils
 import com.skgtecnologia.sisem.ui.commons.utils.MediaStoreUtils
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
+import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportViewModel
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.concurrent.Executors
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
-import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @com.google.accompanist.permissions.ExperimentalPermissionsApi
 @Composable
 fun ReportCameraScreen(
     modifier: Modifier = Modifier,
     viewModel: ReportViewModel,
-    onNavigation: (reportNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (reportNavigationModel: ReportNavigationModel) -> Unit
 ) {
     val uiState = viewModel.uiState
 

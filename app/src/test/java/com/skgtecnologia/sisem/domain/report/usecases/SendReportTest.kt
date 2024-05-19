@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.domain.report.usecases
 
 import com.skgtecnologia.sisem.commons.DESCRIPTION
+import com.skgtecnologia.sisem.commons.DRIVER_ROLE
 import com.skgtecnologia.sisem.commons.TOPIC
 import com.skgtecnologia.sisem.domain.report.ReportRepository
 import io.mockk.MockKAnnotations
@@ -27,18 +28,18 @@ class SendReportTest {
 
     @Test
     fun `when sendReport is success`() = runTest {
-        coEvery { reportRepository.sendReport(any(), any(), any()) } returns Unit
+        coEvery { reportRepository.sendReport(any(), any(), any(), any()) } returns Unit
 
-        val result = sendReport(TOPIC, DESCRIPTION, emptyList())
+        val result = sendReport(DRIVER_ROLE, TOPIC, DESCRIPTION, emptyList())
 
         Assert.assertEquals(true, result.isSuccess)
     }
 
     @Test
     fun `when sendReport is failure`() = runTest {
-        coEvery { reportRepository.sendReport(any(), any(), any()) } throws Exception()
+        coEvery { reportRepository.sendReport(any(), any(), any(), any()) } throws Exception()
 
-        val result = sendReport(TOPIC, DESCRIPTION, emptyList())
+        val result = sendReport(DRIVER_ROLE, TOPIC, DESCRIPTION, emptyList())
 
         Assert.assertEquals(true, result.isFailure)
     }

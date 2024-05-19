@@ -10,6 +10,7 @@ import com.valkiria.uicomponents.components.incident.model.IncidentUiModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -33,6 +34,7 @@ class IncidentCacheDataSource @Inject constructor(
 
     @CheckResult
     fun observeActiveIncident(): Flow<IncidentUiModel?> = incidentDao.observeActiveIncident()
+        .distinctUntilChanged()
         .map {
             it?.mapToUi()
         }

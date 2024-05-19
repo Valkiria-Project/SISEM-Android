@@ -20,7 +20,7 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.label.addFilesHint
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
+import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
@@ -51,7 +51,7 @@ private const val DESCRIPTION_INPUT_MIN_LINES = 3
 fun AddReportScreen(
     viewModel: ReportViewModel,
     modifier: Modifier = Modifier,
-    onNavigation: (addReportNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (addReportNavigationModel: ReportNavigationModel) -> Unit
 ) {
     val addReportViewModel = hiltViewModel<AddReportViewModel>()
     val uiState = viewModel.uiState
@@ -133,21 +133,21 @@ fun AddReportScreen(
 
         addReportUiState.screenModel?.footer?.let {
             FooterSection(footerModel = it) { uiAction ->
-                handleFooterAction(uiAction, viewModel)
+                handleFooterAction(uiAction, viewModel, addReportViewModel.roleName.orEmpty())
             }
         }
     }
 
     OnBannerHandler(uiState.confirmInfoModel) {
-        handleFooterAction(it, viewModel)
+        handleFooterAction(it, viewModel, addReportViewModel.roleName.orEmpty())
     }
 
     OnBannerHandler(uiState.successInfoModel) {
-        onNavigation(uiState.navigationModel)
+        uiState.navigationModel?.let { it1 -> onNavigation(it1) }
     }
 
     OnBannerHandler(uiState.cancelInfoModel) {
-        handleFooterAction(it, viewModel)
+        handleFooterAction(it, viewModel, addReportViewModel.roleName.orEmpty())
     }
 
     OnBannerHandler(addReportUiState.errorModel) {
@@ -166,12 +166,13 @@ fun AddReportScreen(
 
 private fun handleFooterAction(
     uiAction: UiAction,
-    viewModel: ReportViewModel
+    viewModel: ReportViewModel,
+    roleName: String
 ) {
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
             AddReportIdentifier.ADD_REPORT_ENTRY_CANCEL_BUTTON.name -> viewModel.cancelReport()
-            AddReportIdentifier.SEND_REPORT_ENTRY_SEND_BUTTON.name -> viewModel.saveReport()
+            AddReportIdentifier.SEND_REPORT_ENTRY_SEND_BUTTON.name -> viewModel.saveReport(roleName)
 
             AddReportIdentifier.ADD_REPORT_CANCEL_BANNER.name -> viewModel.consumeNavigationEvent()
             AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name ->

@@ -7,7 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.GenericUiAction
@@ -21,7 +20,7 @@ import timber.log.Timber
 @Composable
 fun IncidentScreen(
     modifier: Modifier = Modifier,
-    onNavigation: (incidentNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (incidentNavigationModel: IncidentNavigationModel) -> Unit
 ) {
     val viewModel = hiltViewModel<IncidentViewModel>()
     val uiState = viewModel.uiState

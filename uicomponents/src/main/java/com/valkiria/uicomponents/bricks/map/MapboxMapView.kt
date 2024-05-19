@@ -113,6 +113,7 @@ fun MapboxMapView(
         sheetPeekHeight = if (incident != null) 140.dp else 0.dp
     ) { innerPadding ->
         Box(modifier.padding(innerPadding)) {
+            // FIXME: launched effect to react upon lat and long changes?
             if (incident?.latitude != null && incident.longitude != null) {
                 val accessToken = stringResource(id = R.string.mapbox_access_token)
                 val destinationPoint = Point.fromLngLat(incident.longitude, incident.latitude)
@@ -254,54 +255,6 @@ private fun MapboxNavigationAndroidView(
                     actionToggleAudioButtonBinder = EmptyBinder()
                     actionButtonsBinder = EmptyBinder()
                 }
-
-                val defaultAnnotations = listOf(
-                    DirectionsCriteria.ANNOTATION_DURATION,
-                )
-
-                MapboxNavigationApp.current()!!.requestRoutes(
-                    routeOptions = RouteOptions
-                        .builder()
-//                        .applyDefaultNavigationOptions()
-                        .annotationsList(defaultAnnotations)
-                        .continueStraight(true)
-                        .enableRefresh(true)
-                        .profile(DirectionsCriteria.PROFILE_DRIVING_TRAFFIC)
-                        .overview(DirectionsCriteria.OVERVIEW_FULL)
-                        .steps(true)
-                        .roundaboutExits(false)
-                        .voiceInstructions(false)
-                        .bannerInstructions(false)
-//                        .applyLanguageAndVoiceUnitOptions(this)
-                        .coordinatesList(listOf(locationPoint, destinationPoint))
-                        .alternatives(false)
-                        .build(),
-                    callback = object : NavigationRouterCallback {
-                        override fun onCanceled(
-                            routeOptions: RouteOptions,
-                            routerOrigin: RouterOrigin
-                        ) {
-                            Timber.d("NavigationRouterCallback onCanceled")
-                        }
-
-                        override fun onFailure(
-                            reasons: List<RouterFailure>,
-                            routeOptions: RouteOptions
-                        ) {
-                            Timber.d("NavigationRouterCallback onFailure")
-                        }
-
-                        override fun onRoutesReady(
-                            routes: List<NavigationRoute>,
-                            routerOrigin: RouterOrigin
-                        ) {
-                            Timber.d("NavigationRouterCallback onRoutesReady")
-
-//                            navigationView.api.routeReplayEnabled(true)
-                            navigationView.api.startActiveGuidance(routes)
-                        }
-                    }
-                )
             }
         },
         update = { navigationView ->
@@ -316,9 +269,66 @@ private fun MapboxNavigationAndroidView(
 
                 it.create(pointAnnotationOptions)
             }
+
+            val defaultAnnotations = listOf(
+                DirectionsCriteria.ANNOTATION_DURATION,
+            )
+
+            navigationView.requestRoutes(locationPoint, destinationPoint, defaultAnnotations)
+
             NoOpUpdate
         },
         modifier = modifier
+    )
+}
+
+private fun NavigationView.requestRoutes(
+    locationPoint: Point,
+    destinationPoint: Point,
+    defaultAnnotations: List<String> = listOf(DirectionsCriteria.ANNOTATION_DURATION)
+) {
+    MapboxNavigationApp.current()!!.requestRoutes(
+        routeOptions = RouteOptions
+            .builder()
+//                        .applyDefaultNavigationOptions()
+            .annotationsList(defaultAnnotations)
+            .continueStraight(true)
+            .enableRefresh(true)
+            .profile(DirectionsCriteria.PROFILE_DRIVING_TRAFFIC)
+            .overview(DirectionsCriteria.OVERVIEW_FULL)
+            .steps(true)
+            .roundaboutExits(false)
+            .voiceInstructions(false)
+            .bannerInstructions(false)
+//                        .applyLanguageAndVoiceUnitOptions(this)
+            .coordinatesList(listOf(locationPoint, destinationPoint))
+            .alternatives(false)
+            .build(),
+        callback = object : NavigationRouterCallback {
+            override fun onCanceled(
+                routeOptions: RouteOptions,
+                routerOrigin: RouterOrigin
+            ) {
+                Timber.d("NavigationRouterCallback onCanceled")
+            }
+
+            override fun onFailure(
+                reasons: List<RouterFailure>,
+                routeOptions: RouteOptions
+            ) {
+                Timber.d("NavigationRouterCallback onFailure")
+            }
+
+            override fun onRoutesReady(
+                routes: List<NavigationRoute>,
+                routerOrigin: RouterOrigin
+            ) {
+                Timber.d("NavigationRouterCallback onRoutesReady")
+
+//                navigationView.api.routeReplayEnabled(true)
+                api.startActiveGuidance(routes)
+            }
+        }
     )
 }
 

@@ -1,11 +1,14 @@
 package com.skgtecnologia.sisem.ui.report.addreport
 
+import androidx.lifecycle.SavedStateHandle
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.uiAction
+import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.report.usecases.GetAddReportScreen
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -26,6 +29,9 @@ class AddReportViewModelTest {
     @MockK
     private lateinit var logoutCurrentUser: LogoutCurrentUser
 
+    private val savedStateHandle =
+        SavedStateHandle(mapOf(NavigationArgument.ROLE to OperationRole.MEDIC_APH.name))
+
     private lateinit var viewModel: AddReportViewModel
 
     @Before
@@ -37,7 +43,7 @@ class AddReportViewModelTest {
     fun `when getAddReportScreen is success`() = runTest {
         coEvery { getAddReportScreen.invoke() } returns Result.success(emptyScreenModel)
 
-        viewModel = AddReportViewModel(getAddReportScreen, logoutCurrentUser)
+        viewModel = AddReportViewModel(savedStateHandle, getAddReportScreen, logoutCurrentUser)
 
         Assert.assertEquals(emptyScreenModel, viewModel.uiState.screenModel)
     }
@@ -46,7 +52,7 @@ class AddReportViewModelTest {
     fun `when getAddReportScreen is failure`() = runTest {
         coEvery { getAddReportScreen.invoke() } returns Result.failure(Throwable())
 
-        viewModel = AddReportViewModel(getAddReportScreen, logoutCurrentUser)
+        viewModel = AddReportViewModel(savedStateHandle, getAddReportScreen, logoutCurrentUser)
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.errorModel?.title)
     }
@@ -56,7 +62,7 @@ class AddReportViewModelTest {
         coEvery { getAddReportScreen.invoke() } returns Result.failure(Throwable())
         coEvery { logoutCurrentUser.invoke() } returns Result.success("")
 
-        viewModel = AddReportViewModel(getAddReportScreen, logoutCurrentUser)
+        viewModel = AddReportViewModel(savedStateHandle, getAddReportScreen, logoutCurrentUser)
         viewModel.handleEvent(uiAction)
 
         Assert.assertEquals(null, viewModel.uiState.errorModel)

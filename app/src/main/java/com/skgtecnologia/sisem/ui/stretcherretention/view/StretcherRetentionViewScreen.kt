@@ -9,7 +9,6 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.HeaderUiAction
@@ -20,7 +19,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun StretcherRetentionViewScreen(
     modifier: Modifier = Modifier,
-    onNavigation: (stretcherRetentionViewNavigationModel: NavigationModel?) -> Unit
+    onNavigation: (navigationModel: StretcherRetentionViewNavigationModel) -> Unit
 ) {
     val viewModel = hiltViewModel<StretcherRetentionViewViewModel>()
     val uiState = viewModel.uiState

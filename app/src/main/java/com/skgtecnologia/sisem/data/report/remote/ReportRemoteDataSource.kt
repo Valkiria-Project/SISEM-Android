@@ -6,6 +6,7 @@ import com.skgtecnologia.sisem.data.remote.extensions.createRequestBody
 import com.skgtecnologia.sisem.data.remote.model.screen.Params
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
 import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
+import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import javax.inject.Inject
@@ -35,20 +36,54 @@ class ReportRemoteDataSource @Inject constructor(
         topic: String,
         description: String,
         images: List<ImageModel>,
+        role: OperationRole,
         turnId: String
     ): Result<Unit> = apiCall {
-        reportApi.sendReport(
-            turnId,
-            topic = topic.createRequestBody(),
-            description = description.createRequestBody(),
-            files = images.map { imageModel ->
-                val requestFile = imageModel.file.createRequestBody()
-                MultipartBody.Part.createFormData(
-                    SEND_REPORT_FILE_NAME,
-                    imageModel.file.name,
-                    requestFile
-                )
-            }
-        )
+        when (role) {
+            OperationRole.AUXILIARY_AND_OR_TAPH -> reportApi.sendAuxReport(
+                turnId,
+                topic = topic.createRequestBody(),
+                description = description.createRequestBody(),
+                files = images.map { imageModel ->
+                    val requestFile = imageModel.file.createRequestBody()
+                    MultipartBody.Part.createFormData(
+                        SEND_REPORT_FILE_NAME,
+                        imageModel.file.name,
+                        requestFile
+                    )
+                }
+            )
+
+            OperationRole.DRIVER -> reportApi.sendDriverReport(
+                turnId,
+                topic = topic.createRequestBody(),
+                description = description.createRequestBody(),
+                files = images.map { imageModel ->
+                    val requestFile = imageModel.file.createRequestBody()
+                    MultipartBody.Part.createFormData(
+                        SEND_REPORT_FILE_NAME,
+                        imageModel.file.name,
+                        requestFile
+                    )
+                }
+            )
+
+            OperationRole.MEDIC_APH -> reportApi.sendDoctorReport(
+                turnId,
+                topic = topic.createRequestBody(),
+                description = description.createRequestBody(),
+                files = images.map { imageModel ->
+                    val requestFile = imageModel.file.createRequestBody()
+                    MultipartBody.Part.createFormData(
+                        SEND_REPORT_FILE_NAME,
+                        imageModel.file.name,
+                        requestFile
+                    )
+                }
+            )
+
+            OperationRole.LEAD_APH ->
+                throw IllegalArgumentException("Lead APH role not supported")
+        }
     }
 }

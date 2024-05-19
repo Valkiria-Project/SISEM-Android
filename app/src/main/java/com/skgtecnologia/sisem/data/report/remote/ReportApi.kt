@@ -20,8 +20,26 @@ interface ReportApi {
     suspend fun getAddReportEntryScreen(@Body screenBody: ScreenBody): Response<ScreenResponse>
 
     @Multipart
-    @POST("novelty/{idTurn}")
-    suspend fun sendReport(
+    @POST("novelty/assistant/{idTurn}")
+    suspend fun sendAuxReport(
+        @Path("idTurn") idTurn: String,
+        @Part("subject") topic: RequestBody,
+        @Part("description") description: RequestBody,
+        @Part files: List<MultipartBody.Part>
+    ): Response<Unit>
+
+    @Multipart
+    @POST("novelty/doctor/{idTurn}")
+    suspend fun sendDoctorReport(
+        @Path("idTurn") idTurn: String,
+        @Part("subject") topic: RequestBody,
+        @Part("description") description: RequestBody,
+        @Part files: List<MultipartBody.Part>
+    ): Response<Unit>
+
+    @Multipart
+    @POST("novelty/driver/{idTurn}")
+    suspend fun sendDriverReport(
         @Path("idTurn") idTurn: String,
         @Part("subject") topic: RequestBody,
         @Part("description") description: RequestBody,

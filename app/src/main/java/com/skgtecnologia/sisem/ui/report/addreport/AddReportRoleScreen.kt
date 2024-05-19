@@ -21,7 +21,7 @@ import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 @Composable
 fun AddReportRoleScreen(
     modifier: Modifier = Modifier,
-    onNavigation: () -> Unit,
+    onNavigation: (roleName: String) -> Unit,
     onCancel: () -> Unit
 ) {
     val viewModel = hiltViewModel<AddReportRoleViewModel>()
@@ -77,11 +77,11 @@ fun AddReportRoleScreen(
 
 private fun handleUiAction(
     uiAction: UiAction,
-    onNavigation: () -> Unit
+    onNavigation: (roleName: String) -> Unit
 ) {
     (uiAction as? NewsUiAction)?.let {
         when (uiAction) {
-            is NewsUiAction.NewsStepOneOnChipClick -> onNavigation()
+            is NewsUiAction.NewsStepOneOnChipClick -> onNavigation(uiAction.role)
         }
     }
 }

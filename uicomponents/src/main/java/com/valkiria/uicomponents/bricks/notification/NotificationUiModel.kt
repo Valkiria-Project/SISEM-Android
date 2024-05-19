@@ -1,10 +1,12 @@
 package com.valkiria.uicomponents.bricks.notification
 
+import com.valkiria.uicomponents.bricks.notification.model.AuthTimeNotification
 import com.valkiria.uicomponents.bricks.notification.model.ClosingAPHNotification
 import com.valkiria.uicomponents.bricks.notification.model.IncidentAssignedNotification
 import com.valkiria.uicomponents.bricks.notification.model.IpsPatientTransferredNotification
 import com.valkiria.uicomponents.bricks.notification.model.NoPreOperationalGeneratedCrueNotification
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
+import com.valkiria.uicomponents.bricks.notification.model.NotificationType.AUTH_TIME
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.CLOSING_OF_APH
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.INCIDENT_ASSIGNED
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType.IPS_PATIENT_TRANSFERRED
@@ -41,6 +43,21 @@ fun NotificationData.mapToUi(): NotificationUiModel {
     val timeStamp = getLocalTimeAsString(time)
 
     return when (this) {
+        is AuthTimeNotification -> NotificationUiModel(
+            icon = AUTH_TIME.icon,
+            iconColor = AUTH_TIME.iconColor,
+            title = AUTH_TIME.title,
+            timeStamp = timeStamp
+        )
+
+        is ClosingAPHNotification -> NotificationUiModel(
+            icon = CLOSING_OF_APH.icon,
+            iconColor = CLOSING_OF_APH.iconColor,
+            title = CLOSING_OF_APH.title.plus(this.consecutiveNumber),
+            description = this.updateTimeObservationsAttachments,
+            timeStamp = timeStamp
+        )
+
         is IncidentAssignedNotification -> NotificationUiModel(
             icon = INCIDENT_ASSIGNED.icon,
             iconColor = IncidentPriority.getPriority(incidentPriority).stringColor,
@@ -52,20 +69,12 @@ fun NotificationData.mapToUi(): NotificationUiModel {
             timeStamp = timeStamp
         )
 
-        is TransmilenioAuthorizationNotification -> NotificationUiModel(
-            icon = TRANSMILENIO_AUTHORIZATION.icon,
-            iconColor = TRANSMILENIO_AUTHORIZATION.iconColor,
-            title = TRANSMILENIO_AUTHORIZATION.title,
-            description = TRANSMILENIO_AUTHORIZATION.descriptionDecorator
-                .plus(this.authorizationNumber),
-            content = TRANSMILENIO_AUTHORIZATION.contentLeftDecorator.plus(this.authorizes),
-            timeStamp = timeStamp
-        )
-
-        is TransmilenioDeniedNotification -> NotificationUiModel(
-            icon = TRANSMILENIO_DENIED.icon,
-            iconColor = TRANSMILENIO_DENIED.iconColor,
-            title = TRANSMILENIO_DENIED.title,
+        is IpsPatientTransferredNotification -> NotificationUiModel(
+            icon = IPS_PATIENT_TRANSFERRED.icon,
+            iconColor = IPS_PATIENT_TRANSFERRED.iconColor,
+            title = IPS_PATIENT_TRANSFERRED.title,
+            description = this.headquartersName,
+            content = this.headquartersAddress,
             timeStamp = timeStamp
         )
 
@@ -84,15 +93,6 @@ fun NotificationData.mapToUi(): NotificationUiModel {
             timeStamp = timeStamp
         )
 
-        is IpsPatientTransferredNotification -> NotificationUiModel(
-            icon = IPS_PATIENT_TRANSFERRED.icon,
-            iconColor = IPS_PATIENT_TRANSFERRED.iconColor,
-            title = IPS_PATIENT_TRANSFERRED.title,
-            description = this.headquartersName,
-            content = this.headquartersAddress,
-            timeStamp = timeStamp
-        )
-
         is StretcherRetentionEnableNotification -> NotificationUiModel(
             icon = STRETCHER_RETENTION_ENABLE.icon,
             iconColor = STRETCHER_RETENTION_ENABLE.iconColor,
@@ -100,11 +100,20 @@ fun NotificationData.mapToUi(): NotificationUiModel {
             timeStamp = timeStamp
         )
 
-        is ClosingAPHNotification -> NotificationUiModel(
-            icon = CLOSING_OF_APH.icon,
-            iconColor = CLOSING_OF_APH.iconColor,
-            title = CLOSING_OF_APH.title.plus(this.consecutiveNumber),
-            description = this.updateTimeObservationsAttachments,
+        is TransmilenioAuthorizationNotification -> NotificationUiModel(
+            icon = TRANSMILENIO_AUTHORIZATION.icon,
+            iconColor = TRANSMILENIO_AUTHORIZATION.iconColor,
+            title = TRANSMILENIO_AUTHORIZATION.title,
+            description = TRANSMILENIO_AUTHORIZATION.descriptionDecorator
+                .plus(this.authorizationNumber),
+            content = TRANSMILENIO_AUTHORIZATION.contentLeftDecorator.plus(this.authorizes),
+            timeStamp = timeStamp
+        )
+
+        is TransmilenioDeniedNotification -> NotificationUiModel(
+            icon = TRANSMILENIO_DENIED.icon,
+            iconColor = TRANSMILENIO_DENIED.iconColor,
+            title = TRANSMILENIO_DENIED.title,
             timeStamp = timeStamp
         )
 
