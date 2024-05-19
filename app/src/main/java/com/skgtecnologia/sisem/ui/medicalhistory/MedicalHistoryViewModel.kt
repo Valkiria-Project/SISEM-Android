@@ -32,6 +32,8 @@ import com.skgtecnologia.sisem.domain.medicalhistory.model.CODE
 import com.skgtecnologia.sisem.domain.medicalhistory.model.CODE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.DATE_MEDICINE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.DOCUMENT_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.DOCUMENT_TYPE_W_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.DOCUMENT_W_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.DOSE_UNIT_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.DURING_VITAL_SIGNS
 import com.skgtecnologia.sisem.domain.medicalhistory.model.END_VITAL_SIGNS
@@ -45,22 +47,35 @@ import com.skgtecnologia.sisem.domain.medicalhistory.model.GLASGOW_MRV_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.GLASGOW_RTS_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.GLASGOW_TOTAL_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.GLUCOMETRY_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.HEADER_WITHDRAWAL_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.INITIAL_VITAL_SIGNS
 import com.skgtecnologia.sisem.domain.medicalhistory.model.LASTNAME_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.PLACE_DOCUMENT_COMPANION_W_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.PLACE_DOCUMENT_RESPONSIBLE_W_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.PREGNANT_FUR_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.PREGNANT_WEEKS_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.QUANTITY_USED
 import com.skgtecnologia.sisem.domain.medicalhistory.model.QUANTITY_USED_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.RELATIONSHIIP_W_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.RESPONSIBLE_DOCUMENT_NUMBER_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.RESPONSIBLE_DOCUMENT_TYPE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.RESPONSIBLE_NAME_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.SECOND_LASTNAME_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.SECOND_NAME_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.SIGN_PERSON_CHARGE_W_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.TAS_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.TEMPERATURE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WHO_WITHDRAWAL_RESPONSIBLE_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_CAUSES_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_COMPANION_RICH_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_CONSTANCY_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_DECLARATION_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_EXTRA_INFO_2_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_EXTRA_INFO_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_REPONSIBLE_NAME_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_REPONSIBLE_REFUSE_SIGN_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_RESPONSIBLE_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_STATEMENT_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_TYPE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.getWithdrawalResponsibleText
 import com.skgtecnologia.sisem.domain.medicalhistory.model.getWithdrawalWitnessText
@@ -130,8 +145,6 @@ private const val PATIENT_DOCUMENT_TYPE_IDENTIFIER = "KEY_DOCUMENT_TYPE"
 private const val RESPONSIBLE_DOCUMENT_TYPE_IDENTIFIER = "KEY_DOCUMENT_TYPE_RESPONSIBLE"
 private const val PATIENT_DOCUMENT_IDENTIFIER = "KEY_DOCUMENT"
 private const val RESPONSIBLE_DOCUMENT_IDENTIFIER = "KEY_DOCUMENT_RESPONSIBLE"
-private const val SIGN_PERSON_CHARGE_W_KEY = "KEY_SIGN_PERSON_CHARGE_W"
-private const val WITHDRAWAL_REPONSIBLE_REFUSE_SIGN_KEY = "KEY_WITHDRAWAL_REPONSIBLE_REFUSE_SIGN"
 private const val TIME_KEY = "TIME"
 private const val NO = "NO"
 private const val CC_ID_TYPE = "CC"
@@ -197,6 +210,27 @@ class MedicalHistoryViewModel @Inject constructor(
     private val withdrawalIdentifiers = listOf(
         WITHDRAWAL_TYPE_KEY,
         WHO_WITHDRAWAL_RESPONSIBLE_KEY
+    )
+
+    private val allWithdrawalIdentifiers = mutableMapOf(
+        HEADER_WITHDRAWAL_KEY to false,
+        WITHDRAWAL_TYPE_KEY to false,
+        WITHDRAWAL_EXTRA_INFO_KEY to false,
+        WITHDRAWAL_STATEMENT_KEY to false,
+        WHO_WITHDRAWAL_RESPONSIBLE_KEY to false,
+        WITHDRAWAL_REPONSIBLE_NAME_KEY to false,
+        DOCUMENT_TYPE_W_KEY to false,
+        DOCUMENT_W_KEY to false,
+        PLACE_DOCUMENT_RESPONSIBLE_W_KEY to false,
+        RELATIONSHIIP_W_KEY to false,
+        WITHDRAWAL_COMPANION_RICH_KEY to false,
+        PLACE_DOCUMENT_COMPANION_W_KEY to false,
+        WITHDRAWAL_DECLARATION_KEY to false,
+        WITHDRAWAL_CAUSES_KEY to false,
+        WITHDRAWAL_CONSTANCY_KEY to false,
+        SIGN_PERSON_CHARGE_W_KEY to false,
+        WITHDRAWAL_EXTRA_INFO_2_KEY to false,
+        WITHDRAWAL_REPONSIBLE_REFUSE_SIGN_KEY to false
     )
 
     private var temporalInfoCard by mutableStateOf("")
@@ -926,6 +960,22 @@ class MedicalHistoryViewModel @Inject constructor(
             }
         )
 
+        if (segmentedSwitchAction.identifier == ALIVE_KEY) {
+            val withdrawalVisibility =
+                segmentedSwitchAction.status && segmentedValues[ACCEPT_TRANSFER_KEY] == true
+            allWithdrawalIdentifiers.keys.forEach { key ->
+                allWithdrawalIdentifiers[key] = withdrawalVisibility
+            }
+            allWithdrawalIdentifiers.forEach { viewVisibility ->
+                updateBodyModel(
+                    uiModels = updatedBody,
+                    identifier = viewVisibility.key
+                ) { model ->
+                    updateComponentVisibility(model, viewVisibility)
+                }.also { body -> updatedBody = body }
+            }
+        }
+
         val viewsVisibility = if (segmentedSwitchAction.identifier == ACCEPT_TRANSFER_KEY) {
             segmentedSwitchAction.viewsVisibility.map { entry ->
                 entry.key to !segmentedSwitchAction.status
@@ -934,13 +984,17 @@ class MedicalHistoryViewModel @Inject constructor(
             segmentedSwitchAction.viewsVisibility
         }
 
-        viewsVisibility.forEach { viewVisibility ->
-            updateBodyModel(
-                uiModels = updatedBody,
-                identifier = viewVisibility.key
-            ) { model ->
-                updateComponentVisibility(model, viewVisibility)
-            }.also { body -> updatedBody = body }
+        if (segmentedSwitchAction.identifier != ACCEPT_TRANSFER_KEY ||
+            segmentedValues[ALIVE_KEY] == true
+        ) {
+            viewsVisibility.forEach { viewVisibility ->
+                updateBodyModel(
+                    uiModels = updatedBody,
+                    identifier = viewVisibility.key
+                ) { model ->
+                    updateComponentVisibility(model, viewVisibility)
+                }.also { body -> updatedBody = body }
+            }
         }
 
         uiState = uiState.copy(
