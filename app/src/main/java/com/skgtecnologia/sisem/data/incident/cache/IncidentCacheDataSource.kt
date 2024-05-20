@@ -2,7 +2,6 @@ package com.skgtecnologia.sisem.data.incident.cache
 
 import androidx.annotation.CheckResult
 import com.skgtecnologia.sisem.data.incident.cache.dao.IncidentDao
-import com.skgtecnologia.sisem.data.incident.cache.model.PatientEntity
 import com.skgtecnologia.sisem.data.incident.cache.model.mapToCache
 import com.skgtecnologia.sisem.data.incident.cache.model.mapToUi
 import com.valkiria.uicomponents.bricks.notification.model.TransmiNotification

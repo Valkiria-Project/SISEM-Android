@@ -2,7 +2,6 @@ package com.skgtecnologia.sisem.data.medicalhistory
 
 import com.skgtecnologia.sisem.data.auth.cache.AuthCacheDataSource
 import com.skgtecnologia.sisem.data.incident.cache.IncidentCacheDataSource
-import com.skgtecnologia.sisem.data.incident.cache.model.mapToCache
 import com.skgtecnologia.sisem.data.medicalhistory.remote.MedicalHistoryRemoteDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.domain.medicalhistory.MedicalHistoryRepository
