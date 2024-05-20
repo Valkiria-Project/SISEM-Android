@@ -7,6 +7,7 @@ import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.report.usecases.SendReport
+import com.valkiria.uicomponents.components.media.MediaItemUiModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
@@ -132,8 +133,16 @@ class ReportViewModelTest {
         viewModel.isValidDescription = true
         viewModel.updateMediaActions(
             listOf(
-                "APH_FILE_254_1000076492.jpg",
-                "APH_FILE_254_1000076490.jpg"
+                MediaItemUiModel(
+                    uri = "APH_FILE_254_1000076492.jpg",
+                    name = "1000076492.jpg",
+                    isSizeValid = true
+                ),
+                MediaItemUiModel(
+                    "APH_FILE_254_1000076490.jpg",
+                    name = "1000076490.jpg",
+                    isSizeValid = true
+                )
             ),
             false
         )
@@ -227,8 +236,16 @@ class ReportViewModelTest {
         viewModel.isValidTopic = true
         viewModel.updateMediaActions(
             listOf(
-                "APH_FILE_254_1000076492.jpg",
-                "APH_FILE_254_1000076490.jpg"
+                MediaItemUiModel(
+                    uri = "APH_FILE_254_1000076492.jpg",
+                    name = "1000076492.jpg",
+                    isSizeValid = true
+                ),
+                MediaItemUiModel(
+                    "APH_FILE_254_1000076490.jpg",
+                    name = "1000076490.jpg",
+                    isSizeValid = true
+                )
             ),
             false
         )
@@ -296,8 +313,16 @@ class ReportViewModelTest {
     @Test
     fun `when updateSelectedImages is called with isFromPreOperational false`() = runTest {
         val selectedImages = listOf(
-            "APH_FILE_254_1000076492.jpg",
-            "APH_FILE_254_1000076490.jpg"
+            MediaItemUiModel(
+                uri = "APH_FILE_254_1000076492.jpg",
+                name = "1000076492.jpg",
+                isSizeValid = true
+            ),
+            MediaItemUiModel(
+                "APH_FILE_254_1000076490.jpg",
+                name = "1000076490.jpg",
+                isSizeValid = true
+            )
         )
         val operationModel = mockk<OperationModel> {
             every { numImgNovelty } returns 1
@@ -313,8 +338,16 @@ class ReportViewModelTest {
     @Test
     fun `when updateSelectedImages with isFromPreOperational true and auxiliary`() = runTest {
         val selectedImages = listOf(
-            "APH_FILE_254_1000076492.jpg",
-            "APH_FILE_254_1000076490.jpg"
+            MediaItemUiModel(
+                uri = "APH_FILE_254_1000076492.jpg",
+                name = "1000076492.jpg",
+                isSizeValid = true
+            ),
+            MediaItemUiModel(
+                "APH_FILE_254_1000076490.jpg",
+                name = "1000076490.jpg",
+                isSizeValid = true
+            )
         )
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns OperationRole.AUXILIARY_AND_OR_TAPH
@@ -331,8 +364,16 @@ class ReportViewModelTest {
     @Test
     fun `when updateSelectedImages with isFromPreOperational true and driver`() = runTest {
         val selectedImages = listOf(
-            "APH_FILE_254_1000076492.jpg",
-            "APH_FILE_254_1000076490.jpg"
+            MediaItemUiModel(
+                uri = "APH_FILE_254_1000076492.jpg",
+                name = "1000076492.jpg",
+                isSizeValid = true
+            ),
+            MediaItemUiModel(
+                "APH_FILE_254_1000076490.jpg",
+                name = "1000076490.jpg",
+                isSizeValid = true
+            )
         )
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns OperationRole.DRIVER
@@ -349,8 +390,16 @@ class ReportViewModelTest {
     @Test
     fun `when updateSelectedImages with isFromPreOperational true and lead aph`() = runTest {
         val selectedImages = listOf(
-            "APH_FILE_254_1000076492.jpg",
-            "APH_FILE_254_1000076490.jpg"
+            MediaItemUiModel(
+                uri = "APH_FILE_254_1000076492.jpg",
+                name = "1000076492.jpg",
+                isSizeValid = true
+            ),
+            MediaItemUiModel(
+                "APH_FILE_254_1000076490.jpg",
+                name = "1000076490.jpg",
+                isSizeValid = true
+            )
         )
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns OperationRole.LEAD_APH
@@ -366,8 +415,16 @@ class ReportViewModelTest {
     @Test
     fun `when updateSelectedImages with isFromPreOperational true and medic aph`() = runTest {
         val selectedImages = listOf(
-            "APH_FILE_254_1000076492.jpg",
-            "APH_FILE_254_1000076490.jpg"
+            MediaItemUiModel(
+                uri = "APH_FILE_254_1000076492.jpg",
+                name = "1000076492.jpg",
+                isSizeValid = true
+            ),
+            MediaItemUiModel(
+                "APH_FILE_254_1000076490.jpg",
+                name = "1000076490.jpg",
+                isSizeValid = true
+            )
         )
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns OperationRole.MEDIC_APH
@@ -384,8 +441,16 @@ class ReportViewModelTest {
     @Test
     fun `when updateSelectedImages with isFromPreOperational true and null role`() = runTest {
         val selectedImages = listOf(
-            "APH_FILE_254_1000076492.jpg",
-            "APH_FILE_254_1000076490.jpg"
+            MediaItemUiModel(
+                uri = "APH_FILE_254_1000076492.jpg",
+                name = "1000076492.jpg",
+                isSizeValid = true
+            ),
+            MediaItemUiModel(
+                "APH_FILE_254_1000076490.jpg",
+                name = "1000076490.jpg",
+                isSizeValid = true
+            )
         )
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns null
@@ -401,8 +466,16 @@ class ReportViewModelTest {
     @Test
     fun `when removeCurrentImage is called`() = runTest {
         val selectedImages = listOf(
-            "APH_FILE_254_1000076492.jpg",
-            "APH_FILE_254_1000076490.jpg"
+            MediaItemUiModel(
+                uri = "APH_FILE_254_1000076492.jpg",
+                name = "1000076492.jpg",
+                isSizeValid = true
+            ),
+            MediaItemUiModel(
+                "APH_FILE_254_1000076490.jpg",
+                name = "1000076490.jpg",
+                isSizeValid = true
+            )
         )
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns OperationRole.MEDIC_APH
@@ -415,7 +488,7 @@ class ReportViewModelTest {
         viewModel.currentImage = 1
         viewModel.removeCurrentImage()
 
-        Assert.assertNotNull(viewModel.uiState.selectedImageUris)
+        Assert.assertNotNull(viewModel.uiState.selectedMediaItems)
     }
 
     @Test
@@ -445,8 +518,16 @@ class ReportViewModelTest {
     @Test
     fun `when onPhotoTaken is called with one uri`() = runTest {
         val selectedImages = listOf(
-            "APH_FILE_254_1000076492.jpg",
-            "APH_FILE_254_1000076490.jpg"
+            MediaItemUiModel(
+                uri = "APH_FILE_254_1000076492.jpg",
+                name = "1000076492.jpg",
+                isSizeValid = true
+            ),
+            MediaItemUiModel(
+                "APH_FILE_254_1000076490.jpg",
+                name = "1000076490.jpg",
+                isSizeValid = true
+            )
         )
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns OperationRole.MEDIC_APH
@@ -457,7 +538,13 @@ class ReportViewModelTest {
 
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
         viewModel.updateMediaActions(selectedImages, true)
-        viewModel.onPhotoTaken("APH_FILE_254_1000076492.jpg")
+        viewModel.onPhotoTaken(
+            MediaItemUiModel(
+                "APH_FILE_254_1000076490.jpg",
+                name = "1000076490.jpg",
+                isSizeValid = true
+            )
+        )
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.photoTaken)
     }
@@ -465,8 +552,16 @@ class ReportViewModelTest {
     @Test
     fun `when onPhotoTaken is called with two uris`() = runTest {
         val selectedImages = listOf(
-            "APH_FILE_254_1000076492.jpg",
-            "APH_FILE_254_1000076490.jpg"
+            MediaItemUiModel(
+                uri = "APH_FILE_254_1000076492.jpg",
+                name = "1000076492.jpg",
+                isSizeValid = true
+            ),
+            MediaItemUiModel(
+                "APH_FILE_254_1000076490.jpg",
+                name = "1000076490.jpg",
+                isSizeValid = true
+            )
         )
         val operationModel = mockk<OperationModel> {
             every { operationRole } returns OperationRole.MEDIC_APH
@@ -477,7 +572,13 @@ class ReportViewModelTest {
 
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
         viewModel.updateMediaActions(selectedImages, true)
-        viewModel.onPhotoTaken("APH_FILE_254_1000076492.jpg")
+        viewModel.onPhotoTaken(
+            MediaItemUiModel(
+                "APH_FILE_254_1000076490.jpg",
+                name = "1000076490.jpg",
+                isSizeValid = true
+            )
+        )
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.photoTaken)
         Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.infoEvent?.title)

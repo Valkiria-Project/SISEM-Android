@@ -316,17 +316,15 @@ class ReportViewModel @Inject constructor(
     }
 
     fun onPhotoTaken(mediaItemUiModel: MediaItemUiModel) {
+        val imageLimit = getImageLimit(
+            uiState.navigationModel?.isFromPreOperational == true
+        )
+        val isOverImageLimit = imageLimit < uiState.selectedMediaItems.size
+
         val updatedSelectedImages = buildList {
             addAll(uiState.selectedMediaItems)
 
-            val imageLimit = getImageLimit(uiState.navigationModel?.isFromPreOperational == true)
-            if (imageLimit < uiState.selectedMediaItems.size) {
-                uiState = uiState.copy(
-                    infoEvent = imagesLimitErrorBanner(imageLimit).mapToUi()
-                )
-            } else {
-                if (mediaItemUiModel.isSizeValid) add(mediaItemUiModel)
-            }
+            if (!isOverImageLimit && mediaItemUiModel.isSizeValid) add(mediaItemUiModel)
         }
 
         val invalidMediaSelected = !mediaItemUiModel.isSizeValid
@@ -336,7 +334,9 @@ class ReportViewModel @Inject constructor(
             navigationModel = ReportNavigationModel(
                 photoTaken = true
             ),
-            infoEvent = if (invalidMediaSelected) {
+            infoEvent = if (isOverImageLimit) {
+                imagesLimitErrorBanner(imageLimit).mapToUi()
+            } else if (invalidMediaSelected) {
                 fileSizeErrorBanner().mapToUi()
             } else {
                 null
