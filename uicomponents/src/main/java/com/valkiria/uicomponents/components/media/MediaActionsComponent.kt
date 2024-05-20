@@ -56,12 +56,16 @@ fun MediaActionsComponent(
 
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
-        onResult = { uris -> onAction(uiModel.identifier, Gallery(uris.map { it.toString() })) }
+        onResult = {
+            uris -> onAction(uiModel.identifier, Gallery(uris.map { it.toString() }))
+        }
     )
 
     val multipleMediaFilePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenMultipleDocuments(),
-        onResult = { uris -> onAction(uiModel.identifier, MediaFile(uris.map { it.toString() })) }
+        onResult = {
+            uris -> onAction(uiModel.identifier, MediaFile(uris.map { it.toString() }))
+        }
     )
 
     LaunchedEffect(selectedMedia) {

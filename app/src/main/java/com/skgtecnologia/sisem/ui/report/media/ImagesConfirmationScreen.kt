@@ -197,8 +197,7 @@ private fun handleAction(
                     val images = viewModel.uiState.selectedImageUris.mapNotNull { uri ->
                         runCatching {
                             context.storeUriAsFileToCache(
-                                uri.toUri(),
-                                "30000000"
+                                uri.toUri()
                             )
                         }.fold(
                             onSuccess = { it },

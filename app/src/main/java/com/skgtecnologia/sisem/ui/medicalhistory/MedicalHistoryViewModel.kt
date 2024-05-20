@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.ui.medicalhistory
 
-import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
@@ -79,6 +78,7 @@ import com.skgtecnologia.sisem.domain.medicalhistory.model.getWithdrawalResponsi
 import com.skgtecnologia.sisem.domain.medicalhistory.model.getWithdrawalWitnessText
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryScreen
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SendMedicalHistory
+import com.skgtecnologia.sisem.domain.model.banner.fileSizeErrorBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.banner.medicalHistorySuccess
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
@@ -109,6 +109,7 @@ import com.valkiria.uicomponents.components.label.ListTextUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextUiModel
 import com.valkiria.uicomponents.components.media.MediaActionsUiModel
+import com.valkiria.uicomponents.components.media.MediaItemUiModel
 import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
 import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
@@ -1515,64 +1516,79 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
-    fun onPhotoTaken(savedUri: Uri) {
+    fun onPhotoTaken(mediaItemUiModel: MediaItemUiModel) {
         val updatedSelectedMedia = buildList {
-            addAll(uiState.selectedMediaUris)
-            add(savedUri.toString())
+            addAll(uiState.selectedMediaItems)
+
+            if (mediaItemUiModel.isSizeValid) add(mediaItemUiModel)
         }
 
+        val invalidMediaSelected = !mediaItemUiModel.isSizeValid
+
         uiState = uiState.copy(
-            selectedMediaUris = updatedSelectedMedia,
+            selectedMediaItems = updatedSelectedMedia,
             navigationModel = MedicalHistoryNavigationModel(
                 photoTaken = true
-            )
+            ),
+            errorEvent = if (invalidMediaSelected) {
+                fileSizeErrorBanner().mapToUi()
+            } else {
+                null
+            }
         )
     }
 
-    fun updateMediaActions(selectedMedia: List<String>? = null) {
+    fun updateMediaActions(mediaItems: List<MediaItemUiModel>? = null) {
         val updatedSelectedMedia = buildList {
-            addAll(uiState.selectedMediaUris)
+            addAll(uiState.selectedMediaItems)
 
-            if (selectedMedia?.isNotEmpty() == true) addAll(selectedMedia)
+            mediaItems?.forEach { if (it.isSizeValid) add(it) }
         }
+
+        val invalidMediaSelected = mediaItems?.filter { !it.isSizeValid }
 
         val updatedBody = uiState.screenModel?.body?.map { model ->
             if (model is MediaActionsUiModel) {
-                model.copy(selectedMediaUris = updatedSelectedMedia)
+                model.copy(selectedMediaUris = updatedSelectedMedia.map { it.name })
             } else {
                 model
             }
         }.orEmpty()
 
         uiState = uiState.copy(
-            selectedMediaUris = if (selectedMedia == null) {
-                uiState.selectedMediaUris
+            selectedMediaItems = if (mediaItems == null) {
+                uiState.selectedMediaItems
             } else {
                 updatedSelectedMedia
             },
             screenModel = uiState.screenModel?.copy(
                 body = updatedBody
-            )
+            ),
+            errorEvent = if (invalidMediaSelected?.isNotEmpty() == true) {
+                fileSizeErrorBanner().mapToUi()
+            } else {
+                null
+            }
         )
     }
 
     fun removeMediaActionsImage(selectedMediaIndex: Int) {
         val updatedSelectedMedia = buildList {
-            addAll(uiState.selectedMediaUris)
+            addAll(uiState.selectedMediaItems)
 
             removeAt(selectedMediaIndex)
         }
 
         val updatedBody = uiState.screenModel?.body?.map { model ->
             if (model is MediaActionsUiModel) {
-                model.copy(selectedMediaUris = updatedSelectedMedia)
+                model.copy(selectedMediaUris = updatedSelectedMedia.map { it.name })
             } else {
                 model
             }
         }.orEmpty()
 
         uiState = uiState.copy(
-            selectedMediaUris = updatedSelectedMedia,
+            selectedMediaItems = updatedSelectedMedia,
             screenModel = uiState.screenModel?.copy(
                 body = updatedBody
             )

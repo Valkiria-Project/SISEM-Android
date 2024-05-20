@@ -10,6 +10,8 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.provider.OpenableColumns
 import android.util.Base64
+import androidx.core.net.toUri
+import com.valkiria.uicomponents.components.media.MediaItemUiModel
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.size
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +21,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
+import kotlin.jvm.Throws
 
 const val CONTENT_URI_SCHEME = "content"
 const val BITMAP_COMPRESS_QUALITY = 80
@@ -41,7 +44,39 @@ fun Uri.decodeAsBitmap(contentResolver: ContentResolver): Bitmap {
     return ImageDecoder.decodeBitmap(source)
 }
 
-suspend fun Context.storeUriAsFileToCache(uri: Uri, maxFileSizeKb: String? = null): File {
+suspend fun Context.handleMediaUris(
+    uris: List<String>,
+    maxFileSizeKb: String? = null
+): List<MediaItemUiModel> {
+    return uris.map { uri ->
+        var file = storeUriAsFileToCache(
+            uri.toUri(),
+        )
+
+        runCatching {
+            file = compressFile(file, maxFileSizeKb)
+
+            MediaItemUiModel(
+                uri = uri,
+                file = file,
+                name = file.name,
+                isSizeValid = true
+            )
+        }.fold(
+            onSuccess = { mediaItemUiModel -> mediaItemUiModel },
+            onFailure = {
+                MediaItemUiModel(
+                    uri = uri,
+                    file = file,
+                    name = file.name,
+                    isSizeValid = false
+                )
+            }
+        )
+    }
+}
+
+suspend fun Context.storeUriAsFileToCache(uri: Uri): File {
     val fileContents = try {
         contentResolver.openInputStream(uri)
     } catch (e: FileNotFoundException) {
@@ -61,6 +96,11 @@ suspend fun Context.storeUriAsFileToCache(uri: Uri, maxFileSizeKb: String? = nul
         fileContents?.close()
     }
 
+    return file
+}
+
+@Throws(IllegalStateException::class)
+private suspend fun Context.compressFile(file: File, maxFileSizeKb: String? = null): File {
     val allowedFileSize = getFileAllowedSize(maxFileSizeKb)
     if (file.length() > allowedFileSize) {
         Timber.d("${file.length()} is larger than $allowedFileSize")
@@ -68,9 +108,10 @@ suspend fun Context.storeUriAsFileToCache(uri: Uri, maxFileSizeKb: String? = nul
     }
 
     return Compressor.compress(context = this, imageFile = file) {
-        size(getFileAllowedSize(maxFileSizeKb))
+        size(allowedFileSize)
     }
 }
+
 
 private fun getFileAllowedSize(maxFileSizeKb: String?): Long =
     maxFileSizeKb.orEmpty().toLongOrNull() ?: FALLBACK_FILE_SIZE

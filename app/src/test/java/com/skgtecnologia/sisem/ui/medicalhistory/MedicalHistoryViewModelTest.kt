@@ -1322,7 +1322,7 @@ class MedicalHistoryViewModelTest {
         viewModel.onPhotoTaken(mockk())
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.photoTaken)
-        Assert.assertNotNull(viewModel.uiState.selectedMediaUris)
+        Assert.assertNotNull(viewModel.uiState.selectedMediaItems)
     }
 
     @Test
@@ -1345,7 +1345,7 @@ class MedicalHistoryViewModelTest {
             observeOperationConfig = observeOperationConfig,
             stringProvider = stringProvider
         )
-        viewModel.updateMediaActions()
+        viewModel.updateMediaActions(mediaItems = mediaItems)
 
         Assert.assertNotNull(viewModel.uiState.screenModel)
     }
@@ -1374,7 +1374,8 @@ class MedicalHistoryViewModelTest {
             listOf(
                 "APH_FILE_254_1000076492.jpg",
                 "APH_FILE_254_1000076490.jpg"
-            )
+            ),
+            mediaItems
         )
 
         Assert.assertNotNull(viewModel.uiState.screenModel)
