@@ -130,7 +130,7 @@ class ReportViewModelTest {
 
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
         viewModel.isValidDescription = true
-        viewModel.updateSelectedImages(
+        viewModel.updateMediaActions(
             listOf(
                 "APH_FILE_254_1000076492.jpg",
                 "APH_FILE_254_1000076490.jpg"
@@ -225,7 +225,7 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
         viewModel.isValidDescription = true
         viewModel.isValidTopic = true
-        viewModel.updateSelectedImages(
+        viewModel.updateMediaActions(
             listOf(
                 "APH_FILE_254_1000076492.jpg",
                 "APH_FILE_254_1000076490.jpg"
@@ -305,7 +305,7 @@ class ReportViewModelTest {
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
 
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
-        viewModel.updateSelectedImages(selectedImages, false)
+        viewModel.updateMediaActions(selectedImages, false)
 
         Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.infoEvent?.title)
     }
@@ -323,7 +323,7 @@ class ReportViewModelTest {
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
 
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
-        viewModel.updateSelectedImages(selectedImages, true)
+        viewModel.updateMediaActions(selectedImages, true)
 
         Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.infoEvent?.title)
     }
@@ -341,7 +341,7 @@ class ReportViewModelTest {
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
 
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
-        viewModel.updateSelectedImages(selectedImages, true)
+        viewModel.updateMediaActions(selectedImages, true)
 
         Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.infoEvent?.title)
     }
@@ -358,7 +358,7 @@ class ReportViewModelTest {
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
 
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
-        viewModel.updateSelectedImages(selectedImages, true)
+        viewModel.updateMediaActions(selectedImages, true)
 
         Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.infoEvent?.title)
     }
@@ -376,7 +376,7 @@ class ReportViewModelTest {
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
 
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
-        viewModel.updateSelectedImages(selectedImages, true)
+        viewModel.updateMediaActions(selectedImages, true)
 
         Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.infoEvent?.title)
     }
@@ -393,7 +393,7 @@ class ReportViewModelTest {
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
 
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
-        viewModel.updateSelectedImages(selectedImages, true)
+        viewModel.updateMediaActions(selectedImages, true)
 
         Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.infoEvent?.title)
     }
@@ -411,7 +411,7 @@ class ReportViewModelTest {
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
 
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
-        viewModel.updateSelectedImages(selectedImages, true)
+        viewModel.updateMediaActions(selectedImages, true)
         viewModel.currentImage = 1
         viewModel.removeCurrentImage()
 
@@ -456,7 +456,7 @@ class ReportViewModelTest {
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
 
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
-        viewModel.updateSelectedImages(selectedImages, true)
+        viewModel.updateMediaActions(selectedImages, true)
         viewModel.onPhotoTaken("APH_FILE_254_1000076492.jpg")
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.photoTaken)
@@ -476,7 +476,7 @@ class ReportViewModelTest {
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
 
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
-        viewModel.updateSelectedImages(selectedImages, true)
+        viewModel.updateMediaActions(selectedImages, true)
         viewModel.onPhotoTaken("APH_FILE_254_1000076492.jpg")
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.photoTaken)

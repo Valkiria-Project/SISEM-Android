@@ -76,7 +76,7 @@ suspend fun Context.handleMediaUris(
     }
 }
 
-suspend fun Context.storeUriAsFileToCache(uri: Uri): File {
+private suspend fun Context.storeUriAsFileToCache(uri: Uri): File {
     val fileContents = try {
         contentResolver.openInputStream(uri)
     } catch (e: FileNotFoundException) {

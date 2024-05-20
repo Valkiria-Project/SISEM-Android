@@ -11,16 +11,20 @@ import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryViewScreen
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SaveAphFiles
+import com.skgtecnologia.sisem.domain.model.banner.fileSizeErrorBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
+import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.chip.FiltersUiModel
 import com.valkiria.uicomponents.components.media.MediaActionsUiModel
+import com.valkiria.uicomponents.components.media.MediaItemUiModel
+import com.valkiria.uicomponents.components.media.mapToMediaItems
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -56,10 +60,11 @@ class MedicalHistoryViewViewModel @Inject constructor(
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
                             screenModel = medicalHistoryViewScreen,
-                            selectedMediaUris = medicalHistoryViewScreen.body
+                            selectedMediaItems = medicalHistoryViewScreen.body
                                 .filterIsInstance<MediaActionsUiModel>()
                                 .first()
-                                .selectedMediaUris,
+                                .selectedMediaUris
+                                .mapToMediaItems(),
                             isLoading = false
                         )
                     }
@@ -116,64 +121,79 @@ class MedicalHistoryViewViewModel @Inject constructor(
         )
     }
 
-    fun onPhotoTaken(savedUri: Uri) {
+    fun onPhotoTaken(mediaItemUiModel: MediaItemUiModel) {
         val updatedSelectedMedia = buildList {
-            addAll(uiState.selectedMediaUris)
-            add(savedUri.toString())
+            addAll(uiState.selectedMediaItems)
+
+            if (mediaItemUiModel.isSizeValid) add(mediaItemUiModel)
         }
 
+        val invalidMediaSelected = !mediaItemUiModel.isSizeValid
+
         uiState = uiState.copy(
-            selectedMediaUris = updatedSelectedMedia,
+            selectedMediaItems = updatedSelectedMedia,
             navigationModel = MedicalHistoryViewNavigationModel(
                 photoTaken = true
-            )
+            ),
+            errorEvent = if (invalidMediaSelected) {
+                fileSizeErrorBanner().mapToUi()
+            } else {
+                null
+            }
         )
     }
 
-    fun updateMediaActions(selectedMedia: List<String>? = null) {
+    fun updateMediaActions(mediaItems: List<MediaItemUiModel>? = null) {
         val updatedSelectedMedia = buildList {
-            addAll(uiState.selectedMediaUris)
+            addAll(uiState.selectedMediaItems)
 
-            if (selectedMedia?.isNotEmpty() == true) addAll(selectedMedia)
+            mediaItems?.forEach { if (it.isSizeValid) add(it) }
         }
+
+        val invalidMediaSelected = mediaItems?.filter { !it.isSizeValid }
 
         val updatedBody = uiState.screenModel?.body?.map { model ->
             if (model is MediaActionsUiModel) {
-                model.copy(selectedMediaUris = updatedSelectedMedia)
+                model.copy(selectedMediaUris = updatedSelectedMedia.map { it.name })
             } else {
                 model
             }
         }.orEmpty()
 
         uiState = uiState.copy(
-            selectedMediaUris = if (selectedMedia == null) {
-                uiState.selectedMediaUris
+            selectedMediaItems = if (mediaItems == null) {
+                uiState.selectedMediaItems
             } else {
                 updatedSelectedMedia
             },
             screenModel = uiState.screenModel?.copy(
                 body = updatedBody
-            )
+            ),
+            errorEvent = if (invalidMediaSelected?.isNotEmpty() == true) {
+                fileSizeErrorBanner().mapToUi()
+            } else {
+                null
+            }
         )
     }
 
     fun removeMediaActionsImage(selectedMediaIndex: Int) {
         val updatedSelectedMedia = buildList {
-            addAll(uiState.selectedMediaUris)
+            addAll(uiState.selectedMediaItems)
 
             removeAt(selectedMediaIndex)
         }
 
         val updatedBody = uiState.screenModel?.body?.map { model ->
             if (model is MediaActionsUiModel) {
-                model.copy(selectedMediaUris = updatedSelectedMedia)
+                model.copy(selectedMediaUris = updatedSelectedMedia.map { it.name })
             } else {
                 model
             }
         }.orEmpty()
 
         uiState = uiState.copy(
-            selectedMediaUris = updatedSelectedMedia,
+            selectedMediaItems = updatedSelectedMedia,
             screenModel = uiState.screenModel?.copy(
                 body = updatedBody
             )

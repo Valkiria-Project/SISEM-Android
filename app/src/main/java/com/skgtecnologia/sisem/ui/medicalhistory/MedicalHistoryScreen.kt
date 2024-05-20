@@ -183,11 +183,9 @@ fun handleAction(
 
         is GenericUiAction.SliderAction -> viewModel.handleSliderAction(uiAction)
 
-        is StepperAction -> {
-            scope.launch {
-                val images = viewModel.uiState.selectedMediaItems.map { it.file }
-                viewModel.sendMedicalHistory(images)
-            }
+        is StepperAction -> scope.launch {
+            val images = viewModel.uiState.selectedMediaItems.mapNotNull { it.file }
+            viewModel.sendMedicalHistory(images)
         }
 
         else -> Timber.d("no-op")
