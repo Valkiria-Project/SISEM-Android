@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.ui.medicalhistory.view
 
-import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -17,7 +16,6 @@ import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
-import com.skgtecnologia.sisem.ui.medicalhistory.MedicalHistoryNavigationModel
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction

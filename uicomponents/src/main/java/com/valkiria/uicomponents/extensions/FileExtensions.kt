@@ -112,7 +112,6 @@ private suspend fun Context.compressFile(file: File, maxFileSizeKb: String? = nu
     }
 }
 
-
 private fun getFileAllowedSize(maxFileSizeKb: String?): Long =
     maxFileSizeKb.orEmpty().toLongOrNull() ?: FALLBACK_FILE_SIZE
 
