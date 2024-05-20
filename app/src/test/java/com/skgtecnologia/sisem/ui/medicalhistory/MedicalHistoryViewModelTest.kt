@@ -51,6 +51,7 @@ import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 import com.valkiria.uicomponents.components.label.ListTextUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextUiModel
+import com.valkiria.uicomponents.components.media.MediaItemUiModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -1319,10 +1320,16 @@ class MedicalHistoryViewModelTest {
             observeOperationConfig = observeOperationConfig,
             stringProvider = stringProvider
         )
-        viewModel.onPhotoTaken(mockk())
+        viewModel.onPhotoTaken(
+            MediaItemUiModel(
+                "APH_FILE_254_1000076490.jpg",
+                name = "1000076490.jpg",
+                isSizeValid = true
+            )
+        )
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.photoTaken)
-        Assert.assertNotNull(viewModel.uiState.selectedMediaUris)
+        Assert.assertNotNull(viewModel.uiState.selectedMediaItems)
     }
 
     @Test
@@ -1345,7 +1352,7 @@ class MedicalHistoryViewModelTest {
             observeOperationConfig = observeOperationConfig,
             stringProvider = stringProvider
         )
-        viewModel.updateMediaActions()
+        viewModel.updateMediaActions(mediaItems = listOf())
 
         Assert.assertNotNull(viewModel.uiState.screenModel)
     }
@@ -1372,8 +1379,16 @@ class MedicalHistoryViewModelTest {
         )
         viewModel.updateMediaActions(
             listOf(
-                "APH_FILE_254_1000076492.jpg",
-                "APH_FILE_254_1000076490.jpg"
+                MediaItemUiModel(
+                    uri = "APH_FILE_254_1000076492.jpg",
+                    name = "1000076492.jpg",
+                    isSizeValid = true
+                ),
+                MediaItemUiModel(
+                    "APH_FILE_254_1000076490.jpg",
+                    name = "1000076490.jpg",
+                    isSizeValid = true
+                )
             )
         )
 

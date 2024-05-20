@@ -41,6 +41,7 @@ import com.skgtecnologia.sisem.ui.commons.utils.CameraUtils
 import com.skgtecnologia.sisem.ui.commons.utils.MediaStoreUtils
 import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportViewModel
+import com.valkiria.uicomponents.extensions.handleMediaUris
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.Executors
@@ -124,16 +125,21 @@ private fun CameraPreview(
                         }
 
                         override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                            val savedUri = output.savedUri
                             lifecycleOwner.lifecycleScope.launch {
+                                val savedUri = output.savedUri
                                 Timber.d(
                                     """"Photo capture succeeded: $savedUri with file name 
                                         |${mediaStoreUtils.getLatestImageFilename()}""".trimMargin()
                                 )
-                            }
 
-                            if (savedUri != null) {
-                                viewModel.onPhotoTaken(savedUri.toString())
+                                if (savedUri != null) {
+                                    val mediaItems = context.handleMediaUris(
+                                        listOf(savedUri.toString()),
+                                        viewModel.uiState.operationConfig?.maxFileSizeKb
+                                    )
+
+                                    viewModel.onPhotoTaken(mediaItems.first())
+                                }
                             }
                         }
                     }

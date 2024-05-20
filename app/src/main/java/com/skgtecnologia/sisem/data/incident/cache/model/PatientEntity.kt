@@ -11,7 +11,8 @@ data class PatientEntity(
     @ColumnInfo(name = "id") val id: Int,
     @ColumnInfo(name = "full_name") val fullName: String,
     @ColumnInfo(name = "id_aph") val idAph: Int,
-    @ColumnInfo(name = "is_pending_aph") val isPendingAph: Boolean
+    @ColumnInfo(name = "is_pending_aph") val isPendingAph: Boolean,
+    @ColumnInfo(name = "disabled") val disabled: Boolean
 )
 
 fun PatientEntity.mapToUi(): PatientUiModel = with(this) {
@@ -19,7 +20,8 @@ fun PatientEntity.mapToUi(): PatientUiModel = with(this) {
         id = id,
         fullName = fullName,
         idAph = idAph,
-        isPendingAph = isPendingAph
+        isPendingAph = isPendingAph,
+        disabled = disabled
     )
 }
 
@@ -28,6 +30,7 @@ fun PatientUiModel.mapToCache(): PatientEntity = with(this) {
         id = id,
         fullName = fullName,
         idAph = idAph,
-        isPendingAph = isPendingAph
+        isPendingAph = isPendingAph,
+        disabled = disabled
     )
 }

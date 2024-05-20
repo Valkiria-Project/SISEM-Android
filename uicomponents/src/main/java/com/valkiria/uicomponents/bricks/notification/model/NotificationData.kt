@@ -60,6 +60,19 @@ fun getNotificationDataByType(
     val notificationDateTime = dateTime ?: LocalDateTime.now()
 
     return when (notificationType) {
+        AUTH_TIME -> AuthTimeNotification(
+            time = notificationTime,
+            dateTime = notificationDateTime,
+        )
+
+        CLOSING_OF_APH -> ClosingAPHNotification(
+            time = notificationTime,
+            dateTime = notificationDateTime,
+            consecutiveNumber = notificationDataMap[CONSECUTIVE_NUMBER].orEmpty(),
+            updateTimeObservationsAttachments = notificationDataMap[UPDATE_TIME_OBSERVATIONS]
+                .orEmpty()
+        )
+
         INCIDENT_ASSIGNED -> IncidentAssignedNotification(
             time = notificationTime,
             dateTime = notificationDateTime,
@@ -71,6 +84,30 @@ fun getNotificationDataByType(
             address = notificationDataMap[ADDRESS].orEmpty(),
             hour = notificationDataMap[HOUR].orEmpty(),
             geolocation = notificationDataMap[GEOLOCATION].orEmpty()
+        )
+
+        IPS_PATIENT_TRANSFERRED -> IpsPatientTransferredNotification(
+            time = notificationTime,
+            dateTime = notificationDateTime,
+            headquartersName = notificationDataMap[HEADQUARTERS_NAME].orEmpty(),
+            headquartersAddress = notificationDataMap[HEADQUARTERS_ADDRESS].orEmpty(),
+            geolocation = notificationDataMap[GEOLOCATION].orEmpty()
+        )
+
+        NO_PRE_OPERATIONAL_GENERATED_CRUE -> NoPreOperationalGeneratedCrueNotification(
+            time = notificationTime,
+            dateTime = notificationDateTime,
+        )
+
+        SUPPORT_REQUEST_ON_THE_WAY -> SupportRequestNotification(
+            time = notificationTime,
+            dateTime = notificationDateTime,
+            resourceTypeCode = notificationDataMap[RESOURCE_TYPE_AND_CODE].orEmpty()
+        )
+
+        STRETCHER_RETENTION_ENABLE -> StretcherRetentionEnableNotification(
+            time = notificationTime,
+            dateTime = notificationDateTime,
         )
 
         TRANSMILENIO_AUTHORIZATION -> TransmilenioAuthorizationNotification(
@@ -87,44 +124,12 @@ fun getNotificationDataByType(
             authorizationNumber = notificationDataMap[AUTHORIZATION_NUMBER_DENIED].orEmpty()
         )
 
-        NO_PRE_OPERATIONAL_GENERATED_CRUE -> NoPreOperationalGeneratedCrueNotification(
-            time = notificationTime,
-            dateTime = notificationDateTime,
-        )
-
-        SUPPORT_REQUEST_ON_THE_WAY -> SupportRequestNotification(
-            time = notificationTime,
-            dateTime = notificationDateTime,
-            resourceTypeCode = notificationDataMap[RESOURCE_TYPE_AND_CODE].orEmpty()
-        )
-
-        IPS_PATIENT_TRANSFERRED -> IpsPatientTransferredNotification(
-            time = notificationTime,
-            dateTime = notificationDateTime,
-            headquartersName = notificationDataMap[HEADQUARTERS_NAME].orEmpty(),
-            headquartersAddress = notificationDataMap[HEADQUARTERS_ADDRESS].orEmpty(),
-            geolocation = notificationDataMap[GEOLOCATION].orEmpty()
-        )
-
-        STRETCHER_RETENTION_ENABLE -> StretcherRetentionEnableNotification(
-            time = notificationTime,
-            dateTime = notificationDateTime,
-        )
-
-        CLOSING_OF_APH -> ClosingAPHNotification(
-            time = notificationTime,
-            dateTime = notificationDateTime,
-            consecutiveNumber = notificationDataMap[CONSECUTIVE_NUMBER].orEmpty(),
-            updateTimeObservationsAttachments = notificationDataMap[UPDATE_TIME_OBSERVATIONS]
-                .orEmpty()
-        )
-
         UPDATE_VEHICLE_STATUS -> UpdateVehicleStatusNotification(
             time = notificationTime,
             dateTime = notificationDateTime,
         )
 
-        else -> null
+        null -> null
     }
 }
 

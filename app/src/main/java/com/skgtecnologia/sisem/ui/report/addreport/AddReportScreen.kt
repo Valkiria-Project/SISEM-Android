@@ -10,7 +10,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -40,6 +42,7 @@ import com.valkiria.uicomponents.components.media.MediaActionsUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
+import com.valkiria.uicomponents.extensions.handleMediaUris
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.random.Random
@@ -53,6 +56,8 @@ fun AddReportScreen(
     modifier: Modifier = Modifier,
     onNavigation: (addReportNavigationModel: ReportNavigationModel) -> Unit
 ) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     val addReportViewModel = hiltViewModel<AddReportViewModel>()
     val uiState = viewModel.uiState
     val addReportUiState = addReportViewModel.uiState
@@ -107,7 +112,7 @@ fun AddReportScreen(
             Text(
                 text = stringResource(
                     id = R.string.findings_selected_files_label,
-                    viewModel.uiState.selectedImageUris.size.toString()
+                    viewModel.uiState.selectedMediaItems.size.toString()
                 ),
                 modifier = Modifier.padding(
                     start = 20.dp,
@@ -119,10 +124,18 @@ fun AddReportScreen(
                 when (mediaAction) {
                     Camera -> viewModel.showCamera(isFromPreOperational = false)
                     is MediaFile -> Timber.d("no-op")
-                    is Gallery -> viewModel.updateSelectedImages(
-                        selectedImages = mediaAction.uris,
-                        isFromPreOperational = false
-                    )
+                    is Gallery -> scope.launch {
+                        val uris = mediaAction.uris
+                        val mediaItems = context.handleMediaUris(
+                            uris,
+                            viewModel.uiState.operationConfig?.maxFileSizeKb
+                        )
+
+                        viewModel.updateMediaActions(
+                            mediaItems = mediaItems,
+                            isFromPreOperational = false
+                        )
+                    }
 
                     is MediaAction.RemoveFile -> Timber.d("no-op")
                 }

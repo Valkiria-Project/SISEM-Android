@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.ui.report.media
 
-import android.content.Context
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -46,7 +45,6 @@ import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.extensions.decodeAsBitmap
-import com.valkiria.uicomponents.extensions.storeUriAsFileToCache
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -62,14 +60,13 @@ fun ImagesConfirmationScreen(
     onNavigation: (imageSelectionNavigationModel: ReportNavigationModel) -> Unit
 ) {
     val uiState = viewModel.uiState
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     val pagerState = rememberPagerState(
         initialPage = 0,
         initialPageOffsetFraction = 0f
     ) {
-        viewModel.uiState.selectedImageUris.size
+        viewModel.uiState.selectedMediaItems.size
     }
 
     LaunchedEffect(pagerState) {
@@ -92,9 +89,9 @@ fun ImagesConfirmationScreen(
         }
     }
 
-    LaunchedEffect(uiState.selectedImageUris) {
+    LaunchedEffect(uiState.selectedMediaItems) {
         launch {
-            if (uiState.selectedImageUris.isEmpty()) {
+            if (uiState.selectedMediaItems.isEmpty()) {
                 viewModel.navigateBackFromImages()
             }
         }
@@ -158,15 +155,15 @@ fun ImagesConfirmationScreen(
             }
         }
 
-        val bitmaps = viewModel.uiState.selectedImageUris.map { uri ->
-            uri.toUri().decodeAsBitmap(LocalContext.current.contentResolver)
+        val bitmaps = viewModel.uiState.selectedMediaItems.map { mediaItemUiModel ->
+            mediaItemUiModel.uri.toUri().decodeAsBitmap(LocalContext.current.contentResolver)
         }
 
         ImagesPager(pagerState = pagerState, images = bitmaps)
     }
 
     OnBannerHandler(uiState.confirmInfoModel) {
-        handleAction(it, from, context, viewModel, scope)
+        handleAction(it, from, viewModel, scope)
     }
 
     OnBannerHandler(uiState.successInfoModel) {
@@ -183,37 +180,24 @@ fun ImagesConfirmationScreen(
 private fun handleAction(
     uiAction: UiAction,
     from: String,
-    context: Context,
     viewModel: ReportViewModel,
-    coroutineScope: CoroutineScope
+    scope: CoroutineScope
 ) {
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
             ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_CANCEL_BANNER.name ->
                 viewModel.consumeNavigationEvent()
 
-            ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name -> {
-                coroutineScope.launch {
-                    val images = viewModel.uiState.selectedImageUris.mapNotNull { uri ->
-                        runCatching {
-                            context.storeUriAsFileToCache(
-                                uri.toUri(),
-                                "30000000"
-                            )
-                        }.fold(
-                            onSuccess = { it },
-                            onFailure = { null }
-                        )
-                    }
+            ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name -> scope.launch {
+                val images = viewModel.uiState.selectedMediaItems.mapNotNull { it.file }
 
-                    if (from == REPORT) {
-                        viewModel.confirmReportImages(images)
-                    } else {
-                        viewModel.confirmFindingImages(images)
-                    }
-
-                    viewModel.consumeShownConfirm()
+                if (from == REPORT) {
+                    viewModel.confirmReportImages(images)
+                } else {
+                    viewModel.confirmFindingImages(images)
                 }
+
+                viewModel.consumeShownConfirm()
             }
 
             else -> Timber.d("no-op")

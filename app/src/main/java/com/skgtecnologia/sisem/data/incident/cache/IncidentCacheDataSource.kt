@@ -7,6 +7,7 @@ import com.skgtecnologia.sisem.data.incident.cache.model.mapToUi
 import com.valkiria.uicomponents.bricks.notification.model.TransmiNotification
 import com.valkiria.uicomponents.bricks.notification.model.getTransmiNotificationRawDataByType
 import com.valkiria.uicomponents.components.incident.model.IncidentUiModel
+import com.valkiria.uicomponents.components.incident.model.PatientUiModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -29,6 +30,16 @@ class IncidentCacheDataSource @Inject constructor(
         incidentDao.updateTransmiStatus(
             incidentId,
             transmiNotifications.map { getTransmiNotificationRawDataByType(it) }
+        )
+    }
+
+    suspend fun updatePatientStatus(
+        incidentId: Long,
+        patients: List<PatientUiModel>
+    ) {
+        incidentDao.updatePatientStatus(
+            incidentId,
+            patients.map { it.mapToCache() }
         )
     }
 

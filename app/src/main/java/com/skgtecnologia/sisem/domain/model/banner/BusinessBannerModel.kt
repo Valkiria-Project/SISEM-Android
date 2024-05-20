@@ -79,6 +79,12 @@ fun disassociateDeviceBanner(): BannerModel = BannerModel(
     )
 )
 
+fun fileSizeErrorBanner(): BannerModel = BannerModel(
+    icon = "ic_alert",
+    title = "Tamaño de archivo",
+    description = "La imagen cargada supera el tamaño máximo permitido."
+)
+
 fun findingCancellationBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "¿Descartar hallazgo?",

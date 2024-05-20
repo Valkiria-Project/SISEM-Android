@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.di.operation.OperationRole
+import com.skgtecnologia.sisem.domain.model.banner.fileSizeErrorBanner
 import com.skgtecnologia.sisem.domain.model.banner.findingCancellationBanner
 import com.skgtecnologia.sisem.domain.model.banner.findingConfirmationBanner
 import com.skgtecnologia.sisem.domain.model.banner.findingSavedBanner
@@ -19,6 +20,7 @@ import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.domain.report.usecases.SendReport
+import com.valkiria.uicomponents.components.media.MediaItemUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -117,12 +119,12 @@ class ReportViewModel @Inject constructor(
 
     fun saveFinding() {
         val (confirmInfoModel, navigationModel) =
-            if (isValidDescription && uiState.selectedImageUris.isEmpty()) {
+            if (isValidDescription && uiState.selectedMediaItems.isEmpty()) {
                 findingConfirmationBanner().mapToUi() to null
-            } else if (isValidDescription && uiState.selectedImageUris.isNotEmpty()) {
+            } else if (isValidDescription && uiState.selectedMediaItems.isNotEmpty()) {
                 null to ReportNavigationModel(
                     closeFinding = true,
-                    imagesSize = uiState.selectedImageUris.size
+                    imagesSize = uiState.selectedMediaItems.size
                 )
             } else {
                 null to null
@@ -140,7 +142,7 @@ class ReportViewModel @Inject constructor(
             successInfoModel = findingSavedBanner().mapToUi(),
             navigationModel = ReportNavigationModel(
                 closeFinding = true,
-                imagesSize = uiState.selectedImageUris.size,
+                imagesSize = uiState.selectedMediaItems.size,
                 novelty = Novelty(
                     idPreoperational = findingId,
                     novelty = description,
@@ -190,13 +192,13 @@ class ReportViewModel @Inject constructor(
 
     fun saveReport(roleName: String) {
         val (confirmInfoModel, navigationModel) = if (
-            isValidTopic && isValidDescription && uiState.selectedImageUris.isEmpty()
+            isValidTopic && isValidDescription && uiState.selectedMediaItems.isEmpty()
         ) {
             reportConfirmationBanner().mapToUi() to null
-        } else if (isValidTopic && isValidDescription && uiState.selectedImageUris.isNotEmpty()) {
+        } else if (isValidTopic && isValidDescription && uiState.selectedMediaItems.isNotEmpty()) {
             null to ReportNavigationModel(
                 closeReport = true,
-                imagesSize = uiState.selectedImageUris.size
+                imagesSize = uiState.selectedMediaItems.size
             )
         } else {
             null to null
@@ -264,14 +266,16 @@ class ReportViewModel @Inject constructor(
     // endregion
 
     // region ImageConfirmation
-    fun updateSelectedImages(selectedImages: List<String>, isFromPreOperational: Boolean) {
+    fun updateMediaActions(
+        mediaItems: List<MediaItemUiModel>,
+        isFromPreOperational: Boolean
+    ) {
         val updateSelectedImages = buildList {
-
-            addAll(uiState.selectedImageUris)
+            addAll(uiState.selectedMediaItems)
 
             val imageLimit = getImageLimit(isFromPreOperational)
-            selectedImages.forEachIndexed { index, image ->
-                if (imageLimit <= (uiState.selectedImageUris.size + index)) {
+            mediaItems.forEachIndexed { index, image ->
+                if (imageLimit <= (uiState.selectedMediaItems.size + index)) {
                     uiState = uiState.copy(
                         infoEvent = imagesLimitErrorBanner(imageLimit).mapToUi()
                     )
@@ -283,13 +287,13 @@ class ReportViewModel @Inject constructor(
         }
 
         uiState = uiState.copy(
-            selectedImageUris = updateSelectedImages
+            selectedMediaItems = updateSelectedImages
         )
     }
 
     fun removeCurrentImage() {
         val updateSelectedImages = buildList {
-            uiState.selectedImageUris.mapIndexed { index, uri ->
+            uiState.selectedMediaItems.mapIndexed { index, uri ->
                 if (index != currentImage) {
                     add(uri)
                 }
@@ -297,7 +301,7 @@ class ReportViewModel @Inject constructor(
         }
 
         uiState = uiState.copy(
-            selectedImageUris = updateSelectedImages
+            selectedMediaItems = updateSelectedImages
         )
     }
     // endregion
@@ -311,25 +315,32 @@ class ReportViewModel @Inject constructor(
         )
     }
 
-    fun onPhotoTaken(savedUri: String) {
-        val updatedSelectedImages = buildList {
-            addAll(uiState.selectedImageUris)
+    fun onPhotoTaken(mediaItemUiModel: MediaItemUiModel) {
+        val imageLimit = getImageLimit(
+            uiState.navigationModel?.isFromPreOperational == true
+        )
+        val isOverImageLimit = imageLimit < uiState.selectedMediaItems.size
 
-            val imageLimit = getImageLimit(uiState.navigationModel?.isFromPreOperational == true)
-            if (imageLimit < uiState.selectedImageUris.size) {
-                uiState = uiState.copy(
-                    infoEvent = imagesLimitErrorBanner(imageLimit).mapToUi()
-                )
-            } else {
-                add(savedUri)
-            }
+        val updatedSelectedImages = buildList {
+            addAll(uiState.selectedMediaItems)
+
+            if (!isOverImageLimit && mediaItemUiModel.isSizeValid) add(mediaItemUiModel)
         }
 
+        val invalidMediaSelected = !mediaItemUiModel.isSizeValid
+
         uiState = uiState.copy(
-            selectedImageUris = updatedSelectedImages,
+            selectedMediaItems = updatedSelectedImages,
             navigationModel = ReportNavigationModel(
                 photoTaken = true
-            )
+            ),
+            infoEvent = if (isOverImageLimit) {
+                imagesLimitErrorBanner(imageLimit).mapToUi()
+            } else if (invalidMediaSelected) {
+                fileSizeErrorBanner().mapToUi()
+            } else {
+                null
+            }
         )
     }
 
