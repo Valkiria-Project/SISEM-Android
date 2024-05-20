@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.core.net.toUri
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.GenericUiAction
@@ -22,7 +21,7 @@ import com.valkiria.uicomponents.components.media.MediaAction
 import com.valkiria.uicomponents.components.media.MediaAction.Camera
 import com.valkiria.uicomponents.components.media.MediaAction.Gallery
 import com.valkiria.uicomponents.components.media.MediaAction.MediaFile
-import com.valkiria.uicomponents.extensions.storeUriAsFileToCache
+import com.valkiria.uicomponents.extensions.handleMediaUris
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -147,13 +146,29 @@ fun handleAction(
 
         is GenericUiAction.MediaItemAction -> when (uiAction.mediaAction) {
             Camera -> viewModel.showCamera()
-            is MediaFile -> viewModel.updateMediaActions(
-                selectedMedia = (uiAction.mediaAction as MediaFile).uris,
-            )
+            is MediaFile -> scope.launch {
+                val uris = (uiAction.mediaAction as MediaFile).uris
+                val mediaItems = context.handleMediaUris(
+                    uris,
+                    viewModel.uiState.operationConfig?.maxFileSizeKb
+                )
 
-            is Gallery -> viewModel.updateMediaActions(
-                selectedMedia = (uiAction.mediaAction as Gallery).uris,
-            )
+                viewModel.updateMediaActions(
+                    mediaItems = mediaItems
+                )
+            }
+
+            is Gallery -> scope.launch {
+                val uris = (uiAction.mediaAction as Gallery).uris
+                val mediaItems = context.handleMediaUris(
+                    uris,
+                    viewModel.uiState.operationConfig?.maxFileSizeKb
+                )
+
+                viewModel.updateMediaActions(
+                    mediaItems = mediaItems
+                )
+            }
 
             is MediaAction.RemoveFile -> viewModel.removeMediaActionsImage(
                 (uiAction.mediaAction as MediaAction.RemoveFile).index
@@ -168,21 +183,9 @@ fun handleAction(
 
         is GenericUiAction.SliderAction -> viewModel.handleSliderAction(uiAction)
 
-        is StepperAction -> {
-            scope.launch {
-                val images = viewModel.uiState.selectedMediaUris.mapNotNull { uri ->
-                    runCatching {
-                        context.storeUriAsFileToCache(
-                            uri.toUri(),
-                            viewModel.uiState.operationConfig?.maxFileSizeKb
-                        )
-                    }.fold(
-                        onSuccess = { it },
-                        onFailure = { null }
-                    )
-                }
-                viewModel.sendMedicalHistory(images)
-            }
+        is StepperAction -> scope.launch {
+            val images = viewModel.uiState.selectedMediaItems.mapNotNull { it.file }
+            viewModel.sendMedicalHistory(images)
         }
 
         else -> Timber.d("no-op")
