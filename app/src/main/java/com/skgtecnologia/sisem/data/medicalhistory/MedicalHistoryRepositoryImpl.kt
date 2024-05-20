@@ -1,6 +1,8 @@
 package com.skgtecnologia.sisem.data.medicalhistory
 
 import com.skgtecnologia.sisem.data.auth.cache.AuthCacheDataSource
+import com.skgtecnologia.sisem.data.incident.cache.IncidentCacheDataSource
+import com.skgtecnologia.sisem.data.incident.cache.model.mapToCache
 import com.skgtecnologia.sisem.data.medicalhistory.remote.MedicalHistoryRemoteDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.domain.medicalhistory.MedicalHistoryRepository
@@ -12,6 +14,7 @@ import javax.inject.Inject
 
 class MedicalHistoryRepositoryImpl @Inject constructor(
     private val authCacheDataSource: AuthCacheDataSource,
+    private val incidentCacheDataSource: IncidentCacheDataSource,
     private val medicalHistoryRemoteDataSource: MedicalHistoryRemoteDataSource,
     private val operationCacheDataSource: OperationCacheDataSource
 ) : MedicalHistoryRepository {
@@ -61,6 +64,13 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
         if (images.isNotEmpty()) {
             medicalHistoryRemoteDataSource.saveAphFiles(idAph, images).getOrThrow()
         }
+
+        val incident = checkNotNull(incidentCacheDataSource.observeActiveIncident().first())
+        val patients = incident.patients.map {
+            val patient = if (it.idAph.toString() == idAph) it.copy(disabled = true) else it
+            patient
+        }
+        incidentCacheDataSource.updatePatientStatus(incident.id!!, patients)
     }.getOrThrow()
 
     override suspend fun saveAphFiles(idAph: String, images: List<ImageModel>) =
