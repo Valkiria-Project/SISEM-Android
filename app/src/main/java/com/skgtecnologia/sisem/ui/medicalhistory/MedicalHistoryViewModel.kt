@@ -962,15 +962,6 @@ class MedicalHistoryViewModel @Inject constructor(
 
         updatedBody = updateAliveAndTransferVisibility(action, updatedBody)
 
-        action.viewsVisibility.forEach { viewVisibility ->
-            updateBodyModel(
-                uiModels = updatedBody,
-                identifier = viewVisibility.key
-            ) { model ->
-                updateComponentVisibility(model, viewVisibility)
-            }.also { body -> updatedBody = body }
-        }
-
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(
                 body = updatedBody
@@ -984,14 +975,49 @@ class MedicalHistoryViewModel @Inject constructor(
     ): List<BodyRowModel> {
         var transformedBody = updatedBody
 
-        if (action.identifier == ALIVE_KEY) {
-            val withdrawalVisibility = action.status && segmentedValues[ACCEPT_TRANSFER_KEY] == true
+        when (action.identifier) {
+            ALIVE_KEY -> {
+                val visibility = action.status && segmentedValues[ACCEPT_TRANSFER_KEY] == true
 
-            allWithdrawalIdentifiers.keys.forEach { key ->
-                allWithdrawalIdentifiers[key] = withdrawalVisibility
+                allWithdrawalIdentifiers.keys.forEach { key ->
+                    allWithdrawalIdentifiers[key] = visibility
+                }
+
+                allWithdrawalIdentifiers.forEach { viewVisibility ->
+                    updateBodyModel(
+                        uiModels = transformedBody,
+                        identifier = viewVisibility.key
+                    ) { model ->
+                        updateComponentVisibility(model, viewVisibility)
+                    }.also { body -> transformedBody = body }
+                }
             }
 
-            allWithdrawalIdentifiers.forEach { viewVisibility ->
+            ACCEPT_TRANSFER_KEY -> {
+                val viewsVisibility = action.viewsVisibility.map { entry ->
+                    val value = if (
+                        entry.key == AUTH_NAME_KEY ||
+                        entry.key == SIGN_PERSON_CHARGE_W_KEY
+                    ) {
+                        action.status
+                    } else {
+                        !action.status
+                    }
+
+                    entry.key to value
+                }.toMap()
+
+                viewsVisibility.forEach { viewVisibility ->
+                    updateBodyModel(
+                        uiModels = transformedBody,
+                        identifier = viewVisibility.key
+                    ) { model ->
+                        updateComponentVisibility(model, viewVisibility)
+                    }.also { body -> transformedBody = body }
+                }
+            }
+
+            else -> action.viewsVisibility.forEach { viewVisibility ->
                 updateBodyModel(
                     uiModels = transformedBody,
                     identifier = viewVisibility.key
