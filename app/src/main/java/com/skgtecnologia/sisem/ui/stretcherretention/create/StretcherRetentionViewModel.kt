@@ -81,13 +81,58 @@ class StretcherRetentionViewModel @Inject constructor(
         }
     }
 
+    @Suppress("ComplexMethod", "NestedBlockDepth")
     private fun ScreenModel.getFormInitialValues() {
         this.body.forEach { bodyRowModel ->
             when (bodyRowModel) {
-                is TextFieldUiModel -> fieldsValues[bodyRowModel.identifier] = InputUiModel(
-                    bodyRowModel.identifier,
-                    bodyRowModel.text
-                )
+                is ChipOptionsUiModel -> {
+                    val selectedOptions = bodyRowModel.items
+                        .filter { it.selected }
+
+                    if ((bodyRowModel.required && bodyRowModel.visibility) ||
+                        selectedOptions.isEmpty().not()
+                    ) {
+                        bodyRowModel.items.forEach { chipOption ->
+                            chipOptionValues[bodyRowModel.identifier] =
+                                mutableListOf(
+                                    ChipOptionUiModel(
+                                        id = chipOption.id,
+                                        name = chipOption.name,
+                                        selected = chipOption.selected
+                                    )
+                                )
+                        }
+                    }
+                }
+
+                is ChipSelectionUiModel -> {
+                    if ((bodyRowModel.required && bodyRowModel.visibility) ||
+                        !bodyRowModel.selected.isNullOrEmpty()
+                    ) {
+                        bodyRowModel.items.find {
+                            it.id == bodyRowModel.selected || it.name == bodyRowModel.selected
+                        }?.also {
+                            chipSelectionValues[bodyRowModel.identifier] =
+                                it.copy(isSelected = true)
+                        } ?: run {
+                            chipSelectionValues[bodyRowModel.identifier] =
+                                ChipSelectionItemUiModel()
+                        }
+                    }
+                }
+
+                is TextFieldUiModel -> {
+                    if ((bodyRowModel.required && bodyRowModel.visibility) ||
+                        bodyRowModel.text.isNotEmpty()
+                    ) {
+                        fieldsValues[bodyRowModel.identifier] = InputUiModel(
+                            identifier = bodyRowModel.identifier,
+                            updatedValue = bodyRowModel.text,
+                            fieldValidated = bodyRowModel.text.isNotEmpty(),
+                            required = bodyRowModel.required
+                        )
+                    }
+                }
             }
         }
     }
