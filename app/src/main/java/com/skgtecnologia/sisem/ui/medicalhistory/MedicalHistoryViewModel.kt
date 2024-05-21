@@ -978,7 +978,8 @@ class MedicalHistoryViewModel @Inject constructor(
 
         when (action.identifier) {
             ALIVE_KEY -> {
-                val visibility = action.status && segmentedValues[ACCEPT_TRANSFER_KEY] == true
+                val visibility = (action.status && segmentedValues[ACCEPT_TRANSFER_KEY] == true) ||
+                    (action.status && segmentedValues[ACCEPT_TRANSFER_KEY] == false)
 
                 allWithdrawalIdentifiers.keys.forEach { key ->
                     allWithdrawalIdentifiers[key] = visibility
