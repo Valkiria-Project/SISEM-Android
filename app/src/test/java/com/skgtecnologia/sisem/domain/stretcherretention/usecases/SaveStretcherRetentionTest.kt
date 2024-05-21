@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.domain.stretcherretention.usecases
 
+import com.skgtecnologia.sisem.commons.ID_APH
 import com.skgtecnologia.sisem.domain.stretcherretention.StretcherRetentionRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -25,9 +26,15 @@ class SaveStretcherRetentionTest {
 
     @Test
     fun `when saveStretcherRetention is success`() = runTest {
-        coEvery { stretcherRetentionRepository.saveStretcherRetention(any(), any()) } returns Unit
+        coEvery {
+            stretcherRetentionRepository.saveStretcherRetention(
+                ID_APH.toString(),
+                any(),
+                any()
+            )
+        } returns Unit
 
-        val result = saveStretcherRetention.invoke(emptyMap(), emptyMap())
+        val result = saveStretcherRetention.invoke(ID_APH.toString(), emptyMap(), emptyMap())
 
         Assert.assertEquals(true, result.isSuccess)
     }
@@ -37,11 +44,12 @@ class SaveStretcherRetentionTest {
         coEvery {
             stretcherRetentionRepository.saveStretcherRetention(
                 any(),
+                any(),
                 any()
             )
         } throws Exception()
 
-        val result = saveStretcherRetention.invoke(emptyMap(), emptyMap())
+        val result = saveStretcherRetention.invoke(ID_APH.toString(), emptyMap(), emptyMap())
 
         Assert.assertEquals(true, result.isFailure)
     }

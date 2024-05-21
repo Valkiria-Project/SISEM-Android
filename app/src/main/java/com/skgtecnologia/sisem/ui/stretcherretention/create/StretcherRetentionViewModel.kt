@@ -81,13 +81,58 @@ class StretcherRetentionViewModel @Inject constructor(
         }
     }
 
+    @Suppress("ComplexMethod", "NestedBlockDepth")
     private fun ScreenModel.getFormInitialValues() {
         this.body.forEach { bodyRowModel ->
             when (bodyRowModel) {
-                is TextFieldUiModel -> fieldsValues[bodyRowModel.identifier] = InputUiModel(
-                    bodyRowModel.identifier,
-                    bodyRowModel.text
-                )
+                is ChipOptionsUiModel -> {
+                    val selectedOptions = bodyRowModel.items
+                        .filter { it.selected }
+
+                    if ((bodyRowModel.required && bodyRowModel.visibility) ||
+                        selectedOptions.isEmpty().not()
+                    ) {
+                        bodyRowModel.items.forEach { chipOption ->
+                            chipOptionValues[bodyRowModel.identifier] =
+                                mutableListOf(
+                                    ChipOptionUiModel(
+                                        id = chipOption.id,
+                                        name = chipOption.name,
+                                        selected = chipOption.selected
+                                    )
+                                )
+                        }
+                    }
+                }
+
+                is ChipSelectionUiModel -> {
+                    if ((bodyRowModel.required && bodyRowModel.visibility) ||
+                        !bodyRowModel.selected.isNullOrEmpty()
+                    ) {
+                        bodyRowModel.items.find {
+                            it.id == bodyRowModel.selected || it.name == bodyRowModel.selected
+                        }?.also {
+                            chipSelectionValues[bodyRowModel.identifier] =
+                                it.copy(isSelected = true)
+                        } ?: run {
+                            chipSelectionValues[bodyRowModel.identifier] =
+                                ChipSelectionItemUiModel()
+                        }
+                    }
+                }
+
+                is TextFieldUiModel -> {
+                    if ((bodyRowModel.required && bodyRowModel.visibility) ||
+                        bodyRowModel.text.isNotEmpty()
+                    ) {
+                        fieldsValues[bodyRowModel.identifier] = InputUiModel(
+                            identifier = bodyRowModel.identifier,
+                            updatedValue = bodyRowModel.text,
+                            fieldValidated = bodyRowModel.text.isNotEmpty(),
+                            required = bodyRowModel.required
+                        )
+                    }
+                }
             }
         }
     }
@@ -99,7 +144,7 @@ class StretcherRetentionViewModel @Inject constructor(
             chipOption != null && chipOption.find {
                 it.id == chipOptionAction.chipOptionUiModel.id
             } != null ->
-                chipOption.remove(chipOptionAction.chipOptionUiModel)
+                chipOption.removeIf { it.id == chipOptionAction.chipOptionUiModel.id }
 
             chipOption != null && chipOption.find {
                 it.id == chipOptionAction.chipOptionUiModel.id
@@ -221,6 +266,7 @@ class StretcherRetentionViewModel @Inject constructor(
             job?.cancel()
             job = viewModelScope.launch {
                 saveStretcherRetention.invoke(
+                    idAph = idAph.toString(),
                     fieldsValue = fieldsValues.mapValues { it.value.updatedValue },
                     chipSelectionValues = chipSelectionValues.mapValues { it.value.id }
                 ).onSuccess {
