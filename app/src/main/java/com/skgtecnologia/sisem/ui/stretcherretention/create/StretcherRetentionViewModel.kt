@@ -99,7 +99,7 @@ class StretcherRetentionViewModel @Inject constructor(
             chipOption != null && chipOption.find {
                 it.id == chipOptionAction.chipOptionUiModel.id
             } != null ->
-                chipOption.remove(chipOptionAction.chipOptionUiModel)
+                chipOption.removeIf { it.id == chipOptionAction.chipOptionUiModel.id }
 
             chipOption != null && chipOption.find {
                 it.id == chipOptionAction.chipOptionUiModel.id
@@ -221,6 +221,7 @@ class StretcherRetentionViewModel @Inject constructor(
             job?.cancel()
             job = viewModelScope.launch {
                 saveStretcherRetention.invoke(
+                    idAph = idAph.toString(),
                     fieldsValue = fieldsValues.mapValues { it.value.updatedValue },
                     chipSelectionValues = chipSelectionValues.mapValues { it.value.id }
                 ).onSuccess {

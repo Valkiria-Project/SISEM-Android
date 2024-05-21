@@ -25,7 +25,7 @@ class SaveStretcherRetentionTest {
 
     @Test
     fun `when saveStretcherRetention is success`() = runTest {
-        coEvery { stretcherRetentionRepository.saveStretcherRetention(any(), any()) } returns Unit
+        coEvery { stretcherRetentionRepository.saveStretcherRetention(, any(), any()) } returns Unit
 
         val result = saveStretcherRetention.invoke(emptyMap(), emptyMap())
 
@@ -36,6 +36,7 @@ class SaveStretcherRetentionTest {
     fun `when saveStretcherRetention is failure`() = runTest {
         coEvery {
             stretcherRetentionRepository.saveStretcherRetention(
+                ,
                 any(),
                 any()
             )

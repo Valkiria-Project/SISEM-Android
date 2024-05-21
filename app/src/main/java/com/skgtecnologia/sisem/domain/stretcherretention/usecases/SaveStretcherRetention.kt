@@ -11,10 +11,12 @@ class SaveStretcherRetention @Inject constructor(
 
     @CheckResult
     suspend operator fun invoke(
+        idAph: String,
         fieldsValue: Map<String, String>,
         chipSelectionValues: Map<String, String>
     ): Result<Unit> = resultOf {
         stretcherRetentionRepository.saveStretcherRetention(
+            idAph = idAph,
             fieldsValue = fieldsValue,
             chipSelectionValues = chipSelectionValues
         )

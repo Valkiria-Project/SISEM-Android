@@ -58,6 +58,7 @@ class StretcherRetentionRepositoryImplTest {
         } returns Result.success(Unit)
 
         stretcherRetentionRepositoryImpl.saveStretcherRetention(
+            ,
             fieldsValue = emptyMap(),
             chipSelectionValues = emptyMap()
         )
