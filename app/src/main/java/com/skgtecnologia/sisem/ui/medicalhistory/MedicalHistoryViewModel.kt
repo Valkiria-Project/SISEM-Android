@@ -997,16 +997,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
             ACCEPT_TRANSFER_KEY -> {
                 val viewsVisibility = action.viewsVisibility.map { entry ->
-                    val value = if (
-                        entry.key == AUTH_NAME_KEY ||
-                        entry.key == SIGN_PERSON_CHARGE_W_KEY
-                    ) {
-                        action.status
-                    } else {
-                        !action.status
-                    }
-
-                    entry.key to value
+                    entry.key to !action.status
                 }.toMap()
 
                 viewsVisibility.forEach { viewVisibility ->
