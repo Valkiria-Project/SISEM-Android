@@ -169,7 +169,13 @@ class StretcherRetentionViewModelTest {
         coEvery { getStretcherRetentionScreen.invoke(any()) } returns Result.success(
             emptyScreenModel
         )
-        coEvery { saveStretcherRetention.invoke(any(), any()) } returns Result.success(Unit)
+        coEvery {
+            saveStretcherRetention.invoke(
+                ID_APH.toString(),
+                any(),
+                any()
+            )
+        } returns Result.success(Unit)
 
         viewModel = StretcherRetentionViewModel(
             savedStateHandle,
@@ -188,7 +194,13 @@ class StretcherRetentionViewModelTest {
         coEvery { getStretcherRetentionScreen.invoke(any()) } returns Result.success(
             emptyScreenModel
         )
-        coEvery { saveStretcherRetention.invoke(any(), any()) } returns Result.failure(Throwable())
+        coEvery {
+            saveStretcherRetention.invoke(
+                ID_APH.toString(),
+                any(),
+                any()
+            )
+        } returns Result.failure(Throwable())
 
         viewModel = StretcherRetentionViewModel(
             savedStateHandle,
