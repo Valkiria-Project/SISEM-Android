@@ -30,10 +30,11 @@ class StretcherRetentionRepositoryImpl @Inject constructor(
     ).getOrThrow()
 
     override suspend fun saveStretcherRetention(
+        idAph: String,
         fieldsValue: Map<String, String>,
         chipSelectionValues: Map<String, String>
     ) = stretcherRetentionRemoteDataSource.saveStretcherRetention(
-        idAph = "24", // FIXME: update with cache
+        idAph = idAph,
         fieldsValue = fieldsValue,
         chipSelectionValues = chipSelectionValues
     ).getOrThrow()

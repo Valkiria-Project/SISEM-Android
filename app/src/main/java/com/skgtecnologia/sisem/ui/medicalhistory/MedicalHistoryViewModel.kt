@@ -61,6 +61,8 @@ import com.skgtecnologia.sisem.domain.medicalhistory.model.RESPONSIBLE_DOCUMENT_
 import com.skgtecnologia.sisem.domain.medicalhistory.model.RESPONSIBLE_NAME_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.SECOND_LASTNAME_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.SECOND_NAME_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.SIGN_PERSON_CHARGE_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.SIGN_PERSON_CHARGE_W_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.TAS_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.TEMPERATURE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WHO_WITHDRAWAL_RESPONSIBLE_KEY
@@ -71,6 +73,7 @@ import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_DECLARATIO
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_EXTRA_INFO_2_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_EXTRA_INFO_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_REPONSIBLE_NAME_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_REPONSIBLE_REFUSE_SIGN_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_RESPONSIBLE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_STATEMENT_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.WITHDRAWAL_TYPE_KEY
@@ -144,8 +147,6 @@ private const val PATIENT_DOCUMENT_TYPE_IDENTIFIER = "KEY_DOCUMENT_TYPE"
 private const val RESPONSIBLE_DOCUMENT_TYPE_IDENTIFIER = "KEY_DOCUMENT_TYPE_RESPONSIBLE"
 private const val PATIENT_DOCUMENT_IDENTIFIER = "KEY_DOCUMENT"
 private const val RESPONSIBLE_DOCUMENT_IDENTIFIER = "KEY_DOCUMENT_RESPONSIBLE"
-private const val SIGN_PERSON_CHARGE_W_KEY = "KEY_SIGN_PERSON_CHARGE_W"
-private const val WITHDRAWAL_REPONSIBLE_REFUSE_SIGN_KEY = "KEY_WITHDRAWAL_REPONSIBLE_REFUSE_SIGN"
 private const val TIME_KEY = "TIME"
 private const val NO = "NO"
 private const val CC_ID_TYPE = "CC"
@@ -550,7 +551,7 @@ class MedicalHistoryViewModel @Inject constructor(
             uiModels = uiState.screenModel?.body,
             identifier = SIGN_PERSON_CHARGE_W_KEY,
             updater = { model ->
-                if (model is SignatureUiModel && model.identifier == SIGN_PERSON_CHARGE_W_KEY) {
+                if (model is SignatureUiModel) {
                     model.copy(required = chipSelectionItemUiModel.name.equals(NO, true))
                 } else {
                     model
@@ -961,7 +962,7 @@ class MedicalHistoryViewModel @Inject constructor(
             }
         )
 
-        updatedBody = updateAliveAndTransferVisibility(action, updatedBody)
+        updatedBody = updateSwitchRelatedVisibility(action, updatedBody)
 
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(
@@ -970,7 +971,7 @@ class MedicalHistoryViewModel @Inject constructor(
         )
     }
 
-    private fun updateAliveAndTransferVisibility(
+    private fun updateSwitchRelatedVisibility(
         action: GenericUiAction.SegmentedSwitchAction,
         updatedBody: List<BodyRowModel>
     ): List<BodyRowModel> {
@@ -978,7 +979,8 @@ class MedicalHistoryViewModel @Inject constructor(
 
         when (action.identifier) {
             ALIVE_KEY -> {
-                val visibility = action.status && segmentedValues[ACCEPT_TRANSFER_KEY] == true
+                val visibility = (action.status && segmentedValues[ACCEPT_TRANSFER_KEY] == true) ||
+                    (action.status && segmentedValues[ACCEPT_TRANSFER_KEY] == false)
 
                 allWithdrawalIdentifiers.keys.forEach { key ->
                     allWithdrawalIdentifiers[key] = visibility
@@ -996,16 +998,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
             ACCEPT_TRANSFER_KEY -> {
                 val viewsVisibility = action.viewsVisibility.map { entry ->
-                    val value = if (
-                        entry.key == AUTH_NAME_KEY ||
-                        entry.key == SIGN_PERSON_CHARGE_W_KEY
-                    ) {
-                        action.status
-                    } else {
-                        !action.status
-                    }
-
-                    entry.key to value
+                    entry.key to !action.status
                 }.toMap()
 
                 viewsVisibility.forEach { viewVisibility ->
@@ -1016,6 +1009,17 @@ class MedicalHistoryViewModel @Inject constructor(
                         updateComponentVisibility(model, viewVisibility)
                     }.also { body -> transformedBody = body }
                 }
+
+                updateBodyModel(
+                    uiModels = transformedBody,
+                    identifier = SIGN_PERSON_CHARGE_KEY
+                ) { model ->
+                    if (model is SignatureUiModel) {
+                        model.copy(required = action.status)
+                    } else {
+                        model
+                    }
+                }.also { body -> transformedBody = body }
             }
 
             else -> action.viewsVisibility.forEach { viewVisibility ->
