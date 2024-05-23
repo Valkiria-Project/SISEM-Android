@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -118,7 +119,7 @@ fun SendEmailScreen(
                 }
             )
 
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 6.dp),
@@ -128,7 +129,7 @@ fun SendEmailScreen(
 
             LabelComponent(uiModel = sendEmailLabels(context.getString(R.string.send_email_from)))
 
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 6.dp),
@@ -140,7 +141,7 @@ fun SendEmailScreen(
                 uiModel = sendEmailLabels(context.getString(R.string.send_email_body))
             )
 
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 6.dp),

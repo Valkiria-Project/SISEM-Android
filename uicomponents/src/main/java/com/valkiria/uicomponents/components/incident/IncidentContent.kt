@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -375,11 +376,11 @@ private fun IncidentTransmilenioRequest(transmiRequests: List<TransmiNotificatio
                     )
 
                     if (transmiNotification is TransmilenioDeniedNotification) {
-                        Divider(
-                            color = Color.White,
+                        HorizontalDivider(
                             modifier = Modifier
                                 .height(25.dp)
-                                .width(1.dp)
+                                .width(1.dp),
+                            color = Color.White
                         )
 
                         Text(

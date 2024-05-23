@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -29,7 +30,7 @@ fun ReportDetailContent(
             ReportContent(model = detail)
 
             if (index != model.details.size - 1) {
-                Divider(
+                HorizontalDivider(
                     modifier = Modifier.padding(top = 16.dp),
                     color = MaterialTheme.colorScheme.primary
                 )

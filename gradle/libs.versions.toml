@@ -23,17 +23,17 @@ google-services = "4.4.1"
 hilt-android = "2.51.1"
 hilt-navigation-compose = "1.2.0"
 junit = "4.13.2"
-kotlin = "1.9.24"
+kotlin = "2.0.0"
 kotlinx-collections-immutable = "0.3.7"
 kotlinx-coroutines-test = "1.8.1"
-ksp = "1.9.24-1.0.20"
+ksp = "2.0.0-1.0.21"
 ktlint = "11.1.0"
 leakcanary-android = "2.14"
 lifecycle = "2.8.0"
 mapbox-maps = "10.16.2"
 mapbox-navigation = "2.10.3"
 mapbox-navigation-dropin = "2.17.6"
-mockk = "1.13.10"
+mockk = "1.13.11"
 moshi = "1.15.1"
 # Do not upgrade this version, unless new navigation strategy for back and forth navigation is implemented
 navigation-compose = "2.7.4"
@@ -110,6 +110,7 @@ ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 benManesversions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes-versions" }
+composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 daggerHilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
