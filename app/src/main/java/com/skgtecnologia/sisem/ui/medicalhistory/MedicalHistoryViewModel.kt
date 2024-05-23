@@ -1015,6 +1015,7 @@ class MedicalHistoryViewModel @Inject constructor(
                     identifier = SIGN_PERSON_CHARGE_KEY
                 ) { model ->
                     if (model is SignatureUiModel) {
+                        if (!action.status) signatureValues.remove(SIGN_PERSON_CHARGE_KEY)
                         model.copy(required = action.status)
                     } else {
                         model

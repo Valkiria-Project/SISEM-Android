@@ -205,7 +205,7 @@ class PreOperationalViewModelTest {
             )
         )
 
-        Assert.assertEquals(true, viewModel.uiState.navigationModel?.isNewFindingEvent)
+        Assert.assertEquals(true, viewModel.uiState.navigationModel?.isNewFinding)
         Assert.assertEquals(identifier, viewModel.uiState.navigationModel?.findingId)
     }
 
@@ -412,7 +412,7 @@ class PreOperationalViewModelTest {
 
         viewModel.sendPreOperational()
 
-        Assert.assertEquals(true, viewModel.uiState.navigationModel?.isTurnCompleteEvent)
+        Assert.assertEquals(true, viewModel.uiState.navigationModel?.isTurnComplete)
     }
 
     @Test

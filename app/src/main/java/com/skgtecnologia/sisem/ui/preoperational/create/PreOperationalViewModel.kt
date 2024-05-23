@@ -203,7 +203,7 @@ class PreOperationalViewModel @Inject constructor(
                 body = updatedBody
             ),
             navigationModel = PreOpNavigationModel(
-                isNewFindingEvent = true,
+                isNewFinding = true,
                 findingId = temporalFinding
             )
         )
@@ -353,7 +353,7 @@ class PreOperationalViewModel @Inject constructor(
             .onSuccess { loginNavigationModel ->
                 uiState = uiState.copy(
                     navigationModel = PreOpNavigationModel(
-                        isTurnCompleteEvent = loginNavigationModel.isTurnComplete
+                        isTurnComplete = loginNavigationModel.isTurnComplete
                     ),
                     isLoading = false
                 )

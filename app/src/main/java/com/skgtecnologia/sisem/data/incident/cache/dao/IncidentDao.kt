@@ -32,6 +32,6 @@ interface IncidentDao {
     )
     suspend fun updatePatientStatus(incidentId: Long, patientEntities: List<PatientEntity>)
 
-    @Query("SELECT * FROM incident WHERE is_active = :isActive ORDER BY id DESC LIMIT 1")
+    @Query("SELECT * FROM incident WHERE is_active = :isActive ORDER BY id desc LIMIT 1")
     fun observeActiveIncident(isActive: Boolean = true): Flow<IncidentEntity?>
 }
