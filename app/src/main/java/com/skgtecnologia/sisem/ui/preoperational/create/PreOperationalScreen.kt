@@ -44,7 +44,7 @@ fun PreOperationalScreen(
         Timber.d("PreOperationalScreen: LaunchedEffect navigationModel pass")
         launch {
             with(uiState.navigationModel) {
-                if (this?.isNewFindingEvent == true || this?.isTurnCompleteEvent != null) {
+                if (this?.isNewFinding == true || this?.isTurnComplete != null) {
                     uiState.navigationModel?.let { onNavigation(it) }
                     viewModel.consumeNavigationEvent()
                 }
