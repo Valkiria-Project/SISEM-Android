@@ -8,8 +8,8 @@ import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.navigation.ReportNavigationRoute
 
 data class PreOpNavigationModel(
-    val isTurnCompleteEvent: Boolean = false,
-    val isNewFindingEvent: Boolean = false,
+    val isTurnComplete: Boolean = false,
+    val isNewFinding: Boolean = false,
     val findingId: String? = null
 ) : NavigationModel {
 
@@ -17,13 +17,13 @@ data class PreOpNavigationModel(
         super.navigate(navController)
 
         when {
-            isTurnCompleteEvent -> navController.navigate(NavigationGraph.Main.route) {
+            isTurnComplete -> navController.navigate(NavigationGraph.Main.route) {
                 popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
                     inclusive = true
                 }
             }
 
-            isNewFindingEvent ->
+            isNewFinding ->
                 navController.navigate(
                     ReportNavigationRoute.AddFindingScreen.route +
                         "?${NavigationArgument.FINDING_ID}=$findingId"

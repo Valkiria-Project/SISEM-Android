@@ -205,7 +205,15 @@ private fun NavGraphBuilder.authGraph(
                 novelty = novelty,
                 revertFinding = revertFinding
             ) { navigationModel ->
-                navigationModel.navigate(navController)
+                with(navigationModel) {
+                    if (isTurnComplete) {
+                        Intent(context.applicationContext, LocationService::class.java).apply {
+                            action = ACTION_START
+                            context.startService(this)
+                        }
+                    }
+                    navigate(navController)
+                }
             }
         }
 

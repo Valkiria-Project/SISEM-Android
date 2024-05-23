@@ -67,6 +67,16 @@ class AccessTokenInterceptor @Inject constructor(
                 token?.let { signWithToken(token.accessToken) }
             }
 
+            url.toString().contains(LOCATION) -> {
+                val token = authRepository.getTokenByRole(
+                    OperationRole.AUXILIARY_AND_OR_TAPH.name.lowercase()
+                ) ?: authRepository.getTokenByRole(
+                    OperationRole.MEDIC_APH.name.lowercase()
+                )
+
+                token?.let { signWithToken(token.accessToken) }
+            }
+
             else -> authRepository.getLastToken()?.let { accessToken ->
                 signWithToken(accessToken)
             }

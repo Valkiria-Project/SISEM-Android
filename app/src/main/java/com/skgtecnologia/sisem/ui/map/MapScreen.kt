@@ -36,6 +36,7 @@ fun MapScreen(
 ) {
     val context = LocalContext.current
     val viewModel = hiltViewModel<MapViewModel>()
+    val uiState = viewModel.uiState
 
     val drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
@@ -49,9 +50,7 @@ fun MapScreen(
         incidentErrorData = it
     }
 
-    val incident by remember(
-        viewModel.uiState.incident?.latitude to viewModel.uiState.incident?.longitude
-    ) {
+    val incident by remember(uiState.incident) {
         mutableStateOf(viewModel.uiState.incident)
     }
 
