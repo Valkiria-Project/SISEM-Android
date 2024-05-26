@@ -106,7 +106,7 @@ fun MapboxMapView(
     BottomSheetScaffold(
         sheetContent = {
             incident?.let {
-                IncidentContent(it, onAction)
+                IncidentContent(incidentUiModel = it, onAction = onAction)
             }
         },
         scaffoldState = scaffoldState,

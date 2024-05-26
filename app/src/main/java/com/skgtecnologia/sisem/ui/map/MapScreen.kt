@@ -51,7 +51,7 @@ fun MapScreen(
     }
 
     val incident by remember(uiState.incident) {
-        mutableStateOf(viewModel.uiState.incident)
+        mutableStateOf(uiState.incident)
     }
 
     BackHandler {
