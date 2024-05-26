@@ -30,7 +30,6 @@ ksp = "2.0.0-1.0.21"
 ktlint = "11.1.0"
 leakcanary-android = "2.14"
 lifecycle = "2.8.0"
-mapbox-maps = "10.16.2"
 mapbox-navigation = "2.10.3"
 mapbox-navigation-dropin = "2.17.6"
 mockk = "1.13.11"
@@ -80,7 +79,6 @@ kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collec
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary-android" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
-mapbox-maps-android = { module = "com.mapbox.maps:android", version.ref = "mapbox-maps" }
 mapbox-navigation-android = { module = "com.mapbox.navigation:android", version.ref = "mapbox-navigation" }
 mapbox-navigation-dropin = { module = "com.mapbox.navigation:ui-dropin", version.ref = "mapbox-navigation-dropin" }
 material = { module = "com.google.android.material:material", version.ref = "google-material" }

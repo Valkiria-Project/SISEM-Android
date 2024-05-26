@@ -81,7 +81,6 @@ dependencies {
     implementation(libs.compressor)
 
     // Maps
-    api(libs.mapbox.maps.android)
     api(libs.mapbox.navigation.android)
     api(libs.mapbox.navigation.dropin)
 

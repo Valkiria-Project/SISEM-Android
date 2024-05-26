@@ -72,7 +72,11 @@ class MainActivity : ComponentActivity() {
             intent.getParcelableExtra(STARTUP_NAVIGATION_MODEL)
         }
 
-        MapboxNavigationApp.current()?.registerLocationObserver(locationObserver)
+        with(MapboxNavigationApp) {
+            attach(this@MainActivity)
+            current()?.registerLocationObserver(locationObserver)
+        }
+
         if (hasLocationPermission()) {
             Intent(applicationContext, LocationService::class.java).apply {
                 action = ACTION_START
