@@ -41,6 +41,7 @@ private const val KEY_VIA_RADIO_IDENTIFIER = "KEY_VIA_RADIO"
 private const val OTHERS = "OTHERS"
 private const val TRUE = "true"
 
+@Suppress("TooManyFunctions")
 @HiltViewModel
 class StretcherRetentionViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,

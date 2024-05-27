@@ -743,7 +743,7 @@ class MedicalHistoryViewModel @Inject constructor(
                                 options = it.options.map { imageButtonUiModel ->
                                     imageButtonUiModel.copy(
                                         selected = imageButtonUiModel.identifier ==
-                                                action.itemIdentifier
+                                            action.itemIdentifier
                                     )
                                 }
                             )
@@ -890,9 +890,9 @@ class MedicalHistoryViewModel @Inject constructor(
 
     private fun SnapshotStateMap<String, InputUiModel>.getPatientName(): String =
         this[FIRST_NAME_KEY]?.updatedValue.orEmpty() + " " +
-                this[SECOND_NAME_KEY]?.updatedValue.orEmpty() + " " +
-                this[LASTNAME_KEY]?.updatedValue.orEmpty() + " " +
-                this[SECOND_LASTNAME_KEY]?.updatedValue.orEmpty()
+            this[SECOND_NAME_KEY]?.updatedValue.orEmpty() + " " +
+            this[LASTNAME_KEY]?.updatedValue.orEmpty() + " " +
+            this[SECOND_LASTNAME_KEY]?.updatedValue.orEmpty()
 
     private fun SnapshotStateMap<String, InputUiModel>.getPatientDocument(): String =
         this[DOCUMENT_KEY]?.updatedValue.orEmpty()
@@ -980,7 +980,7 @@ class MedicalHistoryViewModel @Inject constructor(
         when (action.identifier) {
             ALIVE_KEY -> {
                 val visibility = (action.status && segmentedValues[ACCEPT_TRANSFER_KEY] == true) ||
-                        (action.status && segmentedValues[ACCEPT_TRANSFER_KEY] == false)
+                    (action.status && segmentedValues[ACCEPT_TRANSFER_KEY] == false)
 
                 allWithdrawalIdentifiers.keys.forEach { key ->
                     allWithdrawalIdentifiers[key] = visibility
