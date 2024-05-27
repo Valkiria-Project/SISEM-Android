@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.androidApplication)
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.daggerHilt)
     alias(libs.plugins.detekt)
@@ -17,8 +18,8 @@ android {
         applicationId = "com.skgtecnologia.sisem"
         minSdk = 30
         targetSdk = 34
-        versionCode = 55
-        versionName = "1.9.0"
+        versionCode = 56
+        versionName = "1.9.1"
         setProperty("archivesBaseName", "$applicationId-v$versionName($versionCode)")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -33,6 +34,7 @@ android {
             buildConfigField("String", "AUTH_BASE_URL", "\"https://test.emergencias-sisem.co/dev/sisem-api/\"")
             buildConfigField("String", "BASE_URL", "\"https://test.emergencias-sisem.co/dev/sisem-api/v1/\"")
             buildConfigField("String", "LOCATION_URL", "\"https://test.emergencias-sisem.co/dev/sisem-location-api/v1/\"")
+            buildConfigField("String", "REFRESH_URL", "\"https://admin.qa.sisembogota.com/auth/realms/sisem/protocol/openid-connect/token\"")
         }
         create("staging") {
             initWith(getByName("debug"))
@@ -40,6 +42,7 @@ android {
             buildConfigField("String", "AUTH_BASE_URL", "\"https://test.emergencias-sisem.co/qa/sisem-api/\"")
             buildConfigField("String", "BASE_URL", "\"https://test.emergencias-sisem.co/qa/sisem-api/v1/\"")
             buildConfigField("String", "LOCATION_URL", "\"https://test.emergencias-sisem.co/qa/sisem-location-api/v1/\"")
+            buildConfigField("String", "REFRESH_URL", "\"https://admin.qa.sisembogota.com/auth/realms/sisem/protocol/openid-connect/token\"")
         }
         create("preProd") {
             initWith(getByName("debug"))
@@ -48,6 +51,7 @@ android {
             buildConfigField("String", "AUTH_BASE_URL", "\"https://test.emergencias-sisem.co/preprod/sisem-api/\"")
             buildConfigField("String", "BASE_URL", "\"https://test.emergencias-sisem.co/preprod/sisem-api/v1/\"")
             buildConfigField("String", "LOCATION_URL", "\"https://test.emergencias-sisem.co/preprod/sisem-location-api/v1/\"")
+            buildConfigField("String", "REFRESH_URL", "\"https://admin.preprod.sisembogota.com/auth/realms/sisem/protocol/openid-connect/token\"")
         }
         release {
             isMinifyEnabled = false
@@ -55,14 +59,12 @@ android {
             buildConfigField("String", "AUTH_BASE_URL", "\"http://34.74.218.181/sisem-api/\"")
             buildConfigField("String", "BASE_URL", "\"http://34.74.218.181/sisem-api/v1/\"")
             buildConfigField("String", "LOCATION_URL", "\"http://34.74.218.181/sisem-location-api/v1/\"")
+            buildConfigField("String", "REFRESH_URL", "\"https://admin.prod.sisembogota.com/auth/realms/sisem/protocol/openid-connect/token\"")
         }
     }
     buildFeatures {
         buildConfig = true
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -90,6 +92,12 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
+
+composeCompiler {
+    enableStrongSkippingMode = true
+
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
 }
 
 dependencies {

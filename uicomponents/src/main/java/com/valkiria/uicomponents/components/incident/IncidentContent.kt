@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -44,6 +44,7 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.toTextStyle
 import com.valkiria.uicomponents.mocks.getIncidentAssignedModel
 import com.valkiria.uicomponents.utlis.DefType
+import com.valkiria.uicomponents.utlis.HOURS_MINUTES_SECONDS_24_HOURS_PATTERN
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDateFromUTC
 import com.valkiria.uicomponents.utlis.TimeUtils.getLocalTimeAsString
 import com.valkiria.uicomponents.utlis.getResourceIdByName
@@ -181,7 +182,12 @@ private fun IncidentDetails(address: String, premierOneDate: String, premierOneH
             Text(
                 text = getLocalDateFromUTC(premierOneDate)
                     .plus("\n")
-                    .plus(getLocalTimeAsString(premierOneHour)),
+                    .plus(
+                        getLocalTimeAsString(
+                            premierOneHour,
+                            HOURS_MINUTES_SECONDS_24_HOURS_PATTERN
+                        )
+                    ),
                 color = Color.White,
                 style = TextStyle.HEADLINE_4.toTextStyle().copy(
                     fontSize = 16.sp,
@@ -375,11 +381,11 @@ private fun IncidentTransmilenioRequest(transmiRequests: List<TransmiNotificatio
                     )
 
                     if (transmiNotification is TransmilenioDeniedNotification) {
-                        Divider(
-                            color = Color.White,
+                        HorizontalDivider(
                             modifier = Modifier
                                 .height(25.dp)
-                                .width(1.dp)
+                                .width(1.dp),
+                            color = Color.White
                         )
 
                         Text(

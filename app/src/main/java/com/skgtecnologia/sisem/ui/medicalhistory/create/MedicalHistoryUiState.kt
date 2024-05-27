@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.medicalhistory
+package com.skgtecnologia.sisem.ui.medicalhistory.create
 
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel

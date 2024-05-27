@@ -198,7 +198,7 @@ class MedicalHistoryViewViewModel @Inject constructor(
         )
     }
 
-    fun sendMedicalHistoryView(images: List<File>) {
+    fun sendMedicalHistoryView(images: List<File>, description: String?) {
         if (images.isEmpty()) {
             uiState = uiState.copy(
                 isLoading = false,
@@ -214,7 +214,8 @@ class MedicalHistoryViewViewModel @Inject constructor(
                             fileName = "Img_$idAph" + "_$index.jpg",
                             file = image
                         )
-                    }
+                    },
+                    description = description
                 ).onSuccess {
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(

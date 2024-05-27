@@ -26,10 +26,11 @@ interface MedicalHistoryRepository {
         imageButtonSectionValues: Map<String, String>,
         vitalSigns: Map<String, Map<String, String>>,
         infoCardButtonValues: List<Map<String, String>>,
-        images: List<ImageModel>
+        images: List<ImageModel>,
+        description: String? = null
     )
 
-    suspend fun saveAphFiles(idAph: String, images: List<ImageModel>)
+    suspend fun saveAphFiles(idAph: String, images: List<ImageModel>, description: String?)
 
     suspend fun getMedicalHistoryViewScreen(idAph: String): ScreenModel
 }
