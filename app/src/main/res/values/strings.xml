@@ -1,4 +1,6 @@
 <resources>
+    <string name="mapbox_access_token">sk.eyJ1Ijoic2lzZW0iLCJhIjoiY2xwa2l5bmxmMDB0NDJrankxeG4yZWowMSJ9.o6RJNwx7MDzeUDturbT1LA</string>
+
     <string name="default_notification_channel_id">notifications</string>
 
     <!-- Location tracking -->

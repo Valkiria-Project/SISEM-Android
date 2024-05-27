@@ -9,6 +9,7 @@ data class MedicalHistoryViewUiState(
     val screenModel: ScreenModel? = null,
     val operationConfig: OperationModel? = null,
     val selectedMediaItems: List<MediaItemUiModel> = listOf(),
+    val description: String? = null,
     val isLoading: Boolean = false,
     val infoEvent: BannerUiModel? = null,
     val errorEvent: BannerUiModel? = null,

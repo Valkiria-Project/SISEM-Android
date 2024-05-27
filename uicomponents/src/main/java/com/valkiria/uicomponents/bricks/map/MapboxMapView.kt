@@ -25,7 +25,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -61,7 +60,6 @@ import com.mapbox.navigation.base.route.RouterOrigin
 import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
 import com.mapbox.navigation.dropin.EmptyBinder
 import com.mapbox.navigation.dropin.NavigationView
-import com.mapbox.navigation.dropin.navigationview.NavigationViewListener
 import com.mapbox.navigation.ui.maps.NavigationStyles.NAVIGATION_NIGHT_STYLE
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.action.GenericUiAction.NotificationAction
@@ -275,19 +273,10 @@ private fun NavigationView.requestRoutes(
                 .profile(DirectionsCriteria.PROFILE_DRIVING_TRAFFIC)
                 .overview(DirectionsCriteria.OVERVIEW_FULL)
                 .roundaboutExits(false)
-                .voiceInstructions(true)
+                .voiceInstructions(false)
                 .bannerInstructions(false)
                 .applyLanguageAndVoiceUnitOptions(context)
-                .apply {
-                    val coordinatesList = if (destinationPoint != null) {
-                        listOf(locationPoint, destinationPoint)
-                    } else {
-                        listOf(locationPoint)
-                    }
-
-                    coordinatesList(coordinatesList)
-                }
-                .voiceUnits(DirectionsCriteria.METRIC)
+                .coordinatesList(listOf(locationPoint, destinationPoint))
                 .alternatives(false)
                 .build(),
             callback = object : NavigationRouterCallback {

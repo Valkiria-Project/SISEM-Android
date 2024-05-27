@@ -87,7 +87,7 @@ class SendMedicalHistoryTest {
                 any(),
                 any(),
                 any(),
-                any()
+                any(),
             )
         } throws Exception()
 

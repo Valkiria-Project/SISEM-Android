@@ -44,7 +44,8 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
         imageButtonSectionValues: Map<String, String>,
         vitalSigns: Map<String, Map<String, String>>,
         infoCardButtonValues: List<Map<String, String>>,
-        images: List<ImageModel>
+        images: List<ImageModel>,
+        description: String?
     ) = medicalHistoryRemoteDataSource.sendMedicalHistory(
         idTurn = authCacheDataSource.observeAccessToken().first()?.turn?.id.toString(),
         idAph = idAph,
@@ -61,7 +62,7 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
         infoCardButtonValues = infoCardButtonValues
     ).onSuccess {
         if (images.isNotEmpty()) {
-            medicalHistoryRemoteDataSource.saveAphFiles(idAph, images).getOrThrow()
+            medicalHistoryRemoteDataSource.saveAphFiles(idAph, images, description).getOrThrow()
         }
 
         val incident = checkNotNull(incidentCacheDataSource.observeActiveIncident().first())
@@ -72,8 +73,11 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
         incidentCacheDataSource.updatePatientStatus(incident.id!!, patients)
     }.getOrThrow()
 
-    override suspend fun saveAphFiles(idAph: String, images: List<ImageModel>) =
-        medicalHistoryRemoteDataSource.saveAphFiles(idAph, images).getOrThrow()
+    override suspend fun saveAphFiles(
+        idAph: String,
+        images: List<ImageModel>,
+        description: String?
+    ) = medicalHistoryRemoteDataSource.saveAphFiles(idAph, images, description).getOrThrow()
 
     override suspend fun getMedicalHistoryViewScreen(idAph: String): ScreenModel =
         medicalHistoryRemoteDataSource.getMedicalHistoryViewScreen(

@@ -31,35 +31,35 @@ android {
         debug {
             applicationIdSuffix = ".debug"
             isDebuggable = true
-            buildConfigField("String", "ENV", "\"dev\"")
             buildConfigField("String", "AUTH_BASE_URL", "\"https://test.emergencias-sisem.co/dev/sisem-api/\"")
             buildConfigField("String", "BASE_URL", "\"https://test.emergencias-sisem.co/dev/sisem-api/v1/\"")
             buildConfigField("String", "LOCATION_URL", "\"https://test.emergencias-sisem.co/dev/sisem-location-api/v1/\"")
+            buildConfigField("String", "REFRESH_URL", "\"https://admin.qa.sisembogota.com/auth/realms/sisem/protocol/openid-connect/token\"")
         }
         create("staging") {
             initWith(getByName("debug"))
             applicationIdSuffix = ".debugStaging"
-            buildConfigField("String", "ENV", "\"qa\"")
             buildConfigField("String", "AUTH_BASE_URL", "\"https://test.emergencias-sisem.co/qa/sisem-api/\"")
             buildConfigField("String", "BASE_URL", "\"https://test.emergencias-sisem.co/qa/sisem-api/v1/\"")
             buildConfigField("String", "LOCATION_URL", "\"https://test.emergencias-sisem.co/qa/sisem-location-api/v1/\"")
+            buildConfigField("String", "REFRESH_URL", "\"https://admin.qa.sisembogota.com/auth/realms/sisem/protocol/openid-connect/token\"")
         }
         create("preProd") {
             initWith(getByName("debug"))
             isDebuggable = true
             applicationIdSuffix = ".preProd"
-            buildConfigField("String", "ENV", "\"preprod\"")
             buildConfigField("String", "AUTH_BASE_URL", "\"https://test.emergencias-sisem.co/preprod/sisem-api/\"")
             buildConfigField("String", "BASE_URL", "\"https://test.emergencias-sisem.co/preprod/sisem-api/v1/\"")
             buildConfigField("String", "LOCATION_URL", "\"https://test.emergencias-sisem.co/preprod/sisem-location-api/v1/\"")
+            buildConfigField("String", "REFRESH_URL", "\"https://admin.preprod.sisembogota.com/auth/realms/sisem/protocol/openid-connect/token\"")
         }
         release {
             isMinifyEnabled = false
-            buildConfigField("String", "ENV", "\"prod\"")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("String", "AUTH_BASE_URL", "\"http://34.74.218.181/sisem-api/\"")
             buildConfigField("String", "BASE_URL", "\"http://34.74.218.181/sisem-api/v1/\"")
             buildConfigField("String", "LOCATION_URL", "\"http://34.74.218.181/sisem-location-api/v1/\"")
+            buildConfigField("String", "REFRESH_URL", "\"https://admin.prod.sisembogota.com/auth/realms/sisem/protocol/openid-connect/token\"")
         }
     }
     buildFeatures {

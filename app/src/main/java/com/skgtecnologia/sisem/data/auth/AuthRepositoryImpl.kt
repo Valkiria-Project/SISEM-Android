@@ -69,7 +69,6 @@ class AuthRepositoryImpl @Inject constructor(
                 val token = currentToken.copy(
                     accessToken = refreshTokenModel.accessToken,
                     refreshToken = refreshTokenModel.refreshToken,
-                    isAdmin = refreshTokenModel.isAdmin
                 )
                 token
             }.onSuccess { accessTokenModel ->
