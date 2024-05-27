@@ -51,7 +51,7 @@ fun MapScreen(
     }
 
     val incident by remember(uiState.incident) {
-        mutableStateOf(viewModel.uiState.incident)
+        mutableStateOf(uiState.incident)
     }
 
     BackHandler {
@@ -69,9 +69,9 @@ fun MapScreen(
         }
     ) {
         MapboxMapView(
-            coordinates = viewModel.uiState.location,
+            coordinates = uiState.location,
             incident = incident,
-            notifications = viewModel.uiState.notifications,
+            notifications = uiState.notifications,
             drawerState = drawerState,
             notificationData = notificationData,
             incidentErrorData = incidentErrorData,

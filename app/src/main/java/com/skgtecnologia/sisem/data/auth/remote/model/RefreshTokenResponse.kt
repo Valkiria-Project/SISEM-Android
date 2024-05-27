@@ -6,15 +6,13 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class RefreshTokenResponse(
-    @Json(name = "token") val accessToken: String,
+    @Json(name = "access_token") val accessToken: String,
     @Json(name = "refresh_token") val refreshToken: String,
-    @Json(name = "type") val tokenType: String,
-    @Json(name = "is_admin") val isAdmin: Boolean
+    @Json(name = "token_type") val tokenType: String
 )
 
 fun RefreshTokenResponse.mapToDomain(): RefreshTokenModel = RefreshTokenModel(
     accessToken = accessToken,
     refreshToken = refreshToken,
-    tokenType = tokenType,
-    isAdmin = isAdmin
+    tokenType = tokenType
 )

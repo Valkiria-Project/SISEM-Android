@@ -91,9 +91,13 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
         )
     }
 
-    suspend fun saveAphFiles(idAph: String, images: List<ImageModel>): Result<Unit> = apiCall {
+    suspend fun saveAphFiles(
+        idAph: String,
+        images: List<ImageModel>,
+        description: String? = null
+    ): Result<Unit> = apiCall {
         medicalHistoryApi.saveAphFiles(
-            idAph = idAph.toLong(),
+            idAph = idAph.createRequestBody(),
             files = images.map { imageModel ->
                 val requestFile = imageModel.file.createRequestBody()
                 MultipartBody.Part.createFormData(
@@ -101,7 +105,8 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
                     imageModel.file.name,
                     requestFile
                 )
-            }
+            },
+            description = description?.createRequestBody()
         )
     }
 

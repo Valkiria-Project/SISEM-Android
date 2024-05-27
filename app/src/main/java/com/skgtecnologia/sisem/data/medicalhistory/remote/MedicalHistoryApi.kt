@@ -4,6 +4,7 @@ import com.skgtecnologia.sisem.data.medicalhistory.remote.model.MedicalHistoryBo
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Multipart
@@ -27,8 +28,9 @@ interface MedicalHistoryApi {
     @Multipart
     @POST("aph/files")
     suspend fun saveAphFiles(
-        @Part("id_aph") idAph: Long,
-        @Part files: List<MultipartBody.Part>
+        @Part("id_aph") idAph: RequestBody,
+        @Part files: List<MultipartBody.Part>,
+        @Part("novelty") description: RequestBody?
     ): Response<Unit>
 
     @POST("screen/aph-view")

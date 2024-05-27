@@ -9,7 +9,11 @@ class SaveAphFiles @Inject constructor(
     private val medicalHistoryRepository: MedicalHistoryRepository
 ) {
 
-    suspend operator fun invoke(idAph: String, images: List<ImageModel>): Result<Unit> = resultOf {
-        medicalHistoryRepository.saveAphFiles(idAph, images)
+    suspend operator fun invoke(
+        idAph: String,
+        images: List<ImageModel>,
+        description: String?
+    ): Result<Unit> = resultOf {
+        medicalHistoryRepository.saveAphFiles(idAph, images, description)
     }
 }

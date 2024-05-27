@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.detekt)
     alias(libs.plugins.ktlint)
@@ -31,9 +32,6 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -48,6 +46,12 @@ android {
             "plugin:androidx.compose.compiler.plugins.kotlin:experimentalStrongSkipping=true",
         )
     }
+}
+
+composeCompiler {
+    enableStrongSkippingMode = true
+
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
 }
 
 dependencies {
@@ -77,7 +81,6 @@ dependencies {
     implementation(libs.compressor)
 
     // Maps
-    api(libs.mapbox.maps.android)
     api(libs.mapbox.navigation.android)
     api(libs.mapbox.navigation.dropin)
 

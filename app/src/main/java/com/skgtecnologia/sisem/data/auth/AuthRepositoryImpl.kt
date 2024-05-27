@@ -69,7 +69,6 @@ class AuthRepositoryImpl @Inject constructor(
                 val token = currentToken.copy(
                     accessToken = refreshTokenModel.accessToken,
                     refreshToken = refreshTokenModel.refreshToken,
-                    isAdmin = refreshTokenModel.isAdmin
                 )
                 token
             }.onSuccess { accessTokenModel ->
@@ -108,7 +107,6 @@ class AuthRepositoryImpl @Inject constructor(
 
         return authRemoteDataSource.logout(username)
             .onSuccess {
-                authCacheDataSource.deleteAccessTokenByUsername(username = username)
                 authCacheDataSource.observeAccessToken().first()?.let { accessToken ->
                     authCacheDataSource.storeAccessToken(
                         accessToken.copy(

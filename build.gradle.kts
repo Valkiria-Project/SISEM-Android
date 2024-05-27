@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.benManesversions) apply true
+    alias(libs.plugins.composeCompiler) apply false
     alias(libs.plugins.daggerHilt) apply false
     alias(libs.plugins.detekt) apply true
     alias(libs.plugins.googleServices) apply false

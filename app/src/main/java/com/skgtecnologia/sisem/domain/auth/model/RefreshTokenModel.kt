@@ -4,5 +4,5 @@ data class RefreshTokenModel(
     val accessToken: String,
     val refreshToken: String,
     val tokenType: String,
-    val isAdmin: Boolean
+    val isAdmin: Boolean? = null
 )

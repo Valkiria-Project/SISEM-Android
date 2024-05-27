@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.medicalhistory
+package com.skgtecnologia.sisem.ui.medicalhistory.create
 
 import androidx.navigation.NavHostController
 import com.skgtecnologia.sisem.ui.navigation.AphNavigationRoute
