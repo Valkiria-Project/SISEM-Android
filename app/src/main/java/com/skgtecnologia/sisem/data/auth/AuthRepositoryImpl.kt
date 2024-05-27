@@ -107,7 +107,6 @@ class AuthRepositoryImpl @Inject constructor(
 
         return authRemoteDataSource.logout(username)
             .onSuccess {
-                authCacheDataSource.deleteAccessTokenByUsername(username = username)
                 authCacheDataSource.observeAccessToken().first()?.let { accessToken ->
                     authCacheDataSource.storeAccessToken(
                         accessToken.copy(

@@ -34,6 +34,13 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
+private const val KEY_REASON_IDENTIFIER = "KEY_REASON"
+private const val KEY_WHICH_IDENTIFIER = "KEY_WHICH"
+private const val KEY_INFORMED_IDENTIFIER = "KEY_INFORMED"
+private const val KEY_VIA_RADIO_IDENTIFIER = "KEY_VIA_RADIO"
+private const val OTHERS = "OTHERS"
+private const val TRUE = "true"
+
 @HiltViewModel
 class StretcherRetentionViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
@@ -62,9 +69,15 @@ class StretcherRetentionViewModel @Inject constructor(
                 .onSuccess { stretcherRetentionScreen ->
                     stretcherRetentionScreen.getFormInitialValues()
 
+                    val updatedBody = updateReasonSelection(
+                        uiModels = stretcherRetentionScreen.body
+                    )
+
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
-                            screenModel = stretcherRetentionScreen,
+                            screenModel = stretcherRetentionScreen.copy(
+                                body = updatedBody
+                            ),
                             isLoading = false
                         )
                     }
@@ -78,6 +91,30 @@ class StretcherRetentionViewModel @Inject constructor(
                         )
                     }
                 }
+        }
+    }
+
+    private fun updateReasonSelection(
+        uiModels: List<BodyRowModel>? = uiState.screenModel?.body
+    ): List<BodyRowModel> {
+        return uiModels.orEmpty().map { model ->
+            if (model is TextFieldUiModel && model.identifier == KEY_WHICH_IDENTIFIER) {
+                val chipSelection = uiModels
+                    ?.filterIsInstance<ChipSelectionUiModel>()
+                    ?.find { it.identifier == KEY_REASON_IDENTIFIER && it.selected == OTHERS }
+
+                model.copy(visibility = chipSelection != null)
+            } else if (
+                model is ChipSelectionUiModel && model.identifier == KEY_VIA_RADIO_IDENTIFIER
+            ) {
+                val chipSelection = uiModels
+                    ?.filterIsInstance<ChipSelectionUiModel>()
+                    ?.find { it.identifier == KEY_INFORMED_IDENTIFIER && it.selected == TRUE }
+
+                model.copy(visibility = chipSelection != null)
+            } else {
+                model
+            }
         }
     }
 

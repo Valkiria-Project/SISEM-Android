@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.medicalhistory
+package com.skgtecnologia.sisem.ui.medicalhistory.create
 
 import android.content.Context
 import androidx.compose.foundation.layout.fillMaxSize

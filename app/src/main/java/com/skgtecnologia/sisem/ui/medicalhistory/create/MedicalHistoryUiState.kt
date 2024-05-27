@@ -1,7 +1,8 @@
-package com.skgtecnologia.sisem.ui.medicalhistory
+package com.skgtecnologia.sisem.ui.medicalhistory.create
 
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import com.skgtecnologia.sisem.ui.medicalhistory.create.MedicalHistoryNavigationModel
 import com.valkiria.uicomponents.bricks.banner.BannerUiModel
 import com.valkiria.uicomponents.components.media.MediaItemUiModel
 

@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.medicalhistory
+package com.skgtecnologia.sisem.ui.medicalhistory.create
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
@@ -123,7 +123,7 @@ import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.utlis.DATE_PATTERN
 import com.valkiria.uicomponents.utlis.DATE_TIME_PATTERN
 import com.valkiria.uicomponents.utlis.HOURS_MINUTES_SECONDS_24_HOURS_PATTERN
-import com.valkiria.uicomponents.utlis.TimeUtils.getLocalDate
+import com.valkiria.uicomponents.utlis.TimeUtils
 import com.valkiria.uicomponents.utlis.WEEK_DAYS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -743,7 +743,7 @@ class MedicalHistoryViewModel @Inject constructor(
                                 options = it.options.map { imageButtonUiModel ->
                                     imageButtonUiModel.copy(
                                         selected = imageButtonUiModel.identifier ==
-                                            action.itemIdentifier
+                                                action.itemIdentifier
                                     )
                                 }
                             )
@@ -890,9 +890,9 @@ class MedicalHistoryViewModel @Inject constructor(
 
     private fun SnapshotStateMap<String, InputUiModel>.getPatientName(): String =
         this[FIRST_NAME_KEY]?.updatedValue.orEmpty() + " " +
-            this[SECOND_NAME_KEY]?.updatedValue.orEmpty() + " " +
-            this[LASTNAME_KEY]?.updatedValue.orEmpty() + " " +
-            this[SECOND_LASTNAME_KEY]?.updatedValue.orEmpty()
+                this[SECOND_NAME_KEY]?.updatedValue.orEmpty() + " " +
+                this[LASTNAME_KEY]?.updatedValue.orEmpty() + " " +
+                this[SECOND_LASTNAME_KEY]?.updatedValue.orEmpty()
 
     private fun SnapshotStateMap<String, InputUiModel>.getPatientDocument(): String =
         this[DOCUMENT_KEY]?.updatedValue.orEmpty()
@@ -941,7 +941,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
     private fun calculateEstimatedDueDate(): String {
         val fur = fieldsValues[FUR_KEY]?.updatedValue.orEmpty()
-        val furDate = getLocalDate(fur).plusDays(SEVEN_DAYS)
+        val furDate = TimeUtils.getLocalDate(fur).plusDays(SEVEN_DAYS)
         val estimatedDueDate = furDate.plusMonths(NINE_MONTHS)
 
         return estimatedDueDate.format(DateTimeFormatter.ofPattern(DATE_PATTERN))
@@ -980,7 +980,7 @@ class MedicalHistoryViewModel @Inject constructor(
         when (action.identifier) {
             ALIVE_KEY -> {
                 val visibility = (action.status && segmentedValues[ACCEPT_TRANSFER_KEY] == true) ||
-                    (action.status && segmentedValues[ACCEPT_TRANSFER_KEY] == false)
+                        (action.status && segmentedValues[ACCEPT_TRANSFER_KEY] == false)
 
                 allWithdrawalIdentifiers.keys.forEach { key ->
                     allWithdrawalIdentifiers[key] = visibility
@@ -1381,7 +1381,7 @@ class MedicalHistoryViewModel @Inject constructor(
     }
 
     private fun calculateGestationWeeks(): String {
-        val fur = getLocalDate(fieldsValues[FUR_KEY]?.updatedValue.orEmpty())
+        val fur = TimeUtils.getLocalDate(fieldsValues[FUR_KEY]?.updatedValue.orEmpty())
         val now = LocalDate.now()
         return ((now.toEpochDay() - fur.toEpochDay()) / WEEK_DAYS).toString()
     }
