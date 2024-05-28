@@ -24,27 +24,27 @@ class NotificationCacheDataSource @Inject constructor(
         notificationDao.insertNotification(notification.mapToCache())
 
     @CheckResult
-    fun getActiveIncidentNotification(): Flow<IncidentAssignedNotification>? =
+    fun getActiveIncidentNotification(): Flow<IncidentAssignedNotification> =
         notificationDao.observeNotifications()
-            ?.map { notifications ->
+            .map { notifications ->
                 notifications?.map {
                     it.mapToDomain()
                 }
             }
-            ?.filterIsInstance(IncidentAssignedNotification::class)
-            ?.catch { throwable ->
+            .filterIsInstance(IncidentAssignedNotification::class)
+            .catch { throwable ->
                 error("error observing the notifications ${throwable.localizedMessage}")
             }
-            ?.flowOn(Dispatchers.IO)
+            .flowOn(Dispatchers.IO)
 
     @CheckResult
-    fun observeNotifications(): Flow<List<NotificationUiModel>?>? =
+    fun observeNotifications(): Flow<List<NotificationUiModel>?> =
         notificationDao.observeNotifications()
-            ?.map { notifications ->
+            .map { notifications ->
                 notifications?.map { it.mapToDomain()?.mapToUi() ?: error("Map error") }
             }
-            ?.catch { throwable ->
+            .catch { throwable ->
                 error("error observing the notifications ${throwable.localizedMessage}")
             }
-            ?.flowOn(Dispatchers.IO)
+            .flowOn(Dispatchers.IO)
 }

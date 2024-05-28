@@ -8,6 +8,7 @@ import com.skgtecnologia.sisem.domain.location.LocationRepository
 import com.valkiria.uicomponents.utlis.TimeUtils
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
+import timber.log.Timber
 import java.time.Instant
 import javax.inject.Inject
 
@@ -21,9 +22,11 @@ class LocationRepositoryImpl @Inject constructor(
 ) : LocationRepository {
 
     override suspend fun updateLocation(latitude: Double, longitude: Double) {
-        val currentIncidentNotification = notificationCacheDataSource
-            .getActiveIncidentNotification()
-            ?.first()
+        val currentIncidentNotification = runCatching {
+            notificationCacheDataSource
+                .getActiveIncidentNotification()
+//                .firstOrNull()
+        }.onFailure { Timber.wtf(it.localizedMessage) }
 
         locationRemoteDataSource.sendUpdatedLocation(
             idVehicle = operationCacheDataSource
@@ -35,7 +38,7 @@ class LocationRepositoryImpl @Inject constructor(
             latitude = latitude,
             longitude = longitude,
             originAt = TimeUtils.getLocalDateTime(Instant.now()).toString(),
-            idIncident = currentIncidentNotification?.incidentNumber
+            idIncident = null
         )
     }
 }
