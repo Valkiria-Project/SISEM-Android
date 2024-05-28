@@ -17,6 +17,7 @@ import com.valkiria.uicomponents.bricks.notification.model.TransmiNotification
 import com.valkiria.uicomponents.components.incident.model.IncidentPriority
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -44,7 +45,7 @@ class NotificationRepositoryImpl @Inject constructor(
 
     private suspend fun handleClosingAPHNotificationNotification() {
         val currentIncidentNotification = checkNotNull(
-            notificationCacheDataSource.getActiveIncidentNotification()?.first()
+            notificationCacheDataSource.getActiveIncidentNotification()
         )
         val currentIncident = checkNotNull(incidentCacheDataSource.observeActiveIncident().first())
 

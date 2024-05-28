@@ -23,6 +23,7 @@ class AccessTokenAuthenticator @Inject constructor(
 
     private var retryCount = 0
 
+    @Suppress("ComplexMethod")
     override fun authenticate(route: Route?, response: Response): Request? {
         return if (response.isUnauthorized() && retryCount < MAX_ATTEMPTS) {
             retryCount++
