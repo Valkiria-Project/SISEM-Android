@@ -15,7 +15,8 @@ class LocationRemoteDataSource @Inject constructor(
         idOrigin: Int,
         latitude: Double,
         longitude: Double,
-        originAt: String
+        originAt: String,
+        idIncident: String?
     ): Result<Unit> = apiCall {
         locationApi.updateLocation(
             locationBody = LocationBody(
@@ -24,7 +25,8 @@ class LocationRemoteDataSource @Inject constructor(
                 idOrigin = idOrigin,
                 latitude = latitude,
                 longitude = longitude,
-                originAt = originAt
+                originAt = originAt,
+                idIncident = idIncident
             )
         )
     }

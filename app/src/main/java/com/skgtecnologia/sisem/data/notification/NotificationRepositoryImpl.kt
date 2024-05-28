@@ -44,7 +44,7 @@ class NotificationRepositoryImpl @Inject constructor(
 
     private suspend fun handleClosingAPHNotificationNotification() {
         val currentIncidentNotification = checkNotNull(
-            notificationCacheDataSource.getActiveIncidentNotification()?.first()
+            notificationCacheDataSource.getActiveIncidentNotification()
         )
         val currentIncident = checkNotNull(incidentCacheDataSource.observeActiveIncident().first())
 
