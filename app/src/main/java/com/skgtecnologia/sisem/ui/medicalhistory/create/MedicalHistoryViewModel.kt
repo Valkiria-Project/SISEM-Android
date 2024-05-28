@@ -1012,13 +1012,26 @@ class MedicalHistoryViewModel @Inject constructor(
 
                 updateBodyModel(
                     uiModels = transformedBody,
-                    identifier = SIGN_PERSON_CHARGE_KEY
+                    identifiers = listOf(SIGN_PERSON_CHARGE_KEY, AUTH_NAME_KEY)
                 ) { model ->
-                    if (model is SignatureUiModel) {
-                        if (!action.status) signatureValues.remove(SIGN_PERSON_CHARGE_KEY)
-                        model.copy(required = action.status)
-                    } else {
-                        model
+                    when (model) {
+                        is SignatureUiModel -> {
+                            if (!action.status) signatureValues.remove(SIGN_PERSON_CHARGE_KEY)
+                            model.copy(
+                                visibility = true,
+                                required = action.status
+                            )
+                        }
+
+                        is LabelUiModel -> {
+                            model.copy(
+                                visibility = true
+                            )
+                        }
+
+                        else -> {
+                            model
+                        }
                     }
                 }.also { body -> transformedBody = body }
             }
