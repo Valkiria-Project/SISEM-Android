@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.data.location
 
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
-import com.skgtecnologia.sisem.data.incident.cache.IncidentCacheDataSource
 import com.skgtecnologia.sisem.data.location.remote.LocationRemoteDataSource
 import com.skgtecnologia.sisem.data.notification.cache.NotificationCacheDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
