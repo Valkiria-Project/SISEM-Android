@@ -260,6 +260,7 @@ class ReportViewModelTest {
     fun `when confirmReport is called successInfoModel is not null`() = runTest {
         val operationModel = mockk<OperationModel>()
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
+        coEvery { sendReport.invoke(any(), any(), any(), any()) } returns Result.success(Unit)
 
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
         viewModel.confirmReport()
