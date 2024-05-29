@@ -99,10 +99,12 @@ private suspend fun Context.storeUriAsFileToCache(uri: Uri): File {
     return file
 }
 
+private const val BYTES_PER_MEGABYTE = 1024
+
 @Throws(IllegalStateException::class)
 private suspend fun Context.compressFile(file: File, maxFileSizeKb: String? = null): File {
     val allowedFileSize = getFileAllowedSize(maxFileSizeKb)
-    val fileSizeKb = file.length() / 1024
+    val fileSizeKb = file.length() / BYTES_PER_MEGABYTE
 
     if (fileSizeKb > allowedFileSize) {
         Timber.d("$fileSizeKb is larger than $allowedFileSize")
