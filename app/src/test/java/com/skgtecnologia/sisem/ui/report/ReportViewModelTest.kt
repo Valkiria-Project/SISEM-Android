@@ -260,6 +260,7 @@ class ReportViewModelTest {
     fun `when confirmReport is called successInfoModel is not null`() = runTest {
         val operationModel = mockk<OperationModel>()
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
+        coEvery { sendReport.invoke(any(), any(), any(), any()) } returns Result.success(Unit)
 
         viewModel = ReportViewModel(observeOperationConfig, sendReport)
         viewModel.confirmReport()
@@ -500,7 +501,7 @@ class ReportViewModelTest {
         viewModel.showCamera(true)
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.showCamera)
-        Assert.assertEquals(true, viewModel.uiState.navigationModel?.isFromPreOperational)
+        Assert.assertEquals(true, viewModel.uiState.isFromPreOperational)
     }
 
     @Test
@@ -512,7 +513,7 @@ class ReportViewModelTest {
         viewModel.showCamera(false)
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.showCamera)
-        Assert.assertEquals(false, viewModel.uiState.navigationModel?.isFromPreOperational)
+        Assert.assertEquals(false, viewModel.uiState.isFromPreOperational)
     }
 
     @Test

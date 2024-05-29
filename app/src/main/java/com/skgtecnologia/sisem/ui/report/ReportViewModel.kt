@@ -199,12 +199,34 @@ class ReportViewModel @Inject constructor(
     }
 
     fun confirmReport() {
-        uiState = uiState.copy(
-            successInfoModel = reportSentBanner().mapToUi(),
-            navigationModel = ReportNavigationModel(
-                closeReport = true
-            )
-        )
+        job?.cancel()
+        job = viewModelScope.launch {
+            sendReport.invoke(
+                roleName = uiState.roleName,
+                topic = topic,
+                description = description,
+                images = listOf()
+            ).onSuccess {
+                withContext(Dispatchers.Main) {
+                    uiState = uiState.copy(
+                        confirmInfoModel = null,
+                        successInfoModel = reportSentBanner().mapToUi(),
+                        isLoading = false,
+                        navigationModel = ReportNavigationModel(
+                            closeReport = true
+                        )
+                    )
+                }
+            }.onFailure { throwable ->
+                withContext(Dispatchers.Main) {
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        confirmInfoModel = null,
+                        infoEvent = throwable.mapToUi()
+                    )
+                }
+            }
+        }
     }
 
     fun saveReportImages() {
