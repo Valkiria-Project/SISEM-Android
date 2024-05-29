@@ -14,5 +14,6 @@ data class ReportUiState(
     val validateFields: Boolean = false,
     val isLoading: Boolean = false,
     val infoEvent: BannerUiModel? = null,
+    val isFromPreOperational: Boolean = true,
     val navigationModel: ReportNavigationModel? = null
 )

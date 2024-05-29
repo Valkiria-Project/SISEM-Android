@@ -48,20 +48,6 @@ class ReportViewModel @Inject constructor(
     var isValidDescription by mutableStateOf(false)
     var currentImage by mutableIntStateOf(0)
 
-    private fun getImageLimit(isFromPreOperational: Boolean) = if (isFromPreOperational.not()) {
-        uiState.operationConfig?.numImgNovelty ?: 0
-    } else {
-        when (uiState.operationConfig?.operationRole) {
-            OperationRole.AUXILIARY_AND_OR_TAPH ->
-                uiState.operationConfig?.numImgPreoperationalAux ?: 0
-
-            OperationRole.DRIVER -> uiState.operationConfig?.numImgPreoperationalDriver ?: 0
-            OperationRole.LEAD_APH -> 0
-            OperationRole.MEDIC_APH -> uiState.operationConfig?.numImgPreoperationalDoctor ?: 0
-            null -> 0
-        }
-    }
-
     init {
         uiState = uiState.copy(isLoading = true)
 
@@ -265,6 +251,20 @@ class ReportViewModel @Inject constructor(
     }
     // endregion
 
+    private fun getImageLimit(isFromPreOperational: Boolean) = if (isFromPreOperational.not()) {
+        uiState.operationConfig?.numImgNovelty ?: 0
+    } else {
+        when (uiState.operationConfig?.operationRole) {
+            OperationRole.AUXILIARY_AND_OR_TAPH ->
+                uiState.operationConfig?.numImgPreoperationalAux ?: 0
+
+            OperationRole.DRIVER -> uiState.operationConfig?.numImgPreoperationalDriver ?: 0
+            OperationRole.LEAD_APH -> 0
+            OperationRole.MEDIC_APH -> uiState.operationConfig?.numImgPreoperationalDoctor ?: 0
+            null -> 0
+        }
+    }
+
     // region ImageConfirmation
     fun updateMediaActions(
         mediaItems: List<MediaItemUiModel>,
@@ -278,6 +278,11 @@ class ReportViewModel @Inject constructor(
                 if (imageLimit <= (uiState.selectedMediaItems.size + index)) {
                     uiState = uiState.copy(
                         infoEvent = imagesLimitErrorBanner(imageLimit).mapToUi()
+                    )
+                    return@forEachIndexed
+                } else if (!image.isSizeValid) {
+                    uiState = uiState.copy(
+                        infoEvent = fileSizeErrorBanner().mapToUi()
                     )
                     return@forEachIndexed
                 } else {
@@ -308,8 +313,8 @@ class ReportViewModel @Inject constructor(
 
     fun showCamera(isFromPreOperational: Boolean) {
         uiState = uiState.copy(
+            isFromPreOperational = isFromPreOperational,
             navigationModel = ReportNavigationModel(
-                isFromPreOperational = isFromPreOperational,
                 showCamera = true
             )
         )
@@ -317,9 +322,9 @@ class ReportViewModel @Inject constructor(
 
     fun onPhotoTaken(mediaItemUiModel: MediaItemUiModel) {
         val imageLimit = getImageLimit(
-            uiState.navigationModel?.isFromPreOperational == true
+            uiState.isFromPreOperational
         )
-        val isOverImageLimit = imageLimit < uiState.selectedMediaItems.size
+        val isOverImageLimit = uiState.selectedMediaItems.size >= imageLimit
 
         val updatedSelectedImages = buildList {
             addAll(uiState.selectedMediaItems)
