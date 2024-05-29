@@ -11,7 +11,6 @@ data class MediaActionsUiModel(
     val selectedMediaUris: List<String> = listOf(),
     val visibility: Boolean = true,
     val required: Boolean = false,
-    val maxFileSizeKb: String? = "30000000",
     val modifier: Modifier = Modifier
 ) : BodyRowModel {
 

@@ -11,7 +11,6 @@ import com.skgtecnologia.sisem.ui.navigation.REPORT
 import com.skgtecnologia.sisem.ui.navigation.ReportNavigationRoute
 
 data class ReportNavigationModel(
-    val isFromPreOperational: Boolean = true,
     val goBackFromReport: Boolean = false,
     val goBackFromImages: Boolean = false,
     val showCamera: Boolean = false,
