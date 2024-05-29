@@ -500,7 +500,7 @@ class ReportViewModelTest {
         viewModel.showCamera(true)
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.showCamera)
-        Assert.assertEquals(true, viewModel.uiState.navigationModel?.isFromPreOperational)
+        Assert.assertEquals(true, viewModel.uiState.isFromPreOperational)
     }
 
     @Test
@@ -512,7 +512,7 @@ class ReportViewModelTest {
         viewModel.showCamera(false)
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.showCamera)
-        Assert.assertEquals(false, viewModel.uiState.navigationModel?.isFromPreOperational)
+        Assert.assertEquals(false, viewModel.uiState.isFromPreOperational)
     }
 
     @Test
