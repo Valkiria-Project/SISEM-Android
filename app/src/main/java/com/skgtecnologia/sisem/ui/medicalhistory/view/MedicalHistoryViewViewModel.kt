@@ -35,6 +35,7 @@ import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 @HiltViewModel
 class MedicalHistoryViewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
