@@ -33,7 +33,7 @@ fun FusedLocationProviderClient.locationFlow() = callbackFlow<Location> {
                 try {
                     trySend(location).isSuccess
                 } catch (t: Throwable) {
-                    Timber.wtf(t, "Location couldn't be sent to the flow")
+                    Timber.tag("Location").wtf(t, "Location couldn't be sent to the flow")
                 }
             }
         }

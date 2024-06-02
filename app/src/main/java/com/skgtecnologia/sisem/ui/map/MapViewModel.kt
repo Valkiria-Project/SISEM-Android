@@ -49,7 +49,7 @@ class MapViewModel @Inject constructor(
                 Timber.d("Unable to get location $e")
             }
             .onEach { location ->
-                Timber.d("Location: ${location.longitude} with ${location.latitude}")
+                Timber.tag("Location").d("Location: ${location.longitude} with ${location.latitude}")
                 uiState = uiState.copy(
                     location = location.longitude to location.latitude
                 )

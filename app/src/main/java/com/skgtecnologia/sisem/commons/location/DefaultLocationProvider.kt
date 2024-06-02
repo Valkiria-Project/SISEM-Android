@@ -29,6 +29,7 @@ class DefaultLocationProvider(
     override fun getLocationUpdates(interval: Long): Flow<Location> {
         return callbackFlow {
             validateOrThrow(context.hasLocationPermission()) {
+                Timber.tag("Location").d("Missing location permissions")
                 LocationProvider.LocationException("Missing location permissions")
             }
 
@@ -53,7 +54,7 @@ class DefaultLocationProvider(
                 override fun onLocationResult(result: LocationResult) {
                     super.onLocationResult(result)
 
-                    Timber.d("Location result: ${result.lastLocation}")
+                    Timber.tag("Location").d("Location result: ${result.lastLocation}")
                     result.locations.lastOrNull()?.let { location ->
                         launch { send(location) }
                     }
