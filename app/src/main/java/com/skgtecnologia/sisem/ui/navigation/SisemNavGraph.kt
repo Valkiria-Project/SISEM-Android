@@ -20,6 +20,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.skgtecnologia.sisem.commons.communication.AppEvent
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
+import com.skgtecnologia.sisem.commons.extensions.navigateBack
 import com.skgtecnologia.sisem.commons.location.ACTION_START
 import com.skgtecnologia.sisem.commons.location.LocationService
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
@@ -176,7 +177,7 @@ private fun NavGraphBuilder.authGraph(
             ) { navigationModel ->
                 with(navigationModel) {
                     if (isCancel && from != MAIN) {
-                        if (!navController.popBackStack()) (context as Activity).finish()
+                        if (!navController.navigateBack()) (context as Activity).finish()
                     } else {
                         navigationModel.navigate(navController)
                     }
