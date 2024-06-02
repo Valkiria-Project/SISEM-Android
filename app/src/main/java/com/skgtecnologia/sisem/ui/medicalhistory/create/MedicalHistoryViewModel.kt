@@ -235,6 +235,20 @@ class MedicalHistoryViewModel @Inject constructor(
         WITHDRAWAL_REPONSIBLE_REFUSE_SIGN_KEY to false
     )
 
+    private val initialWithdrawalIdentifiers = mutableMapOf(
+        HEADER_WITHDRAWAL_KEY to true,
+        WITHDRAWAL_TYPE_KEY to true,
+        WITHDRAWAL_EXTRA_INFO_KEY to true,
+        WITHDRAWAL_STATEMENT_KEY to true,
+        WHO_WITHDRAWAL_RESPONSIBLE_KEY to true,
+        WITHDRAWAL_DECLARATION_KEY to true,
+        WITHDRAWAL_CAUSES_KEY to true,
+        WITHDRAWAL_CONSTANCY_KEY to true,
+        SIGN_PERSON_CHARGE_W_KEY to true,
+        WITHDRAWAL_EXTRA_INFO_2_KEY to true,
+        WITHDRAWAL_REPONSIBLE_REFUSE_SIGN_KEY to true
+    )
+
     private var temporalInfoCard by mutableStateOf("")
     private var temporalMedsSelector by mutableStateOf("")
     private var temporalSignature by mutableStateOf("")
@@ -982,11 +996,13 @@ class MedicalHistoryViewModel @Inject constructor(
                 val visibility = (action.status && segmentedValues[ACCEPT_TRANSFER_KEY] == true) ||
                     (action.status && segmentedValues[ACCEPT_TRANSFER_KEY] == false)
 
-                allWithdrawalIdentifiers.keys.forEach { key ->
-                    allWithdrawalIdentifiers[key] = visibility
+                val viewsVisibility = if (visibility) {
+                    initialWithdrawalIdentifiers
+                } else {
+                    allWithdrawalIdentifiers
                 }
 
-                allWithdrawalIdentifiers.forEach { viewVisibility ->
+                viewsVisibility.forEach { viewVisibility ->
                     updateBodyModel(
                         uiModels = transformedBody,
                         identifier = viewVisibility.key
@@ -997,9 +1013,14 @@ class MedicalHistoryViewModel @Inject constructor(
             }
 
             ACCEPT_TRANSFER_KEY -> {
-                val viewsVisibility = action.viewsVisibility.map { entry ->
-                    entry.key to !action.status
-                }.toMap()
+
+                val viewsVisibility = if (!action.status) {
+                    action.viewsVisibility.map { entry ->
+                        entry.key to true
+                    }.toMap()
+                } else {
+                    allWithdrawalIdentifiers
+                }
 
                 viewsVisibility.forEach { viewVisibility ->
                     updateBodyModel(
