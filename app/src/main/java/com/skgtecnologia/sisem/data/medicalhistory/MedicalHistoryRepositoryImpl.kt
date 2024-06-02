@@ -84,4 +84,7 @@ class MedicalHistoryRepositoryImpl @Inject constructor(
             code = operationCacheDataSource.observeOperationConfig().first()?.vehicleCode.orEmpty(),
             idAph = idAph
         ).getOrThrow()
+
+    override suspend fun deleteAphFile(idAph: String, fileName: String) =
+        medicalHistoryRemoteDataSource.deleteAphFile(idAph, fileName).getOrThrow()
 }

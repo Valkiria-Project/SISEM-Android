@@ -33,4 +33,6 @@ interface MedicalHistoryRepository {
     suspend fun saveAphFiles(idAph: String, images: List<ImageModel>, description: String?)
 
     suspend fun getMedicalHistoryViewScreen(idAph: String): ScreenModel
+
+    suspend fun deleteAphFile(idAph: String, fileName: String)
 }
