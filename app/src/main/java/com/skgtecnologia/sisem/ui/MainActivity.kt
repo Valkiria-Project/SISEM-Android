@@ -9,9 +9,6 @@ import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.lifecycle.lifecycleScope
-import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
-import com.mapbox.navigation.core.trip.session.LocationMatcherResult
-import com.mapbox.navigation.core.trip.session.LocationObserver
 import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.commons.extensions.hasLocationPermission
@@ -43,16 +40,6 @@ class MainActivity : ComponentActivity() {
 
     private var lastLocation: Location? = null
 
-    private val locationObserver = object : LocationObserver {
-        override fun onNewLocationMatcherResult(locationMatcherResult: LocationMatcherResult) {
-            lastLocation = locationMatcherResult.enhancedLocation
-        }
-
-        override fun onNewRawLocation(rawLocation: Location) {
-            // no impl
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -70,11 +57,6 @@ class MainActivity : ComponentActivity() {
             )
         } else {
             intent.getParcelableExtra(STARTUP_NAVIGATION_MODEL)
-        }
-
-        with(MapboxNavigationApp) {
-            attach(this@MainActivity)
-            current()?.registerLocationObserver(locationObserver)
         }
 
         if (hasLocationPermission()) {
@@ -111,7 +93,6 @@ class MainActivity : ComponentActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
-        MapboxNavigationApp.current()?.unregisterLocationObserver(locationObserver)
         Intent(applicationContext, LocationService::class.java).apply {
             action = ACTION_STOP
             startService(this)

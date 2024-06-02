@@ -250,7 +250,7 @@ private fun NavGraphBuilder.mainGraph(
                 modifier = modifier,
                 onMenuAction = { navigationRoute ->
                     navController.navigate(route = navigationRoute.route) {
-                        popUpTo(MainNavigationRoute.MapScreen.route){
+                        popUpTo(MainNavigationRoute.MapScreen.route) {
                             inclusive = true
                             saveState = true
                         }
