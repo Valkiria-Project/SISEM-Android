@@ -118,7 +118,8 @@ fun MapboxMapView(
             }
         },
         scaffoldState = scaffoldState,
-        sheetPeekHeight = if (rememberedIncident != null) 140.dp else 0.dp
+        sheetPeekHeight = if (rememberedIncident != null) 140.dp else 0.dp,
+        sheetSwipeEnabled = false
     ) { innerPadding ->
         Box(modifier.padding(innerPadding)) {
             val accessToken = stringResource(id = R.string.mapbox_access_token)

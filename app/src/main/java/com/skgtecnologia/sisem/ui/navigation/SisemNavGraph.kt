@@ -249,7 +249,13 @@ private fun NavGraphBuilder.mainGraph(
             MapScreen(
                 modifier = modifier,
                 onMenuAction = { navigationRoute ->
-                    navController.navigate(navigationRoute.route)
+                    navController.navigate(route = navigationRoute.route) {
+                        popUpTo(MainNavigationRoute.MapScreen.route){
+                            inclusive = true
+                            saveState = true
+                        }
+                        restoreState
+                    }
                 },
                 onAction = { aphRoute ->
                     navController.navigate(aphRoute)
