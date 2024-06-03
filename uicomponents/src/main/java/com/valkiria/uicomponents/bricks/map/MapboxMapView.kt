@@ -39,13 +39,15 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.viewinterop.NoOpUpdate
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.graphics.drawable.toBitmap
 import com.mapbox.geojson.Point
-import com.mapbox.maps.MapboxExperimental
-import com.mapbox.maps.extension.compose.MapboxMap
-import com.mapbox.maps.extension.compose.animation.viewport.MapViewportState
+import com.mapbox.maps.MapInitOptions
+import com.mapbox.maps.MapView
+import com.mapbox.maps.Style.Companion.TRAFFIC_NIGHT
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.action.GenericUiAction.NotificationAction
 import com.valkiria.uicomponents.bricks.banner.BannerUiModel
@@ -59,7 +61,6 @@ import com.valkiria.uicomponents.components.incident.model.IncidentUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-@OptIn(MapboxExperimental::class)
 @Suppress("LongMethod", "LongParameterList", "MagicNumber")
 @Composable
 fun MapboxMapView(
@@ -110,17 +111,6 @@ fun MapboxMapView(
         Box(modifier.padding(innerPadding)) {
             val accessToken = stringResource(id = R.string.mapbox_access_token)
 
-            MapboxMap(
-                modifier = Modifier.fillMaxSize(),
-                mapViewportState = MapViewportState().apply {
-                    setCameraOptions {
-                        zoom(2.0)
-                        center(Point.fromLngLat(-98.0, 39.5))
-                        pitch(0.0)
-                        bearing(0.0)
-                    }
-                },
-            )
 
             IconButton(
                 onClick = {
@@ -178,6 +168,25 @@ fun MapboxMapView(
             }
         }
     }
+}
+
+@Composable
+private fun MapBoxAndroidView(
+    modifier: Modifier,
+) {
+    AndroidView(
+        factory = { context ->
+            MapView(
+                context = context,
+                mapInitOptions = MapInitOptions(
+                    context = context,
+                    styleUri = TRAFFIC_NIGHT
+                )
+            )
+        },
+        update = NoOpUpdate,
+        modifier = modifier
+    )
 }
 
 //@Suppress("LongParameterList", "UnusedPrivateMember")
