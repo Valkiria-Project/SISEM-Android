@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.medicalhistory.signaturepad
 
 import androidx.navigation.NavHostController
+import com.skgtecnologia.sisem.commons.extensions.navigateBack
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 
@@ -13,10 +14,10 @@ data class SignaturePadNavigationModel(
         super.navigate(navController)
 
         when {
-            goBack -> navController.popBackStack()
+            goBack -> navController.navigateBack()
 
             signature != null -> with(navController) {
-                popBackStack()
+                navigateBack()
 
                 currentBackStackEntry
                     ?.savedStateHandle

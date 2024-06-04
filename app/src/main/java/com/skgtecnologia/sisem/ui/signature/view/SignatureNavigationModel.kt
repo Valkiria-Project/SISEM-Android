@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.signature.view
 
 import androidx.navigation.NavHostController
+import com.skgtecnologia.sisem.commons.extensions.navigateBack
 import com.skgtecnologia.sisem.ui.navigation.AphNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.NavigationGraph
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
@@ -15,7 +16,7 @@ data class SignatureNavigationModel(
         super.navigate(navController)
 
         when {
-            back -> navController.popBackStack()
+            back -> navController.navigateBack()
 
             isSignatureEvent ->
                 navController.navigate(AphNavigationRoute.SignaturePadScreen.route)

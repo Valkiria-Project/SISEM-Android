@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.data.medicalhistory.remote
 
 import com.skgtecnologia.sisem.commons.extensions.mapResult
+import com.skgtecnologia.sisem.data.medicalhistory.remote.model.DeleteAphFileBody
 import com.skgtecnologia.sisem.data.medicalhistory.remote.model.MedicalHistoryBody
 import com.skgtecnologia.sisem.data.medicalhistory.remote.model.mapToBody
 import com.skgtecnologia.sisem.data.remote.extensions.apiCall
@@ -123,4 +124,8 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
         }.mapResult {
             it.mapToDomain()
         }
+
+    suspend fun deleteAphFile(idAph: String, fileName: String): Result<Unit> = apiCall {
+        medicalHistoryApi.deleteAphFile(DeleteAphFileBody(idAph = idAph, fileName = fileName))
+    }
 }

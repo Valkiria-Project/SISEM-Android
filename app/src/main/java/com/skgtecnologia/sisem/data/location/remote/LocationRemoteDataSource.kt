@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.data.location.remote
 
 import com.skgtecnologia.sisem.data.location.remote.model.LocationBody
 import com.skgtecnologia.sisem.data.remote.extensions.apiCall
+import timber.log.Timber
 import javax.inject.Inject
 
 class LocationRemoteDataSource @Inject constructor(
@@ -18,6 +19,7 @@ class LocationRemoteDataSource @Inject constructor(
         originAt: String,
         idIncident: String?
     ): Result<Unit> = apiCall {
+        Timber.tag("Location").d("LocationRemoteDataSource updateLocation")
         locationApi.updateLocation(
             locationBody = LocationBody(
                 idVehicle = idVehicle,

@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.report
 
 import androidx.navigation.NavHostController
+import com.skgtecnologia.sisem.commons.extensions.navigateBack
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.FINDING
@@ -28,16 +29,16 @@ data class ReportNavigationModel(
 
         when {
             goBackFromReport -> with(navController) {
-                popBackStack()
+                navigateBack()
 
                 currentBackStackEntry
                     ?.savedStateHandle
                     ?.set(NavigationArgument.REVERT_FINDING, true)
             }
 
-            goBackFromImages -> navController.popBackStack()
+            goBackFromImages -> navController.navigateBack()
             showCamera -> navController.navigate(ReportNavigationRoute.ReportCameraScreen.route)
-            photoTaken -> navController.popBackStack()
+            photoTaken -> navController.navigateBack()
             closeFinding && imagesSize > 0 -> navController.navigate(
                 "${ReportNavigationRoute.ImagesConfirmationScreen.route}/$FINDING"
             )

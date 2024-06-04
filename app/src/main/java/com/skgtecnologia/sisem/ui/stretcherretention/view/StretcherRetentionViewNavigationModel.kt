@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.stretcherretention.view
 
 import androidx.navigation.NavHostController
+import com.skgtecnologia.sisem.commons.extensions.navigateBack
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 
 data class StretcherRetentionViewNavigationModel(
@@ -11,7 +12,7 @@ data class StretcherRetentionViewNavigationModel(
         super.navigate(navController)
 
         when {
-            back -> navController.popBackStack()
+            back -> navController.navigateBack()
         }
     }
 }

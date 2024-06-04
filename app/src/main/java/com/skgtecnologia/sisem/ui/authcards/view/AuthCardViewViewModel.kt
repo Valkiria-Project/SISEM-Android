@@ -15,6 +15,8 @@ import com.skgtecnologia.sisem.domain.preoperational.usecases.GetAuthCardViewScr
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalPending
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.valkiria.uicomponents.action.UiAction
+import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel
+import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -88,6 +90,30 @@ class AuthCardViewViewModel @Inject constructor(
                 errorModel = it.mapToUi()
             )
         }
+    }
+
+    fun showReportBottomSheet(reportDetail: ReportsDetailUiModel) {
+        uiState = uiState.copy(
+            reportDetail = reportDetail
+        )
+    }
+
+    fun consumeReportBottomSheetEvent() {
+        uiState = uiState.copy(
+            reportDetail = null
+        )
+    }
+
+    fun showFindingsBottomSheet(chipSection: ChipSectionUiModel) {
+        uiState = uiState.copy(
+            chipSection = chipSection
+        )
+    }
+
+    fun consumeFindingsBottomSheetEvent() {
+        uiState = uiState.copy(
+            chipSection = null
+        )
     }
 
     private fun String.identifierToRole(): OperationRole {
