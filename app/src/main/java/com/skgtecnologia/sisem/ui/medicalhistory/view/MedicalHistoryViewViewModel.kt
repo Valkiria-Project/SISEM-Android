@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.medicalhistory.view
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
@@ -8,10 +9,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
+import com.skgtecnologia.sisem.domain.medicalhistory.usecases.DeleteAphFile
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.GetMedicalHistoryViewScreen
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SaveAphFiles
 import com.skgtecnologia.sisem.domain.model.banner.fileSizeErrorBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
+import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
@@ -32,11 +35,13 @@ import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 @HiltViewModel
 class MedicalHistoryViewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val logoutCurrentUser: LogoutCurrentUser,
+    private val deleteAphFile: DeleteAphFile,
     private val getMedicalHistoryViewScreen: GetMedicalHistoryViewScreen,
+    private val logoutCurrentUser: LogoutCurrentUser,
     private val observeOperationConfig: ObserveOperationConfig,
     private val saveAphFiles: SaveAphFiles
 ) : ViewModel() {
@@ -48,6 +53,8 @@ class MedicalHistoryViewViewModel @Inject constructor(
 
     private val idAph: Int? = savedStateHandle[NavigationArgument.ID_APH]
 
+    private var mediaFiles = mutableStateListOf<String>()
+
     init {
         uiState = uiState.copy(isLoading = true)
 
@@ -55,6 +62,8 @@ class MedicalHistoryViewViewModel @Inject constructor(
         job = viewModelScope.launch {
             getMedicalHistoryViewScreen.invoke(idAph = idAph.toString())
                 .onSuccess { medicalHistoryViewScreen ->
+                    medicalHistoryViewScreen.getFormInitialValues()
+
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
                             screenModel = medicalHistoryViewScreen,
@@ -91,6 +100,14 @@ class MedicalHistoryViewViewModel @Inject constructor(
                         )
                     }
                 }
+        }
+    }
+
+    private fun ScreenModel.getFormInitialValues() {
+        this.body.forEach { bodyRowModel ->
+            when (bodyRowModel) {
+                is MediaActionsUiModel -> mediaFiles.addAll(bodyRowModel.selectedMediaUris)
+            }
         }
     }
 
@@ -176,6 +193,7 @@ class MedicalHistoryViewViewModel @Inject constructor(
     }
 
     fun removeMediaActionsImage(selectedMediaIndex: Int) {
+        deleteAphFile(selectedMediaIndex)
         val updatedSelectedMedia = buildList {
             addAll(uiState.selectedMediaItems)
 
@@ -196,6 +214,18 @@ class MedicalHistoryViewViewModel @Inject constructor(
                 body = updatedBody
             )
         )
+    }
+
+    private fun deleteAphFile(selectedMediaIndex: Int) {
+        if (selectedMediaIndex in mediaFiles.indices) {
+            val file = mediaFiles[selectedMediaIndex]
+            mediaFiles.removeAt(selectedMediaIndex)
+
+            job?.cancel()
+            job = viewModelScope.launch {
+                deleteAphFile.invoke(idAph = idAph.toString(), fileName = file)
+            }
+        }
     }
 
     fun sendMedicalHistoryView(images: List<File>, description: String?) {

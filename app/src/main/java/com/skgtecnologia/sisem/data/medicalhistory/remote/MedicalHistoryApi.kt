@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.data.medicalhistory.remote
 
+import com.skgtecnologia.sisem.data.medicalhistory.remote.model.DeleteAphFileBody
 import com.skgtecnologia.sisem.data.medicalhistory.remote.model.MedicalHistoryBody
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenResponse
@@ -35,4 +36,7 @@ interface MedicalHistoryApi {
 
     @POST("screen/aph-view")
     suspend fun getMedicalHistoryViewScreen(@Body screenBody: ScreenBody): Response<ScreenResponse>
+
+    @POST("aph/delete-file")
+    suspend fun deleteAphFile(@Body deleteAphFileBody: DeleteAphFileBody): Response<Unit>
 }

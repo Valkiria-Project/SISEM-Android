@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.incident
 
 import androidx.navigation.NavHostController
+import com.skgtecnologia.sisem.commons.extensions.navigateBack
 import com.skgtecnologia.sisem.ui.navigation.AphNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
@@ -15,7 +16,7 @@ data class IncidentNavigationModel(
         super.navigate(navController)
 
         when {
-            back -> navController.popBackStack()
+            back -> navController.navigateBack()
             patientAph != null -> navController.navigate(
                 AphNavigationRoute.MedicalHistoryViewScreen.route + "/$patientAph"
             )

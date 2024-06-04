@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.authcards.view
 
 import androidx.navigation.NavHostController
+import com.skgtecnologia.sisem.commons.extensions.navigateBack
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
@@ -17,7 +18,7 @@ data class AuthCardViewNavigationModel(
         super.navigate(navController)
 
         when {
-            back -> navController.popBackStack()
+            back -> navController.navigateBack()
 
             role != null && !isPendingPreOperational -> {
                 navController.navigate(

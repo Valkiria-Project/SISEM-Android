@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.medicalhistory.create
 
 import androidx.navigation.NavHostController
+import com.skgtecnologia.sisem.commons.extensions.navigateBack
 import com.skgtecnologia.sisem.ui.navigation.AphNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
@@ -18,7 +19,7 @@ data class MedicalHistoryNavigationModel(
         super.navigate(navController)
 
         when {
-            back -> navController.popBackStack()
+            back -> navController.navigateBack()
 
             isInfoCardEvent -> navController.navigate(AphNavigationRoute.VitalSignsScreen.route)
 
@@ -30,7 +31,7 @@ data class MedicalHistoryNavigationModel(
 
             showCamera -> navController.navigate(AphNavigationRoute.CameraScreen.route)
             photoTaken -> with(navController) {
-                popBackStack()
+                navigateBack()
 
                 currentBackStackEntry
                     ?.savedStateHandle

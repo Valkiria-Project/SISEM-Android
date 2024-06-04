@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.medicalhistory.medicine
 
 import androidx.navigation.NavHostController
+import com.skgtecnologia.sisem.commons.extensions.navigateBack
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 
@@ -14,7 +15,7 @@ data class MedicineNavigationModel(
 
         when {
             goBack -> with(navController) {
-                popBackStack()
+                navigateBack()
 
                 currentBackStackEntry
                     ?.savedStateHandle
@@ -22,7 +23,7 @@ data class MedicineNavigationModel(
             }
 
             values != null -> with(navController) {
-                popBackStack()
+                navigateBack()
 
                 currentBackStackEntry
                     ?.savedStateHandle
