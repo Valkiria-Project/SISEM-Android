@@ -47,7 +47,11 @@ import androidx.core.graphics.drawable.toBitmap
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapInitOptions
 import com.mapbox.maps.MapView
+import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.Style.Companion.TRAFFIC_NIGHT
+import com.mapbox.maps.extension.compose.MapboxMap
+import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
+import com.mapbox.maps.extension.compose.style.standard.MapboxStandardStyle
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.action.GenericUiAction.NotificationAction
 import com.valkiria.uicomponents.bricks.banner.BannerUiModel
@@ -61,6 +65,7 @@ import com.valkiria.uicomponents.components.incident.model.IncidentUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+@OptIn(MapboxExperimental::class)
 @Suppress("LongMethod", "LongParameterList", "MagicNumber")
 @Composable
 fun MapboxMapView(
@@ -111,6 +116,20 @@ fun MapboxMapView(
         Box(modifier.padding(innerPadding)) {
             val accessToken = stringResource(id = R.string.mapbox_access_token)
 
+            val mapViewportState = rememberMapViewportState {
+                setCameraOptions {
+                    center(Point.fromLngLat(13.403, 52.562))
+                    zoom(0.0)
+                    pitch(0.0)
+                    bearing(0.0)
+                }
+            }
+
+            MapboxMap(
+                modifier = Modifier.fillMaxSize(),
+                mapViewportState = mapViewportState,
+                style = { MapboxStandardStyle() }
+            )
 
             IconButton(
                 onClick = {
