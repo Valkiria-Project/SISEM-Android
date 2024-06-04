@@ -16,7 +16,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.ui.authcards.create.report.FindingsContent
 import com.skgtecnologia.sisem.ui.authcards.create.report.ReportDetailContent
-import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.GenericUiAction
@@ -30,6 +29,7 @@ import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+@Suppress("LongMethod")
 @Composable
 fun AuthCardViewScreen(
     modifier: Modifier = Modifier,
