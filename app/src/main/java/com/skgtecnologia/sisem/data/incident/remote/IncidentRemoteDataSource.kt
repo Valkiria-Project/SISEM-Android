@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.data.incident.remote
 
 import com.skgtecnologia.sisem.commons.extensions.mapResult
 import com.skgtecnologia.sisem.data.incident.remote.model.mapToUi
-import com.skgtecnologia.sisem.data.remote.extensions.apiCall
+import com.skgtecnologia.sisem.data.remote.api.NetworkApi
 import com.skgtecnologia.sisem.data.remote.model.screen.Params
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
 import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
@@ -11,14 +11,15 @@ import com.valkiria.uicomponents.components.incident.model.IncidentUiModel
 import javax.inject.Inject
 
 class IncidentRemoteDataSource @Inject constructor(
-    private val incidentApi: IncidentApi
+    private val incidentApi: IncidentApi,
+    private val networkApi: NetworkApi
 ) {
 
     suspend fun getIncidentInfo(
         idIncident: String,
         idTurn: String,
         codeVehicle: String
-    ): Result<IncidentUiModel> = apiCall {
+    ): Result<IncidentUiModel> = networkApi.apiCall {
         incidentApi.getIncidentInfo(
             idIncident = idIncident,
             idTurn = idTurn,
@@ -28,7 +29,7 @@ class IncidentRemoteDataSource @Inject constructor(
         it.mapToUi()
     }
 
-    suspend fun getIncidentScreen(codeVehicle: String): Result<ScreenModel> = apiCall {
+    suspend fun getIncidentScreen(codeVehicle: String): Result<ScreenModel> = networkApi.apiCall {
         incidentApi.getIncidentScreen(
             screenBody = ScreenBody(
                 params = Params(
