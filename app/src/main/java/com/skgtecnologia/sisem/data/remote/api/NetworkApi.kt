@@ -56,9 +56,9 @@ class NetworkApi @Inject constructor(
 
         val body = response.body()
         val content = TimeUtils.getLocalTimeAsString() +
-                "\t Overview" + response.toString() +
-                "\t Body:" + body +
-                "\t Error Body" + response.errorBody() +
+                "\t Overview: " + response.toString() +
+                "\t Body: " + body +
+                "\t Error Body: " + response.errorBody() +
                 "\n"
         storageProvider.storeContent(
             FILE_NAME,
