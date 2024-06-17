@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.extensions.recoverResult
 import com.skgtecnologia.sisem.commons.extensions.resultOf
 import com.skgtecnologia.sisem.commons.resources.StorageProvider
+import com.skgtecnologia.sisem.commons.resources.StringProvider
 import com.skgtecnologia.sisem.data.remote.extensions.HTTP_FORBIDDEN_STATUS_CODE
 import com.skgtecnologia.sisem.data.remote.extensions.HTTP_UNAUTHORIZED_STATUS_CODE
 import com.skgtecnologia.sisem.data.remote.model.error.ErrorResponse
@@ -36,7 +38,8 @@ import javax.inject.Inject
 private const val FILE_NAME = "android_networking"
 
 class NetworkApi @Inject constructor(
-    private val storageProvider: StorageProvider
+    private val storageProvider: StorageProvider,
+    private val stringProvider: StringProvider
 ) {
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
         Timber.wtf(exception)
@@ -77,15 +80,15 @@ class NetworkApi @Inject constructor(
         throw when (it) {
             is HttpException -> handleHttpException(it.code()).mapToDomain()
             is ConnectException, is UnknownHostException -> ErrorResponse(
-                icon = "ic_alert",
-                title = "Conectividad",
-                description = "Revise su conexión a Internet"
+                icon = stringProvider.getString(R.string.alert_icon),
+                title = stringProvider.getString(R.string.error_connectivity_title),
+                description = stringProvider.getString(R.string.error_connectivity_description)
             ).mapToDomain()
 
             is SocketTimeoutException -> ErrorResponse(
-                icon = "ic_alert",
-                title = "Servicio no disponible",
-                description = "Sucedió algo inesperado, por favor intenta de nuevo"
+                icon = stringProvider.getString(R.string.alert_icon),
+                title = stringProvider.getString(R.string.error_server_title),
+                description = stringProvider.getString(R.string.error_server_description)
             ).mapToDomain()
 
             else -> it
@@ -103,14 +106,14 @@ class NetworkApi @Inject constructor(
     private fun handleHttpException(code: Int): ErrorResponse {
         return if (code == HTTP_FORBIDDEN_STATUS_CODE || code == HTTP_UNAUTHORIZED_STATUS_CODE) {
             ErrorResponse(
-                icon = "ic_alert",
-                title = "Autenticación",
-                description = "Se requiere re-autenticación"
+                icon = stringProvider.getString(R.string.alert_icon),
+                title = stringProvider.getString(R.string.error_unauthorized_title),
+                description = stringProvider.getString(R.string.error_unauthorized_description)
             ).apply {
                 footerModel = FooterUiModel(
                     leftButton = ButtonUiModel(
                         identifier = LoginIdentifier.LOGIN_RE_AUTH_BANNER.name,
-                        label = "Re Autenticar",
+                        label = stringProvider.getString(R.string.error_unauthorized_cta),
                         style = ButtonStyle.LOUD,
                         textStyle = TextStyle.HEADLINE_5,
                         onClick = OnClick.DISMISS,
@@ -127,8 +130,8 @@ class NetworkApi @Inject constructor(
             }
         } else {
             ErrorResponse(
-                icon = "ic_alert",
-                title = "Ha ocurrido un error",
+                icon = stringProvider.getString(R.string.alert_icon),
+                title = stringProvider.getString(R.string.error_general_title),
                 description = ""
             )
         }
