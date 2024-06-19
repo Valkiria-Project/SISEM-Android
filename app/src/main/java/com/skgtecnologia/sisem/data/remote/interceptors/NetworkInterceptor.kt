@@ -20,9 +20,9 @@ class NetworkInterceptor @Inject constructor(
         }
 
         val requestContent = TimeUtils
-                .getFormattedLocalTimeAsString(pattern = HOURS_MINUTES_SECONDS_24_HOURS_PATTERN) +
-                "\t" + request.toString() +
-                "\n"
+            .getFormattedLocalTimeAsString(pattern = HOURS_MINUTES_SECONDS_24_HOURS_PATTERN) +
+            "\t" + request.toString() +
+            "\n"
 
         storageProvider.storeContent(
             FILE_NAME,
@@ -33,9 +33,9 @@ class NetworkInterceptor @Inject constructor(
         val response = chain.proceed(request)
 
         val responseContent = TimeUtils
-                .getFormattedLocalTimeAsString(pattern = HOURS_MINUTES_SECONDS_24_HOURS_PATTERN) +
-                "\t" + response.toString() +
-                "\n"
+            .getFormattedLocalTimeAsString(pattern = HOURS_MINUTES_SECONDS_24_HOURS_PATTERN) +
+            "\t" + response.toString() +
+            "\n"
 
         storageProvider.storeContent(
             FILE_NAME,
