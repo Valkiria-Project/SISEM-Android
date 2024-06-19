@@ -22,6 +22,7 @@ import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.components.footer.FooterUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.utlis.HOURS_MINUTES_SECONDS_24_HOURS_PATTERN
 import com.valkiria.uicomponents.utlis.TimeUtils
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -58,16 +59,8 @@ class NetworkApi @Inject constructor(
             }
 
         val body = response.body()
-        val content = TimeUtils.getLocalTimeAsString() +
-            "\t Overview: " + response.toString() +
-            "\t Body: " + body +
-            "\t Error Body: " + response.errorBody() +
-            "\n"
-        storageProvider.storeContent(
-            FILE_NAME,
-            Context.MODE_APPEND,
-            content.toByteArray()
-        )
+
+        storeResponse(response, response.errorBody())
 
         if (response.isSuccessful && body != null) {
             body
@@ -93,6 +86,20 @@ class NetworkApi @Inject constructor(
 
             else -> it
         }
+    }
+
+    private fun <T> storeResponse(response: Response<T>, errorBody: ResponseBody?) {
+        val content = TimeUtils
+            .getFormattedLocalTimeAsString(pattern = HOURS_MINUTES_SECONDS_24_HOURS_PATTERN) +
+            "\t Body: " + response.body() +
+            "\t Error Body: " + errorBody!!.toError(response.code()) +
+            "\n"
+
+        storageProvider.storeContent(
+            FILE_NAME,
+            Context.MODE_APPEND,
+            content.toByteArray()
+        )
     }
 
     @Suppress("SwallowedException", "TooGenericExceptionCaught")
