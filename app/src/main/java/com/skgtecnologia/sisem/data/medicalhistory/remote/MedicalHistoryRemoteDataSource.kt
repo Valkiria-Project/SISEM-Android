@@ -4,7 +4,7 @@ import com.skgtecnologia.sisem.commons.extensions.mapResult
 import com.skgtecnologia.sisem.data.medicalhistory.remote.model.DeleteAphFileBody
 import com.skgtecnologia.sisem.data.medicalhistory.remote.model.MedicalHistoryBody
 import com.skgtecnologia.sisem.data.medicalhistory.remote.model.mapToBody
-import com.skgtecnologia.sisem.data.remote.extensions.apiCall
+import com.skgtecnologia.sisem.data.remote.api.NetworkApi
 import com.skgtecnologia.sisem.data.remote.extensions.createRequestBody
 import com.skgtecnologia.sisem.data.remote.model.screen.Params
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
@@ -18,11 +18,12 @@ import javax.inject.Inject
 private const val SEND_APH_FILE_NAME = "files"
 
 class MedicalHistoryRemoteDataSource @Inject constructor(
-    private val medicalHistoryApi: MedicalHistoryApi
+    private val medicalHistoryApi: MedicalHistoryApi,
+    private val networkApi: NetworkApi
 ) {
 
     suspend fun getMedicalHistoryScreen(code: String, idAph: String): Result<ScreenModel> =
-        apiCall {
+        networkApi.apiCall {
             medicalHistoryApi.getMedicalHistoryScreen(
                 screenBody = ScreenBody(
                     params = Params(
@@ -35,7 +36,7 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
             it.mapToDomain()
         }
 
-    suspend fun getVitalSignsScreen(): Result<ScreenModel> = apiCall {
+    suspend fun getVitalSignsScreen(): Result<ScreenModel> = networkApi.apiCall {
         medicalHistoryApi.getVitalSignsScreen(
             screenBody = ScreenBody(
                 params = Params()
@@ -45,7 +46,7 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
         it.mapToDomain()
     }
 
-    suspend fun getMedicineScreen(serial: String): Result<ScreenModel> = apiCall {
+    suspend fun getMedicineScreen(serial: String): Result<ScreenModel> = networkApi.apiCall {
         medicalHistoryApi.getMedicineScreen(
             screenBody = ScreenBody(
                 params = Params(
@@ -72,7 +73,7 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
         imageButtonSectionValues: Map<String, String>,
         vitalSigns: Map<String, Map<String, String>>,
         infoCardButtonValues: List<Map<String, String>>
-    ): Result<Unit> = apiCall {
+    ): Result<Unit> = networkApi.apiCall {
         medicalHistoryApi.sendMedicalHistory(
             medicalHistoryBody = MedicalHistoryBody(
                 idTurn = idTurn,
@@ -96,7 +97,7 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
         idAph: String,
         images: List<ImageModel>,
         description: String? = null
-    ): Result<Unit> = apiCall {
+    ): Result<Unit> = networkApi.apiCall {
         medicalHistoryApi.saveAphFiles(
             idAph = idAph.createRequestBody(),
             files = images.map { imageModel ->
@@ -112,7 +113,7 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
     }
 
     suspend fun getMedicalHistoryViewScreen(code: String, idAph: String): Result<ScreenModel> =
-        apiCall {
+        networkApi.apiCall {
             medicalHistoryApi.getMedicalHistoryViewScreen(
                 screenBody = ScreenBody(
                     params = Params(
@@ -125,7 +126,7 @@ class MedicalHistoryRemoteDataSource @Inject constructor(
             it.mapToDomain()
         }
 
-    suspend fun deleteAphFile(idAph: String, fileName: String): Result<Unit> = apiCall {
+    suspend fun deleteAphFile(idAph: String, fileName: String): Result<Unit> = networkApi.apiCall {
         medicalHistoryApi.deleteAphFile(DeleteAphFileBody(idAph = idAph, fileName = fileName))
     }
 }
