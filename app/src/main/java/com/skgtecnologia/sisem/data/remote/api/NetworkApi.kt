@@ -92,7 +92,7 @@ class NetworkApi @Inject constructor(
         val content = TimeUtils
             .getFormattedLocalTimeAsString(pattern = HOURS_MINUTES_SECONDS_24_HOURS_PATTERN) +
             "\t Body: " + response.body() +
-            "\t Error Body: " + errorBody!!.toError(response.code()) +
+            "\t Error Body: " + errorBody?.toError(response.code()) +
             "\n"
 
         storageProvider.storeContent(
