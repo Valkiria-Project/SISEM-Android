@@ -5,6 +5,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
 
+const val ANDROID_NETWORKING_FILE_NAME = "android_networking"
+
 class StorageProviderImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : StorageProvider {

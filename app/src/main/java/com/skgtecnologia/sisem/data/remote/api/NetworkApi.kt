@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.extensions.recoverResult
 import com.skgtecnologia.sisem.commons.extensions.resultOf
+import com.skgtecnologia.sisem.commons.resources.ANDROID_NETWORKING_FILE_NAME
 import com.skgtecnologia.sisem.commons.resources.StorageProvider
 import com.skgtecnologia.sisem.commons.resources.StringProvider
 import com.skgtecnologia.sisem.data.remote.extensions.HTTP_FORBIDDEN_STATUS_CODE
@@ -34,9 +35,8 @@ import timber.log.Timber
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import java.time.Instant
 import javax.inject.Inject
-
-private const val FILE_NAME = "android_networking"
 
 class NetworkApi @Inject constructor(
     private val storageProvider: StorageProvider,
@@ -89,14 +89,13 @@ class NetworkApi @Inject constructor(
     }
 
     private fun <T> storeResponse(response: Response<T>, errorBody: ResponseBody?) {
-        val content = TimeUtils
-            .getFormattedLocalTimeAsString(pattern = HOURS_MINUTES_SECONDS_24_HOURS_PATTERN) +
+        val content = TimeUtils.getLocalDateTime(Instant.now()).toString() +
             "\t Body: " + response.body() +
             "\t Error Body: " + errorBody?.toError(response.code()) +
             "\n"
 
         storageProvider.storeContent(
-            FILE_NAME,
+            ANDROID_NETWORKING_FILE_NAME,
             Context.MODE_APPEND,
             content.toByteArray()
         )
