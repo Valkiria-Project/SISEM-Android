@@ -80,10 +80,10 @@ class AccessTokenAuthenticator @Inject constructor(
             }
 
             val authenticateContent = TimeUtils.getLocalDateTime(Instant.now()).toString() +
-                    "\t Authenticate intent: " + url +
-                    "\t with Token model: " + token +
-                    "\t using the refresh token: " + token?.refreshToken +
-                    "\n"
+                "\t Authenticate intent: " + url +
+                "\t with Token model: " + token +
+                "\t using the refresh token: " + token?.refreshToken +
+                "\n"
 
             storageProvider.storeContent(
                 ANDROID_NETWORKING_FILE_NAME,

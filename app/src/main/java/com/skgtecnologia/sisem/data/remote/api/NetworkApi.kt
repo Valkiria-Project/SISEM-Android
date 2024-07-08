@@ -23,7 +23,6 @@ import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.components.footer.FooterUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
-import com.valkiria.uicomponents.utlis.HOURS_MINUTES_SECONDS_24_HOURS_PATTERN
 import com.valkiria.uicomponents.utlis.TimeUtils
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
