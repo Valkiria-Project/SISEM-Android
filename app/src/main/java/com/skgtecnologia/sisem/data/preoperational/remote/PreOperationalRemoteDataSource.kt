@@ -4,7 +4,7 @@ import com.skgtecnologia.sisem.commons.extensions.mapResult
 import com.skgtecnologia.sisem.commons.extensions.resultOf
 import com.skgtecnologia.sisem.data.preoperational.remote.model.SavePreOperationalBody
 import com.skgtecnologia.sisem.data.preoperational.remote.model.mapToBody
-import com.skgtecnologia.sisem.data.remote.extensions.apiCall
+import com.skgtecnologia.sisem.data.remote.api.NetworkApi
 import com.skgtecnologia.sisem.data.remote.extensions.createRequestBody
 import com.skgtecnologia.sisem.data.remote.model.screen.Params
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
@@ -21,7 +21,8 @@ import javax.inject.Inject
 private const val FINDING_FILE_NAME = "images"
 
 class PreOperationalRemoteDataSource @Inject constructor(
-    private val preOperationalApi: PreOperationalApi
+    private val networkApi: NetworkApi,
+    private val preOperationalApi: PreOperationalApi,
 ) {
 
     suspend fun getPreOperationalScreen(
@@ -29,7 +30,7 @@ class PreOperationalRemoteDataSource @Inject constructor(
         androidId: String,
         vehicleCode: String?,
         idTurn: String
-    ): Result<ScreenModel> = apiCall {
+    ): Result<ScreenModel> = networkApi.apiCall {
         val screenBody = ScreenBody(
             params = Params(
                 serial = androidId,
@@ -66,7 +67,7 @@ class PreOperationalRemoteDataSource @Inject constructor(
         inventoryValues: Map<String, Int>,
         fieldsValues: Map<String, String>,
         novelties: List<Novelty>
-    ): Result<Unit> = apiCall {
+    ): Result<Unit> = networkApi.apiCall {
         when (role) {
             OperationRole.AUXILIARY_AND_OR_TAPH -> preOperationalApi.sendAuxPreOperational(
                 savePreOperationalBody = SavePreOperationalBody(
@@ -131,7 +132,7 @@ class PreOperationalRemoteDataSource @Inject constructor(
         idTurn: String
     ) {
         if (novelty.images.isNotEmpty()) {
-            apiCall {
+            networkApi.apiCall {
                 when (role) {
                     OperationRole.AUXILIARY_AND_OR_TAPH -> preOperationalApi.sendAuxFinding(
                         type = role.name.createRequestBody(),
@@ -189,7 +190,7 @@ class PreOperationalRemoteDataSource @Inject constructor(
         androidId: String,
         vehicleCode: String?,
         idTurn: String
-    ): Result<ScreenModel> = apiCall {
+    ): Result<ScreenModel> = networkApi.apiCall {
         val screenBody = ScreenBody(
             params = Params(
                 serial = androidId,
@@ -208,7 +209,7 @@ class PreOperationalRemoteDataSource @Inject constructor(
         androidId: String,
         vehicleCode: String?,
         idTurn: String
-    ): Result<ScreenModel> = apiCall {
+    ): Result<ScreenModel> = networkApi.apiCall {
         val screenBody = ScreenBody(
             params = Params(
                 serial = androidId,

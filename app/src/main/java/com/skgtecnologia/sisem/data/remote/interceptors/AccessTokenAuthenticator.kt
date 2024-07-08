@@ -1,16 +1,21 @@
 package com.skgtecnologia.sisem.data.remote.interceptors
 
+import android.content.Context
+import com.skgtecnologia.sisem.commons.resources.ANDROID_NETWORKING_FILE_NAME
+import com.skgtecnologia.sisem.commons.resources.StorageProvider
 import com.skgtecnologia.sisem.data.remote.extensions.isUnauthorized
 import com.skgtecnologia.sisem.data.remote.extensions.signWithToken
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
+import com.valkiria.uicomponents.utlis.TimeUtils
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
+import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,7 +23,8 @@ private const val MAX_ATTEMPTS = 3
 
 @Singleton
 class AccessTokenAuthenticator @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val storageProvider: StorageProvider
 ) : Authenticator {
 
     private var retryCount = 0
@@ -73,7 +79,19 @@ class AccessTokenAuthenticator @Inject constructor(
                 }
             }
 
-            token?.accessToken?.let {
+            val authenticateContent = TimeUtils.getLocalDateTime(Instant.now()).toString() +
+                "\t Authenticate intent: " + url +
+                "\t with Token model: " + token +
+                "\t using the refresh token: " + token?.refreshToken +
+                "\n"
+
+            storageProvider.storeContent(
+                ANDROID_NETWORKING_FILE_NAME,
+                Context.MODE_APPEND,
+                authenticateContent.toByteArray()
+            )
+
+            token?.refreshToken?.let {
                 response.createSignedRequest(token)
             }
         } else {

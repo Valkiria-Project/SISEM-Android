@@ -9,11 +9,15 @@ import com.skgtecnologia.sisem.commons.headerResponseMock
 import com.skgtecnologia.sisem.commons.imageButtonResponseMock
 import com.skgtecnologia.sisem.commons.imageButtonSectionResponseMock
 import com.skgtecnologia.sisem.commons.imageModelMock
+import com.skgtecnologia.sisem.commons.resources.StorageProvider
+import com.skgtecnologia.sisem.commons.resources.StringProvider
+import com.skgtecnologia.sisem.data.remote.api.NetworkApi
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenResponse
 import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -25,7 +29,15 @@ import retrofit2.Response
 class ReportRemoteDataSourceTest {
 
     @MockK
+    private lateinit var storageProvider: StorageProvider
+
+    @MockK
+    private lateinit var stringProvider: StringProvider
+
+    @MockK
     private lateinit var reportApi: ReportApi
+
+    private lateinit var networkApi: NetworkApi
 
     private lateinit var reportRemoteDataSource: ReportRemoteDataSource
 
@@ -33,7 +45,10 @@ class ReportRemoteDataSourceTest {
     fun setUp() {
         MockKAnnotations.init(this)
 
-        reportRemoteDataSource = ReportRemoteDataSource(reportApi)
+        every { storageProvider.storeContent(any(), any(), any()) } returns Unit
+        networkApi = NetworkApi(storageProvider, stringProvider)
+
+        reportRemoteDataSource = ReportRemoteDataSource(networkApi, reportApi)
     }
 
     @Test

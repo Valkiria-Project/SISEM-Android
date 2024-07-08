@@ -10,12 +10,16 @@ import com.skgtecnologia.sisem.commons.headerResponseMock
 import com.skgtecnologia.sisem.commons.humanBodyResponseMock
 import com.skgtecnologia.sisem.commons.infoCardResponseMock
 import com.skgtecnologia.sisem.commons.noveltyMock
+import com.skgtecnologia.sisem.commons.resources.StorageProvider
+import com.skgtecnologia.sisem.commons.resources.StringProvider
 import com.skgtecnologia.sisem.commons.simpleCardResponseMock
+import com.skgtecnologia.sisem.data.remote.api.NetworkApi
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenResponse
 import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -29,13 +33,27 @@ class PreOperationalRemoteDataSourceTest {
     @MockK
     private lateinit var preOperationalApi: PreOperationalApi
 
+    @MockK
+    private lateinit var storageProvider: StorageProvider
+
+    @MockK
+    private lateinit var stringProvider: StringProvider
+
+    private lateinit var networkApi: NetworkApi
+
     private lateinit var preOperationalRemoteDataSource: PreOperationalRemoteDataSource
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
 
-        preOperationalRemoteDataSource = PreOperationalRemoteDataSource(preOperationalApi)
+        every { storageProvider.storeContent(any(), any(), any()) } returns Unit
+        networkApi = NetworkApi(storageProvider, stringProvider)
+
+        preOperationalRemoteDataSource = PreOperationalRemoteDataSource(
+            networkApi,
+            preOperationalApi
+        )
     }
 
     @Test
