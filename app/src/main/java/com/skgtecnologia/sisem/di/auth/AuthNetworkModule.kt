@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.di.auth
 import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.data.auth.remote.AuthApi
 import com.skgtecnologia.sisem.data.remote.interceptors.AuditInterceptor
+import com.skgtecnologia.sisem.data.remote.interceptors.NetworkInterceptor
 import com.skgtecnologia.sisem.di.CLIENT_TIMEOUT_DEFAULTS
 import com.skgtecnologia.sisem.di.CoreNetworkModule
 import com.skgtecnologia.sisem.di.qualifiers.BasicAuthentication
@@ -28,12 +29,14 @@ object AuthNetworkModule {
     internal fun providesOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor?,
         auditInterceptor: AuditInterceptor,
+        networkInterceptor: NetworkInterceptor
     ): OkHttpClient = OkHttpClient.Builder().apply {
         connectTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
         readTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
         writeTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
-        loggingInterceptor?.also { addInterceptor(it) }
         addInterceptor(auditInterceptor)
+        addInterceptor(networkInterceptor)
+        loggingInterceptor?.also { addInterceptor(it) }
     }.build()
 
     @BasicAuthentication

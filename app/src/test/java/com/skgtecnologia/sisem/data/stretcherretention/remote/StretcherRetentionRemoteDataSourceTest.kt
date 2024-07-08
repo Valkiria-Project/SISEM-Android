@@ -4,10 +4,14 @@ import com.skgtecnologia.sisem.commons.ID_APH
 import com.skgtecnologia.sisem.commons.buttonResponseMock
 import com.skgtecnologia.sisem.commons.footerResponseMock
 import com.skgtecnologia.sisem.commons.headerResponseMock
+import com.skgtecnologia.sisem.commons.resources.StorageProvider
+import com.skgtecnologia.sisem.commons.resources.StringProvider
+import com.skgtecnologia.sisem.data.remote.api.NetworkApi
 import com.skgtecnologia.sisem.data.remote.model.screen.ScreenResponse
 import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -19,7 +23,15 @@ import retrofit2.Response
 class StretcherRetentionRemoteDataSourceTest {
 
     @MockK
+    private lateinit var storageProvider: StorageProvider
+
+    @MockK
+    private lateinit var stringProvider: StringProvider
+
+    @MockK
     private lateinit var stretcherRetentionApi: StretcherRetentionApi
+
+    private lateinit var networkApi: NetworkApi
 
     private lateinit var stretcherRetentionRemoteDataSource: StretcherRetentionRemoteDataSource
 
@@ -27,8 +39,13 @@ class StretcherRetentionRemoteDataSourceTest {
     fun setUp() {
         MockKAnnotations.init(this)
 
-        stretcherRetentionRemoteDataSource =
-            StretcherRetentionRemoteDataSource(stretcherRetentionApi)
+        every { storageProvider.storeContent(any(), any(), any()) } returns Unit
+        networkApi = NetworkApi(storageProvider, stringProvider)
+
+        stretcherRetentionRemoteDataSource = StretcherRetentionRemoteDataSource(
+            networkApi,
+            stretcherRetentionApi
+        )
     }
 
     @Test
