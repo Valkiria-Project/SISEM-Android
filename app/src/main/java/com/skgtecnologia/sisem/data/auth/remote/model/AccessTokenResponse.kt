@@ -5,6 +5,8 @@ import com.skgtecnologia.sisem.data.remote.model.bricks.banner.mapToDomain
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.valkiria.uicomponents.utlis.TimeUtils
+import java.time.Instant
 import java.time.LocalDateTime
 
 @JsonClass(generateAdapter = true)
@@ -28,6 +30,7 @@ fun AccessTokenResponse.mapToDomain(): AccessTokenModel = AccessTokenModel(
     dateTime = LocalDateTime.now(),
     accessToken = accessToken,
     refreshToken = refreshToken,
+    refreshDateTime = TimeUtils.getLocalDateTime(Instant.now()).toString(),
     tokenType = tokenType,
     username = username,
     role = role,

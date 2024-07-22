@@ -8,10 +8,12 @@ import com.skgtecnologia.sisem.data.auth.remote.AuthRemoteDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
+import com.valkiria.uicomponents.utlis.TimeUtils
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import timber.log.Timber
+import java.time.Instant
 
 class AuthRepositoryImpl @Inject constructor(
     private val authCacheDataSource: AuthCacheDataSource,
@@ -69,6 +71,7 @@ class AuthRepositoryImpl @Inject constructor(
                 val token = currentToken.copy(
                     accessToken = refreshTokenModel.accessToken,
                     refreshToken = refreshTokenModel.refreshToken,
+                    refreshDateTime = TimeUtils.getLocalDateTime(Instant.now()).toString()
                 )
                 token
             }.onSuccess { accessTokenModel ->
