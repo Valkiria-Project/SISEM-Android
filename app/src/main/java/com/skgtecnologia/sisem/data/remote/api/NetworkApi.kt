@@ -29,7 +29,6 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
-import retrofit2.HttpException
 import retrofit2.Response
 import timber.log.Timber
 import java.net.ConnectException
@@ -101,11 +100,10 @@ class NetworkApi @Inject constructor(
 
     private fun handleHttpException(code: Int, responseBody: ResponseBody?): ErrorResponse {
         val errorResponse = responseBody?.toError(code)
+        storeErrorResponse(code, errorResponse, responseBody)
 
         return when {
             errorResponse != null -> {
-                storeErrorResponse(code, errorResponse)
-
                 errorResponse
             }
 
@@ -149,6 +147,7 @@ class NetworkApi @Inject constructor(
         Timber.d("status: $code")
         null
     }
+
     private fun <T> storeSuccessResponse(response: Response<T>) {
         val content = TimeUtils.getLocalDateTime(Instant.now()).toString() +
                 "\t Body: " + response.body() +
@@ -161,10 +160,14 @@ class NetworkApi @Inject constructor(
         )
     }
 
-    private fun storeErrorResponse(code: Int, errorResponse: ErrorResponse) {
+    private fun storeErrorResponse(
+        code: Int,
+        errorResponse: ErrorResponse?,
+        responseBody: ResponseBody?
+    ) {
         val content = TimeUtils.getLocalDateTime(Instant.now()).toString() +
                 "\t Error Code: " + code +
-                "\t Error Body: " + errorResponse +
+                "\t Error Body: " + (errorResponse ?: responseBody).toString() +
                 "\n"
 
         storageProvider.storeContent(
