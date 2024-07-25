@@ -150,8 +150,8 @@ class NetworkApi @Inject constructor(
 
     private fun <T> storeSuccessResponse(response: Response<T>) {
         val content = TimeUtils.getLocalDateTime(Instant.now()).toString() +
-                "\t Body: " + response.body() +
-                "\n"
+            "\t Body: " + response.body() +
+            "\n"
 
         storageProvider.storeContent(
             ANDROID_NETWORKING_FILE_NAME,
@@ -166,9 +166,9 @@ class NetworkApi @Inject constructor(
         responseBody: ResponseBody?
     ) {
         val content = TimeUtils.getLocalDateTime(Instant.now()).toString() +
-                "\t Error Code: " + code +
-                "\t Error Body: " + (errorResponse ?: responseBody).toString() +
-                "\n"
+            "\t Error Code: " + code +
+            "\t Error Body: " + (errorResponse ?: responseBody).toString() +
+            "\n"
 
         storageProvider.storeContent(
             ANDROID_NETWORKING_FILE_NAME,
