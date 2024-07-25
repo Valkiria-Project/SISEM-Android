@@ -16,6 +16,7 @@ import com.skgtecnologia.sisem.data.remote.extensions.HTTP_UNAUTHORIZED_STATUS_C
 import com.skgtecnologia.sisem.data.remote.model.error.ErrorResponse
 import com.skgtecnologia.sisem.data.remote.model.error.mapToDomain
 import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
+import com.skgtecnologia.sisem.domain.model.banner.BannerModel
 import com.squareup.moshi.Moshi
 import com.valkiria.uicomponents.components.button.ButtonSize
 import com.valkiria.uicomponents.components.button.ButtonStyle
@@ -28,7 +29,6 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
-import retrofit2.HttpException
 import retrofit2.Response
 import timber.log.Timber
 import java.net.ConnectException
@@ -50,47 +50,107 @@ class NetworkApi @Inject constructor(
     private val errorResponseAdapter = Moshi.Builder()
         .build()
         .adapter(ErrorResponse::class.java)
+        .lenient()
 
     suspend fun <T> apiCall(api: suspend () -> Response<T>) = resultOf {
         val response: Response<T> =
             withContext(coroutineContext) {
-                api()
+                api.invoke()
             }
 
         val body = response.body()
 
-        storeResponse(response, response.errorBody())
-
         if (response.isSuccessful && body != null) {
+            storeSuccessResponse(response)
             body
         } else {
             Timber.wtf("The retrieved response is not successful and/or body is empty")
 
-            throw response.errorBody()!!.toError(response.code()).mapToDomain()
+            throw handleHttpException(response.code(), response.errorBody()).mapToDomain()
         }
-    }.recoverResult {
-        throw when (it) {
-            is HttpException -> handleHttpException(it.code()).mapToDomain()
+    }.recoverResult { throwable ->
+        throw if (throwable is BannerModel) {
+            throwable
+        } else {
+            parseError(throwable).mapToDomain()
+        }
+    }
+
+    private fun parseError(throwable: Throwable): ErrorResponse {
+        return when (throwable) {
             is ConnectException, is UnknownHostException -> ErrorResponse(
                 icon = stringProvider.getString(R.string.alert_icon),
                 title = stringProvider.getString(R.string.error_connectivity_title),
                 description = stringProvider.getString(R.string.error_connectivity_description)
-            ).mapToDomain()
+            )
 
             is SocketTimeoutException -> ErrorResponse(
                 icon = stringProvider.getString(R.string.alert_icon),
                 title = stringProvider.getString(R.string.error_server_title),
                 description = stringProvider.getString(R.string.error_server_description)
-            ).mapToDomain()
+            )
 
-            else -> it
+            else -> ErrorResponse(
+                icon = stringProvider.getString(R.string.alert_icon),
+                title = stringProvider.getString(R.string.error_general_title),
+                description = stringProvider.getString(R.string.error_general_description)
+            )
         }
     }
 
-    private fun <T> storeResponse(response: Response<T>, errorBody: ResponseBody?) {
+    private fun handleHttpException(code: Int, responseBody: ResponseBody?): ErrorResponse {
+        val errorResponse = responseBody?.toError(code)
+        storeErrorResponse(code, errorResponse, responseBody)
+
+        return when {
+            errorResponse != null -> {
+                errorResponse
+            }
+
+            code == HTTP_FORBIDDEN_STATUS_CODE || code == HTTP_UNAUTHORIZED_STATUS_CODE ->
+                ErrorResponse(
+                    icon = stringProvider.getString(R.string.alert_icon),
+                    title = stringProvider.getString(R.string.error_unauthorized_title),
+                    description = stringProvider.getString(R.string.error_unauthorized_description)
+                ).apply {
+                    footerModel = FooterUiModel(
+                        leftButton = ButtonUiModel(
+                            identifier = LoginIdentifier.LOGIN_RE_AUTH_BANNER.name,
+                            label = stringProvider.getString(R.string.error_unauthorized_cta),
+                            style = ButtonStyle.LOUD,
+                            textStyle = TextStyle.HEADLINE_5,
+                            onClick = OnClick.DISMISS,
+                            size = ButtonSize.DEFAULT,
+                            arrangement = Arrangement.Start,
+                            modifier = Modifier.padding(
+                                start = 0.dp,
+                                top = 20.dp,
+                                end = 0.dp,
+                                bottom = 0.dp
+                            )
+                        )
+                    )
+                }
+
+            else -> ErrorResponse(
+                icon = stringProvider.getString(R.string.alert_icon),
+                title = stringProvider.getString(R.string.error_general_title),
+                description = stringProvider.getString(R.string.error_general_description)
+            )
+        }
+    }
+
+    @Suppress("SwallowedException", "TooGenericExceptionCaught")
+    private fun ResponseBody.toError(code: Int): ErrorResponse? = try {
+        errorResponseAdapter.fromJson(source())!!
+    } catch (exception: Exception) {
+        Timber.d("status: $code")
+        null
+    }
+
+    private fun <T> storeSuccessResponse(response: Response<T>) {
         val content = TimeUtils.getLocalDateTime(Instant.now()).toString() +
             "\t Body: " + response.body() +
-            "\t Error Body: " + errorBody?.toError(response.code()) +
             "\n"
 
         storageProvider.storeContent(
@@ -100,45 +160,20 @@ class NetworkApi @Inject constructor(
         )
     }
 
-    @Suppress("SwallowedException", "TooGenericExceptionCaught")
-    private fun ResponseBody.toError(code: Int): ErrorResponse = try {
-        errorResponseAdapter.fromJson(string())!!
-    } catch (exception: Exception) {
-        Timber.d("status: $code")
-        handleHttpException(code)
-    }
+    private fun storeErrorResponse(
+        code: Int,
+        errorResponse: ErrorResponse?,
+        responseBody: ResponseBody?
+    ) {
+        val content = TimeUtils.getLocalDateTime(Instant.now()).toString() +
+            "\t Error Code: " + code +
+            "\t Error Body: " + (errorResponse ?: responseBody).toString() +
+            "\n"
 
-    private fun handleHttpException(code: Int): ErrorResponse {
-        return if (code == HTTP_FORBIDDEN_STATUS_CODE || code == HTTP_UNAUTHORIZED_STATUS_CODE) {
-            ErrorResponse(
-                icon = stringProvider.getString(R.string.alert_icon),
-                title = stringProvider.getString(R.string.error_unauthorized_title),
-                description = stringProvider.getString(R.string.error_unauthorized_description)
-            ).apply {
-                footerModel = FooterUiModel(
-                    leftButton = ButtonUiModel(
-                        identifier = LoginIdentifier.LOGIN_RE_AUTH_BANNER.name,
-                        label = stringProvider.getString(R.string.error_unauthorized_cta),
-                        style = ButtonStyle.LOUD,
-                        textStyle = TextStyle.HEADLINE_5,
-                        onClick = OnClick.DISMISS,
-                        size = ButtonSize.DEFAULT,
-                        arrangement = Arrangement.Start,
-                        modifier = Modifier.padding(
-                            start = 0.dp,
-                            top = 20.dp,
-                            end = 0.dp,
-                            bottom = 0.dp
-                        )
-                    )
-                )
-            }
-        } else {
-            ErrorResponse(
-                icon = stringProvider.getString(R.string.alert_icon),
-                title = stringProvider.getString(R.string.error_general_title),
-                description = ""
-            )
-        }
+        storageProvider.storeContent(
+            ANDROID_NETWORKING_FILE_NAME,
+            Context.MODE_APPEND,
+            content.toByteArray()
+        )
     }
 }
