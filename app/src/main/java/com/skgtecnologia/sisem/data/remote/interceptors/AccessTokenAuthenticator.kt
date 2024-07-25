@@ -83,6 +83,7 @@ class AccessTokenAuthenticator @Inject constructor(
                 "\t Authenticate intent: " + url +
                 "\t with Token model: " + token +
                 "\t using the refresh token: " + token?.refreshToken +
+                "\t refreshed on: " + token?.refreshDateTime +
                 "\n"
 
             storageProvider.storeContent(

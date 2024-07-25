@@ -8,6 +8,7 @@ data class AccessTokenModel(
     val dateTime: LocalDateTime,
     val accessToken: String,
     val refreshToken: String,
+    val refreshDateTime: String,
     val tokenType: String,
     val username: String,
     val role: String,
