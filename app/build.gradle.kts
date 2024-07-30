@@ -51,7 +51,7 @@ android {
             buildConfigField("String", "AUTH_BASE_URL", "\"https://mobile-preprod.sisem.co/sisem-api/\"")
             buildConfigField("String", "BASE_URL", "\"https://mobile-preprod.sisem.co/sisem-api/v1/\"")
             buildConfigField("String", "LOCATION_URL", "\"https://mobile-preprod.sisem.co/sisem-location-api/v1/\"")
-            buildConfigField("String", "REFRESH_URL", "\"https://admin.preprod.sisembogota.com/auth/realms/sisem/protocol/openid-connect/token\"")
+            buildConfigField("String", "REFRESH_URL", "\"https://admin-preprod.sisem.co/auth/realms/sisem/protocol/openid-connect/token\"")
         }
         release {
             isMinifyEnabled = false
