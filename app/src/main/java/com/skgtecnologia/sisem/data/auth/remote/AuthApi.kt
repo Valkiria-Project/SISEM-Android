@@ -12,6 +12,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Url
 
 interface AuthApi {
 
@@ -20,9 +21,11 @@ interface AuthApi {
         @Body authenticateBody: AuthenticateBody
     ): Response<AccessTokenResponse>
 
+    @Suppress("LongParameterList")
     @FormUrlEncoded
-    @POST(BuildConfig.REFRESH_URL)
+    @POST
     suspend fun refresh(
+        @Url url: String = BuildConfig.REFRESH_URL,
         @Field("grant_type") grantType: String = "refresh_token",
         @Field("client_id") clientId: String = "sisem_real_app_mobile",
         @Field("client_secret") clientSecret: String = "",
