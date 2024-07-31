@@ -21,6 +21,7 @@ interface AuthApi {
         @Body authenticateBody: AuthenticateBody
     ): Response<AccessTokenResponse>
 
+    @Suppress("LongParameterList")
     @FormUrlEncoded
     @POST
     suspend fun refresh(
