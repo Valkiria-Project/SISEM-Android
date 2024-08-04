@@ -71,7 +71,7 @@ class AuthRepositoryImpl @Inject constructor(
                 val token = currentToken.copy(
                     accessToken = refreshTokenModel.accessToken,
                     refreshToken = refreshTokenModel.refreshToken,
-                    refreshDateTime = TimeUtils.getLocalDateTime(Instant.now()).toString()
+                    refreshDateTime = TimeUtils.getLocalDateTime(Instant.now())
                 )
                 token
             }.onSuccess { accessTokenModel ->

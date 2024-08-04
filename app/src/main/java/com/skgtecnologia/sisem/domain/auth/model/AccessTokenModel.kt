@@ -8,7 +8,7 @@ data class AccessTokenModel(
     val dateTime: LocalDateTime,
     val accessToken: String,
     val refreshToken: String,
-    val refreshDateTime: String,
+    val refreshDateTime: LocalDateTime,
     val tokenType: String,
     val username: String,
     val role: String,
@@ -20,5 +20,6 @@ data class AccessTokenModel(
     val warning: BannerModel? = null,
     val isWarning: Boolean,
     val docType: String,
-    val document: String
+    val document: String,
+    val expDate: LocalDateTime
 )

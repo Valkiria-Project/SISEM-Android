@@ -20,7 +20,7 @@ import com.skgtecnologia.sisem.data.operation.cache.model.OperationEntity
         NotificationEntity::class,
         OperationEntity::class
     ],
-    version = 21
+    version = 22
 )
 @TypeConverters(CacheConverters::class)
 abstract class SisemDatabase : RoomDatabase() {
