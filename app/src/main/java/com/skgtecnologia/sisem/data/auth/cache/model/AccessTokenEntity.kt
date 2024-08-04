@@ -24,12 +24,12 @@ data class AccessTokenEntity(
     @ColumnInfo(name = "is_admin") val isAdmin: Boolean,
     @ColumnInfo(name = "is_warning") val isWarning: Boolean,
     @ColumnInfo(name = "name_user") val nameUser: String,
-    @Embedded(prefix = "pre_operational_") val preoperational: PreOperationalEntity?,
-    @Embedded(prefix = "turn_") val turn: TurnEntity?,
     @ColumnInfo(name = "doc_type") val docType: String,
     @ColumnInfo(name = "document") val document: String,
     @ColumnInfo(name = "refresh_date_time") val refreshDateTime: LocalDateTime,
-    @ColumnInfo(name = "exp_date") val expDate: LocalDateTime
+    @ColumnInfo(name = "exp_date") val expDate: LocalDateTime,
+    @Embedded(prefix = "pre_operational_") val preoperational: PreOperationalEntity?,
+    @Embedded(prefix = "turn_") val turn: TurnEntity?
 )
 
 fun AccessTokenEntity.mapToDomain(): AccessTokenModel {
