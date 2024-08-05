@@ -7,7 +7,6 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import java.time.LocalDateTime
-import kotlin.math.exp
 
 @Entity(
     tableName = "access_token",

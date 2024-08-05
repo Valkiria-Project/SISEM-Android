@@ -98,11 +98,11 @@ class AccessTokenInterceptor @Inject constructor(
         authRepository.getAllAccessTokens().map { accessTokenModel ->
             if (LocalDateTime.now() > accessTokenModel.expDate) {
                 val authenticateContent = TimeUtils.getLocalDateTime(Instant.now()).toString() +
-                        "\t Authenticate intent: " + url +
-                        "\t with Token model: " + accessTokenModel +
-                        "\t using the refresh token: " + accessTokenModel.refreshToken +
-                        "\t refreshed on: " + accessTokenModel.refreshDateTime +
-                        "\n"
+                    "\t Authenticate intent: " + url +
+                    "\t with Token model: " + accessTokenModel +
+                    "\t using the refresh token: " + accessTokenModel.refreshToken +
+                    "\t refreshed on: " + accessTokenModel.refreshDateTime +
+                    "\n"
 
                 storageProvider.storeContent(
                     ANDROID_NETWORKING_FILE_NAME,
