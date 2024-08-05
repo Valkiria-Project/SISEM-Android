@@ -1,20 +1,27 @@
 package com.skgtecnologia.sisem.data.remote.interceptors
 
+import android.content.Context
+import com.skgtecnologia.sisem.commons.resources.ANDROID_NETWORKING_FILE_NAME
+import com.skgtecnologia.sisem.commons.resources.StorageProvider
 import com.skgtecnologia.sisem.data.remote.extensions.signWithToken
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
+import com.valkiria.uicomponents.utlis.TimeUtils
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 import timber.log.Timber
 import java.net.ConnectException
+import java.time.Instant
+import java.time.LocalDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class AccessTokenInterceptor @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val storageProvider: StorageProvider
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -34,6 +41,8 @@ class AccessTokenInterceptor @Inject constructor(
 
     @Suppress("ComplexMethod")
     private fun Request.signedRequest(): Request? = runBlocking {
+        handleTokenExpirationTime()
+
         when {
             url.toString().contains(ASSISTANT_PRE_OP) ||
                 url.toString().contains(ASSISTANT_FINDING) ||
@@ -81,6 +90,27 @@ class AccessTokenInterceptor @Inject constructor(
 
             else -> authRepository.getLastToken()?.let { accessToken ->
                 signWithToken(accessToken)
+            }
+        }
+    }
+
+    private suspend fun Request.handleTokenExpirationTime() {
+        authRepository.getAllAccessTokens().map { accessTokenModel ->
+            if (LocalDateTime.now() > accessTokenModel.expDate) {
+                val authenticateContent = TimeUtils.getLocalDateTime(Instant.now()).toString() +
+                    "\t Authenticate intent: " + url +
+                    "\t with Token model: " + accessTokenModel +
+                    "\t using the refresh token: " + accessTokenModel.refreshToken +
+                    "\t refreshed on: " + accessTokenModel.refreshDateTime +
+                    "\n"
+
+                storageProvider.storeContent(
+                    ANDROID_NETWORKING_FILE_NAME,
+                    Context.MODE_APPEND,
+                    authenticateContent.toByteArray()
+                )
+
+                authRepository.refreshToken(accessTokenModel)
             }
         }
     }

@@ -237,7 +237,6 @@ class LoginViewModelTest {
         dateTime = LocalDateTime.now(),
         accessToken = "accessToken",
         refreshToken = "refreshToken",
-        refreshDateTime = "refreshDateTime",
         tokenType = "tokenType",
         username = "username",
         role = "role",
@@ -248,6 +247,8 @@ class LoginViewModelTest {
         warning = warning,
         isWarning = false,
         docType = "docType",
-        document = "document"
+        document = "document",
+        refreshDateTime = LocalDateTime.now(),
+        expDate = LocalDateTime.now()
     )
 }
