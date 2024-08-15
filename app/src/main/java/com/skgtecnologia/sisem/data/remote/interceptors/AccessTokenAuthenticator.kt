@@ -84,7 +84,7 @@ class AccessTokenAuthenticator @Inject constructor(
                 "\t with Token model: " + token +
                 "\t using the refresh token: " + token?.refreshToken +
                 "\t refreshed on: " + token?.refreshDateTime +
-                "\n"
+                "\n\n"
 
             storageProvider.storeContent(
                 ANDROID_NETWORKING_FILE_NAME,

@@ -20,7 +20,7 @@ class NetworkInterceptor @Inject constructor(
 
         val requestContent = TimeUtils.getLocalDateTime(Instant.now()).toString() +
             "\t" + request.toString() +
-            "\n"
+            "\n\n"
 
         storageProvider.storeContent(
             ANDROID_NETWORKING_FILE_NAME,
@@ -32,7 +32,7 @@ class NetworkInterceptor @Inject constructor(
 
         val responseContent = TimeUtils.getLocalDateTime(Instant.now()).toString() +
             "\t" + response.toString() +
-            "\n"
+            "\n\n"
 
         storageProvider.storeContent(
             ANDROID_NETWORKING_FILE_NAME,
