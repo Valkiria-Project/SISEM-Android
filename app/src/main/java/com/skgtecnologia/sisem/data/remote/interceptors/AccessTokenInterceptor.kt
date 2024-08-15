@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.data.remote.interceptors
 
 import android.content.Context
+import com.skgtecnologia.sisem.commons.extensions.resultOf
 import com.skgtecnologia.sisem.commons.resources.ANDROID_NETWORKING_FILE_NAME
 import com.skgtecnologia.sisem.commons.resources.StorageProvider
 import com.skgtecnologia.sisem.data.remote.extensions.signWithToken
@@ -102,7 +103,7 @@ class AccessTokenInterceptor @Inject constructor(
                     "\t with Token model: " + accessTokenModel +
                     "\t using the refresh token: " + accessTokenModel.refreshToken +
                     "\t refreshed on: " + accessTokenModel.refreshDateTime +
-                    "\n"
+                    "\n\n"
 
                 storageProvider.storeContent(
                     ANDROID_NETWORKING_FILE_NAME,
@@ -110,7 +111,34 @@ class AccessTokenInterceptor @Inject constructor(
                     authenticateContent.toByteArray()
                 )
 
-                authRepository.refreshToken(accessTokenModel)
+                resultOf { authRepository.refreshToken(accessTokenModel) }
+                    .onSuccess { refreshedTokenModel ->
+                        val refreshSuccessfulContent =
+                            TimeUtils.getLocalDateTime(Instant.now()).toString() +
+                                "\t Refreshed Token model: " + refreshedTokenModel +
+                                "\t using the refresh token: " + accessTokenModel.refreshToken +
+                                "\t refreshed on: " + refreshedTokenModel.refreshDateTime +
+                                "\n\n"
+
+                        storageProvider.storeContent(
+                            ANDROID_NETWORKING_FILE_NAME,
+                            Context.MODE_APPEND,
+                            refreshSuccessfulContent.toByteArray()
+                        )
+                    }
+                    .onFailure { throwable ->
+                        val refreshFailureContent =
+                            TimeUtils.getLocalDateTime(Instant.now()).toString() +
+                                "\t Refreshed Token failure: " + throwable.localizedMessage +
+                                "\t using the refresh token: " + accessTokenModel.refreshToken +
+                                "\n\n"
+
+                        storageProvider.storeContent(
+                            ANDROID_NETWORKING_FILE_NAME,
+                            Context.MODE_APPEND,
+                            refreshFailureContent.toByteArray()
+                        )
+                    }
             }
         }
     }
