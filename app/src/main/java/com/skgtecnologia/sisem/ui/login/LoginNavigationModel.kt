@@ -2,9 +2,9 @@ package com.skgtecnologia.sisem.ui.login
 
 import androidx.navigation.NavHostController
 import com.skgtecnologia.sisem.di.operation.OperationRole
-import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
-import com.skgtecnologia.sisem.ui.navigation.LOGIN
-import com.skgtecnologia.sisem.ui.navigation.NavigationGraph
+import com.skgtecnologia.sisem.ui.navigation.AuthRoute
+import com.skgtecnologia.sisem.ui.navigation.DeviceAppState
+import com.skgtecnologia.sisem.ui.navigation.NavGraph
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 
 data class LoginNavigationModel(

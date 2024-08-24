@@ -1,8 +1,6 @@
 package com.skgtecnologia.sisem.ui.navigation
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -20,24 +18,16 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.skgtecnologia.sisem.commons.communication.AppEvent
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
-import com.skgtecnologia.sisem.commons.extensions.navigateBack
-import com.skgtecnologia.sisem.commons.location.ACTION_START
-import com.skgtecnologia.sisem.commons.location.LocationService
-import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.ui.authcards.create.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.authcards.view.AuthCardViewScreen
-import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.sharedViewModel
-import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
-import com.skgtecnologia.sisem.ui.forgotpassword.ForgotPasswordScreen
 import com.skgtecnologia.sisem.ui.incident.IncidentScreen
 import com.skgtecnologia.sisem.ui.inventory.InventoryScreen
 import com.skgtecnologia.sisem.ui.inventory.view.InventoryViewScreen
-import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.map.MapScreen
-import com.skgtecnologia.sisem.ui.medicalhistory.create.MedicalHistoryScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.camera.CameraScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.camera.CameraViewScreen
+import com.skgtecnologia.sisem.ui.medicalhistory.create.MedicalHistoryScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.view.MedicalHistoryViewScreen
@@ -46,14 +36,10 @@ import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.DOCUMENT
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ID_APH
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.INVENTORY_TYPE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.PHOTO_TAKEN
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ROLE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.USERNAME
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
-import com.skgtecnologia.sisem.ui.preoperational.create.PreOperationalScreen
 import com.skgtecnologia.sisem.ui.preoperational.view.PreOperationalViewScreen
 import com.skgtecnologia.sisem.ui.report.addfinding.AddFindingScreen
 import com.skgtecnologia.sisem.ui.report.addreport.AddReportRoleScreen
@@ -288,7 +274,7 @@ private fun NavGraphBuilder.mainGraph(
 
         composable(
             route = MainNavigationRoute.InventoryViewScreen.route +
-                "?$INVENTORY_TYPE={$INVENTORY_TYPE}",
+                    "?$INVENTORY_TYPE={$INVENTORY_TYPE}",
             arguments = listOf(navArgument(INVENTORY_TYPE) { type = NavType.StringType })
         ) {
             InventoryViewScreen(
@@ -399,7 +385,7 @@ private fun NavGraphBuilder.mainGraph(
 
         composable(
             route = MainNavigationRoute.PreOperationalViewScreen.route +
-                "?$ROLE={$ROLE}",
+                    "?$ROLE={$ROLE}",
             arguments = listOf(navArgument(ROLE) { type = NavType.StringType })
         ) {
             PreOperationalViewScreen { navigationModel ->
@@ -532,7 +518,7 @@ private fun NavGraphBuilder.reportGraph(
     ) {
         composable(
             route = ReportNavigationRoute.AddFindingScreen.route +
-                "?${NavigationArgument.FINDING_ID}={${NavigationArgument.FINDING_ID}}",
+                    "?${NavigationArgument.FINDING_ID}={${NavigationArgument.FINDING_ID}}",
             arguments = listOf(
                 navArgument(NavigationArgument.FINDING_ID) { type = NavType.StringType }
             )
@@ -560,7 +546,7 @@ private fun NavGraphBuilder.reportGraph(
 
         composable(
             route = ReportNavigationRoute.ImagesConfirmationScreen.route +
-                "/{${NavigationArgument.FROM}}",
+                    "/{${NavigationArgument.FROM}}",
             arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
         ) { navBackStackEntry ->
             ImagesConfirmationScreen(
@@ -594,7 +580,7 @@ private fun NavGraphBuilder.reportGraph(
 
         composable(
             route = ReportNavigationRoute.AddReportScreen.route +
-                "?$ROLE={$ROLE}",
+                    "?$ROLE={$ROLE}",
             arguments = listOf(
                 navArgument(ROLE) {
                     type = NavType.StringType

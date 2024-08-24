@@ -3,10 +3,10 @@ package com.skgtecnologia.sisem.ui.report
 import androidx.navigation.NavHostController
 import com.skgtecnologia.sisem.commons.extensions.navigateBack
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
-import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.skgtecnologia.sisem.ui.navigation.FINDING
+import com.skgtecnologia.sisem.ui.navigation.NavGraph
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
-import com.skgtecnologia.sisem.ui.navigation.NavigationGraph
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.navigation.REPORT
 import com.skgtecnologia.sisem.ui.navigation.ReportNavigationRoute

@@ -3,7 +3,7 @@ package com.skgtecnologia.sisem.ui.authcards.view
 import androidx.navigation.NavHostController
 import com.skgtecnologia.sisem.commons.extensions.navigateBack
 import com.skgtecnologia.sisem.di.operation.OperationRole
-import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ROLE
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
