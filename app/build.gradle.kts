@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.googleServices)
     alias(libs.plugins.kotlinKsp)
     alias(libs.plugins.kotlinParcelize)
+    alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.ktlint)
 }
 
@@ -117,6 +118,7 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.text.google.fonts)
     implementation(libs.ui.tooling.preview)
+    implementation(libs.lifecycle.runtime.compose)
     implementation(libs.material3)
     implementation(libs.material3.window.size)
     implementation(libs.material.icons.extended)
@@ -150,11 +152,13 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.moshi)
 
-    // Deserializer
+    // Serialization
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
     ksp(libs.moshi.codegen)
     implementation(libs.moshi.adapters)
+
+    implementation(libs.kotlinx.serialization.json)
 
     // Local Storage
     implementation(libs.androidx.room.runtime)
