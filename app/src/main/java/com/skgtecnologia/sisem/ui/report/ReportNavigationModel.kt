@@ -45,7 +45,7 @@ data class ReportNavigationModel(
 
             closeFinding -> with(navController) {
                 popBackStack(
-                    route = AuthNavigationRoute.PreOperationalScreen.route,
+                    route = AuthRoute.PreOperationalRoute,
                     inclusive = false
                 )
 
@@ -59,7 +59,7 @@ data class ReportNavigationModel(
             )
 
             closeReport ->
-                navController.navigate(NavigationGraph.Main.route) {
+                navController.navigate(NavGraph.MainNavGraph) {
                     popUpTo(ReportNavigationRoute.AddReportRoleScreen.route) {
                         inclusive = true
                     }

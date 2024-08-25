@@ -1,9 +1,9 @@
 package com.skgtecnologia.sisem.ui.preoperational.create
 
 import androidx.navigation.NavHostController
-import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.AuthRoute
+import com.skgtecnologia.sisem.ui.navigation.NavGraph
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
-import com.skgtecnologia.sisem.ui.navigation.NavigationGraph
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.navigation.ReportNavigationRoute
 
@@ -17,8 +17,8 @@ data class PreOpNavigationModel(
         super.navigate(navController)
 
         when {
-            isTurnComplete -> navController.navigate(NavigationGraph.Main.route) {
-                popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
+            isTurnComplete -> navController.navigate(NavGraph.MainNavGraph) {
+                popUpTo(AuthRoute.AuthCardsRoute) {
                     inclusive = true
                 }
             }
@@ -29,8 +29,8 @@ data class PreOpNavigationModel(
                         "?${NavigationArgument.FINDING_ID}=$findingId"
                 )
 
-            else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
-                popUpTo(AuthNavigationRoute.PreOperationalScreen.route) {
+            else -> navController.navigate(AuthRoute.AuthCardsRoute) {
+                popUpTo(AuthRoute.PreOperationalRoute) {
                     inclusive = true
                 }
             }

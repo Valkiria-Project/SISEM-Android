@@ -25,7 +25,7 @@ fun getAppStartDestination(model: StartupNavigationModel?): NavGraph {
 
 fun getAuthStartDestination(model: StartupNavigationModel?): AuthRoute = when {
     model?.isWarning == true -> AuthRoute.ChangePasswordRoute
-    model?.isAdmin == true -> AuthRoute.DeviceAuthRoute(DeviceAppState.APP_STARTED)
+    model?.isAdmin == true -> AuthRoute.DeviceAuthRoute(DeviceAppState.APP_STARTED.name)
     model?.requiresPreOperational == true -> AuthRoute.PreOperationalRoute(OperationRole.DRIVER)
     else -> AuthRoute.AuthCardsRoute
 }

@@ -25,12 +25,10 @@ import timber.log.Timber
 @Suppress("LongMethod")
 @Composable
 fun DeviceAuthScreen(
-    from: String,
     modifier: Modifier = Modifier,
     onNavigation: (deviceAuthNavigationModel: DeviceAuthNavigationModel) -> Unit
 ) {
     val viewModel = hiltViewModel<DeviceAuthViewModel>()
-    viewModel.from = from
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState) {

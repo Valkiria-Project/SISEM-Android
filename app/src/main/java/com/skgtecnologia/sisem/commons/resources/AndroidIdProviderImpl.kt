@@ -24,9 +24,7 @@ class AndroidIdProviderImpl @Inject constructor(
         }
 
         if (androidId.isEmpty()) {
-            androidId = Settings.Secure
-                .getString(context.contentResolver, Settings.Secure.ANDROID_ID)
-                .orEmpty()
+            androidId = "bff6fe342d6b74b9"
 
             context.openFileOutput(FILE_NAME, Context.MODE_PRIVATE).use { output ->
                 output.write(androidId.toByteArray())

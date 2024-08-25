@@ -21,35 +21,35 @@ data class LoginNavigationModel(
         super.navigate(navController)
 
         when {
-            isWarning -> navController.navigate(AuthNavigationRoute.ChangePasswordScreen.route)
+            isWarning -> navController.navigate(AuthRoute.ChangePasswordRoute)
             isAdmin && requiresDeviceAuth ->
-                navController.navigate("${AuthNavigationRoute.DeviceAuthScreen.route}/$LOGIN")
+                navController.navigate(AuthRoute.DeviceAuthRoute(DeviceAppState.LOGIN.name))
 
             isAdmin && !requiresDeviceAuth ->
-                navController.navigate(NavigationGraph.Main.route) {
-                    popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
+                navController.navigate(NavGraph.MainNavGraph) {
+                    popUpTo(AuthRoute.AuthCardsRoute) {
                         inclusive = true
                     }
                 }
 
             isTurnComplete && requiresPreOperational.not() ->
-                navController.navigate(NavigationGraph.Main.route) {
-                    popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
+                navController.navigate(NavGraph.MainNavGraph) {
+                    popUpTo(AuthRoute.AuthCardsRoute) {
                         inclusive = true
                     }
                 }
 
             requiresPreOperational -> {
-                navController.navigate(AuthNavigationRoute.PreOperationalScreen.route) {
-                    popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
+                navController.navigate(AuthRoute.PreOperationalRoute) {
+                    popUpTo(AuthRoute.AuthCardsRoute) {
                         inclusive = true
                     }
                 }
             }
 
-            forgotPassword -> navController.navigate(AuthNavigationRoute.ForgotPasswordScreen.route)
+            forgotPassword -> navController.navigate(AuthRoute.ForgotPasswordRoute)
 
-            else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route)
+            else -> navController.navigate(AuthRoute.AuthCardsRoute)
         }
     }
 }

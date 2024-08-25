@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.usecases.Login
@@ -13,7 +14,7 @@ import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
+import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.chip.ChipUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
@@ -41,7 +42,8 @@ class LoginViewModel @Inject constructor(
     var uiState by mutableStateOf(LoginUiState())
         private set
 
-    private val previousUsername: String? = savedStateHandle[NavigationArgument.USERNAME]
+    private val previousUsername: String? =
+        savedStateHandle.toRoute<AuthRoute.LoginRoute>().username
 
     private var code by mutableStateOf("")
     var username by mutableStateOf("")

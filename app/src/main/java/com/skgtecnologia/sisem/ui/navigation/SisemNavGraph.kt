@@ -68,10 +68,8 @@ fun SisemNavGraph(
         UnauthorizedEventHandler.subscribeUnauthorizedEvent { appEvent ->
             if (appEvent is AppEvent.UnauthorizedSession) {
                 Timber.d("Username is: ${appEvent.username}")
-                navController.navigate(
-                    AuthNavigationRoute.LoginScreen.route + "?$USERNAME=${appEvent.username}"
-                ) {
-                    popUpTo(NavigationGraph.Main.route) {
+                navController.navigate(AuthRoute.LoginRoute(appEvent.username)) {
+                    popUpTo(NavGraph.MainNavGraph) {
                         inclusive = true
                     }
                 }
@@ -88,9 +86,9 @@ fun SisemNavGraph(
                 modifier,
                 context
             )
-            mainGraph(navController, modifier)
-            aphGraph(navController, modifier)
-            reportGraph(navController, modifier)
+//            mainGraph(navController, modifier)
+//            aphGraph(navController, modifier)
+//            reportGraph(navController, modifier)
         }
     }
 }
@@ -98,125 +96,108 @@ fun SisemNavGraph(
 @Suppress("LongMethod")
 private fun NavGraphBuilder.authGraph(
     navController: NavHostController,
-    startDestination: String,
+    startDestination: AuthRoute,
     modifier: Modifier,
     context: Context
 ) {
-    navigation(
-        startDestination = startDestination,
-        route = NavigationGraph.Auth.route
-    ) {
-        composable(
-            route = AuthNavigationRoute.AuthCardsScreen.route
-        ) {
+    navigation<NavGraph.AuthNavGraph>(startDestination = startDestination) {
+        composable<AuthRoute.AuthCardsRoute> {
             AuthCardsScreen(
                 modifier = modifier
             ) {
-                navController.navigate(AuthNavigationRoute.LoginScreen.route)
+                navController.navigate(AuthRoute.LoginRoute())
             }
         }
 
-        composable(
-            route = AuthNavigationRoute.LoginScreen.route +
-                "?$USERNAME={$USERNAME}",
-            arguments = listOf(
-                navArgument(USERNAME) {
-                    type = NavType.StringType
-                    nullable = true
-                }
-            )
-        ) {
-            LoginScreen(
-                modifier = modifier
-            ) { navigationModel ->
-                with(navigationModel) {
-                    if (isTurnComplete && requiresPreOperational.not()) {
-                        Intent(context.applicationContext, LocationService::class.java).apply {
-                            action = ACTION_START
-                            context.startService(this)
-                        }
-                    }
-                    navigate(navController)
-                }
-            }
-        }
-
-        composable(
-            route = AuthNavigationRoute.ForgotPasswordScreen.route
-        ) {
-            ForgotPasswordScreen(
-                modifier = modifier,
-                onNavigation = { navigationModel ->
-                    navigationModel.navigate(navController)
-                }
-            )
-        }
-
-        composable(
-            route = AuthNavigationRoute.DeviceAuthScreen.route +
-                "/{${NavigationArgument.FROM}}",
-            arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
-        ) {
-            DeviceAuthScreen(
-                from = it.arguments?.getString(NavigationArgument.FROM).orEmpty(),
-                modifier = modifier
-            ) { navigationModel ->
-                with(navigationModel) {
-                    if (isCancel && from != MAIN) {
-                        if (!navController.navigateBack()) (context as Activity).finish()
-                    } else {
-                        navigationModel.navigate(navController)
-                    }
-                }
-            }
-        }
-
-        composable(
-            route = AuthNavigationRoute.PreOperationalScreen.route +
-                "?$ROLE={$ROLE}",
-            arguments = listOf(
-                navArgument(ROLE) {
-                    type = NavType.StringType
-                    nullable = true
-                }
-            )
-        ) { navBackStackEntry ->
-            val revertFinding = navBackStackEntry.savedStateHandle.get<Boolean>(REVERT_FINDING)
-            navBackStackEntry.savedStateHandle.remove<Boolean>(REVERT_FINDING)
-
-            val novelty = navBackStackEntry.savedStateHandle.get<Novelty>(NOVELTY)
-            navBackStackEntry.savedStateHandle.remove<Novelty>(NOVELTY)
-
-            PreOperationalScreen(
-                modifier = modifier,
-                novelty = novelty,
-                revertFinding = revertFinding
-            ) { navigationModel ->
-                with(navigationModel) {
-                    if (isTurnComplete) {
-                        Intent(context.applicationContext, LocationService::class.java).apply {
-                            action = ACTION_START
-                            context.startService(this)
-                        }
-                    }
-                    navigate(navController)
-                }
-            }
-        }
-
-        composable(
-            route = AuthNavigationRoute.ChangePasswordScreen.route
-        ) {
-            ChangePasswordScreen(
-                modifier = modifier,
-                onNavigation = { navigationModel ->
-                    with(navigationModel) {
-                        navigate(navController)
-                    }
-                },
-                onCancel = { navController.navigateUp() }
-            )
-        }
+//        composable<LoginRoute>(
+//            typeMap = mapOf(
+//                typeOf<String?>() to NavType.StringType
+//            )
+//        ) {
+//            LoginScreen(
+//                modifier = modifier,
+//                username = username
+//            ) { navigationModel ->
+//                with(navigationModel) {
+//                    if (isTurnComplete && requiresPreOperational.not()) {
+//                        Intent(context.applicationContext, LocationService::class.java).apply {
+//                            action = ACTION_START
+//                            context.startService(this)
+//                        }
+//                    }
+//                    navigate(navController)
+//                }
+//            }
+//        }
+//
+//        composable<ForgotPasswordRoute> {
+//            ForgotPasswordScreen(
+//                modifier = modifier,
+//                onNavigation = { navigationModel ->
+//                    navigationModel.navigate(navController)
+//                }
+//            )
+//        }
+//
+//        composable<DeviceAuthRoute>(
+//            typeMap = mapOf(
+//                typeOf<DeviceAppState>() to NavType.EnumType(DeviceAppState::class.java)
+//            )
+//        ) {
+//            DeviceAuthScreen(
+//                modifier = modifier
+//            ) { navigationModel ->
+//                with(navigationModel) {
+//                    if (isCancel && from != DeviceAppState.MAIN.name) {
+//                        if (!navController.navigateBack()) (context as Activity).finish()
+//                    } else {
+//                        navigationModel.navigate(navController)
+//                    }
+//                }
+//            }
+//        }
+//
+//        composable<PreOperationalRoute>(
+//            typeMap = mapOf(
+//                typeOf<OperationRole>() to NavType.EnumType(OperationRole::class.java),
+//                typeOf<Boolean>() to NavType.BoolType,
+//                typeOf<Novelty?>() to parcelableType<Novelty>(isNullableAllowed = true)
+//            )
+//        ) { navBackStackEntry ->
+//            val revertFinding = navBackStackEntry.toRoute<PreOperationalRoute>().revertFinding
+////            navBackStackEntry.savedStateHandle.remove<Boolean>(REVERT_FINDING)
+//
+//            val novelty = navBackStackEntry.toRoute<PreOperationalRoute>().novelty
+////            navBackStackEntry.savedStateHandle.remove<Novelty>(NOVELTY)
+//
+//            PreOperationalScreen(
+//                modifier = modifier,
+//                novelty = novelty,
+//                revertFinding = revertFinding
+//            ) { navigationModel ->
+//                with(navigationModel) {
+//                    if (isTurnComplete) {
+//                        Intent(context.applicationContext, LocationService::class.java).apply {
+//                            action = ACTION_START
+//                            context.startService(this)
+//                        }
+//                    }
+//                    navigate(navController)
+//                }
+//            }
+//        }
+//
+//        composable<ChangePasswordRoute> {
+//            ChangePasswordScreen(
+//                modifier = modifier,
+//                onNavigation = { navigationModel ->
+//                    with(navigationModel) {
+//                        navigate(navController)
+//                    }
+//                },
+//                onCancel = { navController.navigateUp() }
+//            )
+//        }
     }
 }
 
@@ -225,9 +206,8 @@ private fun NavGraphBuilder.mainGraph(
     navController: NavHostController,
     modifier: Modifier
 ) {
-    navigation(
+    navigation<NavGraph.MainNavGraph>(
         startDestination = MainNavigationRoute.MapScreen.route,
-        route = NavigationGraph.Main.route
     ) {
         composable(
             route = MainNavigationRoute.MapScreen.route
@@ -241,7 +221,7 @@ private fun NavGraphBuilder.mainGraph(
                     navController.navigate(aphRoute)
                 },
                 onLogout = {
-                    navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
+                    navController.navigate(AuthRoute.AuthCardsRoute) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             inclusive = true
                         }
@@ -325,7 +305,7 @@ private fun NavGraphBuilder.mainGraph(
         composable(
             route = MainNavigationRoute.DeviceAuthScreen.route
         ) {
-            navController.navigate("${AuthNavigationRoute.DeviceAuthScreen.route}/$MAIN")
+            navController.navigate(AuthRoute.DeviceAuthRoute(DeviceAppState.MAIN.name))
         }
 
         composable(
@@ -400,9 +380,8 @@ private fun NavGraphBuilder.aphGraph(
     navController: NavHostController,
     modifier: Modifier
 ) {
-    navigation(
+    navigation<NavGraph.AphNavGraph>(
         startDestination = AphNavigationRoute.MedicalHistoryScreen.route,
-        route = NavigationGraph.Aph.route
     ) {
         composable(
             route = AphNavigationRoute.MedicalHistoryScreen.route + "/{$ID_APH}",
@@ -512,9 +491,8 @@ private fun NavGraphBuilder.reportGraph(
     navController: NavHostController,
     modifier: Modifier
 ) {
-    navigation(
+    navigation<NavGraph.ReportNavGraph>(
         startDestination = ReportNavigationRoute.AddFindingScreen.route,
-        route = NavigationGraph.Report.route
     ) {
         composable(
             route = ReportNavigationRoute.AddFindingScreen.route +
@@ -569,7 +547,7 @@ private fun NavGraphBuilder.reportGraph(
                     )
                 },
                 onCancel = {
-                    navController.navigate(NavigationGraph.Main.route) {
+                    navController.navigate(NavGraph.MainNavGraph) {
                         popUpTo(ReportNavigationRoute.AddReportRoleScreen.route) {
                             inclusive = true
                         }

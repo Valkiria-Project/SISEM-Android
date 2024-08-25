@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.ui.deviceauth
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.SavedStateHandle
 import com.skgtecnologia.sisem.commons.ANDROID_ID
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
@@ -11,7 +12,8 @@ import com.skgtecnologia.sisem.domain.auth.usecases.DeleteAccessToken
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.AssociateDevice
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.GetDeviceAuthScreen
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
-import com.skgtecnologia.sisem.ui.navigation.LOGIN
+import com.skgtecnologia.sisem.ui.navigation.AuthRoute
+import com.skgtecnologia.sisem.ui.navigation.DeviceAppState
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import io.mockk.MockKAnnotations
@@ -57,7 +59,12 @@ class DeviceAuthViewModelTest {
     fun `when getDeviceAuthScreen is success`() = runTest {
         coEvery { getDeviceAuthScreen.invoke(ANDROID_ID) } returns Result.success(screenModel)
 
+        val savedStateHandle = SavedStateHandle(
+            mapOf()
+        )
+
         viewModel = DeviceAuthViewModel(
+            savedStateHandle,
             androidIdProvider,
             associateDevice,
             getDeviceAuthScreen,
@@ -71,7 +78,12 @@ class DeviceAuthViewModelTest {
     fun `when getDeviceAuthScreen is failure`() = runTest {
         coEvery { getDeviceAuthScreen.invoke(ANDROID_ID) } returns Result.failure(Throwable())
 
+        val savedStateHandle = SavedStateHandle(
+            mapOf(AuthRoute.DeviceAuthRoute.toString() to DeviceAppState.LOGIN.name)
+        )
+
         viewModel = DeviceAuthViewModel(
+            savedStateHandle,
             androidIdProvider,
             associateDevice,
             getDeviceAuthScreen,
@@ -85,7 +97,12 @@ class DeviceAuthViewModelTest {
     fun `when isAssociateDevice and isValidVehicleCode is false`() = runTest {
         coEvery { getDeviceAuthScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
 
+        val savedStateHandle = SavedStateHandle(
+            mapOf(AuthRoute.DeviceAuthRoute.toString() to DeviceAppState.LOGIN.name)
+        )
+
         viewModel = DeviceAuthViewModel(
+            savedStateHandle,
             androidIdProvider,
             associateDevice,
             getDeviceAuthScreen,
@@ -104,7 +121,12 @@ class DeviceAuthViewModelTest {
             Throwable()
         )
 
+        val savedStateHandle = SavedStateHandle(
+            mapOf(AuthRoute.DeviceAuthRoute.toString() to DeviceAppState.LOGIN.name)
+        )
+
         viewModel = DeviceAuthViewModel(
+            savedStateHandle,
             androidIdProvider,
             associateDevice,
             getDeviceAuthScreen,
@@ -121,7 +143,12 @@ class DeviceAuthViewModelTest {
         coEvery { getDeviceAuthScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
         coEvery { associateDevice.invoke(ANDROID_ID, any(), true) } returns Result.success(mockk())
 
+        val savedStateHandle = SavedStateHandle(
+            mapOf("deviceAppState" to "LOGIN")
+        )
+
         viewModel = DeviceAuthViewModel(
+            savedStateHandle,
             androidIdProvider,
             associateDevice,
             getDeviceAuthScreen,
@@ -146,7 +173,12 @@ class DeviceAuthViewModelTest {
         coEvery { associateDevice.invoke(ANDROID_ID, any(), false) } returns Result.success(mockk())
         coEvery { deleteAccessToken.invoke() } returns Result.success(Unit)
 
+        val savedStateHandle = SavedStateHandle(
+            mapOf(AuthRoute.DeviceAuthRoute.toString() to DeviceAppState.LOGIN.name)
+        )
+
         viewModel = DeviceAuthViewModel(
+            savedStateHandle,
             androidIdProvider,
             associateDevice,
             getDeviceAuthScreen,
@@ -164,17 +196,21 @@ class DeviceAuthViewModelTest {
         coEvery { getDeviceAuthScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
         coEvery { deleteAccessToken.invoke() } returns Result.success(Unit)
 
+        val savedStateHandle = SavedStateHandle(
+            mapOf(AuthRoute.DeviceAuthRoute.toString() to DeviceAppState.LOGIN.name)
+        )
+
         viewModel = DeviceAuthViewModel(
+            savedStateHandle,
             androidIdProvider,
             associateDevice,
             getDeviceAuthScreen,
             deleteAccessToken
         )
-        viewModel.from = LOGIN
         viewModel.cancel()
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.isCancel)
-        Assert.assertEquals(LOGIN, viewModel.uiState.navigationModel?.from)
+        Assert.assertEquals(DeviceAppState.LOGIN.name, viewModel.uiState.navigationModel?.from)
     }
 
     @Test
@@ -182,13 +218,17 @@ class DeviceAuthViewModelTest {
         val from = "other"
         coEvery { getDeviceAuthScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
 
+        val savedStateHandle = SavedStateHandle(
+            mapOf(AuthRoute.DeviceAuthRoute.toString() to DeviceAppState.LOGIN.name)
+        )
+
         viewModel = DeviceAuthViewModel(
+            savedStateHandle,
             androidIdProvider,
             associateDevice,
             getDeviceAuthScreen,
             deleteAccessToken
         )
-        viewModel.from = from
         viewModel.cancel()
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.isCancel)
@@ -200,7 +240,12 @@ class DeviceAuthViewModelTest {
         coEvery { getDeviceAuthScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
         coEvery { deleteAccessToken.invoke() } returns Result.success(Unit)
 
+        val savedStateHandle = SavedStateHandle(
+            mapOf(AuthRoute.DeviceAuthRoute.toString() to DeviceAppState.LOGIN.name)
+        )
+
         viewModel = DeviceAuthViewModel(
+            savedStateHandle,
             androidIdProvider,
             associateDevice,
             getDeviceAuthScreen,
@@ -216,7 +261,12 @@ class DeviceAuthViewModelTest {
     fun `when consumeErrorEvent is called clear errorModel`() = runTest {
         coEvery { getDeviceAuthScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
 
+        val savedStateHandle = SavedStateHandle(
+            mapOf(AuthRoute.DeviceAuthRoute.toString() to DeviceAppState.LOGIN.name)
+        )
+
         viewModel = DeviceAuthViewModel(
+            savedStateHandle,
             androidIdProvider,
             associateDevice,
             getDeviceAuthScreen,

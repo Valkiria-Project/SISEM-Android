@@ -3,8 +3,10 @@ package com.skgtecnologia.sisem.ui.deviceauth
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.usecases.DeleteAccessToken
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.AssociateDevice
@@ -12,18 +14,20 @@ import com.skgtecnologia.sisem.domain.deviceauth.usecases.GetDeviceAuthScreen
 import com.skgtecnologia.sisem.domain.model.banner.disassociateDeviceBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
-import com.skgtecnologia.sisem.ui.navigation.LOGIN
+import com.skgtecnologia.sisem.ui.navigation.AuthRoute
+import com.skgtecnologia.sisem.ui.navigation.DeviceAppState
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltViewModel
 class DeviceAuthViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val androidIdProvider: AndroidIdProvider,
     private val associateDevice: AssociateDevice,
     private val getDeviceAuthScreen: GetDeviceAuthScreen,
@@ -35,7 +39,8 @@ class DeviceAuthViewModel @Inject constructor(
     var uiState by mutableStateOf(DeviceAuthUiState())
         private set
 
-    var from: String by mutableStateOf("")
+    private val from: String =
+        savedStateHandle.toRoute<AuthRoute.DeviceAuthRoute>().deviceAppState
     private var isAssociateDevice: Boolean by mutableStateOf(false)
 
     var vehicleCode by mutableStateOf("")
@@ -134,7 +139,7 @@ class DeviceAuthViewModel @Inject constructor(
     }
 
     fun cancel() {
-        if (from == LOGIN) {
+        if (from == DeviceAppState.LOGIN.name) {
             uiState = uiState.copy(isLoading = true)
 
             job?.cancel()

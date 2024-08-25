@@ -11,6 +11,7 @@ import com.skgtecnologia.sisem.domain.auth.usecases.Login
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.model.banner.BannerModel
+import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -40,7 +41,7 @@ class LoginViewModelTest {
     private lateinit var androidIdProvider: AndroidIdProvider
 
     private val savedStateHandle = SavedStateHandle(
-        mapOf(NavigationArgument.USERNAME to PREVIOUS_USERNAME)
+        mapOf(AuthRoute.LoginRoute.toString() to PREVIOUS_USERNAME)
     )
 
     private lateinit var loginViewModel: LoginViewModel

@@ -1,22 +1,57 @@
 package com.skgtecnologia.sisem.ui.navigation
 
-sealed class NavigationGraph(val route: String) {
-    data object Auth : NavigationGraph("auth_graph")
-    data object Aph : NavigationGraph("aph_graph")
-    data object Main : NavigationGraph("main_graph")
-    data object Report : NavigationGraph("report_graph")
+import android.os.Parcelable
+import com.skgtecnologia.sisem.di.operation.OperationRole
+import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
+import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+// region Graphs
+sealed interface NavGraph {
+    @Serializable
+    data object AuthNavGraph : NavGraph
+
+    @Serializable
+    data object AphNavGraph : NavGraph
+
+    @Serializable
+    data object MainNavGraph : NavGraph
+
+    @Serializable
+    data object ReportNavGraph : NavGraph
 }
+// endregion
 
 sealed class NavigationRoute(open val route: String)
 
-sealed class AuthNavigationRoute(override val route: String) : NavigationRoute(route) {
-    data object AuthCardsScreen : AuthNavigationRoute("auth_cards_screen")
-    data object LoginScreen : AuthNavigationRoute("login_screen")
-    data object ForgotPasswordScreen : AuthNavigationRoute("forgot_password_screen")
-    data object PreOperationalScreen : AuthNavigationRoute("pre_operational_screen")
-    data object DeviceAuthScreen : AuthNavigationRoute("device_auth_screen")
-    data object ChangePasswordScreen : AuthNavigationRoute("change_password_screen")
+// region Auth Routes
+sealed interface AuthRoute {
+    @Serializable
+    data object AuthCardsRoute : AuthRoute
+
+    @Serializable
+    data class LoginRoute(val username: String? = null) : AuthRoute
+
+    @Serializable
+    data object ForgotPasswordRoute : AuthRoute
+
+    @Serializable
+    data class PreOperationalRoute(
+        val role: OperationRole,
+        val revertFinding: Boolean? = null,
+        val novelty: Novelty? = null
+    ) : AuthRoute
+
+    @Serializable
+    data class DeviceAuthRoute(
+        val deviceAppState: String
+    ) : AuthRoute
+
+    @Serializable
+    data object ChangePasswordRoute : AuthRoute
 }
+// endregion
 
 sealed class MainNavigationRoute(override val route: String) : NavigationRoute(route) {
     data object CertificationsScreen : MainNavigationRoute("menu_certifications_screen")

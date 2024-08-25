@@ -60,7 +60,8 @@ class PreOperationalViewModel @Inject constructor(
     var uiState by mutableStateOf(PreOperationalUiState())
         private set
 
-    private val roleName: String? = savedStateHandle[NavigationArgument.ROLE]
+    private val roleName: String =
+        savedStateHandle.toRoute<AuthRoute.PreOperationalRoute>().role.name
 
     private var temporalFinding by mutableStateOf("")
 
