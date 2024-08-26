@@ -28,6 +28,7 @@ import timber.log.Timber
 @Composable
 fun PreOperationalScreen(
     modifier: Modifier = Modifier,
+    roleName: String?,
     novelty: Novelty?,
     revertFinding: Boolean?,
     onNavigation: (preOpNavigationModel: PreOpNavigationModel) -> Unit
@@ -38,6 +39,10 @@ fun PreOperationalScreen(
     var notificationData by remember { mutableStateOf<NotificationData?>(null) }
     NotificationEventHandler.subscribeNotificationEvent {
         notificationData = it
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.initScreen(roleName)
     }
 
     LaunchedEffect(uiState.navigationModel) {
@@ -73,7 +78,7 @@ fun PreOperationalScreen(
     }
 
     OnBannerHandler(uiModel = uiState.infoEvent) { uiAction ->
-        handleFooterAction(uiAction, viewModel)
+        handleFooterAction(uiAction, viewModel, roleName)
         viewModel.handleEvent(uiAction)
     }
 
@@ -119,11 +124,12 @@ private fun handleBodyAction(
 
 private fun handleFooterAction(
     uiAction: UiAction,
-    viewModel: PreOperationalViewModel
+    viewModel: PreOperationalViewModel,
+    roleName: String?
 ) {
     (uiAction as? FooterUiAction)?.let {
         if (it.identifier == PreOperationalIdentifier.PREOP_SAVE_BUTTON.name) {
-            viewModel.sendPreOperational()
+            viewModel.sendPreOperational(roleName)
         }
     }
 }

@@ -38,7 +38,7 @@ sealed interface AuthRoute {
     data object ForgotPasswordRoute : AuthRoute
 
     @Serializable
-    data object PreOperationalRoute : AuthRoute
+    data class PreOperationalRoute(val role: String? = null) : AuthRoute
 
     @Serializable
     data object DeviceAuthRoute : AuthRoute
@@ -47,11 +47,6 @@ sealed interface AuthRoute {
     data object ChangePasswordRoute : AuthRoute
 }
 // endregion
-
-sealed class AuthNavigationRoute(override val route: String) : NavigationRoute(route) {
-    data object PreOperationalScreen : AuthNavigationRoute("pre_operational_screen")
-    data object DeviceAuthScreen : AuthNavigationRoute("device_auth_screen")
-}
 
 sealed class MainNavigationRoute(override val route: String) : NavigationRoute(route) {
     data object CertificationsScreen : MainNavigationRoute("menu_certifications_screen")

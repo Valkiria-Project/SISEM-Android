@@ -2,9 +2,7 @@ package com.skgtecnologia.sisem.ui.login
 
 import androidx.navigation.NavHostController
 import com.skgtecnologia.sisem.di.operation.OperationRole
-import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.AuthRoute
-import com.skgtecnologia.sisem.ui.navigation.LOGIN
 import com.skgtecnologia.sisem.ui.navigation.NavigationGraph
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 
@@ -24,7 +22,8 @@ data class LoginNavigationModel(
         when {
             isWarning -> navController.navigate(AuthRoute.ChangePasswordRoute)
             isAdmin && requiresDeviceAuth ->
-                navController.navigate("${AuthNavigationRoute.DeviceAuthScreen.route}/$LOGIN")
+                navController.navigate(AuthRoute.DeviceAuthRoute)
+//                    "${AuthNavigationRoute.DeviceAuthScreen.route}/$LOGIN")
 
             isAdmin && !requiresDeviceAuth ->
                 navController.navigate(NavigationGraph.Main.route) {
@@ -41,7 +40,7 @@ data class LoginNavigationModel(
                 }
 
             requiresPreOperational -> {
-                navController.navigate(AuthNavigationRoute.PreOperationalScreen.route) {
+                navController.navigate(AuthRoute.PreOperationalRoute()) {
                     popUpTo(AuthRoute.AuthCardsRoute) {
                         inclusive = true
                     }

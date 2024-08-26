@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.ui.preoperational.create
 
 import androidx.navigation.NavHostController
-import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.skgtecnologia.sisem.ui.navigation.NavigationGraph
@@ -31,7 +30,7 @@ data class PreOpNavigationModel(
                 )
 
             else -> navController.navigate(AuthRoute.AuthCardsRoute) {
-                popUpTo(AuthNavigationRoute.PreOperationalScreen.route) {
+                popUpTo(AuthRoute.PreOperationalRoute()) {
                     inclusive = true
                 }
             }

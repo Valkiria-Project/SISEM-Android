@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.ui.deviceauth
 
 import androidx.navigation.NavHostController
-import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.skgtecnologia.sisem.ui.navigation.LOGIN
 import com.skgtecnologia.sisem.ui.navigation.MAIN
@@ -27,7 +26,7 @@ data class DeviceAuthNavigationModel(
 
             isCrewList && from == "" ->
                 navController.navigate(AuthRoute.AuthCardsRoute) {
-                    popUpTo(AuthNavigationRoute.DeviceAuthScreen.route) {
+                    popUpTo(AuthRoute.DeviceAuthRoute) {
                         inclusive = true
                     }
                 }
@@ -41,7 +40,7 @@ data class DeviceAuthNavigationModel(
 
             isCancel && from == MAIN ->
                 navController.navigate(NavigationGraph.Main.route) {
-                    popUpTo(AuthNavigationRoute.DeviceAuthScreen.route) {
+                    popUpTo(AuthRoute.DeviceAuthRoute) {
                         inclusive = true
                     }
                 }

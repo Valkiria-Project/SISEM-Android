@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
@@ -22,7 +21,6 @@ import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalS
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
@@ -45,7 +43,6 @@ import javax.inject.Inject
 @Suppress("LongParameterList", "TooManyFunctions")
 @HiltViewModel
 class PreOperationalViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val androidIdProvider: AndroidIdProvider,
     private val getLoginNavigationModel: GetLoginNavigationModel,
     private val getPreOperationalScreen: GetPreOperationalScreen,
@@ -59,8 +56,6 @@ class PreOperationalViewModel @Inject constructor(
     var uiState by mutableStateOf(PreOperationalUiState())
         private set
 
-    private val roleName: String? = savedStateHandle[NavigationArgument.ROLE]
-
     private var temporalFinding by mutableStateOf("")
 
     private var findingValues = mutableStateMapOf<String, Boolean>()
@@ -68,7 +63,7 @@ class PreOperationalViewModel @Inject constructor(
     private var inventoryValues = mutableStateMapOf<String, InputUiModel>()
     var novelties = mutableStateListOf<Novelty>()
 
-    init {
+    fun initScreen(roleName: String?) {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
@@ -322,7 +317,7 @@ class PreOperationalViewModel @Inject constructor(
         )
     }
 
-    fun sendPreOperational() {
+    fun sendPreOperational(roleName: String?) {
         uiState = uiState.copy(
             isLoading = true
         )
