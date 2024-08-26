@@ -57,6 +57,7 @@ import com.skgtecnologia.sisem.ui.stretcherretention.create.StretcherRetentionSc
 import com.skgtecnologia.sisem.ui.stretcherretention.pre.PreStretcherRetentionScreen
 import com.skgtecnologia.sisem.ui.stretcherretention.view.StretcherRetentionViewScreen
 import timber.log.Timber
+import kotlin.reflect.typeOf
 
 @Composable
 fun SisemNavGraph(
@@ -112,11 +113,14 @@ private fun NavGraphBuilder.authGraph(
             AuthCardsScreen(
                 modifier = modifier
             ) {
-                navController.navigate(AuthRoute.LoginRoute)
+                navController.navigate(AuthRoute.LoginRoute())
             }
         }
 
         composable<AuthRoute.LoginRoute>(
+            typeMap = mapOf(
+                typeOf<String?>() to NavType.StringType
+            )
 //            route = AuthNavigationRoute.LoginScreen.route +
 //                "?$USERNAME={$USERNAME}",
 //            arguments = listOf(

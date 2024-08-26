@@ -185,11 +185,11 @@ private fun handleAction(
     onNavigation: (route: AuthRoute) -> Unit
 ) {
     when (uiAction) {
-        is AuthCardsUiAction.AuthCard -> onNavigation(AuthRoute.LoginRoute)
+        is AuthCardsUiAction.AuthCard -> onNavigation(AuthRoute.LoginRoute())
 
         is GenericUiAction.InfoCardAction -> {
             if (uiAction.isClickCard) {
-                onNavigation(AuthRoute.LoginRoute)
+                onNavigation(AuthRoute.LoginRoute())
                 return
             }
 

@@ -32,7 +32,7 @@ sealed interface AuthRoute {
     data object AuthCardsRoute : AuthRoute
 
     @Serializable
-    data object LoginRoute : AuthRoute
+    data class LoginRoute(val username: String? = null) : AuthRoute
 
     @Serializable
     data object ForgotPasswordRoute : AuthRoute
