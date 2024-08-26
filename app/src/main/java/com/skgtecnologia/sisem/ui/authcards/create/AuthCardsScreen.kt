@@ -25,7 +25,7 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.ui.authcards.create.report.FindingsContent
 import com.skgtecnologia.sisem.ui.authcards.create.report.ReportDetailContent
-import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.AuthCardsUiAction
@@ -42,7 +42,7 @@ import timber.log.Timber
 @Composable
 fun AuthCardsScreen(
     modifier: Modifier = Modifier,
-    onNavigation: (route: AuthNavigationRoute) -> Unit
+    onNavigation: (route: AuthRoute) -> Unit
 ) {
     val context = LocalContext.current
     val viewModel = hiltViewModel<AuthCardsViewModel>()
@@ -105,7 +105,7 @@ fun AuthCardsScreen(
 private fun AuthCardsScreenRender(
     viewModel: AuthCardsViewModel,
     modifier: Modifier,
-    onNavigation: (route: AuthNavigationRoute) -> Unit
+    onNavigation: (route: AuthRoute) -> Unit
 ) {
     val uiState = viewModel.uiState
 
@@ -182,14 +182,14 @@ private fun arePermissionsGranted(
 private fun handleAction(
     uiAction: UiAction,
     viewModel: AuthCardsViewModel,
-    onNavigation: (route: AuthNavigationRoute) -> Unit
+    onNavigation: (route: AuthRoute) -> Unit
 ) {
     when (uiAction) {
-        is AuthCardsUiAction.AuthCard -> onNavigation(AuthNavigationRoute.LoginScreen)
+        is AuthCardsUiAction.AuthCard -> onNavigation(AuthRoute.LoginRoute)
 
         is GenericUiAction.InfoCardAction -> {
             if (uiAction.isClickCard) {
-                onNavigation(AuthNavigationRoute.LoginScreen)
+                onNavigation(AuthRoute.LoginRoute)
                 return
             }
 

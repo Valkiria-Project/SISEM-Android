@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.navigation
 
 import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -18,12 +19,15 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.skgtecnologia.sisem.commons.communication.AppEvent
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
+import com.skgtecnologia.sisem.commons.location.ACTION_START
+import com.skgtecnologia.sisem.commons.location.LocationService
 import com.skgtecnologia.sisem.ui.authcards.create.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.authcards.view.AuthCardViewScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.sharedViewModel
 import com.skgtecnologia.sisem.ui.incident.IncidentScreen
 import com.skgtecnologia.sisem.ui.inventory.InventoryScreen
 import com.skgtecnologia.sisem.ui.inventory.view.InventoryViewScreen
+import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.map.MapScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.camera.CameraScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.camera.CameraViewScreen
@@ -39,7 +43,6 @@ import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.PHOTO_TAKEN
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ROLE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.USERNAME
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
 import com.skgtecnologia.sisem.ui.preoperational.view.PreOperationalViewScreen
 import com.skgtecnologia.sisem.ui.report.addfinding.AddFindingScreen
@@ -70,7 +73,8 @@ fun SisemNavGraph(
             if (appEvent is AppEvent.UnauthorizedSession) {
                 Timber.d("Username is: ${appEvent.username}")
                 navController.navigate(
-                    AuthNavigationRoute.LoginScreen.route + "?$USERNAME=${appEvent.username}"
+                    AuthRoute.LoginRoute
+//                    AuthNavigationRoute.LoginScreen.route + "?$USERNAME=${appEvent.username}"
                 ) {
                     popUpTo(NavigationGraph.Main.route) {
                         inclusive = true
@@ -108,11 +112,11 @@ private fun NavGraphBuilder.authGraph(
             AuthCardsScreen(
                 modifier = modifier
             ) {
-                navController.navigate(AuthNavigationRoute.LoginScreen.route)
+                navController.navigate(AuthRoute.LoginRoute)
             }
         }
 
-//        composable(
+        composable<AuthRoute.LoginRoute>(
 //            route = AuthNavigationRoute.LoginScreen.route +
 //                "?$USERNAME={$USERNAME}",
 //            arguments = listOf(
@@ -121,21 +125,21 @@ private fun NavGraphBuilder.authGraph(
 //                    nullable = true
 //                }
 //            )
-//        ) {
-//            LoginScreen(
-//                modifier = modifier
-//            ) { navigationModel ->
-//                with(navigationModel) {
-//                    if (isTurnComplete && requiresPreOperational.not()) {
-//                        Intent(context.applicationContext, LocationService::class.java).apply {
-//                            action = ACTION_START
-//                            context.startService(this)
-//                        }
-//                    }
-//                    navigate(navController)
-//                }
-//            }
-//        }
+        ) {
+            LoginScreen(
+                modifier = modifier
+            ) { navigationModel ->
+                with(navigationModel) {
+                    if (isTurnComplete && requiresPreOperational.not()) {
+                        Intent(context.applicationContext, LocationService::class.java).apply {
+                            action = ACTION_START
+                            context.startService(this)
+                        }
+                    }
+                    navigate(navController)
+                }
+            }
+        }
 //
 //        composable(
 //            route = AuthNavigationRoute.ForgotPasswordScreen.route
@@ -237,7 +241,7 @@ private fun NavGraphBuilder.mainGraph(
                     navController.navigate(aphRoute)
                 },
                 onLogout = {
-                    navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
+                    navController.navigate(AuthRoute.AuthCardsRoute) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             inclusive = true
                         }

@@ -49,8 +49,6 @@ sealed interface AuthRoute {
 // endregion
 
 sealed class AuthNavigationRoute(override val route: String) : NavigationRoute(route) {
-    data object AuthCardsScreen : AuthNavigationRoute("auth_cards_screen")
-    data object LoginScreen : AuthNavigationRoute("login_screen")
     data object ForgotPasswordScreen : AuthNavigationRoute("forgot_password_screen")
     data object PreOperationalScreen : AuthNavigationRoute("pre_operational_screen")
     data object DeviceAuthScreen : AuthNavigationRoute("device_auth_screen")
