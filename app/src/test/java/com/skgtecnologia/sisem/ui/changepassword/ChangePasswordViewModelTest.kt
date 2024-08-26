@@ -59,6 +59,7 @@ class ChangePasswordViewModelTest {
             onCancel,
             changePassword
         )
+        viewModel.initScreen()
 
         Assert.assertEquals(emptyScreenModel, viewModel.uiState.screenModel)
     }
@@ -73,6 +74,7 @@ class ChangePasswordViewModelTest {
             onCancel,
             changePassword
         )
+        viewModel.initScreen()
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.errorModel?.title)
     }

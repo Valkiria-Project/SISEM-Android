@@ -68,6 +68,10 @@ fun AuthCardsScreen(
     val fineLocationPermissionState: PermissionState =
         rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
 
+    LaunchedEffect(Unit) {
+        viewModel.initScreen()
+    }
+
     LaunchedEffect(notificationsPermissionState?.status) {
         if (notificationsPermissionState?.status?.isGranted == false &&
             !notificationsPermissionState.status.shouldShowRationale

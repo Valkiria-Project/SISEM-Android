@@ -40,6 +40,7 @@ class ForgotPasswordViewModelTest {
         coEvery { getForgotPasswordScreen.invoke() } returns Result.success(emptyScreenModel)
 
         viewModel = ForgotPasswordViewModel(getForgotPasswordScreen, sendEmail)
+        viewModel.initScreen()
 
         Assert.assertEquals(emptyScreenModel, viewModel.uiState.screenModel)
     }
@@ -49,6 +50,7 @@ class ForgotPasswordViewModelTest {
         coEvery { getForgotPasswordScreen.invoke() } returns Result.failure(Throwable())
 
         viewModel = ForgotPasswordViewModel(getForgotPasswordScreen, sendEmail)
+        viewModel.initScreen()
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.errorModel?.title)
     }

@@ -31,6 +31,10 @@ fun ForgotPasswordScreen(
     val viewModel = hiltViewModel<ForgotPasswordViewModel>()
     val uiState = viewModel.uiState
 
+    LaunchedEffect(Unit) {
+        viewModel.initScreen()
+    }
+
     LaunchedEffect(uiState) {
         launch {
             when {

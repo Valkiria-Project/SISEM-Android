@@ -24,7 +24,9 @@ import com.skgtecnologia.sisem.commons.location.ACTION_START
 import com.skgtecnologia.sisem.commons.location.LocationService
 import com.skgtecnologia.sisem.ui.authcards.create.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.authcards.view.AuthCardViewScreen
+import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.sharedViewModel
+import com.skgtecnologia.sisem.ui.forgotpassword.ForgotPasswordScreen
 import com.skgtecnologia.sisem.ui.incident.IncidentScreen
 import com.skgtecnologia.sisem.ui.inventory.InventoryScreen
 import com.skgtecnologia.sisem.ui.inventory.view.InventoryViewScreen
@@ -135,18 +137,16 @@ private fun NavGraphBuilder.authGraph(
                 }
             }
         }
-//
-//        composable(
-//            route = AuthNavigationRoute.ForgotPasswordScreen.route
-//        ) {
-//            ForgotPasswordScreen(
-//                modifier = modifier,
-//                onNavigation = { navigationModel ->
-//                    navigationModel.navigate(navController)
-//                }
-//            )
-//        }
-//
+
+        composable<AuthRoute.ForgotPasswordRoute> {
+            ForgotPasswordScreen(
+                modifier = modifier,
+                onNavigation = { navigationModel ->
+                    navigationModel.navigate(navController)
+                }
+            )
+        }
+
 //        composable(
 //            route = AuthNavigationRoute.DeviceAuthScreen.route +
 //                "/{${NavigationArgument.FROM}}",
@@ -198,20 +198,18 @@ private fun NavGraphBuilder.authGraph(
 //                }
 //            }
 //        }
-//
-//        composable(
-//            route = AuthNavigationRoute.ChangePasswordScreen.route
-//        ) {
-//            ChangePasswordScreen(
-//                modifier = modifier,
-//                onNavigation = { navigationModel ->
-//                    with(navigationModel) {
-//                        navigate(navController)
-//                    }
-//                },
-//                onCancel = { navController.navigateUp() }
-//            )
-//        }
+
+        composable<AuthRoute.ChangePasswordRoute> {
+            ChangePasswordScreen(
+                modifier = modifier,
+                onNavigation = { navigationModel ->
+                    with(navigationModel) {
+                        navigate(navController)
+                    }
+                },
+                onCancel = { navController.navigateUp() }
+            )
+        }
     }
 }
 

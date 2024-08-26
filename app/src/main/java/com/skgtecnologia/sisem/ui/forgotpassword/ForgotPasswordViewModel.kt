@@ -31,7 +31,7 @@ class ForgotPasswordViewModel @Inject constructor(
 
     var emailValue = mutableStateOf(InputUiModel("", "", false))
 
-    init {
+    fun initScreen() {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()

@@ -31,6 +31,10 @@ fun ChangePasswordScreen(
     val viewModel = hiltViewModel<ChangePasswordViewModel>()
     val uiState = viewModel.uiState
 
+    LaunchedEffect(Unit) {
+        viewModel.initScreen()
+    }
+
     LaunchedEffect(uiState) {
         launch {
             when {

@@ -22,7 +22,7 @@ data class LoginNavigationModel(
         super.navigate(navController)
 
         when {
-            isWarning -> navController.navigate(AuthNavigationRoute.ChangePasswordScreen.route)
+            isWarning -> navController.navigate(AuthRoute.ChangePasswordRoute)
             isAdmin && requiresDeviceAuth ->
                 navController.navigate("${AuthNavigationRoute.DeviceAuthScreen.route}/$LOGIN")
 
@@ -48,7 +48,7 @@ data class LoginNavigationModel(
                 }
             }
 
-            forgotPassword -> navController.navigate(AuthNavigationRoute.ForgotPasswordScreen.route)
+            forgotPassword -> navController.navigate(AuthRoute.ForgotPasswordRoute)
 
             else -> navController.navigate(AuthRoute.AuthCardsRoute)
         }
