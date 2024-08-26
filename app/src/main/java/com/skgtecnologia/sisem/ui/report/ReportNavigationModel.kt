@@ -10,6 +10,7 @@ import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.navigation.REPORT
 import com.skgtecnologia.sisem.ui.navigation.ReportNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.ReportRoute
 
 data class ReportNavigationModel(
     val goBackFromReport: Boolean = false,
@@ -60,7 +61,7 @@ data class ReportNavigationModel(
 
             closeReport ->
                 navController.navigate(NavGraph.MainGraph) {
-                    popUpTo(ReportNavigationRoute.AddReportRoleScreen.route) {
+                    popUpTo(ReportRoute.AddReportRoleRoute) {
                         inclusive = true
                     }
                 }

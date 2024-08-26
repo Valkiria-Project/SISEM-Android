@@ -12,8 +12,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.MapScreen
-import com.skgtecnologia.sisem.ui.navigation.NavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.MainRoute
+import com.skgtecnologia.sisem.ui.navigation.NavRoute
 import kotlinx.coroutines.launch
 
 @Composable
@@ -21,10 +21,10 @@ fun MenuItemsComponent(
     modifier: Modifier,
     menuItems: List<DrawerMenuItemModel>,
     drawerState: DrawerState,
-    onClick: (NavigationRoute) -> Unit
+    onClick: (NavRoute) -> Unit
 ) {
     var currentPick by remember {
-        mutableStateOf<NavigationRoute>(MapScreen)
+        mutableStateOf<NavRoute>(MainRoute.MapRoute)
     }
     val scope = rememberCoroutineScope()
 

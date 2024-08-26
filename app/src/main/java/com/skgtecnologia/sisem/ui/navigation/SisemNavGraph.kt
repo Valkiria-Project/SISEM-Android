@@ -232,7 +232,7 @@ private fun NavGraphBuilder.mainGraph(
             MapScreen(
                 modifier = modifier,
                 onMenuAction = { navigationRoute ->
-                    navController.navigate(route = navigationRoute.route)
+                    navController.navigate(route = navigationRoute)
                 },
                 onAction = { aphRoute ->
                     navController.navigate(aphRoute)
@@ -249,9 +249,7 @@ private fun NavGraphBuilder.mainGraph(
             )
         }
 
-        composable(
-            route = MainNavigationRoute.IncidentScreen.route
-        ) {
+        composable<MainRoute.IncidentsRoute> {
             IncidentScreen(
                 modifier = modifier
             ) { navigationModel ->
@@ -259,9 +257,7 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable(
-            route = MainNavigationRoute.InventoryScreen.route
-        ) {
+        composable<MainRoute.InventoryRoute> {
             InventoryScreen(
                 modifier = modifier
             ) { navigationModel ->
@@ -281,15 +277,11 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable(
-            route = MainNavigationRoute.NotificationsScreen.route
-        ) {
+        composable<MainRoute.NotificationsRoute> {
             // FIXME: Finish this work
         }
 
-        composable(
-            route = MainNavigationRoute.DrivingGuideScreen.route
-        ) {
+        composable<MainRoute.DrivingGuideRoute>{
             // FIXME: Finish this work
         }
 
@@ -299,21 +291,15 @@ private fun NavGraphBuilder.mainGraph(
             // FIXME: Finish this work
         }
 
-        composable(
-            route = MainNavigationRoute.HCEUDCScreen.route
-        ) {
+        composable<MainRoute.HCEUDCRoute>{
             // FIXME: Finish this work
         }
 
-        composable(
-            route = MainNavigationRoute.ShiftScreen.route
-        ) {
+        composable<MainRoute.ShiftRoute>{
             // FIXME: Finish this work
         }
 
-        composable(
-            route = MainNavigationRoute.PreoperationalMainScreen.route
-        ) {
+        composable<MainRoute.PreoperationalMainRoute>{
             AuthCardViewScreen { navigationModel ->
                 navigationModel.navigate(navController)
             }
@@ -325,9 +311,7 @@ private fun NavGraphBuilder.mainGraph(
             navController.navigate(AuthRoute.DeviceAuthRoute(MAIN))
         }
 
-        composable(
-            route = MainNavigationRoute.InitSignatureScreen.route
-        ) {
+        composable<MainRoute.InitSignatureRoute>{
             InitSignatureScreen(modifier = modifier) { navigationModel ->
                 navigationModel.navigate(navController)
             }
@@ -348,9 +332,7 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable(
-            route = MainNavigationRoute.PreStretcherRetentionScreen.route
-        ) {
+        composable<MainRoute.PreStretcherRetentionRoute>{
             PreStretcherRetentionScreen(
                 modifier = modifier
             ) { navigationModel ->
@@ -555,9 +537,7 @@ private fun NavGraphBuilder.reportGraph(
             }
         }
 
-        composable(
-            route = ReportNavigationRoute.AddReportRoleScreen.route
-        ) {
+        composable<ReportRoute.AddReportRoleRoute>{
             AddReportRoleScreen(
                 modifier = modifier,
                 onNavigation = { roleName ->
@@ -567,7 +547,7 @@ private fun NavGraphBuilder.reportGraph(
                 },
                 onCancel = {
                     navController.navigate(NavGraph.MainGraph) {
-                        popUpTo(ReportNavigationRoute.AddReportRoleScreen.route) {
+                        popUpTo(ReportRoute.AddReportRoleRoute) {
                             inclusive = true
                         }
                     }
