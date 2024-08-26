@@ -63,6 +63,7 @@ class DeviceAuthViewModelTest {
             getDeviceAuthScreen,
             deleteAccessToken
         )
+        viewModel.initScreen()
 
         Assert.assertEquals(screenModel, viewModel.uiState.screenModel)
     }
@@ -77,6 +78,7 @@ class DeviceAuthViewModelTest {
             getDeviceAuthScreen,
             deleteAccessToken
         )
+        viewModel.initScreen()
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.errorModel?.title)
     }
@@ -91,8 +93,9 @@ class DeviceAuthViewModelTest {
             getDeviceAuthScreen,
             deleteAccessToken
         )
+        viewModel.initScreen()
         viewModel.isValidVehicleCode = false
-        viewModel.associateDevice()
+        viewModel.associateDevice("from")
 
         Assert.assertEquals(true, viewModel.uiState.validateFields)
     }
@@ -111,7 +114,7 @@ class DeviceAuthViewModelTest {
             deleteAccessToken
         )
         viewModel.isValidVehicleCode = true
-        viewModel.associateDevice()
+        viewModel.associateDevice("from")
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.errorModel?.title)
     }
@@ -129,7 +132,7 @@ class DeviceAuthViewModelTest {
         )
         viewModel.isValidVehicleCode = true
         viewModel.disassociateDeviceState = true
-        viewModel.associateDevice()
+        viewModel.associateDevice("from")
 
         Assert.assertEquals(false, viewModel.uiState.validateFields)
         Assert.assertEquals(false, viewModel.uiState.isLoading)
@@ -154,7 +157,7 @@ class DeviceAuthViewModelTest {
         )
         viewModel.isValidVehicleCode = true
         viewModel.disassociateDeviceState = false
-        viewModel.associateDevice()
+        viewModel.associateDevice("from")
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.isCrewList)
     }
@@ -170,8 +173,7 @@ class DeviceAuthViewModelTest {
             getDeviceAuthScreen,
             deleteAccessToken
         )
-        viewModel.from = LOGIN
-        viewModel.cancel()
+        viewModel.cancel(LOGIN)
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.isCancel)
         Assert.assertEquals(LOGIN, viewModel.uiState.navigationModel?.from)
@@ -188,8 +190,7 @@ class DeviceAuthViewModelTest {
             getDeviceAuthScreen,
             deleteAccessToken
         )
-        viewModel.from = from
-        viewModel.cancel()
+        viewModel.cancel(from)
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.isCancel)
         Assert.assertEquals(from, viewModel.uiState.navigationModel?.from)
@@ -207,7 +208,7 @@ class DeviceAuthViewModelTest {
             deleteAccessToken
         )
 
-        viewModel.cancelBanner()
+        viewModel.cancelBanner("from")
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.isCrewList)
     }

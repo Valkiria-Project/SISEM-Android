@@ -15,12 +15,12 @@ import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.ui.navigation.LOGIN
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltViewModel
 class DeviceAuthViewModel @Inject constructor(
@@ -35,14 +35,13 @@ class DeviceAuthViewModel @Inject constructor(
     var uiState by mutableStateOf(DeviceAuthUiState())
         private set
 
-    var from: String by mutableStateOf("")
     private var isAssociateDevice: Boolean by mutableStateOf(false)
 
     var vehicleCode by mutableStateOf("")
     var isValidVehicleCode by mutableStateOf(false)
     var disassociateDeviceState by mutableStateOf(false)
 
-    init {
+    fun initScreen() {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
@@ -72,19 +71,19 @@ class DeviceAuthViewModel @Inject constructor(
 
     private fun ScreenModel.isAssociateDevice() = body.find { it is SegmentedSwitchUiModel } == null
 
-    fun associateDevice() {
+    fun associateDevice(from: String) {
         if (isAssociateDevice) {
             uiState = uiState.copy(validateFields = true)
 
             if (isValidVehicleCode) {
-                associate()
+                associate(from)
             }
         } else {
-            associate()
+            associate(from)
         }
     }
 
-    private fun associate() {
+    private fun associate(from: String) {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
@@ -94,7 +93,7 @@ class DeviceAuthViewModel @Inject constructor(
                 vehicleCode,
                 disassociateDeviceState
             ).onSuccess {
-                handleOnSuccess()
+                handleOnSuccess(from)
             }.onFailure { throwable ->
                 Timber.wtf(throwable, "This is a failure")
 
@@ -108,7 +107,7 @@ class DeviceAuthViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleOnSuccess() {
+    private suspend fun handleOnSuccess(from: String) {
         if (disassociateDeviceState) {
             withContext(Dispatchers.Main) {
                 consumeNavigationEvent()
@@ -118,11 +117,11 @@ class DeviceAuthViewModel @Inject constructor(
                 )
             }
         } else {
-            resetAppState()
+            resetAppState(from)
         }
     }
 
-    private suspend fun resetAppState() {
+    private suspend fun resetAppState(from: String) {
         deleteAccessToken.invoke().onSuccess {
             withContext(Dispatchers.Main) {
                 uiState = uiState.copy(
@@ -133,7 +132,7 @@ class DeviceAuthViewModel @Inject constructor(
         }
     }
 
-    fun cancel() {
+    fun cancel(from: String) {
         if (from == LOGIN) {
             uiState = uiState.copy(isLoading = true)
 
@@ -158,10 +157,10 @@ class DeviceAuthViewModel @Inject constructor(
         }
     }
 
-    fun cancelBanner() {
+    fun cancelBanner(from: String) {
         job?.cancel()
         job = viewModelScope.launch {
-            resetAppState()
+            resetAppState(from)
         }
     }
 

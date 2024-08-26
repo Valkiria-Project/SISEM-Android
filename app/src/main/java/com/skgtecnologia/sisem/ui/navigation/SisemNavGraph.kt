@@ -155,14 +155,14 @@ private fun NavGraphBuilder.authGraph(
         }
 
         composable<AuthRoute.DeviceAuthRoute>(
-//            route = AuthNavigationRoute.DeviceAuthScreen.route +
-//                "/{${NavigationArgument.FROM}}",
-//            arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
+           typeMap = mapOf(
+                typeOf<String>() to NavType.StringType
+            )
         ) { backStackEntry ->
             val route: AuthRoute.DeviceAuthRoute = backStackEntry.toRoute()
 
             DeviceAuthScreen(
-                from = backStackEntry.arguments?.getString(NavigationArgument.FROM).orEmpty(),
+                from = route.from,
                 modifier = modifier
             ) { navigationModel ->
                 with(navigationModel) {
@@ -182,9 +182,11 @@ private fun NavGraphBuilder.authGraph(
         ) { backStackEntry ->
             val route: AuthRoute.PreOperationalRoute = backStackEntry.toRoute()
 
+            /*TODO*/
             val revertFinding = backStackEntry.savedStateHandle.get<Boolean>(REVERT_FINDING)
             backStackEntry.savedStateHandle.remove<Boolean>(REVERT_FINDING)
 
+            /*TODO*/
             val novelty = backStackEntry.savedStateHandle.get<Novelty>(NOVELTY)
             backStackEntry.savedStateHandle.remove<Novelty>(NOVELTY)
 

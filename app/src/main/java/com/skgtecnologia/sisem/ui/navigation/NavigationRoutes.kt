@@ -41,7 +41,7 @@ sealed interface AuthRoute {
     data class PreOperationalRoute(val role: String? = null) : AuthRoute
 
     @Serializable
-    data object DeviceAuthRoute : AuthRoute
+    data class DeviceAuthRoute(val from: String) : AuthRoute
 
     @Serializable
     data object ChangePasswordRoute : AuthRoute

@@ -30,8 +30,11 @@ fun DeviceAuthScreen(
     onNavigation: (deviceAuthNavigationModel: DeviceAuthNavigationModel) -> Unit
 ) {
     val viewModel = hiltViewModel<DeviceAuthViewModel>()
-    viewModel.from = from
     val uiState = viewModel.uiState
+
+    LaunchedEffect(Unit) {
+        viewModel.initScreen()
+    }
 
     LaunchedEffect(uiState) {
         launch {
@@ -81,7 +84,7 @@ fun DeviceAuthScreen(
                     bottom.linkTo(parent.bottom)
                 }
             ) { uiAction ->
-                handleFooterAction(uiAction, viewModel)
+                handleFooterAction(uiAction, viewModel, from)
             }
         }
     }
@@ -89,7 +92,8 @@ fun DeviceAuthScreen(
     OnBannerHandler(uiModel = uiState.disassociateInfoModel) {
         handleFooterAction(
             uiAction = it,
-            viewModel = viewModel
+            viewModel = viewModel,
+            from = from
         )
     }
 
@@ -119,14 +123,15 @@ private fun handleAction(
 
 private fun handleFooterAction(
     uiAction: UiAction,
-    viewModel: DeviceAuthViewModel
+    viewModel: DeviceAuthViewModel,
+    from: String
 ) {
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
-            DeviceAuthIdentifier.DEVICE_AUTH_BUTTON.name -> viewModel.associateDevice()
-            DeviceAuthIdentifier.DEVICE_AUTH_CANCEL_BUTTON.name -> viewModel.cancel()
-            DeviceAuthIdentifier.DEVICE_AUTH_CONTINUE_BANNER.name -> viewModel.cancel()
-            DeviceAuthIdentifier.DEVICE_AUTH_CANCEL_BANNER.name -> viewModel.cancelBanner()
+            DeviceAuthIdentifier.DEVICE_AUTH_BUTTON.name -> viewModel.associateDevice(from)
+            DeviceAuthIdentifier.DEVICE_AUTH_CANCEL_BUTTON.name -> viewModel.cancel(from)
+            DeviceAuthIdentifier.DEVICE_AUTH_CONTINUE_BANNER.name -> viewModel.cancel(from)
+            DeviceAuthIdentifier.DEVICE_AUTH_CANCEL_BANNER.name -> viewModel.cancelBanner(from)
         }
     }
 }
