@@ -22,7 +22,7 @@ import com.valkiria.uicomponents.components.textfield.InputUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-@Suppress("UnusedPrivateMember")
+@Suppress("LongMethod", "UnusedPrivateMember")
 @Composable
 fun ForgotPasswordScreen(
     modifier: Modifier = Modifier,

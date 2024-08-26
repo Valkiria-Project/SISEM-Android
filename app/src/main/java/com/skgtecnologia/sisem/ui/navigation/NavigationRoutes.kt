@@ -41,7 +41,7 @@ sealed interface AuthRoute {
     data object PreOperationalRoute : AuthRoute
 
     @Serializable
-    data object DeviceAuthRoute: AuthRoute
+    data object DeviceAuthRoute : AuthRoute
 
     @Serializable
     data object ChangePasswordRoute : AuthRoute
