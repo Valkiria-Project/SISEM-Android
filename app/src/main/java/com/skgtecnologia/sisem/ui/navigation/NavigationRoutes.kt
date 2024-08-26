@@ -20,7 +20,6 @@ sealed interface NavGraph {
 
 sealed class NavigationGraph(val route: String) {
     data object Aph : NavigationGraph("aph_graph")
-    data object Main : NavigationGraph("main_graph")
     data object Report : NavigationGraph("report_graph")
 }
 
@@ -45,6 +44,13 @@ sealed interface AuthRoute {
 
     @Serializable
     data object ChangePasswordRoute : AuthRoute
+}
+// endregion
+
+// region Main Routes
+sealed interface MainRoute {
+    @Serializable
+    data object MapRoute : MainRoute
 }
 // endregion
 

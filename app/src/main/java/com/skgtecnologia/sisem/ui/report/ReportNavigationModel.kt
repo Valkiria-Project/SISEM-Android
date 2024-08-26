@@ -5,8 +5,8 @@ import com.skgtecnologia.sisem.commons.extensions.navigateBack
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.skgtecnologia.sisem.ui.navigation.FINDING
+import com.skgtecnologia.sisem.ui.navigation.NavGraph
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
-import com.skgtecnologia.sisem.ui.navigation.NavigationGraph
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.navigation.REPORT
 import com.skgtecnologia.sisem.ui.navigation.ReportNavigationRoute
@@ -59,7 +59,7 @@ data class ReportNavigationModel(
             )
 
             closeReport ->
-                navController.navigate(NavigationGraph.Main.route) {
+                navController.navigate(NavGraph.MainGraph) {
                     popUpTo(ReportNavigationRoute.AddReportRoleScreen.route) {
                         inclusive = true
                     }

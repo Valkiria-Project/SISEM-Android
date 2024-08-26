@@ -82,7 +82,7 @@ fun SisemNavGraph(
         UnauthorizedEventHandler.subscribeUnauthorizedEvent { appEvent ->
             if (appEvent is AppEvent.UnauthorizedSession) {
                 navController.navigate(AuthRoute.LoginRoute(appEvent.username)) {
-                    popUpTo(NavigationGraph.Main.route) {
+                    popUpTo(NavGraph.MainGraph) {
                         inclusive = true
                     }
                 }
@@ -227,13 +227,8 @@ private fun NavGraphBuilder.mainGraph(
     navController: NavHostController,
     modifier: Modifier
 ) {
-    navigation(
-        startDestination = MainNavigationRoute.MapScreen.route,
-        route = NavigationGraph.Main.route
-    ) {
-        composable(
-            route = MainNavigationRoute.MapScreen.route
-        ) {
+    navigation<NavGraph.MainGraph>(startDestination = MainRoute.MapRoute) {
+        composable<MainRoute.MapRoute> {
             MapScreen(
                 modifier = modifier,
                 onMenuAction = { navigationRoute ->
@@ -327,8 +322,7 @@ private fun NavGraphBuilder.mainGraph(
         composable(
             route = MainNavigationRoute.DeviceAuthScreen.route
         ) {
-            navController.navigate(AuthRoute.DeviceAuthRoute)
-//                "${AuthNavigationRoute.DeviceAuthScreen.route}/$MAIN")
+            navController.navigate(AuthRoute.DeviceAuthRoute(MAIN))
         }
 
         composable(
@@ -572,7 +566,7 @@ private fun NavGraphBuilder.reportGraph(
                     )
                 },
                 onCancel = {
-                    navController.navigate(NavigationGraph.Main.route) {
+                    navController.navigate(NavGraph.MainGraph) {
                         popUpTo(ReportNavigationRoute.AddReportRoleScreen.route) {
                             inclusive = true
                         }
