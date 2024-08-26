@@ -1,13 +1,52 @@
 package com.skgtecnologia.sisem.ui.navigation
 
+import kotlinx.serialization.Serializable
+
+// region Graphs
+sealed interface NavGraph {
+    @Serializable
+    data object AuthGraph : NavGraph
+
+    @Serializable
+    data object MainGraph : NavGraph
+
+    @Serializable
+    data object AphGraph : NavGraph
+
+    @Serializable
+    data object ReportGraph : NavGraph
+}
+// endregion
+
 sealed class NavigationGraph(val route: String) {
-    data object Auth : NavigationGraph("auth_graph")
     data object Aph : NavigationGraph("aph_graph")
     data object Main : NavigationGraph("main_graph")
     data object Report : NavigationGraph("report_graph")
 }
 
 sealed class NavigationRoute(open val route: String)
+
+// region Auth Routes
+sealed interface AuthRoute {
+    @Serializable
+    data object AuthCardsRoute : AuthRoute
+
+    @Serializable
+    data object LoginRoute : AuthRoute
+
+    @Serializable
+    data object ForgotPasswordRoute : AuthRoute
+
+    @Serializable
+    data object PreOperationalRoute : AuthRoute
+
+    @Serializable
+    data object DeviceAuthRoute: AuthRoute
+
+    @Serializable
+    data object ChangePasswordRoute : AuthRoute
+}
+// endregion
 
 sealed class AuthNavigationRoute(override val route: String) : NavigationRoute(route) {
     data object AuthCardsScreen : AuthNavigationRoute("auth_cards_screen")
