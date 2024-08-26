@@ -17,6 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.commons.communication.AppEvent
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.location.ACTION_START
@@ -56,7 +57,6 @@ import com.skgtecnologia.sisem.ui.signature.view.SignatureScreen
 import com.skgtecnologia.sisem.ui.stretcherretention.create.StretcherRetentionScreen
 import com.skgtecnologia.sisem.ui.stretcherretention.pre.PreStretcherRetentionScreen
 import com.skgtecnologia.sisem.ui.stretcherretention.view.StretcherRetentionViewScreen
-import timber.log.Timber
 import kotlin.reflect.typeOf
 
 @Composable
@@ -72,11 +72,7 @@ fun SisemNavGraph(
 
         UnauthorizedEventHandler.subscribeUnauthorizedEvent { appEvent ->
             if (appEvent is AppEvent.UnauthorizedSession) {
-                Timber.d("Username is: ${appEvent.username}")
-                navController.navigate(
-                    AuthRoute.LoginRoute
-//                    AuthNavigationRoute.LoginScreen.route + "?$USERNAME=${appEvent.username}"
-                ) {
+                navController.navigate(AuthRoute.LoginRoute(appEvent.username)) {
                     popUpTo(NavigationGraph.Main.route) {
                         inclusive = true
                     }
@@ -121,17 +117,12 @@ private fun NavGraphBuilder.authGraph(
             typeMap = mapOf(
                 typeOf<String?>() to NavType.StringType
             )
-//            route = AuthNavigationRoute.LoginScreen.route +
-//                "?$USERNAME={$USERNAME}",
-//            arguments = listOf(
-//                navArgument(USERNAME) {
-//                    type = NavType.StringType
-//                    nullable = true
-//                }
-//            )
-        ) {
+        ) { backStackEntry ->
+            val route: AuthRoute.LoginRoute = backStackEntry.toRoute()
+
             LoginScreen(
-                modifier = modifier
+                modifier = modifier,
+                previousUsername = route.username
             ) { navigationModel ->
                 with(navigationModel) {
                     if (isTurnComplete && requiresPreOperational.not()) {

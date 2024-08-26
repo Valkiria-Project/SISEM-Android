@@ -32,6 +32,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
+    previousUsername: String?,
     onNavigation: (loginNavigationModel: LoginNavigationModel) -> Unit
 ) {
     val viewModel = hiltViewModel<LoginViewModel>()
@@ -39,6 +40,10 @@ fun LoginScreen(
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(Unit) {
+        viewModel.initScreen(previousUsername)
+    }
 
     LaunchedEffect(uiState) {
         launch {
