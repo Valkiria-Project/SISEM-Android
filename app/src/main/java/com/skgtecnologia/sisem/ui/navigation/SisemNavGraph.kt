@@ -155,7 +155,7 @@ private fun NavGraphBuilder.authGraph(
         }
 
         composable<AuthRoute.DeviceAuthRoute>(
-           typeMap = mapOf(
+            typeMap = mapOf(
                 typeOf<String>() to NavType.StringType
             )
         ) { backStackEntry ->

@@ -459,7 +459,6 @@ class PreOperationalViewModelTest {
             observeOperationConfig,
             sendPreOperational
         )
-2
         viewModel.sendPreOperational(DRIVER_ROLE)
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.infoEvent?.title)
