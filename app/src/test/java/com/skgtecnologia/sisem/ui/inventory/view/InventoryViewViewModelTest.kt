@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.ui.inventory.view
 
-import androidx.lifecycle.SavedStateHandle
 import com.skgtecnologia.sisem.commons.ANDROID_ID
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
@@ -12,7 +11,6 @@ import com.skgtecnologia.sisem.domain.deviceauth.usecases.GetDeviceType
 import com.skgtecnologia.sisem.domain.inventory.model.InventoryType
 import com.skgtecnologia.sisem.domain.inventory.usecases.GetInventoryViewScreen
 import com.skgtecnologia.sisem.domain.inventory.usecases.SaveTransferReturn
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.INVENTORY_TYPE
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
@@ -43,10 +41,6 @@ class InventoryViewViewModelTest {
     @MockK
     lateinit var androidIdProvider: AndroidIdProvider
 
-    private val savedStateHandle = SavedStateHandle(
-        mapOf(INVENTORY_TYPE to InventoryType.MEDICINE.type)
-    )
-
     private lateinit var viewModel: InventoryViewViewModel
 
     @Before
@@ -63,13 +57,13 @@ class InventoryViewViewModelTest {
         )
 
         viewModel = InventoryViewViewModel(
-            savedStateHandle = savedStateHandle,
             getInventoryViewScreen = getInventoryViewScreen,
             getDeviceType = getDeviceType,
             saveTransferReturn = saveTransferReturn,
             logoutCurrentUser = logoutCurrentUser,
             androidIdProvider = androidIdProvider
         )
+        viewModel.initScreen(InventoryType.MEDICINE.type)
 
         Assert.assertEquals(emptyScreenModel, viewModel.uiState.screenModel)
     }
@@ -79,29 +73,27 @@ class InventoryViewViewModelTest {
         coEvery { getInventoryViewScreen.invoke(any(), any()) } returns Result.failure(Throwable())
 
         viewModel = InventoryViewViewModel(
-            savedStateHandle = savedStateHandle,
             getInventoryViewScreen = getInventoryViewScreen,
             getDeviceType = getDeviceType,
             saveTransferReturn = saveTransferReturn,
             logoutCurrentUser = logoutCurrentUser,
             androidIdProvider = androidIdProvider
         )
+        viewModel.initScreen(InventoryType.MEDICINE.type)
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.errorModel?.title)
     }
 
     @Test
     fun `when inventoryType is null`() = runTest {
-        val savedStateHandle = SavedStateHandle(mapOf(INVENTORY_TYPE to null))
-
         viewModel = InventoryViewViewModel(
-            savedStateHandle = savedStateHandle,
             getInventoryViewScreen = getInventoryViewScreen,
             getDeviceType = getDeviceType,
             saveTransferReturn = saveTransferReturn,
             logoutCurrentUser = logoutCurrentUser,
             androidIdProvider = androidIdProvider
         )
+        viewModel.initScreen("")
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.back)
     }
@@ -113,7 +105,6 @@ class InventoryViewViewModelTest {
         )
 
         viewModel = InventoryViewViewModel(
-            savedStateHandle = savedStateHandle,
             getInventoryViewScreen = getInventoryViewScreen,
             getDeviceType = getDeviceType,
             saveTransferReturn = saveTransferReturn,
@@ -133,7 +124,6 @@ class InventoryViewViewModelTest {
         )
 
         viewModel = InventoryViewViewModel(
-            savedStateHandle = savedStateHandle,
             getInventoryViewScreen = getInventoryViewScreen,
             getDeviceType = getDeviceType,
             saveTransferReturn = saveTransferReturn,
@@ -154,7 +144,6 @@ class InventoryViewViewModelTest {
         coEvery { logoutCurrentUser.invoke() } returns Result.success("")
 
         viewModel = InventoryViewViewModel(
-            savedStateHandle = savedStateHandle,
             getInventoryViewScreen = getInventoryViewScreen,
             getDeviceType = getDeviceType,
             saveTransferReturn = saveTransferReturn,

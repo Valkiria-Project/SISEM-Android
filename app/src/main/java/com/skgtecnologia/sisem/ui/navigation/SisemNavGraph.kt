@@ -282,33 +282,33 @@ private fun NavGraphBuilder.mainGraph(
             // FIXME: Finish this work
         }
 
-        composable<MainRoute.DrivingGuideRoute>{
+        composable<MainRoute.DrivingGuideRoute> {
             // FIXME: Finish this work
         }
 
-        composable<MainRoute.CertificationsRoute>{
+        composable<MainRoute.CertificationsRoute> {
             // FIXME: Finish this work
         }
 
-        composable<MainRoute.HCEUDCRoute>{
+        composable<MainRoute.HCEUDCRoute> {
             // FIXME: Finish this work
         }
 
-        composable<MainRoute.ShiftRoute>{
+        composable<MainRoute.ShiftRoute> {
             // FIXME: Finish this work
         }
 
-        composable<MainRoute.PreoperationalMainRoute>{
+        composable<MainRoute.PreoperationalMainRoute> {
             AuthCardViewScreen { navigationModel ->
                 navigationModel.navigate(navController)
             }
         }
 
-        composable<MainRoute.DeviceAuthMainRoute>{
+        composable<MainRoute.DeviceAuthMainRoute> {
             navController.navigate(AuthRoute.DeviceAuthRoute(MAIN))
         }
 
-        composable<MainRoute.InitSignatureRoute>{
+        composable<MainRoute.InitSignatureRoute> {
             InitSignatureScreen(modifier = modifier) { navigationModel ->
                 navigationModel.navigate(navController)
             }
@@ -333,7 +333,7 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable<MainRoute.PreStretcherRetentionRoute>{
+        composable<MainRoute.PreStretcherRetentionRoute> {
             PreStretcherRetentionScreen(
                 modifier = modifier
             ) { navigationModel ->
@@ -551,7 +551,7 @@ private fun NavGraphBuilder.reportGraph(
             }
         }
 
-        composable<ReportRoute.AddReportRoleRoute>{
+        composable<ReportRoute.AddReportRoleRoute> {
             AddReportRoleScreen(
                 modifier = modifier,
                 onNavigation = { roleName ->
