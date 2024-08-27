@@ -4,7 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
@@ -16,7 +15,6 @@ import com.skgtecnologia.sisem.domain.stretcherretention.usecases.GetStretcherRe
 import com.skgtecnologia.sisem.domain.stretcherretention.usecases.SaveStretcherRetention
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.BodyRowModel
@@ -44,7 +42,6 @@ private const val TRUE = "true"
 @Suppress("TooManyFunctions")
 @HiltViewModel
 class StretcherRetentionViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val logoutCurrentUser: LogoutCurrentUser,
     private val getStretcherRetentionScreen: GetStretcherRetentionScreen,
     private val saveStretcherRetention: SaveStretcherRetention
@@ -55,18 +52,16 @@ class StretcherRetentionViewModel @Inject constructor(
     var uiState by mutableStateOf(StretcherRetentionUiState())
         private set
 
-    private val idAph: Int? = savedStateHandle[NavigationArgument.ID_APH]
-
     private var chipOptionValues = mutableStateMapOf<String, MutableList<ChipOptionUiModel>>()
     private var chipSelectionValues = mutableStateMapOf<String, ChipSelectionItemUiModel>()
     private var fieldsValues = mutableStateMapOf<String, InputUiModel>()
 
-    init {
+    fun initScreen(idAph: String) {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
         job = viewModelScope.launch {
-            getStretcherRetentionScreen.invoke(idAph = idAph.toString())
+            getStretcherRetentionScreen.invoke(idAph = idAph)
                 .onSuccess { stretcherRetentionScreen ->
                     stretcherRetentionScreen.getFormInitialValues()
 
@@ -291,7 +286,7 @@ class StretcherRetentionViewModel @Inject constructor(
         )
     }
 
-    fun saveRetention() {
+    fun saveRetention(idAph: String) {
         uiState = uiState.copy(
             validateFields = true
         )
@@ -304,7 +299,7 @@ class StretcherRetentionViewModel @Inject constructor(
             job?.cancel()
             job = viewModelScope.launch {
                 saveStretcherRetention.invoke(
-                    idAph = idAph.toString(),
+                    idAph = idAph,
                     fieldsValue = fieldsValues.mapValues { it.value.updatedValue },
                     chipSelectionValues = chipSelectionValues.mapValues { it.value.id }
                 ).onSuccess {

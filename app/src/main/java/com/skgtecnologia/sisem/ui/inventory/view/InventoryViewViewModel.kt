@@ -59,20 +59,17 @@ private const val DEVICE_TYPE_TEXT = "<font color=\"#FFFFFF\"><b>%s</b></font>"
 @Suppress("TooManyFunctions")
 @HiltViewModel
 class InventoryViewViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+    private val androidIdProvider: AndroidIdProvider,
     private val getInventoryViewScreen: GetInventoryViewScreen,
     private val getDeviceType: GetDeviceType,
     private val saveTransferReturn: SaveTransferReturn,
-    private val logoutCurrentUser: LogoutCurrentUser,
-    androidIdProvider: AndroidIdProvider
+    private val logoutCurrentUser: LogoutCurrentUser
 ) : ViewModel() {
 
     private var job: Job? = null
 
     var uiState by mutableStateOf(InventoryViewUiState())
         private set
-
-    private val inventoryName: String? = savedStateHandle[INVENTORY_TYPE]
 
     private var chipSelectionValues = mutableStateMapOf<String, ChipSelectionItemUiModel>()
     private var fieldsValues = mutableStateMapOf<String, InputUiModel>()
@@ -151,8 +148,8 @@ class InventoryViewViewModel @Inject constructor(
         CANT_RETURN_KEY to true
     )
 
-    init {
-        val inventoryType = InventoryType.from(inventoryName.orEmpty())
+    fun initScreen(inventoryName: String) {
+        val inventoryType = InventoryType.from(inventoryName)
 
         if (inventoryType != null) {
             uiState = uiState.copy(isLoading = true)

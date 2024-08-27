@@ -61,7 +61,7 @@ sealed interface MainRoute : NavRoute {
     data object DrivingGuideRoute : MainRoute
 
     @Serializable
-    data object HCEUDCRoute: MainRoute
+    data object HCEUDCRoute : MainRoute
 
     @Serializable
     data object IncidentsRoute : MainRoute
@@ -73,6 +73,9 @@ sealed interface MainRoute : NavRoute {
     data object InventoryRoute : MainRoute
 
     @Serializable
+    data class InventoryViewRoute(val inventoryName: String) : MainRoute
+
+    @Serializable
     data object MapRoute : MainRoute
 
     @Serializable
@@ -82,20 +85,22 @@ sealed interface MainRoute : NavRoute {
     data object PreoperationalMainRoute : MainRoute
 
     @Serializable
+    data class PreoperationalViewRoute(val role: String) : MainRoute
+
+    @Serializable
     data object PreStretcherRetentionRoute : MainRoute
 
     @Serializable
-    data object ShiftRoute : MainRoute
-}
+    data class SignatureRoute(val document: String) : MainRoute
 
-sealed class MainNavigationRoute(override val route: String) : NavigationRoute(route) {
-    data object CertificationsScreen : MainNavigationRoute("menu_certifications_screen")
-    data object DeviceAuthScreen : MainNavigationRoute("menu_device_auth_screen")
-    data object InventoryViewScreen : MainNavigationRoute("menu_inventory_view_screen")
-    data object PreOperationalViewScreen : MainNavigationRoute("pre_operational_view_screen")
-    data object SignatureScreen : MainNavigationRoute("signature_screen")
-    data object StretcherRetentionScreen : MainNavigationRoute("stretcher_retention_screen")
-    data object StretcherViewScreen : MainNavigationRoute("stretcher_view_screen")
+    @Serializable
+    data object ShiftRoute : MainRoute
+
+    @Serializable
+    data class StretcherRetentionRoute(val idAph: String) : MainRoute
+
+    @Serializable
+    data class StretcherRetentionViewRoute(val idAph: String) : MainRoute
 }
 // endregion
 
@@ -104,6 +109,7 @@ sealed interface ReportRoute : NavRoute {
     @Serializable
     data object AddReportRoleRoute : ReportRoute
 }
+
 sealed class ReportNavigationRoute(override val route: String) : NavigationRoute(route) {
     data object ReportCameraScreen : ReportNavigationRoute("report_camera_screen")
     data object AddFindingScreen : ReportNavigationRoute("add_finding_screen")
@@ -114,6 +120,7 @@ sealed class ReportNavigationRoute(override val route: String) : NavigationRoute
 // endregion
 // endregion
 
+sealed class MainNavigationRoute(override val route: String) : NavigationRoute(route)
 sealed class AphNavigationRoute(override val route: String) : NavigationRoute(route) {
     data object CameraScreen : MainNavigationRoute("camera_screen")
     data object CameraViewScreen : MainNavigationRoute("camera_view_screen")
@@ -126,7 +133,6 @@ sealed class AphNavigationRoute(override val route: String) : NavigationRoute(ro
 }
 
 object NavigationArgument {
-    const val DOCUMENT = "document"
     const val FINDING_ID = "finding_id"
     const val FROM = "from"
     const val ID_APH = "id_aph"
@@ -137,6 +143,5 @@ object NavigationArgument {
     const val REVERT_FINDING = "revert_finding"
     const val ROLE = "role"
     const val SIGNATURE = "signature"
-    const val USERNAME = "username"
     const val VITAL_SIGNS = "vital_signs"
 }

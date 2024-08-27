@@ -24,10 +24,15 @@ import timber.log.Timber
 @Composable
 fun InventoryViewScreen(
     modifier: Modifier = Modifier,
+    inventoryName: String,
     onNavigation: (inventoryViewNavigationModel: InventoryViewNavigationModel) -> Unit
 ) {
     val viewModel = hiltViewModel<InventoryViewViewModel>()
     val uiState = viewModel.uiState
+
+    LaunchedEffect(Unit) {
+        viewModel.initScreen(inventoryName)
+    }
 
     LaunchedEffect(uiState) {
         launch {

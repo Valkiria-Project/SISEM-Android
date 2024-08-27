@@ -3,7 +3,6 @@ package com.skgtecnologia.sisem.ui.preoperational.view
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
@@ -14,7 +13,6 @@ import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreenView
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ROLE
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.finding.FindingsDetailUiModel
@@ -29,7 +27,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PreOperationalViewViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val androidIdProvider: AndroidIdProvider,
     private val logoutCurrentUser: LogoutCurrentUser,
     private val getPreOperationalScreenView: GetPreOperationalScreenView
@@ -40,10 +37,8 @@ class PreOperationalViewViewModel @Inject constructor(
     var uiState by mutableStateOf(PreOperationalViewUiState())
         private set
 
-    private val roleName: String? = savedStateHandle[ROLE]
-
-    init {
-        val role = OperationRole.getRoleByName(roleName.orEmpty())
+    fun initScreen(roleName: String) {
+        val role = OperationRole.getRoleByName(roleName)
 
         if (role != null) {
             uiState = uiState.copy(isLoading = true)

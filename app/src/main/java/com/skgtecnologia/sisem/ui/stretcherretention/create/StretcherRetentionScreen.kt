@@ -22,10 +22,15 @@ import timber.log.Timber
 @Composable
 fun StretcherRetentionScreen(
     modifier: Modifier = Modifier,
+    idAph: String,
     onNavigation: (stretcherRetentionNavigationModel: StretcherRetentionNavigationModel) -> Unit
 ) {
     val viewModel = hiltViewModel<StretcherRetentionViewModel>()
     val uiState = viewModel.uiState
+
+    LaunchedEffect(Unit) {
+        viewModel.initScreen(idAph)
+    }
 
     LaunchedEffect(uiState) {
         launch {
@@ -69,7 +74,7 @@ fun StretcherRetentionScreen(
                 .padding(top = 20.dp),
             validateFields = uiState.validateFields
         ) { uiAction ->
-            handleAction(uiAction, viewModel)
+            handleAction(uiAction, viewModel, idAph)
         }
     }
 
@@ -86,10 +91,11 @@ fun StretcherRetentionScreen(
 
 private fun handleAction(
     uiAction: UiAction,
-    viewModel: StretcherRetentionViewModel
+    viewModel: StretcherRetentionViewModel,
+    idAph: String
 ) {
     when (uiAction) {
-        is GenericUiAction.ButtonAction -> viewModel.saveRetention()
+        is GenericUiAction.ButtonAction -> viewModel.saveRetention(idAph)
 
         is GenericUiAction.ChipOptionAction -> viewModel.handleChipOptionAction(uiAction)
 

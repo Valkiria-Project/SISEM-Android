@@ -43,9 +43,7 @@ import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.view.MedicalHistoryViewScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsScreen
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.DOCUMENT
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ID_APH
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.INVENTORY_TYPE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.PHOTO_TAKEN
@@ -265,13 +263,16 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable(
-            route = MainNavigationRoute.InventoryViewScreen.route +
-                "?$INVENTORY_TYPE={$INVENTORY_TYPE}",
-            arguments = listOf(navArgument(INVENTORY_TYPE) { type = NavType.StringType })
-        ) {
+        composable<MainRoute.InventoryViewRoute>(
+            typeMap = mapOf(
+                typeOf<String?>() to NavType.StringType
+            )
+        ) { backStackEntry ->
+            val route: MainRoute.InventoryViewRoute = backStackEntry.toRoute()
+
             InventoryViewScreen(
-                modifier = modifier
+                modifier = modifier,
+                inventoryName = route.inventoryName
             ) { navigationModel ->
                 navigationModel.navigate(navController)
             }
@@ -285,9 +286,7 @@ private fun NavGraphBuilder.mainGraph(
             // FIXME: Finish this work
         }
 
-        composable(
-            route = MainNavigationRoute.CertificationsScreen.route
-        ) {
+        composable<MainRoute.CertificationsRoute>{
             // FIXME: Finish this work
         }
 
@@ -305,9 +304,7 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable(
-            route = MainNavigationRoute.DeviceAuthScreen.route
-        ) {
+        composable<MainRoute.DeviceAuthMainRoute>{
             navController.navigate(AuthRoute.DeviceAuthRoute(MAIN))
         }
 
@@ -317,15 +314,19 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable(
-            route = MainNavigationRoute.SignatureScreen.route + "?$DOCUMENT={$DOCUMENT}",
-            arguments = listOf(navArgument(DOCUMENT) { type = NavType.StringType })
-        ) { navBackStackEntry ->
-            val signature = navBackStackEntry.savedStateHandle.get<String>(SIGNATURE)
-            navBackStackEntry.savedStateHandle.remove<String>(SIGNATURE)
+        composable<MainRoute.SignatureRoute>(
+            typeMap = mapOf(
+                typeOf<String?>() to NavType.StringType
+            )
+        ) { backStackEntry ->
+            val route: MainRoute.SignatureRoute = backStackEntry.toRoute()
+
+            val signature = backStackEntry.savedStateHandle.get<String>(SIGNATURE)
+            backStackEntry.savedStateHandle.remove<String>(SIGNATURE)
 
             SignatureScreen(
                 modifier = modifier,
+                document = route.document,
                 signature = signature
             ) { navigationModel ->
                 navigationModel.navigate(navController)
@@ -340,34 +341,47 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable(
-            route = MainNavigationRoute.StretcherRetentionScreen.route + "/{$ID_APH}",
-            arguments = listOf(navArgument(ID_APH) { type = NavType.IntType })
-        ) {
+        composable<MainRoute.StretcherRetentionRoute>(
+            typeMap = mapOf(
+                typeOf<String>() to NavType.StringType
+            )
+        ) { backStackEntry ->
+            val route: MainRoute.StretcherRetentionRoute = backStackEntry.toRoute()
+
             StretcherRetentionScreen(
-                modifier = modifier
+                modifier = modifier,
+                idAph = route.idAph
             ) { navigationModel ->
                 navigationModel.navigate(navController)
             }
         }
 
-        composable(
-            route = MainNavigationRoute.StretcherViewScreen.route + "/{$ID_APH}",
-            arguments = listOf(navArgument(ID_APH) { type = NavType.IntType })
-        ) {
+        composable<MainRoute.StretcherRetentionViewRoute>(
+            typeMap = mapOf(
+                typeOf<String>() to NavType.StringType
+            )
+        ) { backStackEntry ->
+            val route: MainRoute.StretcherRetentionViewRoute = backStackEntry.toRoute()
+
             StretcherRetentionViewScreen(
-                modifier = modifier
+                modifier = modifier,
+                idAph = route.idAph
             ) { navigationModel ->
                 navigationModel.navigate(navController)
             }
         }
 
-        composable(
-            route = MainNavigationRoute.PreOperationalViewScreen.route +
-                "?$ROLE={$ROLE}",
-            arguments = listOf(navArgument(ROLE) { type = NavType.StringType })
-        ) {
-            PreOperationalViewScreen { navigationModel ->
+        composable<MainRoute.PreoperationalViewRoute>(
+            typeMap = mapOf(
+                typeOf<String?>() to NavType.StringType
+            )
+        ) { backStackEntry ->
+            val route: MainRoute.PreoperationalViewRoute = backStackEntry.toRoute()
+
+            PreOperationalViewScreen(
+                modifier = modifier,
+                roleName = route.role
+            ) { navigationModel ->
                 navigationModel.navigate(navController)
             }
         }
