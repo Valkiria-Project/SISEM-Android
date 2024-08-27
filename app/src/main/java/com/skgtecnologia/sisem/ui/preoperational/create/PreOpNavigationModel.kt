@@ -5,7 +5,7 @@ import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.skgtecnologia.sisem.ui.navigation.NavGraph
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
-import com.skgtecnologia.sisem.ui.navigation.ReportNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.ReportRoute
 
 data class PreOpNavigationModel(
     val isTurnComplete: Boolean = false,
@@ -23,11 +23,8 @@ data class PreOpNavigationModel(
                 }
             }
 
-            isNewFinding ->
-                navController.navigate(
-                    ReportNavigationRoute.AddFindingScreen.route +
-                        "?${NavigationArgument.FINDING_ID}=$findingId"
-                )
+            isNewFinding && findingId != null ->
+                navController.navigate(ReportRoute.AddFindingRoute(findingId))
 
             else -> navController.navigate(AuthRoute.AuthCardsRoute) {
                 popUpTo(AuthRoute.PreOperationalRoute()) {

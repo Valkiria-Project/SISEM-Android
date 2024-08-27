@@ -9,7 +9,6 @@ import com.skgtecnologia.sisem.ui.navigation.NavGraph
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.navigation.REPORT
-import com.skgtecnologia.sisem.ui.navigation.ReportNavigationRoute
 import com.skgtecnologia.sisem.ui.navigation.ReportRoute
 
 data class ReportNavigationModel(
@@ -38,10 +37,10 @@ data class ReportNavigationModel(
             }
 
             goBackFromImages -> navController.navigateBack()
-            showCamera -> navController.navigate(ReportNavigationRoute.ReportCameraScreen.route)
+            showCamera -> navController.navigate(ReportRoute.ReportCameraRoute)
             photoTaken -> navController.navigateBack()
             closeFinding && imagesSize > 0 -> navController.navigate(
-                "${ReportNavigationRoute.ImagesConfirmationScreen.route}/$FINDING"
+                ReportRoute.ImagesConfirmationRoute(FINDING)
             )
 
             closeFinding -> with(navController) {
@@ -56,7 +55,7 @@ data class ReportNavigationModel(
             }
 
             closeReport && imagesSize > 0 -> navController.navigate(
-                "${ReportNavigationRoute.ImagesConfirmationScreen.route}/$REPORT"
+                ReportRoute.ImagesConfirmationRoute(REPORT)
             )
 
             closeReport ->

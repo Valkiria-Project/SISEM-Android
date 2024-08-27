@@ -107,17 +107,22 @@ sealed interface MainRoute : NavRoute {
 // region Report Routes
 sealed interface ReportRoute : NavRoute {
     @Serializable
+    data class AddFindingRoute(val findingId: String) : ReportRoute
+
+    @Serializable
     data object AddReportRoleRoute : ReportRoute
-}
 
-sealed class ReportNavigationRoute(override val route: String) : NavigationRoute(route) {
-    data object ReportCameraScreen : ReportNavigationRoute("report_camera_screen")
-    data object AddFindingScreen : ReportNavigationRoute("add_finding_screen")
-    data object ImagesConfirmationScreen : ReportNavigationRoute("images_confirmation_screen")
-    data object AddReportScreen : ReportNavigationRoute("add_report_screen")
-}
+    @Serializable
+    data object AddReportRoute : ReportRoute
 
+    @Serializable
+    data class ImagesConfirmationRoute(val from: String,) : ReportRoute
+
+    @Serializable
+    data object ReportCameraRoute : ReportRoute
+}
 // endregion
+
 // endregion
 
 sealed class MainNavigationRoute(override val route: String) : NavigationRoute(route)

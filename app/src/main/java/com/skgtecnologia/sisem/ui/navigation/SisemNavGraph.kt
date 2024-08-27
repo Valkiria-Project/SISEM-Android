@@ -505,16 +505,13 @@ private fun NavGraphBuilder.reportGraph(
     navController: NavHostController,
     modifier: Modifier
 ) {
-    navigation(
-        startDestination = ReportNavigationRoute.AddFindingScreen.route,
-        route = NavigationGraph.Report.route
-    ) {
-        composable(
-            route = ReportNavigationRoute.AddFindingScreen.route +
-                "?${NavigationArgument.FINDING_ID}={${NavigationArgument.FINDING_ID}}",
-            arguments = listOf(
-                navArgument(NavigationArgument.FINDING_ID) { type = NavType.StringType }
-            )
+    navigation<NavGraph.ReportGraph>(startDestination = ReportRoute.AddFindingRoute) {
+        composable<ReportRoute.AddFindingRoute>(
+//            route = ReportNavigationRoute.AddFindingScreen.route +
+//                "?${NavigationArgument.FINDING_ID}={${NavigationArgument.FINDING_ID}}",
+//            arguments = listOf(
+//                navArgument(NavigationArgument.FINDING_ID) { type = NavType.StringType }
+//            )
         ) { navBackStackEntry ->
             AddFindingScreen(
                 viewModel = navBackStackEntry.sharedViewModel(navController = navController),
@@ -526,65 +523,65 @@ private fun NavGraphBuilder.reportGraph(
             }
         }
 
-        composable(
-            route = ReportNavigationRoute.ReportCameraScreen.route
-        ) { navBackStackEntry ->
-            ReportCameraScreen(
-                modifier = modifier,
-                viewModel = navBackStackEntry.sharedViewModel(navController = navController)
-            ) { navigationModel ->
-                navigationModel.navigate(navController)
-            }
-        }
-
-        composable(
-            route = ReportNavigationRoute.ImagesConfirmationScreen.route +
-                "/{${NavigationArgument.FROM}}",
-            arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
-        ) { navBackStackEntry ->
-            ImagesConfirmationScreen(
-                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
-                from = navBackStackEntry.arguments?.getString(NavigationArgument.FROM).orEmpty(),
-                modifier = modifier
-            ) { navigationModel ->
-                navigationModel.navigate(navController)
-            }
-        }
-
-        composable<ReportRoute.AddReportRoleRoute> {
-            AddReportRoleScreen(
-                modifier = modifier,
-                onNavigation = { roleName ->
-                    navController.navigate(
-                        ReportNavigationRoute.AddReportScreen.route + "?$ROLE=$roleName"
-                    )
-                },
-                onCancel = {
-                    navController.navigate(NavGraph.MainGraph) {
-                        popUpTo(ReportRoute.AddReportRoleRoute) {
-                            inclusive = true
-                        }
-                    }
-                }
-            )
-        }
-
-        composable(
-            route = ReportNavigationRoute.AddReportScreen.route +
-                "?$ROLE={$ROLE}",
-            arguments = listOf(
-                navArgument(ROLE) {
-                    type = NavType.StringType
-                    nullable = true
-                }
-            )
-        ) { navBackStackEntry ->
-            AddReportScreen(
-                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
-                onNavigation = { navigationModel ->
-                    navigationModel.navigate(navController)
-                }
-            )
-        }
+//        composable(
+//            route = ReportNavigationRoute.ReportCameraScreen.route
+//        ) { navBackStackEntry ->
+//            ReportCameraScreen(
+//                modifier = modifier,
+//                viewModel = navBackStackEntry.sharedViewModel(navController = navController)
+//            ) { navigationModel ->
+//                navigationModel.navigate(navController)
+//            }
+//        }
+//
+//        composable(
+//            route = ReportNavigationRoute.ImagesConfirmationScreen.route +
+//                "/{${NavigationArgument.FROM}}",
+//            arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
+//        ) { navBackStackEntry ->
+//            ImagesConfirmationScreen(
+//                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
+//                from = navBackStackEntry.arguments?.getString(NavigationArgument.FROM).orEmpty(),
+//                modifier = modifier
+//            ) { navigationModel ->
+//                navigationModel.navigate(navController)
+//            }
+//        }
+//
+//        composable<ReportRoute.AddReportRoleRoute> {
+//            AddReportRoleScreen(
+//                modifier = modifier,
+//                onNavigation = { roleName ->
+//                    navController.navigate(
+//                        ReportNavigationRoute.AddReportScreen.route + "?$ROLE=$roleName"
+//                    )
+//                },
+//                onCancel = {
+//                    navController.navigate(NavGraph.MainGraph) {
+//                        popUpTo(ReportRoute.AddReportRoleRoute) {
+//                            inclusive = true
+//                        }
+//                    }
+//                }
+//            )
+//        }
+//
+//        composable(
+//            route = ReportNavigationRoute.AddReportScreen.route +
+//                "?$ROLE={$ROLE}",
+//            arguments = listOf(
+//                navArgument(ROLE) {
+//                    type = NavType.StringType
+//                    nullable = true
+//                }
+//            )
+//        ) { navBackStackEntry ->
+//            AddReportScreen(
+//                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
+//                onNavigation = { navigationModel ->
+//                    navigationModel.navigate(navController)
+//                }
+//            )
+//        }
     }
 }
