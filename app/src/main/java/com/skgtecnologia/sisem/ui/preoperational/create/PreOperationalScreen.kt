@@ -25,6 +25,7 @@ import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+@Suppress("LongParameterList")
 @Composable
 fun PreOperationalScreen(
     modifier: Modifier = Modifier,

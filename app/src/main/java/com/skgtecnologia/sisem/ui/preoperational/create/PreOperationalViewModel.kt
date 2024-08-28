@@ -141,7 +141,7 @@ class PreOperationalViewModel @Inject constructor(
 
                 is TextFieldUiModel -> {
                     val fieldValidated = bodyRowModel.style == TextFieldStyle.DATE_PICKER &&
-                            bodyRowModel.text.isNotEmpty()
+                        bodyRowModel.text.isNotEmpty()
 
                     fieldsValues[bodyRowModel.identifier] = InputUiModel(
                         bodyRowModel.identifier,
