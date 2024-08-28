@@ -29,9 +29,6 @@ class AddReportViewModelTest {
     @MockK
     private lateinit var logoutCurrentUser: LogoutCurrentUser
 
-    private val savedStateHandle =
-        SavedStateHandle(mapOf(NavigationArgument.ROLE to OperationRole.MEDIC_APH.name))
-
     private lateinit var viewModel: AddReportViewModel
 
     @Before
@@ -43,7 +40,8 @@ class AddReportViewModelTest {
     fun `when getAddReportScreen is success`() = runTest {
         coEvery { getAddReportScreen.invoke() } returns Result.success(emptyScreenModel)
 
-        viewModel = AddReportViewModel(savedStateHandle, getAddReportScreen, logoutCurrentUser)
+        viewModel = AddReportViewModel(getAddReportScreen, logoutCurrentUser)
+        viewModel.initScreen()
 
         Assert.assertEquals(emptyScreenModel, viewModel.uiState.screenModel)
     }
@@ -52,7 +50,8 @@ class AddReportViewModelTest {
     fun `when getAddReportScreen is failure`() = runTest {
         coEvery { getAddReportScreen.invoke() } returns Result.failure(Throwable())
 
-        viewModel = AddReportViewModel(savedStateHandle, getAddReportScreen, logoutCurrentUser)
+        viewModel = AddReportViewModel(getAddReportScreen, logoutCurrentUser)
+        viewModel.initScreen()
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.errorModel?.title)
     }
@@ -62,7 +61,7 @@ class AddReportViewModelTest {
         coEvery { getAddReportScreen.invoke() } returns Result.failure(Throwable())
         coEvery { logoutCurrentUser.invoke() } returns Result.success("")
 
-        viewModel = AddReportViewModel(savedStateHandle, getAddReportScreen, logoutCurrentUser)
+        viewModel = AddReportViewModel(getAddReportScreen, logoutCurrentUser)
         viewModel.handleEvent(uiAction)
 
         Assert.assertEquals(null, viewModel.uiState.errorModel)
