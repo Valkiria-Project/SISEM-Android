@@ -64,9 +64,7 @@ import com.skgtecnologia.sisem.ui.stretcherretention.view.StretcherRetentionView
 import kotlin.reflect.typeOf
 
 @Composable
-fun SisemNavGraph(
-    navigationModel: StartupNavigationModel?
-) {
+fun SisemNavGraph(navigationModel: StartupNavigationModel?) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
     ) { paddingValues ->
@@ -275,25 +273,15 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable<MainRoute.NotificationsRoute> {
-            // FIXME: Finish this work
-        }
+        composable<MainRoute.NotificationsRoute> { /*FIXME: Finish this work*/ }
 
-        composable<MainRoute.DrivingGuideRoute> {
-            // FIXME: Finish this work
-        }
+        composable<MainRoute.DrivingGuideRoute> { /*FIXME: Finish this work*/ }
 
-        composable<MainRoute.CertificationsRoute> {
-            // FIXME: Finish this work
-        }
+        composable<MainRoute.CertificationsRoute> { /*FIXME: Finish this work*/ }
 
-        composable<MainRoute.HCEUDCRoute> {
-            // FIXME: Finish this work
-        }
+        composable<MainRoute.HCEUDCRoute> { /*FIXME: Finish this work*/ }
 
-        composable<MainRoute.ShiftRoute> {
-            // FIXME: Finish this work
-        }
+        composable<MainRoute.ShiftRoute> { /*FIXME: Finish this work*/ }
 
         composable<MainRoute.PreoperationalMainRoute> {
             AuthCardViewScreen { navigationModel ->
@@ -502,9 +490,7 @@ private fun NavGraphBuilder.reportGraph(
     navController: NavHostController,
     modifier: Modifier
 ) {
-    navigation<NavGraph.ReportGraph>(
-        startDestination = ReportRoute.AddFindingRoute::class
-    ) {
+    navigation<NavGraph.ReportGraph>(startDestination = ReportRoute.AddFindingRoute::class) {
         composable<ReportRoute.AddFindingRoute>(
             typeMap = mapOf(
                 typeOf<String>() to NavType.StringType
