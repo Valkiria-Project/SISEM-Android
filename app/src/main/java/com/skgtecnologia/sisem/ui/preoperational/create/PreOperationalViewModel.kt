@@ -64,10 +64,11 @@ class PreOperationalViewModel @Inject constructor(
     var novelties = mutableStateListOf<Novelty>()
 
     fun initScreen(roleName: String?) {
-        uiState = uiState.copy(isLoading = true)
-
         job?.cancel()
         job = viewModelScope.launch {
+            if (uiState.screenModel != null) return@launch
+
+            uiState = uiState.copy(isLoading = true)
             val operationConfig = async {
                 observeOperationConfig.invoke()
                     .onSuccess { operationModel ->
@@ -140,7 +141,7 @@ class PreOperationalViewModel @Inject constructor(
 
                 is TextFieldUiModel -> {
                     val fieldValidated = bodyRowModel.style == TextFieldStyle.DATE_PICKER &&
-                        bodyRowModel.text.isNotEmpty()
+                            bodyRowModel.text.isNotEmpty()
 
                     fieldsValues[bodyRowModel.identifier] = InputUiModel(
                         bodyRowModel.identifier,

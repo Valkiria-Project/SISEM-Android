@@ -113,7 +113,7 @@ sealed interface ReportRoute : NavRoute {
     data object AddReportRoleRoute : ReportRoute
 
     @Serializable
-    data object AddReportRoute : ReportRoute
+    data class AddReportRoute(val roleName: String) : ReportRoute
 
     @Serializable
     data class ImagesConfirmationRoute(val from: String,) : ReportRoute

@@ -48,7 +48,6 @@ import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.PHOTO_TAKEN
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ROLE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
 import com.skgtecnologia.sisem.ui.preoperational.create.PreOperationalScreen
@@ -524,65 +523,62 @@ private fun NavGraphBuilder.reportGraph(
             }
         }
 
-//        composable(
-//            route = ReportNavigationRoute.ReportCameraScreen.route
-//        ) { navBackStackEntry ->
-//            ReportCameraScreen(
-//                modifier = modifier,
-//                viewModel = navBackStackEntry.sharedViewModel(navController = navController)
-//            ) { navigationModel ->
-//                navigationModel.navigate(navController)
-//            }
-//        }
-//
-//        composable(
-//            route = ReportNavigationRoute.ImagesConfirmationScreen.route +
-//                "/{${NavigationArgument.FROM}}",
-//            arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
-//        ) { navBackStackEntry ->
-//            ImagesConfirmationScreen(
-//                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
-//                from = navBackStackEntry.arguments?.getString(NavigationArgument.FROM).orEmpty(),
-//                modifier = modifier
-//            ) { navigationModel ->
-//                navigationModel.navigate(navController)
-//            }
-//        }
-//
-//        composable<ReportRoute.AddReportRoleRoute> {
-//            AddReportRoleScreen(
-//                modifier = modifier,
-//                onNavigation = { roleName ->
-//                    navController.navigate(
-//                        ReportNavigationRoute.AddReportScreen.route + "?$ROLE=$roleName"
-//                    )
-//                },
-//                onCancel = {
-//                    navController.navigate(NavGraph.MainGraph) {
-//                        popUpTo(ReportRoute.AddReportRoleRoute) {
-//                            inclusive = true
-//                        }
-//                    }
-//                }
-//            )
-//        }
-//
-//        composable(
-//            route = ReportNavigationRoute.AddReportScreen.route +
-//                "?$ROLE={$ROLE}",
-//            arguments = listOf(
-//                navArgument(ROLE) {
-//                    type = NavType.StringType
-//                    nullable = true
-//                }
-//            )
-//        ) { navBackStackEntry ->
-//            AddReportScreen(
-//                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
-//                onNavigation = { navigationModel ->
-//                    navigationModel.navigate(navController)
-//                }
-//            )
-//        }
+        composable<ReportRoute.ReportCameraRoute> { navBackStackEntry ->
+            ReportCameraScreen(
+                modifier = modifier,
+                viewModel = navBackStackEntry.sharedViewModel(navController = navController)
+            ) { navigationModel ->
+                navigationModel.navigate(navController)
+            }
+        }
+
+        composable<ReportRoute.ImagesConfirmationRoute>(
+            typeMap = mapOf(
+                typeOf<String>() to NavType.StringType
+            )
+        ) { navBackStackEntry ->
+            val route: ReportRoute.ImagesConfirmationRoute = navBackStackEntry.toRoute()
+
+            ImagesConfirmationScreen(
+                modifier = modifier,
+                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
+                from = route.from,
+            ) { navigationModel ->
+                navigationModel.navigate(navController)
+            }
+        }
+
+        composable<ReportRoute.AddReportRoleRoute> {
+            AddReportRoleScreen(
+                modifier = modifier,
+                onNavigation = { roleName ->
+                    navController.navigate(ReportRoute.AddReportRoute(roleName))
+                },
+                onCancel = {
+                    navController.navigate(NavGraph.MainGraph) {
+                        popUpTo(ReportRoute.AddReportRoleRoute) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
+
+        composable<ReportRoute.AddReportRoute>(
+            typeMap = mapOf(
+                typeOf<String>() to NavType.StringType
+            )
+        ) { navBackStackEntry ->
+            val route: ReportRoute.AddReportRoute = navBackStackEntry.toRoute()
+
+            AddReportScreen(
+                modifier = modifier,
+                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
+                roleName = route.roleName,
+                onNavigation = { navigationModel ->
+                    navigationModel.navigate(navController)
+                }
+            )
+        }
     }
 }

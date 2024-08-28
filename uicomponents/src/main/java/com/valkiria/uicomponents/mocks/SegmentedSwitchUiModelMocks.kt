@@ -4,10 +4,10 @@ package com.valkiria.uicomponents.mocks
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.TextStyle.BUTTON_2
 import com.valkiria.uicomponents.components.segmentedswitch.OptionUiModel
+import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import kotlin.random.Random
 
 fun getDeviceAuthSegmentedSwitchUiModel(): SegmentedSwitchUiModel {

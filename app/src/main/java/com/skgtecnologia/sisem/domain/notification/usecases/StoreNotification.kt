@@ -1,8 +1,8 @@
 package com.skgtecnologia.sisem.domain.notification.usecases
 
 import com.skgtecnologia.sisem.commons.extensions.resultOf
-import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import com.skgtecnologia.sisem.domain.notification.repository.NotificationRepository
+import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import javax.inject.Inject
 
 class StoreNotification @Inject constructor(

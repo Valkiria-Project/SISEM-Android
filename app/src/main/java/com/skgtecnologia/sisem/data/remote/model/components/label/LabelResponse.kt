@@ -5,9 +5,9 @@ import androidx.compose.ui.Modifier
 import com.skgtecnologia.sisem.data.remote.model.components.BodyRowResponse
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.label.LabelUiModel
+import com.valkiria.uicomponents.components.label.TextStyle
 
 @JsonClass(generateAdapter = true)
 data class LabelResponse(

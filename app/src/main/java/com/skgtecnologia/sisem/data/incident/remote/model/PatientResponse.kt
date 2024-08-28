@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.data.incident.remote.model
 
-import com.valkiria.uicomponents.components.incident.model.PatientUiModel
 import com.squareup.moshi.Json
+import com.valkiria.uicomponents.components.incident.model.PatientUiModel
 
 data class PatientResponse(
     @Json(name = "id") val id: Int,

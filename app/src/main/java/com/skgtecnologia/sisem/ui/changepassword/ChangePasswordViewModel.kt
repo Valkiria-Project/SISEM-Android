@@ -14,12 +14,12 @@ import com.skgtecnologia.sisem.domain.model.banner.changePasswordNoMatchBanner
 import com.skgtecnologia.sisem.domain.model.banner.changePasswordSuccessBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltViewModel
 class ChangePasswordViewModel @Inject constructor(

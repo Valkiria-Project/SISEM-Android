@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.data.incident.remote.model
 
-import com.valkiria.uicomponents.components.incident.model.ResourceUiModel
 import com.squareup.moshi.Json
+import com.valkiria.uicomponents.components.incident.model.ResourceUiModel
 
 data class ResourceResponse(
     @Json(name = "id") val id: Int,

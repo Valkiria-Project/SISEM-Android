@@ -28,12 +28,12 @@ import timber.log.Timber
 @Composable
 fun PreOperationalScreen(
     modifier: Modifier = Modifier,
+    viewModel: PreOperationalViewModel = hiltViewModel<PreOperationalViewModel>(),
     roleName: String?,
     novelty: Novelty?,
     revertFinding: Boolean?,
     onNavigation: (preOpNavigationModel: PreOpNavigationModel) -> Unit
 ) {
-    val viewModel = hiltViewModel<PreOperationalViewModel>()
     val uiState = viewModel.uiState
 
     var notificationData by remember { mutableStateOf<NotificationData?>(null) }
@@ -41,7 +41,7 @@ fun PreOperationalScreen(
         notificationData = it
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(uiState.screenModel) {
         viewModel.initScreen(roleName)
     }
 

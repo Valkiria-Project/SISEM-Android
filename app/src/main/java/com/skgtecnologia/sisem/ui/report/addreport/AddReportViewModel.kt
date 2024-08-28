@@ -3,7 +3,6 @@ package com.skgtecnologia.sisem.ui.report.addreport
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
@@ -11,7 +10,6 @@ import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.report.usecases.GetAddReportScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.valkiria.uicomponents.action.UiAction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +21,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddReportViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val getAddReportScreen: GetAddReportScreen,
     private val logoutCurrentUser: LogoutCurrentUser,
 ) : ViewModel() {
@@ -33,9 +30,7 @@ class AddReportViewModel @Inject constructor(
     var uiState by mutableStateOf(AddReportUiState())
         private set
 
-    val roleName: String? = savedStateHandle[NavigationArgument.ROLE]
-
-    init {
+    fun initScreen() {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
