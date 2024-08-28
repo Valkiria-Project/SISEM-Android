@@ -71,7 +71,7 @@ const val EMAIL = "email"
 const val TOPIC = "topic"
 const val DESCRIPTION = "description"
 const val TURN_ID = "1"
-const val ID_APH = 14
+const val ID_APH = "14"
 const val DRIVER_ROLE = "DRIVER"
 
 val uiAction = FooterUiAction.FooterButton(LoginIdentifier.LOGIN_RE_AUTH_BANNER.name)

@@ -16,7 +16,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.commons.communication.AppEvent
@@ -43,7 +42,6 @@ import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.view.MedicalHistoryViewScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsScreen
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ID_APH
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.PHOTO_TAKEN
@@ -392,30 +390,32 @@ private fun NavGraphBuilder.aphGraph(
     navController: NavHostController,
     modifier: Modifier
 ) {
-    navigation(
-        startDestination = AphNavigationRoute.MedicalHistoryScreen.route,
-        route = NavigationGraph.Aph.route
+    navigation<NavGraph.AphGraph>(
+        startDestination = AphRoute.MedicalHistoryRoute::class,
     ) {
-        composable(
-            route = AphNavigationRoute.MedicalHistoryScreen.route + "/{$ID_APH}",
-            arguments = listOf(navArgument(ID_APH) { type = NavType.IntType })
-        ) { navBackStackEntry ->
-            val vitalSigns =
-                navBackStackEntry.savedStateHandle.get<Map<String, String>>(VITAL_SIGNS)
-            navBackStackEntry.savedStateHandle.remove<Map<String, String>>(VITAL_SIGNS)
+        composable<AphRoute.MedicalHistoryRoute>(
+            typeMap = mapOf(
+                typeOf<String?>() to NavType.StringType
+            )
+        ) { backStackEntry ->
+            val route: AphRoute.MedicalHistoryRoute = backStackEntry.toRoute()
 
-            val medicine = navBackStackEntry.savedStateHandle.get<Map<String, String>>(MEDICINE)
-            navBackStackEntry.savedStateHandle.remove<Map<String, String>>(MEDICINE)
+            val vitalSigns = backStackEntry.savedStateHandle.get<Map<String, String>>(VITAL_SIGNS)
+            backStackEntry.savedStateHandle.remove<Map<String, String>>(VITAL_SIGNS)
 
-            val signature = navBackStackEntry.savedStateHandle.get<String>(SIGNATURE)
-            navBackStackEntry.savedStateHandle.remove<String>(SIGNATURE)
+            val medicine = backStackEntry.savedStateHandle.get<Map<String, String>>(MEDICINE)
+            backStackEntry.savedStateHandle.remove<Map<String, String>>(MEDICINE)
 
-            val photoTaken = navBackStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN)
-            navBackStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)
+            val signature = backStackEntry.savedStateHandle.get<String>(SIGNATURE)
+            backStackEntry.savedStateHandle.remove<String>(SIGNATURE)
+
+            val photoTaken = backStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN)
+            backStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)
 
             MedicalHistoryScreen(
-                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
                 modifier = modifier,
+                viewModel = backStackEntry.sharedViewModel(navController = navController),
+                idAph = route.idAph,
                 vitalSigns = vitalSigns,
                 medicine = medicine,
                 signature = signature,
@@ -425,24 +425,26 @@ private fun NavGraphBuilder.aphGraph(
             }
         }
 
-        composable(
-            route = AphNavigationRoute.MedicalHistoryViewScreen.route + "/{$ID_APH}",
-            arguments = listOf(navArgument(ID_APH) { type = NavType.IntType })
-        ) { navBackStackEntry ->
-            val photoTaken = navBackStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN)
-            navBackStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)
+        composable<AphRoute.MedicalHistoryViewRoute>(
+            typeMap = mapOf(
+                typeOf<String?>() to NavType.StringType
+            )
+        ) { backStackEntry ->
+            val route: AphRoute.MedicalHistoryViewRoute = backStackEntry.toRoute()
+
+            val photoTaken = backStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN)
+            backStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)
 
             MedicalHistoryViewScreen(
                 modifier = modifier,
+                idAph = route.idAph,
                 photoTaken = photoTaken == true
             ) { navigationModel ->
                 navigationModel.navigate(navController)
             }
         }
 
-        composable(
-            route = AphNavigationRoute.CameraScreen.route
-        ) { navBackStackEntry ->
+        composable<AphRoute.CameraRoute> { navBackStackEntry ->
             CameraScreen(
                 viewModel = navBackStackEntry.sharedViewModel(navController = navController),
                 modifier = modifier
@@ -451,9 +453,7 @@ private fun NavGraphBuilder.aphGraph(
             }
         }
 
-        composable(
-            route = AphNavigationRoute.CameraViewScreen.route
-        ) { navBackStackEntry ->
+        composable<AphRoute.CameraViewRoute> { navBackStackEntry ->
             CameraViewScreen(
                 viewModel = navBackStackEntry.sharedViewModel(navController = navController),
                 modifier = modifier
@@ -462,36 +462,34 @@ private fun NavGraphBuilder.aphGraph(
             }
         }
 
-        composable(
-            route = AphNavigationRoute.MedicineScreen.route
-        ) {
+        composable<AphRoute.MedicineRoute> {
             MedicineScreen(modifier = modifier) { navigationModel ->
                 navigationModel.navigate(navController)
             }
         }
 
-        composable(
-            route = AphNavigationRoute.SendEmailScreen.route + "/{$ID_APH}",
-            arguments = listOf(navArgument(ID_APH) { type = NavType.IntType })
-        ) {
+        composable<AphRoute.SendEmailRoute>(
+            typeMap = mapOf(
+                typeOf<String?>() to NavType.StringType
+            )
+        ) { backStackEntry ->
+            val route: AphRoute.SendEmailRoute = backStackEntry.toRoute()
+
             SendEmailScreen(
-                modifier = modifier
+                modifier = modifier,
+                idAph = route.idAph
             ) { navigationModel ->
                 navigationModel.navigate(navController)
             }
         }
 
-        composable(
-            route = AphNavigationRoute.SignaturePadScreen.route
-        ) {
+        composable<AphRoute.SignaturePadRoute> {
             SignaturePadScreen(modifier = modifier) { navigationModel ->
                 navigationModel.navigate(navController)
             }
         }
 
-        composable(
-            route = AphNavigationRoute.VitalSignsScreen.route
-        ) {
+        composable<AphRoute.VitalSignsRoute> {
             VitalSignsScreen(modifier = modifier) { navigationModel ->
                 navigationModel.navigate(navController)
             }

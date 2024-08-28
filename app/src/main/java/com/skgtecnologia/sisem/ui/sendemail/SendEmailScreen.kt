@@ -37,6 +37,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SendEmailScreen(
     modifier: Modifier = Modifier,
+    idAph: String,
     onNavigation: (sendEmailNavigationModel: SendEmailNavigationModel) -> Unit
 ) {
     val context = LocalContext.current
@@ -88,7 +89,7 @@ fun SendEmailScreen(
                 modifier = Modifier
                     .clickable {
                         viewModel.bodyValue.value = context.getString(R.string.send_email_body)
-                        viewModel.sendEmail()
+                        viewModel.sendEmail(idAph)
                     }
                     .padding(end = 12.dp)
                     .size(24.dp),

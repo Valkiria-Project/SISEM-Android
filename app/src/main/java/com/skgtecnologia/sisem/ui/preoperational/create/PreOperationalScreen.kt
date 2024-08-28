@@ -42,7 +42,7 @@ fun PreOperationalScreen(
         notificationData = it
     }
 
-    LaunchedEffect(uiState.screenModel) {
+    LaunchedEffect(viewModel) {
         viewModel.initScreen(roleName)
     }
 

@@ -18,7 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.commons.communication.IncidentEventHandler
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
-import com.skgtecnologia.sisem.ui.navigation.AphNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.AphRoute
 import com.skgtecnologia.sisem.ui.navigation.NavRoute
 import com.valkiria.uicomponents.bricks.banner.BannerUiModel
 import com.valkiria.uicomponents.bricks.map.MapboxMapView
@@ -31,7 +31,7 @@ import timber.log.Timber
 fun MapScreen(
     modifier: Modifier = Modifier,
     onMenuAction: (NavRoute) -> Unit,
-    onAction: (aphRoute: String) -> Unit,
+    onAction: (aphRoute: AphRoute) -> Unit,
     onLogout: () -> Unit
 ) {
     val context = LocalContext.current
@@ -84,9 +84,7 @@ fun MapScreen(
             }
         ) { idAph ->
             Timber.d("Navigate to APH with Id APH $idAph")
-            onAction(
-                AphNavigationRoute.MedicalHistoryScreen.route + "/$idAph"
-            )
+            onAction(AphRoute.MedicalHistoryRoute(idAph.toString()))
         }
     }
 }

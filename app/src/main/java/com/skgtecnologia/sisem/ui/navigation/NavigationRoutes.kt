@@ -16,16 +16,10 @@ sealed interface NavGraph {
     @Serializable
     data object ReportGraph : NavGraph
 }
-
-sealed class NavigationGraph(val route: String) {
-    data object Aph : NavigationGraph("aph_graph")
-    data object Report : NavigationGraph("report_graph")
-}
 // endregion
 
 // region Navigation Routes
 sealed interface NavRoute
-sealed class NavigationRoute(open val route: String)
 
 // region Auth Routes
 sealed interface AuthRoute : NavRoute {
@@ -104,6 +98,34 @@ sealed interface MainRoute : NavRoute {
 }
 // endregion
 
+// region Aph Routes
+sealed interface AphRoute : NavRoute {
+    @Serializable
+    data object CameraRoute : AphRoute
+
+    @Serializable
+    data object CameraViewRoute : AphRoute
+
+    @Serializable
+    data class MedicalHistoryRoute(val idAph: String) : AphRoute
+
+    @Serializable
+    data class MedicalHistoryViewRoute(val idAph: String) : AphRoute
+
+    @Serializable
+    data class MedicineRoute(val idAph: String) : AphRoute
+
+    @Serializable
+    data class SendEmailRoute(val idAph: String) : AphRoute
+
+    @Serializable
+    data class SignaturePadRoute(val idAph: String) : AphRoute
+
+    @Serializable
+    data class VitalSignsRoute(val idAph: String) : AphRoute
+}
+// endregion
+
 // region Report Routes
 sealed interface ReportRoute : NavRoute {
     @Serializable
@@ -125,28 +147,11 @@ sealed interface ReportRoute : NavRoute {
 
 // endregion
 
-sealed class MainNavigationRoute(override val route: String) : NavigationRoute(route)
-sealed class AphNavigationRoute(override val route: String) : NavigationRoute(route) {
-    data object CameraScreen : MainNavigationRoute("camera_screen")
-    data object CameraViewScreen : MainNavigationRoute("camera_view_screen")
-    data object MedicalHistoryScreen : MainNavigationRoute("medical_history_screen")
-    data object MedicalHistoryViewScreen : MainNavigationRoute("medical_history_view_screen")
-    data object MedicineScreen : MainNavigationRoute("medicine_screen")
-    data object SendEmailScreen : MainNavigationRoute("send_email_screen")
-    data object SignaturePadScreen : MainNavigationRoute("signature_pad_screen")
-    data object VitalSignsScreen : MainNavigationRoute("vital_signs_screen")
-}
-
 object NavigationArgument {
-    const val FINDING_ID = "finding_id"
-    const val FROM = "from"
-    const val ID_APH = "id_aph"
-    const val INVENTORY_TYPE = "inventory_type"
     const val MEDICINE = "medicine"
     const val NOVELTY = "novelty"
     const val PHOTO_TAKEN = "photo_taken"
     const val REVERT_FINDING = "revert_finding"
-    const val ROLE = "role"
     const val SIGNATURE = "signature"
     const val VITAL_SIGNS = "vital_signs"
 }

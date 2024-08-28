@@ -4,7 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
@@ -19,7 +18,6 @@ import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.chip.FiltersUiModel
@@ -38,7 +36,6 @@ import javax.inject.Inject
 @Suppress("TooManyFunctions")
 @HiltViewModel
 class MedicalHistoryViewViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val deleteAphFile: DeleteAphFile,
     private val getMedicalHistoryViewScreen: GetMedicalHistoryViewScreen,
     private val logoutCurrentUser: LogoutCurrentUser,
@@ -51,16 +48,14 @@ class MedicalHistoryViewViewModel @Inject constructor(
     var uiState by mutableStateOf(MedicalHistoryViewUiState())
         private set
 
-    private val idAph: Int? = savedStateHandle[NavigationArgument.ID_APH]
-
     private var mediaFiles = mutableStateListOf<String>()
 
-    init {
+    fun initScreen(idAph: String) {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
         job = viewModelScope.launch {
-            getMedicalHistoryViewScreen.invoke(idAph = idAph.toString())
+            getMedicalHistoryViewScreen.invoke(idAph = idAph)
                 .onSuccess { medicalHistoryViewScreen ->
                     medicalHistoryViewScreen.getFormInitialValues()
 
@@ -192,8 +187,8 @@ class MedicalHistoryViewViewModel @Inject constructor(
         )
     }
 
-    fun removeMediaActionsImage(selectedMediaIndex: Int) {
-        deleteAphFile(selectedMediaIndex)
+    fun removeMediaActionsImage(selectedMediaIndex: Int, idAph: String) {
+        deleteAphFile(selectedMediaIndex, idAph)
         val updatedSelectedMedia = buildList {
             addAll(uiState.selectedMediaItems)
 
@@ -216,19 +211,19 @@ class MedicalHistoryViewViewModel @Inject constructor(
         )
     }
 
-    private fun deleteAphFile(selectedMediaIndex: Int) {
+    private fun deleteAphFile(selectedMediaIndex: Int, idAph: String) {
         if (selectedMediaIndex in mediaFiles.indices) {
             val file = mediaFiles[selectedMediaIndex]
             mediaFiles.removeAt(selectedMediaIndex)
 
             job?.cancel()
             job = viewModelScope.launch {
-                deleteAphFile.invoke(idAph = idAph.toString(), fileName = file)
+                deleteAphFile.invoke(idAph = idAph, fileName = file)
             }
         }
     }
 
-    fun sendMedicalHistoryView(images: List<File>, description: String?) {
+    fun sendMedicalHistoryView(images: List<File>, description: String?, idAph: String) {
         if (images.isEmpty()) {
             uiState = uiState.copy(
                 isLoading = false,
@@ -238,7 +233,7 @@ class MedicalHistoryViewViewModel @Inject constructor(
             job?.cancel()
             job = viewModelScope.launch {
                 saveAphFiles.invoke(
-                    idAph = idAph.toString(),
+                    idAph = idAph,
                     images = images.mapIndexed { index, image ->
                         ImageModel(
                             fileName = "Img_$idAph" + "_$index.jpg",
@@ -250,7 +245,9 @@ class MedicalHistoryViewViewModel @Inject constructor(
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
                             isLoading = false,
-                            navigationModel = MedicalHistoryViewNavigationModel(sendMedical = idAph)
+                            navigationModel = MedicalHistoryViewNavigationModel(
+                                sendMedical = idAph
+                            )
                         )
                     }
                 }.onFailure { throwable ->
