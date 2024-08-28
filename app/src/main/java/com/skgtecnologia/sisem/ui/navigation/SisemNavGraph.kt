@@ -505,18 +505,19 @@ private fun NavGraphBuilder.reportGraph(
     navController: NavHostController,
     modifier: Modifier
 ) {
-    navigation<NavGraph.ReportGraph>(startDestination = ReportRoute.AddFindingRoute) {
+    navigation<NavGraph.ReportGraph>(
+        startDestination = ReportRoute.AddFindingRoute::class
+    ) {
         composable<ReportRoute.AddFindingRoute>(
-//            route = ReportNavigationRoute.AddFindingScreen.route +
-//                "?${NavigationArgument.FINDING_ID}={${NavigationArgument.FINDING_ID}}",
-//            arguments = listOf(
-//                navArgument(NavigationArgument.FINDING_ID) { type = NavType.StringType }
-//            )
+            typeMap = mapOf(
+                typeOf<String>() to NavType.StringType
+            )
         ) { navBackStackEntry ->
+            val route: ReportRoute.AddFindingRoute = navBackStackEntry.toRoute()
+
             AddFindingScreen(
                 viewModel = navBackStackEntry.sharedViewModel(navController = navController),
-                findingId = navBackStackEntry.arguments?.getString(NavigationArgument.FINDING_ID)
-                    .orEmpty(),
+                findingId = route.findingId,
                 modifier = modifier
             ) { navigationModel ->
                 navigationModel.navigate(navController)
