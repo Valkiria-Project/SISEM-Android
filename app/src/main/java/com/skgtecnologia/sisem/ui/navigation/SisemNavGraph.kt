@@ -175,11 +175,11 @@ private fun NavGraphBuilder.authGraph(
         ) { backStackEntry ->
             val route: AuthRoute.PreOperationalRoute = backStackEntry.toRoute()
 
-            /*TODO*/
+            /*FIXME*/
             val revertFinding = backStackEntry.savedStateHandle.get<Boolean>(REVERT_FINDING)
             backStackEntry.savedStateHandle.remove<Boolean>(REVERT_FINDING)
 
-            /*TODO*/
+            /*FIXME*/
             val novelty = backStackEntry.savedStateHandle.get<Novelty>(NOVELTY)
             backStackEntry.savedStateHandle.remove<Novelty>(NOVELTY)
 
