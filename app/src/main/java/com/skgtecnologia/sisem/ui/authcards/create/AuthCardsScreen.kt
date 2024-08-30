@@ -42,10 +42,10 @@ import timber.log.Timber
 @Composable
 fun AuthCardsScreen(
     modifier: Modifier = Modifier,
+    viewModel: AuthCardsViewModel = hiltViewModel<AuthCardsViewModel>(),
     onNavigation: (route: AuthRoute) -> Unit
 ) {
     val context = LocalContext.current
-    val viewModel = hiltViewModel<AuthCardsViewModel>()
     val uiState = viewModel.uiState
 
     var notificationData by remember { mutableStateOf<NotificationData?>(null) }
@@ -67,10 +67,6 @@ fun AuthCardsScreen(
 
     val fineLocationPermissionState: PermissionState =
         rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
-
-    LaunchedEffect(Unit) {
-        viewModel.initScreen()
-    }
 
     LaunchedEffect(notificationsPermissionState?.status) {
         if (notificationsPermissionState?.status?.isGranted == false &&

@@ -31,7 +31,7 @@ class AuthCardsViewModel @Inject constructor(
     var uiState by mutableStateOf(AuthCardsUiState())
         private set
 
-    fun initScreen() {
+    init {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()

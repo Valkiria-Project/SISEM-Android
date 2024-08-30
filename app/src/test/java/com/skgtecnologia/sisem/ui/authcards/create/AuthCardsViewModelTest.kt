@@ -53,7 +53,6 @@ class AuthCardsViewModelTest {
             getAuthCardsScreen,
             getOperationConfig
         )
-        authCardsViewModel.initScreen()
 
         Assert.assertEquals(emptyScreenModel, authCardsViewModel.uiState.screenModel)
     }
@@ -67,7 +66,6 @@ class AuthCardsViewModelTest {
             getAuthCardsScreen,
             getOperationConfig
         )
-        authCardsViewModel.initScreen()
 
         Assert.assertEquals(SERVER_ERROR_TITLE, authCardsViewModel.uiState.errorModel?.title)
     }
@@ -82,7 +80,6 @@ class AuthCardsViewModelTest {
             getAuthCardsScreen,
             getOperationConfig
         )
-        authCardsViewModel.initScreen()
 
         Assert.assertEquals(SERVER_ERROR_TITLE, authCardsViewModel.uiState.errorModel?.title)
     }
