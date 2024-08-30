@@ -3,8 +3,10 @@ package com.skgtecnologia.sisem.ui.login
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.usecases.Login
@@ -12,6 +14,7 @@ import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
+import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.chip.ChipUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
@@ -28,6 +31,7 @@ private const val LOGIN_EMAIL_IDENTIFIER = "LOGIN_EMAIL"
 @Suppress("TooManyFunctions")
 @HiltViewModel
 class LoginViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val androidIdProvider: AndroidIdProvider,
     private val getLoginScreen: GetLoginScreen,
     private val login: Login
@@ -38,13 +42,15 @@ class LoginViewModel @Inject constructor(
     var uiState by mutableStateOf(LoginUiState())
         private set
 
+    private val previousUsername = savedStateHandle.toRoute<AuthRoute.LoginRoute>().username
+
     private var code by mutableStateOf("")
     var username by mutableStateOf("")
     var isValidUsername by mutableStateOf(false)
     var password by mutableStateOf("")
     var isValidPassword by mutableStateOf(false)
 
-    fun initScreen(previousUsername: String?) {
+    init {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
@@ -55,7 +61,9 @@ class LoginViewModel @Inject constructor(
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
                             screenModel = loginScreenModel.copy(
-                                body = loginScreenModel.body.withPreviousUsername(previousUsername)
+                                body = loginScreenModel.body.withPreviousUsername(
+                                    previousUsername
+                                )
                             ),
                             isLoading = false
                         )

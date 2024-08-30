@@ -110,8 +110,8 @@ private fun NavGraphBuilder.authGraph(
         composable<AuthRoute.AuthCardsRoute> {
             AuthCardsScreen(
                 modifier = modifier
-            ) {
-                navController.navigate(AuthRoute.LoginRoute())
+            ) { authRoute ->
+                navController.navigate(authRoute)
             }
         }
 
@@ -119,12 +119,9 @@ private fun NavGraphBuilder.authGraph(
             typeMap = mapOf(
                 typeOf<String?>() to NavType.StringType
             )
-        ) { backStackEntry ->
-            val route: AuthRoute.LoginRoute = backStackEntry.toRoute()
-
+        ) {
             LoginScreen(
                 modifier = modifier,
-                previousUsername = route.username
             ) { navigationModel ->
                 with(navigationModel) {
                     if (isTurnComplete && requiresPreOperational.not()) {

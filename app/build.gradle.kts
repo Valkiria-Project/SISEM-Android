@@ -183,6 +183,8 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.androidx.core.testing)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.navigation.testing)
+    testImplementation(libs.robolectric)
 
     // UI Testing
     androidTestImplementation(libs.androidx.test.ext.junit)
