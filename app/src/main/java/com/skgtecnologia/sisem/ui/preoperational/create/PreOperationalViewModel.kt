@@ -5,8 +5,10 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
@@ -21,6 +23,7 @@ import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalS
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
+import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
@@ -43,6 +46,7 @@ import javax.inject.Inject
 @Suppress("LongParameterList", "TooManyFunctions")
 @HiltViewModel
 class PreOperationalViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val androidIdProvider: AndroidIdProvider,
     private val getLoginNavigationModel: GetLoginNavigationModel,
     private val getPreOperationalScreen: GetPreOperationalScreen,
@@ -56,6 +60,8 @@ class PreOperationalViewModel @Inject constructor(
     var uiState by mutableStateOf(PreOperationalUiState())
         private set
 
+    private val roleName = savedStateHandle.toRoute<AuthRoute.PreOperationalRoute>().role
+
     private var temporalFinding by mutableStateOf("")
 
     private var findingValues = mutableStateMapOf<String, Boolean>()
@@ -63,7 +69,7 @@ class PreOperationalViewModel @Inject constructor(
     private var inventoryValues = mutableStateMapOf<String, InputUiModel>()
     var novelties = mutableStateListOf<Novelty>()
 
-    fun initScreen(roleName: String?) {
+    init {
         job?.cancel()
         job = viewModelScope.launch {
             if (uiState.screenModel != null) return@launch
@@ -318,7 +324,7 @@ class PreOperationalViewModel @Inject constructor(
         )
     }
 
-    fun sendPreOperational(roleName: String?) {
+    fun sendPreOperational() {
         uiState = uiState.copy(
             isLoading = true
         )

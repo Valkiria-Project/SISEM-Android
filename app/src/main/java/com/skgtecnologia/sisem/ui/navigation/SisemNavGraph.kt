@@ -154,13 +154,7 @@ private fun NavGraphBuilder.authGraph(
             }
         }
 
-        composable<AuthRoute.PreOperationalRoute>(
-            typeMap = mapOf(
-                typeOf<String?>() to NavType.StringType
-            )
-        ) { backStackEntry ->
-            val route: AuthRoute.PreOperationalRoute = backStackEntry.toRoute()
-
+        composable<AuthRoute.PreOperationalRoute> { backStackEntry ->
             /*FIXME*/
             val revertFinding = backStackEntry.savedStateHandle.get<Boolean>(REVERT_FINDING)
             backStackEntry.savedStateHandle.remove<Boolean>(REVERT_FINDING)
@@ -171,7 +165,6 @@ private fun NavGraphBuilder.authGraph(
 
             PreOperationalScreen(
                 modifier = modifier,
-                roleName = route.role,
                 novelty = novelty,
                 revertFinding = revertFinding
             ) { navigationModel ->

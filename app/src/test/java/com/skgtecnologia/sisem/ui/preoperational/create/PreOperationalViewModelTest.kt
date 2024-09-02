@@ -1,5 +1,7 @@
 package com.skgtecnologia.sisem.ui.preoperational.create
 
+import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.testing.invoke
 import com.skgtecnologia.sisem.commons.ANDROID_ID
 import com.skgtecnologia.sisem.commons.DRIVER_ROLE
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
@@ -20,6 +22,7 @@ import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
 import com.skgtecnologia.sisem.ui.login.LoginNavigationModel
+import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.valkiria.uicomponents.action.GenericUiAction
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -31,10 +34,13 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
 private const val BANNER_CONFIRMATION_TITLE = "Guardar cambios"
 private const val BANNER_INCOMPLETE_TITLE = "Incompleto"
 
+@RunWith(RobolectricTestRunner::class)
 class PreOperationalViewModelTest {
 
     @get:Rule
@@ -57,6 +63,10 @@ class PreOperationalViewModelTest {
 
     @MockK
     private lateinit var sendPreOperational: SendPreOperational
+
+    private val savedStateHandle: SavedStateHandle = SavedStateHandle(
+        route = AuthRoute.PreOperationalRoute(role = DRIVER_ROLE)
+    )
 
     private lateinit var viewModel: PreOperationalViewModel
 
@@ -84,6 +94,7 @@ class PreOperationalViewModelTest {
         )
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -91,7 +102,6 @@ class PreOperationalViewModelTest {
             observeOperationConfig,
             sendPreOperational
         )
-        viewModel.initScreen(DRIVER_ROLE)
 
         Assert.assertEquals(screenModel, viewModel.uiState.screenModel)
         Assert.assertEquals(operationModel, viewModel.uiState.operationModel)
@@ -107,6 +117,7 @@ class PreOperationalViewModelTest {
             )
 
             viewModel = PreOperationalViewModel(
+                savedStateHandle,
                 androidIdProvider,
                 getLoginNavigationModel,
                 getPreOperationalScreen,
@@ -114,7 +125,6 @@ class PreOperationalViewModelTest {
                 observeOperationConfig,
                 sendPreOperational
             )
-            viewModel.initScreen(DRIVER_ROLE)
 
             Assert.assertEquals(operationModel, viewModel.uiState.operationModel)
             Assert.assertEquals(null, viewModel.uiState.screenModel)
@@ -130,6 +140,7 @@ class PreOperationalViewModelTest {
             )
 
             viewModel = PreOperationalViewModel(
+                savedStateHandle,
                 androidIdProvider,
                 getLoginNavigationModel,
                 getPreOperationalScreen,
@@ -137,7 +148,6 @@ class PreOperationalViewModelTest {
                 observeOperationConfig,
                 sendPreOperational
             )
-            viewModel.initScreen(DRIVER_ROLE)
 
             Assert.assertEquals(null, viewModel.uiState.operationModel)
             Assert.assertEquals(emptyScreenModel, viewModel.uiState.screenModel)
@@ -152,6 +162,7 @@ class PreOperationalViewModelTest {
         } returns Result.failure(Throwable())
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -159,7 +170,6 @@ class PreOperationalViewModelTest {
             observeOperationConfig,
             sendPreOperational
         )
-        viewModel.initScreen(DRIVER_ROLE)
 
         Assert.assertEquals(null, viewModel.uiState.operationModel)
         Assert.assertEquals(null, viewModel.uiState.screenModel)
@@ -182,6 +192,7 @@ class PreOperationalViewModelTest {
         )
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -218,6 +229,7 @@ class PreOperationalViewModelTest {
         )
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -225,7 +237,6 @@ class PreOperationalViewModelTest {
             observeOperationConfig,
             sendPreOperational
         )
-        viewModel.initScreen(DRIVER_ROLE)
 
         viewModel.handleInputAction(
             GenericUiAction.InputAction(
@@ -254,6 +265,7 @@ class PreOperationalViewModelTest {
         )
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -261,7 +273,6 @@ class PreOperationalViewModelTest {
             observeOperationConfig,
             sendPreOperational
         )
-        viewModel.initScreen(DRIVER_ROLE)
 
         viewModel.handleInventoryAction(
             GenericUiAction.InventoryAction(
@@ -291,6 +302,7 @@ class PreOperationalViewModelTest {
         )
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -298,7 +310,6 @@ class PreOperationalViewModelTest {
             observeOperationConfig,
             sendPreOperational
         )
-        viewModel.initScreen(DRIVER_ROLE)
 
         viewModel.handleFindingAction(
             GenericUiAction.FindingAction(
@@ -327,6 +338,7 @@ class PreOperationalViewModelTest {
         )
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -334,7 +346,6 @@ class PreOperationalViewModelTest {
             observeOperationConfig,
             sendPreOperational
         )
-
         viewModel.savePreOperational()
 
         Assert.assertEquals(BANNER_CONFIRMATION_TITLE, viewModel.uiState.infoEvent?.title)
@@ -355,6 +366,7 @@ class PreOperationalViewModelTest {
         )
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -362,8 +374,6 @@ class PreOperationalViewModelTest {
             observeOperationConfig,
             sendPreOperational
         )
-        viewModel.initScreen(DRIVER_ROLE)
-
         viewModel.savePreOperational()
 
         Assert.assertEquals(BANNER_INCOMPLETE_TITLE, viewModel.uiState.infoEvent?.title)
@@ -393,6 +403,7 @@ class PreOperationalViewModelTest {
         coEvery { getLoginNavigationModel.invoke() } returns Result.success(loginNavigationModel)
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -400,8 +411,7 @@ class PreOperationalViewModelTest {
             observeOperationConfig,
             sendPreOperational
         )
-
-        viewModel.sendPreOperational(DRIVER_ROLE)
+        viewModel.sendPreOperational()
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.isTurnComplete)
     }
@@ -423,6 +433,7 @@ class PreOperationalViewModelTest {
         coEvery { getLoginNavigationModel.invoke() } returns Result.failure(IllegalStateException())
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -430,8 +441,7 @@ class PreOperationalViewModelTest {
             observeOperationConfig,
             sendPreOperational
         )
-
-        viewModel.sendPreOperational(DRIVER_ROLE)
+        viewModel.sendPreOperational()
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.infoEvent?.title)
     }
@@ -452,6 +462,7 @@ class PreOperationalViewModelTest {
         )
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -459,7 +470,7 @@ class PreOperationalViewModelTest {
             observeOperationConfig,
             sendPreOperational
         )
-        viewModel.sendPreOperational(DRIVER_ROLE)
+        viewModel.sendPreOperational()
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.infoEvent?.title)
     }
@@ -473,6 +484,7 @@ class PreOperationalViewModelTest {
         )
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
@@ -480,7 +492,6 @@ class PreOperationalViewModelTest {
             observeOperationConfig,
             sendPreOperational
         )
-
         viewModel.consumeNavigationEvent()
 
         Assert.assertEquals(null, viewModel.uiState.navigationModel)
@@ -496,6 +507,7 @@ class PreOperationalViewModelTest {
         coEvery { logoutCurrentUser.invoke() } returns Result.success("")
 
         viewModel = PreOperationalViewModel(
+            savedStateHandle,
             androidIdProvider,
             getLoginNavigationModel,
             getPreOperationalScreen,
