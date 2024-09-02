@@ -308,16 +308,9 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable<MainRoute.PreoperationalViewRoute>(
-            typeMap = mapOf(
-                typeOf<String?>() to NavType.StringType
-            )
-        ) { backStackEntry ->
-            val route: MainRoute.PreoperationalViewRoute = backStackEntry.toRoute()
-
+        composable<MainRoute.PreoperationalViewRoute> {
             PreOperationalViewScreen(
-                modifier = modifier,
-                roleName = route.role
+                modifier = modifier
             ) { navigationModel ->
                 navigationModel.navigate(navController)
             }

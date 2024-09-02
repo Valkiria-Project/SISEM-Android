@@ -27,10 +27,9 @@ import timber.log.Timber
 @Composable
 fun PreOperationalViewScreen(
     modifier: Modifier = Modifier,
-    roleName: String,
+    viewModel: PreOperationalViewViewModel = hiltViewModel(),
     onNavigation: (preOpByRoleNavigationModel: PreOpViewNavigationModel) -> Unit
 ) {
-    val viewModel = hiltViewModel<PreOperationalViewViewModel>()
     val uiState = viewModel.uiState
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -39,10 +38,6 @@ fun PreOperationalViewScreen(
     var notificationData by remember { mutableStateOf<NotificationData?>(null) }
     NotificationEventHandler.subscribeNotificationEvent {
         notificationData = it
-    }
-
-    LaunchedEffect(Unit) {
-        viewModel.initScreen(roleName)
     }
 
     LaunchedEffect(uiState) {
