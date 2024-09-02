@@ -30,12 +30,12 @@ import timber.log.Timber
 @Composable
 fun MapScreen(
     modifier: Modifier = Modifier,
+    viewModel: MapViewModel = hiltViewModel(),
     onMenuAction: (NavRoute) -> Unit,
     onAction: (aphRoute: AphRoute) -> Unit,
     onLogout: () -> Unit
 ) {
     val context = LocalContext.current
-    val viewModel = hiltViewModel<MapViewModel>()
     val uiState = viewModel.uiState
 
     val drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)

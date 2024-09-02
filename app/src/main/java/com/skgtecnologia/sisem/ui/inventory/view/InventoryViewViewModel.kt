@@ -4,8 +4,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
@@ -17,6 +19,7 @@ import com.skgtecnologia.sisem.domain.model.banner.confirmTransferReturn
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
+import com.skgtecnologia.sisem.ui.navigation.MainRoute
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.BodyRowModel
@@ -57,6 +60,7 @@ private const val DEVICE_TYPE_TEXT = "<font color=\"#FFFFFF\"><b>%s</b></font>"
 @Suppress("TooManyFunctions")
 @HiltViewModel
 class InventoryViewViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val androidIdProvider: AndroidIdProvider,
     private val getInventoryViewScreen: GetInventoryViewScreen,
     private val getDeviceType: GetDeviceType,
@@ -68,6 +72,9 @@ class InventoryViewViewModel @Inject constructor(
 
     var uiState by mutableStateOf(InventoryViewUiState())
         private set
+
+    private val inventoryName =
+        savedStateHandle.toRoute<MainRoute.InventoryViewRoute>().inventoryName
 
     private var chipSelectionValues = mutableStateMapOf<String, ChipSelectionItemUiModel>()
     private var fieldsValues = mutableStateMapOf<String, InputUiModel>()
@@ -146,7 +153,7 @@ class InventoryViewViewModel @Inject constructor(
         CANT_RETURN_KEY to true
     )
 
-    fun initScreen(inventoryName: String) {
+    init {
         val inventoryType = InventoryType.from(inventoryName)
 
         if (inventoryType != null) {

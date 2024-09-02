@@ -237,16 +237,9 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable<MainRoute.InventoryViewRoute>(
-            typeMap = mapOf(
-                typeOf<String?>() to NavType.StringType
-            )
-        ) { backStackEntry ->
-            val route: MainRoute.InventoryViewRoute = backStackEntry.toRoute()
-
+        composable<MainRoute.InventoryViewRoute> {
             InventoryViewScreen(
-                modifier = modifier,
-                inventoryName = route.inventoryName
+                modifier = modifier
             ) { navigationModel ->
                 navigationModel.navigate(navController)
             }
