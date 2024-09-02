@@ -26,9 +26,9 @@ import timber.log.Timber
 @Composable
 fun ForgotPasswordScreen(
     modifier: Modifier = Modifier,
+    viewModel: ForgotPasswordViewModel = hiltViewModel<ForgotPasswordViewModel>(),
     onNavigation: (forgotPasswordNavigationModel: ForgotPasswordNavigationModel) -> Unit
 ) {
-    val viewModel = hiltViewModel<ForgotPasswordViewModel>()
     val uiState = viewModel.uiState
 
     LaunchedEffect(Unit) {

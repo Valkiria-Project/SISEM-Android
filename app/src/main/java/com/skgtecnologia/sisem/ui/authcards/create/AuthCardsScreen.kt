@@ -42,7 +42,7 @@ import timber.log.Timber
 @Composable
 fun AuthCardsScreen(
     modifier: Modifier = Modifier,
-    viewModel: AuthCardsViewModel = hiltViewModel<AuthCardsViewModel>(),
+    viewModel: AuthCardsViewModel = hiltViewModel(),
     onNavigation: (route: AuthRoute) -> Unit
 ) {
     val context = LocalContext.current

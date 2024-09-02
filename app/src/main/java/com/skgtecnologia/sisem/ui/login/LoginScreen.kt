@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    viewModel: LoginViewModel = hiltViewModel<LoginViewModel>(),
+    viewModel: LoginViewModel = hiltViewModel(),
     onNavigation: (loginNavigationModel: LoginNavigationModel) -> Unit
 ) {
     val uiState = viewModel.uiState

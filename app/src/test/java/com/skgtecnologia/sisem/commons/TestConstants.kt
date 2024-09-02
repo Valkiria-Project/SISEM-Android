@@ -62,17 +62,20 @@ import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import java.io.File
 
 const val ANDROID_ID = "123"
-const val SERVER_ERROR_TITLE = "Error en servidor"
-const val USERNAME = "username"
+const val CODE = "123"
+const val DESCRIPTION = "description"
+const val DRIVER_ROLE = "DRIVER"
+const val EMAIL = "email"
+const val FROM = "from"
+const val ID_APH = "14"
+const val LOGIN = "login"
+const val OTHER = "other"
 const val PASSWORD = "password"
 const val SERIAL = "serial"
-const val CODE = "123"
-const val EMAIL = "email"
+const val SERVER_ERROR_TITLE = "Error en servidor"
 const val TOPIC = "topic"
-const val DESCRIPTION = "description"
 const val TURN_ID = "1"
-const val ID_APH = "14"
-const val DRIVER_ROLE = "DRIVER"
+const val USERNAME = "username"
 
 val uiAction = FooterUiAction.FooterButton(LoginIdentifier.LOGIN_RE_AUTH_BANNER.name)
 val emptyScreenModel = ScreenModel(body = emptyList())

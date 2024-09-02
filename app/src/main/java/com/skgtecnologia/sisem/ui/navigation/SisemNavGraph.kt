@@ -115,11 +115,7 @@ private fun NavGraphBuilder.authGraph(
             }
         }
 
-        composable<AuthRoute.LoginRoute>(
-            typeMap = mapOf(
-                typeOf<String?>() to NavType.StringType
-            )
-        ) {
+        composable<AuthRoute.LoginRoute> {
             LoginScreen(
                 modifier = modifier,
             ) { navigationModel ->
@@ -144,15 +140,8 @@ private fun NavGraphBuilder.authGraph(
             )
         }
 
-        composable<AuthRoute.DeviceAuthRoute>(
-            typeMap = mapOf(
-                typeOf<String>() to NavType.StringType
-            )
-        ) { backStackEntry ->
-            val route: AuthRoute.DeviceAuthRoute = backStackEntry.toRoute()
-
+        composable<AuthRoute.DeviceAuthRoute> {
             DeviceAuthScreen(
-                from = route.from,
                 modifier = modifier
             ) { navigationModel ->
                 with(navigationModel) {
