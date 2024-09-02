@@ -12,7 +12,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -61,7 +60,6 @@ import com.skgtecnologia.sisem.ui.signature.view.SignatureScreen
 import com.skgtecnologia.sisem.ui.stretcherretention.create.StretcherRetentionScreen
 import com.skgtecnologia.sisem.ui.stretcherretention.pre.PreStretcherRetentionScreen
 import com.skgtecnologia.sisem.ui.stretcherretention.view.StretcherRetentionViewScreen
-import kotlin.reflect.typeOf
 
 @Composable
 fun SisemNavGraph(navigationModel: StartupNavigationModel?) {
@@ -436,11 +434,7 @@ private fun NavGraphBuilder.reportGraph(
             }
         }
 
-        composable<ReportRoute.ImagesConfirmationRoute>(
-            typeMap = mapOf(
-                typeOf<String>() to NavType.StringType
-            )
-        ) { navBackStackEntry ->
+        composable<ReportRoute.ImagesConfirmationRoute> { navBackStackEntry ->
             val route: ReportRoute.ImagesConfirmationRoute = navBackStackEntry.toRoute()
 
             ImagesConfirmationScreen(
@@ -468,11 +462,7 @@ private fun NavGraphBuilder.reportGraph(
             )
         }
 
-        composable<ReportRoute.AddReportRoute>(
-            typeMap = mapOf(
-                typeOf<String>() to NavType.StringType
-            )
-        ) { navBackStackEntry ->
+        composable<ReportRoute.AddReportRoute> { navBackStackEntry ->
             val route: ReportRoute.AddReportRoute = navBackStackEntry.toRoute()
 
             AddReportScreen(

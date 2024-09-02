@@ -135,7 +135,7 @@ class ReportViewModel @Inject constructor(
                 closeFinding = true,
                 imagesSize = uiState.selectedMediaItems.size,
                 novelty = Novelty(
-                    idPreoperational = findingId,
+                    idPreoperational = findingId.orEmpty(),
                     novelty = description,
                     images = emptyList()
                 )
@@ -157,7 +157,7 @@ class ReportViewModel @Inject constructor(
             navigationModel = ReportNavigationModel(
                 closeFinding = true,
                 novelty = Novelty(
-                    idPreoperational = findingId,
+                    idPreoperational = findingId.orEmpty(),
                     novelty = description,
                     images = images.mapIndexed { index, image ->
                         ImageModel(

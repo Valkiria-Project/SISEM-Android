@@ -129,7 +129,7 @@ sealed interface AphRoute : NavRoute {
 // region Report Routes
 sealed interface ReportRoute : NavRoute {
     @Serializable
-    data class AddFindingRoute(val findingId: String) : ReportRoute
+    data class AddFindingRoute(val findingId: String? = null) : ReportRoute
 
     @Serializable
     data object AddReportRoleRoute : ReportRoute

@@ -54,12 +54,12 @@ private const val DESCRIPTION_INPUT_MIN_LINES = 3
 fun AddReportScreen(
     viewModel: ReportViewModel,
     modifier: Modifier = Modifier,
+    addReportViewModel: AddReportViewModel = hiltViewModel(),
     roleName: String,
     onNavigation: (addReportNavigationModel: ReportNavigationModel) -> Unit
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val addReportViewModel = hiltViewModel<AddReportViewModel>()
     val uiState = viewModel.uiState
     val addReportUiState = addReportViewModel.uiState
 
