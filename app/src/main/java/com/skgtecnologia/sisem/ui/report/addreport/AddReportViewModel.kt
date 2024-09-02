@@ -30,7 +30,7 @@ class AddReportViewModel @Inject constructor(
     var uiState by mutableStateOf(AddReportUiState())
         private set
 
-    fun initScreen() {
+    init {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
