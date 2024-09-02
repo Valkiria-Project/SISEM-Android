@@ -64,6 +64,7 @@ import java.io.File
 const val ANDROID_ID = "123"
 const val CODE = "123"
 const val DESCRIPTION = "description"
+const val DOCUMENT = "document"
 const val DRIVER_ROLE = "DRIVER"
 const val EMAIL = "email"
 const val FROM = "from"

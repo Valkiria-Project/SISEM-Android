@@ -24,17 +24,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun SignatureScreen(
     modifier: Modifier = Modifier,
-    document: String,
+    viewModel: SignatureViewModel = hiltViewModel(),
     signature: String?,
     onNavigation: (signatureNavigationModel: SignatureNavigationModel) -> Unit
 ) {
-
-    val viewModel = hiltViewModel<SignatureViewModel>()
     val uiState = viewModel.uiState
-
-    LaunchedEffect(Unit) {
-        viewModel.initScreen(document)
-    }
 
     LaunchedEffect(uiState.navigationModel) {
         launch {
@@ -47,7 +41,7 @@ fun SignatureScreen(
 
     LaunchedEffect(signature) {
         launch {
-            signature?.let { viewModel.registerSignature(signature, document) }
+            signature?.let { viewModel.registerSignature(signature) }
         }
     }
 
@@ -98,7 +92,7 @@ fun SignatureScreen(
         viewModel.consumeInfoEvent()
     }
 
-    OnBannerHandler(uiModel = uiState.errorEvent) {
+    OnBannerHandler(uiModel = uiState.errorModel) {
         viewModel.handleEvent(it)
     }
 

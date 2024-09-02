@@ -271,19 +271,13 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable<MainRoute.SignatureRoute>(
-            typeMap = mapOf(
-                typeOf<String?>() to NavType.StringType
-            )
-        ) { backStackEntry ->
-            val route: MainRoute.SignatureRoute = backStackEntry.toRoute()
-
+        composable<MainRoute.SignatureRoute> { backStackEntry ->
+            /*FIXME*/
             val signature = backStackEntry.savedStateHandle.get<String>(SIGNATURE)
             backStackEntry.savedStateHandle.remove<String>(SIGNATURE)
 
             SignatureScreen(
                 modifier = modifier,
-                document = route.document,
                 signature = signature
             ) { navigationModel ->
                 navigationModel.navigate(navController)

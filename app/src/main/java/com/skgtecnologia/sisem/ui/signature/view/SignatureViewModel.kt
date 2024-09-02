@@ -3,8 +3,10 @@ package com.skgtecnologia.sisem.ui.signature.view
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
@@ -12,6 +14,7 @@ import com.skgtecnologia.sisem.domain.model.banner.successfulSignatureRecord
 import com.skgtecnologia.sisem.domain.signature.usecases.GetSignatureScreen
 import com.skgtecnologia.sisem.domain.signature.usecases.RegisterSignature
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
+import com.skgtecnologia.sisem.ui.navigation.MainRoute
 import com.valkiria.uicomponents.action.UiAction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +26,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignatureViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val getSignatureScreen: GetSignatureScreen,
     private val registerSignature: RegisterSignature,
     private val logoutCurrentUser: LogoutCurrentUser
@@ -33,7 +37,9 @@ class SignatureViewModel @Inject constructor(
     var uiState by mutableStateOf(SignatureUiState())
         private set
 
-    fun initScreen(document: String) {
+    private val document = savedStateHandle.toRoute<MainRoute.SignatureRoute>().document
+
+    init {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
@@ -53,21 +59,21 @@ class SignatureViewModel @Inject constructor(
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
                             isLoading = false,
-                            errorEvent = throwable.mapToUi()
+                            errorModel = throwable.mapToUi()
                         )
                     }
                 }
         }
     }
 
-    fun registerSignature(signature: String, document: String) {
+    fun registerSignature(signature: String) {
         uiState = uiState.copy(
             isLoading = true
         )
 
         job?.cancel()
         job = viewModelScope.launch {
-            registerSignature.invoke(document = document.orEmpty(), signature = signature)
+            registerSignature.invoke(document = document, signature = signature)
                 .onSuccess {
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
@@ -82,7 +88,7 @@ class SignatureViewModel @Inject constructor(
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
                             isLoading = false,
-                            errorEvent = throwable.mapToUi()
+                            errorModel = throwable.mapToUi()
                         )
                     }
                 }
@@ -135,7 +141,7 @@ class SignatureViewModel @Inject constructor(
 
     private fun consumeShownError() {
         uiState = uiState.copy(
-            errorEvent = null
+            errorModel = null
         )
     }
 }
