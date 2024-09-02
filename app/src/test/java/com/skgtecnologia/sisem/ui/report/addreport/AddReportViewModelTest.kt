@@ -38,7 +38,6 @@ class AddReportViewModelTest {
         coEvery { getAddReportScreen.invoke() } returns Result.success(emptyScreenModel)
 
         viewModel = AddReportViewModel(getAddReportScreen, logoutCurrentUser)
-        viewModel.initScreen()
 
         Assert.assertEquals(emptyScreenModel, viewModel.uiState.screenModel)
     }
@@ -48,7 +47,6 @@ class AddReportViewModelTest {
         coEvery { getAddReportScreen.invoke() } returns Result.failure(Throwable())
 
         viewModel = AddReportViewModel(getAddReportScreen, logoutCurrentUser)
-        viewModel.initScreen()
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.errorModel?.title)
     }
