@@ -292,16 +292,9 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable<MainRoute.StretcherRetentionRoute>(
-            typeMap = mapOf(
-                typeOf<String>() to NavType.StringType
-            )
-        ) { backStackEntry ->
-            val route: MainRoute.StretcherRetentionRoute = backStackEntry.toRoute()
-
+        composable<MainRoute.StretcherRetentionRoute> {
             StretcherRetentionScreen(
-                modifier = modifier,
-                idAph = route.idAph
+                modifier = modifier
             ) { navigationModel ->
                 navigationModel.navigate(navController)
             }

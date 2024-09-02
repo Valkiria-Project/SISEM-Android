@@ -4,8 +4,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
@@ -15,6 +17,7 @@ import com.skgtecnologia.sisem.domain.stretcherretention.usecases.GetStretcherRe
 import com.skgtecnologia.sisem.domain.stretcherretention.usecases.SaveStretcherRetention
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
+import com.skgtecnologia.sisem.ui.navigation.MainRoute
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.BodyRowModel
@@ -42,6 +45,7 @@ private const val TRUE = "true"
 @Suppress("TooManyFunctions")
 @HiltViewModel
 class StretcherRetentionViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val logoutCurrentUser: LogoutCurrentUser,
     private val getStretcherRetentionScreen: GetStretcherRetentionScreen,
     private val saveStretcherRetention: SaveStretcherRetention
@@ -52,11 +56,13 @@ class StretcherRetentionViewModel @Inject constructor(
     var uiState by mutableStateOf(StretcherRetentionUiState())
         private set
 
+    private val idAph = savedStateHandle.toRoute<MainRoute.StretcherRetentionRoute>().idAph
+
     private var chipOptionValues = mutableStateMapOf<String, MutableList<ChipOptionUiModel>>()
     private var chipSelectionValues = mutableStateMapOf<String, ChipSelectionItemUiModel>()
     private var fieldsValues = mutableStateMapOf<String, InputUiModel>()
 
-    fun initScreen(idAph: String) {
+    init {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
@@ -286,7 +292,7 @@ class StretcherRetentionViewModel @Inject constructor(
         )
     }
 
-    fun saveRetention(idAph: String) {
+    fun saveRetention() {
         uiState = uiState.copy(
             validateFields = true
         )
