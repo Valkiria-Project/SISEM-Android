@@ -18,8 +18,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.commons.communication.IncidentEventHandler
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
-import com.skgtecnologia.sisem.ui.navigation.AphNavigationRoute
-import com.skgtecnologia.sisem.ui.navigation.NavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.AphRoute
+import com.skgtecnologia.sisem.ui.navigation.NavRoute
 import com.valkiria.uicomponents.bricks.banner.BannerUiModel
 import com.valkiria.uicomponents.bricks.map.MapboxMapView
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
@@ -30,12 +30,12 @@ import timber.log.Timber
 @Composable
 fun MapScreen(
     modifier: Modifier = Modifier,
-    onMenuAction: (NavigationRoute) -> Unit,
-    onAction: (aphRoute: String) -> Unit,
+    viewModel: MapViewModel = hiltViewModel(),
+    onMenuAction: (NavRoute) -> Unit,
+    onAction: (aphRoute: AphRoute) -> Unit,
     onLogout: () -> Unit
 ) {
     val context = LocalContext.current
-    val viewModel = hiltViewModel<MapViewModel>()
     val uiState = viewModel.uiState
 
     val drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -84,9 +84,7 @@ fun MapScreen(
             }
         ) { idAph ->
             Timber.d("Navigate to APH with Id APH $idAph")
-            onAction(
-                AphNavigationRoute.MedicalHistoryScreen.route + "/$idAph"
-            )
+            onAction(AphRoute.MedicalHistoryRoute(idAph.toString()))
         }
     }
 }

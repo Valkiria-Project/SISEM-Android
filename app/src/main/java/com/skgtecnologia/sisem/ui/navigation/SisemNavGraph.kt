@@ -12,12 +12,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.commons.communication.AppEvent
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.extensions.navigateBack
@@ -35,23 +34,18 @@ import com.skgtecnologia.sisem.ui.inventory.InventoryScreen
 import com.skgtecnologia.sisem.ui.inventory.view.InventoryViewScreen
 import com.skgtecnologia.sisem.ui.login.LoginScreen
 import com.skgtecnologia.sisem.ui.map.MapScreen
-import com.skgtecnologia.sisem.ui.medicalhistory.create.MedicalHistoryScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.camera.CameraScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.camera.CameraViewScreen
+import com.skgtecnologia.sisem.ui.medicalhistory.create.MedicalHistoryScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedicineScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.signaturepad.SignaturePadScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.view.MedicalHistoryViewScreen
 import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsScreen
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.DOCUMENT
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ID_APH
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.INVENTORY_TYPE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.PHOTO_TAKEN
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ROLE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.USERNAME
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
 import com.skgtecnologia.sisem.ui.preoperational.create.PreOperationalScreen
 import com.skgtecnologia.sisem.ui.preoperational.view.PreOperationalViewScreen
@@ -66,12 +60,9 @@ import com.skgtecnologia.sisem.ui.signature.view.SignatureScreen
 import com.skgtecnologia.sisem.ui.stretcherretention.create.StretcherRetentionScreen
 import com.skgtecnologia.sisem.ui.stretcherretention.pre.PreStretcherRetentionScreen
 import com.skgtecnologia.sisem.ui.stretcherretention.view.StretcherRetentionViewScreen
-import timber.log.Timber
 
 @Composable
-fun SisemNavGraph(
-    navigationModel: StartupNavigationModel?
-) {
+fun SisemNavGraph(navigationModel: StartupNavigationModel?) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
     ) { paddingValues ->
@@ -81,11 +72,8 @@ fun SisemNavGraph(
 
         UnauthorizedEventHandler.subscribeUnauthorizedEvent { appEvent ->
             if (appEvent is AppEvent.UnauthorizedSession) {
-                Timber.d("Username is: ${appEvent.username}")
-                navController.navigate(
-                    AuthNavigationRoute.LoginScreen.route + "?$USERNAME=${appEvent.username}"
-                ) {
-                    popUpTo(NavigationGraph.Main.route) {
+                navController.navigate(AuthRoute.LoginRoute(appEvent.username)) {
+                    popUpTo(NavGraph.MainGraph) {
                         inclusive = true
                     }
                 }
@@ -112,36 +100,22 @@ fun SisemNavGraph(
 @Suppress("LongMethod")
 private fun NavGraphBuilder.authGraph(
     navController: NavHostController,
-    startDestination: String,
+    startDestination: AuthRoute,
     modifier: Modifier,
     context: Context
 ) {
-    navigation(
-        startDestination = startDestination,
-        route = NavigationGraph.Auth.route
-    ) {
-        composable(
-            route = AuthNavigationRoute.AuthCardsScreen.route
-        ) {
+    navigation<NavGraph.AuthGraph>(startDestination = startDestination) {
+        composable<AuthRoute.AuthCardsRoute> {
             AuthCardsScreen(
                 modifier = modifier
-            ) {
-                navController.navigate(AuthNavigationRoute.LoginScreen.route)
+            ) { authRoute ->
+                navController.navigate(authRoute)
             }
         }
 
-        composable(
-            route = AuthNavigationRoute.LoginScreen.route +
-                "?$USERNAME={$USERNAME}",
-            arguments = listOf(
-                navArgument(USERNAME) {
-                    type = NavType.StringType
-                    nullable = true
-                }
-            )
-        ) {
+        composable<AuthRoute.LoginRoute> {
             LoginScreen(
-                modifier = modifier
+                modifier = modifier,
             ) { navigationModel ->
                 with(navigationModel) {
                     if (isTurnComplete && requiresPreOperational.not()) {
@@ -155,9 +129,7 @@ private fun NavGraphBuilder.authGraph(
             }
         }
 
-        composable(
-            route = AuthNavigationRoute.ForgotPasswordScreen.route
-        ) {
+        composable<AuthRoute.ForgotPasswordRoute> {
             ForgotPasswordScreen(
                 modifier = modifier,
                 onNavigation = { navigationModel ->
@@ -166,13 +138,8 @@ private fun NavGraphBuilder.authGraph(
             )
         }
 
-        composable(
-            route = AuthNavigationRoute.DeviceAuthScreen.route +
-                "/{${NavigationArgument.FROM}}",
-            arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
-        ) {
+        composable<AuthRoute.DeviceAuthRoute> {
             DeviceAuthScreen(
-                from = it.arguments?.getString(NavigationArgument.FROM).orEmpty(),
                 modifier = modifier
             ) { navigationModel ->
                 with(navigationModel) {
@@ -185,21 +152,14 @@ private fun NavGraphBuilder.authGraph(
             }
         }
 
-        composable(
-            route = AuthNavigationRoute.PreOperationalScreen.route +
-                "?$ROLE={$ROLE}",
-            arguments = listOf(
-                navArgument(ROLE) {
-                    type = NavType.StringType
-                    nullable = true
-                }
-            )
-        ) { navBackStackEntry ->
-            val revertFinding = navBackStackEntry.savedStateHandle.get<Boolean>(REVERT_FINDING)
-            navBackStackEntry.savedStateHandle.remove<Boolean>(REVERT_FINDING)
+        composable<AuthRoute.PreOperationalRoute> { backStackEntry ->
+            /*FIXME*/
+            val revertFinding = backStackEntry.savedStateHandle.get<Boolean>(REVERT_FINDING)
+            backStackEntry.savedStateHandle.remove<Boolean>(REVERT_FINDING)
 
-            val novelty = navBackStackEntry.savedStateHandle.get<Novelty>(NOVELTY)
-            navBackStackEntry.savedStateHandle.remove<Novelty>(NOVELTY)
+            /*FIXME*/
+            val novelty = backStackEntry.savedStateHandle.get<Novelty>(NOVELTY)
+            backStackEntry.savedStateHandle.remove<Novelty>(NOVELTY)
 
             PreOperationalScreen(
                 modifier = modifier,
@@ -218,9 +178,7 @@ private fun NavGraphBuilder.authGraph(
             }
         }
 
-        composable(
-            route = AuthNavigationRoute.ChangePasswordScreen.route
-        ) {
+        composable<AuthRoute.ChangePasswordRoute> {
             ChangePasswordScreen(
                 modifier = modifier,
                 onNavigation = { navigationModel ->
@@ -239,23 +197,18 @@ private fun NavGraphBuilder.mainGraph(
     navController: NavHostController,
     modifier: Modifier
 ) {
-    navigation(
-        startDestination = MainNavigationRoute.MapScreen.route,
-        route = NavigationGraph.Main.route
-    ) {
-        composable(
-            route = MainNavigationRoute.MapScreen.route
-        ) {
+    navigation<NavGraph.MainGraph>(startDestination = MainRoute.MapRoute) {
+        composable<MainRoute.MapRoute> {
             MapScreen(
                 modifier = modifier,
                 onMenuAction = { navigationRoute ->
-                    navController.navigate(route = navigationRoute.route)
+                    navController.navigate(route = navigationRoute)
                 },
                 onAction = { aphRoute ->
                     navController.navigate(aphRoute)
                 },
                 onLogout = {
-                    navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
+                    navController.navigate(AuthRoute.AuthCardsRoute) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             inclusive = true
                         }
@@ -266,9 +219,7 @@ private fun NavGraphBuilder.mainGraph(
             )
         }
 
-        composable(
-            route = MainNavigationRoute.IncidentScreen.route
-        ) {
+        composable<MainRoute.IncidentsRoute> {
             IncidentScreen(
                 modifier = modifier
             ) { navigationModel ->
@@ -276,9 +227,7 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable(
-            route = MainNavigationRoute.InventoryScreen.route
-        ) {
+        composable<MainRoute.InventoryRoute> {
             InventoryScreen(
                 modifier = modifier
             ) { navigationModel ->
@@ -286,11 +235,7 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable(
-            route = MainNavigationRoute.InventoryViewScreen.route +
-                "?$INVENTORY_TYPE={$INVENTORY_TYPE}",
-            arguments = listOf(navArgument(INVENTORY_TYPE) { type = NavType.StringType })
-        ) {
+        composable<MainRoute.InventoryViewRoute> {
             InventoryViewScreen(
                 modifier = modifier
             ) { navigationModel ->
@@ -298,64 +243,36 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable(
-            route = MainNavigationRoute.NotificationsScreen.route
-        ) {
-            // FIXME: Finish this work
-        }
+        composable<MainRoute.NotificationsRoute> { /*FIXME: Finish this work*/ }
 
-        composable(
-            route = MainNavigationRoute.DrivingGuideScreen.route
-        ) {
-            // FIXME: Finish this work
-        }
+        composable<MainRoute.DrivingGuideRoute> { /*FIXME: Finish this work*/ }
 
-        composable(
-            route = MainNavigationRoute.CertificationsScreen.route
-        ) {
-            // FIXME: Finish this work
-        }
+        composable<MainRoute.CertificationsRoute> { /*FIXME: Finish this work*/ }
 
-        composable(
-            route = MainNavigationRoute.HCEUDCScreen.route
-        ) {
-            // FIXME: Finish this work
-        }
+        composable<MainRoute.HCEUDCRoute> { /*FIXME: Finish this work*/ }
 
-        composable(
-            route = MainNavigationRoute.ShiftScreen.route
-        ) {
-            // FIXME: Finish this work
-        }
+        composable<MainRoute.ShiftRoute> { /*FIXME: Finish this work*/ }
 
-        composable(
-            route = MainNavigationRoute.PreoperationalMainScreen.route
-        ) {
+        composable<MainRoute.PreoperationalMainRoute> {
             AuthCardViewScreen { navigationModel ->
                 navigationModel.navigate(navController)
             }
         }
 
-        composable(
-            route = MainNavigationRoute.DeviceAuthScreen.route
-        ) {
-            navController.navigate("${AuthNavigationRoute.DeviceAuthScreen.route}/$MAIN")
+        composable<MainRoute.DeviceAuthMainRoute> {
+            navController.navigate(AuthRoute.DeviceAuthRoute(MAIN))
         }
 
-        composable(
-            route = MainNavigationRoute.InitSignatureScreen.route
-        ) {
+        composable<MainRoute.InitSignatureRoute> {
             InitSignatureScreen(modifier = modifier) { navigationModel ->
                 navigationModel.navigate(navController)
             }
         }
 
-        composable(
-            route = MainNavigationRoute.SignatureScreen.route + "?$DOCUMENT={$DOCUMENT}",
-            arguments = listOf(navArgument(DOCUMENT) { type = NavType.StringType })
-        ) { navBackStackEntry ->
-            val signature = navBackStackEntry.savedStateHandle.get<String>(SIGNATURE)
-            navBackStackEntry.savedStateHandle.remove<String>(SIGNATURE)
+        composable<MainRoute.SignatureRoute> { backStackEntry ->
+            /*FIXME*/
+            val signature = backStackEntry.savedStateHandle.get<String>(SIGNATURE)
+            backStackEntry.savedStateHandle.remove<String>(SIGNATURE)
 
             SignatureScreen(
                 modifier = modifier,
@@ -365,9 +282,7 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable(
-            route = MainNavigationRoute.PreStretcherRetentionScreen.route
-        ) {
+        composable<MainRoute.PreStretcherRetentionRoute> {
             PreStretcherRetentionScreen(
                 modifier = modifier
             ) { navigationModel ->
@@ -375,10 +290,7 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable(
-            route = MainNavigationRoute.StretcherRetentionScreen.route + "/{$ID_APH}",
-            arguments = listOf(navArgument(ID_APH) { type = NavType.IntType })
-        ) {
+        composable<MainRoute.StretcherRetentionRoute> {
             StretcherRetentionScreen(
                 modifier = modifier
             ) { navigationModel ->
@@ -386,10 +298,7 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable(
-            route = MainNavigationRoute.StretcherViewScreen.route + "/{$ID_APH}",
-            arguments = listOf(navArgument(ID_APH) { type = NavType.IntType })
-        ) {
+        composable<MainRoute.StretcherRetentionViewRoute> {
             StretcherRetentionViewScreen(
                 modifier = modifier
             ) { navigationModel ->
@@ -397,12 +306,10 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable(
-            route = MainNavigationRoute.PreOperationalViewScreen.route +
-                "?$ROLE={$ROLE}",
-            arguments = listOf(navArgument(ROLE) { type = NavType.StringType })
-        ) {
-            PreOperationalViewScreen { navigationModel ->
+        composable<MainRoute.PreoperationalViewRoute> {
+            PreOperationalViewScreen(
+                modifier = modifier
+            ) { navigationModel ->
                 navigationModel.navigate(navController)
             }
         }
@@ -414,30 +321,27 @@ private fun NavGraphBuilder.aphGraph(
     navController: NavHostController,
     modifier: Modifier
 ) {
-    navigation(
-        startDestination = AphNavigationRoute.MedicalHistoryScreen.route,
-        route = NavigationGraph.Aph.route
-    ) {
-        composable(
-            route = AphNavigationRoute.MedicalHistoryScreen.route + "/{$ID_APH}",
-            arguments = listOf(navArgument(ID_APH) { type = NavType.IntType })
-        ) { navBackStackEntry ->
-            val vitalSigns =
-                navBackStackEntry.savedStateHandle.get<Map<String, String>>(VITAL_SIGNS)
-            navBackStackEntry.savedStateHandle.remove<Map<String, String>>(VITAL_SIGNS)
+    navigation<NavGraph.AphGraph>(startDestination = AphRoute.MedicalHistoryRoute::class) {
+        composable<AphRoute.MedicalHistoryRoute> { backStackEntry ->
+            /*FIXME*/
+            val vitalSigns = backStackEntry.savedStateHandle.get<Map<String, String>>(VITAL_SIGNS)
+            backStackEntry.savedStateHandle.remove<Map<String, String>>(VITAL_SIGNS)
 
-            val medicine = navBackStackEntry.savedStateHandle.get<Map<String, String>>(MEDICINE)
-            navBackStackEntry.savedStateHandle.remove<Map<String, String>>(MEDICINE)
+            /*FIXME*/
+            val medicine = backStackEntry.savedStateHandle.get<Map<String, String>>(MEDICINE)
+            backStackEntry.savedStateHandle.remove<Map<String, String>>(MEDICINE)
 
-            val signature = navBackStackEntry.savedStateHandle.get<String>(SIGNATURE)
-            navBackStackEntry.savedStateHandle.remove<String>(SIGNATURE)
+            /*FIXME*/
+            val signature = backStackEntry.savedStateHandle.get<String>(SIGNATURE)
+            backStackEntry.savedStateHandle.remove<String>(SIGNATURE)
 
-            val photoTaken = navBackStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN)
-            navBackStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)
+            /*FIXME*/
+            val photoTaken = backStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN)
+            backStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)
 
             MedicalHistoryScreen(
-                viewModel = navBackStackEntry.sharedViewModel(navController = navController),
                 modifier = modifier,
+                viewModel = backStackEntry.sharedViewModel(navController = navController),
                 vitalSigns = vitalSigns,
                 medicine = medicine,
                 signature = signature,
@@ -447,12 +351,10 @@ private fun NavGraphBuilder.aphGraph(
             }
         }
 
-        composable(
-            route = AphNavigationRoute.MedicalHistoryViewScreen.route + "/{$ID_APH}",
-            arguments = listOf(navArgument(ID_APH) { type = NavType.IntType })
-        ) { navBackStackEntry ->
-            val photoTaken = navBackStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN)
-            navBackStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)
+        composable<AphRoute.MedicalHistoryViewRoute> { backStackEntry ->
+            /*FIXME*/
+            val photoTaken = backStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN)
+            backStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)
 
             MedicalHistoryViewScreen(
                 modifier = modifier,
@@ -462,9 +364,7 @@ private fun NavGraphBuilder.aphGraph(
             }
         }
 
-        composable(
-            route = AphNavigationRoute.CameraScreen.route
-        ) { navBackStackEntry ->
+        composable<AphRoute.CameraRoute> { navBackStackEntry ->
             CameraScreen(
                 viewModel = navBackStackEntry.sharedViewModel(navController = navController),
                 modifier = modifier
@@ -473,9 +373,7 @@ private fun NavGraphBuilder.aphGraph(
             }
         }
 
-        composable(
-            route = AphNavigationRoute.CameraViewScreen.route
-        ) { navBackStackEntry ->
+        composable<AphRoute.CameraViewRoute> { navBackStackEntry ->
             CameraViewScreen(
                 viewModel = navBackStackEntry.sharedViewModel(navController = navController),
                 modifier = modifier
@@ -484,18 +382,13 @@ private fun NavGraphBuilder.aphGraph(
             }
         }
 
-        composable(
-            route = AphNavigationRoute.MedicineScreen.route
-        ) {
+        composable<AphRoute.MedicineRoute> {
             MedicineScreen(modifier = modifier) { navigationModel ->
                 navigationModel.navigate(navController)
             }
         }
 
-        composable(
-            route = AphNavigationRoute.SendEmailScreen.route + "/{$ID_APH}",
-            arguments = listOf(navArgument(ID_APH) { type = NavType.IntType })
-        ) {
+        composable<AphRoute.SendEmailRoute> {
             SendEmailScreen(
                 modifier = modifier
             ) { navigationModel ->
@@ -503,17 +396,13 @@ private fun NavGraphBuilder.aphGraph(
             }
         }
 
-        composable(
-            route = AphNavigationRoute.SignaturePadScreen.route
-        ) {
+        composable<AphRoute.SignaturePadRoute> {
             SignaturePadScreen(modifier = modifier) { navigationModel ->
                 navigationModel.navigate(navController)
             }
         }
 
-        composable(
-            route = AphNavigationRoute.VitalSignsScreen.route
-        ) {
+        composable<AphRoute.VitalSignsRoute> {
             VitalSignsScreen(modifier = modifier) { navigationModel ->
                 navigationModel.navigate(navController)
             }
@@ -526,30 +415,17 @@ private fun NavGraphBuilder.reportGraph(
     navController: NavHostController,
     modifier: Modifier
 ) {
-    navigation(
-        startDestination = ReportNavigationRoute.AddFindingScreen.route,
-        route = NavigationGraph.Report.route
-    ) {
-        composable(
-            route = ReportNavigationRoute.AddFindingScreen.route +
-                "?${NavigationArgument.FINDING_ID}={${NavigationArgument.FINDING_ID}}",
-            arguments = listOf(
-                navArgument(NavigationArgument.FINDING_ID) { type = NavType.StringType }
-            )
-        ) { navBackStackEntry ->
+    navigation<NavGraph.ReportGraph>(startDestination = ReportRoute.AddFindingRoute::class) {
+        composable<ReportRoute.AddFindingRoute> { navBackStackEntry ->
             AddFindingScreen(
                 viewModel = navBackStackEntry.sharedViewModel(navController = navController),
-                findingId = navBackStackEntry.arguments?.getString(NavigationArgument.FINDING_ID)
-                    .orEmpty(),
                 modifier = modifier
             ) { navigationModel ->
                 navigationModel.navigate(navController)
             }
         }
 
-        composable(
-            route = ReportNavigationRoute.ReportCameraScreen.route
-        ) { navBackStackEntry ->
+        composable<ReportRoute.ReportCameraRoute> { navBackStackEntry ->
             ReportCameraScreen(
                 modifier = modifier,
                 viewModel = navBackStackEntry.sharedViewModel(navController = navController)
@@ -558,33 +434,27 @@ private fun NavGraphBuilder.reportGraph(
             }
         }
 
-        composable(
-            route = ReportNavigationRoute.ImagesConfirmationScreen.route +
-                "/{${NavigationArgument.FROM}}",
-            arguments = listOf(navArgument(NavigationArgument.FROM) { type = NavType.StringType })
-        ) { navBackStackEntry ->
+        composable<ReportRoute.ImagesConfirmationRoute> { navBackStackEntry ->
+            val route: ReportRoute.ImagesConfirmationRoute = navBackStackEntry.toRoute()
+
             ImagesConfirmationScreen(
+                modifier = modifier,
                 viewModel = navBackStackEntry.sharedViewModel(navController = navController),
-                from = navBackStackEntry.arguments?.getString(NavigationArgument.FROM).orEmpty(),
-                modifier = modifier
+                from = route.from,
             ) { navigationModel ->
                 navigationModel.navigate(navController)
             }
         }
 
-        composable(
-            route = ReportNavigationRoute.AddReportRoleScreen.route
-        ) {
+        composable<ReportRoute.AddReportRoleRoute> {
             AddReportRoleScreen(
                 modifier = modifier,
                 onNavigation = { roleName ->
-                    navController.navigate(
-                        ReportNavigationRoute.AddReportScreen.route + "?$ROLE=$roleName"
-                    )
+                    navController.navigate(ReportRoute.AddReportRoute(roleName))
                 },
                 onCancel = {
-                    navController.navigate(NavigationGraph.Main.route) {
-                        popUpTo(ReportNavigationRoute.AddReportRoleScreen.route) {
+                    navController.navigate(NavGraph.MainGraph) {
+                        popUpTo(ReportRoute.AddReportRoleRoute) {
                             inclusive = true
                         }
                     }
@@ -592,18 +462,13 @@ private fun NavGraphBuilder.reportGraph(
             )
         }
 
-        composable(
-            route = ReportNavigationRoute.AddReportScreen.route +
-                "?$ROLE={$ROLE}",
-            arguments = listOf(
-                navArgument(ROLE) {
-                    type = NavType.StringType
-                    nullable = true
-                }
-            )
-        ) { navBackStackEntry ->
+        composable<ReportRoute.AddReportRoute> { navBackStackEntry ->
+            val route: ReportRoute.AddReportRoute = navBackStackEntry.toRoute()
+
             AddReportScreen(
+                modifier = modifier,
                 viewModel = navBackStackEntry.sharedViewModel(navController = navController),
+                roleName = route.roleName,
                 onNavigation = { navigationModel ->
                     navigationModel.navigate(navController)
                 }

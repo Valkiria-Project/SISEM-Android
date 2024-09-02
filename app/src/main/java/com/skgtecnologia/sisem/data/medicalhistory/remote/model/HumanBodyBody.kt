@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.data.medicalhistory.remote.model
 
-import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 import com.squareup.moshi.Json
+import com.valkiria.uicomponents.components.humanbody.HumanBodyUi
 
 data class HumanBodyBody(
     @Json(name = "type") val type: String,

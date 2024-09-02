@@ -1,9 +1,10 @@
-package com.skgtecnologia.sisem.ui.stretcherretention
+package com.skgtecnologia.sisem.ui.stretcherretention.create
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.testing.invoke
 import com.skgtecnologia.sisem.commons.ANDROID_ID
 import com.skgtecnologia.sisem.commons.ID_APH
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
@@ -15,8 +16,7 @@ import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.stretcherretention.usecases.GetStretcherRetentionScreen
 import com.skgtecnologia.sisem.domain.stretcherretention.usecases.SaveStretcherRetention
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
-import com.skgtecnologia.sisem.ui.stretcherretention.create.StretcherRetentionViewModel
+import com.skgtecnologia.sisem.ui.navigation.MainRoute
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import io.mockk.MockKAnnotations
@@ -28,9 +28,12 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
 private const val BANNER_TITLE = "Retención de camilla"
 
+@RunWith(RobolectricTestRunner::class)
 class StretcherRetentionViewModelTest {
 
     @get:Rule
@@ -48,8 +51,8 @@ class StretcherRetentionViewModelTest {
     @MockK
     private lateinit var saveStretcherRetention: SaveStretcherRetention
 
-    private val savedStateHandle = SavedStateHandle(
-        mapOf(NavigationArgument.ID_APH to ID_APH)
+    private val savedStateHandle: SavedStateHandle = SavedStateHandle(
+        route = MainRoute.StretcherRetentionRoute(idAph = ID_APH)
     )
 
     private lateinit var viewModel: StretcherRetentionViewModel
@@ -118,7 +121,6 @@ class StretcherRetentionViewModelTest {
             getStretcherRetentionScreen,
             saveStretcherRetention
         )
-
         viewModel.consumeNavigationEvent()
 
         Assert.assertEquals(false, viewModel.uiState.isLoading)
@@ -139,7 +141,6 @@ class StretcherRetentionViewModelTest {
             getStretcherRetentionScreen,
             saveStretcherRetention
         )
-
         viewModel.handleEvent(uiAction)
 
         Assert.assertEquals(null, viewModel.uiState.infoEvent)
@@ -157,7 +158,6 @@ class StretcherRetentionViewModelTest {
             getStretcherRetentionScreen,
             saveStretcherRetention
         )
-
         viewModel.gpBack()
 
         Assert.assertEquals(null, viewModel.uiState.successEvent)
@@ -171,7 +171,7 @@ class StretcherRetentionViewModelTest {
         )
         coEvery {
             saveStretcherRetention.invoke(
-                ID_APH.toString(),
+                ID_APH,
                 any(),
                 any()
             )
@@ -183,7 +183,6 @@ class StretcherRetentionViewModelTest {
             getStretcherRetentionScreen,
             saveStretcherRetention
         )
-
         viewModel.saveRetention()
 
         Assert.assertEquals(BANNER_TITLE, viewModel.uiState.successEvent?.title)
@@ -196,7 +195,7 @@ class StretcherRetentionViewModelTest {
         )
         coEvery {
             saveStretcherRetention.invoke(
-                ID_APH.toString(),
+                ID_APH,
                 any(),
                 any()
             )
@@ -208,7 +207,6 @@ class StretcherRetentionViewModelTest {
             getStretcherRetentionScreen,
             saveStretcherRetention
         )
-
         viewModel.saveRetention()
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.infoEvent?.title)

@@ -2,13 +2,13 @@ package com.skgtecnologia.sisem.domain.model.footer
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.skgtecnologia.sisem.domain.report.model.AddFindingIdentifier
 import com.valkiria.uicomponents.components.button.ButtonSize
 import com.valkiria.uicomponents.components.button.ButtonStyle
-import com.valkiria.uicomponents.components.label.TextStyle
-import com.valkiria.uicomponents.components.footer.FooterUiModel
+import com.valkiria.uicomponents.components.button.ButtonUiModel
 import com.valkiria.uicomponents.components.button.OnClick
+import com.valkiria.uicomponents.components.footer.FooterUiModel
+import com.valkiria.uicomponents.components.label.TextStyle
 
 fun findingsFooter(
     leftButtonText: String,

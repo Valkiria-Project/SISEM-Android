@@ -6,13 +6,14 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
-import com.skgtecnologia.sisem.domain.sendemail.usecases.SendEmail
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.banner.sendEmailScreenSuccessBanner
+import com.skgtecnologia.sisem.domain.sendemail.usecases.SendEmail
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
+import com.skgtecnologia.sisem.ui.navigation.AphRoute
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,7 +35,7 @@ class SendEmailViewModel @Inject constructor(
     var uiState by mutableStateOf(SendEmailUiState())
         private set
 
-    private val idAph: Int? = savedStateHandle[NavigationArgument.ID_APH]
+    private val idAph = savedStateHandle.toRoute<AphRoute.SendEmailRoute>().idAph
 
     var emailValue = mutableStateOf(InputUiModel("", "", false))
     var bodyValue = mutableStateOf("")
@@ -54,7 +55,7 @@ class SendEmailViewModel @Inject constructor(
                 sendEmail.invoke(
                     to = emailValue.value.updatedValue,
                     body = bodyValue.value,
-                    idAph = idAph.toString()
+                    idAph = idAph
                 ).onSuccess {
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(

@@ -16,7 +16,7 @@ import com.skgtecnologia.sisem.ui.menu.header.CrewMemberMenuItemModel
 import com.skgtecnologia.sisem.ui.menu.header.MenuHeaderComponent
 import com.skgtecnologia.sisem.ui.menu.items.DrawerMenuItemModel
 import com.skgtecnologia.sisem.ui.menu.items.MenuItemsComponent
-import com.skgtecnologia.sisem.ui.navigation.NavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.NavRoute
 
 @Suppress("LongParameterList")
 @Composable
@@ -25,7 +25,7 @@ fun DrawerContent(
     vehicleConfig: VehicleConfigModel?,
     crewMenuItems: List<CrewMemberMenuItemModel>,
     menuItems: List<DrawerMenuItemModel>,
-    onMenuItemClick: (NavigationRoute) -> Unit,
+    onMenuItemClick: (NavRoute) -> Unit,
     onLogout: (CrewMemberMenuItemModel) -> Unit
 ) {
     ModalDrawerSheet {

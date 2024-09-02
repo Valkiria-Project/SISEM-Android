@@ -11,9 +11,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ireward.htmlcompose.HtmlText
-import com.valkiria.uicomponents.mocks.getLoginWelcomeRichLabelUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.toTextStyle
+import com.valkiria.uicomponents.mocks.getLoginWelcomeRichLabelUiModel
 import timber.log.Timber
 
 @Composable

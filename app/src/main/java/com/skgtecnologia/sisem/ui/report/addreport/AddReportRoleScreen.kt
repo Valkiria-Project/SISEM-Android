@@ -21,10 +21,10 @@ import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 @Composable
 fun AddReportRoleScreen(
     modifier: Modifier = Modifier,
+    viewModel: AddReportRoleViewModel = hiltViewModel(),
     onNavigation: (roleName: String) -> Unit,
     onCancel: () -> Unit
 ) {
-    val viewModel = hiltViewModel<AddReportRoleViewModel>()
     val uiState = viewModel.uiState
 
     ConstraintLayout(

@@ -29,8 +29,8 @@ import timber.log.Timber
 @Suppress("LongMethod", "LongParameterList")
 @Composable
 fun MedicalHistoryScreen(
-    viewModel: MedicalHistoryViewModel,
     modifier: Modifier = Modifier,
+    viewModel: MedicalHistoryViewModel,
     vitalSigns: Map<String, String>?,
     medicine: Map<String, String>?,
     signature: String?,

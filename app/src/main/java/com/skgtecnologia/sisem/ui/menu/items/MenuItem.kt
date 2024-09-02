@@ -12,14 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import com.skgtecnologia.sisem.ui.navigation.NavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.NavRoute
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.label.toTextStyle
 
 @Composable
 fun MenuItem(
     item: DrawerMenuItemModel,
-    onClick: (route: NavigationRoute) -> Unit
+    onClick: (route: NavRoute) -> Unit
 ) {
     Row(
         modifier = Modifier

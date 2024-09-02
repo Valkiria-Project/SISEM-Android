@@ -6,8 +6,8 @@ import com.skgtecnologia.sisem.data.remote.model.components.BodyRowResponse
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.components.BodyRowType
-import com.valkiria.uicomponents.components.chip.ChipUiModel
 import com.valkiria.uicomponents.components.chip.ChipStyle
+import com.valkiria.uicomponents.components.chip.ChipUiModel
 import com.valkiria.uicomponents.components.label.TextStyle
 
 @JsonClass(generateAdapter = true)

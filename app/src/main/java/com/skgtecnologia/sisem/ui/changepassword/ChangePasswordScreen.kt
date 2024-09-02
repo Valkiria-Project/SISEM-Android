@@ -25,10 +25,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun ChangePasswordScreen(
     modifier: Modifier = Modifier,
+    viewModel: ChangePasswordViewModel = hiltViewModel(),
     onNavigation: (loginNavigationModel: LoginNavigationModel) -> Unit,
     onCancel: () -> Unit
 ) {
-    val viewModel = hiltViewModel<ChangePasswordViewModel>()
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState) {

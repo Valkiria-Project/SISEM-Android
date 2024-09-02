@@ -1,10 +1,10 @@
 package com.skgtecnologia.sisem.commons.communication
 
-import kotlin.coroutines.coroutineContext
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterIsInstance
+import kotlin.coroutines.coroutineContext
 
 internal object EventBus {
     var events = MutableSharedFlow<Any>()

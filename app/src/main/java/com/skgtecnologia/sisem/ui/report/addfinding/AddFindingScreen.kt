@@ -10,7 +10,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -55,7 +54,6 @@ private const val DESCRIPTION_INPUT_MIN_LINES = 3
 @Composable
 fun AddFindingScreen(
     viewModel: ReportViewModel,
-    findingId: String,
     modifier: Modifier = Modifier,
     onNavigation: (findingsNavigationModel: ReportNavigationModel) -> Unit
 ) {
@@ -78,16 +76,6 @@ fun AddFindingScreen(
                 }
             }
         }
-    }
-
-    LaunchedEffect(findingId) {
-        launch {
-            viewModel.findingId = findingId
-        }
-    }
-
-    SideEffect {
-        Timber.d("Finding id: $findingId")
     }
 
     Column(

@@ -7,6 +7,6 @@ data class SignatureUiState(
     val screenModel: ScreenModel? = null,
     val isLoading: Boolean = false,
     val infoEvent: BannerUiModel? = null,
-    val errorEvent: BannerUiModel? = null,
+    val errorModel: BannerUiModel? = null,
     val navigationModel: SignatureNavigationModel? = null
 )

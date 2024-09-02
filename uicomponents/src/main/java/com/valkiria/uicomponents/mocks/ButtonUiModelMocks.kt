@@ -4,11 +4,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.components.button.OnClick
 import com.valkiria.uicomponents.components.button.ButtonSize
 import com.valkiria.uicomponents.components.button.ButtonStyle
-import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.button.ButtonUiModel
+import com.valkiria.uicomponents.components.button.OnClick
+import com.valkiria.uicomponents.components.label.TextStyle
 
 fun getLoginForgotButtonUiModel(): ButtonUiModel {
     return ButtonUiModel(

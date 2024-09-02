@@ -2,10 +2,10 @@ package com.valkiria.uicomponents.mocks
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.Modifier
-import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
-import com.valkiria.uicomponents.components.label.TextUiModel
-import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckItemUiModel
+import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
+import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.label.TextUiModel
 import com.valkiria.uicomponents.components.textfield.ValidationUiModel
 
 fun getPreOperationalInventoryCheckUiModel(): InventoryCheckUiModel {

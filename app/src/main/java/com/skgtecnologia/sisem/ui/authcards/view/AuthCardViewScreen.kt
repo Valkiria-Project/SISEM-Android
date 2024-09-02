@@ -33,9 +33,9 @@ import timber.log.Timber
 @Composable
 fun AuthCardViewScreen(
     modifier: Modifier = Modifier,
+    viewModel: AuthCardViewViewModel = hiltViewModel(),
     onNavigation: (authCardViewNavigationModel: AuthCardViewNavigationModel) -> Unit
 ) {
-    val viewModel = hiltViewModel<AuthCardViewViewModel>()
     val uiState = viewModel.uiState
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)

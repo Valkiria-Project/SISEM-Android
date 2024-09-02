@@ -1,11 +1,10 @@
 package com.skgtecnologia.sisem.ui.preoperational.create
 
 import androidx.navigation.NavHostController
-import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
-import com.skgtecnologia.sisem.ui.navigation.NavigationGraph
+import com.skgtecnologia.sisem.ui.navigation.AuthRoute
+import com.skgtecnologia.sisem.ui.navigation.NavGraph
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
-import com.skgtecnologia.sisem.ui.navigation.ReportNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.ReportRoute
 
 data class PreOpNavigationModel(
     val isTurnComplete: Boolean = false,
@@ -17,20 +16,17 @@ data class PreOpNavigationModel(
         super.navigate(navController)
 
         when {
-            isTurnComplete -> navController.navigate(NavigationGraph.Main.route) {
-                popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
+            isTurnComplete -> navController.navigate(NavGraph.MainGraph) {
+                popUpTo(AuthRoute.AuthCardsRoute) {
                     inclusive = true
                 }
             }
 
-            isNewFinding ->
-                navController.navigate(
-                    ReportNavigationRoute.AddFindingScreen.route +
-                        "?${NavigationArgument.FINDING_ID}=$findingId"
-                )
+            isNewFinding && findingId != null ->
+                navController.navigate(ReportRoute.AddFindingRoute(findingId))
 
-            else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
-                popUpTo(AuthNavigationRoute.PreOperationalScreen.route) {
+            else -> navController.navigate(AuthRoute.AuthCardsRoute) {
+                popUpTo(AuthRoute.PreOperationalRoute()) {
                     inclusive = true
                 }
             }

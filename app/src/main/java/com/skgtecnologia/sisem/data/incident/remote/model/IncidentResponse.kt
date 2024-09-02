@@ -1,8 +1,8 @@
 package com.skgtecnologia.sisem.data.incident.remote.model
 
-import com.valkiria.uicomponents.components.incident.model.IncidentUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.valkiria.uicomponents.components.incident.model.IncidentUiModel
 
 @JsonClass(generateAdapter = true)
 data class IncidentResponse(

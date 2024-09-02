@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.ui.stretcherretention.pre
 
 import androidx.navigation.NavHostController
 import com.skgtecnologia.sisem.commons.extensions.navigateBack
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.MainRoute
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 
 data class PreStretcherRetentionNavigationModel(
@@ -17,7 +17,7 @@ data class PreStretcherRetentionNavigationModel(
             back -> navController.navigateBack()
 
             patientAph != null -> navController.navigate(
-                MainNavigationRoute.StretcherRetentionScreen.route + "/$patientAph"
+                MainRoute.StretcherRetentionRoute(patientAph)
             )
         }
     }

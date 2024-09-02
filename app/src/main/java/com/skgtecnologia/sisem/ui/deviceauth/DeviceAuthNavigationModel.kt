@@ -1,10 +1,10 @@
 package com.skgtecnologia.sisem.ui.deviceauth
 
 import androidx.navigation.NavHostController
-import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.skgtecnologia.sisem.ui.navigation.LOGIN
 import com.skgtecnologia.sisem.ui.navigation.MAIN
-import com.skgtecnologia.sisem.ui.navigation.NavigationGraph
+import com.skgtecnologia.sisem.ui.navigation.NavGraph
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 
 data class DeviceAuthNavigationModel(
@@ -18,29 +18,29 @@ data class DeviceAuthNavigationModel(
 
         when {
             isCrewList && from == LOGIN ->
-                navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
-                    popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
+                navController.navigate(AuthRoute.AuthCardsRoute) {
+                    popUpTo(AuthRoute.AuthCardsRoute) {
                         inclusive = true
                     }
                 }
 
             isCrewList && from == "" ->
-                navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
-                    popUpTo(AuthNavigationRoute.DeviceAuthScreen.route) {
+                navController.navigate(AuthRoute.AuthCardsRoute) {
+                    popUpTo(AuthRoute.DeviceAuthRoute) {
                         inclusive = true
                     }
                 }
 
             isCrewList && from == MAIN ->
-                navController.navigate(AuthNavigationRoute.AuthCardsScreen.route) {
-                    popUpTo(NavigationGraph.Main.route) {
+                navController.navigate(AuthRoute.AuthCardsRoute) {
+                    popUpTo(NavGraph.MainGraph) {
                         inclusive = true
                     }
                 }
 
             isCancel && from == MAIN ->
-                navController.navigate(NavigationGraph.Main.route) {
-                    popUpTo(AuthNavigationRoute.DeviceAuthScreen.route) {
+                navController.navigate(NavGraph.MainGraph) {
+                    popUpTo(AuthRoute.DeviceAuthRoute) {
                         inclusive = true
                     }
                 }

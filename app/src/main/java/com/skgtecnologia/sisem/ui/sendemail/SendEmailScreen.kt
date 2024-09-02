@@ -37,10 +37,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun SendEmailScreen(
     modifier: Modifier = Modifier,
+    viewModel: SendEmailViewModel = hiltViewModel(),
     onNavigation: (sendEmailNavigationModel: SendEmailNavigationModel) -> Unit
 ) {
     val context = LocalContext.current
-    val viewModel = hiltViewModel<SendEmailViewModel>()
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState) {
