@@ -194,7 +194,7 @@ class MedicalHistoryViewViewModel @Inject constructor(
     }
 
     fun removeMediaActionsImage(selectedMediaIndex: Int) {
-        deleteAphFile(selectedMediaIndex, idAph)
+        deleteAphFile(selectedMediaIndex)
         val updatedSelectedMedia = buildList {
             addAll(uiState.selectedMediaItems)
 
@@ -217,7 +217,7 @@ class MedicalHistoryViewViewModel @Inject constructor(
         )
     }
 
-    private fun deleteAphFile(selectedMediaIndex: Int, idAph: String) {
+    private fun deleteAphFile(selectedMediaIndex: Int) {
         if (selectedMediaIndex in mediaFiles.indices) {
             val file = mediaFiles[selectedMediaIndex]
             mediaFiles.removeAt(selectedMediaIndex)

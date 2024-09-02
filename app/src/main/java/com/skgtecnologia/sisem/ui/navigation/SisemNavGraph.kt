@@ -390,16 +390,9 @@ private fun NavGraphBuilder.aphGraph(
             }
         }
 
-        composable<AphRoute.SendEmailRoute>(
-            typeMap = mapOf(
-                typeOf<String?>() to NavType.StringType
-            )
-        ) { backStackEntry ->
-            val route: AphRoute.SendEmailRoute = backStackEntry.toRoute()
-
+        composable<AphRoute.SendEmailRoute> {
             SendEmailScreen(
-                modifier = modifier,
-                idAph = route.idAph
+                modifier = modifier
             ) { navigationModel ->
                 navigationModel.navigate(navController)
             }

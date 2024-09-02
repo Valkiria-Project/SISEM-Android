@@ -142,7 +142,7 @@ private fun handleAction(
             }
 
             is MediaAction.RemoveFile -> viewModel.removeMediaActionsImage(
-                (uiAction.mediaAction as MediaAction.RemoveFile).index,
+                (uiAction.mediaAction as MediaAction.RemoveFile).index
             )
         }
 

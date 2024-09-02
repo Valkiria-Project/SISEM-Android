@@ -3,14 +3,17 @@ package com.skgtecnologia.sisem.ui.sendemail
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.banner.sendEmailScreenSuccessBanner
 import com.skgtecnologia.sisem.domain.sendemail.usecases.SendEmail
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
+import com.skgtecnologia.sisem.ui.navigation.AphRoute
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.textfield.InputUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,6 +25,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SendEmailViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val sendEmail: SendEmail,
     private val logoutCurrentUser: LogoutCurrentUser
 ) : ViewModel() {
@@ -31,10 +35,12 @@ class SendEmailViewModel @Inject constructor(
     var uiState by mutableStateOf(SendEmailUiState())
         private set
 
+    private val idAph = savedStateHandle.toRoute<AphRoute.SendEmailRoute>().idAph
+
     var emailValue = mutableStateOf(InputUiModel("", "", false))
     var bodyValue = mutableStateOf("")
 
-    fun sendEmail(idAph: String) {
+    fun sendEmail() {
         uiState = uiState.copy(
             validateFields = true
         )
