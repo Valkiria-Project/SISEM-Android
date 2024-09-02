@@ -40,7 +40,7 @@ class ChangePasswordViewModel @Inject constructor(
     var confirmedNewPassword by mutableStateOf("")
     var isValidConfirmedNewPassword by mutableStateOf(false)
 
-    fun initScreen() {
+    init {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
