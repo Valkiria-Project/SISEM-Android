@@ -22,9 +22,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun VitalSignsScreen(
     modifier: Modifier = Modifier,
+    viewModel: VitalSignsViewModel = hiltViewModel(),
     onNavigation: (vitalSignsNavigationModel: VitalSignsNavigationModel) -> Unit
 ) {
-    val viewModel = hiltViewModel<VitalSignsViewModel>()
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState.navigationModel) {

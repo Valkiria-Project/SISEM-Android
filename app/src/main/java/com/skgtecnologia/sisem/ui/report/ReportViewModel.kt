@@ -4,8 +4,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.model.banner.fileSizeErrorBanner
 import com.skgtecnologia.sisem.domain.model.banner.findingCancellationBanner
@@ -20,6 +22,7 @@ import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.domain.report.usecases.SendReport
+import com.skgtecnologia.sisem.ui.navigation.ReportRoute
 import com.valkiria.uicomponents.components.media.MediaItemUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -32,6 +35,7 @@ import javax.inject.Inject
 @Suppress("TooManyFunctions")
 @HiltViewModel
 class ReportViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val observeOperationConfig: ObserveOperationConfig,
     private val sendReport: SendReport
 ) : ViewModel() {
@@ -41,7 +45,8 @@ class ReportViewModel @Inject constructor(
     var uiState by mutableStateOf(ReportUiState())
         private set
 
-    var findingId by mutableStateOf("")
+    private val findingId = savedStateHandle.toRoute<ReportRoute.AddFindingRoute>().findingId
+
     var topic by mutableStateOf("")
     var description by mutableStateOf("")
     var isValidTopic by mutableStateOf(false)
