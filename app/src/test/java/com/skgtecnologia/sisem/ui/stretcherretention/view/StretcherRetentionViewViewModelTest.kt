@@ -44,7 +44,7 @@ class StretcherRetentionViewViewModelTest {
     }
 
     @Test
-    fun `when getLoginScreen is success`() = runTest {
+    fun `when getStretcherRetentionViewScreen is success`() = runTest {
         coEvery { getStretcherRetentionViewScreen.invoke(ID_APH) } returns Result.success(
             emptyScreenModel
         )
@@ -61,7 +61,7 @@ class StretcherRetentionViewViewModelTest {
     }
 
     @Test
-    fun `when getLoginScreen fails`() = runTest {
+    fun `when getStretcherRetentionViewScreen fails`() = runTest {
         coEvery { getStretcherRetentionViewScreen.invoke(ID_APH) } returns Result.failure(
             Throwable()
         )
