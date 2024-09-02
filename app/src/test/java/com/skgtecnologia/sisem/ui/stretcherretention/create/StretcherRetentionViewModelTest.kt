@@ -1,4 +1,4 @@
-package com.skgtecnologia.sisem.ui.stretcherretention
+package com.skgtecnologia.sisem.ui.stretcherretention.create
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.text.KeyboardOptions
@@ -17,7 +17,6 @@ import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.stretcherretention.usecases.GetStretcherRetentionScreen
 import com.skgtecnologia.sisem.domain.stretcherretention.usecases.SaveStretcherRetention
 import com.skgtecnologia.sisem.ui.navigation.MainRoute
-import com.skgtecnologia.sisem.ui.stretcherretention.create.StretcherRetentionViewModel
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import io.mockk.MockKAnnotations

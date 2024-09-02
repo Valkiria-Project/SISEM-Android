@@ -19,15 +19,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun StretcherRetentionViewScreen(
     modifier: Modifier = Modifier,
-    idAph: String,
+    viewModel: StretcherRetentionViewViewModel = hiltViewModel(),
     onNavigation: (navigationModel: StretcherRetentionViewNavigationModel) -> Unit
 ) {
-    val viewModel = hiltViewModel<StretcherRetentionViewViewModel>()
     val uiState = viewModel.uiState
-
-    LaunchedEffect(Unit) {
-        viewModel.initScreen(idAph)
-    }
 
     LaunchedEffect(uiState) {
         launch {

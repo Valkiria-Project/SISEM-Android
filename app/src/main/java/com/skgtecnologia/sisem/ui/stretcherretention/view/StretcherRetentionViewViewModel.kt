@@ -4,13 +4,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.stretcherretention.usecases.GetStretcherRetentionViewScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
+import com.skgtecnologia.sisem.ui.navigation.MainRoute
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.chip.ChipSelectionItemUiModel
 import com.valkiria.uicomponents.components.textfield.InputUiModel
@@ -24,6 +27,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StretcherRetentionViewViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val logoutCurrentUser: LogoutCurrentUser,
     private val getStretcherRetentionViewScreen: GetStretcherRetentionViewScreen
 ) : ViewModel() {
@@ -33,10 +37,12 @@ class StretcherRetentionViewViewModel @Inject constructor(
     var uiState by mutableStateOf(StretcherRetentionViewUiState())
         private set
 
+    private val idAph = savedStateHandle.toRoute<MainRoute.StretcherRetentionViewRoute>().idAph
+
     var chipSelectionValues = mutableStateMapOf<String, ChipSelectionItemUiModel>()
     var fieldsValues = mutableStateMapOf<String, InputUiModel>()
 
-    fun initScreen(idAph: String) {
+    init {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
