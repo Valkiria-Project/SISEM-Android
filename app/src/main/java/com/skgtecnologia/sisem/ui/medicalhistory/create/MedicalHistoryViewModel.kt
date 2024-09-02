@@ -12,8 +12,10 @@ import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.StringProvider
@@ -88,6 +90,7 @@ import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
+import com.skgtecnologia.sisem.ui.navigation.AphRoute
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
@@ -166,6 +169,7 @@ private const val EP_ID_TYPE = "EP"
 @Suppress("LargeClass", "TooManyFunctions", "LongMethod", "ComplexMethod")
 @HiltViewModel
 class MedicalHistoryViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val getMedicalHistoryScreen: GetMedicalHistoryScreen,
     private val logoutCurrentUser: LogoutCurrentUser,
     private val sendMedicalHistory: SendMedicalHistory,
@@ -177,6 +181,9 @@ class MedicalHistoryViewModel @Inject constructor(
 
     var uiState by mutableStateOf(MedicalHistoryUiState())
         private set
+
+    private val idAph = savedStateHandle.toRoute<AphRoute.MedicalHistoryRoute>().idAph
+
     private var initialVitalSignsTas: Int = 0
     private var initialVitalSignsFc: Int = 0
     private var vitalSignsChipSection: ChipSectionUiModel? = null
@@ -259,7 +266,7 @@ class MedicalHistoryViewModel @Inject constructor(
     private var sliderValues = mutableStateMapOf<String, String>()
     private var vitalSignsValues = mutableStateMapOf<String, Map<String, String>>()
 
-    fun initScreen(idAph: String) {
+    init {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
@@ -1415,7 +1422,7 @@ class MedicalHistoryViewModel @Inject constructor(
     }
 
     @Suppress("ComplexCondition")
-    fun sendMedicalHistory(images: List<File>, idAph: String) {
+    fun sendMedicalHistory(images: List<File>) {
         uiState = uiState.copy(
             isLoading = true,
             validateFields = true

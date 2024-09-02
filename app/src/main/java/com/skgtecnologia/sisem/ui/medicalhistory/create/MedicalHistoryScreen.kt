@@ -31,7 +31,6 @@ import timber.log.Timber
 fun MedicalHistoryScreen(
     modifier: Modifier = Modifier,
     viewModel: MedicalHistoryViewModel,
-    idAph: String,
     vitalSigns: Map<String, String>?,
     medicine: Map<String, String>?,
     signature: String?,
@@ -41,10 +40,6 @@ fun MedicalHistoryScreen(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val uiState = viewModel.uiState
-
-    LaunchedEffect(viewModel) {
-        viewModel.initScreen(idAph)
-    }
 
     LaunchedEffect(uiState.navigationModel) {
         launch {
@@ -110,7 +105,7 @@ fun MedicalHistoryScreen(
                 },
             validateFields = uiState.validateFields
         ) { uiAction ->
-            handleAction(uiAction, viewModel, context, scope, idAph)
+            handleAction(uiAction, viewModel, context, scope)
         }
     }
 
@@ -130,8 +125,7 @@ fun handleAction(
     uiAction: UiAction,
     viewModel: MedicalHistoryViewModel,
     context: Context,
-    scope: CoroutineScope,
-    idAph: String
+    scope: CoroutineScope
 ) {
     when (uiAction) {
         is GenericUiAction.ChipOptionAction -> viewModel.handleChipOptionAction(uiAction)
@@ -191,7 +185,7 @@ fun handleAction(
 
         is StepperAction -> scope.launch {
             val images = viewModel.uiState.selectedMediaItems.mapNotNull { it.file }
-            viewModel.sendMedicalHistory(images, idAph)
+            viewModel.sendMedicalHistory(images)
         }
 
         else -> Timber.d("no-op")

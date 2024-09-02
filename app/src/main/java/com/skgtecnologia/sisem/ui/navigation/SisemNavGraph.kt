@@ -323,32 +323,27 @@ private fun NavGraphBuilder.aphGraph(
     navController: NavHostController,
     modifier: Modifier
 ) {
-    navigation<NavGraph.AphGraph>(
-        startDestination = AphRoute.MedicalHistoryRoute::class,
-    ) {
-        composable<AphRoute.MedicalHistoryRoute>(
-            typeMap = mapOf(
-                typeOf<String?>() to NavType.StringType
-            )
-        ) { backStackEntry ->
-            val route: AphRoute.MedicalHistoryRoute = backStackEntry.toRoute()
-
+    navigation<NavGraph.AphGraph>(startDestination = AphRoute.MedicalHistoryRoute::class) {
+        composable<AphRoute.MedicalHistoryRoute> { backStackEntry ->
+            /*FIXME*/
             val vitalSigns = backStackEntry.savedStateHandle.get<Map<String, String>>(VITAL_SIGNS)
             backStackEntry.savedStateHandle.remove<Map<String, String>>(VITAL_SIGNS)
 
+            /*FIXME*/
             val medicine = backStackEntry.savedStateHandle.get<Map<String, String>>(MEDICINE)
             backStackEntry.savedStateHandle.remove<Map<String, String>>(MEDICINE)
 
+            /*FIXME*/
             val signature = backStackEntry.savedStateHandle.get<String>(SIGNATURE)
             backStackEntry.savedStateHandle.remove<String>(SIGNATURE)
 
+            /*FIXME*/
             val photoTaken = backStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN)
             backStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)
 
             MedicalHistoryScreen(
                 modifier = modifier,
                 viewModel = backStackEntry.sharedViewModel(navController = navController),
-                idAph = route.idAph,
                 vitalSigns = vitalSigns,
                 medicine = medicine,
                 signature = signature,
