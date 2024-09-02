@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
 import com.skgtecnologia.sisem.commons.ANDROID_ID
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
+import com.skgtecnologia.sisem.commons.OTHER
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
@@ -23,7 +24,10 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
+@RunWith(RobolectricTestRunner::class)
 class InventoryViewViewModelTest {
 
     @get:Rule
@@ -92,7 +96,11 @@ class InventoryViewViewModelTest {
     }
 
     @Test
-    fun `when inventoryType is null`() = runTest {
+    fun `when inventoryType is not valid`() = runTest {
+        val savedStateHandle = SavedStateHandle(
+            route = MainRoute.InventoryViewRoute(inventoryName = OTHER)
+        )
+
         viewModel = InventoryViewViewModel(
             savedStateHandle,
             getInventoryViewScreen = getInventoryViewScreen,
