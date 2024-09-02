@@ -1,9 +1,11 @@
 package com.skgtecnologia.sisem.ui.login
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.testing.invoke
 import com.skgtecnologia.sisem.commons.ANDROID_ID
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
+import com.skgtecnologia.sisem.commons.USERNAME
 import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
@@ -11,7 +13,7 @@ import com.skgtecnologia.sisem.domain.auth.usecases.Login
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.model.banner.BannerModel
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
+import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
@@ -21,10 +23,11 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 import java.time.LocalDateTime
 
-private const val PREVIOUS_USERNAME = "USERNAME"
-
+@RunWith(RobolectricTestRunner::class)
 class LoginViewModelTest {
 
     @get:Rule
@@ -39,8 +42,8 @@ class LoginViewModelTest {
     @MockK
     private lateinit var androidIdProvider: AndroidIdProvider
 
-    private val savedStateHandle = SavedStateHandle(
-        mapOf(NavigationArgument.USERNAME to PREVIOUS_USERNAME)
+    private val savedStateHandle: SavedStateHandle = SavedStateHandle(
+        route = AuthRoute.LoginRoute(username = USERNAME)
     )
 
     private lateinit var loginViewModel: LoginViewModel
@@ -58,7 +61,7 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, getLoginScreen, login, androidIdProvider)
+        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
         val uiState = loginViewModel.uiState
 
         Assert.assertEquals(emptyScreenModel, uiState.screenModel)
@@ -71,7 +74,7 @@ class LoginViewModelTest {
             Throwable()
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, getLoginScreen, login, androidIdProvider)
+        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
         val uiState = loginViewModel.uiState
 
         Assert.assertEquals(null, uiState.screenModel)
@@ -84,7 +87,7 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, getLoginScreen, login, androidIdProvider)
+        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
         loginViewModel.forgotPassword()
 
         Assert.assertEquals(true, loginViewModel.uiState.navigationModel?.forgotPassword)
@@ -96,7 +99,7 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, getLoginScreen, login, androidIdProvider)
+        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
         loginViewModel.login()
 
         Assert.assertEquals(true, loginViewModel.uiState.validateFields)
@@ -109,7 +112,7 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, getLoginScreen, login, androidIdProvider)
+        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
 
         loginViewModel.isValidUsername = true
         loginViewModel.isValidPassword = true
@@ -136,7 +139,7 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, getLoginScreen, login, androidIdProvider)
+        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
         loginViewModel.isValidUsername = true
         loginViewModel.isValidPassword = true
         val accessTokenModel = createAccessToken(null)
@@ -156,7 +159,7 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, getLoginScreen, login, androidIdProvider)
+        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
         loginViewModel.isValidUsername = true
         loginViewModel.isValidPassword = true
 
@@ -173,7 +176,7 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, getLoginScreen, login, androidIdProvider)
+        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
         loginViewModel.consumeNavigationEvent()
 
         Assert.assertEquals(false, loginViewModel.uiState.validateFields)
@@ -189,7 +192,7 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, getLoginScreen, login, androidIdProvider)
+        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
         val loginLink = LoginLink.TERMS_AND_CONDITIONS
         loginViewModel.showLoginLink(loginLink)
 
@@ -202,7 +205,7 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, getLoginScreen, login, androidIdProvider)
+        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
         loginViewModel.consumeLoginLinkEvent()
 
         Assert.assertEquals(null, loginViewModel.uiState.onLoginLink)
@@ -214,7 +217,7 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, getLoginScreen, login, androidIdProvider)
+        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
         loginViewModel.consumeErrorEvent()
 
         Assert.assertEquals(null, loginViewModel.uiState.errorModel)
@@ -226,7 +229,7 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, getLoginScreen, login, androidIdProvider)
+        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
         loginViewModel.consumeWarningEvent()
 
         Assert.assertEquals(null, loginViewModel.uiState.warning)

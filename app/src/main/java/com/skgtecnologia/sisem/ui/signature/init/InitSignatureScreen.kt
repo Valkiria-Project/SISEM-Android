@@ -27,9 +27,9 @@ import timber.log.Timber
 @Composable
 fun InitSignatureScreen(
     modifier: Modifier = Modifier,
+    viewModel: InitSignatureViewModel = hiltViewModel(),
     onNavigation: (initSignatureNavigationModel: InitSignatureNavigationModel) -> Unit
 ) {
-    val viewModel = hiltViewModel<InitSignatureViewModel>()
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState) {

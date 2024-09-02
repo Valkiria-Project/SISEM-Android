@@ -22,9 +22,9 @@ import timber.log.Timber
 @Composable
 fun MedicineScreen(
     modifier: Modifier = Modifier,
+    viewModel: MedicineViewModel = hiltViewModel(),
     onNavigation: (medicineNavigationModel: MedicineNavigationModel) -> Unit
 ) {
-    val viewModel = hiltViewModel<MedicineViewModel>()
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState.navigationModel) {

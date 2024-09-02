@@ -1,9 +1,9 @@
 package com.skgtecnologia.sisem.data.remote.model.components.footer
 
 import com.skgtecnologia.sisem.data.remote.model.components.button.ButtonResponse
-import com.valkiria.uicomponents.components.footer.FooterUiModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.valkiria.uicomponents.components.footer.FooterUiModel
 
 @JsonClass(generateAdapter = true)
 data class FooterResponse(

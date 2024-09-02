@@ -3,9 +3,8 @@ package com.skgtecnologia.sisem.ui.authcards.view
 import androidx.navigation.NavHostController
 import com.skgtecnologia.sisem.commons.extensions.navigateBack
 import com.skgtecnologia.sisem.di.operation.OperationRole
-import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ROLE
+import com.skgtecnologia.sisem.ui.navigation.AuthRoute
+import com.skgtecnologia.sisem.ui.navigation.MainRoute
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 
 data class AuthCardViewNavigationModel(
@@ -21,14 +20,12 @@ data class AuthCardViewNavigationModel(
             back -> navController.navigateBack()
 
             role != null && !isPendingPreOperational -> {
-                navController.navigate(
-                    MainNavigationRoute.PreOperationalViewScreen.route + "?$ROLE=${role.name}"
-                )
+                navController.navigate(MainRoute.PreoperationalViewRoute(role.name))
             }
 
             role != null && isPendingPreOperational -> {
                 navController.navigate(
-                    AuthNavigationRoute.PreOperationalScreen.route + "?$ROLE=${role.name}"
+                    AuthRoute.PreOperationalRoute(role.name)
                 )
             }
         }

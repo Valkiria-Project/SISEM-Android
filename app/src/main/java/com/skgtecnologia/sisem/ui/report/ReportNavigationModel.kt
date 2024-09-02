@@ -3,13 +3,13 @@ package com.skgtecnologia.sisem.ui.report
 import androidx.navigation.NavHostController
 import com.skgtecnologia.sisem.commons.extensions.navigateBack
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
-import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.skgtecnologia.sisem.ui.navigation.FINDING
+import com.skgtecnologia.sisem.ui.navigation.NavGraph
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
-import com.skgtecnologia.sisem.ui.navigation.NavigationGraph
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 import com.skgtecnologia.sisem.ui.navigation.REPORT
-import com.skgtecnologia.sisem.ui.navigation.ReportNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.ReportRoute
 
 data class ReportNavigationModel(
     val goBackFromReport: Boolean = false,
@@ -37,15 +37,15 @@ data class ReportNavigationModel(
             }
 
             goBackFromImages -> navController.navigateBack()
-            showCamera -> navController.navigate(ReportNavigationRoute.ReportCameraScreen.route)
+            showCamera -> navController.navigate(ReportRoute.ReportCameraRoute)
             photoTaken -> navController.navigateBack()
             closeFinding && imagesSize > 0 -> navController.navigate(
-                "${ReportNavigationRoute.ImagesConfirmationScreen.route}/$FINDING"
+                ReportRoute.ImagesConfirmationRoute(FINDING)
             )
 
             closeFinding -> with(navController) {
                 popBackStack(
-                    route = AuthNavigationRoute.PreOperationalScreen.route,
+                    route = AuthRoute.PreOperationalRoute(),
                     inclusive = false
                 )
 
@@ -55,12 +55,12 @@ data class ReportNavigationModel(
             }
 
             closeReport && imagesSize > 0 -> navController.navigate(
-                "${ReportNavigationRoute.ImagesConfirmationScreen.route}/$REPORT"
+                ReportRoute.ImagesConfirmationRoute(REPORT)
             )
 
             closeReport ->
-                navController.navigate(NavigationGraph.Main.route) {
-                    popUpTo(ReportNavigationRoute.AddReportRoleScreen.route) {
+                navController.navigate(NavGraph.MainGraph) {
+                    popUpTo(ReportRoute.AddReportRoleRoute) {
                         inclusive = true
                     }
                 }

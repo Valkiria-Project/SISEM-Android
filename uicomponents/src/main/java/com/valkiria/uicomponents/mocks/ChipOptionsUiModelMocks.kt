@@ -1,10 +1,10 @@
 package com.valkiria.uicomponents.mocks
 
 import androidx.compose.foundation.layout.Arrangement
-import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
-import com.valkiria.uicomponents.components.label.TextUiModel
-import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.chip.ChipOptionUiModel
+import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
+import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.label.TextUiModel
 
 fun getPreOperationalChipOptionsUiModel(): ChipOptionsUiModel {
     return ChipOptionsUiModel(

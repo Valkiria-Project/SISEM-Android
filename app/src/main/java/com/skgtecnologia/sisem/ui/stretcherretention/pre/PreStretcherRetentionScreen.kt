@@ -22,9 +22,9 @@ import timber.log.Timber
 @Composable
 fun PreStretcherRetentionScreen(
     modifier: Modifier = Modifier,
+    viewModel: PreStretcherRetentionViewModel = hiltViewModel(),
     onNavigation: (navigationModel: PreStretcherRetentionNavigationModel) -> Unit
 ) {
-    val viewModel = hiltViewModel<PreStretcherRetentionViewModel>()
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState) {

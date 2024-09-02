@@ -25,14 +25,15 @@ import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+@Suppress("LongParameterList")
 @Composable
 fun PreOperationalScreen(
     modifier: Modifier = Modifier,
+    viewModel: PreOperationalViewModel = hiltViewModel(),
     novelty: Novelty?,
     revertFinding: Boolean?,
     onNavigation: (preOpNavigationModel: PreOpNavigationModel) -> Unit
 ) {
-    val viewModel = hiltViewModel<PreOperationalViewModel>()
     val uiState = viewModel.uiState
 
     var notificationData by remember { mutableStateOf<NotificationData?>(null) }

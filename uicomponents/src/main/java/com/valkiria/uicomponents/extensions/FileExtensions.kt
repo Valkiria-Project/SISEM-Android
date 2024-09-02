@@ -21,7 +21,6 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
-import kotlin.jvm.Throws
 
 const val CONTENT_URI_SCHEME = "content"
 const val BITMAP_COMPRESS_QUALITY = 80

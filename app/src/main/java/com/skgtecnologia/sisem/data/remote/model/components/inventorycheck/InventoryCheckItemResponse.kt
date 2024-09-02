@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.data.remote.model.components.inventorycheck
 
-import com.skgtecnologia.sisem.data.remote.model.components.richlabel.RichLabelResponse
 import com.skgtecnologia.sisem.data.remote.model.components.label.TextResponse
+import com.skgtecnologia.sisem.data.remote.model.components.richlabel.RichLabelResponse
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckItemUiModel

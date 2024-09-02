@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.ui.medicalhistory.create
 
 import androidx.navigation.NavHostController
 import com.skgtecnologia.sisem.commons.extensions.navigateBack
-import com.skgtecnologia.sisem.ui.navigation.AphNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.AphRoute
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 
@@ -21,15 +21,15 @@ data class MedicalHistoryNavigationModel(
         when {
             back -> navController.navigateBack()
 
-            isInfoCardEvent -> navController.navigate(AphNavigationRoute.VitalSignsScreen.route)
+            isInfoCardEvent -> navController.navigate(AphRoute.VitalSignsRoute)
 
             isMedsSelectorEvent ->
-                navController.navigate(AphNavigationRoute.MedicineScreen.route)
+                navController.navigate(AphRoute.MedicineRoute)
 
             isSignatureEvent ->
-                navController.navigate(AphNavigationRoute.SignaturePadScreen.route)
+                navController.navigate(AphRoute.SignaturePadRoute)
 
-            showCamera -> navController.navigate(AphNavigationRoute.CameraScreen.route)
+            showCamera -> navController.navigate(AphRoute.CameraRoute)
             photoTaken -> with(navController) {
                 navigateBack()
 

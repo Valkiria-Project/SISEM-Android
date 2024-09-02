@@ -54,11 +54,12 @@ private const val DESCRIPTION_INPUT_MIN_LINES = 3
 fun AddReportScreen(
     viewModel: ReportViewModel,
     modifier: Modifier = Modifier,
+    addReportViewModel: AddReportViewModel = hiltViewModel(),
+    roleName: String,
     onNavigation: (addReportNavigationModel: ReportNavigationModel) -> Unit
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val addReportViewModel = hiltViewModel<AddReportViewModel>()
     val uiState = viewModel.uiState
     val addReportUiState = addReportViewModel.uiState
 
@@ -146,13 +147,13 @@ fun AddReportScreen(
 
         addReportUiState.screenModel?.footer?.let {
             FooterSection(footerModel = it) { uiAction ->
-                handleFooterAction(uiAction, viewModel, addReportViewModel.roleName.orEmpty())
+                handleFooterAction(uiAction, viewModel, roleName)
             }
         }
     }
 
     OnBannerHandler(uiState.confirmInfoModel) {
-        handleFooterAction(it, viewModel, addReportViewModel.roleName.orEmpty())
+        handleFooterAction(it, viewModel, roleName)
     }
 
     OnBannerHandler(uiState.successInfoModel) {
@@ -160,7 +161,7 @@ fun AddReportScreen(
     }
 
     OnBannerHandler(uiState.cancelInfoModel) {
-        handleFooterAction(it, viewModel, addReportViewModel.roleName.orEmpty())
+        handleFooterAction(it, viewModel, roleName)
     }
 
     OnBannerHandler(addReportUiState.errorModel) {

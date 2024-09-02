@@ -32,9 +32,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
+    viewModel: LoginViewModel = hiltViewModel(),
     onNavigation: (loginNavigationModel: LoginNavigationModel) -> Unit
 ) {
-    val viewModel = hiltViewModel<LoginViewModel>()
     val uiState = viewModel.uiState
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)

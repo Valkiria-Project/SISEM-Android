@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.di.operation.OperationRole
@@ -14,7 +15,7 @@ import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreenView
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ROLE
+import com.skgtecnologia.sisem.ui.navigation.MainRoute
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.finding.FindingsDetailUiModel
@@ -40,10 +41,10 @@ class PreOperationalViewViewModel @Inject constructor(
     var uiState by mutableStateOf(PreOperationalViewUiState())
         private set
 
-    private val roleName: String? = savedStateHandle[ROLE]
+    private val role = savedStateHandle.toRoute<MainRoute.PreoperationalViewRoute>().role
 
     init {
-        val role = OperationRole.getRoleByName(roleName.orEmpty())
+        val role = OperationRole.getRoleByName(role)
 
         if (role != null) {
             uiState = uiState.copy(isLoading = true)

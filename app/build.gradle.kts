@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.googleServices)
     alias(libs.plugins.kotlinKsp)
     alias(libs.plugins.kotlinParcelize)
+    alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.ktlint)
 }
 
@@ -18,8 +19,8 @@ android {
         applicationId = "com.skgtecnologia.sisem"
         minSdk = 30
         targetSdk = 34
-        versionCode = 65
-        versionName = "2.0.0"
+        versionCode = 70
+        versionName = "2.1.0"
         setProperty("archivesBaseName", "$applicationId-v$versionName($versionCode)")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -117,6 +118,7 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.text.google.fonts)
     implementation(libs.ui.tooling.preview)
+    implementation(libs.lifecycle.runtime.compose)
     implementation(libs.material3)
     implementation(libs.material3.window.size)
     implementation(libs.material.icons.extended)
@@ -150,11 +152,13 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.moshi)
 
-    // Deserializer
+    // Serialization
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
     ksp(libs.moshi.codegen)
     implementation(libs.moshi.adapters)
+
+    implementation(libs.kotlinx.serialization.json)
 
     // Local Storage
     implementation(libs.androidx.room.runtime)
@@ -179,6 +183,8 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.androidx.core.testing)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.navigation.testing)
+    testImplementation(libs.robolectric)
 
     // UI Testing
     androidTestImplementation(libs.androidx.test.ext.junit)

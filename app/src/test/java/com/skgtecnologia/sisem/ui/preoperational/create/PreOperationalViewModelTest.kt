@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.preoperational.create
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.testing.invoke
 import com.skgtecnologia.sisem.commons.ANDROID_ID
 import com.skgtecnologia.sisem.commons.DRIVER_ROLE
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
@@ -12,7 +13,6 @@ import com.skgtecnologia.sisem.commons.inventoryCheckUiModelMock
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.commons.textFieldUiModelMock
 import com.skgtecnologia.sisem.commons.uiAction
-import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.skgtecnologia.sisem.domain.authcards.model.VehicleConfigModel
@@ -22,7 +22,7 @@ import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
 import com.skgtecnologia.sisem.ui.login.LoginNavigationModel
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
+import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.valkiria.uicomponents.action.GenericUiAction
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -34,10 +34,13 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
 private const val BANNER_CONFIRMATION_TITLE = "Guardar cambios"
 private const val BANNER_INCOMPLETE_TITLE = "Incompleto"
 
+@RunWith(RobolectricTestRunner::class)
 class PreOperationalViewModelTest {
 
     @get:Rule
@@ -61,8 +64,9 @@ class PreOperationalViewModelTest {
     @MockK
     private lateinit var sendPreOperational: SendPreOperational
 
-    private val savedStateHandle =
-        SavedStateHandle(mapOf(NavigationArgument.ROLE to OperationRole.DRIVER.name))
+    private val savedStateHandle: SavedStateHandle = SavedStateHandle(
+        route = AuthRoute.PreOperationalRoute(role = DRIVER_ROLE)
+    )
 
     private lateinit var viewModel: PreOperationalViewModel
 
@@ -342,7 +346,6 @@ class PreOperationalViewModelTest {
             observeOperationConfig,
             sendPreOperational
         )
-
         viewModel.savePreOperational()
 
         Assert.assertEquals(BANNER_CONFIRMATION_TITLE, viewModel.uiState.infoEvent?.title)
@@ -371,7 +374,6 @@ class PreOperationalViewModelTest {
             observeOperationConfig,
             sendPreOperational
         )
-
         viewModel.savePreOperational()
 
         Assert.assertEquals(BANNER_INCOMPLETE_TITLE, viewModel.uiState.infoEvent?.title)
@@ -409,7 +411,6 @@ class PreOperationalViewModelTest {
             observeOperationConfig,
             sendPreOperational
         )
-
         viewModel.sendPreOperational()
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.isTurnComplete)
@@ -440,7 +441,6 @@ class PreOperationalViewModelTest {
             observeOperationConfig,
             sendPreOperational
         )
-
         viewModel.sendPreOperational()
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.infoEvent?.title)
@@ -470,7 +470,6 @@ class PreOperationalViewModelTest {
             observeOperationConfig,
             sendPreOperational
         )
-
         viewModel.sendPreOperational()
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.infoEvent?.title)
@@ -493,7 +492,6 @@ class PreOperationalViewModelTest {
             observeOperationConfig,
             sendPreOperational
         )
-
         viewModel.consumeNavigationEvent()
 
         Assert.assertEquals(null, viewModel.uiState.navigationModel)

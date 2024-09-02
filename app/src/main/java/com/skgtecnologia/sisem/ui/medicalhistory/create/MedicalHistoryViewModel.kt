@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.StringProvider
@@ -89,7 +90,7 @@ import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
+import com.skgtecnologia.sisem.ui.navigation.AphRoute
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
@@ -181,7 +182,7 @@ class MedicalHistoryViewModel @Inject constructor(
     var uiState by mutableStateOf(MedicalHistoryUiState())
         private set
 
-    private val idAph: Int? = savedStateHandle[NavigationArgument.ID_APH]
+    private val idAph = savedStateHandle.toRoute<AphRoute.MedicalHistoryRoute>().idAph
 
     private var initialVitalSignsTas: Int = 0
     private var initialVitalSignsFc: Int = 0
@@ -285,7 +286,7 @@ class MedicalHistoryViewModel @Inject constructor(
                     }
                 }
 
-            getMedicalHistoryScreen.invoke(idAph = idAph.toString())
+            getMedicalHistoryScreen.invoke(idAph = idAph)
                 .onSuccess { medicalHistoryScreenModel ->
                     medicalHistoryScreenModel.getFormInitialValues()
 
@@ -1503,7 +1504,7 @@ class MedicalHistoryViewModel @Inject constructor(
             job?.cancel()
             job = viewModelScope.launch {
                 sendMedicalHistory.invoke(
-                    idAph = idAph.toString(),
+                    idAph = idAph,
                     humanBodyValues = humanBodyValues,
                     segmentedValues = segmentedValues,
                     signatureValues = signatureValues,

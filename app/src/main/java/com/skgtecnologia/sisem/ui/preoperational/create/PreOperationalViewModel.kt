@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
@@ -22,7 +23,7 @@ import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalS
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
+import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
@@ -59,7 +60,7 @@ class PreOperationalViewModel @Inject constructor(
     var uiState by mutableStateOf(PreOperationalUiState())
         private set
 
-    private val roleName: String? = savedStateHandle[NavigationArgument.ROLE]
+    private val roleName = savedStateHandle.toRoute<AuthRoute.PreOperationalRoute>().role
 
     private var temporalFinding by mutableStateOf("")
 
@@ -69,10 +70,11 @@ class PreOperationalViewModel @Inject constructor(
     var novelties = mutableStateListOf<Novelty>()
 
     init {
-        uiState = uiState.copy(isLoading = true)
-
         job?.cancel()
         job = viewModelScope.launch {
+            if (uiState.screenModel != null) return@launch
+
+            uiState = uiState.copy(isLoading = true)
             val operationConfig = async {
                 observeOperationConfig.invoke()
                     .onSuccess { operationModel ->

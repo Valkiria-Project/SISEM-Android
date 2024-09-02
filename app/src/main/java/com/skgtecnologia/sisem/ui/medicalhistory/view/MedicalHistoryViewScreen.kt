@@ -32,12 +32,12 @@ import timber.log.Timber
 @Composable
 fun MedicalHistoryViewScreen(
     modifier: Modifier = Modifier,
+    viewModel: MedicalHistoryViewViewModel = hiltViewModel(),
     photoTaken: Boolean = false,
     onNavigation: (medicalHistoryViewNavigationModel: MedicalHistoryViewNavigationModel) -> Unit
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val viewModel = hiltViewModel<MedicalHistoryViewViewModel>()
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState) {

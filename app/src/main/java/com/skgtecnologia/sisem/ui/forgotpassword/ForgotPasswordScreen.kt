@@ -22,13 +22,13 @@ import com.valkiria.uicomponents.components.textfield.InputUiModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-@Suppress("UnusedPrivateMember")
+@Suppress("LongMethod")
 @Composable
 fun ForgotPasswordScreen(
     modifier: Modifier = Modifier,
+    viewModel: ForgotPasswordViewModel = hiltViewModel(),
     onNavigation: (forgotPasswordNavigationModel: ForgotPasswordNavigationModel) -> Unit
 ) {
-    val viewModel = hiltViewModel<ForgotPasswordViewModel>()
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState) {

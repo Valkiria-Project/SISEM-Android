@@ -2,9 +2,9 @@ package com.skgtecnologia.sisem.ui.login
 
 import androidx.navigation.NavHostController
 import com.skgtecnologia.sisem.di.operation.OperationRole
-import com.skgtecnologia.sisem.ui.navigation.AuthNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.skgtecnologia.sisem.ui.navigation.LOGIN
-import com.skgtecnologia.sisem.ui.navigation.NavigationGraph
+import com.skgtecnologia.sisem.ui.navigation.NavGraph
 import com.skgtecnologia.sisem.ui.navigation.NavigationModel
 
 data class LoginNavigationModel(
@@ -21,35 +21,36 @@ data class LoginNavigationModel(
         super.navigate(navController)
 
         when {
-            isWarning -> navController.navigate(AuthNavigationRoute.ChangePasswordScreen.route)
-            isAdmin && requiresDeviceAuth ->
-                navController.navigate("${AuthNavigationRoute.DeviceAuthScreen.route}/$LOGIN")
+            isWarning -> navController.navigate(AuthRoute.ChangePasswordRoute)
+            isAdmin && requiresDeviceAuth -> navController.navigate(
+                AuthRoute.DeviceAuthRoute(LOGIN)
+            )
 
             isAdmin && !requiresDeviceAuth ->
-                navController.navigate(NavigationGraph.Main.route) {
-                    popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
+                navController.navigate(NavGraph.MainGraph) {
+                    popUpTo(AuthRoute.AuthCardsRoute) {
                         inclusive = true
                     }
                 }
 
             isTurnComplete && requiresPreOperational.not() ->
-                navController.navigate(NavigationGraph.Main.route) {
-                    popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
+                navController.navigate(NavGraph.MainGraph) {
+                    popUpTo(AuthRoute.AuthCardsRoute) {
                         inclusive = true
                     }
                 }
 
             requiresPreOperational -> {
-                navController.navigate(AuthNavigationRoute.PreOperationalScreen.route) {
-                    popUpTo(AuthNavigationRoute.AuthCardsScreen.route) {
+                navController.navigate(AuthRoute.PreOperationalRoute()) {
+                    popUpTo(AuthRoute.AuthCardsRoute) {
                         inclusive = true
                     }
                 }
             }
 
-            forgotPassword -> navController.navigate(AuthNavigationRoute.ForgotPasswordScreen.route)
+            forgotPassword -> navController.navigate(AuthRoute.ForgotPasswordRoute)
 
-            else -> navController.navigate(AuthNavigationRoute.AuthCardsScreen.route)
+            else -> navController.navigate(AuthRoute.AuthCardsRoute)
         }
     }
 }

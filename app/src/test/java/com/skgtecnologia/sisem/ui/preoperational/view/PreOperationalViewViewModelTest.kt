@@ -1,16 +1,17 @@
 package com.skgtecnologia.sisem.ui.preoperational.view
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.testing.invoke
 import com.skgtecnologia.sisem.commons.ANDROID_ID
+import com.skgtecnologia.sisem.commons.DRIVER_ROLE
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.commons.uiAction
-import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreenView
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.ROLE
+import com.skgtecnologia.sisem.ui.navigation.MainRoute
 import com.valkiria.uicomponents.bricks.banner.finding.FindingsDetailUiModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -22,7 +23,10 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
+@RunWith(RobolectricTestRunner::class)
 class PreOperationalViewViewModelTest {
 
     @get:Rule
@@ -37,8 +41,9 @@ class PreOperationalViewViewModelTest {
     @MockK
     private lateinit var getPreOperationalScreenView: GetPreOperationalScreenView
 
-    private val savedStateHandle =
-        SavedStateHandle(mapOf(ROLE to OperationRole.MEDIC_APH.name))
+    private val savedStateHandle: SavedStateHandle = SavedStateHandle(
+        route = MainRoute.PreoperationalViewRoute(role = DRIVER_ROLE)
+    )
 
     private lateinit var viewModel: PreOperationalViewViewModel
 
@@ -83,8 +88,12 @@ class PreOperationalViewViewModelTest {
 
     @Test
     fun `when role is null`() = runTest {
+        val savedStateHandle = SavedStateHandle(
+            route = MainRoute.PreoperationalViewRoute(role = "")
+        )
+
         viewModel = PreOperationalViewViewModel(
-            SavedStateHandle(mapOf(ROLE to null)),
+            savedStateHandle,
             androidIdProvider,
             logoutCurrentUser,
             getPreOperationalScreenView
@@ -105,7 +114,6 @@ class PreOperationalViewViewModelTest {
             logoutCurrentUser,
             getPreOperationalScreenView
         )
-
         viewModel.goBack()
 
         Assert.assertEquals(true, viewModel.uiState.navigationModel?.back)
@@ -123,7 +131,6 @@ class PreOperationalViewViewModelTest {
             logoutCurrentUser,
             getPreOperationalScreenView
         )
-
         viewModel.consumeNavigationEvent()
 
         Assert.assertEquals(null, viewModel.uiState.navigationModel)
@@ -141,7 +148,6 @@ class PreOperationalViewViewModelTest {
             logoutCurrentUser,
             getPreOperationalScreenView
         )
-
         viewModel.handleShownFindingBottomSheet()
 
         Assert.assertEquals(null, viewModel.uiState.findingDetail)
@@ -160,7 +166,6 @@ class PreOperationalViewViewModelTest {
             logoutCurrentUser,
             getPreOperationalScreenView
         )
-
         viewModel.showFindings(findingDetail)
 
         Assert.assertEquals(findingDetail, viewModel.uiState.findingDetail)
@@ -179,7 +184,6 @@ class PreOperationalViewViewModelTest {
             logoutCurrentUser,
             getPreOperationalScreenView
         )
-
         viewModel.handleEvent(uiAction)
 
         Assert.assertEquals(null, viewModel.uiState.errorModel)

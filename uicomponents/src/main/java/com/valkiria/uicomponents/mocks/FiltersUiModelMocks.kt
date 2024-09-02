@@ -1,7 +1,7 @@
 package com.valkiria.uicomponents.mocks
 
-import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.chip.FiltersUiModel
+import com.valkiria.uicomponents.components.label.TextStyle
 
 fun getPreOperationalFiltersUiModel(): FiltersUiModel {
     return FiltersUiModel(
