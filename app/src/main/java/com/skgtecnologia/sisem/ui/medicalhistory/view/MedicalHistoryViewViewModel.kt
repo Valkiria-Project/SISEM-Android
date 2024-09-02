@@ -4,8 +4,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.medicalhistory.usecases.DeleteAphFile
@@ -18,6 +20,7 @@ import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
+import com.skgtecnologia.sisem.ui.navigation.AphRoute
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.chip.FiltersUiModel
@@ -36,6 +39,7 @@ import javax.inject.Inject
 @Suppress("TooManyFunctions")
 @HiltViewModel
 class MedicalHistoryViewViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val deleteAphFile: DeleteAphFile,
     private val getMedicalHistoryViewScreen: GetMedicalHistoryViewScreen,
     private val logoutCurrentUser: LogoutCurrentUser,
@@ -48,9 +52,11 @@ class MedicalHistoryViewViewModel @Inject constructor(
     var uiState by mutableStateOf(MedicalHistoryViewUiState())
         private set
 
+    private val idAph = savedStateHandle.toRoute<AphRoute.MedicalHistoryViewRoute>().idAph
+
     private var mediaFiles = mutableStateListOf<String>()
 
-    fun initScreen(idAph: String) {
+    init {
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
@@ -187,7 +193,7 @@ class MedicalHistoryViewViewModel @Inject constructor(
         )
     }
 
-    fun removeMediaActionsImage(selectedMediaIndex: Int, idAph: String) {
+    fun removeMediaActionsImage(selectedMediaIndex: Int) {
         deleteAphFile(selectedMediaIndex, idAph)
         val updatedSelectedMedia = buildList {
             addAll(uiState.selectedMediaItems)
@@ -223,7 +229,7 @@ class MedicalHistoryViewViewModel @Inject constructor(
         }
     }
 
-    fun sendMedicalHistoryView(images: List<File>, description: String?, idAph: String) {
+    fun sendMedicalHistoryView(images: List<File>, description: String?) {
         if (images.isEmpty()) {
             uiState = uiState.copy(
                 isLoading = false,

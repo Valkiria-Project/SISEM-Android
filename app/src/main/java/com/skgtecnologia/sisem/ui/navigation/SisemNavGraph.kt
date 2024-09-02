@@ -353,19 +353,13 @@ private fun NavGraphBuilder.aphGraph(
             }
         }
 
-        composable<AphRoute.MedicalHistoryViewRoute>(
-            typeMap = mapOf(
-                typeOf<String?>() to NavType.StringType
-            )
-        ) { backStackEntry ->
-            val route: AphRoute.MedicalHistoryViewRoute = backStackEntry.toRoute()
-
+        composable<AphRoute.MedicalHistoryViewRoute> { backStackEntry ->
+            /*FIXME*/
             val photoTaken = backStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN)
             backStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)
 
             MedicalHistoryViewScreen(
                 modifier = modifier,
-                idAph = route.idAph,
                 photoTaken = photoTaken == true
             ) { navigationModel ->
                 navigationModel.navigate(navController)

@@ -32,18 +32,13 @@ import timber.log.Timber
 @Composable
 fun MedicalHistoryViewScreen(
     modifier: Modifier = Modifier,
-    idAph: String,
+    viewModel: MedicalHistoryViewViewModel = hiltViewModel(),
     photoTaken: Boolean = false,
     onNavigation: (medicalHistoryViewNavigationModel: MedicalHistoryViewNavigationModel) -> Unit
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val viewModel = hiltViewModel<MedicalHistoryViewViewModel>()
     val uiState = viewModel.uiState
-
-    LaunchedEffect(viewModel) {
-        viewModel.initScreen(idAph)
-    }
 
     LaunchedEffect(uiState) {
         launch {
@@ -94,7 +89,7 @@ fun MedicalHistoryViewScreen(
                 }
                 .padding(top = 20.dp)
         ) { uiAction ->
-            handleAction(uiAction, viewModel, context, scope, idAph)
+            handleAction(uiAction, viewModel, context, scope)
         }
     }
 
@@ -113,8 +108,7 @@ private fun handleAction(
     uiAction: UiAction,
     viewModel: MedicalHistoryViewViewModel,
     context: Context,
-    scope: CoroutineScope,
-    idAph: String
+    scope: CoroutineScope
 ) {
     when (uiAction) {
         is FiltersAction -> viewModel.handleFiltersAction(uiAction)
@@ -149,14 +143,13 @@ private fun handleAction(
 
             is MediaAction.RemoveFile -> viewModel.removeMediaActionsImage(
                 (uiAction.mediaAction as MediaAction.RemoveFile).index,
-                idAph
             )
         }
 
         is GenericUiAction.StepperAction -> scope.launch {
             val images = viewModel.uiState.selectedMediaItems.mapNotNull { it.file }
             val description = viewModel.uiState.description
-            viewModel.sendMedicalHistoryView(images, description, idAph)
+            viewModel.sendMedicalHistoryView(images, description)
         }
 
         else -> Timber.d("no-op")
