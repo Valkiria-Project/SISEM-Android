@@ -12,7 +12,7 @@ import com.valkiria.uicomponents.components.BodyRowModel
 inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
     navController: NavController
 ): T {
-    val navGraphRoute = destination.parent?.route ?: hiltViewModel()
+    val navGraphRoute = destination.parent?.route ?: hiltViewModel<T>()
     val parentEntry = remember(this) {
         navController.getBackStackEntry(navGraphRoute)
     }
