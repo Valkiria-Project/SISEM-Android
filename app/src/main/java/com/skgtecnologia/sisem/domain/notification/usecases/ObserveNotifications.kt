@@ -4,6 +4,7 @@ import androidx.annotation.CheckResult
 import com.skgtecnologia.sisem.domain.notification.repository.NotificationRepository
 import com.valkiria.uicomponents.bricks.notification.NotificationUiModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
 import javax.inject.Inject
 
 class ObserveNotifications @Inject constructor(
@@ -11,6 +12,6 @@ class ObserveNotifications @Inject constructor(
 ) {
 
     @CheckResult
-    operator fun invoke(): Flow<List<NotificationUiModel>?>? =
+    operator fun invoke(): Flow<List<NotificationUiModel>> =
         notificationsRepository.observeNotifications()
 }

@@ -298,6 +298,11 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         super.onCreate(savedInstanceState)
 
         arguments?.let { bundle ->
+            lastLocation = Location.Builder()
+                .longitude(bundle.getDouble(LOCATION_POINT_LONGITUDE))
+                .latitude(bundle.getDouble(LOCATION_POINT_LATITUDE))
+                .build()
+
             destinationPoint = Point.fromLngLat(
                 bundle.getDouble(DESTINATION_POINT_LONGITUDE),
                 bundle.getDouble(DESTINATION_POINT_LATITUDE)
@@ -575,6 +580,8 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     }
 
     companion object {
+        const val LOCATION_POINT_LONGITUDE = "location_point_longitude"
+        const val LOCATION_POINT_LATITUDE = "location_point_latitude"
         const val DESTINATION_POINT_LONGITUDE = "destination_point_longitude"
         const val DESTINATION_POINT_LATITUDE = "destination_point_latitude"
     }
