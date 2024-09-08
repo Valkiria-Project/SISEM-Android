@@ -4,12 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
+import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.commons.extensions.hasMapLocationPermission
 import com.skgtecnologia.sisem.commons.location.ACTION_START
