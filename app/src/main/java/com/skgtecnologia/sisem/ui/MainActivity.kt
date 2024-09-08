@@ -14,7 +14,7 @@ import com.mapbox.navigation.core.trip.session.LocationMatcherResult
 import com.mapbox.navigation.core.trip.session.LocationObserver
 import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
-import com.skgtecnologia.sisem.commons.extensions.hasLocationPermission
+import com.skgtecnologia.sisem.commons.extensions.hasMapLocationPermission
 import com.skgtecnologia.sisem.commons.location.ACTION_START
 import com.skgtecnologia.sisem.commons.location.ACTION_STOP
 import com.skgtecnologia.sisem.commons.location.LocationService
@@ -77,7 +77,7 @@ class MainActivity : ComponentActivity() {
             current()?.registerLocationObserver(locationObserver)
         }
 
-        if (hasLocationPermission()) {
+        if (hasMapLocationPermission()) {
             Intent(applicationContext, LocationService::class.java).apply {
                 action = ACTION_START
                 startService(this)
