@@ -122,7 +122,7 @@ sealed interface AphRoute : NavRoute {
     data class SignaturePadRoute(val idAph: String) : AphRoute
 
     @Serializable
-    data class VitalSignsRoute(val idAph: String) : AphRoute
+    data object VitalSignsRoute : AphRoute
 }
 // endregion
 
