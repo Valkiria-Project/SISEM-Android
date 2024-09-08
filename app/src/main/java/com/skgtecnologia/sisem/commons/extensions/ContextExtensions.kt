@@ -29,4 +29,3 @@ private fun Context.hasPostNotifications() =
     } else {
         true
     }
-

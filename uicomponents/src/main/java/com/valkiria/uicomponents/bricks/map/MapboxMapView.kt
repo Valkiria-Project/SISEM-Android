@@ -40,27 +40,10 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.compose.ui.viewinterop.NoOpUpdate
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.graphics.drawable.toBitmap
-import com.mapbox.api.directions.v5.DirectionsCriteria
-import com.mapbox.api.directions.v5.models.RouteOptions
 import com.mapbox.geojson.Point
-import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
-import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
-import com.mapbox.navigation.base.extensions.applyLanguageAndVoiceUnitOptions
-import com.mapbox.navigation.base.formatter.DistanceFormatterOptions
-import com.mapbox.navigation.base.formatter.UnitType
-import com.mapbox.navigation.base.route.NavigationRoute
-import com.mapbox.navigation.base.route.NavigationRouterCallback
-import com.mapbox.navigation.base.route.RouterFailure
-import com.mapbox.navigation.base.route.RouterOrigin
-import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
-import com.mapbox.navigation.dropin.EmptyBinder
-import com.mapbox.navigation.dropin.NavigationView
-import com.mapbox.navigation.ui.maps.NavigationStyles.NAVIGATION_NIGHT_STYLE
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.action.GenericUiAction.NotificationAction
 import com.valkiria.uicomponents.bricks.banner.BannerUiModel
@@ -199,114 +182,7 @@ private fun MapboxNavigationAndroidView(
     modifier: Modifier,
     accessToken: String
 ) {
-    val pointAnnotationManager: PointAnnotationManager? by remember {
-        mutableStateOf(null)
-    }
-
-    AndroidView(
-        factory = { context ->
-            NavigationView(
-                context = context,
-                accessToken = accessToken
-            ).also { navigationView ->
-                navigationView.customizeViewOptions {
-                    mapStyleUriDay = NAVIGATION_NIGHT_STYLE
-                    mapStyleUriNight = NAVIGATION_NIGHT_STYLE
-                    distanceFormatterOptions = DistanceFormatterOptions.Builder(context)
-                        .unitType(UnitType.METRIC)
-                        .build()
-                    enableMapLongClickIntercept = false
-                    showEndNavigationButton = false
-                }
-
-                navigationView.customizeViewBinders {
-                    maneuverBinder = EmptyBinder()
-                    speedLimitBinder = EmptyBinder()
-                    actionToggleAudioButtonBinder = EmptyBinder()
-                    actionButtonsBinder = EmptyBinder()
-                }
-            }
-        },
-        update = { navigationView ->
-            pointAnnotationManager?.let { annotationManager ->
-                annotationManager.deleteAll()
-                val pointAnnotationOptions = PointAnnotationOptions().apply {
-                    withPoint(locationPoint)
-                    marker?.let { bitmap ->
-                        withIconImage(bitmap)
-                    }
-                }
-
-                annotationManager.create(pointAnnotationOptions)
-            }
-
-            val defaultAnnotations = listOf(
-                DirectionsCriteria.ANNOTATION_DURATION,
-                DirectionsCriteria.ANNOTATION_DISTANCE
-            )
-
-            navigationView.requestRoutes(locationPoint, destinationPoint, defaultAnnotations)
-
-            NoOpUpdate
-        },
-        modifier = modifier
-    )
-}
-
-private const val ES_LANGUAGE = "es"
-
-private fun NavigationView.requestRoutes(
-    locationPoint: Point,
-    destinationPoint: Point?,
-    defaultAnnotations: List<String> = listOf(DirectionsCriteria.ANNOTATION_DURATION)
-) {
-    if (destinationPoint == null) {
-        api.startFreeDrive()
-    } else {
-        MapboxNavigationApp.current()!!.requestRoutes(
-            routeOptions = RouteOptions
-                .builder()
-                .steps(true)
-                .language(ES_LANGUAGE)
-                .annotationsList(defaultAnnotations)
-                .continueStraight(true)
-                .enableRefresh(true)
-                .profile(DirectionsCriteria.PROFILE_DRIVING_TRAFFIC)
-                .overview(DirectionsCriteria.OVERVIEW_FULL)
-                .roundaboutExits(false)
-                .voiceInstructions(false)
-                .bannerInstructions(false)
-                .applyLanguageAndVoiceUnitOptions(context)
-                .coordinatesList(listOf(locationPoint, destinationPoint))
-                .alternatives(false)
-                .build(),
-            callback = object : NavigationRouterCallback {
-                override fun onCanceled(
-                    routeOptions: RouteOptions,
-                    routerOrigin: RouterOrigin
-                ) {
-                    Timber.d("NavigationRouterCallback onCanceled")
-                    api.startFreeDrive()
-                }
-
-                override fun onFailure(
-                    reasons: List<RouterFailure>,
-                    routeOptions: RouteOptions
-                ) {
-                    Timber.d("NavigationRouterCallback onFailure")
-                    api.startFreeDrive()
-                }
-
-                override fun onRoutesReady(
-                    routes: List<NavigationRoute>,
-                    routerOrigin: RouterOrigin
-                ) {
-                    Timber.d("NavigationRouterCallback onRoutesReady")
-                    api.startActiveGuidance(routes)
-                }
-            }
-        )
-    }
+    Unit
 }
 
 @Composable

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
+
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeCompiler)
@@ -49,7 +51,10 @@ android {
 }
 
 composeCompiler {
-    enableStrongSkippingMode = true
+    featureFlags.addAll(
+        ComposeFeatureFlag.OptimizeNonSkippingGroups,
+        ComposeFeatureFlag.StrongSkipping
+    )
 
     reportsDestination = layout.buildDirectory.dir("compose_compiler")
 }
@@ -82,7 +87,7 @@ dependencies {
 
     // Maps
     api(libs.mapbox.navigation.android)
-    api(libs.mapbox.navigation.dropin)
+    api(libs.mapbox.navigation.ui.components)
 
     // Unit Testing
     testImplementation(libs.junit)
