@@ -8,6 +8,8 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.valkiria.uicomponents.components.BodyRowModel
 
+const val STATE_FLOW_STARTED_TIME = 5000L
+
 @Composable
 inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
     navController: NavController

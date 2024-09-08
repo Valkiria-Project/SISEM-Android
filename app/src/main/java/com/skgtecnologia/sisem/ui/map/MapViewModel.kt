@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.skgtecnologia.sisem.domain.incident.usecases.ObserveActiveIncident
 import com.skgtecnologia.sisem.domain.notification.usecases.ObserveNotifications
+import com.skgtecnologia.sisem.ui.commons.extensions.STATE_FLOW_STARTED_TIME
 import com.skgtecnologia.sisem.ui.commons.extensions.locationFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
@@ -23,8 +24,7 @@ class MapViewModel @Inject constructor(
         observeActiveIncident.invoke(),
         fusedLocationClient.locationFlow(),
         observeNotifications.invoke()
-    )
-    { incident, location, notifications ->
+    ) { incident, location, notifications ->
         MapUiState(
             incident = incident,
             lastLocation = location,
@@ -32,7 +32,7 @@ class MapViewModel @Inject constructor(
         )
     }.stateIn(
         scope = viewModelScope,
-        started = WhileSubscribed(5000),
+        started = WhileSubscribed(STATE_FLOW_STARTED_TIME),
         initialValue = MapUiState()
     )
 }

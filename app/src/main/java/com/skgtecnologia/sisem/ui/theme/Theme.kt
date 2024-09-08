@@ -3,7 +3,6 @@
 package com.skgtecnologia.sisem.ui.theme
 
 import android.app.Activity
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
@@ -28,7 +27,6 @@ private val DarkColorScheme = darkColorScheme(
 
 @Composable
 fun SisemTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
     /*
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
