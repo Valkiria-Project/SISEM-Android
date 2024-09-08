@@ -20,8 +20,7 @@ data class SignatureNavigationModel(
 
             isSignatureEvent -> navController.navigate(AphRoute.SignaturePadRoute)
 
-            // FIXME: validar si no se devuelve a la pantalla de firma
-            isSaved -> navController.navigate(NavGraph.MainGraph)
+            isSaved -> navController.navigate(NavGraph.MainGraph) // TECH-DEBT: validar si no se devuelve a la pantalla de firma
         }
     }
 }

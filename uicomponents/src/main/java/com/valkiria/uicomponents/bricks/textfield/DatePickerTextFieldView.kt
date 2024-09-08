@@ -121,8 +121,8 @@ fun DatePickerTextFieldView(
         val pickerState = rememberDatePickerState(
             initialSelectedDateMillis = getLocalDateInMillis(selectedDate),
             selectableDates = object : SelectableDates {
-                override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-                    return if (uiModel.maxDate != null) {
+                override fun isSelectableDate(utcTimeMillis: Long): Boolean =
+                    if (uiModel.maxDate != null) {
                         val maxDate = uiModel.maxDate.substringBefore(DATE_TIME_DELIMITER)
 
                         if (uiModel.minDate == null) {
@@ -136,7 +136,6 @@ fun DatePickerTextFieldView(
                     } else {
                         true
                     }
-                }
             }
         )
         DatePickerDialog(

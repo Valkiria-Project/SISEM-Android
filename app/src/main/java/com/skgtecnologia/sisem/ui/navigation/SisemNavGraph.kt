@@ -153,11 +153,11 @@ private fun NavGraphBuilder.authGraph(
         }
 
         composable<AuthRoute.PreOperationalRoute> { backStackEntry ->
-            /*FIXME*/
+            // TECH-DEBT
             val revertFinding = backStackEntry.savedStateHandle.get<Boolean>(REVERT_FINDING)
             backStackEntry.savedStateHandle.remove<Boolean>(REVERT_FINDING)
 
-            /*FIXME*/
+            // TECH-DEBT
             val novelty = backStackEntry.savedStateHandle.get<Novelty>(NOVELTY)
             backStackEntry.savedStateHandle.remove<Novelty>(NOVELTY)
 
@@ -243,15 +243,15 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable<MainRoute.NotificationsRoute> { /*FIXME: Finish this work*/ }
+        composable<MainRoute.NotificationsRoute> { /*TECH-DEBT: Finish this work*/ }
 
-        composable<MainRoute.DrivingGuideRoute> { /*FIXME: Finish this work*/ }
+        composable<MainRoute.DrivingGuideRoute> { /*TECH-DEBT: Finish this work*/ }
 
-        composable<MainRoute.CertificationsRoute> { /*FIXME: Finish this work*/ }
+        composable<MainRoute.CertificationsRoute> { /*TECH-DEBT: Finish this work*/ }
 
-        composable<MainRoute.HCEUDCRoute> { /*FIXME: Finish this work*/ }
+        composable<MainRoute.HCEUDCRoute> { /*TECH-DEBT: Finish this work*/ }
 
-        composable<MainRoute.ShiftRoute> { /*FIXME: Finish this work*/ }
+        composable<MainRoute.ShiftRoute> { /*TECH-DEBT: Finish this work*/ }
 
         composable<MainRoute.PreoperationalMainRoute> {
             AuthCardViewScreen { navigationModel ->
@@ -270,7 +270,7 @@ private fun NavGraphBuilder.mainGraph(
         }
 
         composable<MainRoute.SignatureRoute> { backStackEntry ->
-            /*FIXME*/
+            // TECH-DEBT
             val signature = backStackEntry.savedStateHandle.get<String>(SIGNATURE)
             backStackEntry.savedStateHandle.remove<String>(SIGNATURE)
 
@@ -323,19 +323,19 @@ private fun NavGraphBuilder.aphGraph(
 ) {
     navigation<NavGraph.AphGraph>(startDestination = AphRoute.MedicalHistoryRoute::class) {
         composable<AphRoute.MedicalHistoryRoute> { backStackEntry ->
-            /*FIXME*/
+            // TECH-DEBT
             val vitalSigns = backStackEntry.savedStateHandle.get<Map<String, String>>(VITAL_SIGNS)
             backStackEntry.savedStateHandle.remove<Map<String, String>>(VITAL_SIGNS)
 
-            /*FIXME*/
+            // TECH-DEBT
             val medicine = backStackEntry.savedStateHandle.get<Map<String, String>>(MEDICINE)
             backStackEntry.savedStateHandle.remove<Map<String, String>>(MEDICINE)
 
-            /*FIXME*/
+            // TECH-DEBT
             val signature = backStackEntry.savedStateHandle.get<String>(SIGNATURE)
             backStackEntry.savedStateHandle.remove<String>(SIGNATURE)
 
-            /*FIXME*/
+            // TECH-DEBT
             val photoTaken = backStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN)
             backStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)
 
@@ -352,7 +352,7 @@ private fun NavGraphBuilder.aphGraph(
         }
 
         composable<AphRoute.MedicalHistoryViewRoute> { backStackEntry ->
-            /*FIXME*/
+            // TECH-DEBT
             val photoTaken = backStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN)
             backStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)
 

@@ -165,7 +165,7 @@ private const val MSI_ID_TYPE = "MSI"
 private const val TE_ID_TYPE = "TE"
 private const val EP_ID_TYPE = "EP"
 
-// FIXME: Split into use cases
+// TECH-DEBT: Split into use casese
 @Suppress("LargeClass", "TooManyFunctions", "LongMethod", "ComplexMethod")
 @HiltViewModel
 class MedicalHistoryViewModel @Inject constructor(

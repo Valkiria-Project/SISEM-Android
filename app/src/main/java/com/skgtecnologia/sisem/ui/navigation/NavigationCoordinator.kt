@@ -11,10 +11,12 @@ const val REPORT = "report"
 fun getAppStartDestination(model: StartupNavigationModel?): NavGraph {
     return if (model == null) {
         NavGraph.AuthGraph
-    } else when {
-        model.isAdmin && !model.vehicleCode.isNullOrEmpty() -> NavGraph.MainGraph
-        model.isTurnStarted && !model.requiresPreOperational -> NavGraph.MainGraph
-        else -> NavGraph.AuthGraph
+    } else {
+        when {
+            model.isAdmin && !model.vehicleCode.isNullOrEmpty() -> NavGraph.MainGraph
+            model.isTurnStarted && !model.requiresPreOperational -> NavGraph.MainGraph
+            else -> NavGraph.AuthGraph
+        }
     }
 }
 

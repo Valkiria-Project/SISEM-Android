@@ -118,7 +118,7 @@ class LoginViewModel @Inject constructor(
             validateFields = true
         )
 
-        // FIXME: Move this to the Use Case
+        // TECH-DEBT: Move this to the Use Case
         if (isValidUsername && isValidPassword) {
             authenticate()
         }
