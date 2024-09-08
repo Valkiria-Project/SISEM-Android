@@ -5,14 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.skgtecnologia.sisem.domain.incident.usecases.ObserveActiveIncident
 import com.skgtecnologia.sisem.domain.notification.usecases.ObserveNotifications
-import com.skgtecnologia.sisem.ui.commons.extensions.locationFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -22,7 +19,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MapViewModel @Inject constructor(
-    fusedLocationClient: FusedLocationProviderClient,
     observeActiveIncident: ObserveActiveIncident,
     observeNotifications: ObserveNotifications
 ) : ViewModel() {
@@ -41,21 +37,6 @@ class MapViewModel @Inject constructor(
                 )
             }
             .catch { Timber.wtf("Error observing active incident ${it.localizedMessage}") }
-            .launchIn(viewModelScope)
-
-        fusedLocationClient.locationFlow()
-            .conflate()
-            .catch { e ->
-                Timber.d("Unable to get location $e")
-            }
-            .onEach { location ->
-                Timber
-                    .tag("Location")
-                    .d("Location: ${location.longitude} with ${location.latitude}")
-                uiState = uiState.copy(
-                    location = location.longitude to location.latitude
-                )
-            }
             .launchIn(viewModelScope)
 
         observeNotifications.invoke()

@@ -69,7 +69,6 @@ fun MapScreen(
         }
     ) {
         MapboxMapView(
-            coordinates = uiState.location,
             incident = incident,
             notifications = uiState.notifications,
             drawerState = drawerState,

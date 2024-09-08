@@ -1,7 +1,6 @@
 package com.valkiria.uicomponents.bricks.map
 
-import android.graphics.Bitmap
-import androidx.appcompat.content.res.AppCompatResources
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -34,7 +33,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -42,7 +40,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.core.graphics.drawable.toBitmap
+import androidx.core.os.bundleOf
+import androidx.fragment.compose.AndroidFragment
+import androidx.fragment.compose.rememberFragmentState
 import com.mapbox.geojson.Point
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.action.GenericUiAction.NotificationAction
@@ -60,7 +60,6 @@ import timber.log.Timber
 @Suppress("LongMethod", "LongParameterList", "MagicNumber")
 @Composable
 fun MapboxMapView(
-    coordinates: Pair<Double, Double>,
     incident: IncidentUiModel?,
     notifications: List<NotificationUiModel>?,
     drawerState: DrawerState,
@@ -71,14 +70,6 @@ fun MapboxMapView(
     onIncidentErrorAction: () -> Unit,
     onAction: (idAph: Int) -> Unit
 ) {
-    val context = LocalContext.current
-    val marker = remember(context) {
-        AppCompatResources.getDrawable(context, R.drawable.ic_ambulance_marker)?.toBitmap()
-    }
-
-    val locationPoint by remember(coordinates) {
-        mutableStateOf(Point.fromLngLat(coordinates.first, coordinates.second))
-    }
     val rememberedIncident by remember(incident) { mutableStateOf(incident) }
     val destinationPoint by remember(incident?.longitude to incident?.latitude) {
         val destinationPoint = if (incident?.longitude != null && incident.latitude != null) {
@@ -105,14 +96,8 @@ fun MapboxMapView(
         sheetSwipeEnabled = false
     ) { innerPadding ->
         Box(modifier.padding(innerPadding)) {
-            val accessToken = stringResource(id = R.string.mapbox_access_token)
-
             MapboxNavigationAndroidView(
-                locationPoint = locationPoint,
-                destinationPoint = destinationPoint,
-                marker = marker,
-                modifier = modifier,
-                accessToken = accessToken
+                destinationPoint = destinationPoint
             )
 
             IconButton(
@@ -173,16 +158,17 @@ fun MapboxMapView(
     }
 }
 
-@Suppress("LongParameterList", "UnusedPrivateMember")
+@SuppressLint("MissingPermission")
 @Composable
 private fun MapboxNavigationAndroidView(
-    locationPoint: Point,
-    destinationPoint: Point?,
-    marker: Bitmap?,
-    modifier: Modifier,
-    accessToken: String
+    destinationPoint: Point?
 ) {
-    Unit
+    val fragmentState = rememberFragmentState()
+    val args = bundleOf(
+        MapFragment.DESTINATION_POINT_LONGITUDE to destinationPoint?.longitude(),
+        MapFragment.DESTINATION_POINT_LATITUDE to destinationPoint?.latitude()
+    )
+    AndroidFragment<MapFragment>(fragmentState = fragmentState, arguments = args)
 }
 
 @Composable

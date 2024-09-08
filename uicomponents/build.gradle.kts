@@ -33,6 +33,7 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -64,7 +65,9 @@ dependencies {
     // Android
     implementation(libs.activity.compose)
     implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.androidx.fragment.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.ui.viewbinding)
     implementation(libs.material)
 
     // Compose
