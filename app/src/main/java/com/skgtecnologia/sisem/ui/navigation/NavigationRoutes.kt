@@ -113,13 +113,13 @@ sealed interface AphRoute : NavRoute {
     data class MedicalHistoryViewRoute(val idAph: String) : AphRoute
 
     @Serializable
-    data class MedicineRoute(val idAph: String) : AphRoute
+    data object MedicineRoute : AphRoute
 
     @Serializable
     data class SendEmailRoute(val idAph: String) : AphRoute
 
     @Serializable
-    data class SignaturePadRoute(val idAph: String) : AphRoute
+    data object SignaturePadRoute : AphRoute
 
     @Serializable
     data object VitalSignsRoute : AphRoute
