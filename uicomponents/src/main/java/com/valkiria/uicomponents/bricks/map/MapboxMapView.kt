@@ -1,6 +1,6 @@
 package com.valkiria.uicomponents.bricks.map
 
-import android.annotation.SuppressLint
+import android.location.Location
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -60,6 +60,7 @@ import timber.log.Timber
 @Suppress("LongMethod", "LongParameterList", "MagicNumber")
 @Composable
 fun MapboxMapView(
+    location: Location?,
     incident: IncidentUiModel?,
     notifications: List<NotificationUiModel>?,
     drawerState: DrawerState,
@@ -70,6 +71,7 @@ fun MapboxMapView(
     onIncidentErrorAction: () -> Unit,
     onAction: (idAph: Int) -> Unit
 ) {
+    val fragmentState = rememberFragmentState()
     val rememberedIncident by remember(incident) { mutableStateOf(incident) }
     val destinationPoint by remember(incident?.longitude to incident?.latitude) {
         val destinationPoint = if (incident?.longitude != null && incident.latitude != null) {
@@ -96,9 +98,13 @@ fun MapboxMapView(
         sheetSwipeEnabled = false
     ) { innerPadding ->
         Box(modifier.padding(innerPadding)) {
-            MapboxNavigationAndroidView(
-                destinationPoint = destinationPoint
+            val args = bundleOf(
+                MapFragment.LOCATION_POINT_LONGITUDE to location?.longitude,
+                MapFragment.LOCATION_POINT_LATITUDE to location?.latitude,
+                MapFragment.DESTINATION_POINT_LONGITUDE to destinationPoint?.longitude(),
+                MapFragment.DESTINATION_POINT_LATITUDE to destinationPoint?.latitude()
             )
+            AndroidFragment<MapFragment>(fragmentState = fragmentState, arguments = args)
 
             IconButton(
                 onClick = {
@@ -156,19 +162,6 @@ fun MapboxMapView(
             }
         }
     }
-}
-
-@SuppressLint("MissingPermission")
-@Composable
-private fun MapboxNavigationAndroidView(
-    destinationPoint: Point?
-) {
-    val fragmentState = rememberFragmentState()
-    val args = bundleOf(
-        MapFragment.DESTINATION_POINT_LONGITUDE to destinationPoint?.longitude(),
-        MapFragment.DESTINATION_POINT_LATITUDE to destinationPoint?.latitude()
-    )
-    AndroidFragment<MapFragment>(fragmentState = fragmentState, arguments = args)
 }
 
 @Composable

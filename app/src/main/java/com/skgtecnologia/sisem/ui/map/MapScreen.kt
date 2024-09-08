@@ -8,6 +8,7 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,7 +37,7 @@ fun MapScreen(
     onLogout: () -> Unit
 ) {
     val context = LocalContext.current
-    val uiState = viewModel.uiState
+    val uiState by viewModel.uiState.collectAsState()
 
     val drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
@@ -48,10 +49,6 @@ fun MapScreen(
     var incidentErrorData by remember { mutableStateOf<BannerUiModel?>(null) }
     IncidentEventHandler.subscribeIncidentErrorEvent {
         incidentErrorData = it
-    }
-
-    val incident by remember(uiState.incident) {
-        mutableStateOf(uiState.incident)
     }
 
     BackHandler {
@@ -68,22 +65,25 @@ fun MapScreen(
             onLogout()
         }
     ) {
-        MapboxMapView(
-            incident = incident,
-            notifications = uiState.notifications,
-            drawerState = drawerState,
-            notificationData = notificationData,
-            incidentErrorData = incidentErrorData,
-            modifier = modifier.fillMaxSize(),
-            onNotificationAction = {
-                notificationData = null
-            },
-            onIncidentErrorAction = {
-                incidentErrorData = null
+        if (uiState.lastLocation != null) {
+            MapboxMapView(
+                location = uiState.lastLocation,
+                incident = uiState.incident,
+                notifications = uiState.notifications,
+                drawerState = drawerState,
+                notificationData = notificationData,
+                incidentErrorData = incidentErrorData,
+                modifier = modifier.fillMaxSize(),
+                onNotificationAction = {
+                    notificationData = null
+                },
+                onIncidentErrorAction = {
+                    incidentErrorData = null
+                }
+            ) { idAph ->
+                Timber.d("Navigate to APH with Id APH $idAph")
+                onAction(AphRoute.MedicalHistoryRoute(idAph.toString()))
             }
-        ) { idAph ->
-            Timber.d("Navigate to APH with Id APH $idAph")
-            onAction(AphRoute.MedicalHistoryRoute(idAph.toString()))
         }
     }
 }

@@ -15,7 +15,7 @@ interface NotificationDao {
     suspend fun insertNotification(notificationEntity: NotificationEntity): Long
 
     @Query("SELECT * FROM notification order by dateTime desc")
-    fun observeNotifications(): Flow<List<NotificationEntity>?>?
+    fun observeNotifications(): Flow<List<NotificationEntity>>
 
     @Query(
         """
