@@ -29,15 +29,11 @@ fun MenuDrawer(
     content: @Composable () -> Unit
 ) {
     val uiState = viewModel.uiState
-    val crewMenuItems by remember {
-        derivedStateOf {
-            uiState.accessTokenModelList?.let { list ->
-                list.map { accessTokenModel ->
-                    accessTokenModel.toCrewMemberItemModel()
-                }
-            } ?: emptyList()
+    val crewMenuItems = uiState.accessTokenModelList?.let { list ->
+        list.map { accessTokenModel ->
+            accessTokenModel.toCrewMemberItemModel()
         }
-    }
+    } ?: emptyList()
 
     val isAdmin by remember { derivedStateOf { uiState.accessTokenModelList?.first()?.isAdmin } }
 

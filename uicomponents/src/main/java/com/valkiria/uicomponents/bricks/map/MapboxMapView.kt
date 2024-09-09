@@ -87,13 +87,13 @@ fun MapboxMapView(
         mutableStateOf(destinationPoint)
     }
 
-    val args by remember(location, destinationPoint) {
+    val args by remember(destinationPoint) {
         mutableStateOf(
             bundleOf(
                 MapFragment.LOCATION_POINT_LONGITUDE to location.longitude,
                 MapFragment.LOCATION_POINT_LATITUDE to location.latitude,
-                MapFragment.DESTINATION_POINT_LONGITUDE to null,
-                MapFragment.DESTINATION_POINT_LATITUDE to null
+                MapFragment.DESTINATION_POINT_LONGITUDE to destinationPoint?.longitude(),
+                MapFragment.DESTINATION_POINT_LATITUDE to destinationPoint?.latitude()
             )
         )
     }
