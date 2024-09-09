@@ -114,6 +114,7 @@ dependencies {
     // Android
     implementation(libs.core.ktx)
     implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.fragment.compose)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
     implementation(libs.androidx.constraintlayout.compose)

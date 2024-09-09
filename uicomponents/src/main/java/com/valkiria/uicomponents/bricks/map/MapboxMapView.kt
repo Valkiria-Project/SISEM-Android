@@ -42,7 +42,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.os.bundleOf
 import androidx.fragment.compose.AndroidFragment
-import androidx.fragment.compose.rememberFragmentState
+import androidx.fragment.compose.FragmentState
 import com.mapbox.geojson.Point
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.action.GenericUiAction.NotificationAction
@@ -60,19 +60,23 @@ import timber.log.Timber
 @Suppress("LongMethod", "LongParameterList", "MagicNumber")
 @Composable
 fun MapboxMapView(
-    location: Location?,
+    location: Location,
     incident: IncidentUiModel?,
     notifications: List<NotificationUiModel>?,
     drawerState: DrawerState,
     notificationData: NotificationData?,
     incidentErrorData: BannerUiModel?,
     modifier: Modifier = Modifier,
+    fragmentState: FragmentState,
     onNotificationAction: (notificationAction: NotificationAction) -> Unit,
     onIncidentErrorAction: () -> Unit,
     onAction: (idAph: Int) -> Unit
 ) {
-    val fragmentState = rememberFragmentState()
-    val rememberedIncident by remember(incident) { mutableStateOf(incident) }
+    val scaffoldState = rememberBottomSheetScaffoldState()
+    val scope = rememberCoroutineScope()
+    var showNotificationsDialog by remember { mutableStateOf(false) }
+
+    val currentIncident by remember(incident) { mutableStateOf(incident) }
     val destinationPoint by remember(incident?.longitude to incident?.latitude) {
         val destinationPoint = if (incident?.longitude != null && incident.latitude != null) {
             Point.fromLngLat(incident.longitude, incident.latitude)
@@ -83,28 +87,32 @@ fun MapboxMapView(
         mutableStateOf(destinationPoint)
     }
 
-    val scaffoldState = rememberBottomSheetScaffoldState()
-    val scope = rememberCoroutineScope()
-    var showNotificationsDialog by remember { mutableStateOf(false) }
+    val args by remember(location, destinationPoint) {
+        mutableStateOf(
+            bundleOf(
+                MapFragment.LOCATION_POINT_LONGITUDE to location.longitude,
+                MapFragment.LOCATION_POINT_LATITUDE to location.latitude,
+                MapFragment.DESTINATION_POINT_LONGITUDE to null,
+                MapFragment.DESTINATION_POINT_LATITUDE to null
+            )
+        )
+    }
 
     BottomSheetScaffold(
         sheetContent = {
-            rememberedIncident?.let {
+            currentIncident?.let {
                 IncidentContent(incidentUiModel = it, onAction = onAction)
             }
         },
         scaffoldState = scaffoldState,
-        sheetPeekHeight = if (rememberedIncident != null) 140.dp else 0.dp,
+        sheetPeekHeight = if (currentIncident != null) 140.dp else 0.dp,
         sheetSwipeEnabled = false
     ) { innerPadding ->
         Box(modifier.padding(innerPadding)) {
-            val args = bundleOf(
-                MapFragment.LOCATION_POINT_LONGITUDE to location?.longitude,
-                MapFragment.LOCATION_POINT_LATITUDE to location?.latitude,
-                MapFragment.DESTINATION_POINT_LONGITUDE to destinationPoint?.longitude(),
-                MapFragment.DESTINATION_POINT_LATITUDE to destinationPoint?.latitude()
+            AndroidFragment<MapFragment>(
+                fragmentState = fragmentState,
+                arguments = args
             )
-            AndroidFragment<MapFragment>(fragmentState = fragmentState, arguments = args)
 
             IconButton(
                 onClick = {

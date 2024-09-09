@@ -9,6 +9,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.fragment.compose.rememberFragmentState
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -199,14 +200,13 @@ private fun NavGraphBuilder.mainGraph(
 ) {
     navigation<NavGraph.MainGraph>(startDestination = MainRoute.MapRoute) {
         composable<MainRoute.MapRoute> {
+            val fragmentState = rememberFragmentState()
+
             MapScreen(
                 modifier = modifier,
-                onMenuAction = { navigationRoute ->
-                    navController.navigate(route = navigationRoute)
-                },
-                onAction = { aphRoute ->
-                    navController.navigate(aphRoute)
-                },
+                fragmentState = fragmentState,
+                onMenuAction = { navRoute -> navController.navigate(route = navRoute) },
+                onAction = { aphRoute -> navController.navigate(route = aphRoute) },
                 onLogout = {
                     navController.navigate(AuthRoute.AuthCardsRoute) {
                         popUpTo(navController.graph.findStartDestination().id) {

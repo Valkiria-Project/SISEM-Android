@@ -297,17 +297,23 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        arguments?.let { bundle ->
-            lastLocation = Location.Builder()
-                .longitude(bundle.getDouble(LOCATION_POINT_LONGITUDE))
-                .latitude(bundle.getDouble(LOCATION_POINT_LATITUDE))
-                .build()
-
-            destinationPoint = Point.fromLngLat(
-                bundle.getDouble(DESTINATION_POINT_LONGITUDE),
-                bundle.getDouble(DESTINATION_POINT_LATITUDE)
-            )
+        if (savedInstanceState != null) {
+            getMapFragmentArguments(savedInstanceState)
+        } else {
+            arguments?.let { getMapFragmentArguments(it) }
         }
+    }
+
+    private fun getMapFragmentArguments(bundle: Bundle) {
+        lastLocation = Location.Builder()
+            .longitude(bundle.getDouble(LOCATION_POINT_LONGITUDE))
+            .latitude(bundle.getDouble(LOCATION_POINT_LATITUDE))
+            .build()
+
+        destinationPoint = Point.fromLngLat(
+            bundle.getDouble(DESTINATION_POINT_LONGITUDE),
+            bundle.getDouble(DESTINATION_POINT_LATITUDE)
+        )
     }
 
     override fun onCreateView(
@@ -401,6 +407,14 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         initNavigation()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        lastLocation?.longitude?.let { outState.putDouble(LOCATION_POINT_LONGITUDE, it) }
+        lastLocation?.latitude?.let { outState.putDouble(LOCATION_POINT_LATITUDE, it) }
+        destinationPoint?.longitude()?.let { outState.putDouble(DESTINATION_POINT_LONGITUDE, it) }
+        destinationPoint?.latitude()?.let { outState.putDouble(DESTINATION_POINT_LATITUDE, it) }
+    }
+
     private fun initViewInteractions() {
         // initialize view interactions
         binding.mapView.camera.addCameraAnimationsLifecycleListener(
@@ -483,8 +497,10 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     }
 
     private fun findRoute(destination: Point) {
-        val originLocation = navigationLocationProvider.lastLocation ?: return
-        val originPoint = Point.fromLngLat(originLocation.longitude, originLocation.latitude)
+        val originLocation = navigationLocationProvider.lastLocation ?: lastLocation
+        val originPoint = originLocation?.let {
+            Point.fromLngLat(it.longitude, originLocation.latitude)
+        }
 
         // execute a route request
         // it's recommended to use the
@@ -499,7 +515,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 .apply {
                     // provide the bearing for the origin of the request to ensure
                     // that the returned route faces in the direction of the current user movement
-                    originLocation.bearing?.let { bearing ->
+                    originLocation?.bearing?.let { bearing ->
                         bearingsList(
                             listOf(
                                 Bearing.builder()
