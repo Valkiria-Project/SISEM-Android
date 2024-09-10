@@ -4,11 +4,6 @@ import android.app.Application
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
-import com.mapbox.navigation.base.TimeFormat.TWENTY_FOUR_HOURS
-import com.mapbox.navigation.base.formatter.DistanceFormatterOptions
-import com.mapbox.navigation.base.formatter.UnitType
-import com.mapbox.navigation.base.options.NavigationOptions
-import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -36,18 +31,5 @@ class SisemApplication : Application() {
                 Timber.d("FCM registration token: ${task.result}")
             }
         )
-
-        if (!MapboxNavigationApp.isSetup()) {
-            MapboxNavigationApp.setup {
-                NavigationOptions.Builder(this)
-                    .distanceFormatterOptions(
-                        DistanceFormatterOptions.Builder(this)
-                            .unitType(UnitType.METRIC)
-                            .build()
-                    )
-                    .timeFormatType(TWENTY_FOUR_HOURS)
-                    .build()
-            }
-        }
     }
 }
