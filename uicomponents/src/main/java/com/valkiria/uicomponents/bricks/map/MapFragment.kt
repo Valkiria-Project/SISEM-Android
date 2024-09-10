@@ -182,9 +182,8 @@ class MapFragment : Fragment(R.layout.fragment_map) {
             viewportDataSource.clearRouteData()
             viewportDataSource.evaluate()
         }
-
-
     }
+
     private val locationObserver = object : LocationObserver {
         var firstLocationUpdateReceived = false
 
