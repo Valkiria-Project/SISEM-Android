@@ -32,7 +32,8 @@ fun TermsAndConditionsComponent(
             |<a href="${uiModel.links.first()}">términos y condiciones</a> 
             |<font color="#FFFFFF">y nuestra</font> 
             |<a href="${uiModel.links[1]}">política de protección de datos personales.</a>
-            |</font>""".trimMargin(),
+            |</font>
+            """.trimMargin(),
             style = MaterialTheme.typography.labelMedium,
             linkClicked = { link ->
                 Timber.d("$link clicked")

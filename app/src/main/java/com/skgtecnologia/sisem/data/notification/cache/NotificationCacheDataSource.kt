@@ -28,13 +28,13 @@ class NotificationCacheDataSource @Inject constructor(
             ?.mapToDomain() as? IncidentAssignedNotification
 
     @CheckResult
-    fun observeNotifications(): Flow<List<NotificationUiModel>?>? =
+    fun observeNotifications(): Flow<List<NotificationUiModel>> =
         notificationDao.observeNotifications()
-            ?.map { notifications ->
-                notifications?.map { it.mapToDomain()?.mapToUi() ?: error("Map error") }
+            .map { notifications ->
+                notifications.map { it.mapToDomain()?.mapToUi() ?: error("Map error") }
             }
-            ?.catch { throwable ->
+            .catch { throwable ->
                 error("error observing the notifications ${throwable.localizedMessage}")
             }
-            ?.flowOn(Dispatchers.IO)
+            .flowOn(Dispatchers.IO)
 }

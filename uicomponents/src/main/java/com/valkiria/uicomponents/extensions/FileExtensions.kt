@@ -46,33 +46,31 @@ fun Uri.decodeAsBitmap(contentResolver: ContentResolver): Bitmap {
 suspend fun Context.handleMediaUris(
     uris: List<String>,
     maxFileSizeKb: String? = null
-): List<MediaItemUiModel> {
-    return uris.map { uri ->
-        var file = storeUriAsFileToCache(
-            uri.toUri(),
+): List<MediaItemUiModel> = uris.map { uri ->
+    var file = storeUriAsFileToCache(
+        uri.toUri(),
+    )
+
+    runCatching {
+        file = compressFile(file, maxFileSizeKb)
+
+        MediaItemUiModel(
+            uri = uri,
+            file = file,
+            name = file.name,
+            isSizeValid = true
         )
-
-        runCatching {
-            file = compressFile(file, maxFileSizeKb)
-
+    }.fold(
+        onSuccess = { mediaItemUiModel -> mediaItemUiModel },
+        onFailure = {
             MediaItemUiModel(
                 uri = uri,
                 file = file,
                 name = file.name,
-                isSizeValid = true
+                isSizeValid = false
             )
-        }.fold(
-            onSuccess = { mediaItemUiModel -> mediaItemUiModel },
-            onFailure = {
-                MediaItemUiModel(
-                    uri = uri,
-                    file = file,
-                    name = file.name,
-                    isSizeValid = false
-                )
-            }
-        )
-    }
+        }
+    )
 }
 
 private suspend fun Context.storeUriAsFileToCache(uri: Uri): File {

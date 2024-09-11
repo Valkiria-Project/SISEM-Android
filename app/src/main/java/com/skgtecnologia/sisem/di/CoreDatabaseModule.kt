@@ -20,29 +20,22 @@ object CoreDatabaseModule {
 
     @Singleton
     @Provides
-    fun provideSisemDatabase(@ApplicationContext appContext: Context): SisemDatabase {
-        return Room.databaseBuilder(appContext, SisemDatabase::class.java, "sisem.db")
+    fun provideSisemDatabase(@ApplicationContext appContext: Context): SisemDatabase =
+        Room.databaseBuilder(appContext, SisemDatabase::class.java, "sisem.db")
             .fallbackToDestructiveMigration()
             .build()
-    }
 
     @Provides
-    fun provideAccessTokenDao(sisemDatabase: SisemDatabase): AccessTokenDao {
-        return sisemDatabase.accessTokenDao()
-    }
+    fun provideAccessTokenDao(sisemDatabase: SisemDatabase): AccessTokenDao =
+        sisemDatabase.accessTokenDao()
 
     @Provides
-    fun provideIncidentDao(sisemDatabase: SisemDatabase): IncidentDao {
-        return sisemDatabase.incidentDao()
-    }
+    fun provideIncidentDao(sisemDatabase: SisemDatabase): IncidentDao = sisemDatabase.incidentDao()
 
     @Provides
-    fun provideNotificationDao(sisemDatabase: SisemDatabase): NotificationDao {
-        return sisemDatabase.notificationDao()
-    }
+    fun provideNotificationDao(sisemDatabase: SisemDatabase): NotificationDao =
+        sisemDatabase.notificationDao()
 
     @Provides
-    fun provideOperationDao(sisemDatabase: SisemDatabase): OperationDao {
-        return sisemDatabase.configDao()
-    }
+    fun provideOperationDao(sisemDatabase: SisemDatabase): OperationDao = sisemDatabase.configDao()
 }

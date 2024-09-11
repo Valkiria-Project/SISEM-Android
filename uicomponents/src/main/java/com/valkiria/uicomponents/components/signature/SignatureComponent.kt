@@ -82,7 +82,7 @@ fun SignatureComponent(
                 Image(
                     bitmap = uiModel.signature
                         .decodeAsBase64Bitmap()
-                        .asImageBitmap(), // FIXME: Temporal hack
+                        .asImageBitmap(), // TECH-DEBT: Temporal hack
                     contentDescription = uiModel.signature,
                     contentScale = ContentScale.Crop,
                     alpha = 1f,

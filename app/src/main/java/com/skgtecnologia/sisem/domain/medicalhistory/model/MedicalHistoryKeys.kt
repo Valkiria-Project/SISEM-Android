@@ -57,7 +57,7 @@ const val WITHDRAWAL_EXTRA_INFO_2_KEY = "KEY_WITHDRAWAL_EXTRA_INFO_2"
 const val WITHDRAWAL_REPONSIBLE_REFUSE_SIGN_KEY = "KEY_WITHDRAWAL_REPONSIBLE_REFUSE_SIGN"
 // endregion
 
-// FIXME: Move this to String resources
+// TECH-DEBT: Move this to String resources
 const val APPLIED_DOSES = "Dosis aplicada"
 const val CODE = "Código"
 const val QUANTITY_USED = "Cantidad utilizada"

@@ -113,16 +113,16 @@ sealed interface AphRoute : NavRoute {
     data class MedicalHistoryViewRoute(val idAph: String) : AphRoute
 
     @Serializable
-    data class MedicineRoute(val idAph: String) : AphRoute
+    data object MedicineRoute : AphRoute
 
     @Serializable
     data class SendEmailRoute(val idAph: String) : AphRoute
 
     @Serializable
-    data class SignaturePadRoute(val idAph: String) : AphRoute
+    data object SignaturePadRoute : AphRoute
 
     @Serializable
-    data class VitalSignsRoute(val idAph: String) : AphRoute
+    data object VitalSignsRoute : AphRoute
 }
 // endregion
 
@@ -138,7 +138,7 @@ sealed interface ReportRoute : NavRoute {
     data class AddReportRoute(val roleName: String) : ReportRoute
 
     @Serializable
-    data class ImagesConfirmationRoute(val from: String,) : ReportRoute
+    data class ImagesConfirmationRoute(val from: String) : ReportRoute
 
     @Serializable
     data object ReportCameraRoute : ReportRoute

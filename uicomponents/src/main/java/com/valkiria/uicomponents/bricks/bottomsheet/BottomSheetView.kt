@@ -64,7 +64,8 @@ fun BottomSheetComponentPreview() {
                 Text(
                     text = """1. INTRODUCCIÓN\n\nLa Política de Seguridad de la Información del 
                         |sitio web y términos de uso del Sitio Web de la Secretaría Distrital de 
-                        |Salud y el Fondo Financiero ...""".trimMargin()
+                        |Salud y el Fondo Financiero ...
+                        """.trimMargin()
                 )
             },
             sheetState = sheetState,

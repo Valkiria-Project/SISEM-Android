@@ -41,7 +41,7 @@ fun SignaturePadScreen(
             mutableStateOf(null)
         }
 
-        // FIXME: The resources should be dynamic
+        // TECH-DEBT: The resources should be dynamic
         HeaderSection(
             headerUiModel = signaturePadHeader(
                 titleText = stringResource(id = string.signature_pad_title),

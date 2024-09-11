@@ -10,7 +10,7 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.Priority
-import com.skgtecnologia.sisem.commons.extensions.hasLocationPermission
+import com.skgtecnologia.sisem.commons.extensions.hasMapLocationPermission
 import com.skgtecnologia.sisem.commons.extensions.validateOrThrow
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -28,7 +28,7 @@ class DefaultLocationProvider(
     @SuppressLint("MissingPermission")
     override fun getLocationUpdates(interval: Long): Flow<Location> {
         return callbackFlow {
-            validateOrThrow(context.hasLocationPermission()) {
+            validateOrThrow(context.hasMapLocationPermission()) {
                 Timber.tag("Location").d("Missing location permissions")
                 LocationProvider.LocationException("Missing location permissions")
             }

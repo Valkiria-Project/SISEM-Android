@@ -221,9 +221,7 @@ fun captureBitmap(
     /**
      * Callback function which could get latest image bitmap
      **/
-    fun captureBitmap(): Bitmap {
-        return composeView.drawToBitmap()
-    }
+    fun captureBitmap(): Bitmap = composeView.drawToBitmap()
 
     /** Use Native View inside Composable **/
     AndroidView(

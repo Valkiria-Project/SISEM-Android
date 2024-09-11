@@ -33,50 +33,47 @@ private fun getDrawerItems(context: Context) = listOf(
         context.getString(R.string.drawer_inventory),
         drawable.ic_inventory
     ),
-    /* FIXME: Revert later
+    /* TECH-DEBT: Revert later
     DrawerMenuItemModel(
         MainRoute.NotificationsRoute,
         context.getString(R.string.drawer_notifications),
         drawable.ic_notification
-    ),*/
-    /* FIXME: Revert later
+    ),
     DrawerMenuItemModel(
         MainRoute.DrivingGuideRoute,
         context.getString(R.string.drawer_guides),
         drawable.ic_folder
     ),
-    */
-    /* FIXME: Revert later
     DrawerMenuItemModel(
         MainRoute.CertificationsRoute,
         context.getString(R.string.drawer_certifications),
         drawable.ic_certifications
     ),
-    */
+     */
     DrawerMenuItemModel(
         ReportRoute.AddReportRoleRoute,
         context.getString(R.string.drawer_novelties),
         drawable.ic_news
     ),
-    /* FIXME: Revert later
+    /* TECH-DEBT: Revert later
     DrawerMenuItemModel(
         MainRoute.ShiftRoute,
         context.getString(R.string.drawer_turn_shift),
         drawable.ic_shift
     ),
-    */
+     */
     DrawerMenuItemModel(
         MainRoute.PreoperationalMainRoute,
         context.getString(R.string.drawer_pre_operational),
         drawable.ic_check
     ),
-    /* FIXME: Revert later
+    /* TECH-DEBT: Revert later
     DrawerMenuItemModel(
         MainRoute.HCEUDCRoute,
         context.getString(R.string.drawer_hceud),
         drawable.ic_hceud
     ),
-    */
+     */
     DrawerMenuItemModel(
         MainRoute.PreStretcherRetentionRoute,
         context.getString(R.string.drawer_stretcher_retention),

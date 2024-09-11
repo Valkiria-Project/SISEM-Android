@@ -111,9 +111,7 @@ private fun shouldValidateFields(
     validateFields: Boolean,
     realTimeValidation: Boolean,
     text: String
-): Boolean {
-    return validateFields || (realTimeValidation && text.isNotEmpty())
-}
+): Boolean = validateFields || (realTimeValidation && text.isNotEmpty())
 
 @Preview(showBackground = true)
 @Composable

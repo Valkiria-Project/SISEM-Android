@@ -125,6 +125,6 @@ class NotificationRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun observeNotifications(): Flow<List<NotificationUiModel>?>? =
+    override fun observeNotifications(): Flow<List<NotificationUiModel>> =
         notificationCacheDataSource.observeNotifications()
 }

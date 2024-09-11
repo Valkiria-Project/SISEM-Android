@@ -17,6 +17,7 @@ data class StaggeredCardsResponse(
 ) : BodyRowResponse {
 
     override val type: BodyRowType = BodyRowType.STAGGERED_CARDS
+
     override fun mapToUi(): StaggeredCardsUiModel = StaggeredCardsUiModel(
         identifier = identifier ?: error("StaggeredCards identifier cannot be null"),
         cards = cards?.map { it.mapToUi() } ?: error("StaggeredCards cards cannot be null"),

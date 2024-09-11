@@ -68,7 +68,7 @@ fun PreOperationalScreen(
     OnNotificationHandler(notificationData) {
         notificationData = null
         if (it.isDismiss.not()) {
-            // FIXME: Navigate to MapScreen if is type INCIDENT_ASSIGNED
+            // TECH-DEBT: Navigate to MapScreen if is type INCIDENT_ASSIGNED
             Timber.d("Navigate to MapScreen")
         }
     }
