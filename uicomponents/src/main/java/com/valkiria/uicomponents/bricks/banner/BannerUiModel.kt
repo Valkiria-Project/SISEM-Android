@@ -2,7 +2,7 @@ package com.valkiria.uicomponents.bricks.banner
 
 import com.valkiria.uicomponents.components.button.ButtonUiModel
 
-const val DEFAULT_ICON_COLOR = "#F55757" // FIXME: update with backend
+const val DEFAULT_ICON_COLOR = "#F55757" // TECH-DEBT: update with backend
 
 data class BannerUiModel(
     val icon: String? = null,

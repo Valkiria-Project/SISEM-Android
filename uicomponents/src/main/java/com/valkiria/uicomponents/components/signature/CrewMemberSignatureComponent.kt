@@ -162,7 +162,8 @@ fun CrewMemberSignatureComponentPreview() {
                 |rcxbGqcoyMhDRWjliU2NQXWvTMjliU1apyijYl6mmRkZGRkZyVlZXpkzIyMjIqOCI49Hb2478SfJ5C0iIiI
                 |iMTExMWRkZyVmTMjIRV76VFRfc+/giGoJGJGclZkzIqKvRDExZGRkZyVlZkzIyMjJFRVou/hfL3RERiYkZW
                 |J++IiIjExMSaRnJWZMyMjJFRV6F3+C+jx2xERijExIyM5KzJmQ2JwqKvv8hde+IaEjExZGRnJWV/V5C6+Bp
-                |38LyPH9J9Hj+mvwv/2Q==""".trimMargin(),
+                |38LyPH9J9Hj+mvwv/2Q==
+            """.trimMargin(),
             arrangement = Arrangement.Center,
             modifier = Modifier
         ),

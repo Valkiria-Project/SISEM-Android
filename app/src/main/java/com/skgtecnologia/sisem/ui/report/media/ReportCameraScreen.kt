@@ -129,7 +129,8 @@ private fun CameraPreview(
                                 val savedUri = output.savedUri
                                 Timber.d(
                                     """"Photo capture succeeded: $savedUri with file name 
-                                        |${mediaStoreUtils.getLatestImageFilename()}""".trimMargin()
+                                        |${mediaStoreUtils.getLatestImageFilename()}
+                                    """.trimMargin()
                                 )
 
                                 if (savedUri != null) {

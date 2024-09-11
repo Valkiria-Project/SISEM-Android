@@ -64,7 +64,9 @@ fun NotificationView(
             ) {
                 show = false
                 true
-            } else false
+            } else {
+                false
+            }
         }
     )
 

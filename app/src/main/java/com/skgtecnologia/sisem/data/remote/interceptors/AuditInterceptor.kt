@@ -32,7 +32,8 @@ class AuditInterceptor @Inject constructor(
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request()
+        val request = chain
+            .request()
             .newBuilder()
             .header(HTTP_CLIENT_VERSION_HEADER, CLIENT_VERSION)
             .withCurrentLocation()
@@ -45,7 +46,8 @@ class AuditInterceptor @Inject constructor(
     private fun Request.Builder.withCurrentLocation(): Request.Builder = runBlocking {
         val location = runCatching {
             withTimeout(AUDIT_TIMEOUT) {
-                fusedLocationClient.locationFlow()
+                fusedLocationClient
+                    .locationFlow()
                     .catch { throwable ->
                         Timber.d("Unable to get location $throwable")
                     }

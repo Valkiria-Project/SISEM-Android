@@ -170,7 +170,7 @@
     <string name="drawer_certifications">Certificados</string>
     <string name="drawer_novelties">Novedades</string>
     <string name="drawer_turn_shift">Entrega de turno</string>
-    <string name="drawer_pre_operational">Preoperacional</string>
+    <string name="drawer_pre_operational">Preoperacionales</string>
     <string name="drawer_hceud">HCEUD</string>
     <string name="drawer_device_auth">Asociar dispositivo al vehículo</string>
     <string name="drawer_signature_and_fingerprint">Registrar firma y huella</string>

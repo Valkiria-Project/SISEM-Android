@@ -223,8 +223,8 @@ fun getNotificationDataByType(
     }
 }
 
-fun getNotificationRawDataByType(notificationData: NotificationData): Map<String, String> {
-    return when (notificationData) {
+fun getNotificationRawDataByType(notificationData: NotificationData): Map<String, String> =
+    when (notificationData) {
         is AuthTimeNotification -> mapOf(
             NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
         )
@@ -285,4 +285,3 @@ fun getNotificationRawDataByType(notificationData: NotificationData): Map<String
             NOTIFICATION_TYPE_KEY to notificationData.notificationType.name,
         )
     }
-}

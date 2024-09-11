@@ -2,19 +2,18 @@ package com.skgtecnologia.sisem.ui
 
 import android.content.Context
 import android.content.Intent
-import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
-import com.mapbox.navigation.core.trip.session.LocationMatcherResult
-import com.mapbox.navigation.core.trip.session.LocationObserver
 import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
-import com.skgtecnologia.sisem.commons.extensions.hasLocationPermission
+import com.skgtecnologia.sisem.commons.extensions.hasMapLocationPermission
 import com.skgtecnologia.sisem.commons.location.ACTION_START
 import com.skgtecnologia.sisem.commons.location.ACTION_STOP
 import com.skgtecnologia.sisem.commons.location.LocationService
@@ -33,7 +32,7 @@ import javax.inject.Inject
 const val STARTUP_NAVIGATION_MODEL = "STARTUP_NAVIGATION_MODEL"
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
 
     @Inject
     lateinit var storeNotification: StoreNotification
@@ -41,16 +40,16 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var notificationsManager: NotificationsManager
 
-    private var lastLocation: Location? = null
+    init {
+        lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onResume(owner: LifecycleOwner) {
+                MapboxNavigationApp.attach(owner)
+            }
 
-    private val locationObserver = object : LocationObserver {
-        override fun onNewLocationMatcherResult(locationMatcherResult: LocationMatcherResult) {
-            lastLocation = locationMatcherResult.enhancedLocation
-        }
-
-        override fun onNewRawLocation(rawLocation: Location) {
-            // no impl
-        }
+            override fun onPause(owner: LifecycleOwner) {
+                MapboxNavigationApp.detach(owner)
+            }
+        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,12 +71,7 @@ class MainActivity : ComponentActivity() {
             intent.getParcelableExtra(STARTUP_NAVIGATION_MODEL)
         }
 
-        with(MapboxNavigationApp) {
-            attach(this@MainActivity)
-            current()?.registerLocationObserver(locationObserver)
-        }
-
-        if (hasLocationPermission()) {
+        if (hasMapLocationPermission()) {
             Intent(applicationContext, LocationService::class.java).apply {
                 action = ACTION_START
                 startService(this)
@@ -111,7 +105,6 @@ class MainActivity : ComponentActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
-        MapboxNavigationApp.current()?.unregisterLocationObserver(locationObserver)
         Intent(applicationContext, LocationService::class.java).apply {
             action = ACTION_STOP
             startService(this)

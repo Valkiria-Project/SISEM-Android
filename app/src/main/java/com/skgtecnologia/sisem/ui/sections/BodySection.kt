@@ -366,7 +366,7 @@ private fun LazyListScope.handleBodyRows(
                         }
                     }
 
-                    // FIXME: Send data to Stepper or create shared fun
+                    // TECH-DEBT: Send data to Stepper or create shared fun
                 }
             }
 

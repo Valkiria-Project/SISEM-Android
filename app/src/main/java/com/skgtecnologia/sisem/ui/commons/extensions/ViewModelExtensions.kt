@@ -8,11 +8,13 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.valkiria.uicomponents.components.BodyRowModel
 
+const val STATE_FLOW_STARTED_TIME = 5000L
+
 @Composable
 inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
     navController: NavController
 ): T {
-    val navGraphRoute = destination.parent?.route ?: hiltViewModel()
+    val navGraphRoute = destination.parent?.route ?: hiltViewModel<T>()
     val parentEntry = remember(this) {
         navController.getBackStackEntry(navGraphRoute)
     }

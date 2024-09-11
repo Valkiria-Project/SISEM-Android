@@ -11,5 +11,6 @@ class ObserveActiveIncident @Inject constructor(
 ) {
 
     @CheckResult
-    operator fun invoke(): Flow<IncidentUiModel?> = incidentRepository.observeActiveIncident()
+    operator fun invoke(): Flow<IncidentUiModel?> =
+        incidentRepository.observeActiveIncident()
 }

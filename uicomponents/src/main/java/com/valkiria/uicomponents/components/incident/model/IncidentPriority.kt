@@ -30,13 +30,11 @@ enum class IncidentPriority(
     );
 
     companion object {
-        fun getPriority(identifier: String): IncidentPriority {
-            return when (identifier.lowercase()) {
-                CRITIC.priorityName -> CRITIC
-                HIGH.priorityName -> HIGH
-                MEDIUM.priorityName -> MEDIUM
-                else -> LOW
-            }
+        fun getPriority(identifier: String): IncidentPriority = when (identifier.lowercase()) {
+            CRITIC.priorityName -> CRITIC
+            HIGH.priorityName -> HIGH
+            MEDIUM.priorityName -> MEDIUM
+            else -> LOW
         }
     }
 }

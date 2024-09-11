@@ -6,6 +6,9 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -19,22 +22,20 @@ import kotlinx.coroutines.launch
 @Suppress("LongMethod", "LongParameterList")
 @Composable
 fun MenuDrawer(
+    viewModel: MenuViewModel = hiltViewModel(),
     drawerState: DrawerState,
     onClick: (NavRoute) -> Unit,
     onLogout: () -> Unit,
     content: @Composable () -> Unit
 ) {
-    val viewModel = hiltViewModel<MenuViewModel>()
-
     val uiState = viewModel.uiState
-
     val crewMenuItems = uiState.accessTokenModelList?.let { list ->
         list.map { accessTokenModel ->
             accessTokenModel.toCrewMemberItemModel()
         }
     } ?: emptyList()
 
-    val isAdmin = uiState.accessTokenModelList?.first()?.isAdmin
+    val isAdmin by remember { derivedStateOf { uiState.accessTokenModelList?.first()?.isAdmin } }
 
     LaunchedEffect(uiState) {
         launch {
@@ -51,10 +52,7 @@ fun MenuDrawer(
                 vehicleConfig = uiState.vehicleConfig,
                 crewMenuItems = crewMenuItems,
                 menuItems = getDrawerMenuItemList(LocalContext.current, isAdmin),
-                onMenuItemClick = {
-                    viewModel.getOperationConfig()
-                    onClick(it)
-                },
+                onMenuItemClick = onClick,
                 onLogout = {
                     if (isAdmin == true) {
                         viewModel.logoutAdmin(it.username)
@@ -81,7 +79,7 @@ fun MenuDrawer(
 @Composable
 fun MenuDrawerPreview() {
     MenuDrawer(
-        rememberDrawerState(initialValue = DrawerValue.Closed),
+        drawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
         onClick = {},
         onLogout = {}
     ) {}

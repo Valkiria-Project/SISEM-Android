@@ -94,7 +94,7 @@ fun MedicalHistoryViewScreen(
     }
 
     OnBannerHandler(uiModel = uiState.infoEvent) {
-        // FIXME: navigate to send email ?
+        // TECH-DEBT: navigate to send email?
     }
 
     OnBannerHandler(uiModel = uiState.errorEvent) { uiAction ->

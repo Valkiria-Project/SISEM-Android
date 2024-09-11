@@ -15,7 +15,7 @@ enum class TextStyle {
     HEADLINE_5,
     HEADLINE_6,
     HEADLINE_7,
-    HEADLINE_8;
+    HEADLINE_8
 }
 
 @Composable

@@ -23,11 +23,9 @@ data class MedicalHistoryNavigationModel(
 
             isInfoCardEvent -> navController.navigate(AphRoute.VitalSignsRoute)
 
-            isMedsSelectorEvent ->
-                navController.navigate(AphRoute.MedicineRoute)
+            isMedsSelectorEvent -> navController.navigate(AphRoute.MedicineRoute)
 
-            isSignatureEvent ->
-                navController.navigate(AphRoute.SignaturePadRoute)
+            isSignatureEvent -> navController.navigate(AphRoute.SignaturePadRoute)
 
             showCamera -> navController.navigate(AphRoute.CameraRoute)
             photoTaken -> with(navController) {

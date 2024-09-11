@@ -15,7 +15,8 @@ fun getLoginIncorrectErrorUiModel(): BannerUiModel {
         icon = "ic_alert",
         title = "Incorrecto",
         description = """Los datos de  usuario y/o contraseña son incorrectos. 
-            |Por favor verifíquelos.""".trimMargin()
+            |Por favor verifíquelos.
+            """.trimMargin()
     )
 }
 
@@ -32,7 +33,8 @@ fun getLoginDuplicatedErrorUiModel(): BannerUiModel {
         icon = "ic_duplicated",
         title = "Duplicidad",
         description = """El usuario ya se encuentra autenticado en 5421244, no es permitida
-            | la conexión simultánea.""".trimMargin()
+            | la conexión simultánea.
+            """.trimMargin()
     )
 }
 
@@ -41,6 +43,7 @@ fun getLoginUnassignedErrorUiModel(): BannerUiModel {
         icon = "ic_ambulance",
         title = "No asignado",
         description = """"El dispositivo no se encuentra asociado al vehículo, debe comunicarse
-            | con el Líder APH de la subred.""".trimMargin()
+            | con el Líder APH de la subred.
+            """.trimMargin()
     )
 }

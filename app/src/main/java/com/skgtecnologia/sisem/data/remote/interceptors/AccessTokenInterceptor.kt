@@ -25,19 +25,17 @@ class AccessTokenInterceptor @Inject constructor(
     private val storageProvider: StorageProvider
 ) : Interceptor {
 
-    override fun intercept(chain: Interceptor.Chain): Response {
-        return try {
-            val newRequest = chain.request().signedRequest()
+    override fun intercept(chain: Interceptor.Chain): Response = try {
+        val newRequest = chain.request().signedRequest()
 
-            if (newRequest != null) {
-                chain.proceed(newRequest)
-            } else {
-                chain.proceed(chain.request())
-            }
-        } catch (connectException: ConnectException) {
-            Timber.d("ConnectException ${connectException.message}")
+        if (newRequest != null) {
+            chain.proceed(newRequest)
+        } else {
             chain.proceed(chain.request())
         }
+    } catch (connectException: ConnectException) {
+        Timber.d("ConnectException ${connectException.message}")
+        chain.proceed(chain.request())
     }
 
     @Suppress("ComplexMethod")

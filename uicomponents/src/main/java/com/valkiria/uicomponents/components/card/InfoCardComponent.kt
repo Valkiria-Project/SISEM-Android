@@ -228,7 +228,7 @@ fun InfoCardComponent(
                     }
                 }
 
-                uiModel.chipSection?.let { it ->
+                uiModel.chipSection?.let {
                     Text(
                         text = it.title.text,
                         style = it.title.textStyle.toTextStyle(),

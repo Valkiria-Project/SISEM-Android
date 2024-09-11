@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
+
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeCompiler)
@@ -31,6 +33,7 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -49,7 +52,10 @@ android {
 }
 
 composeCompiler {
-    enableStrongSkippingMode = true
+    featureFlags.addAll(
+        ComposeFeatureFlag.OptimizeNonSkippingGroups,
+        ComposeFeatureFlag.StrongSkipping
+    )
 
     reportsDestination = layout.buildDirectory.dir("compose_compiler")
 }
@@ -59,7 +65,9 @@ dependencies {
     // Android
     implementation(libs.activity.compose)
     implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.androidx.fragment.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.ui.viewbinding)
     implementation(libs.material)
 
     // Compose
@@ -82,7 +90,7 @@ dependencies {
 
     // Maps
     api(libs.mapbox.navigation.android)
-    api(libs.mapbox.navigation.dropin)
+    api(libs.mapbox.navigation.ui.components)
 
     // Unit Testing
     testImplementation(libs.junit)

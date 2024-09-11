@@ -67,7 +67,7 @@ class ChangePasswordViewModel @Inject constructor(
     }
 
     fun change() {
-        // FIXME: Move this to the Use Case
+        // TECH-DEBT: Move this to the Use Case
         uiState = uiState.copy(
             validateFields = true
         )

@@ -48,20 +48,18 @@ fun getTransmiNotificationDataByType(
 
 fun getTransmiNotificationRawDataByType(
     transmiNotification: TransmiNotification
-): Map<String, String> {
-    return when (transmiNotification) {
-        is TransmilenioAuthorizationNotification -> mapOf(
-            NOTIFICATION_TYPE_KEY to transmiNotification.notificationType.name,
-            AUTHORIZATION_NUMBER to transmiNotification.authorizationNumber,
-            AUTHORIZES to transmiNotification.authorizes,
-            JOURNEY to transmiNotification.journey
-        )
+): Map<String, String> = when (transmiNotification) {
+    is TransmilenioAuthorizationNotification -> mapOf(
+        NOTIFICATION_TYPE_KEY to transmiNotification.notificationType.name,
+        AUTHORIZATION_NUMBER to transmiNotification.authorizationNumber,
+        AUTHORIZES to transmiNotification.authorizes,
+        JOURNEY to transmiNotification.journey
+    )
 
-        is TransmilenioDeniedNotification -> mapOf(
-            NOTIFICATION_TYPE_KEY to transmiNotification.notificationType.name,
-            AUTHORIZATION_NUMBER_DENIED to transmiNotification.authorizationNumber
-        )
+    is TransmilenioDeniedNotification -> mapOf(
+        NOTIFICATION_TYPE_KEY to transmiNotification.notificationType.name,
+        AUTHORIZATION_NUMBER_DENIED to transmiNotification.authorizationNumber
+    )
 
-        else -> error("Invalid Transmi Notification Type")
-    }
+    else -> error("Invalid Transmi Notification Type")
 }
