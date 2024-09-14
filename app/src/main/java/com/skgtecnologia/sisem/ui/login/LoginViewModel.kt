@@ -137,6 +137,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    @Suppress("LongMethod")
     private fun authenticate() {
         uiState.update {
             it.copy(
