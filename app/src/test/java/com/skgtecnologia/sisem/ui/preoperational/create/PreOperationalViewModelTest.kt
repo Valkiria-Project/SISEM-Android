@@ -13,6 +13,7 @@ import com.skgtecnologia.sisem.commons.inventoryCheckUiModelMock
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.commons.textFieldUiModelMock
 import com.skgtecnologia.sisem.commons.uiAction
+import com.skgtecnologia.sisem.core.navigation.AuthRoute
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.skgtecnologia.sisem.domain.authcards.model.VehicleConfigModel
@@ -21,8 +22,7 @@ import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
-import com.skgtecnologia.sisem.ui.login.LoginNavigationModel
-import com.skgtecnologia.sisem.ui.navigation.AuthRoute
+import com.skgtecnologia.sisem.features.login.navigation.LoginNavigationModel
 import com.valkiria.uicomponents.action.GenericUiAction
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery

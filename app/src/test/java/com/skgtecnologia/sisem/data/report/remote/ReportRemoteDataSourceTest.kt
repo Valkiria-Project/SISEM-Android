@@ -11,9 +11,9 @@ import com.skgtecnologia.sisem.commons.imageButtonSectionResponseMock
 import com.skgtecnologia.sisem.commons.imageModelMock
 import com.skgtecnologia.sisem.commons.resources.StorageProvider
 import com.skgtecnologia.sisem.commons.resources.StringProvider
-import com.skgtecnologia.sisem.data.remote.api.NetworkApi
-import com.skgtecnologia.sisem.data.remote.model.screen.ScreenResponse
-import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
+import com.skgtecnologia.sisem.core.data.remote.api.NetworkApi
+import com.skgtecnologia.sisem.core.data.remote.model.screen.ScreenResponse
+import com.skgtecnologia.sisem.core.data.remote.model.screen.mapToDomain
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery

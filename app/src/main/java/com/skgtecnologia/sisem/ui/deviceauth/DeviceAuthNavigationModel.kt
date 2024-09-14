@@ -1,11 +1,11 @@
 package com.skgtecnologia.sisem.ui.deviceauth
 
 import androidx.navigation.NavHostController
-import com.skgtecnologia.sisem.ui.navigation.AuthRoute
-import com.skgtecnologia.sisem.ui.navigation.LOGIN
-import com.skgtecnologia.sisem.ui.navigation.MAIN
-import com.skgtecnologia.sisem.ui.navigation.NavGraph
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
+import com.skgtecnologia.sisem.core.navigation.AuthRoute
+import com.skgtecnologia.sisem.core.navigation.LOGIN
+import com.skgtecnologia.sisem.core.navigation.MAIN
+import com.skgtecnologia.sisem.core.navigation.NavGraph
+import com.skgtecnologia.sisem.core.navigation.NavigationModel
 
 data class DeviceAuthNavigationModel(
     val isCrewList: Boolean = false,

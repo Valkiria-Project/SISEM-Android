@@ -7,7 +7,7 @@ import com.skgtecnologia.sisem.domain.changepassword.usecases.ChangePassword
 import com.skgtecnologia.sisem.domain.changepassword.usecases.GetChangePasswordScreen
 import com.skgtecnologia.sisem.domain.changepassword.usecases.GetLoginNavigationModel
 import com.skgtecnologia.sisem.domain.changepassword.usecases.OnCancel
-import com.skgtecnologia.sisem.ui.login.LoginNavigationModel
+import com.skgtecnologia.sisem.features.login.navigation.LoginNavigationModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK

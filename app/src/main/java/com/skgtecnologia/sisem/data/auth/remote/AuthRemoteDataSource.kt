@@ -1,9 +1,9 @@
 package com.skgtecnologia.sisem.data.auth.remote
 
 import com.skgtecnologia.sisem.commons.extensions.mapResult
+import com.skgtecnologia.sisem.core.data.remote.api.NetworkApi
 import com.skgtecnologia.sisem.data.auth.remote.model.AuthenticateBody
 import com.skgtecnologia.sisem.data.auth.remote.model.mapToDomain
-import com.skgtecnologia.sisem.data.remote.api.NetworkApi
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.auth.model.RefreshTokenModel
 import javax.inject.Inject

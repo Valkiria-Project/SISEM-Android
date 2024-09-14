@@ -2,8 +2,8 @@ package com.skgtecnologia.sisem.ui.signature.init
 
 import androidx.navigation.NavHostController
 import com.skgtecnologia.sisem.commons.extensions.navigateBack
-import com.skgtecnologia.sisem.ui.navigation.MainRoute
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
+import com.skgtecnologia.sisem.core.navigation.MainRoute
+import com.skgtecnologia.sisem.core.navigation.NavigationModel
 
 data class InitSignatureNavigationModel(
     val back: Boolean = false,

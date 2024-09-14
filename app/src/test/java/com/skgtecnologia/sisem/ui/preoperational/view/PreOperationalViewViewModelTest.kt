@@ -9,9 +9,9 @@ import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.commons.uiAction
+import com.skgtecnologia.sisem.core.navigation.MainRoute
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreenView
-import com.skgtecnologia.sisem.ui.navigation.MainRoute
 import com.valkiria.uicomponents.bricks.banner.finding.FindingsDetailUiModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery

@@ -2,8 +2,8 @@ package com.skgtecnologia.sisem.di
 
 import android.content.Context
 import androidx.room.Room
+import com.skgtecnologia.sisem.core.data.local.SisemDatabase
 import com.skgtecnologia.sisem.data.auth.cache.dao.AccessTokenDao
-import com.skgtecnologia.sisem.data.cache.SisemDatabase
 import com.skgtecnologia.sisem.data.incident.cache.dao.IncidentDao
 import com.skgtecnologia.sisem.data.notification.cache.dao.NotificationDao
 import com.skgtecnologia.sisem.data.operation.cache.dao.OperationDao

@@ -2,9 +2,9 @@ package com.skgtecnologia.sisem.ui.medicalhistory.create
 
 import androidx.navigation.NavHostController
 import com.skgtecnologia.sisem.commons.extensions.navigateBack
-import com.skgtecnologia.sisem.ui.navigation.AphRoute
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
+import com.skgtecnologia.sisem.core.navigation.AphRoute
+import com.skgtecnologia.sisem.core.navigation.NavigationArgument
+import com.skgtecnologia.sisem.core.navigation.NavigationModel
 
 data class MedicalHistoryNavigationModel(
     val isInfoCardEvent: Boolean = false,

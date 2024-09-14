@@ -1,8 +1,8 @@
 package com.skgtecnologia.sisem.data.operation.remote
 
 import com.skgtecnologia.sisem.commons.extensions.mapResult
+import com.skgtecnologia.sisem.core.data.remote.api.NetworkApi
 import com.skgtecnologia.sisem.data.operation.remote.model.mapToDomain
-import com.skgtecnologia.sisem.data.remote.api.NetworkApi
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import javax.inject.Inject
 

@@ -6,10 +6,10 @@ import com.skgtecnologia.sisem.commons.DOCUMENT
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.emptyScreenModel
+import com.skgtecnologia.sisem.core.navigation.MainRoute
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.signature.usecases.GetSignatureScreen
 import com.skgtecnologia.sisem.domain.signature.usecases.RegisterSignature
-import com.skgtecnologia.sisem.ui.navigation.MainRoute
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK

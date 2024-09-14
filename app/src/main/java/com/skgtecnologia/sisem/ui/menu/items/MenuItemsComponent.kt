@@ -12,8 +12,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.skgtecnologia.sisem.ui.navigation.MainRoute
-import com.skgtecnologia.sisem.ui.navigation.NavRoute
+import com.skgtecnologia.sisem.core.navigation.MainRoute
+import com.skgtecnologia.sisem.core.navigation.NavRoute
 import kotlinx.coroutines.launch
 
 @Composable

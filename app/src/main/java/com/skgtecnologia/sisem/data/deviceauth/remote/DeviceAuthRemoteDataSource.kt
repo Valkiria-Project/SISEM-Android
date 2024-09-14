@@ -1,12 +1,12 @@
 package com.skgtecnologia.sisem.data.deviceauth.remote
 
 import com.skgtecnologia.sisem.commons.extensions.mapResult
+import com.skgtecnologia.sisem.core.data.remote.api.NetworkApi
+import com.skgtecnologia.sisem.core.data.remote.model.screen.Params
+import com.skgtecnologia.sisem.core.data.remote.model.screen.ScreenBody
+import com.skgtecnologia.sisem.core.data.remote.model.screen.mapToDomain
 import com.skgtecnologia.sisem.data.deviceauth.remote.model.AssociateDeviceBody
 import com.skgtecnologia.sisem.data.deviceauth.remote.model.mapToDomain
-import com.skgtecnologia.sisem.data.remote.api.NetworkApi
-import com.skgtecnologia.sisem.data.remote.model.screen.Params
-import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
-import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
 import com.skgtecnologia.sisem.domain.deviceauth.model.AssociateDeviceModel
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceModel
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel

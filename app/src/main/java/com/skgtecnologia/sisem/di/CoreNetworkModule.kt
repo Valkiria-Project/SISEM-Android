@@ -1,43 +1,41 @@
 package com.skgtecnologia.sisem.di
 
 import com.skgtecnologia.sisem.BuildConfig
-import com.skgtecnologia.sisem.data.remote.adapters.ArrangementAdapter
-import com.skgtecnologia.sisem.data.remote.adapters.KeyboardOptionsAdapter
-import com.skgtecnologia.sisem.data.remote.adapters.ModifierAdapter
-import com.skgtecnologia.sisem.data.remote.model.components.BodyRowResponse
-import com.skgtecnologia.sisem.data.remote.model.components.body.HumanBodyResponse
-import com.skgtecnologia.sisem.data.remote.model.components.button.ButtonResponse
-import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonResponse
-import com.skgtecnologia.sisem.data.remote.model.components.button.ImageButtonSectionResponse
-import com.skgtecnologia.sisem.data.remote.model.components.card.InfoCardResponse
-import com.skgtecnologia.sisem.data.remote.model.components.card.SimpleCardResponse
-import com.skgtecnologia.sisem.data.remote.model.components.card.StaggeredCardsResponse
-import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipOptionsResponse
-import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipResponse
-import com.skgtecnologia.sisem.data.remote.model.components.chip.ChipSelectionResponse
-import com.skgtecnologia.sisem.data.remote.model.components.chip.FiltersResponse
-import com.skgtecnologia.sisem.data.remote.model.components.detailedinfolist.DetailedInfoListResponse
-import com.skgtecnologia.sisem.data.remote.model.components.dropdown.DropDownResponse
-import com.skgtecnologia.sisem.data.remote.model.components.finding.FindingResponse
-import com.skgtecnologia.sisem.data.remote.model.components.fingerprint.FingerprintResponse
-import com.skgtecnologia.sisem.data.remote.model.components.header.HeaderResponse
-import com.skgtecnologia.sisem.data.remote.model.components.inventorycheck.InventoryCheckResponse
-import com.skgtecnologia.sisem.data.remote.model.components.inventorysearch.InventorySearchResponse
-import com.skgtecnologia.sisem.data.remote.model.components.label.LabelResponse
-import com.skgtecnologia.sisem.data.remote.model.components.media.MediaActionsResponse
-import com.skgtecnologia.sisem.data.remote.model.components.medsselector.MedsSelectorResponse
-import com.skgtecnologia.sisem.data.remote.model.components.obstetrician.ObstetricianDataResponse
-import com.skgtecnologia.sisem.data.remote.model.components.richlabel.RichLabelResponse
-import com.skgtecnologia.sisem.data.remote.model.components.segmentedswitch.SegmentedSwitchResponse
-import com.skgtecnologia.sisem.data.remote.model.components.signature.CrewMemberSignatureResponse
-import com.skgtecnologia.sisem.data.remote.model.components.signature.SignatureResponse
-import com.skgtecnologia.sisem.data.remote.model.components.slider.SliderResponse
-import com.skgtecnologia.sisem.data.remote.model.components.stepper.StepperResponse
-import com.skgtecnologia.sisem.data.remote.model.components.termsandconditions.TermsAndConditionsResponse
-import com.skgtecnologia.sisem.data.remote.model.components.textfield.PasswordTextFieldResponse
-import com.skgtecnologia.sisem.data.remote.model.components.textfield.TextFieldResponse
-import com.skgtecnologia.sisem.data.remote.model.components.time.TimePickerResponse
-import com.skgtecnologia.sisem.data.remote.model.components.timeline.TimelineResponse
+import com.skgtecnologia.sisem.core.data.remote.adapters.ArrangementAdapter
+import com.skgtecnologia.sisem.core.data.remote.adapters.KeyboardOptionsAdapter
+import com.skgtecnologia.sisem.core.data.remote.adapters.ModifierAdapter
+import com.skgtecnologia.sisem.core.data.remote.model.components.button.ButtonResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.button.ImageButtonResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.button.ImageButtonSectionResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.card.InfoCardResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.card.SimpleCardResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.card.StaggeredCardsResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.chip.ChipOptionsResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.chip.ChipResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.chip.ChipSelectionResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.chip.FiltersResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.detailedinfolist.DetailedInfoListResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.dropdown.DropDownResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.finding.FindingResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.fingerprint.FingerprintResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.humanbody.HumanBodyResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.inventorycheck.InventoryCheckResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.inventorysearch.InventorySearchResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.media.MediaActionsResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.medsselector.MedsSelectorResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.obstetrician.ObstetricianDataResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.richlabel.RichLabelResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.segmentedswitch.SegmentedSwitchResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.signature.CrewMemberSignatureResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.signature.SignatureResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.stepper.StepperResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.termsandconditions.TermsAndConditionsResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.textfield.PasswordTextFieldResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.textfield.TextFieldResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.time.TimePickerResponse
+import com.skgtecnologia.sisem.core.data.remote.model.components.timeline.TimelineResponse
+import com.skgtecnologia.sisem.core.data.remote.model.screen.BodyRowResponse
+import com.skgtecnologia.sisem.core.data.remote.model.screen.HeaderResponse
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.EnumJsonAdapter
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
@@ -156,7 +154,7 @@ object CoreNetworkModule {
             InventoryCheckResponse::class.java,
             BodyRowType.INVENTORY_CHECK.name
         ).withSubtype(
-            LabelResponse::class.java,
+            com.skgtecnologia.sisem.core.data.remote.model.components.label.LabelResponse::class.java,
             BodyRowType.LABEL.name
         ).withSubtype(
             MediaActionsResponse::class.java,
@@ -180,7 +178,7 @@ object CoreNetworkModule {
             SimpleCardResponse::class.java,
             BodyRowType.SIMPLE_CARD.name
         ).withSubtype(
-            SliderResponse::class.java,
+            com.skgtecnologia.sisem.core.data.remote.model.components.slider.SliderResponse::class.java,
             BodyRowType.SLIDER.name
         ).withSubtype(
             StaggeredCardsResponse::class.java,

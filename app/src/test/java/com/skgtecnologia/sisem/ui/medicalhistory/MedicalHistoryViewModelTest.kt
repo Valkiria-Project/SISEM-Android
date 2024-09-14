@@ -22,6 +22,7 @@ import com.skgtecnologia.sisem.commons.signatureUiModelMock
 import com.skgtecnologia.sisem.commons.sliderUiModelMock
 import com.skgtecnologia.sisem.commons.textFieldUiModelMock
 import com.skgtecnologia.sisem.commons.uiAction
+import com.skgtecnologia.sisem.core.navigation.AphRoute
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.medicalhistory.model.ALIVE_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.APPLICATION_TIME_KEY
@@ -43,7 +44,6 @@ import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.ui.humanbody.area.FrontArea
 import com.skgtecnologia.sisem.ui.medicalhistory.create.MedicalHistoryViewModel
-import com.skgtecnologia.sisem.ui.navigation.AphRoute
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.components.chip.ChipOptionUiModel

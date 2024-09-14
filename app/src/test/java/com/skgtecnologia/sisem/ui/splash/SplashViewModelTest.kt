@@ -1,8 +1,8 @@
 package com.skgtecnologia.sisem.ui.splash
 
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
+import com.skgtecnologia.sisem.core.navigation.StartupNavigationModel
 import com.skgtecnologia.sisem.domain.operation.usecases.GetStartupState
-import com.skgtecnologia.sisem.ui.navigation.StartupNavigationModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK

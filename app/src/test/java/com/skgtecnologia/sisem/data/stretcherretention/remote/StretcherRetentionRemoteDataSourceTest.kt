@@ -6,9 +6,9 @@ import com.skgtecnologia.sisem.commons.footerResponseMock
 import com.skgtecnologia.sisem.commons.headerResponseMock
 import com.skgtecnologia.sisem.commons.resources.StorageProvider
 import com.skgtecnologia.sisem.commons.resources.StringProvider
-import com.skgtecnologia.sisem.data.remote.api.NetworkApi
-import com.skgtecnologia.sisem.data.remote.model.screen.ScreenResponse
-import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
+import com.skgtecnologia.sisem.core.data.remote.api.NetworkApi
+import com.skgtecnologia.sisem.core.data.remote.model.screen.ScreenResponse
+import com.skgtecnologia.sisem.core.data.remote.model.screen.mapToDomain
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every

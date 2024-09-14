@@ -1,0 +1,478 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 22,
+    "identityHash": "dddc7c3486a93395e7e4e3efd59283ba",
+    "entities": [
+      {
+        "tableName": "access_token",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `date_time` TEXT NOT NULL, `token` TEXT NOT NULL, `refresh_token` TEXT NOT NULL, `type` TEXT NOT NULL, `user_name` TEXT NOT NULL, `role` TEXT NOT NULL, `is_admin` INTEGER NOT NULL, `is_warning` INTEGER NOT NULL, `name_user` TEXT NOT NULL, `doc_type` TEXT NOT NULL, `document` TEXT NOT NULL, `refresh_date_time` TEXT NOT NULL, `exp_date` TEXT NOT NULL, `pre_operational_preoperational` TEXT, `pre_operational_type_resource` TEXT, `pre_operational_status` INTEGER, `turn_date` TEXT, `turn_isComplete` INTEGER, PRIMARY KEY(`user_id`))",
+        "fields": [
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dateTime",
+            "columnName": "date_time",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accessToken",
+            "columnName": "token",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "refreshToken",
+            "columnName": "refresh_token",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tokenType",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "username",
+            "columnName": "user_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "role",
+            "columnName": "role",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isAdmin",
+            "columnName": "is_admin",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isWarning",
+            "columnName": "is_warning",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nameUser",
+            "columnName": "name_user",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "docType",
+            "columnName": "doc_type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "document",
+            "columnName": "document",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "refreshDateTime",
+            "columnName": "refresh_date_time",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "expDate",
+            "columnName": "exp_date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "preoperational.preoperational",
+            "columnName": "pre_operational_preoperational",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "preoperational.typeResource",
+            "columnName": "pre_operational_type_resource",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "preoperational.status",
+            "columnName": "pre_operational_status",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "turn.date",
+            "columnName": "turn_date",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "turn.isComplete",
+            "columnName": "turn_isComplete",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "user_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_access_token_role",
+            "unique": true,
+            "columnNames": [
+              "role"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_access_token_role` ON `${TABLE_NAME}` (`role`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "incident",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `patients` TEXT NOT NULL, `resources` TEXT NOT NULL, `incident_priority` TEXT, `transmi_requests` TEXT, `latitude` REAL, `longitude` REAL, `is_active` INTEGER NOT NULL, `incident_id` INTEGER NOT NULL, `incident_code` TEXT NOT NULL, `incident_codeSisem` TEXT NOT NULL, `incident_address` TEXT NOT NULL, `incident_address_reference_point` TEXT NOT NULL, `incident_premier_one_date` TEXT NOT NULL, `incident_premier_one_hour` TEXT NOT NULL, `incident_doctor_auth_name` TEXT NOT NULL, `incident_incident_type_id` INTEGER NOT NULL, `incident_incident_type_code` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "patients",
+            "columnName": "patients",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "resources",
+            "columnName": "resources",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "incidentPriority",
+            "columnName": "incident_priority",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "transmiRequests",
+            "columnName": "transmi_requests",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "longitude",
+            "columnName": "longitude",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isActive",
+            "columnName": "is_active",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "incident.id",
+            "columnName": "incident_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "incident.code",
+            "columnName": "incident_code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "incident.codeSisem",
+            "columnName": "incident_codeSisem",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "incident.address",
+            "columnName": "incident_address",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "incident.addressReferencePoint",
+            "columnName": "incident_address_reference_point",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "incident.premierOneDate",
+            "columnName": "incident_premier_one_date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "incident.premierOneHour",
+            "columnName": "incident_premier_one_hour",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "incident.doctorAuthName",
+            "columnName": "incident_doctor_auth_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "incident.incidentType.id",
+            "columnName": "incident_incident_type_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "incident.incidentType.code",
+            "columnName": "incident_incident_type_code",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_incident_incident_id",
+            "unique": true,
+            "columnNames": [
+              "incident_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_incident_incident_id` ON `${TABLE_NAME}` (`incident_id`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "notification",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `notificationType` TEXT NOT NULL, `time` TEXT NOT NULL, `dateTime` TEXT NOT NULL, `data` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notificationType",
+            "columnName": "notificationType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "time",
+            "columnName": "time",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dateTime",
+            "columnName": "dateTime",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "data",
+            "columnName": "data",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_notification_data",
+            "unique": true,
+            "columnNames": [
+              "data"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_notification_data` ON `${TABLE_NAME}` (`data`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "operation",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `preoperational_time` INTEGER NOT NULL, `clinic_hist_observations_time` INTEGER NOT NULL, `login_time` INTEGER NOT NULL, `num_img_preoperational_driver` INTEGER NOT NULL, `num_img_preoperational_doctor` INTEGER NOT NULL, `num_img_preoperational_aux` INTEGER NOT NULL, `num_img_novelty` INTEGER NOT NULL, `auth_method` TEXT NOT NULL, `attentions_type` TEXT NOT NULL, `status` INTEGER NOT NULL, `vehicle_code` TEXT, `max_file_sizeKb` TEXT NOT NULL, `preoperational_exec` TEXT NOT NULL, `vehicle_config_zone` TEXT, `vehicle_config_status_code` TEXT, `vehicle_config_provider` TEXT, `vehicle_config_plate` TEXT, `vehicle_config_preoperational` TEXT, `vehicle_config_type_resource` TEXT, `vehicle_config_status_color` TEXT, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "preoperationalTime",
+            "columnName": "preoperational_time",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "clinicHistObservationsTime",
+            "columnName": "clinic_hist_observations_time",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "loginTime",
+            "columnName": "login_time",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "numImgPreoperationalDriver",
+            "columnName": "num_img_preoperational_driver",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "numImgPreoperationalDoctor",
+            "columnName": "num_img_preoperational_doctor",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "numImgPreoperationalAux",
+            "columnName": "num_img_preoperational_aux",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "numImgNovelty",
+            "columnName": "num_img_novelty",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "authMethod",
+            "columnName": "auth_method",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "attentionsType",
+            "columnName": "attentions_type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "vehicleCode",
+            "columnName": "vehicle_code",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "maxFileSizeKb",
+            "columnName": "max_file_sizeKb",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "preoperationalExec",
+            "columnName": "preoperational_exec",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "vehicleConfig.zone",
+            "columnName": "vehicle_config_zone",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "vehicleConfig.statusCode",
+            "columnName": "vehicle_config_status_code",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "vehicleConfig.provider",
+            "columnName": "vehicle_config_provider",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "vehicleConfig.plate",
+            "columnName": "vehicle_config_plate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "vehicleConfig.preoperational",
+            "columnName": "vehicle_config_preoperational",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "vehicleConfig.typeResource",
+            "columnName": "vehicle_config_type_resource",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "vehicleConfig.statusColor",
+            "columnName": "vehicle_config_status_color",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'dddc7c3486a93395e7e4e3efd59283ba')"
+    ]
+  }
+}

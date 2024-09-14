@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.data.location.remote
 
+import com.skgtecnologia.sisem.core.data.remote.api.NetworkApi
 import com.skgtecnologia.sisem.data.location.remote.model.LocationBody
-import com.skgtecnologia.sisem.data.remote.api.NetworkApi
 import timber.log.Timber
 import javax.inject.Inject
 

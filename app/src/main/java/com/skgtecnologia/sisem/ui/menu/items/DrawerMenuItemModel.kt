@@ -3,9 +3,9 @@ package com.skgtecnologia.sisem.ui.menu.items
 import android.content.Context
 import androidx.annotation.DrawableRes
 import com.skgtecnologia.sisem.R
-import com.skgtecnologia.sisem.ui.navigation.MainRoute
-import com.skgtecnologia.sisem.ui.navigation.NavRoute
-import com.skgtecnologia.sisem.ui.navigation.ReportRoute
+import com.skgtecnologia.sisem.core.navigation.MainRoute
+import com.skgtecnologia.sisem.core.navigation.NavRoute
+import com.skgtecnologia.sisem.core.navigation.ReportRoute
 import com.valkiria.uicomponents.R.drawable
 
 data class DrawerMenuItemModel(

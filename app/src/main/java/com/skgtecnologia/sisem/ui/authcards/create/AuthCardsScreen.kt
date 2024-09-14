@@ -23,9 +23,9 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
+import com.skgtecnologia.sisem.core.navigation.AuthRoute
 import com.skgtecnologia.sisem.ui.authcards.create.report.FindingsContent
 import com.skgtecnologia.sisem.ui.authcards.create.report.ReportDetailContent
-import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.AuthCardsUiAction

@@ -21,9 +21,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.skgtecnologia.sisem.commons.communication.IncidentEventHandler
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
+import com.skgtecnologia.sisem.core.navigation.AphRoute
+import com.skgtecnologia.sisem.core.navigation.NavRoute
 import com.skgtecnologia.sisem.ui.menu.MenuDrawer
-import com.skgtecnologia.sisem.ui.navigation.AphRoute
-import com.skgtecnologia.sisem.ui.navigation.NavRoute
 import com.valkiria.uicomponents.bricks.banner.BannerUiModel
 import com.valkiria.uicomponents.bricks.map.MapboxMapView
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData

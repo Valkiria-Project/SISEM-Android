@@ -12,11 +12,11 @@ import com.skgtecnologia.sisem.commons.OTHER
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
+import com.skgtecnologia.sisem.core.navigation.AuthRoute
 import com.skgtecnologia.sisem.domain.auth.usecases.DeleteAccessToken
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.AssociateDevice
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.GetDeviceAuthScreen
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
-import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import io.mockk.MockKAnnotations

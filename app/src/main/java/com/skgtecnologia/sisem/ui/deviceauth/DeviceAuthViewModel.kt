@@ -8,14 +8,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
+import com.skgtecnologia.sisem.core.navigation.AuthRoute
+import com.skgtecnologia.sisem.core.navigation.LOGIN
 import com.skgtecnologia.sisem.domain.auth.usecases.DeleteAccessToken
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.AssociateDevice
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.GetDeviceAuthScreen
 import com.skgtecnologia.sisem.domain.model.banner.disassociateDeviceBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
-import com.skgtecnologia.sisem.ui.navigation.AuthRoute
-import com.skgtecnologia.sisem.ui.navigation.LOGIN
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

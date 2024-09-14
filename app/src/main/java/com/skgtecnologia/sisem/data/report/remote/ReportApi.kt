@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.data.report.remote
 
-import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
-import com.skgtecnologia.sisem.data.remote.model.screen.ScreenResponse
+import com.skgtecnologia.sisem.core.data.remote.model.screen.ScreenBody
+import com.skgtecnologia.sisem.core.data.remote.model.screen.ScreenResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response

@@ -2,14 +2,14 @@ package com.skgtecnologia.sisem.ui.report
 
 import androidx.navigation.NavHostController
 import com.skgtecnologia.sisem.commons.extensions.navigateBack
+import com.skgtecnologia.sisem.core.navigation.AuthRoute
+import com.skgtecnologia.sisem.core.navigation.FINDING
+import com.skgtecnologia.sisem.core.navigation.NavGraph
+import com.skgtecnologia.sisem.core.navigation.NavigationArgument
+import com.skgtecnologia.sisem.core.navigation.NavigationModel
+import com.skgtecnologia.sisem.core.navigation.REPORT
+import com.skgtecnologia.sisem.core.navigation.ReportRoute
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
-import com.skgtecnologia.sisem.ui.navigation.AuthRoute
-import com.skgtecnologia.sisem.ui.navigation.FINDING
-import com.skgtecnologia.sisem.ui.navigation.NavGraph
-import com.skgtecnologia.sisem.ui.navigation.NavigationArgument
-import com.skgtecnologia.sisem.ui.navigation.NavigationModel
-import com.skgtecnologia.sisem.ui.navigation.REPORT
-import com.skgtecnologia.sisem.ui.navigation.ReportRoute
 
 data class ReportNavigationModel(
     val goBackFromReport: Boolean = false,

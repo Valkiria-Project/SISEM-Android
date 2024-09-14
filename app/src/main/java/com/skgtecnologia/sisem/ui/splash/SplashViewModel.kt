@@ -2,8 +2,8 @@ package com.skgtecnologia.sisem.ui.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.core.navigation.StartupNavigationModel
 import com.skgtecnologia.sisem.domain.operation.usecases.GetStartupState
-import com.skgtecnologia.sisem.ui.navigation.StartupNavigationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

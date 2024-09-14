@@ -1,10 +1,10 @@
 package com.skgtecnologia.sisem.di
 
 import com.skgtecnologia.sisem.BuildConfig
-import com.skgtecnologia.sisem.data.remote.interceptors.AccessTokenAuthenticator
-import com.skgtecnologia.sisem.data.remote.interceptors.AccessTokenInterceptor
-import com.skgtecnologia.sisem.data.remote.interceptors.AuditInterceptor
-import com.skgtecnologia.sisem.data.remote.interceptors.NetworkInterceptor
+import com.skgtecnologia.sisem.core.data.remote.interceptors.AccessTokenAuthenticator
+import com.skgtecnologia.sisem.core.data.remote.interceptors.AccessTokenInterceptor
+import com.skgtecnologia.sisem.core.data.remote.interceptors.AuditInterceptor
+import com.skgtecnologia.sisem.core.data.remote.interceptors.NetworkInterceptor
 import com.skgtecnologia.sisem.di.qualifiers.BearerAuthentication
 import com.squareup.moshi.Moshi
 import dagger.Module

@@ -1,14 +1,14 @@
 package com.skgtecnologia.sisem.data.medicalhistory.remote
 
 import com.skgtecnologia.sisem.commons.extensions.mapResult
+import com.skgtecnologia.sisem.core.data.remote.api.NetworkApi
+import com.skgtecnologia.sisem.core.data.remote.extensions.createRequestBody
+import com.skgtecnologia.sisem.core.data.remote.model.screen.Params
+import com.skgtecnologia.sisem.core.data.remote.model.screen.ScreenBody
+import com.skgtecnologia.sisem.core.data.remote.model.screen.mapToDomain
 import com.skgtecnologia.sisem.data.medicalhistory.remote.model.DeleteAphFileBody
 import com.skgtecnologia.sisem.data.medicalhistory.remote.model.MedicalHistoryBody
 import com.skgtecnologia.sisem.data.medicalhistory.remote.model.mapToBody
-import com.skgtecnologia.sisem.data.remote.api.NetworkApi
-import com.skgtecnologia.sisem.data.remote.extensions.createRequestBody
-import com.skgtecnologia.sisem.data.remote.model.screen.Params
-import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
-import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.valkiria.uicomponents.components.humanbody.HumanBodyUi

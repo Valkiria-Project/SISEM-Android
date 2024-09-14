@@ -13,9 +13,9 @@ import com.skgtecnologia.sisem.commons.noveltyMock
 import com.skgtecnologia.sisem.commons.resources.StorageProvider
 import com.skgtecnologia.sisem.commons.resources.StringProvider
 import com.skgtecnologia.sisem.commons.simpleCardResponseMock
-import com.skgtecnologia.sisem.data.remote.api.NetworkApi
-import com.skgtecnologia.sisem.data.remote.model.screen.ScreenResponse
-import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
+import com.skgtecnologia.sisem.core.data.remote.api.NetworkApi
+import com.skgtecnologia.sisem.core.data.remote.model.screen.ScreenResponse
+import com.skgtecnologia.sisem.core.data.remote.model.screen.mapToDomain
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery

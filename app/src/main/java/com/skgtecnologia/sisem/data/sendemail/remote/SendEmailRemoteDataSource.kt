@@ -1,6 +1,6 @@
 package com.skgtecnologia.sisem.data.sendemail.remote
 
-import com.skgtecnologia.sisem.data.remote.api.NetworkApi
+import com.skgtecnologia.sisem.core.data.remote.api.NetworkApi
 import com.skgtecnologia.sisem.data.sendemail.remote.model.SendEmailBody
 import javax.inject.Inject
 

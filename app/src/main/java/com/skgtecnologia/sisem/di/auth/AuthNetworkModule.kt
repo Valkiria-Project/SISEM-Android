@@ -1,9 +1,9 @@
 package com.skgtecnologia.sisem.di.auth
 
 import com.skgtecnologia.sisem.BuildConfig
+import com.skgtecnologia.sisem.core.data.remote.interceptors.AuditInterceptor
+import com.skgtecnologia.sisem.core.data.remote.interceptors.NetworkInterceptor
 import com.skgtecnologia.sisem.data.auth.remote.AuthApi
-import com.skgtecnologia.sisem.data.remote.interceptors.AuditInterceptor
-import com.skgtecnologia.sisem.data.remote.interceptors.NetworkInterceptor
 import com.skgtecnologia.sisem.di.CLIENT_TIMEOUT_DEFAULTS
 import com.skgtecnologia.sisem.di.CoreNetworkModule
 import com.skgtecnologia.sisem.di.qualifiers.BasicAuthentication

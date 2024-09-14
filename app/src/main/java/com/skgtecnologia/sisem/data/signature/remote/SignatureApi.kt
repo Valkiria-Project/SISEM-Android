@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.data.signature.remote
 
-import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
-import com.skgtecnologia.sisem.data.remote.model.screen.ScreenResponse
+import com.skgtecnologia.sisem.core.data.remote.model.screen.ScreenBody
+import com.skgtecnologia.sisem.core.data.remote.model.screen.ScreenResponse
 import com.skgtecnologia.sisem.data.signature.remote.model.SignatureBody
 import retrofit2.Response
 import retrofit2.http.Body

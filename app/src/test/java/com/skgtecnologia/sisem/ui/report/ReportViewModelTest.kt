@@ -6,11 +6,11 @@ import com.skgtecnologia.sisem.commons.DRIVER_ROLE
 import com.skgtecnologia.sisem.commons.ID_FINDING
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
+import com.skgtecnologia.sisem.core.navigation.ReportRoute
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.domain.report.usecases.SendReport
-import com.skgtecnologia.sisem.ui.navigation.ReportRoute
 import com.valkiria.uicomponents.components.media.MediaItemUiModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery

@@ -12,11 +12,11 @@ import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.commons.uiAction
+import com.skgtecnologia.sisem.core.navigation.MainRoute
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.stretcherretention.usecases.GetStretcherRetentionScreen
 import com.skgtecnologia.sisem.domain.stretcherretention.usecases.SaveStretcherRetention
-import com.skgtecnologia.sisem.ui.navigation.MainRoute
 import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import io.mockk.MockKAnnotations

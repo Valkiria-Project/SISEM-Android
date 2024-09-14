@@ -1,11 +1,11 @@
 package com.skgtecnologia.sisem.data.report.remote
 
 import com.skgtecnologia.sisem.commons.extensions.mapResult
-import com.skgtecnologia.sisem.data.remote.api.NetworkApi
-import com.skgtecnologia.sisem.data.remote.extensions.createRequestBody
-import com.skgtecnologia.sisem.data.remote.model.screen.Params
-import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
-import com.skgtecnologia.sisem.data.remote.model.screen.mapToDomain
+import com.skgtecnologia.sisem.core.data.remote.api.NetworkApi
+import com.skgtecnologia.sisem.core.data.remote.extensions.createRequestBody
+import com.skgtecnologia.sisem.core.data.remote.model.screen.Params
+import com.skgtecnologia.sisem.core.data.remote.model.screen.ScreenBody
+import com.skgtecnologia.sisem.core.data.remote.model.screen.mapToDomain
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
 import com.skgtecnologia.sisem.domain.report.model.ImageModel

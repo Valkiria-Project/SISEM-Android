@@ -10,13 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.skgtecnologia.sisem.core.navigation.NavRoute
 import com.skgtecnologia.sisem.domain.authcards.model.VehicleConfigModel
 import com.skgtecnologia.sisem.ui.menu.footer.MenuFooterComponent
 import com.skgtecnologia.sisem.ui.menu.header.CrewMemberMenuItemModel
 import com.skgtecnologia.sisem.ui.menu.header.MenuHeaderComponent
 import com.skgtecnologia.sisem.ui.menu.items.DrawerMenuItemModel
 import com.skgtecnologia.sisem.ui.menu.items.MenuItemsComponent
-import com.skgtecnologia.sisem.ui.navigation.NavRoute
 
 @Suppress("LongParameterList")
 @Composable

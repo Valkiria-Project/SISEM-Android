@@ -5,7 +5,7 @@ import com.skgtecnologia.sisem.commons.extensions.resultOf
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
 import com.skgtecnologia.sisem.domain.operation.OperationRepository
-import com.skgtecnologia.sisem.ui.login.LoginNavigationModel
+import com.skgtecnologia.sisem.features.login.navigation.LoginNavigationModel
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 

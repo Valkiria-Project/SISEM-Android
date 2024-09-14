@@ -1,9 +1,9 @@
 package com.skgtecnologia.sisem.data.medicalhistory.remote
 
+import com.skgtecnologia.sisem.core.data.remote.model.screen.ScreenBody
+import com.skgtecnologia.sisem.core.data.remote.model.screen.ScreenResponse
 import com.skgtecnologia.sisem.data.medicalhistory.remote.model.DeleteAphFileBody
 import com.skgtecnologia.sisem.data.medicalhistory.remote.model.MedicalHistoryBody
-import com.skgtecnologia.sisem.data.remote.model.screen.ScreenBody
-import com.skgtecnologia.sisem.data.remote.model.screen.ScreenResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
