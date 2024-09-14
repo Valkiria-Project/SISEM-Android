@@ -104,6 +104,9 @@ class LoginViewModel @Inject constructor(
                 identifier = LOGIN_EMAIL_IDENTIFIER,
                 updater = { model ->
                     if (model is TextFieldUiModel) {
+                        username = previousUsername
+                        isValidUsername = true
+
                         model.copy(text = previousUsername)
                     } else {
                         model
