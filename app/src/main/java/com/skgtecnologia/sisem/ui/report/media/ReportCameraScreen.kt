@@ -2,11 +2,13 @@ package com.skgtecnologia.sisem.ui.report.media
 
 import android.Manifest
 import android.content.Context
+import androidx.camera.core.CameraProvider
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -44,6 +46,7 @@ import com.skgtecnologia.sisem.ui.commons.utils.MediaStoreUtils
 import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
 import com.skgtecnologia.sisem.ui.report.ReportUiState
 import com.skgtecnologia.sisem.ui.report.ReportViewModel
+import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import com.valkiria.uicomponents.components.media.MediaItemUiModel
 import com.valkiria.uicomponents.extensions.handleMediaUris
 import kotlinx.coroutines.launch
@@ -78,9 +81,16 @@ fun ReportCameraScreen(
 
     if (cameraPermission.isGranted) {
         Timber.d("Show Camera")
-        CameraPreview(modifier, uiState) { mediaItemUiModel ->
-            viewModel.onPhotoTaken(mediaItemUiModel)
-        }
+        CameraPreview(
+            modifier = modifier,
+            uiState = uiState,
+            onPhotoStarted = {
+                viewModel.onPhotoStarted()
+            },
+            onPhotoTaken = { mediaItemUiModel -> viewModel.onPhotoTaken(mediaItemUiModel) }
+        )
+
+        OnLoadingHandler(uiState.isLoading, modifier)
     } else if (cameraPermission.shouldShowRationale) {
         Timber.d("Show rationale")
     }
@@ -90,6 +100,7 @@ fun ReportCameraScreen(
 private fun CameraPreview(
     modifier: Modifier,
     uiState: ReportUiState,
+    onPhotoStarted: () -> Unit,
     onPhotoTaken: (mediaItemUiModel: MediaItemUiModel) -> Unit
 ) {
     val context = LocalContext.current
@@ -123,6 +134,8 @@ private fun CameraPreview(
                 .padding(bottom = 20.dp)
                 .size(92.dp),
             onClick = {
+                onPhotoStarted()
+
                 imageCapture.takePicture(
                     cameraUtils.getOutputOptions(),
                     Executors.newSingleThreadExecutor(),

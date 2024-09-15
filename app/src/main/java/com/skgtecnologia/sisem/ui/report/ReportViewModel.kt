@@ -393,6 +393,11 @@ class ReportViewModel @Inject constructor(
         }
     }
 
+
+    fun onPhotoStarted() {
+        uiState.update { it.copy(isLoading = true) }
+    }
+
     fun onPhotoTaken(mediaItemUiModel: MediaItemUiModel) {
         val imageLimit = getImageLimit(
             uiState.value.isFromPreOperational
@@ -409,6 +414,7 @@ class ReportViewModel @Inject constructor(
 
         uiState.update {
             it.copy(
+                isLoading = false,
                 selectedMediaItems = updatedSelectedImages,
                 navigationModel = ReportNavigationModel(
                     photoTaken = true
