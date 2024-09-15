@@ -59,12 +59,10 @@ class MenuViewModelTest {
         coEvery { getAllAccessTokens.invoke() } returns Result.failure(Throwable())
 
         viewModel = MenuViewModel(
-            androidIdProvider = androidIdProvider,
             getAllAccessTokens = getAllAccessTokens,
-            getOperationConfig = getOperationConfig,
-            observeOperationConfig = observeOperationConfig,
             logout = logout,
-            logoutTurn = logoutTurn
+            logoutTurn = logoutTurn,
+            observeOperationConfig = observeOperationConfig
         )
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.errorModel?.title)
@@ -81,12 +79,10 @@ class MenuViewModelTest {
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationConfig)
 
         viewModel = MenuViewModel(
-            androidIdProvider = androidIdProvider,
             getAllAccessTokens = getAllAccessTokens,
-            getOperationConfig = getOperationConfig,
-            observeOperationConfig = observeOperationConfig,
             logout = logout,
-            logoutTurn = logoutTurn
+            logoutTurn = logoutTurn,
+            observeOperationConfig = observeOperationConfig
         )
 
         Assert.assertEquals(vehicleConfigModel, viewModel.uiState.vehicleConfig)
@@ -100,12 +96,10 @@ class MenuViewModelTest {
         coEvery { observeOperationConfig.invoke() } returns Result.failure(IllegalStateException())
 
         viewModel = MenuViewModel(
-            androidIdProvider = androidIdProvider,
             getAllAccessTokens = getAllAccessTokens,
-            getOperationConfig = getOperationConfig,
-            observeOperationConfig = observeOperationConfig,
             logout = logout,
-            logoutTurn = logoutTurn
+            logoutTurn = logoutTurn,
+            observeOperationConfig = observeOperationConfig
         )
 
         Assert.assertEquals(null, viewModel.uiState.accessTokenModelList)
@@ -124,12 +118,10 @@ class MenuViewModelTest {
         coEvery { logoutTurn.invoke(USERNAME) } returns Result.success("")
 
         viewModel = MenuViewModel(
-            androidIdProvider = androidIdProvider,
             getAllAccessTokens = getAllAccessTokens,
-            getOperationConfig = getOperationConfig,
-            observeOperationConfig = observeOperationConfig,
             logout = logout,
-            logoutTurn = logoutTurn
+            logoutTurn = logoutTurn,
+            observeOperationConfig = observeOperationConfig
         )
 
         viewModel.logout(USERNAME)
@@ -149,12 +141,10 @@ class MenuViewModelTest {
         coEvery { logoutTurn.invoke(USERNAME) } returns Result.failure(Throwable())
 
         viewModel = MenuViewModel(
-            androidIdProvider = androidIdProvider,
             getAllAccessTokens = getAllAccessTokens,
-            getOperationConfig = getOperationConfig,
-            observeOperationConfig = observeOperationConfig,
             logout = logout,
-            logoutTurn = logoutTurn
+            logoutTurn = logoutTurn,
+            observeOperationConfig = observeOperationConfig
         )
 
         viewModel.logout(USERNAME)
@@ -173,12 +163,10 @@ class MenuViewModelTest {
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationConfig)
 
         viewModel = MenuViewModel(
-            androidIdProvider = androidIdProvider,
             getAllAccessTokens = getAllAccessTokens,
-            getOperationConfig = getOperationConfig,
-            observeOperationConfig = observeOperationConfig,
             logout = logout,
-            logoutTurn = logoutTurn
+            logoutTurn = logoutTurn,
+            observeOperationConfig = observeOperationConfig
         )
 
         viewModel.consumeErrorEvent()

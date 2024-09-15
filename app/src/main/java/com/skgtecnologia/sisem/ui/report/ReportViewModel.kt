@@ -393,7 +393,6 @@ class ReportViewModel @Inject constructor(
         }
     }
 
-
     fun onPhotoStarted() {
         uiState.update { it.copy(isLoading = true) }
     }
