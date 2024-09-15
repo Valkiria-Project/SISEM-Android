@@ -27,6 +27,8 @@ import com.valkiria.uicomponents.components.media.MediaItemUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -42,7 +44,7 @@ class ReportViewModel @Inject constructor(
 
     private var job: Job? = null
 
-    var uiState by mutableStateOf(ReportUiState())
+    var uiState: MutableStateFlow<ReportUiState> = MutableStateFlow(ReportUiState())
         private set
 
     private val findingId = savedStateHandle.toRoute<ReportRoute.AddFindingRoute>().findingId
@@ -54,198 +56,226 @@ class ReportViewModel @Inject constructor(
     var currentImage by mutableIntStateOf(0)
 
     init {
-        uiState = uiState.copy(isLoading = true)
+        uiState.update { it.copy(isLoading = true) }
 
         job?.cancel()
         job = viewModelScope.launch {
             observeOperationConfig.invoke()
                 .onSuccess { operationModel ->
                     withContext(Dispatchers.Main) {
-                        uiState = uiState.copy(
-                            operationConfig = operationModel,
-                            isLoading = false
-                        )
+                        uiState.update {
+                            it.copy(
+                                operationConfig = operationModel,
+                                isLoading = false
+                            )
+                        }
                     }
                 }
                 .onFailure { throwable ->
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        infoEvent = throwable.mapToUi()
-                    )
+                    uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            infoEvent = throwable.mapToUi()
+                        )
+                    }
                 }
         }
     }
 
     fun navigateBackFromReport() {
-        uiState = uiState.copy(
-            navigationModel = ReportNavigationModel(
-                goBackFromReport = true
-            ),
-            successInfoModel = null,
-            cancelInfoModel = null,
-            confirmInfoModel = null
-        )
+        uiState.update {
+            it.copy(
+                navigationModel = ReportNavigationModel(
+                    goBackFromReport = true
+                ),
+                successInfoModel = null,
+                cancelInfoModel = null,
+                confirmInfoModel = null
+            )
+        }
     }
 
     fun navigateBackFromImages() {
-        uiState = uiState.copy(
-            navigationModel = ReportNavigationModel(
-                goBackFromImages = true
-            ),
-            successInfoModel = null,
-            cancelInfoModel = null,
-            confirmInfoModel = null
-        )
+        uiState.update {
+            it.copy(
+                navigationModel = ReportNavigationModel(
+                    goBackFromImages = true
+                ),
+                successInfoModel = null,
+                cancelInfoModel = null,
+                confirmInfoModel = null
+            )
+        }
     }
 
     // region AddFinding
     fun cancelFinding() {
-        uiState = uiState.copy(
-            navigationModel = ReportNavigationModel(
-                cancelFinding = true
-            ),
-            cancelInfoModel = findingCancellationBanner().mapToUi()
-        )
+        uiState.update {
+            it.copy(
+                navigationModel = ReportNavigationModel(
+                    cancelFinding = true
+                ),
+                cancelInfoModel = findingCancellationBanner().mapToUi()
+            )
+        }
     }
 
     fun saveFinding() {
         val (confirmInfoModel, navigationModel) =
-            if (isValidDescription && uiState.selectedMediaItems.isEmpty()) {
+            if (isValidDescription && uiState.value.selectedMediaItems.isEmpty()) {
                 findingConfirmationBanner().mapToUi() to null
-            } else if (isValidDescription && uiState.selectedMediaItems.isNotEmpty()) {
+            } else if (isValidDescription && uiState.value.selectedMediaItems.isNotEmpty()) {
                 null to ReportNavigationModel(
                     closeFinding = true,
-                    imagesSize = uiState.selectedMediaItems.size
+                    imagesSize = uiState.value.selectedMediaItems.size
                 )
             } else {
                 null to null
             }
 
-        uiState = uiState.copy(
-            confirmInfoModel = confirmInfoModel,
-            validateFields = true,
-            navigationModel = navigationModel
-        )
+        uiState.update {
+            it.copy(
+                confirmInfoModel = confirmInfoModel,
+                validateFields = true,
+                navigationModel = navigationModel
+            )
+        }
     }
 
     fun confirmFinding() {
-        uiState = uiState.copy(
-            successInfoModel = findingSavedBanner().mapToUi(),
-            navigationModel = ReportNavigationModel(
-                closeFinding = true,
-                imagesSize = uiState.selectedMediaItems.size,
-                novelty = Novelty(
-                    idPreoperational = findingId.orEmpty(),
-                    novelty = description,
-                    images = emptyList()
+        uiState.update {
+            it.copy(
+                successInfoModel = findingSavedBanner().mapToUi(),
+                navigationModel = ReportNavigationModel(
+                    closeFinding = true,
+                    imagesSize = uiState.value.selectedMediaItems.size,
+                    novelty = Novelty(
+                        idPreoperational = findingId.orEmpty(),
+                        novelty = description,
+                        images = emptyList()
+                    )
                 )
             )
-        )
+        }
     }
 
     fun saveFindingImages() {
-        uiState = uiState.copy(
-            confirmInfoModel = findingConfirmationBanner().mapToUi()
-        )
+        uiState.update {
+            it.copy(
+                confirmInfoModel = findingConfirmationBanner().mapToUi()
+            )
+        }
     }
 
     fun confirmFindingImages(images: List<File>) {
-        uiState = uiState.copy(
-            confirmInfoModel = null,
-            successInfoModel = findingSavedBanner().mapToUi(),
-            isLoading = false,
-            navigationModel = ReportNavigationModel(
-                closeFinding = true,
-                novelty = Novelty(
-                    idPreoperational = findingId.orEmpty(),
-                    novelty = description,
-                    images = images.mapIndexed { index, image ->
-                        ImageModel(
-                            fileName = "Img_$findingId" + "_$index.jpg",
-                            file = image
-                        )
-                    }
+        uiState.update {
+            it.copy(
+                confirmInfoModel = null,
+                successInfoModel = findingSavedBanner().mapToUi(),
+                isLoading = false,
+                navigationModel = ReportNavigationModel(
+                    closeFinding = true,
+                    novelty = Novelty(
+                        idPreoperational = findingId.orEmpty(),
+                        novelty = description,
+                        images = images.mapIndexed { index, image ->
+                            ImageModel(
+                                fileName = "Img_$findingId" + "_$index.jpg",
+                                file = image
+                            )
+                        }
+                    )
                 )
             )
-        )
+        }
     }
     // endregion
 
     // region AddReport
     fun cancelReport() {
-        uiState = uiState.copy(
-            navigationModel = ReportNavigationModel(
-                cancelReport = true
-            ),
-            cancelInfoModel = reportCancellationBanner().mapToUi()
-        )
+        uiState.update {
+            it.copy(
+                navigationModel = ReportNavigationModel(
+                    cancelReport = true
+                ),
+                cancelInfoModel = reportCancellationBanner().mapToUi()
+            )
+        }
     }
 
     fun saveReport(roleName: String) {
         val (confirmInfoModel, navigationModel) = if (
-            isValidTopic && isValidDescription && uiState.selectedMediaItems.isEmpty()
+            isValidTopic && isValidDescription && uiState.value.selectedMediaItems.isEmpty()
         ) {
             reportConfirmationBanner().mapToUi() to null
-        } else if (isValidTopic && isValidDescription && uiState.selectedMediaItems.isNotEmpty()) {
+        } else if (isValidTopic && isValidDescription && uiState.value.selectedMediaItems.isNotEmpty()) {
             null to ReportNavigationModel(
                 closeReport = true,
-                imagesSize = uiState.selectedMediaItems.size
+                imagesSize = uiState.value.selectedMediaItems.size
             )
         } else {
             null to null
         }
 
-        uiState = uiState.copy(
-            roleName = roleName,
-            confirmInfoModel = confirmInfoModel,
-            validateFields = true,
-            navigationModel = navigationModel
-        )
+        uiState.update {
+            it.copy(
+                roleName = roleName,
+                confirmInfoModel = confirmInfoModel,
+                validateFields = true,
+                navigationModel = navigationModel
+            )
+        }
     }
 
     fun confirmReport() {
         job?.cancel()
         job = viewModelScope.launch {
             sendReport.invoke(
-                roleName = uiState.roleName,
+                roleName = uiState.value.roleName,
                 topic = topic,
                 description = description,
                 images = listOf()
             ).onSuccess {
                 withContext(Dispatchers.Main) {
-                    uiState = uiState.copy(
-                        confirmInfoModel = null,
-                        successInfoModel = reportSentBanner().mapToUi(),
-                        isLoading = false,
-                        navigationModel = ReportNavigationModel(
-                            closeReport = true
+                    uiState.update {
+                        it.copy(
+                            confirmInfoModel = null,
+                            successInfoModel = reportSentBanner().mapToUi(),
+                            isLoading = false,
+                            navigationModel = ReportNavigationModel(
+                                closeReport = true
+                            )
                         )
-                    )
+                    }
                 }
             }.onFailure { throwable ->
                 withContext(Dispatchers.Main) {
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        confirmInfoModel = null,
-                        infoEvent = throwable.mapToUi()
-                    )
+                    uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            confirmInfoModel = null,
+                            infoEvent = throwable.mapToUi()
+                        )
+                    }
                 }
             }
         }
     }
 
     fun saveReportImages() {
-        uiState = uiState.copy(
-            confirmInfoModel = reportConfirmationBanner().mapToUi()
-        )
+        uiState.update {
+            it.copy(
+                confirmInfoModel = reportConfirmationBanner().mapToUi()
+            )
+        }
     }
 
     fun confirmReportImages(images: List<File>) {
-        uiState = uiState.copy(isLoading = true)
+        uiState.update { it.copy(isLoading = true) }
         job?.cancel()
         job = viewModelScope.launch {
             sendReport.invoke(
-                roleName = uiState.roleName,
+                roleName = uiState.value.roleName,
                 topic = topic,
                 description = description,
                 images = images.mapIndexed { index, image ->
@@ -256,22 +286,26 @@ class ReportViewModel @Inject constructor(
                 }
             ).onSuccess {
                 withContext(Dispatchers.Main) {
-                    uiState = uiState.copy(
-                        confirmInfoModel = null,
-                        successInfoModel = reportSentBanner().mapToUi(),
-                        isLoading = false,
-                        navigationModel = ReportNavigationModel(
-                            closeReport = true
+                    uiState.update {
+                        it.copy(
+                            confirmInfoModel = null,
+                            successInfoModel = reportSentBanner().mapToUi(),
+                            isLoading = false,
+                            navigationModel = ReportNavigationModel(
+                                closeReport = true
+                            )
                         )
-                    )
+                    }
                 }
             }.onFailure { throwable ->
                 withContext(Dispatchers.Main) {
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        confirmInfoModel = null,
-                        infoEvent = throwable.mapToUi()
-                    )
+                    uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            confirmInfoModel = null,
+                            infoEvent = throwable.mapToUi()
+                        )
+                    }
                 }
             }
         }
@@ -279,15 +313,17 @@ class ReportViewModel @Inject constructor(
     // endregion
 
     private fun getImageLimit(isFromPreOperational: Boolean) = if (isFromPreOperational.not()) {
-        uiState.operationConfig?.numImgNovelty ?: 0
+        uiState.value.operationConfig?.numImgNovelty ?: 0
     } else {
-        when (uiState.operationConfig?.operationRole) {
+        when (uiState.value.operationConfig?.operationRole) {
             OperationRole.AUXILIARY_AND_OR_TAPH ->
-                uiState.operationConfig?.numImgPreoperationalAux ?: 0
+                uiState.value.operationConfig?.numImgPreoperationalAux ?: 0
 
-            OperationRole.DRIVER -> uiState.operationConfig?.numImgPreoperationalDriver ?: 0
+            OperationRole.DRIVER -> uiState.value.operationConfig?.numImgPreoperationalDriver ?: 0
             OperationRole.LEAD_APH -> 0
-            OperationRole.MEDIC_APH -> uiState.operationConfig?.numImgPreoperationalDoctor ?: 0
+            OperationRole.MEDIC_APH ->
+                uiState.value.operationConfig?.numImgPreoperationalDoctor ?: 0
+
             null -> 0
         }
     }
@@ -298,19 +334,23 @@ class ReportViewModel @Inject constructor(
         isFromPreOperational: Boolean
     ) {
         val updateSelectedImages = buildList {
-            addAll(uiState.selectedMediaItems)
+            addAll(uiState.value.selectedMediaItems)
 
             val imageLimit = getImageLimit(isFromPreOperational)
             mediaItems.forEachIndexed { index, image ->
-                if (imageLimit <= (uiState.selectedMediaItems.size + index)) {
-                    uiState = uiState.copy(
-                        infoEvent = imagesLimitErrorBanner(imageLimit).mapToUi()
-                    )
+                if (imageLimit <= (uiState.value.selectedMediaItems.size + index)) {
+                    uiState.update {
+                        it.copy(
+                            infoEvent = imagesLimitErrorBanner(imageLimit).mapToUi()
+                        )
+                    }
                     return@forEachIndexed
                 } else if (!image.isSizeValid) {
-                    uiState = uiState.copy(
-                        infoEvent = fileSizeErrorBanner().mapToUi()
-                    )
+                    uiState.update {
+                        it.copy(
+                            infoEvent = fileSizeErrorBanner().mapToUi()
+                        )
+                    }
                     return@forEachIndexed
                 } else {
                     add(image)
@@ -318,82 +358,96 @@ class ReportViewModel @Inject constructor(
             }
         }
 
-        uiState = uiState.copy(
-            selectedMediaItems = updateSelectedImages
-        )
+        uiState.update {
+            it.copy(
+                selectedMediaItems = updateSelectedImages
+            )
+        }
     }
 
     fun removeCurrentImage() {
         val updateSelectedImages = buildList {
-            uiState.selectedMediaItems.mapIndexed { index, uri ->
+            uiState.value.selectedMediaItems.mapIndexed { index, uri ->
                 if (index != currentImage) {
                     add(uri)
                 }
             }
         }
 
-        uiState = uiState.copy(
-            selectedMediaItems = updateSelectedImages
-        )
+        uiState.update {
+            it.copy(
+                selectedMediaItems = updateSelectedImages
+            )
+        }
     }
     // endregion
 
     fun showCamera(isFromPreOperational: Boolean) {
-        uiState = uiState.copy(
-            isFromPreOperational = isFromPreOperational,
-            navigationModel = ReportNavigationModel(
-                showCamera = true
+        uiState.update {
+            it.copy(
+                isFromPreOperational = isFromPreOperational,
+                navigationModel = ReportNavigationModel(
+                    showCamera = true
+                )
             )
-        )
+        }
     }
 
     fun onPhotoTaken(mediaItemUiModel: MediaItemUiModel) {
         val imageLimit = getImageLimit(
-            uiState.isFromPreOperational
+            uiState.value.isFromPreOperational
         )
-        val isOverImageLimit = uiState.selectedMediaItems.size >= imageLimit
+        val isOverImageLimit = uiState.value.selectedMediaItems.size >= imageLimit
 
         val updatedSelectedImages = buildList {
-            addAll(uiState.selectedMediaItems)
+            addAll(uiState.value.selectedMediaItems)
 
             if (!isOverImageLimit && mediaItemUiModel.isSizeValid) add(mediaItemUiModel)
         }
 
         val invalidMediaSelected = !mediaItemUiModel.isSizeValid
 
-        uiState = uiState.copy(
-            selectedMediaItems = updatedSelectedImages,
-            navigationModel = ReportNavigationModel(
-                photoTaken = true
-            ),
-            infoEvent = if (isOverImageLimit) {
-                imagesLimitErrorBanner(imageLimit).mapToUi()
-            } else if (invalidMediaSelected) {
-                fileSizeErrorBanner().mapToUi()
-            } else {
-                null
-            }
-        )
+        uiState.update {
+            it.copy(
+                selectedMediaItems = updatedSelectedImages,
+                navigationModel = ReportNavigationModel(
+                    photoTaken = true
+                ),
+                infoEvent = if (isOverImageLimit) {
+                    imagesLimitErrorBanner(imageLimit).mapToUi()
+                } else if (invalidMediaSelected) {
+                    fileSizeErrorBanner().mapToUi()
+                } else {
+                    null
+                }
+            )
+        }
     }
 
     fun consumeShownConfirm() {
-        uiState = uiState.copy(
-            confirmInfoModel = null
-        )
+        uiState.update {
+            it.copy(
+                confirmInfoModel = null
+            )
+        }
     }
 
     fun consumeShownError() {
-        uiState = uiState.copy(
-            infoEvent = null
-        )
+        uiState.update {
+            it.copy(
+                infoEvent = null
+            )
+        }
     }
 
     fun consumeNavigationEvent() {
-        uiState = uiState.copy(
-            validateFields = false,
-            cancelInfoModel = null,
-            confirmInfoModel = null,
-            navigationModel = null
-        )
+        uiState.update {
+            it.copy(
+                validateFields = false,
+                cancelInfoModel = null,
+                confirmInfoModel = null,
+                navigationModel = null
+            )
+        }
     }
 }

@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -17,6 +18,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.footer.findingsFooter
 import com.skgtecnologia.sisem.domain.model.header.addFindingHeader
@@ -59,7 +61,7 @@ fun AddFindingScreen(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val uiState = viewModel.uiState
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     BackHandler {
         Timber.d("Navigate back")
@@ -71,7 +73,7 @@ fun AddFindingScreen(
             when {
                 uiState.navigationModel != null && uiState.cancelInfoModel == null &&
                     uiState.confirmInfoModel == null && uiState.successInfoModel == null -> {
-                    onNavigation(uiState.navigationModel)
+                    onNavigation(checkNotNull(uiState.navigationModel))
                     viewModel.consumeNavigationEvent()
                 }
             }
@@ -108,7 +110,7 @@ fun AddFindingScreen(
         Text(
             text = stringResource(
                 id = R.string.findings_selected_files_label,
-                viewModel.uiState.selectedMediaItems.size.toString()
+                uiState.selectedMediaItems.size.toString()
             ),
             modifier = Modifier.padding(
                 start = 20.dp,
@@ -124,7 +126,7 @@ fun AddFindingScreen(
                     val uris = mediaAction.uris
                     val mediaItems = context.handleMediaUris(
                         uris,
-                        viewModel.uiState.operationConfig?.maxFileSizeKb
+                        viewModel.uiState.value.operationConfig?.maxFileSizeKb
                     )
 
                     viewModel.updateMediaActions(

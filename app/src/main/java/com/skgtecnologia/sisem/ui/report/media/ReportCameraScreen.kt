@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +32,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
@@ -40,7 +42,9 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.ui.commons.utils.CameraUtils
 import com.skgtecnologia.sisem.ui.commons.utils.MediaStoreUtils
 import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
+import com.skgtecnologia.sisem.ui.report.ReportUiState
 import com.skgtecnologia.sisem.ui.report.ReportViewModel
+import com.valkiria.uicomponents.components.media.MediaItemUiModel
 import com.valkiria.uicomponents.extensions.handleMediaUris
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -55,7 +59,7 @@ fun ReportCameraScreen(
     viewModel: ReportViewModel,
     onNavigation: (reportNavigationModel: ReportNavigationModel) -> Unit
 ) {
-    val uiState = viewModel.uiState
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val cameraPermissionState: PermissionState =
         rememberPermissionState(Manifest.permission.CAMERA)
@@ -67,14 +71,16 @@ fun ReportCameraScreen(
         }
 
         if (uiState.navigationModel != null) {
-            onNavigation(uiState.navigationModel)
+            onNavigation(checkNotNull(uiState.navigationModel))
             viewModel.consumeNavigationEvent()
         }
     }
 
     if (cameraPermission.isGranted) {
         Timber.d("Show Camera")
-        CameraPreview(viewModel, modifier)
+        CameraPreview(modifier, uiState) { mediaItemUiModel ->
+            viewModel.onPhotoTaken(mediaItemUiModel)
+        }
     } else if (cameraPermission.shouldShowRationale) {
         Timber.d("Show rationale")
     }
@@ -82,8 +88,9 @@ fun ReportCameraScreen(
 
 @Composable
 private fun CameraPreview(
-    viewModel: ReportViewModel,
-    modifier: Modifier
+    modifier: Modifier,
+    uiState: ReportUiState,
+    onPhotoTaken: (mediaItemUiModel: MediaItemUiModel) -> Unit
 ) {
     val context = LocalContext.current
     val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
@@ -136,10 +143,10 @@ private fun CameraPreview(
                                 if (savedUri != null) {
                                     val mediaItems = context.handleMediaUris(
                                         listOf(savedUri.toString()),
-                                        viewModel.uiState.operationConfig?.maxFileSizeKb
+                                        uiState.operationConfig?.maxFileSizeKb
                                     )
 
-                                    viewModel.onPhotoTaken(mediaItems.first())
+                                    onPhotoTaken(mediaItems.first())
                                 }
                             }
                         }
