@@ -65,7 +65,7 @@ class MenuViewModelTest {
             observeOperationConfig = observeOperationConfig
         )
 
-        Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.errorModel?.title)
+        Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.value.errorModel?.title)
     }
 
     @Test
@@ -85,8 +85,8 @@ class MenuViewModelTest {
             observeOperationConfig = observeOperationConfig
         )
 
-        Assert.assertEquals(vehicleConfigModel, viewModel.uiState.vehicleConfig)
-        Assert.assertEquals(accessTokens, viewModel.uiState.accessTokenModelList)
+        Assert.assertEquals(vehicleConfigModel, viewModel.uiState.value.vehicleConfig)
+        Assert.assertEquals(accessTokens, viewModel.uiState.value.accessTokenModelList)
     }
 
     @Test
@@ -102,8 +102,8 @@ class MenuViewModelTest {
             observeOperationConfig = observeOperationConfig
         )
 
-        Assert.assertEquals(null, viewModel.uiState.accessTokenModelList)
-        Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.errorModel?.title)
+        Assert.assertEquals(null, viewModel.uiState.value.accessTokenModelList)
+        Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.value.errorModel?.title)
     }
 
     @Test
@@ -126,7 +126,7 @@ class MenuViewModelTest {
 
         viewModel.logout(USERNAME)
 
-        Assert.assertEquals(true, viewModel.uiState.isLogout)
+        Assert.assertEquals(true, viewModel.uiState.value.isLogout)
     }
 
     @Test
@@ -149,7 +149,7 @@ class MenuViewModelTest {
 
         viewModel.logout(USERNAME)
 
-        Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.errorModel?.title)
+        Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.value.errorModel?.title)
     }
 
     @Test
@@ -171,6 +171,6 @@ class MenuViewModelTest {
 
         viewModel.consumeErrorEvent()
 
-        Assert.assertEquals(null, viewModel.uiState.errorModel)
+        Assert.assertEquals(null, viewModel.uiState.value.errorModel)
     }
 }
