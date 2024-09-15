@@ -321,8 +321,6 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
             binding.mapView.compass.updateSettings {
                 enabled = false
-                marginTop = 200.0F
-                marginRight = 36.0F
             }
         }
 
