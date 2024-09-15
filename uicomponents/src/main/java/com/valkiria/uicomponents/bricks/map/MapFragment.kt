@@ -16,6 +16,7 @@ import com.mapbox.maps.EdgeInsets
 import com.mapbox.maps.ImageHolder
 import com.mapbox.maps.plugin.LocationPuck2D
 import com.mapbox.maps.plugin.animation.camera
+import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.gestures.gestures
 import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.navigation.base.ExperimentalPreviewMapboxNavigationAPI
@@ -316,6 +317,12 @@ class MapFragment : Fragment(R.layout.fragment_map) {
             binding.mapView.gestures.addOnMapLongClickListener { point ->
                 findRoute(point)
                 true
+            }
+
+            binding.mapView.compass.updateSettings {
+                enabled = false
+                marginTop = 200.0F
+                marginRight = 36.0F
             }
         }
 
