@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
+import androidx.core.view.isInvisible
+import androidx.core.view.marginTop
 import androidx.fragment.app.Fragment
 import com.mapbox.api.directions.v5.models.Bearing
 import com.mapbox.api.directions.v5.models.DirectionsRoute
@@ -61,6 +64,7 @@ import com.mapbox.navigation.ui.maps.route.line.model.MapboxRouteLineApiOptions
 import com.mapbox.navigation.ui.maps.route.line.model.MapboxRouteLineViewOptions
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.databinding.FragmentMapBinding
+import com.valkiria.uicomponents.extensions.setMargins
 import java.util.Date
 
 private const val BUTTON_ANIMATION_DURATION = 1500L
@@ -323,6 +327,14 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 enabled = false
             }
         }
+
+        binding.recenter.setMargins(
+            top = if (binding.routeOverview.isGone) {
+                resources.getDimensionPixelSize(R.dimen.map_controls_margin_top)
+            } else {
+                resources.getDimensionPixelSize(R.dimen.map_controls_margin_small_top)
+            }
+        )
 
         initViewInteractions()
         initNavigation()
