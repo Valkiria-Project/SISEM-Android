@@ -21,6 +21,8 @@ import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -39,7 +41,7 @@ class LoginViewModel @Inject constructor(
 
     private var job: Job? = null
 
-    var uiState by mutableStateOf(LoginUiState())
+    var uiState: MutableStateFlow<LoginUiState> = MutableStateFlow(LoginUiState())
         private set
 
     private val previousUsername = savedStateHandle.toRoute<AuthRoute.LoginRoute>().username
@@ -51,7 +53,7 @@ class LoginViewModel @Inject constructor(
     var isValidPassword by mutableStateOf(false)
 
     init {
-        uiState = uiState.copy(isLoading = true)
+        uiState.update { it.copy(isLoading = true) }
 
         job?.cancel()
         job = viewModelScope.launch {
@@ -59,23 +61,27 @@ class LoginViewModel @Inject constructor(
                 .onSuccess { loginScreenModel ->
                     loginScreenModel.body.toVehicleCode()
                     withContext(Dispatchers.Main) {
-                        uiState = uiState.copy(
-                            screenModel = loginScreenModel.copy(
-                                body = loginScreenModel.body.withPreviousUsername(
-                                    previousUsername
-                                )
-                            ),
-                            isLoading = false
-                        )
+                        uiState.update {
+                            it.copy(
+                                screenModel = loginScreenModel.copy(
+                                    body = loginScreenModel.body.withPreviousUsername(
+                                        previousUsername
+                                    )
+                                ),
+                                isLoading = false
+                            )
+                        }
                     }
                 }
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
                     withContext(Dispatchers.Main) {
-                        uiState = uiState.copy(
-                            isLoading = false,
-                            errorModel = throwable.mapToUi()
-                        )
+                        uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                errorModel = throwable.mapToUi()
+                            )
+                        }
                     }
                 }
         }
@@ -98,6 +104,9 @@ class LoginViewModel @Inject constructor(
                 identifier = LOGIN_EMAIL_IDENTIFIER,
                 updater = { model ->
                     if (model is TextFieldUiModel) {
+                        username = previousUsername
+                        isValidUsername = true
+
                         model.copy(text = previousUsername)
                     } else {
                         model
@@ -108,15 +117,19 @@ class LoginViewModel @Inject constructor(
     }
 
     fun forgotPassword() {
-        uiState = uiState.copy(
-            navigationModel = LoginNavigationModel(forgotPassword = true)
-        )
+        uiState.update {
+            it.copy(
+                navigationModel = LoginNavigationModel(forgotPassword = true)
+            )
+        }
     }
 
     fun login() {
-        uiState = uiState.copy(
-            validateFields = true
-        )
+        uiState.update {
+            it.copy(
+                validateFields = true
+            )
+        }
 
         // TECH-DEBT: Move this to the Use Case
         if (isValidUsername && isValidPassword) {
@@ -124,10 +137,13 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    @Suppress("LongMethod")
     private fun authenticate() {
-        uiState = uiState.copy(
-            isLoading = true
-        )
+        uiState.update {
+            it.copy(
+                isLoading = true
+            )
+        }
 
         job?.cancel()
         job = viewModelScope.launch {
@@ -135,25 +151,10 @@ class LoginViewModel @Inject constructor(
                 .onSuccess { accessTokenModel ->
                     Timber.d("Successful login with ${accessTokenModel.username}")
                     if (accessTokenModel.warning == null) {
-                        uiState = uiState.copy(
-                            navigationModel = with(accessTokenModel) {
-                                LoginNavigationModel(
-                                    isAdmin = isAdmin,
-                                    isTurnComplete = turn?.isComplete == true,
-                                    requiresPreOperational =
-                                    preoperational?.status == true && configPreoperational,
-                                    preOperationRole = OperationRole.getRoleByName(role),
-                                    requiresDeviceAuth = code.isEmpty()
-                                )
-                            }
-                        )
-                    } else {
-                        withContext(Dispatchers.Main) {
-                            uiState = uiState.copy(
-                                warning = accessTokenModel.warning.mapToUi(),
+                        uiState.update {
+                            it.copy(
                                 navigationModel = with(accessTokenModel) {
                                     LoginNavigationModel(
-                                        isWarning = true,
                                         isAdmin = isAdmin,
                                         isTurnComplete = turn?.isComplete == true,
                                         requiresPreOperational =
@@ -161,30 +162,53 @@ class LoginViewModel @Inject constructor(
                                         preOperationRole = OperationRole.getRoleByName(role),
                                         requiresDeviceAuth = code.isEmpty()
                                     )
-                                },
-                                isLoading = false
+                                }
                             )
+                        }
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            uiState.update {
+                                it.copy(
+                                    warning = accessTokenModel.warning.mapToUi(),
+                                    navigationModel = with(accessTokenModel) {
+                                        LoginNavigationModel(
+                                            isWarning = true,
+                                            isAdmin = isAdmin,
+                                            isTurnComplete = turn?.isComplete == true,
+                                            requiresPreOperational =
+                                            preoperational?.status == true && configPreoperational,
+                                            preOperationRole = OperationRole.getRoleByName(role),
+                                            requiresDeviceAuth = code.isEmpty()
+                                        )
+                                    },
+                                    isLoading = false
+                                )
+                            }
                         }
                     }
                 }
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
                     withContext(Dispatchers.Main) {
-                        uiState = uiState.copy(
-                            isLoading = false,
-                            errorModel = throwable.mapToUi()
-                        )
+                        uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                errorModel = throwable.mapToUi()
+                            )
+                        }
                     }
                 }
         }
     }
 
     fun consumeNavigationEvent() {
-        uiState = uiState.copy(
-            validateFields = false,
-            navigationModel = null,
-            isLoading = false
-        )
+        uiState.update {
+            it.copy(
+                validateFields = false,
+                navigationModel = null,
+                isLoading = false
+            )
+        }
 
         resetForm()
     }
@@ -195,26 +219,34 @@ class LoginViewModel @Inject constructor(
     }
 
     fun showLoginLink(link: LoginLink) {
-        uiState = uiState.copy(
-            onLoginLink = link
-        )
+        uiState.update {
+            it.copy(
+                onLoginLink = link
+            )
+        }
     }
 
     fun consumeLoginLinkEvent() {
-        uiState = uiState.copy(
-            onLoginLink = null
-        )
+        uiState.update {
+            it.copy(
+                onLoginLink = null
+            )
+        }
     }
 
     fun consumeErrorEvent() {
-        uiState = uiState.copy(
-            errorModel = null
-        )
+        uiState.update {
+            it.copy(
+                errorModel = null
+            )
+        }
     }
 
     fun consumeWarningEvent() {
-        uiState = uiState.copy(
-            warning = null
-        )
+        uiState.update {
+            it.copy(
+                warning = null
+            )
+        }
     }
 }

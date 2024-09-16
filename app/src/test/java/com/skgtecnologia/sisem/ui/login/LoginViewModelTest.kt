@@ -64,8 +64,8 @@ class LoginViewModelTest {
         loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
         val uiState = loginViewModel.uiState
 
-        Assert.assertEquals(emptyScreenModel, uiState.screenModel)
-        Assert.assertEquals(null, uiState.errorModel)
+        Assert.assertEquals(emptyScreenModel, uiState.value.screenModel)
+        Assert.assertEquals(null, uiState.value.errorModel)
     }
 
     @Test
@@ -77,8 +77,8 @@ class LoginViewModelTest {
         loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
         val uiState = loginViewModel.uiState
 
-        Assert.assertEquals(null, uiState.screenModel)
-        Assert.assertEquals(SERVER_ERROR_TITLE, uiState.errorModel?.title)
+        Assert.assertEquals(null, uiState.value.screenModel)
+        Assert.assertEquals(SERVER_ERROR_TITLE, uiState.value.errorModel?.title)
     }
 
     @Test
@@ -90,7 +90,7 @@ class LoginViewModelTest {
         loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
         loginViewModel.forgotPassword()
 
-        Assert.assertEquals(true, loginViewModel.uiState.navigationModel?.forgotPassword)
+        Assert.assertEquals(true, loginViewModel.uiState.value.navigationModel?.forgotPassword)
     }
 
     @Test
@@ -102,8 +102,8 @@ class LoginViewModelTest {
         loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
         loginViewModel.login()
 
-        Assert.assertEquals(true, loginViewModel.uiState.validateFields)
-        Assert.assertEquals(false, loginViewModel.uiState.isLoading)
+        Assert.assertEquals(true, loginViewModel.uiState.value.validateFields)
+        Assert.assertEquals(false, loginViewModel.uiState.value.isLoading)
     }
 
     @Test
@@ -128,9 +128,9 @@ class LoginViewModelTest {
 
         loginViewModel.login()
 
-        Assert.assertEquals(true, loginViewModel.uiState.validateFields)
-        Assert.assertEquals(true, loginViewModel.uiState.navigationModel?.isWarning)
-        Assert.assertEquals(false, loginViewModel.uiState.isLoading)
+        Assert.assertEquals(true, loginViewModel.uiState.value.validateFields)
+        Assert.assertEquals(true, loginViewModel.uiState.value.navigationModel?.isWarning)
+        Assert.assertEquals(false, loginViewModel.uiState.value.isLoading)
     }
 
     @Test
@@ -148,9 +148,9 @@ class LoginViewModelTest {
 
         loginViewModel.login()
 
-        Assert.assertEquals(true, loginViewModel.uiState.validateFields)
-        Assert.assertEquals(false, loginViewModel.uiState.navigationModel?.isWarning)
-        Assert.assertEquals(true, loginViewModel.uiState.isLoading)
+        Assert.assertEquals(true, loginViewModel.uiState.value.validateFields)
+        Assert.assertEquals(false, loginViewModel.uiState.value.navigationModel?.isWarning)
+        Assert.assertEquals(true, loginViewModel.uiState.value.isLoading)
     }
 
     @Test
@@ -167,7 +167,7 @@ class LoginViewModelTest {
 
         loginViewModel.login()
 
-        Assert.assertEquals(SERVER_ERROR_TITLE, loginViewModel.uiState.errorModel?.title)
+        Assert.assertEquals(SERVER_ERROR_TITLE, loginViewModel.uiState.value.errorModel?.title)
     }
 
     @Test
@@ -179,9 +179,9 @@ class LoginViewModelTest {
         loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
         loginViewModel.consumeNavigationEvent()
 
-        Assert.assertEquals(false, loginViewModel.uiState.validateFields)
-        Assert.assertEquals(null, loginViewModel.uiState.navigationModel)
-        Assert.assertEquals(false, loginViewModel.uiState.isLoading)
+        Assert.assertEquals(false, loginViewModel.uiState.value.validateFields)
+        Assert.assertEquals(null, loginViewModel.uiState.value.navigationModel)
+        Assert.assertEquals(false, loginViewModel.uiState.value.isLoading)
         Assert.assertEquals("", loginViewModel.password)
         Assert.assertEquals(false, loginViewModel.isValidPassword)
     }
@@ -196,7 +196,7 @@ class LoginViewModelTest {
         val loginLink = LoginLink.TERMS_AND_CONDITIONS
         loginViewModel.showLoginLink(loginLink)
 
-        Assert.assertEquals(loginLink, loginViewModel.uiState.onLoginLink)
+        Assert.assertEquals(loginLink, loginViewModel.uiState.value.onLoginLink)
     }
 
     @Test
@@ -208,7 +208,7 @@ class LoginViewModelTest {
         loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
         loginViewModel.consumeLoginLinkEvent()
 
-        Assert.assertEquals(null, loginViewModel.uiState.onLoginLink)
+        Assert.assertEquals(null, loginViewModel.uiState.value.onLoginLink)
     }
 
     @Test
@@ -220,7 +220,7 @@ class LoginViewModelTest {
         loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
         loginViewModel.consumeErrorEvent()
 
-        Assert.assertEquals(null, loginViewModel.uiState.errorModel)
+        Assert.assertEquals(null, loginViewModel.uiState.value.errorModel)
     }
 
     @Test
@@ -232,7 +232,7 @@ class LoginViewModelTest {
         loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
         loginViewModel.consumeWarningEvent()
 
-        Assert.assertEquals(null, loginViewModel.uiState.warning)
+        Assert.assertEquals(null, loginViewModel.uiState.value.warning)
     }
 
     private fun createAccessToken(warning: BannerModel?) = AccessTokenModel(

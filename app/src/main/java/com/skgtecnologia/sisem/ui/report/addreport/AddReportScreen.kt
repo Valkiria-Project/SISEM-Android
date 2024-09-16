@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -18,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.label.addFilesHint
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
@@ -60,7 +62,7 @@ fun AddReportScreen(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val uiState = viewModel.uiState
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val addReportUiState = addReportViewModel.uiState
 
     BackHandler {
@@ -73,7 +75,7 @@ fun AddReportScreen(
             when {
                 uiState.navigationModel != null && uiState.cancelInfoModel == null &&
                     uiState.confirmInfoModel == null && uiState.successInfoModel == null -> {
-                    onNavigation(uiState.navigationModel)
+                    onNavigation(checkNotNull(uiState.navigationModel))
                     viewModel.consumeNavigationEvent()
                 }
             }
@@ -113,7 +115,7 @@ fun AddReportScreen(
             Text(
                 text = stringResource(
                     id = R.string.findings_selected_files_label,
-                    viewModel.uiState.selectedMediaItems.size.toString()
+                    uiState.selectedMediaItems.size.toString()
                 ),
                 modifier = Modifier.padding(
                     start = 20.dp,
@@ -129,7 +131,7 @@ fun AddReportScreen(
                         val uris = mediaAction.uris
                         val mediaItems = context.handleMediaUris(
                             uris,
-                            viewModel.uiState.operationConfig?.maxFileSizeKb
+                            uiState.operationConfig?.maxFileSizeKb
                         )
 
                         viewModel.updateMediaActions(

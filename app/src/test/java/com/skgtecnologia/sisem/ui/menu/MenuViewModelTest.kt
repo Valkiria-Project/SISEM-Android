@@ -2,13 +2,11 @@ package com.skgtecnologia.sisem.ui.menu
 
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
-import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
 import com.skgtecnologia.sisem.domain.auth.usecases.Logout
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.skgtecnologia.sisem.domain.authcards.model.VehicleConfigModel
-import com.skgtecnologia.sisem.domain.operation.usecases.GetOperationConfig
 import com.skgtecnologia.sisem.domain.operation.usecases.LogoutTurn
 import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import io.mockk.MockKAnnotations
@@ -30,13 +28,7 @@ class MenuViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @MockK
-    private lateinit var androidIdProvider: AndroidIdProvider
-
-    @MockK
     private lateinit var getAllAccessTokens: GetAllAccessTokens
-
-    @MockK
-    private lateinit var getOperationConfig: GetOperationConfig
 
     @MockK
     private lateinit var observeOperationConfig: ObserveOperationConfig
@@ -59,15 +51,13 @@ class MenuViewModelTest {
         coEvery { getAllAccessTokens.invoke() } returns Result.failure(Throwable())
 
         viewModel = MenuViewModel(
-            androidIdProvider = androidIdProvider,
             getAllAccessTokens = getAllAccessTokens,
-            getOperationConfig = getOperationConfig,
-            observeOperationConfig = observeOperationConfig,
             logout = logout,
-            logoutTurn = logoutTurn
+            logoutTurn = logoutTurn,
+            observeOperationConfig = observeOperationConfig
         )
 
-        Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.errorModel?.title)
+        Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.value.errorModel?.title)
     }
 
     @Test
@@ -81,16 +71,14 @@ class MenuViewModelTest {
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationConfig)
 
         viewModel = MenuViewModel(
-            androidIdProvider = androidIdProvider,
             getAllAccessTokens = getAllAccessTokens,
-            getOperationConfig = getOperationConfig,
-            observeOperationConfig = observeOperationConfig,
             logout = logout,
-            logoutTurn = logoutTurn
+            logoutTurn = logoutTurn,
+            observeOperationConfig = observeOperationConfig
         )
 
-        Assert.assertEquals(vehicleConfigModel, viewModel.uiState.vehicleConfig)
-        Assert.assertEquals(accessTokens, viewModel.uiState.accessTokenModelList)
+        Assert.assertEquals(vehicleConfigModel, viewModel.uiState.value.vehicleConfig)
+        Assert.assertEquals(accessTokens, viewModel.uiState.value.accessTokenModelList)
     }
 
     @Test
@@ -100,16 +88,14 @@ class MenuViewModelTest {
         coEvery { observeOperationConfig.invoke() } returns Result.failure(IllegalStateException())
 
         viewModel = MenuViewModel(
-            androidIdProvider = androidIdProvider,
             getAllAccessTokens = getAllAccessTokens,
-            getOperationConfig = getOperationConfig,
-            observeOperationConfig = observeOperationConfig,
             logout = logout,
-            logoutTurn = logoutTurn
+            logoutTurn = logoutTurn,
+            observeOperationConfig = observeOperationConfig
         )
 
-        Assert.assertEquals(null, viewModel.uiState.accessTokenModelList)
-        Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.errorModel?.title)
+        Assert.assertEquals(null, viewModel.uiState.value.accessTokenModelList)
+        Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.value.errorModel?.title)
     }
 
     @Test
@@ -124,17 +110,15 @@ class MenuViewModelTest {
         coEvery { logoutTurn.invoke(USERNAME) } returns Result.success("")
 
         viewModel = MenuViewModel(
-            androidIdProvider = androidIdProvider,
             getAllAccessTokens = getAllAccessTokens,
-            getOperationConfig = getOperationConfig,
-            observeOperationConfig = observeOperationConfig,
             logout = logout,
-            logoutTurn = logoutTurn
+            logoutTurn = logoutTurn,
+            observeOperationConfig = observeOperationConfig
         )
 
         viewModel.logout(USERNAME)
 
-        Assert.assertEquals(true, viewModel.uiState.isLogout)
+        Assert.assertEquals(true, viewModel.uiState.value.isLogout)
     }
 
     @Test
@@ -149,17 +133,15 @@ class MenuViewModelTest {
         coEvery { logoutTurn.invoke(USERNAME) } returns Result.failure(Throwable())
 
         viewModel = MenuViewModel(
-            androidIdProvider = androidIdProvider,
             getAllAccessTokens = getAllAccessTokens,
-            getOperationConfig = getOperationConfig,
-            observeOperationConfig = observeOperationConfig,
             logout = logout,
-            logoutTurn = logoutTurn
+            logoutTurn = logoutTurn,
+            observeOperationConfig = observeOperationConfig
         )
 
         viewModel.logout(USERNAME)
 
-        Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.errorModel?.title)
+        Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.value.errorModel?.title)
     }
 
     @Test
@@ -173,16 +155,14 @@ class MenuViewModelTest {
         coEvery { observeOperationConfig.invoke() } returns Result.success(operationConfig)
 
         viewModel = MenuViewModel(
-            androidIdProvider = androidIdProvider,
             getAllAccessTokens = getAllAccessTokens,
-            getOperationConfig = getOperationConfig,
-            observeOperationConfig = observeOperationConfig,
             logout = logout,
-            logoutTurn = logoutTurn
+            logoutTurn = logoutTurn,
+            observeOperationConfig = observeOperationConfig
         )
 
         viewModel.consumeErrorEvent()
 
-        Assert.assertEquals(null, viewModel.uiState.errorModel)
+        Assert.assertEquals(null, viewModel.uiState.value.errorModel)
     }
 }
