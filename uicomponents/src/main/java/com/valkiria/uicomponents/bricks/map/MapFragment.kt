@@ -373,7 +373,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         // initialize location puck
         binding.mapView.location.apply {
             setLocationProvider(navigationLocationProvider)
-            this.locationPuck = LocationPuck2D(
+            locationPuck = LocationPuck2D(
                 bearingImage = ImageHolder.Companion.from(
                     R.drawable.ic_ambulance_marker
                 )
