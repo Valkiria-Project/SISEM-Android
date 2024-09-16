@@ -2,13 +2,11 @@ package com.skgtecnologia.sisem.ui.menu
 
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
-import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
 import com.skgtecnologia.sisem.domain.auth.usecases.Logout
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.skgtecnologia.sisem.domain.authcards.model.VehicleConfigModel
-import com.skgtecnologia.sisem.domain.operation.usecases.GetOperationConfig
 import com.skgtecnologia.sisem.domain.operation.usecases.LogoutTurn
 import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import io.mockk.MockKAnnotations
@@ -30,13 +28,7 @@ class MenuViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @MockK
-    private lateinit var androidIdProvider: AndroidIdProvider
-
-    @MockK
     private lateinit var getAllAccessTokens: GetAllAccessTokens
-
-    @MockK
-    private lateinit var getOperationConfig: GetOperationConfig
 
     @MockK
     private lateinit var observeOperationConfig: ObserveOperationConfig
