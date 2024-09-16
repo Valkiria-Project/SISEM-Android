@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import com.mapbox.api.directions.v5.models.Bearing
 import com.mapbox.api.directions.v5.models.DirectionsRoute
@@ -62,16 +61,13 @@ import com.mapbox.navigation.ui.maps.route.line.model.MapboxRouteLineApiOptions
 import com.mapbox.navigation.ui.maps.route.line.model.MapboxRouteLineViewOptions
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.databinding.FragmentMapBinding
-import com.valkiria.uicomponents.extensions.setMargins
 import java.util.Date
 
-private const val BUTTON_ANIMATION_DURATION = 1500L
 private const val PADDING_TOP_SMALL = 140.0
 private const val PADDING_TOP_LARGE = 180.0
 private const val PADDING_HORIZONTAL = 40.0
 private const val PADDING_BOTTOM_SMALL = 120.0
 private const val PADDING_BOTTOM_LARGE = 150.0
-private const val BEARING_DEGREES = 45.0
 
 @Suppress("TooManyFunctions")
 @OptIn(ExperimentalPreviewMapboxNavigationAPI::class)
@@ -326,14 +322,6 @@ class MapFragment : Fragment(R.layout.fragment_map) {
             }
         }
 
-        binding.recenter.setMargins(
-            top = if (binding.routeOverview.isGone) {
-                resources.getDimensionPixelSize(R.dimen.map_controls_margin_top)
-            } else {
-                resources.getDimensionPixelSize(R.dimen.map_controls_margin_small_top)
-            }
-        )
-
         initViewInteractions()
         initNavigation()
     }
@@ -366,11 +354,6 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
         binding.recenter.setOnClickListener {
             navigationCamera.requestNavigationCameraToFollowing()
-            binding.routeOverview.showTextAndExtend(BUTTON_ANIMATION_DURATION)
-        }
-        binding.routeOverview.setOnClickListener {
-            navigationCamera.requestNavigationCameraToOverview()
-            binding.recenter.showTextAndExtend(BUTTON_ANIMATION_DURATION)
         }
     }
 
@@ -442,7 +425,6 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                             listOf(
                                 Bearing.builder()
                                     .angle(bearing)
-                                    .degrees(BEARING_DEGREES)
                                     .build(),
                                 null
                             )
@@ -474,9 +456,6 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         // set routes, where the first route in the list is the primary route that
         // will be used for active guidance
         mapboxNavigation.setNavigationRoutes(routes)
-
-        // show UI elements
-        binding.routeOverview.visibility = View.VISIBLE
 
         // move the camera to overview when new route is available
         navigationCamera.requestNavigationCameraToOverview()
