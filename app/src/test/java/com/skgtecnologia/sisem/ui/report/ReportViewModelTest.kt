@@ -62,7 +62,7 @@ class ReportViewModelTest {
 
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
 
-        Assert.assertEquals(operationModel, viewModel.uiState.operationConfig)
+        Assert.assertEquals(operationModel, viewModel.uiState.value.operationConfig)
     }
 
     @Test
@@ -72,7 +72,7 @@ class ReportViewModelTest {
 
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
 
-        Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.infoEvent?.title)
+        Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.value.infoEvent?.title)
     }
 
     @Test
@@ -83,7 +83,7 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.navigateBackFromReport()
 
-        Assert.assertEquals(true, viewModel.uiState.navigationModel?.goBackFromReport)
+        Assert.assertEquals(true, viewModel.uiState.value.navigationModel?.goBackFromReport)
     }
 
     @Test
@@ -94,7 +94,7 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.navigateBackFromImages()
 
-        Assert.assertEquals(true, viewModel.uiState.navigationModel?.goBackFromImages)
+        Assert.assertEquals(true, viewModel.uiState.value.navigationModel?.goBackFromImages)
     }
 
     @Test
@@ -105,7 +105,7 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.cancelFinding()
 
-        Assert.assertEquals(true, viewModel.uiState.navigationModel?.cancelFinding)
+        Assert.assertEquals(true, viewModel.uiState.value.navigationModel?.cancelFinding)
     }
 
     @Test
@@ -116,8 +116,8 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.saveFinding()
 
-        Assert.assertEquals(null, viewModel.uiState.confirmInfoModel)
-        Assert.assertEquals(null, viewModel.uiState.navigationModel)
+        Assert.assertEquals(null, viewModel.uiState.value.confirmInfoModel)
+        Assert.assertEquals(null, viewModel.uiState.value.navigationModel)
     }
 
     @Test
@@ -129,8 +129,11 @@ class ReportViewModelTest {
         viewModel.isValidDescription = true
         viewModel.saveFinding()
 
-        Assert.assertEquals(FINDING_BANNER_CONFIRM_TITLE, viewModel.uiState.confirmInfoModel?.title)
-        Assert.assertEquals(null, viewModel.uiState.navigationModel)
+        Assert.assertEquals(
+            FINDING_BANNER_CONFIRM_TITLE,
+            viewModel.uiState.value.confirmInfoModel?.title
+        )
+        Assert.assertEquals(null, viewModel.uiState.value.navigationModel)
     }
 
     @Test
@@ -159,9 +162,9 @@ class ReportViewModelTest {
         )
         viewModel.saveFinding()
 
-        Assert.assertEquals(null, viewModel.uiState.confirmInfoModel)
-        Assert.assertEquals(true, viewModel.uiState.navigationModel?.closeFinding)
-        Assert.assertEquals(1, viewModel.uiState.navigationModel?.imagesSize)
+        Assert.assertEquals(null, viewModel.uiState.value.confirmInfoModel)
+        Assert.assertEquals(true, viewModel.uiState.value.navigationModel?.closeFinding)
+        Assert.assertEquals(1, viewModel.uiState.value.navigationModel?.imagesSize)
     }
 
     @Test
@@ -172,8 +175,11 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.confirmFinding()
 
-        Assert.assertEquals(true, viewModel.uiState.navigationModel?.closeFinding)
-        Assert.assertEquals(FINDING_BANNER_SAVED_TITLE, viewModel.uiState.successInfoModel?.title)
+        Assert.assertEquals(true, viewModel.uiState.value.navigationModel?.closeFinding)
+        Assert.assertEquals(
+            FINDING_BANNER_SAVED_TITLE,
+            viewModel.uiState.value.successInfoModel?.title
+        )
     }
 
     @Test
@@ -184,7 +190,10 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.saveFindingImages()
 
-        Assert.assertEquals(FINDING_BANNER_CONFIRM_TITLE, viewModel.uiState.confirmInfoModel?.title)
+        Assert.assertEquals(
+            FINDING_BANNER_CONFIRM_TITLE,
+            viewModel.uiState.value.confirmInfoModel?.title
+        )
     }
 
     @Test
@@ -195,7 +204,10 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.confirmFindingImages(listOf(mockk()))
 
-        Assert.assertEquals(FINDING_BANNER_SAVED_TITLE, viewModel.uiState.successInfoModel?.title)
+        Assert.assertEquals(
+            FINDING_BANNER_SAVED_TITLE,
+            viewModel.uiState.value.successInfoModel?.title
+        )
     }
 
     @Test
@@ -206,8 +218,11 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.cancelReport()
 
-        Assert.assertEquals(NOVELTY_BANNER_CANCEL_TITLE, viewModel.uiState.cancelInfoModel?.title)
-        Assert.assertEquals(true, viewModel.uiState.navigationModel?.cancelReport)
+        Assert.assertEquals(
+            NOVELTY_BANNER_CANCEL_TITLE,
+            viewModel.uiState.value.cancelInfoModel?.title
+        )
+        Assert.assertEquals(true, viewModel.uiState.value.navigationModel?.cancelReport)
     }
 
     @Test
@@ -218,8 +233,8 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.saveReport(DRIVER_ROLE)
 
-        Assert.assertEquals(null, viewModel.uiState.confirmInfoModel)
-        Assert.assertEquals(null, viewModel.uiState.navigationModel)
+        Assert.assertEquals(null, viewModel.uiState.value.confirmInfoModel)
+        Assert.assertEquals(null, viewModel.uiState.value.navigationModel)
     }
 
     @Test
@@ -232,7 +247,10 @@ class ReportViewModelTest {
         viewModel.isValidTopic = true
         viewModel.saveReport(DRIVER_ROLE)
 
-        Assert.assertEquals(NOVELTY_BANNER_CONFIRM_TITLE, viewModel.uiState.confirmInfoModel?.title)
+        Assert.assertEquals(
+            NOVELTY_BANNER_CONFIRM_TITLE,
+            viewModel.uiState.value.confirmInfoModel?.title
+        )
     }
 
     @Test
@@ -262,9 +280,9 @@ class ReportViewModelTest {
         )
         viewModel.saveReport(DRIVER_ROLE)
 
-        Assert.assertEquals(null, viewModel.uiState.confirmInfoModel)
-        Assert.assertEquals(true, viewModel.uiState.navigationModel?.closeReport)
-        Assert.assertEquals(1, viewModel.uiState.navigationModel?.imagesSize)
+        Assert.assertEquals(null, viewModel.uiState.value.confirmInfoModel)
+        Assert.assertEquals(true, viewModel.uiState.value.navigationModel?.closeReport)
+        Assert.assertEquals(1, viewModel.uiState.value.navigationModel?.imagesSize)
     }
 
     @Test
@@ -276,8 +294,11 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.confirmReport()
 
-        Assert.assertEquals(NOVELTY_BANNER_SAVED_TITLE, viewModel.uiState.successInfoModel?.title)
-        Assert.assertEquals(true, viewModel.uiState.navigationModel?.closeReport)
+        Assert.assertEquals(
+            NOVELTY_BANNER_SAVED_TITLE,
+            viewModel.uiState.value.successInfoModel?.title
+        )
+        Assert.assertEquals(true, viewModel.uiState.value.navigationModel?.closeReport)
     }
 
     @Test
@@ -288,7 +309,10 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.saveReportImages()
 
-        Assert.assertEquals(NOVELTY_BANNER_CONFIRM_TITLE, viewModel.uiState.confirmInfoModel?.title)
+        Assert.assertEquals(
+            NOVELTY_BANNER_CONFIRM_TITLE,
+            viewModel.uiState.value.confirmInfoModel?.title
+        )
     }
 
     @Test
@@ -300,7 +324,10 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.confirmReportImages(listOf(mockk()))
 
-        Assert.assertEquals(NOVELTY_BANNER_SAVED_TITLE, viewModel.uiState.successInfoModel?.title)
+        Assert.assertEquals(
+            NOVELTY_BANNER_SAVED_TITLE,
+            viewModel.uiState.value.successInfoModel?.title
+        )
     }
 
     @Test
@@ -319,7 +346,7 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.confirmReportImages(listOf())
 
-        Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.infoEvent?.title)
+        Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.value.infoEvent?.title)
     }
 
     @Test
@@ -344,7 +371,7 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.updateMediaActions(selectedImages, false)
 
-        Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.infoEvent?.title)
+        Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.value.infoEvent?.title)
     }
 
     @Test
@@ -370,7 +397,7 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.updateMediaActions(selectedImages, true)
 
-        Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.infoEvent?.title)
+        Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.value.infoEvent?.title)
     }
 
     @Test
@@ -396,7 +423,7 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.updateMediaActions(selectedImages, true)
 
-        Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.infoEvent?.title)
+        Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.value.infoEvent?.title)
     }
 
     @Test
@@ -421,7 +448,7 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.updateMediaActions(selectedImages, true)
 
-        Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.infoEvent?.title)
+        Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.value.infoEvent?.title)
     }
 
     @Test
@@ -447,7 +474,7 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.updateMediaActions(selectedImages, true)
 
-        Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.infoEvent?.title)
+        Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.value.infoEvent?.title)
     }
 
     @Test
@@ -472,7 +499,7 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.updateMediaActions(selectedImages, true)
 
-        Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.infoEvent?.title)
+        Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.value.infoEvent?.title)
     }
 
     @Test
@@ -500,7 +527,7 @@ class ReportViewModelTest {
         viewModel.currentImage = 1
         viewModel.removeCurrentImage()
 
-        Assert.assertNotNull(viewModel.uiState.selectedMediaItems)
+        Assert.assertNotNull(viewModel.uiState.value.selectedMediaItems)
     }
 
     @Test
@@ -511,8 +538,8 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.showCamera(true)
 
-        Assert.assertEquals(true, viewModel.uiState.navigationModel?.showCamera)
-        Assert.assertEquals(true, viewModel.uiState.isFromPreOperational)
+        Assert.assertEquals(true, viewModel.uiState.value.navigationModel?.showCamera)
+        Assert.assertEquals(true, viewModel.uiState.value.isFromPreOperational)
     }
 
     @Test
@@ -523,8 +550,8 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.showCamera(false)
 
-        Assert.assertEquals(true, viewModel.uiState.navigationModel?.showCamera)
-        Assert.assertEquals(false, viewModel.uiState.isFromPreOperational)
+        Assert.assertEquals(true, viewModel.uiState.value.navigationModel?.showCamera)
+        Assert.assertEquals(false, viewModel.uiState.value.isFromPreOperational)
     }
 
     @Test
@@ -558,7 +585,7 @@ class ReportViewModelTest {
             )
         )
 
-        Assert.assertEquals(true, viewModel.uiState.navigationModel?.photoTaken)
+        Assert.assertEquals(true, viewModel.uiState.value.navigationModel?.photoTaken)
     }
 
     @Test
@@ -592,8 +619,8 @@ class ReportViewModelTest {
             )
         )
 
-        Assert.assertEquals(true, viewModel.uiState.navigationModel?.photoTaken)
-        Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.infoEvent?.title)
+        Assert.assertEquals(true, viewModel.uiState.value.navigationModel?.photoTaken)
+        Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.value.infoEvent?.title)
     }
 
     @Test
@@ -604,7 +631,7 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.consumeShownConfirm()
 
-        Assert.assertEquals(null, viewModel.uiState.confirmInfoModel)
+        Assert.assertEquals(null, viewModel.uiState.value.confirmInfoModel)
     }
 
     @Test
@@ -615,7 +642,7 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.consumeShownError()
 
-        Assert.assertEquals(null, viewModel.uiState.infoEvent)
+        Assert.assertEquals(null, viewModel.uiState.value.infoEvent)
     }
 
     @Test
@@ -626,9 +653,9 @@ class ReportViewModelTest {
         viewModel = ReportViewModel(savedStateHandle, observeOperationConfig, sendReport)
         viewModel.consumeNavigationEvent()
 
-        Assert.assertEquals(false, viewModel.uiState.validateFields)
-        Assert.assertEquals(null, viewModel.uiState.cancelInfoModel)
-        Assert.assertEquals(null, viewModel.uiState.confirmInfoModel)
-        Assert.assertEquals(null, viewModel.uiState.navigationModel)
+        Assert.assertEquals(false, viewModel.uiState.value.validateFields)
+        Assert.assertEquals(null, viewModel.uiState.value.cancelInfoModel)
+        Assert.assertEquals(null, viewModel.uiState.value.confirmInfoModel)
+        Assert.assertEquals(null, viewModel.uiState.value.navigationModel)
     }
 }

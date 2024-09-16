@@ -29,6 +29,10 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
     }
     buildTypes {
         debug {
@@ -87,8 +91,6 @@ android {
                 "-opt-in=com.google.accompanist.permissions.ExperimentalPermissionsApi",
                 "-opt-in=kotlin.contracts.ExperimentalContracts",
                 "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                "-P",
-                "plugin:androidx.compose.compiler.plugins.kotlin:experimentalStrongSkipping=true",
             )
     }
     packaging {
@@ -100,8 +102,7 @@ android {
 
 composeCompiler {
     featureFlags.addAll(
-        ComposeFeatureFlag.OptimizeNonSkippingGroups,
-        ComposeFeatureFlag.StrongSkipping
+        ComposeFeatureFlag.OptimizeNonSkippingGroups
     )
 
     reportsDestination = layout.buildDirectory.dir("compose_compiler")

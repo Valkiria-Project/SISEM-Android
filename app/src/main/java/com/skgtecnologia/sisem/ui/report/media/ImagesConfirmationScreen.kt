@@ -15,6 +15,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -25,12 +26,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.model.header.imagesConfirmationHeader
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
 import com.skgtecnologia.sisem.ui.authcards.create.report.PagerIndicator
 import com.skgtecnologia.sisem.ui.navigation.REPORT
 import com.skgtecnologia.sisem.ui.report.ReportNavigationModel
+import com.skgtecnologia.sisem.ui.report.ReportUiState
 import com.skgtecnologia.sisem.ui.report.ReportViewModel
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.FooterUiAction
@@ -59,14 +62,14 @@ fun ImagesConfirmationScreen(
     modifier: Modifier = Modifier,
     onNavigation: (imageSelectionNavigationModel: ReportNavigationModel) -> Unit
 ) {
-    val uiState = viewModel.uiState
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
 
     val pagerState = rememberPagerState(
         initialPage = 0,
         initialPageOffsetFraction = 0f
     ) {
-        viewModel.uiState.selectedMediaItems.size
+        uiState.selectedMediaItems.size
     }
 
     LaunchedEffect(pagerState) {
@@ -155,7 +158,7 @@ fun ImagesConfirmationScreen(
             }
         }
 
-        val bitmaps = viewModel.uiState.selectedMediaItems.map { mediaItemUiModel ->
+        val bitmaps = uiState.selectedMediaItems.map { mediaItemUiModel ->
             mediaItemUiModel.uri.toUri().decodeAsBitmap(LocalContext.current.contentResolver)
         }
 
@@ -163,7 +166,7 @@ fun ImagesConfirmationScreen(
     }
 
     OnBannerHandler(uiState.confirmInfoModel) {
-        handleAction(it, from, viewModel, scope)
+        handleAction(it, from, viewModel, uiState, scope)
     }
 
     OnBannerHandler(uiState.successInfoModel) {
@@ -181,6 +184,7 @@ private fun handleAction(
     uiAction: UiAction,
     from: String,
     viewModel: ReportViewModel,
+    uiState: ReportUiState,
     scope: CoroutineScope
 ) {
     (uiAction as? FooterUiAction)?.let {
@@ -189,7 +193,7 @@ private fun handleAction(
                 viewModel.consumeNavigationEvent()
 
             ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name -> scope.launch {
-                val images = viewModel.uiState.selectedMediaItems.mapNotNull { it.file }
+                val images = uiState.selectedMediaItems.mapNotNull { it.file }
 
                 if (from == REPORT) {
                     viewModel.confirmReportImages(images)
