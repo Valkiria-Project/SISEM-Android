@@ -106,7 +106,7 @@ fun MapboxMapView(
         },
         scaffoldState = scaffoldState,
         sheetPeekHeight = if (currentIncident != null) 140.dp else 0.dp,
-        sheetSwipeEnabled = false
+        sheetSwipeEnabled = true
     ) { innerPadding ->
         Box(modifier.padding(innerPadding)) {
             AndroidFragment<MapFragment>(
