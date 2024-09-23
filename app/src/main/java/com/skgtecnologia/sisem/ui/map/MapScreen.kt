@@ -25,7 +25,6 @@ import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.AphRoute
 import com.skgtecnologia.sisem.ui.navigation.NavRoute
 import com.valkiria.uicomponents.bricks.banner.BannerUiModel
-import com.valkiria.uicomponents.bricks.map.MapboxMapView
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import timber.log.Timber
 

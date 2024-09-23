@@ -14,6 +14,7 @@ import com.valkiria.uicomponents.bricks.notification.model.IncidentAssignedNotif
 import com.valkiria.uicomponents.bricks.notification.model.IpsPatientTransferredNotification
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import com.valkiria.uicomponents.bricks.notification.model.TransmiNotification
+import com.valkiria.uicomponents.bricks.notification.model.UpdateVehicleStatusNotification
 import com.valkiria.uicomponents.components.incident.model.IncidentPriority
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -38,6 +39,7 @@ class NotificationRepositoryImpl @Inject constructor(
                 handleIpsPatientTransferredNotification(notification)
 
             is TransmiNotification -> handleTransmiNotification(notification)
+            is UpdateVehicleStatusNotification -> handleIncidentDeleteNotification()
             else -> Timber.d("no-op")
         }
     }

@@ -9,6 +9,7 @@ coil-compose = "2.7.0"
 compose-bom = "2024.09.02"
 compose-html = "1.0.2"
 compressor = "3.0.1"
+constraintlayout = "2.1.4"
 constraintlayout-compose = "1.0.1"
 converter-moshi = "2.11.0"
 core-ktx = "1.13.1"
@@ -54,6 +55,7 @@ androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.r
 androidx-camera-extensions = { module = "androidx.camera:camera-extensions", version.ref = "camera-x" }
 androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "camera-x" }
 androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "camera-x" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayout-compose" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "core-splashscreen" }
 androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "core-testing" }

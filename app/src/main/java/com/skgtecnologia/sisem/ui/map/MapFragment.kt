@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.bricks.map
+package com.skgtecnologia.sisem.ui.map
 
 import android.annotation.SuppressLint
 import android.content.res.Resources
@@ -24,7 +24,7 @@ import com.mapbox.navigation.base.extensions.applyLanguageAndVoiceUnitOptions
 import com.mapbox.navigation.base.route.NavigationRoute
 import com.mapbox.navigation.base.route.NavigationRouterCallback
 import com.mapbox.navigation.base.route.RouterFailure
-import com.mapbox.navigation.base.trip.model.RouteProgressState.COMPLETE
+import com.mapbox.navigation.base.trip.model.RouteProgressState
 import com.mapbox.navigation.core.MapboxNavigation
 import com.mapbox.navigation.core.directions.session.RoutesObserver
 import com.mapbox.navigation.core.lifecycle.MapboxNavigationObserver
@@ -36,11 +36,7 @@ import com.mapbox.navigation.ui.maps.NavigationStyles
 import com.mapbox.navigation.ui.maps.camera.NavigationCamera
 import com.mapbox.navigation.ui.maps.camera.data.MapboxNavigationViewportDataSource
 import com.mapbox.navigation.ui.maps.camera.lifecycle.NavigationBasicGesturesHandler
-import com.mapbox.navigation.ui.maps.camera.state.NavigationCameraState.FOLLOWING
-import com.mapbox.navigation.ui.maps.camera.state.NavigationCameraState.IDLE
-import com.mapbox.navigation.ui.maps.camera.state.NavigationCameraState.OVERVIEW
-import com.mapbox.navigation.ui.maps.camera.state.NavigationCameraState.TRANSITION_TO_FOLLOWING
-import com.mapbox.navigation.ui.maps.camera.state.NavigationCameraState.TRANSITION_TO_OVERVIEW
+import com.mapbox.navigation.ui.maps.camera.state.NavigationCameraState
 import com.mapbox.navigation.ui.maps.camera.transition.NavigationCameraTransitionOptions
 import com.mapbox.navigation.ui.maps.location.NavigationLocationProvider
 import com.mapbox.navigation.ui.maps.route.arrow.api.MapboxRouteArrowApi
@@ -55,8 +51,8 @@ import com.mapbox.navigation.ui.maps.route.line.api.MapboxRouteLineApi
 import com.mapbox.navigation.ui.maps.route.line.api.MapboxRouteLineView
 import com.mapbox.navigation.ui.maps.route.line.model.MapboxRouteLineApiOptions
 import com.mapbox.navigation.ui.maps.route.line.model.MapboxRouteLineViewOptions
-import com.valkiria.uicomponents.R
-import com.valkiria.uicomponents.databinding.FragmentMapBinding
+import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.databinding.FragmentMapBinding
 import kotlinx.coroutines.launch
 
 private const val DESTINATION_DISTANCE_ERROR_RANGE = 10F
@@ -106,7 +102,6 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     private val navigationLocationProvider = NavigationLocationProvider()
 
-    //    private val replayRouteMapper = ReplayRouteMapper()
     private val routeArrowApi: MapboxRouteArrowApi = MapboxRouteArrowApi()
 
     private val mapboxNavigation: MapboxNavigation by requireMapboxNavigation(
@@ -219,7 +214,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         }
 
         with(routeProgress) {
-            if (currentState == COMPLETE && distanceRemaining < DESTINATION_DISTANCE_ERROR_RANGE) {
+            if (currentState == RouteProgressState.COMPLETE && distanceRemaining < DESTINATION_DISTANCE_ERROR_RANGE) {
                 mapboxNavigation.stopTripSession()
                 if (style != null) {
                     routeLineApi.clearRouteLine { value ->
@@ -348,12 +343,12 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         navigationCamera.registerNavigationCameraStateChangeObserver { navigationCameraState ->
             // shows/hide the recenter button depending on the camera state
             when (navigationCameraState) {
-                TRANSITION_TO_FOLLOWING,
-                FOLLOWING -> binding.recenter.visibility = View.INVISIBLE
+                NavigationCameraState.TRANSITION_TO_FOLLOWING,
+                NavigationCameraState.FOLLOWING -> binding.recenter.visibility = View.INVISIBLE
 
-                TRANSITION_TO_OVERVIEW,
-                OVERVIEW,
-                IDLE -> binding.recenter.visibility = View.VISIBLE
+                NavigationCameraState.TRANSITION_TO_OVERVIEW,
+                NavigationCameraState.OVERVIEW,
+                NavigationCameraState.IDLE -> binding.recenter.visibility = View.VISIBLE
             }
         }
 
@@ -367,7 +362,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         binding.mapView.location.apply {
             setLocationProvider(navigationLocationProvider)
             locationPuck = LocationPuck2D(
-                bearingImage = ImageHolder.Companion.from(
+                bearingImage = ImageHolder.from(
                     R.drawable.ic_ambulance_marker
                 )
             )

@@ -1,4 +1,4 @@
-package com.valkiria.uicomponents.bricks.map
+package com.skgtecnologia.sisem.ui.map
 
 import android.location.Location
 import androidx.compose.foundation.background
@@ -79,7 +79,7 @@ fun MapboxMapView(
     val currentIncident by remember(incident) { mutableStateOf(incident) }
     val destinationPoint by remember(incident?.longitude to incident?.latitude) {
         val destinationPoint = if (incident?.longitude != null && incident.latitude != null) {
-            Point.fromLngLat(incident.longitude, incident.latitude)
+            Point.fromLngLat(checkNotNull(incident.longitude), checkNotNull(incident.latitude))
         } else {
             null
         }

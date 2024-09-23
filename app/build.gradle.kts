@@ -113,12 +113,15 @@ dependencies {
     implementation(project(":uicomponents"))
 
     // Android
-    implementation(libs.core.ktx)
-    implementation(libs.androidx.core.splashscreen)
-    implementation(libs.androidx.fragment.compose)
-    implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.fragment.compose)
+    implementation(libs.androidx.ui.viewbinding)
+    implementation(libs.core.ktx)
+    implementation(libs.lifecycle.runtime.ktx)
 
     // Compose
     implementation(platform(libs.compose.bom))
@@ -185,6 +188,10 @@ dependencies {
 
     // Location
     implementation(libs.play.services.location)
+
+    // Maps
+    implementation(libs.mapbox.navigation.android)
+    implementation(libs.mapbox.navigation.ui.components)
 
     // Unit Testing
     testImplementation(libs.junit)
