@@ -30,6 +30,7 @@ fun MenuDrawer(
     content: @Composable () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val operationConfig by viewModel.operationConfig.collectAsStateWithLifecycle()
     val crewMenuItems = uiState.accessTokenModelList?.let { list ->
         list.map { accessTokenModel ->
             accessTokenModel.toCrewMemberItemModel()
@@ -50,7 +51,7 @@ fun MenuDrawer(
         drawerContent = {
             DrawerContent(
                 drawerState = drawerState,
-                vehicleConfig = uiState.vehicleConfig,
+                vehicleConfig = operationConfig?.vehicleConfig,
                 crewMenuItems = crewMenuItems,
                 menuItems = getDrawerMenuItemList(LocalContext.current, isAdmin),
                 onMenuItemClick = onClick,

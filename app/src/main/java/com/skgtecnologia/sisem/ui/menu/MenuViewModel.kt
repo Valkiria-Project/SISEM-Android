@@ -2,16 +2,21 @@ package com.skgtecnologia.sisem.ui.menu
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
 import com.skgtecnologia.sisem.domain.auth.usecases.Logout
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.operation.usecases.LogoutTurn
 import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
+import com.skgtecnologia.sisem.ui.commons.extensions.STATE_FLOW_STARTED_TIME
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -23,7 +28,7 @@ class MenuViewModel @Inject constructor(
     private val getAllAccessTokens: GetAllAccessTokens,
     private val logout: Logout,
     private val logoutTurn: LogoutTurn,
-    private val observeOperationConfig: ObserveOperationConfig
+    observeOperationConfig: ObserveOperationConfig
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -31,29 +36,47 @@ class MenuViewModel @Inject constructor(
     var uiState: MutableStateFlow<MenuUiState> = MutableStateFlow(MenuUiState())
         private set
 
-    init {
-        uiState.update { it.copy(isLoading = true) }
-
-        job?.cancel()
-        job = viewModelScope.launch {
+    val operationConfig = observeOperationConfig.invoke()
+        .onStart {
+            uiState.update { it.copy(isLoading = true) }
             getAllAccessTokens.invoke()
-                .onSuccess { accessTokenModel ->
-                    retrieveOperationConfig(accessTokenModel)
-                }
-                .onFailure { throwable ->
-                    Timber.wtf(throwable, "This is a failure")
-
-                    withContext(Dispatchers.Main) {
-                        uiState.update {
-                            it.copy(
-                                isLoading = false,
-                                errorModel = throwable.mapToUi()
-                            )
-                        }
+                .onSuccess { accessTokenModels ->
+                    Timber.d("Success getting the users")
+                    uiState.update {
+                        it.copy(
+                            accessTokenModelList = accessTokenModels
+                        )
                     }
                 }
         }
-    }
+        .onEach { operationModel ->
+            Timber.d("Update operationModel")
+            withContext(Dispatchers.Main) {
+                uiState.update {
+                    it.copy(
+                        vehicleConfig = operationModel.vehicleConfig,
+                        isLoading = false
+                    )
+                }
+            }
+        }
+        .catch { throwable ->
+            Timber.wtf(throwable, "This is a failure")
+
+            withContext(Dispatchers.Main) {
+                uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorModel = throwable.mapToUi()
+                    )
+                }
+            }
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = WhileSubscribed(STATE_FLOW_STARTED_TIME),
+            initialValue = null
+        )
 
     fun logout(username: String) {
         uiState.update { it.copy(isLoading = true) }
@@ -115,32 +138,6 @@ class MenuViewModel @Inject constructor(
                     }
                 }
         }
-    }
-
-    private suspend fun retrieveOperationConfig(accessTokenModel: List<AccessTokenModel>) {
-        observeOperationConfig.invoke()
-            .onSuccess { operationModel ->
-                withContext(Dispatchers.Main) {
-                    uiState.update {
-                        it.copy(
-                            vehicleConfig = operationModel.vehicleConfig,
-                            accessTokenModelList = accessTokenModel,
-                            isLoading = false
-                        )
-                    }
-                }
-            }.onFailure { throwable ->
-                Timber.wtf(throwable, "This is a failure")
-
-                withContext(Dispatchers.Main) {
-                    uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            errorModel = throwable.mapToUi()
-                        )
-                    }
-                }
-            }
     }
 
     fun consumeErrorEvent() {

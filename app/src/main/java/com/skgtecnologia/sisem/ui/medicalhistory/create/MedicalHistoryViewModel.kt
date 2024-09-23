@@ -86,7 +86,7 @@ import com.skgtecnologia.sisem.domain.model.banner.fileSizeErrorBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.banner.medicalHistorySuccess
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
-import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
+import com.skgtecnologia.sisem.domain.operation.usecases.GetOperationConfigWithCurrentRole
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
@@ -173,7 +173,7 @@ class MedicalHistoryViewModel @Inject constructor(
     private val getMedicalHistoryScreen: GetMedicalHistoryScreen,
     private val logoutCurrentUser: LogoutCurrentUser,
     private val sendMedicalHistory: SendMedicalHistory,
-    private val observeOperationConfig: ObserveOperationConfig,
+    private val getOperationConfigWithCurrentRole: GetOperationConfigWithCurrentRole,
     private val stringProvider: StringProvider
 ) : ViewModel() {
 
@@ -271,7 +271,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch {
-            observeOperationConfig.invoke()
+            getOperationConfigWithCurrentRole.invoke()
                 .onSuccess { operationConfig ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(

@@ -1,11 +1,13 @@
 package com.skgtecnologia.sisem.data.notification
 
 import com.skgtecnologia.sisem.commons.communication.IncidentEventHandler
+import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.data.auth.cache.AuthCacheDataSource
 import com.skgtecnologia.sisem.data.incident.cache.IncidentCacheDataSource
 import com.skgtecnologia.sisem.data.incident.remote.IncidentRemoteDataSource
 import com.skgtecnologia.sisem.data.notification.cache.NotificationCacheDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
+import com.skgtecnologia.sisem.data.operation.remote.OperationRemoteDataSource
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.notification.repository.NotificationRepository
 import com.valkiria.uicomponents.bricks.notification.NotificationUiModel
@@ -22,11 +24,13 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class NotificationRepositoryImpl @Inject constructor(
+    private val androidIdProvider: AndroidIdProvider,
     private val authCacheDataSource: AuthCacheDataSource,
     private val incidentCacheDataSource: IncidentCacheDataSource,
     private val incidentRemoteDataSource: IncidentRemoteDataSource,
     private val notificationCacheDataSource: NotificationCacheDataSource,
-    private val operationCacheDataSource: OperationCacheDataSource
+    private val operationCacheDataSource: OperationCacheDataSource,
+    private val operationRemoteDataSource: OperationRemoteDataSource
 ) : NotificationRepository {
 
     override suspend fun storeNotification(notification: NotificationData) {
@@ -39,7 +43,7 @@ class NotificationRepositoryImpl @Inject constructor(
                 handleIpsPatientTransferredNotification(notification)
 
             is TransmiNotification -> handleTransmiNotification(notification)
-            is UpdateVehicleStatusNotification -> handleIncidentDeleteNotification()
+            is UpdateVehicleStatusNotification -> handleUpdateVehicleStatusNotification()
             else -> Timber.d("no-op")
         }
     }
@@ -125,6 +129,16 @@ class NotificationRepositoryImpl @Inject constructor(
 
             incidentCacheDataSource.updateTransmiStatus(incident.id!!, transmiRequests)
         }
+    }
+
+    private suspend fun handleUpdateVehicleStatusNotification() {
+        val turnId = authCacheDataSource.observeAccessToken()
+            .first()?.turn?.id?.toString()
+
+        operationRemoteDataSource.getOperationConfig(androidIdProvider.getAndroidId(), turnId)
+            .onSuccess {
+                operationCacheDataSource.storeOperationConfig(it)
+            }
     }
 
     override fun observeNotifications(): Flow<List<NotificationUiModel>> =
