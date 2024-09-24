@@ -42,15 +42,30 @@ class MenuViewModel @Inject constructor(
             getAllAccessTokens.invoke()
                 .onSuccess { accessTokenModels ->
                     Timber.d("Success getting the users")
-                    uiState.update {
-                        it.copy(
-                            accessTokenModelList = accessTokenModels
-                        )
+
+                    withContext(Dispatchers.Main) {
+                        uiState.update {
+                            it.copy(
+                                accessTokenModelList = accessTokenModels
+                            )
+                        }
+                    }
+                }.onFailure { throwable ->
+                    Timber.wtf(throwable, "This is a failure")
+
+                    withContext(Dispatchers.Main) {
+                        uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                errorModel = throwable.mapToUi()
+                            )
+                        }
                     }
                 }
         }
         .onEach { operationModel ->
             Timber.d("Update operationModel")
+
             withContext(Dispatchers.Main) {
                 uiState.update {
                     it.copy(

@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.first
 import timber.log.Timber
 import javax.inject.Inject
 
+@Suppress("LongParameterList")
 class NotificationRepositoryImpl @Inject constructor(
     private val androidIdProvider: AndroidIdProvider,
     private val authCacheDataSource: AuthCacheDataSource,

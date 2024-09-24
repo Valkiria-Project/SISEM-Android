@@ -14,6 +14,10 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
@@ -48,7 +52,12 @@ class MenuViewModelTest {
 
     @Test
     fun `when getAllAccessTokens failure`() = runTest {
+        val vehicleConfigModel = mockk<VehicleConfigModel>()
+        val operationConfig = mockk<OperationModel> {
+            every { vehicleConfig } returns vehicleConfigModel
+        }
         coEvery { getAllAccessTokens.invoke() } returns Result.failure(Throwable())
+        coEvery { observeOperationConfig.invoke() } returns flowOf(operationConfig)
 
         viewModel = MenuViewModel(
             getAllAccessTokens = getAllAccessTokens,
@@ -56,6 +65,10 @@ class MenuViewModelTest {
             logoutTurn = logoutTurn,
             observeOperationConfig = observeOperationConfig
         )
+
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            viewModel.operationConfig.collect()
+        }
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.value.errorModel?.title)
     }
@@ -68,7 +81,7 @@ class MenuViewModelTest {
             every { vehicleConfig } returns vehicleConfigModel
         }
         coEvery { getAllAccessTokens.invoke() } returns Result.success(accessTokens)
-        coEvery { observeOperationConfig.invoke() } returns Result.success(operationConfig)
+        coEvery { observeOperationConfig.invoke() } returns flowOf(operationConfig)
 
         viewModel = MenuViewModel(
             getAllAccessTokens = getAllAccessTokens,
@@ -76,6 +89,10 @@ class MenuViewModelTest {
             logoutTurn = logoutTurn,
             observeOperationConfig = observeOperationConfig
         )
+
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            viewModel.operationConfig.collect()
+        }
 
         Assert.assertEquals(vehicleConfigModel, viewModel.uiState.value.vehicleConfig)
         Assert.assertEquals(accessTokens, viewModel.uiState.value.accessTokenModelList)
@@ -83,9 +100,8 @@ class MenuViewModelTest {
 
     @Test
     fun `when getAllAccessTokens is success and observeOperationConfig failure`() = runTest {
-        val accessTokens = listOf(mockk<AccessTokenModel>())
-        coEvery { getAllAccessTokens.invoke() } returns Result.success(accessTokens)
-        coEvery { observeOperationConfig.invoke() } returns Result.failure(IllegalStateException())
+        coEvery { getAllAccessTokens.invoke() } returns Result.failure(IllegalStateException())
+        coEvery { observeOperationConfig.invoke() } returns flowOf()
 
         viewModel = MenuViewModel(
             getAllAccessTokens = getAllAccessTokens,
@@ -93,6 +109,10 @@ class MenuViewModelTest {
             logoutTurn = logoutTurn,
             observeOperationConfig = observeOperationConfig
         )
+
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            viewModel.operationConfig.collect()
+        }
 
         Assert.assertEquals(null, viewModel.uiState.value.accessTokenModelList)
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.value.errorModel?.title)
@@ -106,7 +126,7 @@ class MenuViewModelTest {
             every { vehicleConfig } returns vehicleConfigModel
         }
         coEvery { getAllAccessTokens.invoke() } returns Result.success(accessTokens)
-        coEvery { observeOperationConfig.invoke() } returns Result.success(operationConfig)
+        coEvery { observeOperationConfig.invoke() } returns flowOf(operationConfig)
         coEvery { logoutTurn.invoke(USERNAME) } returns Result.success("")
 
         viewModel = MenuViewModel(
@@ -129,7 +149,7 @@ class MenuViewModelTest {
             every { vehicleConfig } returns vehicleConfigModel
         }
         coEvery { getAllAccessTokens.invoke() } returns Result.success(accessTokens)
-        coEvery { observeOperationConfig.invoke() } returns Result.success(operationConfig)
+        coEvery { observeOperationConfig.invoke() } returns flowOf(operationConfig)
         coEvery { logoutTurn.invoke(USERNAME) } returns Result.failure(Throwable())
 
         viewModel = MenuViewModel(
@@ -152,7 +172,7 @@ class MenuViewModelTest {
             every { vehicleConfig } returns vehicleConfigModel
         }
         coEvery { getAllAccessTokens.invoke() } returns Result.success(accessTokens)
-        coEvery { observeOperationConfig.invoke() } returns Result.success(operationConfig)
+        coEvery { observeOperationConfig.invoke() } returns flowOf(operationConfig)
 
         viewModel = MenuViewModel(
             getAllAccessTokens = getAllAccessTokens,
