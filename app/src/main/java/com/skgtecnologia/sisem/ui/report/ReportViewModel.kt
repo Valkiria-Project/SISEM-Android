@@ -18,7 +18,7 @@ import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.banner.reportCancellationBanner
 import com.skgtecnologia.sisem.domain.model.banner.reportConfirmationBanner
 import com.skgtecnologia.sisem.domain.model.banner.reportSentBanner
-import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
+import com.skgtecnologia.sisem.domain.operation.usecases.GetOperationConfigWithCurrentRole
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.domain.report.usecases.SendReport
@@ -38,7 +38,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ReportViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val observeOperationConfig: ObserveOperationConfig,
+    private val getOperationConfigWithCurrentRole: GetOperationConfigWithCurrentRole,
     private val sendReport: SendReport
 ) : ViewModel() {
 
@@ -60,7 +60,7 @@ class ReportViewModel @Inject constructor(
 
         job?.cancel()
         job = viewModelScope.launch {
-            observeOperationConfig.invoke()
+            getOperationConfigWithCurrentRole.invoke()
                 .onSuccess { operationModel ->
                     withContext(Dispatchers.Main) {
                         uiState.update {

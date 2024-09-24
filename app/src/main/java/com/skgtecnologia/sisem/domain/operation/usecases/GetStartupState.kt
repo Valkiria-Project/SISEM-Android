@@ -11,13 +11,13 @@ import javax.inject.Inject
 
 class GetStartupState @Inject constructor(
     private val authRepository: AuthRepository,
-    private val observeOperationConfig: ObserveOperationConfig
+    private val getOperationConfigWithCurrentRole: GetOperationConfigWithCurrentRole
 ) {
 
     @CheckResult
     suspend operator fun invoke(): Result<StartupNavigationModel> = resultOf {
         val accessToken = authRepository.observeCurrentAccessToken()
-        val operationConfig = observeOperationConfig.invoke().getOrNull()
+        val operationConfig = getOperationConfigWithCurrentRole.invoke().getOrNull()
         val configPreoperational = PreoperationalStatus.getStatusByName(
             operationConfig?.vehicleConfig?.preoperational.orEmpty()
         ) == PreoperationalStatus.SI

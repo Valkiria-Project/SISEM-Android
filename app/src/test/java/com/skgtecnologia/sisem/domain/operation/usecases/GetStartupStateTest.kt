@@ -25,7 +25,7 @@ class GetStartupStateTest {
     private lateinit var authRepository: AuthRepository
 
     @MockK
-    private lateinit var observeOperationConfig: ObserveOperationConfig
+    private lateinit var getOperationConfigWithCurrentRole: GetOperationConfigWithCurrentRole
 
     private lateinit var getStartupState: GetStartupState
 
@@ -33,7 +33,7 @@ class GetStartupStateTest {
     fun setUp() {
         MockKAnnotations.init(this)
 
-        getStartupState = GetStartupState(authRepository, observeOperationConfig)
+        getStartupState = GetStartupState(authRepository, getOperationConfigWithCurrentRole)
     }
 
     @Test
@@ -57,7 +57,7 @@ class GetStartupStateTest {
         }
         coEvery { authRepository.observeCurrentAccessToken() } returns flow { emit(accessToken) }
         coEvery { accessToken.copy(configPreoperational = any()) } returns accessToken
-        coEvery { observeOperationConfig() } returns Result.success(operationConfig)
+        coEvery { getOperationConfigWithCurrentRole() } returns Result.success(operationConfig)
 
         val result = getStartupState()
         val startupNavigationModel = result.getOrThrow()
@@ -87,7 +87,7 @@ class GetStartupStateTest {
             coEvery { isWarning } returns true
         }
         coEvery { authRepository.observeCurrentAccessToken() } returns flow { emit(accessToken) }
-        coEvery { observeOperationConfig() } returns Result.failure(Exception())
+        coEvery { getOperationConfigWithCurrentRole() } returns Result.failure(Exception())
 
         val result = getStartupState()
         val startupNavigationModel = result.getOrThrow()
@@ -112,7 +112,7 @@ class GetStartupStateTest {
             coEvery { authRepository.observeCurrentAccessToken() } returns flow {
                 throw IllegalStateException()
             }
-            coEvery { observeOperationConfig() } returns Result.success(operationConfig)
+            coEvery { getOperationConfigWithCurrentRole() } returns Result.success(operationConfig)
 
             val result = getStartupState()
 
@@ -124,7 +124,7 @@ class GetStartupStateTest {
         coEvery { authRepository.observeCurrentAccessToken() } returns flow {
             throw IllegalStateException()
         }
-        coEvery { observeOperationConfig() } returns Result.failure(IllegalStateException())
+        coEvery { getOperationConfigWithCurrentRole() } returns Result.failure(IllegalStateException())
 
         val result = getStartupState()
 
