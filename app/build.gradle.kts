@@ -114,6 +114,7 @@ dependencies {
 
     // Android
     implementation(libs.activity.compose)
+    implementation(libs.androidx.cardview)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.constraintlayout.compose)

@@ -19,8 +19,11 @@ import com.mapbox.maps.plugin.animation.camera
 import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.navigation.base.ExperimentalPreviewMapboxNavigationAPI
+import com.mapbox.navigation.base.TimeFormat
 import com.mapbox.navigation.base.extensions.applyDefaultNavigationOptions
 import com.mapbox.navigation.base.extensions.applyLanguageAndVoiceUnitOptions
+import com.mapbox.navigation.base.formatter.DistanceFormatterOptions
+import com.mapbox.navigation.base.formatter.UnitType
 import com.mapbox.navigation.base.route.NavigationRoute
 import com.mapbox.navigation.base.route.NavigationRouterCallback
 import com.mapbox.navigation.base.route.RouterFailure
@@ -32,6 +35,12 @@ import com.mapbox.navigation.core.lifecycle.requireMapboxNavigation
 import com.mapbox.navigation.core.trip.session.LocationMatcherResult
 import com.mapbox.navigation.core.trip.session.LocationObserver
 import com.mapbox.navigation.core.trip.session.RouteProgressObserver
+import com.mapbox.navigation.tripdata.progress.api.MapboxTripProgressApi
+import com.mapbox.navigation.tripdata.progress.model.DistanceRemainingFormatter
+import com.mapbox.navigation.tripdata.progress.model.EstimatedTimeToArrivalFormatter
+import com.mapbox.navigation.tripdata.progress.model.PercentDistanceTraveledFormatter
+import com.mapbox.navigation.tripdata.progress.model.TimeRemainingFormatter
+import com.mapbox.navigation.tripdata.progress.model.TripProgressUpdateFormatter
 import com.mapbox.navigation.ui.maps.NavigationStyles
 import com.mapbox.navigation.ui.maps.camera.NavigationCamera
 import com.mapbox.navigation.ui.maps.camera.data.MapboxNavigationViewportDataSource
@@ -76,6 +85,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     private lateinit var routeArrowView: MapboxRouteArrowView
     private lateinit var routeLineApi: MapboxRouteLineApi
     private lateinit var routeLineView: MapboxRouteLineView
+    private lateinit var tripProgressApi: MapboxTripProgressApi
     private lateinit var viewportDataSource: MapboxNavigationViewportDataSource
 
     private val routeCalloutApiOptions: MapboxRouteCalloutApiOptions by lazy {
@@ -211,6 +221,10 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         if (style != null) {
             val maneuverArrowResult = routeArrowApi.addUpcomingManeuverArrow(routeProgress)
             routeArrowView.renderManeuverUpdate(style, maneuverArrowResult)
+
+            binding.tripProgressView.render(
+                tripProgressApi.getTripProgress(routeProgress)
+            )
         }
 
         with(routeProgress) {
@@ -296,6 +310,30 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         // set the padding values
         viewportDataSource.overviewPadding = overviewPadding
         viewportDataSource.followingPadding = followingPadding
+
+        val distanceFormatterOptions = DistanceFormatterOptions.Builder(requireActivity())
+            .unitType(UnitType.METRIC)
+            .build()
+
+        tripProgressApi = MapboxTripProgressApi(
+            TripProgressUpdateFormatter.Builder(requireActivity())
+                .distanceRemainingFormatter(
+                    DistanceRemainingFormatter(distanceFormatterOptions)
+                )
+                .timeRemainingFormatter(
+                    TimeRemainingFormatter(requireActivity())
+                )
+                .percentRouteTraveledFormatter(
+                    PercentDistanceTraveledFormatter()
+                )
+                .estimatedTimeToArrivalFormatter(
+                    EstimatedTimeToArrivalFormatter(
+                        requireActivity(),
+                        TimeFormat.TWELVE_HOURS
+                    )
+                )
+                .build()
+        )
 
         // initialize route line, the routeLineBelowLayerId is specified to place
         // the route line below road labels layer on the map
@@ -432,12 +470,14 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     }
 
     private fun setRouteAndStartNavigation(routes: List<NavigationRoute>) {
-        // set routes, where the first route in the list is the primary route that
-        // will be used for active guidance
         mapboxNavigation.setNavigationRoutes(routes)
-
-        // move the camera to overview when new route is available
+        binding.tripProgressCard.visibility = View.VISIBLE
         navigationCamera.requestNavigationCameraToFollowing()
+    }
+
+    private fun clearRouteAndStopNavigation() {
+        mapboxNavigation.setNavigationRoutes(listOf())
+        binding.tripProgressCard.visibility = View.INVISIBLE
     }
 
     companion object {
