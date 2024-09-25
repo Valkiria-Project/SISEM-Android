@@ -7,14 +7,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.mapbox.api.directions.v5.models.Bearing
 import com.mapbox.api.directions.v5.models.RouteOptions
 import com.mapbox.common.location.Location
 import com.mapbox.geojson.Point
+import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.EdgeInsets
 import com.mapbox.maps.ImageHolder
+import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.LocationPuck2D
+import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.animation.camera
 import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.locationcomponent.location
@@ -76,8 +82,8 @@ private const val PADDING_BOTTOM_LARGE = 150.0
 class MapFragment : Fragment(R.layout.fragment_map) {
 
     private lateinit var binding: FragmentMapBinding
+//    val viewModel by viewModels<MapFragmentViewModel>()
 
-    private var lastLocation: Location? = null
     private var destinationLocation: Location? = null
 
     private lateinit var navigationCamera: NavigationCamera
@@ -130,7 +136,8 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 mapboxNavigation.unregisterRouteProgressObserver(routeProgressObserver)
                 mapboxNavigation.stopTripSession()
             }
-        }
+        },
+        onInitialize = this::initNavigation
     )
 
     private val routesObserver = RoutesObserver { result ->
@@ -187,28 +194,43 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
         override fun onNewLocationMatcherResult(locationMatcherResult: LocationMatcherResult) {
             val enhancedLocation = locationMatcherResult.enhancedLocation
-            lastLocation = locationMatcherResult.enhancedLocation
-            // update location puck's position on the map
             navigationLocationProvider.changePosition(
-                location = enhancedLocation,
-                keyPoints = locationMatcherResult.keyPoints,
+                enhancedLocation,
+                locationMatcherResult.keyPoints,
             )
-
-            // update camera position to account for new location
-            viewportDataSource.onLocationChanged(enhancedLocation)
-            viewportDataSource.evaluate()
-
-            // if this is the first location update the activity has received,
-            // it's best to immediately move the camera to the current user location
-            if (!firstLocationUpdateReceived) {
-                firstLocationUpdateReceived = true
-                navigationCamera.requestNavigationCameraToFollowing(
-                    stateTransitionOptions = NavigationCameraTransitionOptions.Builder()
-                        .maxDuration(0) // instant transition
-                        .build()
-                )
-            }
+            // Invoke this method to move the camera to your current location.
+            updateCamera(enhancedLocation)
         }
+    }
+
+    private fun updateLocationOnMap(
+        enhancedLocation: Location,
+        keyPoints: List<Location> = emptyList()
+    ) {
+        // update location puck's position on the map
+        navigationLocationProvider.changePosition(
+            location = enhancedLocation,
+            keyPoints = keyPoints
+        )
+
+        // update camera position to account for new location
+        viewportDataSource.onLocationChanged(enhancedLocation)
+        viewportDataSource.evaluate()
+    }
+
+    private fun updateCamera(location: Location) {
+        val mapAnimationOptions = MapAnimationOptions.Builder().duration(1500L).build()
+        binding.mapView.camera.easeTo(
+            CameraOptions.Builder()
+                // Centers the camera to the lng/lat specified.
+                .center(Point.fromLngLat(location.longitude, location.latitude))
+                // specifies the zoom value. Increase or decrease to zoom in or zoom out
+                .zoom(12.0)
+                // specify frame of reference from the center.
+                .padding(EdgeInsets(500.0, 0.0, 0.0, 0.0))
+                .build(),
+            mapAnimationOptions
+        )
     }
 
     private val routeProgressObserver = RouteProgressObserver { routeProgress ->
@@ -265,28 +287,6 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         )
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        if (savedInstanceState != null) {
-            getMapFragmentArguments(savedInstanceState)
-        } else {
-            arguments?.let { getMapFragmentArguments(it) }
-        }
-    }
-
-    private fun getMapFragmentArguments(bundle: Bundle) {
-        lastLocation = Location.Builder()
-            .longitude(bundle.getDouble(LOCATION_POINT_LONGITUDE))
-            .latitude(bundle.getDouble(LOCATION_POINT_LATITUDE))
-            .build()
-
-        destinationLocation = Location.Builder()
-            .longitude(bundle.getDouble(DESTINATION_POINT_LONGITUDE))
-            .latitude(bundle.getDouble(DESTINATION_POINT_LATITUDE))
-            .build()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -300,76 +300,69 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewportDataSource = MapboxNavigationViewportDataSource(binding.mapView.mapboxMap)
-        navigationCamera = NavigationCamera(
-            binding.mapView.mapboxMap,
-            binding.mapView.camera,
-            viewportDataSource
-        )
+        binding.mapView.mapboxMap.loadStyle(Style.DARK)
 
-        // set the padding values
-        viewportDataSource.overviewPadding = overviewPadding
-        viewportDataSource.followingPadding = followingPadding
-
-        val distanceFormatterOptions = DistanceFormatterOptions.Builder(requireActivity())
-            .unitType(UnitType.METRIC)
-            .build()
-
-        tripProgressApi = MapboxTripProgressApi(
-            TripProgressUpdateFormatter.Builder(requireActivity())
-                .distanceRemainingFormatter(
-                    DistanceRemainingFormatter(distanceFormatterOptions)
-                )
-                .timeRemainingFormatter(
-                    TimeRemainingFormatter(requireActivity())
-                )
-                .percentRouteTraveledFormatter(
-                    PercentDistanceTraveledFormatter()
-                )
-                .estimatedTimeToArrivalFormatter(
-                    EstimatedTimeToArrivalFormatter(
-                        requireActivity(),
-                        TimeFormat.TWELVE_HOURS
-                    )
-                )
-                .build()
-        )
-
-        // initialize route line, the routeLineBelowLayerId is specified to place
-        // the route line below road labels layer on the map
-        // the value of this option will depend on the style that you are using
-        // and under which layer the route line should be placed on the map layers stack
-        val mapboxRouteLineViewOptions = MapboxRouteLineViewOptions.Builder(requireActivity())
-            .routeLineBelowLayerId("road-label-navigation")
-            .build()
-
-        routeLineApi = MapboxRouteLineApi(MapboxRouteLineApiOptions.Builder().build())
-        routeLineView = MapboxRouteLineView(mapboxRouteLineViewOptions)
-
-        // initialize maneuver arrow view to draw arrows on the map
-        val routeArrowOptions = RouteArrowOptions.Builder(requireActivity()).build()
-        routeArrowView = MapboxRouteArrowView(routeArrowOptions)
-
-        // load map style
-        binding.mapView.mapboxMap.loadStyle(NavigationStyles.NAVIGATION_NIGHT_STYLE) {
-            // Ensure that the route line related layers are present before the route arrow
-            routeLineView.initializeLayers(it)
-
-            binding.mapView.compass.updateSettings {
-                enabled = false
-            }
-        }
-
-        initViewInteractions()
-        initNavigation()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        lastLocation?.longitude?.let { outState.putDouble(LOCATION_POINT_LONGITUDE, it) }
-        lastLocation?.latitude?.let { outState.putDouble(LOCATION_POINT_LATITUDE, it) }
-        destinationLocation?.longitude?.let { outState.putDouble(DESTINATION_POINT_LONGITUDE, it) }
-        destinationLocation?.latitude?.let { outState.putDouble(DESTINATION_POINT_LATITUDE, it) }
+//        viewportDataSource = MapboxNavigationViewportDataSource(binding.mapView.mapboxMap)
+//        navigationCamera = NavigationCamera(
+//            binding.mapView.mapboxMap,
+//            binding.mapView.camera,
+//            viewportDataSource
+//        )
+//
+//        // set the padding values
+//        viewportDataSource.overviewPadding = overviewPadding
+//        viewportDataSource.followingPadding = followingPadding
+//
+//        val distanceFormatterOptions = DistanceFormatterOptions.Builder(requireActivity())
+//            .unitType(UnitType.METRIC)
+//            .build()
+//
+//        tripProgressApi = MapboxTripProgressApi(
+//            TripProgressUpdateFormatter.Builder(requireActivity())
+//                .distanceRemainingFormatter(
+//                    DistanceRemainingFormatter(distanceFormatterOptions)
+//                )
+//                .timeRemainingFormatter(
+//                    TimeRemainingFormatter(requireActivity())
+//                )
+//                .percentRouteTraveledFormatter(
+//                    PercentDistanceTraveledFormatter()
+//                )
+//                .estimatedTimeToArrivalFormatter(
+//                    EstimatedTimeToArrivalFormatter(
+//                        requireActivity(),
+//                        TimeFormat.TWELVE_HOURS
+//                    )
+//                )
+//                .build()
+//        )
+//
+//        // initialize route line, the routeLineBelowLayerId is specified to place
+//        // the route line below road labels layer on the map
+//        // the value of this option will depend on the style that you are using
+//        // and under which layer the route line should be placed on the map layers stack
+//        val mapboxRouteLineViewOptions = MapboxRouteLineViewOptions.Builder(requireActivity())
+//            .routeLineBelowLayerId("road-label-navigation")
+//            .build()
+//
+//        routeLineApi = MapboxRouteLineApi(MapboxRouteLineApiOptions.Builder().build())
+//        routeLineView = MapboxRouteLineView(mapboxRouteLineViewOptions)
+//
+//        // initialize maneuver arrow view to draw arrows on the map
+//        val routeArrowOptions = RouteArrowOptions.Builder(requireActivity()).build()
+//        routeArrowView = MapboxRouteArrowView(routeArrowOptions)
+//
+//        // load map style
+//        binding.mapView.mapboxMap.loadStyle(NavigationStyles.NAVIGATION_NIGHT_STYLE) {
+//            // Ensure that the route line related layers are present before the route arrow
+//            routeLineView.initializeLayers(it)
+//
+//            binding.mapView.compass.updateSettings {
+//                enabled = false
+//            }
+//        }
+//
+//        initViewInteractions()
     }
 
     private fun initViewInteractions() {
@@ -396,25 +389,29 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     }
 
     private fun initNavigation() {
-        // initialize location puck
-        binding.mapView.location.apply {
-            setLocationProvider(navigationLocationProvider)
-            locationPuck = LocationPuck2D(
-                bearingImage = ImageHolder.from(
-                    R.drawable.ic_ambulance_marker
-                )
-            )
-            puckBearingEnabled = true
-            enabled = true
-        }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                // initialize location puck
+                binding.mapView.location.apply {
+                    setLocationProvider(navigationLocationProvider)
+                    locationPuck = LocationPuck2D(
+                        bearingImage = ImageHolder.from(
+                            R.drawable.ic_ambulance_marker
+                        )
+                    )
+                    puckBearingEnabled = true
+                    enabled = true
+                }
 
-        destinationLocation?.let { destination ->
-            findRoute(destination)
+                destinationLocation?.let { destination ->
+                    findRoute(destination)
+                }
+            }
         }
     }
 
     private fun findRoute(destinationLocation: Location) {
-        val originLocation = navigationLocationProvider.lastLocation ?: lastLocation
+        val originLocation = navigationLocationProvider.lastLocation
         val originPoint = originLocation?.let {
             Point.fromLngLat(it.longitude, it.latitude)
         }
@@ -478,12 +475,5 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     private fun clearRouteAndStopNavigation() {
         mapboxNavigation.setNavigationRoutes(listOf())
         binding.tripProgressCard.visibility = View.INVISIBLE
-    }
-
-    companion object {
-        const val LOCATION_POINT_LONGITUDE = "location_point_longitude"
-        const val LOCATION_POINT_LATITUDE = "location_point_latitude"
-        const val DESTINATION_POINT_LONGITUDE = "destination_point_longitude"
-        const val DESTINATION_POINT_LATITUDE = "destination_point_latitude"
     }
 }

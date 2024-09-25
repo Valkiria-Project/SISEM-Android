@@ -1,9 +1,9 @@
 package com.skgtecnologia.sisem.ui.map
 
-import com.valkiria.uicomponents.bricks.notification.NotificationUiModel
+import android.location.Location
 import com.valkiria.uicomponents.components.incident.model.IncidentUiModel
 
-data class MapUiState(
+data class MapFragmentUiState(
+    val lastLocation: Location? = null,
     val incident: IncidentUiModel? = null,
-    val notifications: List<NotificationUiModel>? = null
 )

@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.ui.map
 
-import android.location.Location
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -40,10 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.core.os.bundleOf
 import androidx.fragment.compose.AndroidFragment
 import androidx.fragment.compose.FragmentState
-import com.mapbox.geojson.Point
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.action.GenericUiAction.NotificationAction
 import com.valkiria.uicomponents.bricks.banner.BannerUiModel
@@ -60,7 +57,6 @@ import timber.log.Timber
 @Suppress("LongMethod", "LongParameterList", "MagicNumber")
 @Composable
 fun MapboxMapView(
-    location: Location,
     incident: IncidentUiModel?,
     notifications: List<NotificationUiModel>?,
     drawerState: DrawerState,
@@ -77,26 +73,6 @@ fun MapboxMapView(
     var showNotificationsDialog by remember { mutableStateOf(false) }
 
     val currentIncident by remember(incident) { mutableStateOf(incident) }
-    val destinationPoint by remember(incident?.longitude to incident?.latitude) {
-        val destinationPoint = if (incident?.longitude != null && incident.latitude != null) {
-            Point.fromLngLat(checkNotNull(incident.longitude), checkNotNull(incident.latitude))
-        } else {
-            null
-        }
-
-        mutableStateOf(destinationPoint)
-    }
-
-    val args by remember(destinationPoint) {
-        mutableStateOf(
-            bundleOf(
-                MapFragment.LOCATION_POINT_LONGITUDE to location.longitude,
-                MapFragment.LOCATION_POINT_LATITUDE to location.latitude,
-                MapFragment.DESTINATION_POINT_LONGITUDE to destinationPoint?.longitude(),
-                MapFragment.DESTINATION_POINT_LATITUDE to destinationPoint?.latitude()
-            )
-        )
-    }
 
     BottomSheetScaffold(
         sheetContent = {
@@ -110,8 +86,7 @@ fun MapboxMapView(
     ) { innerPadding ->
         Box(modifier.padding(innerPadding)) {
             AndroidFragment<MapFragment>(
-                fragmentState = fragmentState,
-                arguments = args
+                fragmentState = fragmentState
             )
 
             IconButton(
