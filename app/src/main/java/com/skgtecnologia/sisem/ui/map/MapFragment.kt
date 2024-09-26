@@ -47,12 +47,10 @@ import com.mapbox.navigation.tripdata.progress.model.EstimatedTimeToArrivalForma
 import com.mapbox.navigation.tripdata.progress.model.PercentDistanceTraveledFormatter
 import com.mapbox.navigation.tripdata.progress.model.TimeRemainingFormatter
 import com.mapbox.navigation.tripdata.progress.model.TripProgressUpdateFormatter
-import com.mapbox.navigation.ui.maps.NavigationStyles
 import com.mapbox.navigation.ui.maps.camera.NavigationCamera
 import com.mapbox.navigation.ui.maps.camera.data.MapboxNavigationViewportDataSource
 import com.mapbox.navigation.ui.maps.camera.lifecycle.NavigationBasicGesturesHandler
 import com.mapbox.navigation.ui.maps.camera.state.NavigationCameraState
-import com.mapbox.navigation.ui.maps.camera.transition.NavigationCameraTransitionOptions
 import com.mapbox.navigation.ui.maps.location.NavigationLocationProvider
 import com.mapbox.navigation.ui.maps.route.arrow.api.MapboxRouteArrowApi
 import com.mapbox.navigation.ui.maps.route.arrow.api.MapboxRouteArrowView
@@ -67,7 +65,9 @@ import com.mapbox.navigation.ui.maps.route.line.api.MapboxRouteLineView
 import com.mapbox.navigation.ui.maps.route.line.model.MapboxRouteLineApiOptions
 import com.mapbox.navigation.ui.maps.route.line.model.MapboxRouteLineViewOptions
 import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.commons.extensions.biLet
 import com.skgtecnologia.sisem.databinding.FragmentMapBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 private const val DESTINATION_DISTANCE_ERROR_RANGE = 10F
@@ -79,10 +79,11 @@ private const val PADDING_BOTTOM_LARGE = 150.0
 
 @Suppress("TooManyFunctions")
 @OptIn(ExperimentalPreviewMapboxNavigationAPI::class)
+@AndroidEntryPoint
 class MapFragment : Fragment(R.layout.fragment_map) {
 
     private lateinit var binding: FragmentMapBinding
-//    val viewModel by viewModels<MapFragmentViewModel>()
+    val viewModel: MapFragmentViewModel by viewModels()
 
     private var destinationLocation: Location? = null
 
@@ -300,69 +301,69 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.mapView.mapboxMap.loadStyle(Style.DARK)
+        viewportDataSource = MapboxNavigationViewportDataSource(binding.mapView.mapboxMap)
+        navigationCamera = NavigationCamera(
+            binding.mapView.mapboxMap,
+            binding.mapView.camera,
+            viewportDataSource
+        )
 
-//        viewportDataSource = MapboxNavigationViewportDataSource(binding.mapView.mapboxMap)
-//        navigationCamera = NavigationCamera(
-//            binding.mapView.mapboxMap,
-//            binding.mapView.camera,
-//            viewportDataSource
-//        )
-//
-//        // set the padding values
-//        viewportDataSource.overviewPadding = overviewPadding
-//        viewportDataSource.followingPadding = followingPadding
-//
-//        val distanceFormatterOptions = DistanceFormatterOptions.Builder(requireActivity())
-//            .unitType(UnitType.METRIC)
-//            .build()
-//
-//        tripProgressApi = MapboxTripProgressApi(
-//            TripProgressUpdateFormatter.Builder(requireActivity())
-//                .distanceRemainingFormatter(
-//                    DistanceRemainingFormatter(distanceFormatterOptions)
-//                )
-//                .timeRemainingFormatter(
-//                    TimeRemainingFormatter(requireActivity())
-//                )
-//                .percentRouteTraveledFormatter(
-//                    PercentDistanceTraveledFormatter()
-//                )
-//                .estimatedTimeToArrivalFormatter(
-//                    EstimatedTimeToArrivalFormatter(
-//                        requireActivity(),
-//                        TimeFormat.TWELVE_HOURS
-//                    )
-//                )
-//                .build()
-//        )
-//
-//        // initialize route line, the routeLineBelowLayerId is specified to place
-//        // the route line below road labels layer on the map
-//        // the value of this option will depend on the style that you are using
-//        // and under which layer the route line should be placed on the map layers stack
-//        val mapboxRouteLineViewOptions = MapboxRouteLineViewOptions.Builder(requireActivity())
-//            .routeLineBelowLayerId("road-label-navigation")
-//            .build()
-//
-//        routeLineApi = MapboxRouteLineApi(MapboxRouteLineApiOptions.Builder().build())
-//        routeLineView = MapboxRouteLineView(mapboxRouteLineViewOptions)
-//
-//        // initialize maneuver arrow view to draw arrows on the map
-//        val routeArrowOptions = RouteArrowOptions.Builder(requireActivity()).build()
-//        routeArrowView = MapboxRouteArrowView(routeArrowOptions)
-//
-//        // load map style
-//        binding.mapView.mapboxMap.loadStyle(NavigationStyles.NAVIGATION_NIGHT_STYLE) {
-//            // Ensure that the route line related layers are present before the route arrow
-//            routeLineView.initializeLayers(it)
-//
-//            binding.mapView.compass.updateSettings {
-//                enabled = false
-//            }
-//        }
-//
-//        initViewInteractions()
+        // set the padding values
+        viewportDataSource.overviewPadding = overviewPadding
+        viewportDataSource.followingPadding = followingPadding
+
+        val distanceFormatterOptions = DistanceFormatterOptions.Builder(requireActivity())
+            .unitType(UnitType.METRIC)
+            .build()
+
+        tripProgressApi = MapboxTripProgressApi(
+            TripProgressUpdateFormatter.Builder(requireActivity())
+                .distanceRemainingFormatter(
+                    DistanceRemainingFormatter(distanceFormatterOptions)
+                )
+                .timeRemainingFormatter(
+                    TimeRemainingFormatter(requireActivity())
+                )
+                .percentRouteTraveledFormatter(
+                    PercentDistanceTraveledFormatter()
+                )
+                .estimatedTimeToArrivalFormatter(
+                    EstimatedTimeToArrivalFormatter(
+                        requireActivity(),
+                        TimeFormat.TWELVE_HOURS
+                    )
+                )
+                .build()
+        )
+
+        // initialize route line, the routeLineBelowLayerId is specified to place
+        // the route line below road labels layer on the map
+        // the value of this option will depend on the style that you are using
+        // and under which layer the route line should be placed on the map layers stack
+        val mapboxRouteLineViewOptions = MapboxRouteLineViewOptions.Builder(requireActivity())
+            .routeLineBelowLayerId("road-label-navigation")
+            .build()
+
+        routeLineApi = MapboxRouteLineApi(MapboxRouteLineApiOptions.Builder().build())
+        routeLineView = MapboxRouteLineView(mapboxRouteLineViewOptions)
+
+        // initialize maneuver arrow view to draw arrows on the map
+        val routeArrowOptions = RouteArrowOptions.Builder(requireActivity()).build()
+        routeArrowView = MapboxRouteArrowView(routeArrowOptions)
+
+        // load map style
+
+        binding.mapView.mapboxMap.loadStyle(Style.DARK) {
+            // Ensure that the route line related layers are present before the route arrow
+            routeLineView.initializeLayers(it)
+
+            binding.mapView.compass.updateSettings {
+                enabled = false
+            }
+        }
+
+        initViewInteractions()
+        initObservers()
     }
 
     private fun initViewInteractions() {
@@ -385,6 +386,25 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
         binding.recenter.setOnClickListener {
             navigationCamera.requestNavigationCameraToFollowing()
+        }
+    }
+
+    private fun initObservers() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { mapFragmentUiState ->
+                    val incident = mapFragmentUiState.incident
+
+                    biLet(incident?.longitude, incident?.latitude) { longitude, latitude ->
+                        destinationLocation = Location.Builder()
+                            .longitude(longitude)
+                            .latitude(latitude)
+                            .build()
+
+                        destinationLocation?.let { findRoute(it) }
+                    }
+                }
+            }
         }
     }
 
