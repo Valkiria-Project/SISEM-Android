@@ -15,14 +15,13 @@ import com.mapbox.api.directions.v5.models.Bearing
 import com.mapbox.api.directions.v5.models.RouteOptions
 import com.mapbox.common.location.Location
 import com.mapbox.geojson.Point
-import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.EdgeInsets
 import com.mapbox.maps.ImageHolder
 import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.LocationPuck2D
-import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.animation.camera
 import com.mapbox.maps.plugin.compass.compass
+import com.mapbox.maps.plugin.gestures.gestures
 import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.navigation.base.ExperimentalPreviewMapboxNavigationAPI
 import com.mapbox.navigation.base.TimeFormat
@@ -33,7 +32,6 @@ import com.mapbox.navigation.base.formatter.UnitType
 import com.mapbox.navigation.base.route.NavigationRoute
 import com.mapbox.navigation.base.route.NavigationRouterCallback
 import com.mapbox.navigation.base.route.RouterFailure
-import com.mapbox.navigation.base.trip.model.RouteProgressState
 import com.mapbox.navigation.core.MapboxNavigation
 import com.mapbox.navigation.core.directions.session.RoutesObserver
 import com.mapbox.navigation.core.lifecycle.MapboxNavigationObserver
@@ -51,6 +49,7 @@ import com.mapbox.navigation.ui.maps.camera.NavigationCamera
 import com.mapbox.navigation.ui.maps.camera.data.MapboxNavigationViewportDataSource
 import com.mapbox.navigation.ui.maps.camera.lifecycle.NavigationBasicGesturesHandler
 import com.mapbox.navigation.ui.maps.camera.state.NavigationCameraState
+import com.mapbox.navigation.ui.maps.camera.transition.NavigationCameraTransitionOptions
 import com.mapbox.navigation.ui.maps.location.NavigationLocationProvider
 import com.mapbox.navigation.ui.maps.route.arrow.api.MapboxRouteArrowApi
 import com.mapbox.navigation.ui.maps.route.arrow.api.MapboxRouteArrowView
@@ -69,6 +68,7 @@ import com.skgtecnologia.sisem.commons.extensions.biLet
 import com.skgtecnologia.sisem.databinding.FragmentMapBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 private const val DESTINATION_DISTANCE_ERROR_RANGE = 10F
 private const val PADDING_TOP_SMALL = 140.0
@@ -135,54 +135,41 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 mapboxNavigation.unregisterRoutesObserver(routesObserver)
                 mapboxNavigation.unregisterLocationObserver(locationObserver)
                 mapboxNavigation.unregisterRouteProgressObserver(routeProgressObserver)
-                mapboxNavigation.stopTripSession()
             }
         },
         onInitialize = this::initNavigation
     )
 
-    private val routesObserver = RoutesObserver { result ->
-        lifecycleScope.launch {
-            if (result.navigationRoutes.isNotEmpty()) {
-                // generate route geometries asynchronously and render them
-                routeLineApi.setNavigationRoutes(
-                    result.navigationRoutes
-                ) { value ->
-                    binding.mapView.mapboxMap.style?.apply {
-                        routeLineView.renderRouteDrawData(this, value)
-                    }
+    private val routesObserver = RoutesObserver { routeUpdateResult ->
+        if (routeUpdateResult.navigationRoutes.isNotEmpty()) {
+            // generate route geometries asynchronously and render them
+            routeLineApi.setNavigationRoutes(
+                routeUpdateResult.navigationRoutes
+            ) { value ->
+                binding.mapView.mapboxMap.style?.apply {
+                    routeLineView.renderRouteDrawData(this, value)
                 }
-
-                val alternativesMetadata = mapboxNavigation.getAlternativeMetadataFor(
-                    result.navigationRoutes
-                )
-                routeCalloutApi.setNavigationRoutes(
-                    result.navigationRoutes,
-                    alternativesMetadata
-                ).also { value ->
-                    routeCalloutView.renderCallouts(value)
-                }
-
-                // update the camera position to account for the new route
-                viewportDataSource.onRouteChanged(result.navigationRoutes.first())
-                viewportDataSource.evaluate()
-            } else {
-                // remove the route line and route arrow from the map
-                val style = binding.mapView.mapboxMap.style
-                if (style != null) {
-                    routeLineApi.clearRouteLine { value ->
-                        routeLineView.renderClearRouteLineValue(
-                            style,
-                            value
-                        )
-                    }
-                    routeArrowView.render(style, routeArrowApi.clearArrows())
-                }
-
-                // remove the route reference from camera position evaluations
-                viewportDataSource.clearRouteData()
-                viewportDataSource.evaluate()
             }
+
+            // update the camera position to account for the new route
+            viewportDataSource.onRouteChanged(routeUpdateResult.navigationRoutes.first())
+            viewportDataSource.evaluate()
+        } else {
+            // remove the route line and route arrow from the map
+            val style = binding.mapView.mapboxMap.style
+            if (style != null) {
+                routeLineApi.clearRouteLine { value ->
+                    routeLineView.renderClearRouteLineValue(
+                        style,
+                        value
+                    )
+                }
+                routeArrowView.render(style, routeArrowApi.clearArrows())
+            }
+
+            // remove the route reference from camera position evaluations
+            viewportDataSource.clearRouteData()
+            viewportDataSource.evaluate()
         }
     }
 
@@ -195,43 +182,27 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
         override fun onNewLocationMatcherResult(locationMatcherResult: LocationMatcherResult) {
             val enhancedLocation = locationMatcherResult.enhancedLocation
+            // update location puck's position on the map
             navigationLocationProvider.changePosition(
-                enhancedLocation,
-                locationMatcherResult.keyPoints,
+                location = enhancedLocation,
+                keyPoints = locationMatcherResult.keyPoints,
             )
-            // Invoke this method to move the camera to your current location.
-            updateCamera(enhancedLocation)
+
+            // update camera position to account for new location
+            viewportDataSource.onLocationChanged(enhancedLocation)
+            viewportDataSource.evaluate()
+
+            // if this is the first location update the activity has received,
+            // it's best to immediately move the camera to the current user location
+            if (!firstLocationUpdateReceived) {
+                firstLocationUpdateReceived = true
+                navigationCamera.requestNavigationCameraToOverview(
+                    stateTransitionOptions = NavigationCameraTransitionOptions.Builder()
+                        .maxDuration(0) // instant transition
+                        .build()
+                )
+            }
         }
-    }
-
-    private fun updateLocationOnMap(
-        enhancedLocation: Location,
-        keyPoints: List<Location> = emptyList()
-    ) {
-        // update location puck's position on the map
-        navigationLocationProvider.changePosition(
-            location = enhancedLocation,
-            keyPoints = keyPoints
-        )
-
-        // update camera position to account for new location
-        viewportDataSource.onLocationChanged(enhancedLocation)
-        viewportDataSource.evaluate()
-    }
-
-    private fun updateCamera(location: Location) {
-        val mapAnimationOptions = MapAnimationOptions.Builder().duration(1500L).build()
-        binding.mapView.camera.easeTo(
-            CameraOptions.Builder()
-                // Centers the camera to the lng/lat specified.
-                .center(Point.fromLngLat(location.longitude, location.latitude))
-                // specifies the zoom value. Increase or decrease to zoom in or zoom out
-                .zoom(12.0)
-                // specify frame of reference from the center.
-                .padding(EdgeInsets(500.0, 0.0, 0.0, 0.0))
-                .build(),
-            mapAnimationOptions
-        )
     }
 
     private val routeProgressObserver = RouteProgressObserver { routeProgress ->
@@ -244,30 +215,12 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         if (style != null) {
             val maneuverArrowResult = routeArrowApi.addUpcomingManeuverArrow(routeProgress)
             routeArrowView.renderManeuverUpdate(style, maneuverArrowResult)
-
-            binding.tripProgressView.render(
-                tripProgressApi.getTripProgress(routeProgress)
-            )
         }
 
-        with(routeProgress) {
-            if (currentState == RouteProgressState.COMPLETE && distanceRemaining < DESTINATION_DISTANCE_ERROR_RANGE) {
-                mapboxNavigation.stopTripSession()
-                if (style != null) {
-                    routeLineApi.clearRouteLine { value ->
-                        routeLineView.renderClearRouteLineValue(
-                            style,
-                            value
-                        )
-                    }
-                    routeArrowView.render(style, routeArrowApi.clearArrows())
-                }
-
-                // remove the route reference from camera position evaluations
-                viewportDataSource.clearRouteData()
-                viewportDataSource.evaluate()
-            }
-        }
+        // update bottom trip progress summary
+        binding.tripProgressView.render(
+            tripProgressApi.getTripProgress(routeProgress)
+        )
     }
 
     private val pixelDensity = Resources.getSystem().displayMetrics.density
@@ -360,6 +313,15 @@ class MapFragment : Fragment(R.layout.fragment_map) {
             binding.mapView.compass.updateSettings {
                 enabled = false
             }
+
+            // add long click listener that search for a route to the clicked destination
+            binding.mapView.gestures.addOnMapLongClickListener { point ->
+                findRoute(
+                    Location.Builder().longitude(point.longitude()).latitude(point.latitude())
+                        .build()
+                )
+                true
+            }
         }
 
         initViewInteractions()
@@ -409,6 +371,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     }
 
     private fun initNavigation() {
+        Timber.d("initNavigation")
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 // initialize location puck
@@ -431,6 +394,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     }
 
     private fun findRoute(destinationLocation: Location) {
+        Timber.d("findRoute with location ${destinationLocation.latitude} and ${destinationLocation.longitude}")
         val originLocation = navigationLocationProvider.lastLocation
         val originPoint = originLocation?.let {
             Point.fromLngLat(it.longitude, it.latitude)
