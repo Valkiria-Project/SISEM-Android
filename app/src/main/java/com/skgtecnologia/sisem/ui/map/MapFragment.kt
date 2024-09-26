@@ -67,9 +67,11 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.extensions.biLet
 import com.skgtecnologia.sisem.databinding.FragmentMapBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+private const val ACTIVE_INCIDENT_OBSERVATION_DELAY = 3000L
 private const val DESTINATION_DISTANCE_ERROR_RANGE = 10F
 private const val PADDING_TOP_SMALL = 140.0
 private const val PADDING_TOP_LARGE = 180.0
@@ -353,6 +355,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     private fun initObservers() {
         lifecycleScope.launch {
+            delay(ACTIVE_INCIDENT_OBSERVATION_DELAY)
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { mapFragmentUiState ->
                     val incident = mapFragmentUiState.incident
