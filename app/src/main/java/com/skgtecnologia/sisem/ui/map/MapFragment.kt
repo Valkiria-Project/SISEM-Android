@@ -22,6 +22,7 @@ import com.mapbox.maps.plugin.LocationPuck2D
 import com.mapbox.maps.plugin.animation.camera
 import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.gestures.gestures
+import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
 import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.navigation.base.ExperimentalPreviewMapboxNavigationAPI
 import com.mapbox.navigation.base.TimeFormat
@@ -70,9 +71,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.time.Duration.Companion.minutes
 
 private const val ACTIVE_INCIDENT_OBSERVATION_DELAY = 3000L
-private const val DESTINATION_DISTANCE_ERROR_RANGE = 10F
 private const val PADDING_TOP_SMALL = 140.0
 private const val PADDING_TOP_LARGE = 180.0
 private const val PADDING_HORIZONTAL = 40.0
@@ -90,17 +91,30 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     private var destinationLocation: Location? = null
 
     private lateinit var navigationCamera: NavigationCamera
-
     private lateinit var routeArrowView: MapboxRouteArrowView
-    private lateinit var routeLineApi: MapboxRouteLineApi
-    private lateinit var routeLineView: MapboxRouteLineView
     private lateinit var tripProgressApi: MapboxTripProgressApi
     private lateinit var viewportDataSource: MapboxNavigationViewportDataSource
+
+    private val navigationLocationProvider = NavigationLocationProvider()
+
+    private val onPositionChangedListener = OnIndicatorPositionChangedListener { point ->
+        val result = routeLineApi.updateTraveledRouteLine(point)
+        binding.mapView.mapboxMap.style?.apply {
+            routeLineView.renderRouteLineUpdate(this, result)
+        }
+    }
+
+    private val routeArrowApi: MapboxRouteArrowApi = MapboxRouteArrowApi()
 
     private val routeCalloutApiOptions: MapboxRouteCalloutApiOptions by lazy {
         MapboxRouteCalloutApiOptions.Builder()
             .routeCalloutType(RouteCalloutType.RouteDurations)
+            .similarDurationDelta(1.minutes)
             .build()
+    }
+
+    private val routeCalloutApi by lazy {
+        MapboxRouteCalloutApi(routeCalloutApiOptions)
     }
 
     private val routeCalloutViewOptions: MapboxRouteCalloutViewOptions by lazy {
@@ -111,17 +125,29 @@ class MapFragment : Fragment(R.layout.fragment_map) {
             .build()
     }
 
-    private val routeCalloutApi by lazy {
-        MapboxRouteCalloutApi(routeCalloutApiOptions)
-    }
-
     private val routeCalloutView by lazy {
         MapboxRouteCalloutView(binding.mapView, routeCalloutViewOptions)
     }
 
-    private val navigationLocationProvider = NavigationLocationProvider()
+    private val routeLineApiOptions: MapboxRouteLineApiOptions by lazy {
+        MapboxRouteLineApiOptions.Builder()
+            .vanishingRouteLineEnabled(true)
+            .build()
+    }
 
-    private val routeArrowApi: MapboxRouteArrowApi = MapboxRouteArrowApi()
+    private val routeLineApi: MapboxRouteLineApi by lazy {
+        MapboxRouteLineApi(routeLineApiOptions)
+    }
+
+    private val routeLineViewOptions: MapboxRouteLineViewOptions by lazy {
+        MapboxRouteLineViewOptions.Builder(requireActivity())
+            .routeLineBelowLayerId("road-label-navigation")
+            .build()
+    }
+
+    private val routeLineView by lazy {
+        MapboxRouteLineView(routeLineViewOptions)
+    }
 
     private val mapboxNavigation: MapboxNavigation by requireMapboxNavigation(
         onResumedObserver = object : MapboxNavigationObserver {
@@ -142,19 +168,27 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         onInitialize = this::initNavigation
     )
 
-    private val routesObserver = RoutesObserver { routeUpdateResult ->
-        if (routeUpdateResult.navigationRoutes.isNotEmpty()) {
+    private val routesObserver = RoutesObserver { routesResult ->
+        if (routesResult.navigationRoutes.isNotEmpty()) {
             // generate route geometries asynchronously and render them
             routeLineApi.setNavigationRoutes(
-                routeUpdateResult.navigationRoutes
+                routesResult.navigationRoutes
             ) { value ->
                 binding.mapView.mapboxMap.style?.apply {
                     routeLineView.renderRouteDrawData(this, value)
                 }
             }
 
+            val metadata = mapboxNavigation.getAlternativeMetadataFor(routesResult.navigationRoutes)
+            routeCalloutApi.setNavigationRoutes(
+                newRoutes = routesResult.navigationRoutes,
+                alternativeRoutesMetadata = metadata,
+            ).apply {
+                routeCalloutView.renderCallouts(this)
+            }
+
             // update the camera position to account for the new route
-            viewportDataSource.onRouteChanged(routeUpdateResult.navigationRoutes.first())
+            viewportDataSource.onRouteChanged(routesResult.navigationRoutes.first())
             viewportDataSource.evaluate()
         } else {
             // remove the route line and route arrow from the map
@@ -208,6 +242,12 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     }
 
     private val routeProgressObserver = RouteProgressObserver { routeProgress ->
+        routeLineApi.updateWithRouteProgress(routeProgress) { result ->
+            binding.mapView.mapboxMap.style?.apply {
+                routeLineView.renderRouteLineUpdate(this, result)
+            }
+        }
+
         // update the camera position to account for the progressed fragment of the route
         viewportDataSource.onRouteProgressChanged(routeProgress)
         viewportDataSource.evaluate()
@@ -291,17 +331,6 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 .build()
         )
 
-        // initialize route line, the routeLineBelowLayerId is specified to place
-        // the route line below road labels layer on the map
-        // the value of this option will depend on the style that you are using
-        // and under which layer the route line should be placed on the map layers stack
-        val mapboxRouteLineViewOptions = MapboxRouteLineViewOptions.Builder(requireActivity())
-            .routeLineBelowLayerId("road-label-navigation")
-            .build()
-
-        routeLineApi = MapboxRouteLineApi(MapboxRouteLineApiOptions.Builder().build())
-        routeLineView = MapboxRouteLineView(mapboxRouteLineViewOptions)
-
         // initialize maneuver arrow view to draw arrows on the map
         val routeArrowOptions = RouteArrowOptions.Builder(requireActivity()).build()
         routeArrowView = MapboxRouteArrowView(routeArrowOptions)
@@ -380,6 +409,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 // initialize location puck
                 binding.mapView.location.apply {
                     setLocationProvider(navigationLocationProvider)
+                    addOnIndicatorPositionChangedListener(onPositionChangedListener)
                     locationPuck = LocationPuck2D(
                         bearingImage = ImageHolder.from(
                             R.drawable.ic_ambulance_marker
@@ -457,10 +487,5 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         mapboxNavigation.setNavigationRoutes(routes)
         binding.tripProgressCard.visibility = View.VISIBLE
         navigationCamera.requestNavigationCameraToFollowing()
-    }
-
-    private fun clearRouteAndStopNavigation() {
-        mapboxNavigation.setNavigationRoutes(listOf())
-        binding.tripProgressCard.visibility = View.INVISIBLE
     }
 }

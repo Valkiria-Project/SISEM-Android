@@ -29,7 +29,8 @@
         <com.mapbox.navigation.ui.components.tripprogress.view.MapboxTripProgressView
             android:id="@+id/tripProgressView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:padding="@dimen/map_controls_margin_end" />
 
         <ImageView
             android:id="@+id/stop"
