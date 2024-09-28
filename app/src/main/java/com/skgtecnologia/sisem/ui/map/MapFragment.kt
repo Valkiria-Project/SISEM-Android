@@ -405,6 +405,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     private fun initNavigation() {
         Timber.d("initNavigation")
         lifecycleScope.launch {
+            delay(ACTIVE_INCIDENT_OBSERVATION_DELAY)
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 // initialize location puck
                 binding.mapView.location.apply {
