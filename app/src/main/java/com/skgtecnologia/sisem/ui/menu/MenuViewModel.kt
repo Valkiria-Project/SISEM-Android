@@ -2,12 +2,16 @@ package com.skgtecnologia.sisem.ui.menu
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
 import com.skgtecnologia.sisem.domain.auth.usecases.Logout
+import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.operation.usecases.LogoutTurn
 import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.ui.commons.extensions.STATE_FLOW_STARTED_TIME
+import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
+import com.valkiria.uicomponents.action.UiAction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -27,6 +31,7 @@ import javax.inject.Inject
 class MenuViewModel @Inject constructor(
     private val getAllAccessTokens: GetAllAccessTokens,
     private val logout: Logout,
+    private val logoutCurrentUser: LogoutCurrentUser,
     private val logoutTurn: LogoutTurn,
     observeOperationConfig: ObserveOperationConfig
 ) : ViewModel() {
@@ -155,7 +160,23 @@ class MenuViewModel @Inject constructor(
         }
     }
 
-    fun consumeErrorEvent() {
+    fun handleEvent(uiAction: UiAction) {
+        consumeShownError()
+
+        uiAction.handleAuthorizationErrorEvent {
+            job?.cancel()
+            job = viewModelScope.launch {
+                logoutCurrentUser.invoke()
+                    .onSuccess { username ->
+                        UnauthorizedEventHandler.publishUnauthorizedEvent(username)
+                    }.onFailure {
+                        UnauthorizedEventHandler.publishUnauthorizedEvent(it.toString())
+                    }
+            }
+        }
+    }
+
+    private fun consumeShownError() {
         uiState.update {
             it.copy(
                 errorModel = null
