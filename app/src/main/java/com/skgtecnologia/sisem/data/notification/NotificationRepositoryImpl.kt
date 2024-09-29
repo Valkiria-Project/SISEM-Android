@@ -11,7 +11,6 @@ import com.skgtecnologia.sisem.data.operation.remote.OperationRemoteDataSource
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.notification.repository.NotificationRepository
 import com.valkiria.uicomponents.bricks.notification.NotificationUiModel
-import com.valkiria.uicomponents.bricks.notification.model.ClosingAPHNotification
 import com.valkiria.uicomponents.bricks.notification.model.IncidentAssignedNotification
 import com.valkiria.uicomponents.bricks.notification.model.IpsPatientTransferredNotification
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
@@ -38,7 +37,6 @@ class NotificationRepositoryImpl @Inject constructor(
         notificationCacheDataSource.storeNotification(notification)
 
         when (notification) {
-            is ClosingAPHNotification -> handleClosingAPHNotificationNotification()
             is IncidentAssignedNotification -> handleIncidentAssignedNotification(notification)
             is IpsPatientTransferredNotification ->
                 handleIpsPatientTransferredNotification(notification)
@@ -46,34 +44,6 @@ class NotificationRepositoryImpl @Inject constructor(
             is TransmiNotification -> handleTransmiNotification(notification)
             is UpdateVehicleStatusNotification -> handleUpdateVehicleStatusNotification()
             else -> Timber.d("no-op")
-        }
-    }
-
-    private suspend fun handleClosingAPHNotificationNotification() {
-        val currentIncidentNotification = checkNotNull(
-            notificationCacheDataSource.getActiveIncidentNotification()
-        )
-        val currentIncident = checkNotNull(incidentCacheDataSource.observeActiveIncident().first())
-
-        incidentRemoteDataSource.getIncidentInfo(
-            idIncident = currentIncidentNotification.incidentNumber,
-            idTurn = authCacheDataSource.observeAccessToken()
-                .first()
-                ?.turn
-                ?.id
-                ?.toString()
-                .orEmpty(),
-            codeVehicle = operationCacheDataSource.observeOperationConfig()
-                .first()
-                ?.vehicleCode
-                .orEmpty()
-        ).onSuccess {
-            val updatedIncident = it.copy(
-                incidentPriority = currentIncident.incidentPriority,
-                latitude = currentIncident.latitude,
-                longitude = currentIncident.longitude
-            )
-            incidentCacheDataSource.storeIncident(updatedIncident)
         }
     }
 
