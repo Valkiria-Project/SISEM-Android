@@ -156,6 +156,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         onResumedObserver = object : MapboxNavigationObserver {
             @SuppressLint("MissingPermission")
             override fun onAttached(mapboxNavigation: MapboxNavigation) {
+                mapboxNavigation.registerArrivalObserver(arrivalObserver)
                 mapboxNavigation.registerRoutesObserver(routesObserver)
                 mapboxNavigation.registerLocationObserver(locationObserver)
                 mapboxNavigation.registerRouteProgressObserver(routeProgressObserver)
@@ -163,6 +164,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
             }
 
             override fun onDetached(mapboxNavigation: MapboxNavigation) {
+                mapboxNavigation.unregisterArrivalObserver(arrivalObserver)
                 mapboxNavigation.unregisterRoutesObserver(routesObserver)
                 mapboxNavigation.unregisterLocationObserver(locationObserver)
                 mapboxNavigation.unregisterRouteProgressObserver(routeProgressObserver)
@@ -173,15 +175,15 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     private val arrivalObserver: ArrivalObserver = object : ArrivalObserver {
         override fun onFinalDestinationArrival(routeProgress: RouteProgress) {
-            // TODO("Not yet implemented")
+            Timber.d("onFinalDestinationArrival")
         }
 
         override fun onNextRouteLegStart(routeLegProgress: RouteLegProgress) {
-            // TODO("Not yet implemented")
+            Timber.d("onNextRouteLegStart")
         }
 
         override fun onWaypointArrival(routeProgress: RouteProgress) {
-            // TODO("Not yet implemented")
+            Timber.d("onWaypointArrival")
         }
     }
 
