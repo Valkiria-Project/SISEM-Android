@@ -33,7 +33,10 @@ import com.mapbox.navigation.base.formatter.UnitType
 import com.mapbox.navigation.base.route.NavigationRoute
 import com.mapbox.navigation.base.route.NavigationRouterCallback
 import com.mapbox.navigation.base.route.RouterFailure
+import com.mapbox.navigation.base.trip.model.RouteLegProgress
+import com.mapbox.navigation.base.trip.model.RouteProgress
 import com.mapbox.navigation.core.MapboxNavigation
+import com.mapbox.navigation.core.arrival.ArrivalObserver
 import com.mapbox.navigation.core.directions.session.RoutesObserver
 import com.mapbox.navigation.core.lifecycle.MapboxNavigationObserver
 import com.mapbox.navigation.core.lifecycle.requireMapboxNavigation
@@ -167,6 +170,20 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         },
         onInitialize = this::initNavigation
     )
+
+    private val arrivalObserver: ArrivalObserver = object : ArrivalObserver {
+        override fun onFinalDestinationArrival(routeProgress: RouteProgress) {
+            // TODO("Not yet implemented")
+        }
+
+        override fun onNextRouteLegStart(routeLegProgress: RouteLegProgress) {
+            // TODO("Not yet implemented")
+        }
+
+        override fun onWaypointArrival(routeProgress: RouteProgress) {
+            // TODO("Not yet implemented")
+        }
+    }
 
     private val routesObserver = RoutesObserver { routesResult ->
         if (routesResult.navigationRoutes.isNotEmpty()) {
