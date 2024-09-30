@@ -16,7 +16,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-class ObserveOperationConfigTest {
+class GetOperationConfigWithCurrentRoleTest {
 
     @MockK
     private lateinit var authRepository: AuthRepository
@@ -24,13 +24,13 @@ class ObserveOperationConfigTest {
     @MockK
     private lateinit var operationRepository: OperationRepository
 
-    private lateinit var observeOperationConfig: ObserveOperationConfig
+    private lateinit var getOperationConfigWithCurrentRole: GetOperationConfigWithCurrentRole
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
 
-        observeOperationConfig = ObserveOperationConfig(authRepository, operationRepository)
+        getOperationConfigWithCurrentRole = GetOperationConfigWithCurrentRole(authRepository, operationRepository)
     }
 
     @Test
@@ -47,7 +47,7 @@ class ObserveOperationConfigTest {
             emit(accessTokenModel)
         }
 
-        val result = observeOperationConfig()
+        val result = getOperationConfigWithCurrentRole()
 
         Assert.assertEquals(true, result.isSuccess)
     }
@@ -57,7 +57,7 @@ class ObserveOperationConfigTest {
         coEvery { operationRepository.observeOperationConfig() } returns mockk()
         coEvery { authRepository.observeCurrentAccessToken() } returns flow { Throwable() }
 
-        val result = observeOperationConfig()
+        val result = getOperationConfigWithCurrentRole()
 
         Assert.assertEquals(true, result.isFailure)
     }
@@ -72,7 +72,7 @@ class ObserveOperationConfigTest {
             emit(accessTokenModel)
         }
 
-        val result = observeOperationConfig()
+        val result = getOperationConfigWithCurrentRole()
 
         Assert.assertEquals(true, result.isFailure)
     }
@@ -82,7 +82,7 @@ class ObserveOperationConfigTest {
         coEvery { operationRepository.observeOperationConfig() } returns flow { Throwable() }
         coEvery { authRepository.observeCurrentAccessToken() } returns flow { Throwable() }
 
-        val result = observeOperationConfig()
+        val result = getOperationConfigWithCurrentRole()
 
         Assert.assertEquals(true, result.isFailure)
     }

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.skgtecnologia.sisem.ui.map.MapFragment">
+
+    <com.mapbox.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/tripProgressCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:cardElevation="8dp"
+        app:cardUseCompatPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.mapbox.navigation.ui.components.tripprogress.view.MapboxTripProgressView
+            android:id="@+id/tripProgressView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/map_controls_margin_end" />
+
+        <ImageView
+            android:id="@+id/stop"
+            android:layout_width="@dimen/map_controls_stop_button_size"
+            android:layout_height="@dimen/map_controls_stop_button_size"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="@dimen/map_controls_margin_end"
+            android:contentDescription="@null"
+            app:srcCompat="@android:drawable/ic_delete" />
+    </androidx.cardview.widget.CardView>
+
+    <com.mapbox.navigation.ui.components.maps.camera.view.MapboxRecenterButton
+        android:id="@+id/recenter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/map_controls_margin_top"
+        android:layout_marginEnd="@dimen/map_controls_margin_end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

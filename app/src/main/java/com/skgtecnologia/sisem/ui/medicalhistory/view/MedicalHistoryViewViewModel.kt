@@ -16,7 +16,7 @@ import com.skgtecnologia.sisem.domain.medicalhistory.usecases.SaveAphFiles
 import com.skgtecnologia.sisem.domain.model.banner.fileSizeErrorBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
-import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
+import com.skgtecnologia.sisem.domain.operation.usecases.GetOperationConfigWithCurrentRole
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
@@ -43,7 +43,7 @@ class MedicalHistoryViewViewModel @Inject constructor(
     private val deleteAphFile: DeleteAphFile,
     private val getMedicalHistoryViewScreen: GetMedicalHistoryViewScreen,
     private val logoutCurrentUser: LogoutCurrentUser,
-    private val observeOperationConfig: ObserveOperationConfig,
+    private val getOperationConfigWithCurrentRole: GetOperationConfigWithCurrentRole,
     private val saveAphFiles: SaveAphFiles
 ) : ViewModel() {
 
@@ -87,7 +87,7 @@ class MedicalHistoryViewViewModel @Inject constructor(
                     }
                 }
 
-            observeOperationConfig.invoke()
+            getOperationConfigWithCurrentRole.invoke()
                 .onSuccess { operationConfig ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
