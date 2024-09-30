@@ -63,9 +63,7 @@ dependencies {
     // Android
     implementation(libs.activity.compose)
     implementation(libs.androidx.constraintlayout.compose)
-    implementation(libs.androidx.fragment.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.ui.viewbinding)
     implementation(libs.material)
 
     // Compose
@@ -85,10 +83,6 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.compose.html)
     implementation(libs.compressor)
-
-    // Maps
-    api(libs.mapbox.navigation.android)
-    api(libs.mapbox.navigation.ui.components)
 
     // Unit Testing
     testImplementation(libs.junit)

@@ -1,14 +1,16 @@
 [versions]
 accompanist = "0.36.0"
 activity-compose = "1.9.2"
-agp = "8.6.0"
+agp = "8.6.1"
 androidx-test-ext-junit = "1.2.1"
 ben-manes-versions = "0.47.0"
 camera-x = "1.3.4"
+cardview = "1.0.0"
 coil-compose = "2.7.0"
-compose-bom = "2024.09.01"
+compose-bom = "2024.09.02"
 compose-html = "1.0.2"
 compressor = "3.0.1"
+constraintlayout = "2.1.4"
 constraintlayout-compose = "1.0.1"
 converter-moshi = "2.11.0"
 core-ktx = "1.13.1"
@@ -27,15 +29,15 @@ junit = "4.13.2"
 kotlin = "2.0.20"
 kotlinx-collections-immutable = "0.3.8"
 kotlinx-coroutines-test = "1.9.0"
-kotlin-serialization = "1.7.2"
+kotlin-serialization = "1.7.3"
 ksp = "2.0.20-1.0.25"
 ktlint = "12.1.1"
 leakcanary-android = "2.14"
-lifecycle = "2.8.5"
+lifecycle = "2.8.6"
 mapbox-navigation = "3.4.0-beta.1"
 mockk = "1.13.12"
 moshi = "1.15.1"
-navigation-compose = "2.8.0"
+navigation-compose = "2.8.1"
 okhttp-bom = "4.12.0"
 paparazzi = "1.3.1"
 play-services-location = "21.3.0"
@@ -43,7 +45,7 @@ retrofit = "2.11.0"
 robolectric = "4.13"
 room = "2.6.1"
 timber = "5.0.1"
-ui-viewbinding = "1.7.1"
+ui-viewbinding = "1.7.2"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
@@ -54,6 +56,8 @@ androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.r
 androidx-camera-extensions = { module = "androidx.camera:camera-extensions", version.ref = "camera-x" }
 androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "camera-x" }
 androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "camera-x" }
+androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayout-compose" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "core-splashscreen" }
 androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "core-testing" }

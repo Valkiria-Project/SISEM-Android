@@ -9,5 +9,5 @@ interface OperationRepository {
 
     suspend fun logoutTurn(username: String): String
 
-    suspend fun observeOperationConfig(): Flow<OperationModel?>
+    fun observeOperationConfig(): Flow<OperationModel?>
 }

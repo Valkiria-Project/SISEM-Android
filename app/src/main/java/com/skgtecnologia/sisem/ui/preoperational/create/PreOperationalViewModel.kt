@@ -17,7 +17,7 @@ import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.banner.preOperationalConfirmationBanner
 import com.skgtecnologia.sisem.domain.model.banner.preOperationalIncompleteFormBanner
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
-import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
+import com.skgtecnologia.sisem.domain.operation.usecases.GetOperationConfigWithCurrentRole
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
@@ -51,7 +51,7 @@ class PreOperationalViewModel @Inject constructor(
     private val getLoginNavigationModel: GetLoginNavigationModel,
     private val getPreOperationalScreen: GetPreOperationalScreen,
     private val logoutCurrentUser: LogoutCurrentUser,
-    private val observeOperationConfig: ObserveOperationConfig,
+    private val getOperationConfigWithCurrentRole: GetOperationConfigWithCurrentRole,
     private val sendPreOperational: SendPreOperational
 ) : ViewModel() {
 
@@ -76,7 +76,7 @@ class PreOperationalViewModel @Inject constructor(
 
             uiState = uiState.copy(isLoading = true)
             val operationConfig = async {
-                observeOperationConfig.invoke()
+                getOperationConfigWithCurrentRole.invoke()
                     .onSuccess { operationModel ->
                         withContext(Dispatchers.Main) {
                             uiState = uiState.copy(

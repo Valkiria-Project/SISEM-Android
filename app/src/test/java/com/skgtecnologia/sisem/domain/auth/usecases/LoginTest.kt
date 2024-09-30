@@ -5,7 +5,7 @@ import com.skgtecnologia.sisem.commons.USERNAME
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
-import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
+import com.skgtecnologia.sisem.domain.operation.usecases.GetOperationConfigWithCurrentRole
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -21,7 +21,7 @@ class LoginTest {
     private lateinit var authRepository: AuthRepository
 
     @MockK
-    private lateinit var observeOperationConfig: ObserveOperationConfig
+    private lateinit var getOperationConfigWithCurrentRole: GetOperationConfigWithCurrentRole
 
     private lateinit var login: Login
 
@@ -29,7 +29,7 @@ class LoginTest {
     fun setUp() {
         MockKAnnotations.init(this)
 
-        login = Login(authRepository, observeOperationConfig)
+        login = Login(authRepository, getOperationConfigWithCurrentRole)
     }
 
     @Test
@@ -37,7 +37,7 @@ class LoginTest {
         val accessToken = mockk<AccessTokenModel>()
         coEvery { authRepository.authenticate(any(), any()) } returns accessToken
         coEvery { accessToken.copy(configPreoperational = any()) } returns accessToken
-        coEvery { observeOperationConfig.invoke() } returns mockk<Result<OperationModel>>()
+        coEvery { getOperationConfigWithCurrentRole.invoke() } returns mockk<Result<OperationModel>>()
 
         val result = login(USERNAME, PASSWORD)
 

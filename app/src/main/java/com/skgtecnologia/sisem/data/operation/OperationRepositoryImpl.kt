@@ -55,6 +55,6 @@ class OperationRepositoryImpl @Inject constructor(
         }.getOrThrow()
     }
 
-    override suspend fun observeOperationConfig(): Flow<OperationModel?> =
+    override fun observeOperationConfig(): Flow<OperationModel?> =
         operationCacheDataSource.observeOperationConfig()
 }

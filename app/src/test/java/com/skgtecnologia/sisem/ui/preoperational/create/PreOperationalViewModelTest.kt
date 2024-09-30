@@ -18,7 +18,7 @@ import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.skgtecnologia.sisem.domain.authcards.model.VehicleConfigModel
 import com.skgtecnologia.sisem.domain.changepassword.usecases.GetLoginNavigationModel
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
-import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
+import com.skgtecnologia.sisem.domain.operation.usecases.GetOperationConfigWithCurrentRole
 import com.skgtecnologia.sisem.domain.preoperational.usecases.GetPreOperationalScreen
 import com.skgtecnologia.sisem.domain.preoperational.usecases.SendPreOperational
 import com.skgtecnologia.sisem.ui.login.LoginNavigationModel
@@ -59,7 +59,7 @@ class PreOperationalViewModelTest {
     private lateinit var logoutCurrentUser: LogoutCurrentUser
 
     @MockK
-    private lateinit var observeOperationConfig: ObserveOperationConfig
+    private lateinit var getOperationConfigWithCurrentRole: GetOperationConfigWithCurrentRole
 
     @MockK
     private lateinit var sendPreOperational: SendPreOperational
@@ -88,7 +88,7 @@ class PreOperationalViewModelTest {
             )
         )
         val operationModel = mockk<OperationModel>()
-        coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
+        coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
         coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
             screenModel
         )
@@ -99,7 +99,7 @@ class PreOperationalViewModelTest {
             getLoginNavigationModel,
             getPreOperationalScreen,
             logoutCurrentUser,
-            observeOperationConfig,
+            getOperationConfigWithCurrentRole,
             sendPreOperational
         )
 
@@ -111,7 +111,7 @@ class PreOperationalViewModelTest {
     fun `when observeOperationConfig is success and getPreOperationalScreen is failure`() =
         runTest {
             val operationModel = mockk<OperationModel>()
-            coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
+            coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
             coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.failure(
                 Throwable()
             )
@@ -122,7 +122,7 @@ class PreOperationalViewModelTest {
                 getLoginNavigationModel,
                 getPreOperationalScreen,
                 logoutCurrentUser,
-                observeOperationConfig,
+                getOperationConfigWithCurrentRole,
                 sendPreOperational
             )
 
@@ -134,7 +134,7 @@ class PreOperationalViewModelTest {
     @Test
     fun `when observeOperationConfig is failure and getPreOperationalScreen is success`() =
         runTest {
-            coEvery { observeOperationConfig.invoke() } returns Result.failure(Throwable())
+            coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.failure(Throwable())
             coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
                 emptyScreenModel
             )
@@ -145,7 +145,7 @@ class PreOperationalViewModelTest {
                 getLoginNavigationModel,
                 getPreOperationalScreen,
                 logoutCurrentUser,
-                observeOperationConfig,
+                getOperationConfigWithCurrentRole,
                 sendPreOperational
             )
 
@@ -156,7 +156,7 @@ class PreOperationalViewModelTest {
 
     @Test
     fun `when observeOperationConfig and getPreOperationalScreen are failure`() = runTest {
-        coEvery { observeOperationConfig.invoke() } returns Result.failure(Throwable())
+        coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.failure(Throwable())
         coEvery {
             getPreOperationalScreen.invoke(DRIVER_ROLE, any())
         } returns Result.failure(Throwable())
@@ -167,7 +167,7 @@ class PreOperationalViewModelTest {
             getLoginNavigationModel,
             getPreOperationalScreen,
             logoutCurrentUser,
-            observeOperationConfig,
+            getOperationConfigWithCurrentRole,
             sendPreOperational
         )
 
@@ -186,7 +186,7 @@ class PreOperationalViewModelTest {
         )
         val identifier = "identifier"
         val operationModel = mockk<OperationModel>()
-        coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
+        coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
         coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
             screenModel
         )
@@ -197,7 +197,7 @@ class PreOperationalViewModelTest {
             getLoginNavigationModel,
             getPreOperationalScreen,
             logoutCurrentUser,
-            observeOperationConfig,
+            getOperationConfigWithCurrentRole,
             sendPreOperational
         )
 
@@ -223,7 +223,7 @@ class PreOperationalViewModelTest {
         )
         val identifier = "identifier"
         val operationModel = mockk<OperationModel>()
-        coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
+        coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
         coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
             screenModel
         )
@@ -234,7 +234,7 @@ class PreOperationalViewModelTest {
             getLoginNavigationModel,
             getPreOperationalScreen,
             logoutCurrentUser,
-            observeOperationConfig,
+            getOperationConfigWithCurrentRole,
             sendPreOperational
         )
 
@@ -259,7 +259,7 @@ class PreOperationalViewModelTest {
         )
         val identifier = "identifier"
         val operationModel = mockk<OperationModel>()
-        coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
+        coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
         coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
             screenModel
         )
@@ -270,7 +270,7 @@ class PreOperationalViewModelTest {
             getLoginNavigationModel,
             getPreOperationalScreen,
             logoutCurrentUser,
-            observeOperationConfig,
+            getOperationConfigWithCurrentRole,
             sendPreOperational
         )
 
@@ -296,7 +296,7 @@ class PreOperationalViewModelTest {
         )
         val identifier = "identifier"
         val operationModel = mockk<OperationModel>()
-        coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
+        coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
         coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
             screenModel
         )
@@ -307,7 +307,7 @@ class PreOperationalViewModelTest {
             getLoginNavigationModel,
             getPreOperationalScreen,
             logoutCurrentUser,
-            observeOperationConfig,
+            getOperationConfigWithCurrentRole,
             sendPreOperational
         )
 
@@ -332,7 +332,7 @@ class PreOperationalViewModelTest {
         val operationModel = mockk<OperationModel> {
             every { vehicleConfig } returns vehicleConfigModel
         }
-        coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
+        coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
         coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
             emptyScreenModel
         )
@@ -343,7 +343,7 @@ class PreOperationalViewModelTest {
             getLoginNavigationModel,
             getPreOperationalScreen,
             logoutCurrentUser,
-            observeOperationConfig,
+            getOperationConfigWithCurrentRole,
             sendPreOperational
         )
         viewModel.savePreOperational()
@@ -360,7 +360,7 @@ class PreOperationalViewModelTest {
             )
         )
         val operationModel = mockk<OperationModel>()
-        coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
+        coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
         coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
             screenModel
         )
@@ -371,7 +371,7 @@ class PreOperationalViewModelTest {
             getLoginNavigationModel,
             getPreOperationalScreen,
             logoutCurrentUser,
-            observeOperationConfig,
+            getOperationConfigWithCurrentRole,
             sendPreOperational
         )
         viewModel.savePreOperational()
@@ -385,7 +385,7 @@ class PreOperationalViewModelTest {
         val loginNavigationModel = mockk<LoginNavigationModel> {
             every { isTurnComplete } returns true
         }
-        coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
+        coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
         coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
             emptyScreenModel
         )
@@ -408,7 +408,7 @@ class PreOperationalViewModelTest {
             getLoginNavigationModel,
             getPreOperationalScreen,
             logoutCurrentUser,
-            observeOperationConfig,
+            getOperationConfigWithCurrentRole,
             sendPreOperational
         )
         viewModel.sendPreOperational()
@@ -419,7 +419,7 @@ class PreOperationalViewModelTest {
     @Test
     fun `when sendPreOperational is success and getLoginNavigationModel failure`() = runTest {
         val operationModel = mockk<OperationModel>()
-        coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
+        coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
         coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
             emptyScreenModel
         )
@@ -438,7 +438,7 @@ class PreOperationalViewModelTest {
             getLoginNavigationModel,
             getPreOperationalScreen,
             logoutCurrentUser,
-            observeOperationConfig,
+            getOperationConfigWithCurrentRole,
             sendPreOperational
         )
         viewModel.sendPreOperational()
@@ -449,7 +449,7 @@ class PreOperationalViewModelTest {
     @Test
     fun `when sendPreOperational is failure`() = runTest {
         val operationModel = mockk<OperationModel>()
-        coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
+        coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
         coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
             emptyScreenModel
         )
@@ -467,7 +467,7 @@ class PreOperationalViewModelTest {
             getLoginNavigationModel,
             getPreOperationalScreen,
             logoutCurrentUser,
-            observeOperationConfig,
+            getOperationConfigWithCurrentRole,
             sendPreOperational
         )
         viewModel.sendPreOperational()
@@ -478,7 +478,7 @@ class PreOperationalViewModelTest {
     @Test
     fun `when consumeNavigationEvent is called`() = runTest {
         val operationModel = mockk<OperationModel>()
-        coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
+        coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
         coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
             emptyScreenModel
         )
@@ -489,7 +489,7 @@ class PreOperationalViewModelTest {
             getLoginNavigationModel,
             getPreOperationalScreen,
             logoutCurrentUser,
-            observeOperationConfig,
+            getOperationConfigWithCurrentRole,
             sendPreOperational
         )
         viewModel.consumeNavigationEvent()
@@ -500,7 +500,7 @@ class PreOperationalViewModelTest {
     @Test
     fun `when consumeInfoEvent is called`() = runTest {
         val operationModel = mockk<OperationModel>()
-        coEvery { observeOperationConfig.invoke() } returns Result.success(operationModel)
+        coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
         coEvery { getPreOperationalScreen.invoke(DRIVER_ROLE, any()) } returns Result.success(
             emptyScreenModel
         )
@@ -512,7 +512,7 @@ class PreOperationalViewModelTest {
             getLoginNavigationModel,
             getPreOperationalScreen,
             logoutCurrentUser,
-            observeOperationConfig,
+            getOperationConfigWithCurrentRole,
             sendPreOperational
         )
         viewModel.handleEvent(uiAction)

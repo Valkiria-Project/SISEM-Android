@@ -8,7 +8,6 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,7 +24,6 @@ import com.skgtecnologia.sisem.ui.menu.MenuDrawer
 import com.skgtecnologia.sisem.ui.navigation.AphRoute
 import com.skgtecnologia.sisem.ui.navigation.NavRoute
 import com.valkiria.uicomponents.bricks.banner.BannerUiModel
-import com.valkiria.uicomponents.bricks.map.MapboxMapView
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import timber.log.Timber
 
@@ -47,7 +45,6 @@ fun MapScreen(
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    val showMap by remember { derivedStateOf { uiState.lastLocation != null } }
     val drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
     var notificationData by remember { mutableStateOf<NotificationData?>(null) }
@@ -65,32 +62,29 @@ fun MapScreen(
         (context as ComponentActivity).finish()
     }
 
-    if (showMap) {
-        MenuDrawer(
+    MenuDrawer(
+        drawerState = drawerState,
+        onClick = currentMenuAction,
+        onLogout = currentOnLogout
+    ) {
+        MapboxMapView(
+            incident = uiState.incident,
+            notifications = uiState.notifications,
             drawerState = drawerState,
-            onClick = currentMenuAction,
-            onLogout = currentOnLogout
-        ) {
-            MapboxMapView(
-                location = checkNotNull(uiState.lastLocation),
-                incident = uiState.incident,
-                notifications = uiState.notifications,
-                drawerState = drawerState,
-                notificationData = notificationData,
-                incidentErrorData = incidentErrorData,
-                modifier = modifier.fillMaxSize(),
-                fragmentState = fragmentState,
-                onNotificationAction = {
-                    notificationData = null
-                },
-                onIncidentErrorAction = {
-                    incidentErrorData = null
-                }
-            ) { idAph ->
-                Timber.d("Navigate to APH with Id APH $idAph")
-
-                currentOnAction(AphRoute.MedicalHistoryRoute(idAph.toString()))
+            notificationData = notificationData,
+            incidentErrorData = incidentErrorData,
+            modifier = modifier.fillMaxSize(),
+            fragmentState = fragmentState,
+            onNotificationAction = {
+                notificationData = null
+            },
+            onIncidentErrorAction = {
+                incidentErrorData = null
             }
+        ) { idAph ->
+            Timber.d("Navigate to APH with Id APH $idAph")
+
+            currentOnAction(AphRoute.MedicalHistoryRoute(idAph.toString()))
         }
     }
 }
