@@ -3,11 +3,16 @@ package com.skgtecnologia.sisem.ui.report.addreport
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.FooterSection
@@ -17,6 +22,9 @@ import com.valkiria.uicomponents.action.NewsUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
+import com.valkiria.uicomponents.bricks.notification.OnNotificationHandler
+import com.valkiria.uicomponents.bricks.notification.model.NotificationData
+import timber.log.Timber
 
 @Composable
 fun AddReportRoleScreen(
@@ -26,6 +34,11 @@ fun AddReportRoleScreen(
     onCancel: () -> Unit
 ) {
     val uiState = viewModel.uiState
+
+    var notificationData by remember { mutableStateOf<NotificationData?>(null) }
+    NotificationEventHandler.subscribeNotificationEvent {
+        notificationData = it
+    }
 
     ConstraintLayout(
         modifier = modifier.fillMaxSize()
@@ -65,6 +78,14 @@ fun AddReportRoleScreen(
             ) { uiAction ->
                 handleFooterAction(uiAction, onCancel)
             }
+        }
+    }
+
+    OnNotificationHandler(notificationData) {
+        notificationData = null
+        if (it.isDismiss.not()) {
+            // TECH-DEBT: Navigate to MapScreen if is type INCIDENT_ASSIGNED
+            Timber.d("Navigate to MapScreen")
         }
     }
 
