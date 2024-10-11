@@ -16,7 +16,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.domain.model.header.imagesConfirmationHeader
 import com.skgtecnologia.sisem.domain.report.model.ImagesConfirmationIdentifier
 import com.skgtecnologia.sisem.ui.authcards.create.report.PagerIndicator
@@ -42,6 +46,8 @@ import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.button.ButtonView
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
+import com.valkiria.uicomponents.bricks.notification.OnNotificationHandler
+import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import com.valkiria.uicomponents.components.button.ButtonSize
 import com.valkiria.uicomponents.components.button.ButtonStyle
 import com.valkiria.uicomponents.components.button.ButtonUiModel
@@ -64,6 +70,11 @@ fun ImagesConfirmationScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
+
+    var notificationData by remember { mutableStateOf<NotificationData?>(null) }
+    NotificationEventHandler.subscribeNotificationEvent {
+        notificationData = it
+    }
 
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -163,6 +174,14 @@ fun ImagesConfirmationScreen(
         }
 
         ImagesPager(pagerState = pagerState, images = bitmaps)
+    }
+
+    OnNotificationHandler(notificationData) {
+        notificationData = null
+        if (it.isDismiss.not()) {
+            // TECH-DEBT: Navigate to MapScreen if is type INCIDENT_ASSIGNED
+            Timber.d("Navigate to MapScreen")
+        }
     }
 
     OnBannerHandler(uiState.confirmInfoModel) {
