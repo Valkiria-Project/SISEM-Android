@@ -5,13 +5,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.GenericUiAction
@@ -22,6 +27,8 @@ import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
+import com.valkiria.uicomponents.bricks.notification.OnNotificationHandler
+import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import com.valkiria.uicomponents.components.media.MediaAction
 import com.valkiria.uicomponents.extensions.handleMediaUris
 import kotlinx.coroutines.CoroutineScope
@@ -39,6 +46,11 @@ fun MedicalHistoryViewScreen(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val uiState = viewModel.uiState
+
+    var notificationData by remember { mutableStateOf<NotificationData?>(null) }
+    NotificationEventHandler.subscribeNotificationEvent {
+        notificationData = it
+    }
 
     LaunchedEffect(uiState) {
         launch {
@@ -90,6 +102,13 @@ fun MedicalHistoryViewScreen(
                 .padding(top = 20.dp)
         ) { uiAction ->
             handleAction(uiAction, viewModel, context, scope)
+        }
+    }
+
+    OnNotificationHandler(notificationData) {
+        notificationData = null
+        if (it.isDismiss.not()) {
+            Timber.d("Navigate to MapScreen")
         }
     }
 
