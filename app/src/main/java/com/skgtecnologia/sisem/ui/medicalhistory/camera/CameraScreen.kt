@@ -20,7 +20,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,10 +40,13 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.ui.commons.utils.CameraUtils
 import com.skgtecnologia.sisem.ui.commons.utils.MediaStoreUtils
 import com.skgtecnologia.sisem.ui.medicalhistory.create.MedicalHistoryNavigationModel
 import com.skgtecnologia.sisem.ui.medicalhistory.create.MedicalHistoryViewModel
+import com.valkiria.uicomponents.bricks.notification.OnNotificationHandler
+import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import com.valkiria.uicomponents.extensions.handleMediaUris
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -55,6 +61,11 @@ fun CameraScreen(
     onNavigation: (medicalHistoryNavigationModel: MedicalHistoryNavigationModel) -> Unit
 ) {
     val uiState = viewModel.uiState
+
+    var notificationData by remember { mutableStateOf<NotificationData?>(null) }
+    NotificationEventHandler.subscribeNotificationEvent {
+        notificationData = it
+    }
 
     val cameraPermissionState: PermissionState =
         rememberPermissionState(Manifest.permission.CAMERA)
@@ -74,6 +85,14 @@ fun CameraScreen(
     if (cameraPermission.isGranted) {
         Timber.d("Show Camera")
         CameraPreview(viewModel, modifier)
+
+        OnNotificationHandler(notificationData) {
+            notificationData = null
+            if (it.isDismiss.not()) {
+                // TECH-DEBT: Navigate to MapScreen if is type INCIDENT_ASSIGNED
+                Timber.d("Navigate to MapScreen")
+            }
+        }
     } else if (cameraPermission.shouldShowRationale) {
         Timber.d("Show rationale")
     }

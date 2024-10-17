@@ -16,11 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R.string
+import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.domain.medicalhistory.model.MedicalHistoryIdentifier
 import com.skgtecnologia.sisem.domain.model.header.signaturePadHeader
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.bricks.button.ButtonView
+import com.valkiria.uicomponents.bricks.notification.OnNotificationHandler
+import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import com.valkiria.uicomponents.bricks.signature.ComposeSignature
 import com.valkiria.uicomponents.components.button.ButtonSize
 import com.valkiria.uicomponents.components.button.ButtonStyle
@@ -36,6 +39,11 @@ fun SignaturePadScreen(
     modifier: Modifier = Modifier,
     onNavigation: (signaturePadNavigationModel: SignaturePadNavigationModel) -> Unit
 ) {
+    var notificationData by remember { mutableStateOf<NotificationData?>(null) }
+    NotificationEventHandler.subscribeNotificationEvent {
+        notificationData = it
+    }
+
     Column(modifier.fillMaxSize()) {
         var bitmap: Bitmap? by remember {
             mutableStateOf(null)
@@ -121,5 +129,13 @@ fun SignaturePadScreen(
                 bitmap = null
             }
         )
+    }
+
+    OnNotificationHandler(notificationData) {
+        notificationData = null
+        if (it.isDismiss.not()) {
+            // TECH-DEBT: Navigate to MapScreen if is type INCIDENT_ASSIGNED
+            Timber.d("Navigate to MapScreen")
+        }
     }
 }
