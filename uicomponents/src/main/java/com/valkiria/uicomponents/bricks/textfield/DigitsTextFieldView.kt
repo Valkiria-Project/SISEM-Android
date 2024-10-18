@@ -50,15 +50,6 @@ fun DigitsTextFieldView(
         },
         modifier = Modifier.size(64.dp),
         textStyle = style,
-        supportingText = {
-            if (inputError != null) {
-                Text(
-                    text = inputError.message,
-                    modifier = Modifier.fillMaxWidth(),
-                    color = MaterialTheme.colorScheme.error
-                )
-            }
-        },
         isError = inputError != null,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         singleLine = true
