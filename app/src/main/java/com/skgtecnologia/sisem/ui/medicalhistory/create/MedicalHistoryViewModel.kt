@@ -1550,9 +1550,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
     fun showCamera() {
         uiState = uiState.copy(
-            navigationModel = MedicalHistoryNavigationModel(
-                showCamera = true
-            )
+            navigationModel = MedicalHistoryNavigationModel(showCamera = true)
         )
     }
 
