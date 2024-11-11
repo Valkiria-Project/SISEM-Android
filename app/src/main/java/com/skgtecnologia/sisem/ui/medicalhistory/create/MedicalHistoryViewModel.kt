@@ -210,7 +210,7 @@ class MedicalHistoryViewModel @Inject constructor(
         GYNECOBSTETRICS_V_KEY,
         FUR_KEY
     )
-    
+
     private val allowInfoCardIdentifiers = listOf(
         INITIAL_VITAL_SIGNS,
         DURING_VITAL_SIGNS,
