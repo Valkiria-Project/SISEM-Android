@@ -47,6 +47,12 @@ import com.skgtecnologia.sisem.domain.medicalhistory.model.GLASGOW_MRV_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.GLASGOW_RTS_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.GLASGOW_TOTAL_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.GLUCOMETRY_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.GYNECOBSTETRICS_A_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.GYNECOBSTETRICS_C_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.GYNECOBSTETRICS_G_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.GYNECOBSTETRICS_HEADER_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.GYNECOBSTETRICS_P_KEY
+import com.skgtecnologia.sisem.domain.medicalhistory.model.GYNECOBSTETRICS_V_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.HEADER_WITHDRAWAL_KEY
 import com.skgtecnologia.sisem.domain.medicalhistory.model.INITIAL_VITAL_SIGNS
 import com.skgtecnologia.sisem.domain.medicalhistory.model.LASTNAME_KEY
@@ -144,6 +150,13 @@ private const val TEMPERATURE_SYMBOL = "°C"
 private const val GLUCOMETRY_SYMBOL = "mg/dL"
 private const val SEVEN_DAYS = 7L
 private const val NINE_MONTHS = 9L
+private const val GYNAE_AGE_LOWER_LIMIT = 9
+private const val GYNAE_AGE_UPPER_LIMIT = 50
+private const val FEMALE_GENDER_ID = "3"
+private const val FEMALE_GENDER = "Femenino"
+private const val AGE_TYPE_IDENTIFIER = "KEY_AGE_TYPE"
+private const val AGE_IDENTIFIER = "KEY_AGE"
+private const val GENDER_IDENTIFIER = "KEY_GENDER"
 private const val PATIENT_DOCUMENT_TYPE_IDENTIFIER = "KEY_DOCUMENT_TYPE"
 private const val RESPONSIBLE_DOCUMENT_TYPE_IDENTIFIER = "KEY_DOCUMENT_TYPE_RESPONSIBLE"
 private const val PATIENT_DOCUMENT_IDENTIFIER = "KEY_DOCUMENT"
@@ -188,6 +201,16 @@ class MedicalHistoryViewModel @Inject constructor(
     private var initialVitalSignsFc: Int = 0
     private var vitalSignsChipSection: ChipSectionUiModel? = null
 
+    private val gynaeIdentifiers = listOf(
+        GYNECOBSTETRICS_HEADER_KEY,
+        GYNECOBSTETRICS_G_KEY,
+        GYNECOBSTETRICS_P_KEY,
+        GYNECOBSTETRICS_A_KEY,
+        GYNECOBSTETRICS_C_KEY,
+        GYNECOBSTETRICS_V_KEY,
+        FUR_KEY
+    )
+    
     private val allowInfoCardIdentifiers = listOf(
         INITIAL_VITAL_SIGNS,
         DURING_VITAL_SIGNS,
@@ -554,11 +577,64 @@ class MedicalHistoryViewModel @Inject constructor(
             )
         }
 
+        if (action.identifier == GENDER_IDENTIFIER) {
+            updatedBody = updateGynae(
+                action.chipSelectionItemUiModel.id,
+                updatedBody
+            )
+        }
+
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(
                 body = updatedBody
             )
         )
+    }
+
+    private fun updateGynae(
+        gender: String,
+        uiModels: List<BodyRowModel>? = uiState.screenModel?.body,
+        age: String? = null
+    ): List<BodyRowModel> {
+        val ageTypeField = uiState.screenModel?.body
+            ?.firstOrNull { it.identifier == AGE_TYPE_IDENTIFIER } as ChipSelectionUiModel
+        val ageType = ageTypeField.selected
+
+        val ageFieldValue = if (age.isNullOrEmpty()) {
+            val ageField = uiState.screenModel?.body
+                ?.firstOrNull { it.identifier == AGE_IDENTIFIER } as TextFieldUiModel
+            ageField.text
+        } else {
+            age
+        }
+
+        Timber.tag("SMA-680").d("Gender id is: $gender & ageType is: $ageType & age is: $ageFieldValue")
+
+        val isFemale = gender == FEMALE_GENDER_ID || gender == FEMALE_GENDER
+        val showGynae =
+            isFemale && ageFieldValue.toInt() in GYNAE_AGE_LOWER_LIMIT..GYNAE_AGE_UPPER_LIMIT
+
+       return buildList {
+           val updateBodyModel = updateBodyModel(
+               uiModels = uiModels,
+               identifiers = gynaeIdentifiers,
+               updater = { model ->
+                   if (model is TextFieldUiModel && !showGynae) {
+                       model.copy(visibility = false, required = false)
+                   } else if (model is TextFieldUiModel) {
+                       model.copy(visibility = true, required = true)
+                   } else if (model is HeaderUiModel && !showGynae) {
+                       model.copy(visibility = false, required = false)
+                   } else if (model is HeaderUiModel) {
+                       model.copy(visibility = true, required = true)
+                   } else {
+                       model
+                   }
+               }
+           )
+
+           addAll(updateBodyModel)
+       }
     }
 
     private fun updateResponsibleSignature(chipSelectionItemUiModel: ChipSelectionItemUiModel) {
@@ -806,7 +882,7 @@ class MedicalHistoryViewModel @Inject constructor(
             updateFurAndGestationWeeks()
         }
 
-        val updatedBody = updateBodyModel(
+        var updatedBody = updateBodyModel(
             uiModels = uiState.screenModel?.body,
             identifier = action.identifier,
             updater = { model ->
@@ -817,6 +893,18 @@ class MedicalHistoryViewModel @Inject constructor(
                 }
             }
         )
+
+        if (action.identifier == AGE_IDENTIFIER) {
+            val genderField = uiState.screenModel?.body?.firstOrNull {
+                it.identifier == GENDER_IDENTIFIER
+            } as ChipSelectionUiModel
+
+            updatedBody = updateGynae(
+                genderField.selected.orEmpty(),
+                updatedBody,
+                action.updatedValue
+            )
+        }
 
         uiState = uiState.copy(
             screenModel = uiState.screenModel?.copy(
