@@ -15,7 +15,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
@@ -39,7 +38,7 @@ import timber.log.Timber
 @Composable
 fun MedicalHistoryViewScreen(
     modifier: Modifier = Modifier,
-    viewModel: MedicalHistoryViewViewModel = hiltViewModel(),
+    viewModel: MedicalHistoryViewViewModel,
     photoTaken: Boolean = false,
     onNavigation: (medicalHistoryViewNavigationModel: MedicalHistoryViewNavigationModel) -> Unit
 ) {

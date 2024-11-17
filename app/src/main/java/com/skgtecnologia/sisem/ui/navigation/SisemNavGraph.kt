@@ -45,6 +45,7 @@ import com.skgtecnologia.sisem.ui.medicalhistory.vitalsings.VitalSignsScreen
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.MEDICINE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.NOVELTY
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.PHOTO_TAKEN
+import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.PHOTO_TAKEN_VIEW
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.REVERT_FINDING
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.SIGNATURE
 import com.skgtecnologia.sisem.ui.navigation.NavigationArgument.VITAL_SIGNS
@@ -353,11 +354,12 @@ private fun NavGraphBuilder.aphGraph(
 
         composable<AphRoute.MedicalHistoryViewRoute> { backStackEntry ->
             // TECH-DEBT
-            val photoTaken = backStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN)
-            backStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN)
+            val photoTaken = backStackEntry.savedStateHandle.get<Boolean>(PHOTO_TAKEN_VIEW)
+            backStackEntry.savedStateHandle.remove<Boolean>(PHOTO_TAKEN_VIEW)
 
             MedicalHistoryViewScreen(
                 modifier = modifier,
+                viewModel = backStackEntry.sharedViewModel(navController = navController),
                 photoTaken = photoTaken == true
             ) { navigationModel ->
                 navigationModel.navigate(navController)
