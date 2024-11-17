@@ -22,9 +22,10 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 
-const val CONTENT_URI_SCHEME = "content"
-const val BITMAP_COMPRESS_QUALITY = 80
-const val FALLBACK_FILE_SIZE = 30_000_000L
+private const val CONTENT_URI_SCHEME = "content"
+private const val BITMAP_COMPRESS_QUALITY = 80
+private const val FALLBACK_FILE_SIZE = 30_000_000L
+private const val PDF_FILE_EXTENSION = ".pdf"
 
 fun Bitmap.encodeAsBase64(): String {
     val output = ByteArrayOutputStream()
@@ -108,8 +109,12 @@ private suspend fun Context.compressFile(file: File, maxFileSizeKb: String? = nu
         error("The file size $fileSizeKb is larger than the allowed $allowedFileSize")
     }
 
-    return Compressor.compress(context = this, imageFile = file) {
-        size(allowedFileSize)
+    return if (file.name.endsWith(PDF_FILE_EXTENSION)) {
+        file
+    } else {
+        Compressor.compress(context = this, imageFile = file) {
+            size(allowedFileSize)
+        }
     }
 }
 

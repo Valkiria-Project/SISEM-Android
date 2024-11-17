@@ -27,7 +27,7 @@ data class MedicalHistoryViewNavigationModel(
 
                 currentBackStackEntry
                     ?.savedStateHandle
-                    ?.set(NavigationArgument.PHOTO_TAKEN, true)
+                    ?.set(NavigationArgument.PHOTO_TAKEN_VIEW, true)
             }
         }
     }
