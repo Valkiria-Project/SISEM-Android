@@ -15,12 +15,12 @@ plugins {
 
 android {
     namespace = "com.skgtecnologia.sisem"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.skgtecnologia.sisem"
         minSdk = 30
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 74
         versionName = "2.3.1"
         setProperty("archivesBaseName", "$applicationId-v$versionName($versionCode)")
