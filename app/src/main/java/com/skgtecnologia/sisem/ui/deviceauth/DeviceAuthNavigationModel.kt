@@ -38,12 +38,7 @@ data class DeviceAuthNavigationModel(
                     }
                 }
 
-            isCancel && from == MAIN ->
-                navController.navigate(NavGraph.MainGraph) {
-                    popUpTo(AuthRoute.DeviceAuthRoute) {
-                        inclusive = true
-                    }
-                }
+            isCancel && from == MAIN -> navController.popBackStack()
         }
     }
 }

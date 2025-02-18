@@ -49,7 +49,7 @@ sealed interface MainRoute : NavRoute {
     data object CertificationsRoute : MainRoute
 
     @Serializable
-    data object DeviceAuthMainRoute : AuthRoute
+    data class DeviceAuthMainRoute(val from: String) : MainRoute
 
     @Serializable
     data object DrivingGuideRoute : MainRoute

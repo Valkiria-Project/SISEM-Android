@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.ui.menu.items
 import android.content.Context
 import androidx.annotation.DrawableRes
 import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.ui.navigation.MAIN
 import com.skgtecnologia.sisem.ui.navigation.MainRoute
 import com.skgtecnologia.sisem.ui.navigation.NavRoute
 import com.skgtecnologia.sisem.ui.navigation.ReportRoute
@@ -83,7 +84,7 @@ private fun getDrawerItems(context: Context) = listOf(
 
 private fun getLeaderDrawerItems(context: Context) = listOf(
     DrawerMenuItemModel(
-        MainRoute.DeviceAuthMainRoute,
+        MainRoute.DeviceAuthMainRoute(MAIN),
         context.getString(R.string.drawer_device_auth),
         drawable.ic_ambulance
     ),

@@ -199,7 +199,7 @@ private fun NavGraphBuilder.mainGraph(
     navController: NavHostController,
     modifier: Modifier
 ) {
-    navigation<NavGraph.MainGraph>(startDestination = MainRoute.MapRoute) {
+    navigation<NavGraph.MainGraph>(startDestination = MainRoute.MapRoute::class) {
         composable<MainRoute.MapRoute> {
             val fragmentState = rememberFragmentState()
 
@@ -261,7 +261,11 @@ private fun NavGraphBuilder.mainGraph(
         }
 
         composable<MainRoute.DeviceAuthMainRoute> {
-            navController.navigate(AuthRoute.DeviceAuthRoute(MAIN))
+            DeviceAuthScreen(
+                modifier = modifier
+            ) { navigationModel ->
+                navigationModel.navigate(navController)
+            }
         }
 
         composable<MainRoute.InitSignatureRoute> {
