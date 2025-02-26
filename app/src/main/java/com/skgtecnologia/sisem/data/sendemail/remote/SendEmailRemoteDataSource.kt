@@ -15,7 +15,7 @@ class SendEmailRemoteDataSource @Inject constructor(
                 sendEmailBody = SendEmailBody(
                     idAph = idAph,
                     to = to,
-                    body = body
+                    body = null
                 )
             )
         }
