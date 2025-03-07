@@ -21,8 +21,8 @@ android {
         applicationId = "com.skgtecnologia.sisem"
         minSdk = 30
         targetSdk = 35
-        versionCode = 75
-        versionName = "2.3.2"
+        versionCode = 76
+        versionName = "2.3.3"
         setProperty("archivesBaseName", "$applicationId-v$versionName($versionCode)")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
