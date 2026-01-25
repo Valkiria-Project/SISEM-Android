@@ -10,7 +10,9 @@ plugins {
     alias(libs.plugins.kotlinAndroid) apply false
     alias(libs.plugins.kotlinKsp) apply false
     alias(libs.plugins.kotlinParcelize) apply false
+    alias(libs.plugins.kotlinSerialization) apply false
     alias(libs.plugins.ktlint) apply true
+    alias(libs.plugins.paparazzi) apply false
 }
 
 apply(from = "buildscripts/githooks.gradle")
@@ -22,17 +24,17 @@ subprojects {
 
     // Compose metric configuration
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-        kotlinOptions {
+        compilerOptions {
             if (project.findProperty("composeCompilerReports") == "true") {
-                freeCompilerArgs += listOf(
+                freeCompilerArgs.addAll(
                     "-P",
-                    "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=${project.buildDir.absolutePath}/compose_compiler"
+                    "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=${project.layout.buildDirectory.get().asFile.absolutePath}/compose_compiler"
                 )
             }
             if (project.findProperty("composeCompilerMetrics") == "true") {
-                freeCompilerArgs += listOf(
+                freeCompilerArgs.addAll(
                     "-P",
-                    "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=${project.buildDir.absolutePath}/compose_compiler"
+                    "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=${project.layout.buildDirectory.get().asFile.absolutePath}/compose_compiler"
                 )
             }
         }
