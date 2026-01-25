@@ -2,12 +2,10 @@ apply plugin: "io.gitlab.arturbosch.detekt"
 
 detekt {
     config.setFrom(files("${rootProject.projectDir}/config/detekt/detekt.yml"))
-}
 
-tasks.withType(io.gitlab.arturbosch.detekt.Detekt).configureEach {
     reports {
-        html.required.set(true)
-        xml.required.set(true)
-        txt.required.set(true)
+        html.required = true
+        xml.required = true
+        txt.required = true
     }
 }

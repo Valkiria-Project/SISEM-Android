@@ -6,9 +6,9 @@ ktlint {
     android = true
 
     reporters {
-        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
-        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
-        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.HTML)
+        reporter "plain"
+        reporter "checkstyle"
+        reporter "html"
     }
 
     outputColorName = "RED"

@@ -36,7 +36,7 @@ android {
     }
 
     base {
-        archivesName.set("${defaultConfig.applicationId}-v${defaultConfig.versionName}(${defaultConfig.versionCode})")
+        archivesName.set("${defaultConfig.applicationId}-v${defaultConfig.versionName}-${defaultConfig.versionCode}")
     }
 
     buildTypes {
