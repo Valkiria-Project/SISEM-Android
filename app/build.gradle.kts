@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.androidApplication)
@@ -15,6 +16,20 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        create("release") {
+            val keystorePropertiesFile = rootProject.file("keystore.properties")
+            if (keystorePropertiesFile.exists()) {
+                val keystoreProperties = Properties()
+                keystoreProperties.load(keystorePropertiesFile.inputStream())
+
+                storeFile = file(keystoreProperties["storeFile"] as String)
+                storePassword = keystoreProperties["storePassword"] as String
+                keyAlias = keystoreProperties["keyAlias"] as String
+                keyPassword = keystoreProperties["keyPassword"] as String
+            }
+        }
+    }
     namespace = "com.skgtecnologia.sisem"
     compileSdk = 35
 
@@ -51,10 +66,10 @@ android {
         create("staging") {
             initWith(getByName("debug"))
             applicationIdSuffix = ".debugStaging"
-            buildConfigField("String", "AUTH_BASE_URL", "\"https://test.emergencias-sisem.co/qa/sisem-api/\"")
-            buildConfigField("String", "BASE_URL", "\"https://test.emergencias-sisem.co/qa/sisem-api/v1/\"")
-            buildConfigField("String", "LOCATION_URL", "\"https://test.emergencias-sisem.co/qa/sisem-location-api/v1/\"")
-            buildConfigField("String", "REFRESH_URL", "\"https://admin.qa.sisembogota.com/auth/realms/sisem/protocol/openid-connect/token\"")
+            buildConfigField("String", "AUTH_BASE_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-api/\"")
+            buildConfigField("String", "BASE_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-api/actuator/health/\"")
+            buildConfigField("String", "LOCATION_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-location-api/v1/\"")
+            buildConfigField("String", "REFRESH_URL", "\"https://admin.prod.sisembogota.com/auth/realms/sisem/protocol/openid-connect/token\"")
         }
         create("preProd") {
             initWith(getByName("debug"))
@@ -68,10 +83,11 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            buildConfigField("String", "AUTH_BASE_URL", "\"http://34.74.218.181/sisem-api/\"")
-            buildConfigField("String", "BASE_URL", "\"http://34.74.218.181/sisem-api/v1/\"")
-            buildConfigField("String", "LOCATION_URL", "\"http://34.74.218.181/sisem-location-api/v1/\"")
+            buildConfigField("String", "AUTH_BASE_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-api/\"")
+            buildConfigField("String", "BASE_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-api/actuator/health/\"")
+            buildConfigField("String", "LOCATION_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-location-api/v1/\"")
             buildConfigField("String", "REFRESH_URL", "\"https://admin.prod.sisembogota.com/auth/realms/sisem/protocol/openid-connect/token\"")
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     buildFeatures {
