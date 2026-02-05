@@ -15,11 +15,13 @@ plugins {
     alias(libs.plugins.ktlint)
 }
 
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystorePropertiesExist = keystorePropertiesFile.exists()
+
 android {
     signingConfigs {
-        create("release") {
-            val keystorePropertiesFile = rootProject.file("keystore.properties")
-            if (keystorePropertiesFile.exists()) {
+        if (keystorePropertiesExist) {
+            create("release") {
                 val keystoreProperties = Properties()
                 keystoreProperties.load(keystorePropertiesFile.inputStream())
 
@@ -87,7 +89,9 @@ android {
             buildConfigField("String", "BASE_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-api/v1/\"")
             buildConfigField("String", "LOCATION_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-location-api/v1/\"")
             buildConfigField("String", "REFRESH_URL", "\"https://admin.prod.sisembogota.com/auth/realms/sisem/protocol/openid-connect/token\"")
-            signingConfig = signingConfigs.getByName("release")
+            if (keystorePropertiesExist) {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
     }
     buildFeatures {
