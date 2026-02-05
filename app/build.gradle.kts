@@ -67,9 +67,9 @@ android {
             initWith(getByName("debug"))
             applicationIdSuffix = ".debugStaging"
             buildConfigField("String", "AUTH_BASE_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-api/\"")
-            buildConfigField("String", "BASE_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-api/actuator/health/\"")
+            buildConfigField("String", "BASE_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-api/v1/\"")
             buildConfigField("String", "LOCATION_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-location-api/v1/\"")
-            buildConfigField("String", "REFRESH_URL", "\"https://admin.prod.sisembogota.com/auth/realms/sisem/protocol/openid-connect/token\"")
+            buildConfigField("String", "REFRESH_URL", "\"https://admin.emergencias.saludcapital.gov.co/auth/realms/sisem/protocol/openid-connect/token\"")
         }
         create("preProd") {
             initWith(getByName("debug"))
@@ -84,7 +84,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("String", "AUTH_BASE_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-api/\"")
-            buildConfigField("String", "BASE_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-api/actuator/health/\"")
+            buildConfigField("String", "BASE_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-api/v1/\"")
             buildConfigField("String", "LOCATION_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-location-api/v1/\"")
             buildConfigField("String", "REFRESH_URL", "\"https://admin.prod.sisembogota.com/auth/realms/sisem/protocol/openid-connect/token\"")
             signingConfig = signingConfigs.getByName("release")

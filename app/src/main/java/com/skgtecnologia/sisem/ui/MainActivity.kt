@@ -4,17 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
-import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
-import com.skgtecnologia.sisem.commons.extensions.hasMapLocationPermission
-import com.skgtecnologia.sisem.commons.location.ACTION_START
 import com.skgtecnologia.sisem.commons.location.ACTION_STOP
 import com.skgtecnologia.sisem.commons.location.LocationService
 import com.skgtecnologia.sisem.data.notification.NotificationsManager
@@ -55,13 +51,12 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Prevent Screenshots on all build types but debug
-        if (BuildConfig.BUILD_TYPE != "debug") {
+        /*if (BuildConfig.BUILD_TYPE != "debug") {
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE
             )
-        }
+        }*/
 
         val startupNavigationModel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(
@@ -69,13 +64,6 @@ class MainActivity : FragmentActivity() {
             )
         } else {
             intent.getParcelableExtra(STARTUP_NAVIGATION_MODEL)
-        }
-
-        if (hasMapLocationPermission()) {
-            Intent(applicationContext, LocationService::class.java).apply {
-                action = ACTION_START
-                startService(this)
-            }
         }
 
         intent.extras?.also { bundle ->
