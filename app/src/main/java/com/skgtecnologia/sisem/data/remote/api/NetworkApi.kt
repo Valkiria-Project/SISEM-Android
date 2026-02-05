@@ -77,17 +77,23 @@ class NetworkApi @Inject constructor(
     }
 
     private fun parseError(throwable: Throwable): ErrorResponse {
-        return when (throwable) {
-            is ConnectException, is UnknownHostException -> ErrorResponse(
+        return when {
+            throwable is ConnectException || throwable is UnknownHostException -> ErrorResponse(
                 icon = stringProvider.getString(R.string.alert_icon),
                 title = stringProvider.getString(R.string.error_connectivity_title),
                 description = stringProvider.getString(R.string.error_connectivity_description)
             )
 
-            is SocketTimeoutException -> ErrorResponse(
+            throwable is SocketTimeoutException -> ErrorResponse(
                 icon = stringProvider.getString(R.string.alert_icon),
                 title = stringProvider.getString(R.string.error_server_title),
                 description = stringProvider.getString(R.string.error_server_description)
+            )
+
+            isEmptyBodyException(throwable) -> ErrorResponse(
+                icon = stringProvider.getString(R.string.alert_icon),
+                title = stringProvider.getString(R.string.error_device_config_title),
+                description = stringProvider.getString(R.string.error_device_config_description)
             )
 
             else -> ErrorResponse(
@@ -96,6 +102,12 @@ class NetworkApi @Inject constructor(
                 description = stringProvider.getString(R.string.error_general_description)
             )
         }
+    }
+
+    private fun isEmptyBodyException(throwable: Throwable): Boolean {
+        return throwable is java.io.EOFException ||
+            throwable.cause is java.io.EOFException ||
+            throwable.message?.contains("End of input") == true
     }
 
     private fun handleHttpException(code: Int, responseBody: ResponseBody?): ErrorResponse {
