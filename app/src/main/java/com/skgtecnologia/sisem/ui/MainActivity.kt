@@ -13,8 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
 import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
-import com.skgtecnologia.sisem.commons.extensions.hasMapLocationPermission
-import com.skgtecnologia.sisem.commons.location.ACTION_START
 import com.skgtecnologia.sisem.commons.location.ACTION_STOP
 import com.skgtecnologia.sisem.commons.location.LocationService
 import com.skgtecnologia.sisem.data.notification.NotificationsManager
@@ -69,13 +67,6 @@ class MainActivity : FragmentActivity() {
             )
         } else {
             intent.getParcelableExtra(STARTUP_NAVIGATION_MODEL)
-        }
-
-        if (hasMapLocationPermission()) {
-            Intent(applicationContext, LocationService::class.java).apply {
-                action = ACTION_START
-                startService(this)
-            }
         }
 
         intent.extras?.also { bundle ->

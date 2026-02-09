@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.compose.rememberFragmentState
@@ -71,6 +72,16 @@ fun SisemNavGraph(navigationModel: StartupNavigationModel?) {
         val modifier = Modifier.padding(paddingValues)
         val navController = rememberNavController()
         val context = LocalContext.current
+        val startDestination = getAppStartDestination(navigationModel)
+
+        LaunchedEffect(Unit) {
+            if (startDestination == NavGraph.MainGraph) {
+                Intent(context.applicationContext, LocationService::class.java).apply {
+                    action = ACTION_START
+                    context.startService(this)
+                }
+            }
+        }
 
         UnauthorizedEventHandler.subscribeUnauthorizedEvent { appEvent ->
             if (appEvent is AppEvent.UnauthorizedSession) {
@@ -84,7 +95,7 @@ fun SisemNavGraph(navigationModel: StartupNavigationModel?) {
 
         NavHost(
             navController = navController,
-            startDestination = getAppStartDestination(navigationModel)
+            startDestination = startDestination
         ) {
             authGraph(
                 navController,

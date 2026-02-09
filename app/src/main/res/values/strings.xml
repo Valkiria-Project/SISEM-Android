@@ -28,6 +28,8 @@
     <string name="error_general_description">Intenta más tarde</string>
     <string name="error_server_title">Servicio no disponible</string>
     <string name="error_server_description">Sucedió algo inesperado, por favor intenta de nuevo</string>
+    <string name="error_device_config_title">Error de configuración</string>
+    <string name="error_device_config_description">El dispositivo no está registrado en el sistema. Por favor, contacte al administrador.</string>
 
     <!-- Field validations -->
     <string name="field_empty_validation_message">El campo no debe estar vacío</string>
