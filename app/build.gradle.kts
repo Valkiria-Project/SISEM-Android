@@ -4,6 +4,7 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.androidApplication)
+    alias(libs.plugins.androidxRoom)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.daggerHilt)
@@ -33,12 +34,12 @@ android {
         }
     }
     namespace = "com.skgtecnologia.sisem"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.skgtecnologia.sisem"
         minSdk = 30
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 76
         versionName = "2.3.3"
 
@@ -47,8 +48,8 @@ android {
             useSupportLibrary = true
         }
 
-        ksp {
-            arg("room.schemaLocation", "$projectDir/schemas")
+        room {
+            schemaDirectory("$projectDir/schemas")
         }
     }
 

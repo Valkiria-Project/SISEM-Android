@@ -1,51 +1,51 @@
 [versions]
 accompanist = "0.36.0"
-activity-compose = "1.10.0"
+activity-compose = "1.12.3"
 agp = "9.0.0"
-androidx-test-ext-junit = "1.2.1"
+androidx-test-ext-junit = "1.3.0"
 ben-manes-versions = "0.53.0"
-camera-x = "1.4.1"
+camera-x = "1.5.3"
 cardview = "1.0.0"
 coil-compose = "2.7.0"
-compose-bom = "2025.02.00"
+compose-bom = "2026.01.01"
 compose-html = "1.0.2"
 compressor = "3.0.1"
-constraintlayout = "2.1.4"
-constraintlayout-compose = "1.0.1"
-converter-moshi = "2.11.0"
-core-ktx = "1.15.0"
-core-splashscreen = "1.0.1"
+constraintlayout = "2.2.1"
+constraintlayout-compose = "1.1.1"
+converter-moshi = "3.0.0"
+core-ktx = "1.17.0"
+core-splashscreen = "1.2.0"
 core-testing = "2.2.0"
-desugar-jdk-libs = "2.1.4"
-detekt = "1.23.6"
-espresso-core = "3.6.1"
-firebase-bom = "33.9.0"
-fragment-compose = "1.8.6"
-google-material = "1.12.0"
-google-services = "4.4.2"
-hilt-android = "2.59"
-hilt-navigation-compose = "1.2.0"
+desugar-jdk-libs = "2.1.5"
+detekt = "1.23.8"
+espresso-core = "3.7.0"
+firebase-bom = "34.9.0"
+fragment-compose = "1.8.9"
+google-material = "1.13.0"
+google-services = "4.4.4"
+hilt-android = "2.59.1"
+hilt-navigation-compose = "1.3.0"
 junit = "4.13.2"
-kotlin = "2.1.0"
-kotlinx-collections-immutable = "0.3.8"
-kotlinx-coroutines-test = "1.10.1"
-kotlin-serialization = "1.7.3"
-ksp = "2.1.0-1.0.29"
-ktlint = "12.1.1"
+kotlin = "2.3.10"
+kotlinx-collections-immutable = "0.4.0"
+kotlinx-coroutines-test = "1.10.2"
+kotlin-serialization = "1.10.0"
+ksp = "2.3.4"
+ktlint = "14.0.1"
 leakcanary-android = "2.14"
-lifecycle = "2.8.7"
+lifecycle = "2.10.0"
 mapbox-navigation = "3.4.0-beta.1"
-mockk = "1.13.13"
-moshi = "1.15.1"
-navigation-compose = "2.8.7"
-okhttp-bom = "4.12.0"
-paparazzi = "1.3.1"
+mockk = "1.14.9"
+moshi = "1.15.2"
+navigation-compose = "2.9.7"
+okhttp-bom = "5.3.2"
+paparazzi = "1.3.5"
 play-services-location = "21.3.0"
-retrofit = "2.11.0"
-robolectric = "4.13"
-room = "2.7.0-alpha13"
+retrofit = "3.0.0"
+robolectric = "4.16.1"
+room = "2.8.4"
 timber = "5.0.1"
-ui-viewbinding = "1.7.8"
+ui-viewbinding = "1.10.2"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
@@ -80,7 +80,7 @@ core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx
 desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
-firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt-android" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -119,6 +119,7 @@ ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
+androidxRoom = { id = "androidx.room", version.ref = "room" }
 benManesversions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes-versions" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 daggerHilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android" }
