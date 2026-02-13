@@ -7,6 +7,7 @@ import com.skgtecnologia.sisem.commons.ID_FINDING
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.di.operation.OperationRole
+import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
 import com.skgtecnologia.sisem.domain.operation.usecases.GetOperationConfigWithCurrentRole
 import com.skgtecnologia.sisem.domain.report.usecases.SendReport
@@ -39,6 +40,9 @@ class ReportViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @MockK
+    private lateinit var logoutCurrentUser: LogoutCurrentUser
+
+    @MockK
     private lateinit var getOperationConfigWithCurrentRole: GetOperationConfigWithCurrentRole
 
     @MockK
@@ -60,7 +64,7 @@ class ReportViewModelTest {
         val operationModel = mockk<OperationModel>()
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
 
         Assert.assertEquals(operationModel, viewModel.uiState.value.operationConfig)
     }
@@ -70,7 +74,7 @@ class ReportViewModelTest {
         val exception = mockk<Exception>()
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.failure(exception)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.value.infoEvent?.title)
     }
@@ -80,7 +84,7 @@ class ReportViewModelTest {
         val operationModel = mockk<OperationModel>()
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.navigateBackFromReport()
 
         Assert.assertEquals(true, viewModel.uiState.value.navigationModel?.goBackFromReport)
@@ -91,7 +95,7 @@ class ReportViewModelTest {
         val operationModel = mockk<OperationModel>()
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.navigateBackFromImages()
 
         Assert.assertEquals(true, viewModel.uiState.value.navigationModel?.goBackFromImages)
@@ -102,7 +106,7 @@ class ReportViewModelTest {
         val operationModel = mockk<OperationModel>()
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.cancelFinding()
 
         Assert.assertEquals(true, viewModel.uiState.value.navigationModel?.cancelFinding)
@@ -113,7 +117,7 @@ class ReportViewModelTest {
         val operationModel = mockk<OperationModel>()
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.saveFinding()
 
         Assert.assertEquals(null, viewModel.uiState.value.confirmInfoModel)
@@ -125,7 +129,7 @@ class ReportViewModelTest {
         val operationModel = mockk<OperationModel>()
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.isValidDescription = true
         viewModel.saveFinding()
 
@@ -143,7 +147,7 @@ class ReportViewModelTest {
         }
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.isValidDescription = true
         viewModel.updateMediaActions(
             listOf(
@@ -172,7 +176,7 @@ class ReportViewModelTest {
         val operationModel = mockk<OperationModel>()
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.confirmFinding()
 
         Assert.assertEquals(true, viewModel.uiState.value.navigationModel?.closeFinding)
@@ -187,7 +191,7 @@ class ReportViewModelTest {
         val operationModel = mockk<OperationModel>()
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.saveFindingImages()
 
         Assert.assertEquals(
@@ -201,7 +205,7 @@ class ReportViewModelTest {
         val operationModel = mockk<OperationModel>()
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.confirmFindingImages(listOf(mockk()))
 
         Assert.assertEquals(
@@ -215,7 +219,7 @@ class ReportViewModelTest {
         val operationModel = mockk<OperationModel>()
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.cancelReport()
 
         Assert.assertEquals(
@@ -230,7 +234,7 @@ class ReportViewModelTest {
         val operationModel = mockk<OperationModel>()
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.saveReport(DRIVER_ROLE)
 
         Assert.assertEquals(null, viewModel.uiState.value.confirmInfoModel)
@@ -242,7 +246,7 @@ class ReportViewModelTest {
         val operationModel = mockk<OperationModel>()
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.isValidDescription = true
         viewModel.isValidTopic = true
         viewModel.saveReport(DRIVER_ROLE)
@@ -260,7 +264,7 @@ class ReportViewModelTest {
         }
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.isValidDescription = true
         viewModel.isValidTopic = true
         viewModel.updateMediaActions(
@@ -291,7 +295,7 @@ class ReportViewModelTest {
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
         coEvery { sendReport.invoke(any(), any(), any(), any()) } returns Result.success(Unit)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.confirmReport()
 
         Assert.assertEquals(
@@ -306,7 +310,7 @@ class ReportViewModelTest {
         val operationModel = mockk<OperationModel>()
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.saveReportImages()
 
         Assert.assertEquals(
@@ -321,7 +325,7 @@ class ReportViewModelTest {
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
         coEvery { sendReport.invoke(any(), any(), any(), any()) } returns Result.success(Unit)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.confirmReportImages(listOf(mockk()))
 
         Assert.assertEquals(
@@ -343,7 +347,7 @@ class ReportViewModelTest {
             )
         } returns Result.failure(Throwable())
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.confirmReportImages(listOf())
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.value.infoEvent?.title)
@@ -368,7 +372,7 @@ class ReportViewModelTest {
         }
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.updateMediaActions(selectedImages, false)
 
         Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.value.infoEvent?.title)
@@ -394,7 +398,7 @@ class ReportViewModelTest {
         }
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.updateMediaActions(selectedImages, true)
 
         Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.value.infoEvent?.title)
@@ -420,7 +424,7 @@ class ReportViewModelTest {
         }
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.updateMediaActions(selectedImages, true)
 
         Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.value.infoEvent?.title)
@@ -445,7 +449,7 @@ class ReportViewModelTest {
         }
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.updateMediaActions(selectedImages, true)
 
         Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.value.infoEvent?.title)
@@ -471,7 +475,7 @@ class ReportViewModelTest {
         }
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.updateMediaActions(selectedImages, true)
 
         Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.value.infoEvent?.title)
@@ -496,7 +500,7 @@ class ReportViewModelTest {
         }
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.updateMediaActions(selectedImages, true)
 
         Assert.assertEquals(BANNER_LIMIT_TITLE, viewModel.uiState.value.infoEvent?.title)
@@ -522,7 +526,7 @@ class ReportViewModelTest {
         }
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.updateMediaActions(selectedImages, true)
         viewModel.currentImage = 1
         viewModel.removeCurrentImage()
@@ -535,7 +539,7 @@ class ReportViewModelTest {
         val operationModel = mockk<OperationModel>()
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.showCamera(true)
 
         Assert.assertEquals(true, viewModel.uiState.value.navigationModel?.showCamera)
@@ -547,7 +551,7 @@ class ReportViewModelTest {
         val operationModel = mockk<OperationModel>()
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.showCamera(false)
 
         Assert.assertEquals(true, viewModel.uiState.value.navigationModel?.showCamera)
@@ -575,7 +579,7 @@ class ReportViewModelTest {
         }
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.updateMediaActions(selectedImages, true)
         viewModel.onPhotoTaken(
             MediaItemUiModel(
@@ -609,7 +613,7 @@ class ReportViewModelTest {
         }
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.updateMediaActions(selectedImages, true)
         viewModel.onPhotoTaken(
             MediaItemUiModel(
@@ -628,7 +632,7 @@ class ReportViewModelTest {
         val operationModel = mockk<OperationModel>()
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.consumeShownConfirm()
 
         Assert.assertEquals(null, viewModel.uiState.value.confirmInfoModel)
@@ -639,7 +643,7 @@ class ReportViewModelTest {
         val operationModel = mockk<OperationModel>()
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.consumeShownError()
 
         Assert.assertEquals(null, viewModel.uiState.value.infoEvent)
@@ -650,7 +654,7 @@ class ReportViewModelTest {
         val operationModel = mockk<OperationModel>()
         coEvery { getOperationConfigWithCurrentRole.invoke() } returns Result.success(operationModel)
 
-        viewModel = ReportViewModel(savedStateHandle, getOperationConfigWithCurrentRole, sendReport)
+        viewModel = ReportViewModel(savedStateHandle, logoutCurrentUser, getOperationConfigWithCurrentRole, sendReport)
         viewModel.consumeNavigationEvent()
 
         Assert.assertEquals(false, viewModel.uiState.value.validateFields)

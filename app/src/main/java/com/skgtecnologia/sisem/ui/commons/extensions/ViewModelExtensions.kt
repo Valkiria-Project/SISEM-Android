@@ -14,7 +14,7 @@ const val STATE_FLOW_STARTED_TIME = 5000L
 inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
     navController: NavController
 ): T {
-    val navGraphRoute = destination.parent?.route ?: hiltViewModel()
+    val navGraphRoute = destination.parent?.route ?: return hiltViewModel()
     val parentEntry = remember(this) {
         navController.getBackStackEntry(navGraphRoute)
     }
