@@ -184,7 +184,7 @@ fun AddFindingScreen(
     }
 
     OnBannerHandler(uiState.infoEvent) {
-        viewModel.consumeShownError()
+        viewModel.handleEvent(it)
     }
 
     LocalFocusManager.current.clearFocus()

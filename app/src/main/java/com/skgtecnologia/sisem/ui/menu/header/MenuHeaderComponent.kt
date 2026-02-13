@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -91,7 +91,7 @@ fun MenuHeaderComponent(
         ) {
             val (subRedText, functionalUnitText, baseText) = createRefs()
             Text(
-                text = LocalContext.current.getString(
+                text = stringResource(
                     R.string.drawer_header_zone,
                     vehicleConfig?.zone.orEmpty()
                 ),
@@ -102,7 +102,7 @@ fun MenuHeaderComponent(
                 style = BUTTON_1.toTextStyle()
             )
             Text(
-                text = LocalContext.current.getString(
+                text = stringResource(
                     R.string.drawer_header_provider,
                     vehicleConfig?.provider.orEmpty()
                 ),
@@ -113,7 +113,7 @@ fun MenuHeaderComponent(
                 style = BUTTON_1.toTextStyle()
             )
             Text(
-                text = LocalContext.current.getString(R.string.drawer_header_functional_unit),
+                text = stringResource(R.string.drawer_header_functional_unit),
                 modifier = Modifier
                     .constrainAs(baseText) {
                         end.linkTo(parent.end)

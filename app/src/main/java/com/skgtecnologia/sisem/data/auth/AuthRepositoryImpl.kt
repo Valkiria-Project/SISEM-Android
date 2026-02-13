@@ -1,7 +1,7 @@
 package com.skgtecnologia.sisem.data.auth
 
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.ktx.messaging
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.messaging
 import com.skgtecnologia.sisem.commons.extensions.mapResult
 import com.skgtecnologia.sisem.data.auth.cache.AuthCacheDataSource
 import com.skgtecnologia.sisem.data.auth.remote.AuthRemoteDataSource

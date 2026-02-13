@@ -113,18 +113,20 @@ fun InfoCardComponent(
                         )
                     }
 
-                    val endDp = if (uiModel.reportsDetail == null) 40.dp else 0.dp
-
                     Column(
                         modifier = Modifier
                             .constrainAs(text) {
                                 start.linkTo(icon.end)
                                 top.linkTo(parent.top)
                                 bottom.linkTo(parent.bottom)
-                                end.linkTo(badged.start)
-                                width = Dimension.preferredWrapContent
+                                if (uiModel.reportsDetail != null) {
+                                    end.linkTo(badged.start)
+                                } else {
+                                    end.linkTo(parent.end)
+                                }
+                                width = Dimension.fillToConstraints
                             }
-                            .padding(start = 12.dp, end = endDp)
+                            .padding(start = 12.dp)
                     ) {
                         Text(
                             text = uiModel.title.text,

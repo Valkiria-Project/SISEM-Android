@@ -190,7 +190,7 @@ fun AddReportScreen(
     }
 
     OnBannerHandler(uiState.infoEvent) {
-        viewModel.consumeShownError()
+        viewModel.handleEvent(it)
     }
 
     LocalFocusManager.current.clearFocus()

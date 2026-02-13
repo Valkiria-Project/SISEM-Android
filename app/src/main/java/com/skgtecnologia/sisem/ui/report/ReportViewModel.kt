@@ -8,7 +8,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.di.operation.OperationRole
+import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.model.banner.fileSizeErrorBanner
 import com.skgtecnologia.sisem.domain.model.banner.findingCancellationBanner
 import com.skgtecnologia.sisem.domain.model.banner.findingConfirmationBanner
@@ -22,7 +24,9 @@ import com.skgtecnologia.sisem.domain.operation.usecases.GetOperationConfigWithC
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.domain.report.usecases.SendReport
+import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.navigation.ReportRoute
+import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.media.MediaItemUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +42,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ReportViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val logoutCurrentUser: LogoutCurrentUser,
     private val getOperationConfigWithCurrentRole: GetOperationConfigWithCurrentRole,
     private val sendReport: SendReport
 ) : ViewModel() {
@@ -434,6 +439,22 @@ class ReportViewModel @Inject constructor(
             it.copy(
                 confirmInfoModel = null
             )
+        }
+    }
+
+    fun handleEvent(uiAction: UiAction) {
+        consumeShownError()
+
+        uiAction.handleAuthorizationErrorEvent {
+            job?.cancel()
+            job = viewModelScope.launch {
+                logoutCurrentUser.invoke()
+                    .onSuccess { username ->
+                        UnauthorizedEventHandler.publishUnauthorizedEvent(username)
+                    }.onFailure {
+                        UnauthorizedEventHandler.publishUnauthorizedEvent(it.toString())
+                    }
+            }
         }
     }
 

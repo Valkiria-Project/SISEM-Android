@@ -193,7 +193,7 @@ fun ImagesConfirmationScreen(
     }
 
     OnBannerHandler(uiState.infoEvent) {
-        viewModel.consumeShownError()
+        viewModel.handleEvent(it)
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)

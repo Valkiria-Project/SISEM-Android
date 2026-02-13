@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
@@ -38,7 +38,7 @@ fun SwitchBodyType(
         Text(
             modifier = Modifier
                 .padding(top = 4.dp),
-            text = LocalContext.current.getString(R.string.human_body_label),
+            text = stringResource(R.string.human_body_label),
             style = com.valkiria.uicomponents.components.label.TextStyle.HEADLINE_4.toTextStyle()
         )
     }
