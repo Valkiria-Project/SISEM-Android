@@ -1690,10 +1690,10 @@ class MedicalHistoryViewModel @Inject constructor(
             screenModel = uiState.screenModel?.copy(
                 body = updatedBody
             ),
-            errorEvent = if (invalidMediaSelected?.isNotEmpty() == true) {
-                fileSizeErrorBanner().mapToUi()
-            } else {
-                null
+            errorEvent = when {
+                mediaItems == null -> uiState.errorEvent
+                invalidMediaSelected?.isNotEmpty() == true -> fileSizeErrorBanner().mapToUi()
+                else -> null
             }
         )
     }

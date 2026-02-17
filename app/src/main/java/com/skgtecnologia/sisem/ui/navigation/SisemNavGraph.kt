@@ -83,11 +83,13 @@ fun SisemNavGraph(navigationModel: StartupNavigationModel?) {
             }
         }
 
-        UnauthorizedEventHandler.subscribeUnauthorizedEvent { appEvent ->
-            if (appEvent is AppEvent.UnauthorizedSession) {
-                navController.navigate(AuthRoute.LoginRoute(appEvent.username)) {
-                    popUpTo(NavGraph.MainGraph) {
-                        inclusive = true
+        LaunchedEffect(Unit) {
+            UnauthorizedEventHandler.subscribeUnauthorizedEvent { appEvent ->
+                if (appEvent is AppEvent.UnauthorizedSession) {
+                    navController.navigate(AuthRoute.LoginRoute(appEvent.username)) {
+                        popUpTo(NavGraph.MainGraph) {
+                            inclusive = true
+                        }
                     }
                 }
             }

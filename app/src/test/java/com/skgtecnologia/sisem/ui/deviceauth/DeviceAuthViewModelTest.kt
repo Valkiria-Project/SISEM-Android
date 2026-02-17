@@ -13,6 +13,7 @@ import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.usecases.DeleteAccessToken
+import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.AssociateDevice
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.GetDeviceAuthScreen
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
@@ -52,6 +53,9 @@ class DeviceAuthViewModelTest {
     @MockK
     private lateinit var deleteAccessToken: DeleteAccessToken
 
+    @MockK
+    private lateinit var logoutCurrentUser: LogoutCurrentUser
+
     private val savedStateHandle: SavedStateHandle = SavedStateHandle(
         route = AuthRoute.DeviceAuthRoute(from = FROM)
     )
@@ -74,7 +78,8 @@ class DeviceAuthViewModelTest {
             androidIdProvider,
             associateDevice,
             getDeviceAuthScreen,
-            deleteAccessToken
+            deleteAccessToken,
+            logoutCurrentUser
         )
 
         Assert.assertEquals(screenModel, viewModel.uiState.screenModel)
@@ -89,7 +94,8 @@ class DeviceAuthViewModelTest {
             androidIdProvider,
             associateDevice,
             getDeviceAuthScreen,
-            deleteAccessToken
+            deleteAccessToken,
+            logoutCurrentUser
         )
 
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.errorModel?.title)
@@ -104,7 +110,8 @@ class DeviceAuthViewModelTest {
             androidIdProvider,
             associateDevice,
             getDeviceAuthScreen,
-            deleteAccessToken
+            deleteAccessToken,
+            logoutCurrentUser
         )
         viewModel.isValidVehicleCode = false
         viewModel.associateDevice()
@@ -124,7 +131,8 @@ class DeviceAuthViewModelTest {
             androidIdProvider,
             associateDevice,
             getDeviceAuthScreen,
-            deleteAccessToken
+            deleteAccessToken,
+            logoutCurrentUser
         )
         viewModel.isValidVehicleCode = true
         viewModel.associateDevice()
@@ -142,7 +150,8 @@ class DeviceAuthViewModelTest {
             androidIdProvider,
             associateDevice,
             getDeviceAuthScreen,
-            deleteAccessToken
+            deleteAccessToken,
+            logoutCurrentUser
         )
         viewModel.isValidVehicleCode = true
         viewModel.disassociateDeviceState = true
@@ -168,7 +177,8 @@ class DeviceAuthViewModelTest {
             androidIdProvider,
             associateDevice,
             getDeviceAuthScreen,
-            deleteAccessToken
+            deleteAccessToken,
+            logoutCurrentUser
         )
         viewModel.isValidVehicleCode = true
         viewModel.disassociateDeviceState = false
@@ -191,7 +201,8 @@ class DeviceAuthViewModelTest {
             androidIdProvider,
             associateDevice,
             getDeviceAuthScreen,
-            deleteAccessToken
+            deleteAccessToken,
+            logoutCurrentUser
         )
         viewModel.cancel()
 
@@ -212,7 +223,8 @@ class DeviceAuthViewModelTest {
             androidIdProvider,
             associateDevice,
             getDeviceAuthScreen,
-            deleteAccessToken
+            deleteAccessToken,
+            logoutCurrentUser
         )
         viewModel.cancel()
 
@@ -230,7 +242,8 @@ class DeviceAuthViewModelTest {
             androidIdProvider,
             associateDevice,
             getDeviceAuthScreen,
-            deleteAccessToken
+            deleteAccessToken,
+            logoutCurrentUser
         )
         viewModel.cancelBanner()
 
@@ -246,7 +259,8 @@ class DeviceAuthViewModelTest {
             androidIdProvider,
             associateDevice,
             getDeviceAuthScreen,
-            deleteAccessToken
+            deleteAccessToken,
+            logoutCurrentUser
         )
         viewModel.consumeErrorEvent()
 
