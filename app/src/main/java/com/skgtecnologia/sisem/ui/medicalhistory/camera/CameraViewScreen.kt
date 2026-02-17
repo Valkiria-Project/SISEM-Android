@@ -77,8 +77,9 @@ fun CameraViewScreen(
         }
 
         if (uiState.navigationModel != null) {
-            onNavigation(uiState.navigationModel)
+            val navModel = uiState.navigationModel
             viewModel.consumeNavigationEvent()
+            onNavigation(navModel)
         }
     }
 
