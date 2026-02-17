@@ -4,6 +4,7 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.androidApplication)
+    alias(libs.plugins.androidxRoom)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.daggerHilt)
@@ -33,22 +34,22 @@ android {
         }
     }
     namespace = "com.skgtecnologia.sisem"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.skgtecnologia.sisem"
         minSdk = 30
-        targetSdk = 35
-        versionCode = 76
-        versionName = "2.3.3"
+        targetSdk = 36
+        versionCode = 78
+        versionName = "2.3.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
 
-        ksp {
-            arg("room.schemaLocation", "$projectDir/schemas")
+        room {
+            schemaDirectory("$projectDir/schemas")
         }
     }
 
@@ -88,7 +89,7 @@ android {
             buildConfigField("String", "AUTH_BASE_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-api/\"")
             buildConfigField("String", "BASE_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-api/v1/\"")
             buildConfigField("String", "LOCATION_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-location-api/v1/\"")
-            buildConfigField("String", "REFRESH_URL", "\"https://admin.prod.sisembogota.com/auth/realms/sisem/protocol/openid-connect/token\"")
+            buildConfigField("String", "REFRESH_URL", "\"https://admin.emergencias.saludcapital.gov.co/auth/realms/sisem/protocol/openid-connect/token\"")
             if (keystorePropertiesExist) {
                 signingConfig = signingConfigs.getByName("release")
             }

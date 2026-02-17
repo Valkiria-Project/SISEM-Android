@@ -7,15 +7,19 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.usecases.DeleteAccessToken
+import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.AssociateDevice
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.GetDeviceAuthScreen
 import com.skgtecnologia.sisem.domain.model.banner.disassociateDeviceBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.skgtecnologia.sisem.ui.navigation.LOGIN
+import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +36,8 @@ class DeviceAuthViewModel @Inject constructor(
     private val androidIdProvider: AndroidIdProvider,
     private val associateDevice: AssociateDevice,
     private val getDeviceAuthScreen: GetDeviceAuthScreen,
-    private val deleteAccessToken: DeleteAccessToken
+    private val deleteAccessToken: DeleteAccessToken,
+    private val logoutCurrentUser: LogoutCurrentUser
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -185,6 +190,22 @@ class DeviceAuthViewModel @Inject constructor(
         vehicleCode = ""
         isValidVehicleCode = false
         disassociateDeviceState = false
+    }
+
+    fun handleEvent(uiAction: UiAction) {
+        consumeErrorEvent()
+
+        uiAction.handleAuthorizationErrorEvent {
+            job?.cancel()
+            job = viewModelScope.launch {
+                logoutCurrentUser.invoke()
+                    .onSuccess { username ->
+                        UnauthorizedEventHandler.publishUnauthorizedEvent(username)
+                    }.onFailure {
+                        UnauthorizedEventHandler.publishUnauthorizedEvent(it.toString())
+                    }
+            }
+        }
     }
 
     fun consumeErrorEvent() {
