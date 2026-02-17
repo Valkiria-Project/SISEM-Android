@@ -21,7 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -48,7 +48,6 @@ fun SendEmailScreen(
     viewModel: SendEmailViewModel = hiltViewModel(),
     onNavigation: (sendEmailNavigationModel: SendEmailNavigationModel) -> Unit
 ) {
-    val context = LocalContext.current
     val uiState = viewModel.uiState
 
     var notificationData by remember { mutableStateOf<NotificationData?>(null) }
@@ -66,6 +65,11 @@ fun SendEmailScreen(
             }
         }
     }
+
+    val emailBodyText = stringResource(R.string.send_email_body)
+    val emailFromText = stringResource(R.string.send_email_from)
+    val emailContentText = stringResource(R.string.send_email_content)
+    val emailContentPdfText = stringResource(R.string.send_email_content_pdf)
 
     ConstraintLayout(
         modifier = modifier.fillMaxSize()
@@ -100,7 +104,7 @@ fun SendEmailScreen(
                 contentDescription = null,
                 modifier = Modifier
                     .clickable {
-                        viewModel.bodyValue.value = context.getString(R.string.send_email_body)
+                        viewModel.bodyValue.value = emailBodyText
                         viewModel.sendEmail()
                     }
                     .padding(end = 12.dp)
@@ -139,7 +143,7 @@ fun SendEmailScreen(
                 color = Color(parseColor("#3D3F42"))
             )
 
-            LabelComponent(uiModel = sendEmailLabels(context.getString(R.string.send_email_from)))
+            LabelComponent(uiModel = sendEmailLabels(emailFromText))
 
             HorizontalDivider(
                 modifier = Modifier
@@ -150,7 +154,7 @@ fun SendEmailScreen(
             )
 
             LabelComponent(
-                uiModel = sendEmailLabels(context.getString(R.string.send_email_body))
+                uiModel = sendEmailLabels(emailBodyText)
             )
 
             HorizontalDivider(
@@ -162,11 +166,11 @@ fun SendEmailScreen(
             )
 
             LabelComponent(
-                uiModel = sendEmailLabels(context.getString(R.string.send_email_content), "#FFFFFF")
+                uiModel = sendEmailLabels(emailContentText, "#FFFFFF")
             )
 
             LabelComponent(
-                uiModel = sendEmailContent(context.getString(R.string.send_email_content_pdf))
+                uiModel = sendEmailContent(emailContentPdfText)
             )
         }
     }
