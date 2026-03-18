@@ -4,6 +4,7 @@ import android.content.Context
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.ANDROID_NETWORKING_FILE_NAME
 import com.skgtecnologia.sisem.commons.resources.StorageProvider
+import com.skgtecnologia.sisem.domain.model.banner.BannerModel
 import com.skgtecnologia.sisem.data.remote.extensions.isUnauthorized
 import com.skgtecnologia.sisem.data.remote.extensions.signWithToken
 import com.skgtecnologia.sisem.di.operation.OperationRole
@@ -109,15 +110,35 @@ class AccessTokenAuthenticator @Inject constructor(
 
     private fun Response.createSignedRequest(currentToken: AccessTokenModel): Request? =
         synchronized(this) {
-            val newToken = runBlocking {
+            val result = runBlocking {
                 runCatching {
                     authRepository.refreshToken(
                         currentToken = currentToken
                     )
-                }.getOrNull()
+                }
             }
+            val newToken = result.getOrNull()
 
             if (newToken == null) {
+                val throwable = result.exceptionOrNull()
+                val errorMessage = when {
+                    throwable is BannerModel -> "${throwable.title}: ${throwable.description}"
+                    throwable != null -> throwable.message ?: throwable::class.simpleName
+                        ?: "UnknownError"
+                    else -> "UnknownError"
+                }
+
+                storageProvider.storeContent(
+                    ANDROID_NETWORKING_FILE_NAME,
+                    Context.MODE_APPEND,
+                    (
+                        TimeUtils.getLocalDateTime(Instant.now()).toString() +
+                        "\t Refreshed Token failure: " + errorMessage +
+                        "\t using the refresh token: " + currentToken.refreshToken +
+                        "\n\n"
+                    ).toByteArray()
+                )
+
                 runBlocking {
                     authRepository.deleteAccessTokenByUsername(currentToken.username)
                 }
