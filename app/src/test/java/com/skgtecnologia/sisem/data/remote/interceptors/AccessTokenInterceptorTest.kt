@@ -100,7 +100,7 @@ class AccessTokenInterceptorTest {
     }
 
     @Test
-    fun `when token is expired and refresh fails with BannerModel, logs title and description, deletes token, publishes unauthorized event`() = runTest {
+    fun `when token expired and refresh fails with BannerModel, deletes token and publishes event`() = runTest {
         val bannerError = BannerModel(
             icon = "ic_alert",
             title = "Token expired",
@@ -130,7 +130,7 @@ class AccessTokenInterceptorTest {
     }
 
     @Test
-    fun `when token is expired and refresh fails with generic exception, deletes token and publishes unauthorized event`() = runTest {
+    fun `when token expired and refresh fails with generic exception, deletes token and publishes event`() = runTest {
         coEvery { authRepository.getAllAccessTokens() } returns listOf(expiredToken)
         coEvery { authRepository.refreshToken(expiredToken) } throws RuntimeException("network error")
         coEvery { authRepository.deleteAccessTokenByUsername("testuser") } just runs

@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.data.remote.interceptors
 
 import android.content.Context
+import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.ANDROID_NETWORKING_FILE_NAME
 import com.skgtecnologia.sisem.commons.resources.StorageProvider
 import com.skgtecnologia.sisem.data.remote.extensions.isUnauthorized
@@ -27,13 +28,19 @@ class AccessTokenAuthenticator @Inject constructor(
     private val storageProvider: StorageProvider
 ) : Authenticator {
 
-    private var retryCount = 0
+    private fun responseCount(response: Response): Int {
+        var count = 1
+        var prior = response.priorResponse
+        while (prior != null) {
+            count++
+            prior = prior.priorResponse
+        }
+        return count
+    }
 
     @Suppress("ComplexMethod")
     override fun authenticate(route: Route?, response: Response): Request? {
-        return if (response.isUnauthorized() && retryCount < MAX_ATTEMPTS) {
-            retryCount++
-
+        return if (response.isUnauthorized() && responseCount(response) <= MAX_ATTEMPTS) {
             val url = response.request.url
 
             val token = runBlocking {
@@ -96,12 +103,11 @@ class AccessTokenAuthenticator @Inject constructor(
                 response.createSignedRequest(token)
             }
         } else {
-            retryCount = 0
             null
         }
     }
 
-    private fun Response.createSignedRequest(currentToken: AccessTokenModel): Request =
+    private fun Response.createSignedRequest(currentToken: AccessTokenModel): Request? =
         synchronized(this) {
             val newToken = runBlocking {
                 runCatching {
@@ -111,6 +117,14 @@ class AccessTokenAuthenticator @Inject constructor(
                 }.getOrNull()
             }
 
-            request.signWithToken(newToken?.accessToken.orEmpty())
+            if (newToken == null) {
+                runBlocking {
+                    authRepository.deleteAccessTokenByUsername(currentToken.username)
+                }
+                UnauthorizedEventHandler.publishUnauthorizedEvent(currentToken.username)
+                return@synchronized null
+            }
+
+            request.signWithToken(newToken.accessToken)
         }
 }

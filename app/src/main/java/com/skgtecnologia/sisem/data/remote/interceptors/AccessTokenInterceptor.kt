@@ -136,10 +136,12 @@ class AccessTokenInterceptor @Inject constructor(
                         storageProvider.storeContent(
                             ANDROID_NETWORKING_FILE_NAME,
                             Context.MODE_APPEND,
-                            (TimeUtils.getLocalDateTime(Instant.now()).toString() +
+                            (
+                                TimeUtils.getLocalDateTime(Instant.now()).toString() +
                                 "\t Refreshed Token failure: " + errorMessage +
                                 "\t using the refresh token: " + accessTokenModel.refreshToken +
-                                "\n\n").toByteArray()
+                                "\n\n"
+                            ).toByteArray()
                         )
 
                         authRepository.deleteAccessTokenByUsername(accessTokenModel.username)
