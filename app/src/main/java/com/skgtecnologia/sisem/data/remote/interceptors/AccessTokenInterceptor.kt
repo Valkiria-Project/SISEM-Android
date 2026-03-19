@@ -1,12 +1,14 @@
 package com.skgtecnologia.sisem.data.remote.interceptors
 
 import android.content.Context
+import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.extensions.resultOf
 import com.skgtecnologia.sisem.commons.resources.ANDROID_NETWORKING_FILE_NAME
 import com.skgtecnologia.sisem.commons.resources.StorageProvider
 import com.skgtecnologia.sisem.data.remote.extensions.signWithToken
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
+import com.skgtecnologia.sisem.domain.model.banner.BannerModel
 import com.valkiria.uicomponents.utlis.TimeUtils
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -125,17 +127,25 @@ class AccessTokenInterceptor @Inject constructor(
                         )
                     }
                     .onFailure { throwable ->
-                        val refreshFailureContent =
-                            TimeUtils.getLocalDateTime(Instant.now()).toString() +
-                                "\t Refreshed Token failure: " + throwable.localizedMessage +
-                                "\t using the refresh token: " + accessTokenModel.refreshToken +
-                                "\n\n"
+                        val errorMessage = if (throwable is BannerModel) {
+                            "${throwable.title}: ${throwable.description}"
+                        } else {
+                            throwable.message ?: throwable::class.simpleName ?: "UnknownError"
+                        }
 
                         storageProvider.storeContent(
                             ANDROID_NETWORKING_FILE_NAME,
                             Context.MODE_APPEND,
-                            refreshFailureContent.toByteArray()
+                            (
+                                TimeUtils.getLocalDateTime(Instant.now()).toString() +
+                                "\t Refreshed Token failure: " + errorMessage +
+                                "\t using the refresh token: " + accessTokenModel.refreshToken +
+                                "\n\n"
+                            ).toByteArray()
                         )
+
+                        authRepository.deleteAccessTokenByUsername(accessTokenModel.username)
+                        UnauthorizedEventHandler.publishUnauthorizedEvent(accessTokenModel.username)
                     }
             }
         }
