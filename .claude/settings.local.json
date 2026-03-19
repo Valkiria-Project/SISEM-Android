@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./gradlew assembleStaging:*)",
+      "Bash(adb install:*)",
+      "Bash(adb shell am start:*)",
+      "Bash(adb logcat:*)",
+      "Bash(adb shell:*)",
+      "Bash(git commit:*)",
+      "Bash(./gradlew assembleRelease:*)",
+      "Bash(gpg:*)",
+      "Bash(./gradlew :app:mergeExtDexStaging:*)",
+      "Bash(./gradlew clean:*)",
+      "Bash(open \"https://github.com/settings/tokens/new?scopes=repo,workflow&description=gh-cli-with-workflow\")",
+      "Bash(ssh:*)",
+      "Bash(GIT_SEQUENCE_EDITOR=\"sed -e ''s/^pick 511188f/drop 511188f/'' -e ''s/^pick 95847d3/edit 95847d3/''\" git rebase -i 95847d3~1)",
+      "Bash(open:*)",
+      "Bash(./gradlew assembleDebug:*)",
+      "Bash(./gradlew :app:compileDebugUnitTestKotlin:*)",
+      "Bash(./gradlew:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:mvnrepository.com)",
+      "Bash(claude --version)"
+    ]
+  },
+  "disabledMcpjsonServers": [
+    "FuryMCP",
+    "CodeReviewerMCP",
+    "LargeTestingPlatformMCP",
+    "AtlassianMCP",
+    "figma",
+    "SecurityMCP"
+  ]
+}

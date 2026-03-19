@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.data.remote.interceptors
 
 import android.content.Context
+import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.ANDROID_NETWORKING_FILE_NAME
 import com.skgtecnologia.sisem.commons.resources.StorageProvider
 import com.skgtecnologia.sisem.data.remote.extensions.isUnauthorized
@@ -8,6 +9,7 @@ import com.skgtecnologia.sisem.data.remote.extensions.signWithToken
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
+import com.skgtecnologia.sisem.domain.model.banner.BannerModel
 import com.valkiria.uicomponents.utlis.TimeUtils
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -27,13 +29,19 @@ class AccessTokenAuthenticator @Inject constructor(
     private val storageProvider: StorageProvider
 ) : Authenticator {
 
-    private var retryCount = 0
+    private fun responseCount(response: Response): Int {
+        var count = 1
+        var prior = response.priorResponse
+        while (prior != null) {
+            count++
+            prior = prior.priorResponse
+        }
+        return count
+    }
 
     @Suppress("ComplexMethod")
     override fun authenticate(route: Route?, response: Response): Request? {
-        return if (response.isUnauthorized() && retryCount < MAX_ATTEMPTS) {
-            retryCount++
-
+        return if (response.isUnauthorized() && responseCount(response) <= MAX_ATTEMPTS) {
             val url = response.request.url
 
             val token = runBlocking {
@@ -96,21 +104,49 @@ class AccessTokenAuthenticator @Inject constructor(
                 response.createSignedRequest(token)
             }
         } else {
-            retryCount = 0
             null
         }
     }
 
-    private fun Response.createSignedRequest(currentToken: AccessTokenModel): Request =
+    private fun Response.createSignedRequest(currentToken: AccessTokenModel): Request? =
         synchronized(this) {
-            val newToken = runBlocking {
+            val result = runBlocking {
                 runCatching {
                     authRepository.refreshToken(
                         currentToken = currentToken
                     )
-                }.getOrNull()
+                }
+            }
+            val newToken = result.getOrNull()
+
+            if (newToken == null) {
+                val throwable = result.exceptionOrNull()
+                val errorMessage = when {
+                    throwable is BannerModel -> "${throwable.title}: ${throwable.description}"
+                    throwable != null ->
+                        throwable.message ?: throwable::class.simpleName
+                        ?: "UnknownError"
+                    else -> "UnknownError"
+                }
+
+                storageProvider.storeContent(
+                    ANDROID_NETWORKING_FILE_NAME,
+                    Context.MODE_APPEND,
+                    (
+                        TimeUtils.getLocalDateTime(Instant.now()).toString() +
+                        "\t Refreshed Token failure: " + errorMessage +
+                        "\t using the refresh token: " + currentToken.refreshToken +
+                        "\n\n"
+                    ).toByteArray()
+                )
+
+                runBlocking {
+                    authRepository.deleteAccessTokenByUsername(currentToken.username)
+                }
+                UnauthorizedEventHandler.publishUnauthorizedEvent(currentToken.username)
+                return@synchronized null
             }
 
-            request.signWithToken(newToken?.accessToken.orEmpty())
+            request.signWithToken(newToken.accessToken)
         }
 }
