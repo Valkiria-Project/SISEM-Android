@@ -144,7 +144,6 @@ class AccessTokenInterceptor @Inject constructor(
                             ).toByteArray()
                         )
 
-                        authRepository.deleteAccessTokenByUsername(accessTokenModel.username)
                         UnauthorizedEventHandler.publishUnauthorizedEvent(accessTokenModel.username)
                     }
             }

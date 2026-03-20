@@ -123,16 +123,15 @@ class AccessTokenAuthenticatorTest {
     }
 
     @Test
-    fun `when 401 and refresh fails, deletes token, publishes unauthorized event, returns null`() = runTest {
+    fun `when 401 and refresh fails, publishes unauthorized event and returns null without deleting token`() = runTest {
         val response = build401Response(totalAttemptCount = 1)
         coEvery { authRepository.observeCurrentAccessToken() } returns flowOf(expiredToken)
         coEvery { authRepository.refreshToken(expiredToken) } throws RuntimeException("refresh failed")
-        coEvery { authRepository.deleteAccessTokenByUsername("testuser") } just runs
 
         val result = authenticator.authenticate(null, response)
 
         assertNull(result)
-        coVerify(exactly = 1) { authRepository.deleteAccessTokenByUsername("testuser") }
+        coVerify(exactly = 0) { authRepository.deleteAccessTokenByUsername(any()) }
         verify(exactly = 1) { UnauthorizedEventHandler.publishUnauthorizedEvent("testuser") }
     }
 
