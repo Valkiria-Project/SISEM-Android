@@ -21,7 +21,10 @@
       "WebSearch",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:mvnrepository.com)",
-      "Bash(claude --version)"
+      "Bash(claude --version)",
+      "Bash(PRE_COMMIT_ALLOW_NO_CONFIG=1 git add app/build.gradle.kts)",
+      "Bash(PRE_COMMIT_ALLOW_NO_CONFIG=1 git commit -m \"$\\(cat <<''EOF'':*)",
+      "Bash(PRE_COMMIT_ALLOW_NO_CONFIG=1 git commit -m \"$\\(cat <<'EOF'\nfix: preserve turn state on token refresh failure to avoid re-requesting preoperacionales\n\nRemove deleteAccessTokenByUsername calls from AccessTokenAuthenticator and\nAccessTokenInterceptor when token refresh fails. The deletion was erasing\nturn and preoperational data from Room, causing authenticate\\(\\) to treat\nre-authentication as a new shift and re-request preoperacionales.\n\nBump version to 2.3.7 \\(80\\).\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")"
     ]
   },
   "disabledMcpjsonServers": [
