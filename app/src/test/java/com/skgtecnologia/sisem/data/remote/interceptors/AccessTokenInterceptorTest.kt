@@ -128,7 +128,7 @@ class AccessTokenInterceptorTest {
     }
 
     @Test
-    fun `when token expired and refresh fails with generic exception, publishes event without deleting token`() = runTest {
+    fun `when token expired and refresh fails with exception, publishes event without deleting`() = runTest {
         coEvery { authRepository.getAllAccessTokens() } returns listOf(expiredToken)
         coEvery { authRepository.refreshToken(expiredToken) } throws RuntimeException("network error")
         coEvery { authRepository.getLastToken() } returns expiredToken.accessToken
