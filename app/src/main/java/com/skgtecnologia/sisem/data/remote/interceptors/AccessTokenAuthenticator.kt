@@ -140,9 +140,6 @@ class AccessTokenAuthenticator @Inject constructor(
                     ).toByteArray()
                 )
 
-                runBlocking {
-                    authRepository.deleteAccessTokenByUsername(currentToken.username)
-                }
                 UnauthorizedEventHandler.publishUnauthorizedEvent(currentToken.username)
                 return@synchronized null
             }
