@@ -330,6 +330,13 @@ class MedicalHistoryViewModel @Inject constructor(
                         )
                     }
 
+                    if (chipSelectionValues.containsKey(GENDER_IDENTIFIER)) {
+                        updatedBody = updateGynae(
+                            chipSelectionValues[GENDER_IDENTIFIER]?.id.orEmpty(),
+                            updatedBody
+                        )
+                    }
+
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
                             isLoading = false,
@@ -596,12 +603,12 @@ class MedicalHistoryViewModel @Inject constructor(
         uiModels: List<BodyRowModel>? = uiState.screenModel?.body,
         age: String? = null
     ): List<BodyRowModel> {
-        val ageTypeField = uiState.screenModel?.body
+        val ageTypeField = uiModels
             ?.firstOrNull { it.identifier == AGE_TYPE_IDENTIFIER } as ChipSelectionUiModel
         val ageType = ageTypeField.selected
 
         val ageFieldValue = if (age.isNullOrEmpty()) {
-            val ageField = uiState.screenModel?.body
+            val ageField = uiModels
                 ?.firstOrNull { it.identifier == AGE_IDENTIFIER } as TextFieldUiModel
             ageField.text
         } else {
