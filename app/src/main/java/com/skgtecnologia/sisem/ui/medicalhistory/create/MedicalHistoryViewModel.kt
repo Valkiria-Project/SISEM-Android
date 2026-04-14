@@ -619,7 +619,7 @@ class MedicalHistoryViewModel @Inject constructor(
 
         val isFemale = gender == FEMALE_GENDER_ID || gender == FEMALE_GENDER
         val showGynae =
-            isFemale && ageFieldValue.toInt() in GYNAE_AGE_LOWER_LIMIT..GYNAE_AGE_UPPER_LIMIT
+            isFemale && (ageFieldValue.toIntOrNull() ?: 0) in GYNAE_AGE_LOWER_LIMIT..GYNAE_AGE_UPPER_LIMIT
 
        return buildList {
            val updateBodyModel = updateBodyModel(
