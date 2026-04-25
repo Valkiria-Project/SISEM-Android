@@ -1,9 +1,35 @@
 <resources>
+    <string name="mapbox_access_token">sk.eyJ1Ijoic2lzZW0iLCJhIjoiY2xwa2l5bmxmMDB0NDJrankxeG4yZWowMSJ9.o6RJNwx7MDzeUDturbT1LA</string>
+
+    <string name="default_notification_channel_id">notifications</string>
+
+    <!-- Location tracking -->
+    <string name="location_tracking_title">Seguimiento de ubicación activado</string>
+    <string name="location_tracking_content">…</string>
+    <string name="location_tracking_content_update">%1$s, %2$s</string>
+
+    <!-- CTA's -->
+    <string name="cancel_cta">CANCELAR</string>
+    <string name="erase_cta">BORRAR</string>
+    <string name="save_cta">GUARDAR</string>
+    <string name="continue_cta">CONTINUAR</string>
+
+    <!-- Icons -->
+    <string name="alert_icon">ic_alert</string>
+    <string name="back_icon">ic_back</string>
+
     <!-- Error dialog -->
-    <string name="error_connectivity_title">Revise su conexión a Internet</string>
-    <string name="error_forbidden_title">Autorización denegada</string>
+    <string name="error_connectivity_title">Conectividad</string>
+    <string name="error_connectivity_description">Revise su conexión a Internet</string>
+    <string name="error_unauthorized_title">Autenticación</string>
+    <string name="error_unauthorized_description">Se requiere re-autenticación</string>
+    <string name="error_unauthorized_cta">Re Autenticar</string>
     <string name="error_general_title">Ha ocurrido un error</string>
-    <string name="error_server_title">Error en servidor</string>
+    <string name="error_general_description">Intenta más tarde</string>
+    <string name="error_server_title">Servicio no disponible</string>
+    <string name="error_server_description">Sucedió algo inesperado, por favor intenta de nuevo</string>
+    <string name="error_device_config_title">Error de configuración</string>
+    <string name="error_device_config_description">El dispositivo no está registrado en el sistema. Por favor, contacte al administrador.</string>
 
     <!-- Field validations -->
     <string name="field_empty_validation_message">El campo no debe estar vacío</string>
@@ -112,20 +138,14 @@
     <!-- Finding form dialog -->
     <string name="finding_input_label">Respuesta al hallazgo</string>
     <string name="finding_input_hint">Escribe tu comentario…</string>
-    <string name="finding_input_save_cta">Guardar</string>
 
     <!-- Findings screen -->
     <string name="findings_title">Registrar hallazgo</string>
     <string name="findings_subtitle">Registre los hallazgos encontrados durante el preoperacional.</string>
-    <string name="findings_left_icon">ic_back</string>
-    <string name="findings_input_label">Descripción</string>
+    <string name="findings_topic_label">Asunto</string>
+    <string name="findings_description_label">Descripción</string>
     <string name="findings_add_files_label">Adjuntar archivos</string>
-    <string name="findings_take_picture_label">Cámara</string>
-    <string name="findings_select_pictures">Imagen</string>
-
-    <!-- Add Report Screen -->
-    <string name="record_news_topic_label">Asunto</string>
-    <string name="record_news_description_label">Descripción</string>
+    <string name="findings_selected_files_label">Imágenes seleccionadas: %1$s</string>
 
     <!-- Camera screen -->
     <string name="camera_take_picture">Tomar foto</string>
@@ -133,7 +153,6 @@
     <!-- Images confirmation screen -->
     <string name="images_confirmation_title">Fotos seleccionadas</string>
     <string name="images_confirmation_subtitle">Visualice las imágenes seleccionadas previamente, en caso de querer eliminarlas.</string>
-    <string name="images_confirmation_left_icon">ic_back</string>
     <string name="images_confirmation_delete_image_cta">Eliminar</string>
     <string name="images_confirmation_confirm_images_cta">Adjuntar</string>
 
@@ -153,8 +172,30 @@
     <string name="drawer_certifications">Certificados</string>
     <string name="drawer_novelties">Novedades</string>
     <string name="drawer_turn_shift">Entrega de turno</string>
-    <string name="drawer_pre_operational">Preoperacional</string>
+    <string name="drawer_pre_operational">Preoperacionales</string>
     <string name="drawer_hceud">HCEUD</string>
     <string name="drawer_device_auth">Asociar dispositivo al vehículo</string>
     <string name="drawer_signature_and_fingerprint">Registrar firma y huella</string>
+    <string name="drawer_stretcher_retention">Registra retención de camilla</string>
+
+    <!-- Wounds dialog -->
+    <string name="wounds_burn_description">¿Que tipo de quemadura presenta el paciente?</string>
+
+    <!-- SignaturePad screen -->
+    <string name="signature_pad_title">Firmar</string>
+    <string name="signature_pad_subtitle">Firma del responsable</string>
+
+    <!-- Medical history screen -->
+    <string name="medical_history_proc_auth_label">
+        Autorizo a la tripulación del vehículo de emergencias o ambulancia para realizar la evaluación, procedimiento y traslado del paciente %s.
+        Acepto que se me han explicado las razones del traslado y las posibles complicaciones que podrían ocurrir como consecuencia de la patología base o durante el traslado,
+        de tal manera que admito la realización de maniobras de reanimación o su finalización, de acuerdo con el criterio médico y a la patología del paciente.
+        He tenido la oportunidad de hacer todas las preguntas pertinentes para aclarar mis dudas y se me han respondido de manera clara y suficiente.
+    </string>
+
+    <!-- Send Email Screen -->
+    <string name="send_email_body">Asunto  Registro de atención Prehospitalaria</string>
+    <string name="send_email_from">De   notificacionessisem@saludcapital.gov.co</string>
+    <string name="send_email_content">Contenido</string>
+    <string name="send_email_content_pdf">RegistroAPH.pdf</string>
 </resources>

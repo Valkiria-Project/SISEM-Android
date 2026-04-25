@@ -2,6 +2,8 @@ package com.skgtecnologia.sisem.di
 
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProviderImpl
+import com.skgtecnologia.sisem.commons.resources.StorageProvider
+import com.skgtecnologia.sisem.commons.resources.StorageProviderImpl
 import com.skgtecnologia.sisem.commons.resources.StringProvider
 import com.skgtecnologia.sisem.commons.resources.StringProviderImpl
 import dagger.Binds
@@ -22,4 +24,9 @@ abstract class ProviderModule {
     internal abstract fun bindsStringProvider(
         stringProviderImpl: StringProviderImpl
     ): StringProvider
+
+    @Binds
+    internal abstract fun bindsStorageProvider(
+        storageProviderImpl: StorageProviderImpl
+    ): StorageProvider
 }

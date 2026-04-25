@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,8 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -27,30 +28,35 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.authcards.model.VehicleConfigModel
-import com.valkiria.uicomponents.model.props.TextStyle.BUTTON_1
-import com.valkiria.uicomponents.model.props.TextStyle.HEADLINE_5
-import com.valkiria.uicomponents.model.props.toTextStyle
+import com.valkiria.uicomponents.components.label.TextStyle.BUTTON_1
+import com.valkiria.uicomponents.components.label.TextStyle.HEADLINE_5
+import com.valkiria.uicomponents.components.label.toTextStyle
 
 @Suppress("LongMethod")
 @Composable
 fun MenuHeaderComponent(
     modifier: Modifier,
-    vehicleConfig: VehicleConfigModel?, // FIXME: nullable ?
+    vehicleConfig: VehicleConfigModel?,
     menuItemsPersonal: List<CrewMemberMenuItemModel>,
     onLogout: (CrewMemberMenuItemModel) -> Unit
 ) {
-    val color = vehicleConfig?.statusColor ?: "#FFFFFF"
+    val color = runCatching {
+        Color(parseColor(vehicleConfig?.statusColor))
+    }.fold(
+        onSuccess = { it },
+        onFailure = { Color(parseColor("#FFFFFF")) }
+    )
 
     Column(modifier = modifier) {
         Row {
             Icon(
-                painter = painterResource(id = R.drawable.ic_ambulance_box),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_ambulance_box),
                 contentDescription = null,
                 modifier = Modifier
                     .padding(start = 33.dp, top = 30.dp, bottom = 10.dp)
                     .width(64.096.dp)
                     .height(54.342.dp),
-                tint = Color(parseColor(color))
+                tint = color
             )
             Column {
                 Text(
@@ -61,10 +67,10 @@ fun MenuHeaderComponent(
                         fontFamily = FontFamily.Default,
                         fontSize = 24.sp,
                         fontStyle = FontStyle.Normal,
-                        fontWeight = FontWeight.W700,
+                        fontWeight = FontWeight.Bold,
                         lineHeight = 28.sp,
                         letterSpacing = (2).sp,
-                        color = Color(parseColor(color))
+                        color = color
                     )
                 )
                 Text(
@@ -73,7 +79,7 @@ fun MenuHeaderComponent(
                         start = 20.dp
                     ),
                     style = HEADLINE_5.toTextStyle(),
-                    color = Color(parseColor(color))
+                    color = color
                 )
             }
         }
@@ -85,7 +91,7 @@ fun MenuHeaderComponent(
         ) {
             val (subRedText, functionalUnitText, baseText) = createRefs()
             Text(
-                text = LocalContext.current.getString(
+                text = stringResource(
                     R.string.drawer_header_zone,
                     vehicleConfig?.zone.orEmpty()
                 ),
@@ -96,7 +102,7 @@ fun MenuHeaderComponent(
                 style = BUTTON_1.toTextStyle()
             )
             Text(
-                text = LocalContext.current.getString(
+                text = stringResource(
                     R.string.drawer_header_provider,
                     vehicleConfig?.provider.orEmpty()
                 ),
@@ -107,7 +113,7 @@ fun MenuHeaderComponent(
                 style = BUTTON_1.toTextStyle()
             )
             Text(
-                text = LocalContext.current.getString(R.string.drawer_header_functional_unit),
+                text = stringResource(R.string.drawer_header_functional_unit),
                 modifier = Modifier
                     .constrainAs(baseText) {
                         end.linkTo(parent.end)
@@ -117,7 +123,7 @@ fun MenuHeaderComponent(
             )
         }
 
-        Divider(
+        HorizontalDivider(
             modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 20.dp),
             color = MaterialTheme.colorScheme.primary
         )
@@ -137,7 +143,7 @@ fun MenuHeaderComponent(
             }
         }
 
-        Divider(
+        HorizontalDivider(
             modifier = Modifier.padding(start = 33.dp, end = 33.dp, top = 15.dp),
             color = MaterialTheme.colorScheme.primary
         )

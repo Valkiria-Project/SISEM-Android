@@ -1,46 +1,43 @@
 package com.skgtecnologia.sisem.ui.menu
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.skgtecnologia.sisem.ui.menu.header.toCrewMemberItemModel
 import com.skgtecnologia.sisem.ui.menu.items.getDrawerMenuItemList
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
-import com.valkiria.uicomponents.components.banner.OnErrorHandler
-import com.valkiria.uicomponents.components.loader.LoaderComponent
-import kotlinx.coroutines.CoroutineScope
+import com.skgtecnologia.sisem.ui.navigation.NavRoute
+import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
+import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 
+@Suppress("LongMethod", "LongParameterList")
 @Composable
 fun MenuDrawer(
-    onClick: (MainNavigationRoute) -> Unit,
-    onLogout: () -> Unit
+    viewModel: MenuViewModel = hiltViewModel(),
+    drawerState: DrawerState,
+    onClick: (NavRoute) -> Unit,
+    onLogout: () -> Unit,
+    content: @Composable () -> Unit
 ) {
-    val viewModel = hiltViewModel<MenuViewModel>()
-    val coroutineScope: CoroutineScope = rememberCoroutineScope()
-    val drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-
-    val uiState = viewModel.uiState
-
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val operationConfig by viewModel.operationConfig.collectAsStateWithLifecycle()
     val crewMenuItems = uiState.accessTokenModelList?.let { list ->
         list.map { accessTokenModel ->
             accessTokenModel.toCrewMemberItemModel()
         }
     } ?: emptyList()
 
-    val isAdmin = uiState.accessTokenModelList?.first()?.isAdmin
+    val isAdmin by remember { derivedStateOf { uiState.accessTokenModelList?.first()?.isAdmin } }
 
     LaunchedEffect(uiState) {
         launch {
@@ -51,47 +48,41 @@ fun MenuDrawer(
     }
 
     ModalNavigationDrawer(
-        drawerState = drawerState,
         drawerContent = {
             DrawerContent(
                 drawerState = drawerState,
-                vehicleConfig = uiState.vehicleConfig,
+                vehicleConfig = operationConfig?.vehicleConfig,
                 crewMenuItems = crewMenuItems,
                 menuItems = getDrawerMenuItemList(LocalContext.current, isAdmin),
-                onMenuItemClick = { onClick(it) },
-                onLogout = { viewModel.logout(it.username) }
-            )
-        }
-    ) {
-        IconButton(
-            onClick = {
-                coroutineScope.launch {
-                    drawerState.open()
+                onMenuItemClick = onClick,
+                onLogout = {
+                    if (isAdmin == true) {
+                        viewModel.logoutAdmin(it.username)
+                    } else {
+                        viewModel.logout(it.username)
+                    }
                 }
-            }
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Menu,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
             )
-        }
+        },
+        drawerState = drawerState,
+        gesturesEnabled = drawerState.isOpen
+    ) {
+        content()
     }
 
-    OnErrorHandler(uiModel = uiState.errorModel) {
-        viewModel.handleShownError()
+    OnBannerHandler(uiModel = uiState.errorModel) {
+        viewModel.handleEvent(it)
     }
 
-    if (uiState.isLoading) {
-        LoaderComponent()
-    }
+    OnLoadingHandler(uiState.isLoading)
 }
 
 @Preview
 @Composable
 fun MenuDrawerPreview() {
     MenuDrawer(
+        drawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
         onClick = {},
         onLogout = {}
-    )
+    ) {}
 }

@@ -12,10 +12,11 @@ class SendReport @Inject constructor(
 
     @CheckResult
     suspend operator fun invoke(
+        roleName: String?,
         topic: String,
         description: String,
         images: List<ImageModel>
     ): Result<Unit> = resultOf {
-        reportRepository.sendReport(topic, description, images)
+        reportRepository.sendReport(roleName, topic, description, images)
     }
 }

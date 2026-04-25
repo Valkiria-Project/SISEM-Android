@@ -5,16 +5,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.model.toLegalContentModel
-import com.skgtecnologia.sisem.ui.bottomsheet.LegalContent
-import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
+import com.skgtecnologia.sisem.ui.login.legal.LegalContent
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.valkiria.uicomponents.action.LoginUiAction
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
@@ -23,21 +24,20 @@ import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
 import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.bottomsheet.BottomSheetComponent
-import com.valkiria.uicomponents.components.banner.OnErrorHandler
-import com.valkiria.uicomponents.components.loader.OnLoadingHandler
+import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
+import com.valkiria.uicomponents.bricks.bottomsheet.BottomSheetView
+import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @Suppress("LongMethod")
+@androidx.compose.material3.ExperimentalMaterial3Api
 @Composable
 fun LoginScreen(
-    isTablet: Boolean,
     modifier: Modifier = Modifier,
-    onNavigation: (loginNavigationModel: NavigationModel?) -> Unit
+    viewModel: LoginViewModel = hiltViewModel(),
+    onNavigation: (loginNavigationModel: LoginNavigationModel) -> Unit
 ) {
-    val viewModel = hiltViewModel<LoginViewModel>()
-    val uiState = viewModel.uiState
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
@@ -45,9 +45,9 @@ fun LoginScreen(
     LaunchedEffect(uiState) {
         launch {
             when {
-                uiState.navigationModel != null -> {
-                    viewModel.onNavigationHandled()
-                    onNavigation(uiState.navigationModel)
+                uiState.navigationModel != null && uiState.warning == null -> {
+                    viewModel.consumeNavigationEvent()
+                    onNavigation(checkNotNull(uiState.navigationModel))
                 }
             }
         }
@@ -64,7 +64,6 @@ fun LoginScreen(
 
         BodySection(
             body = uiState.screenModel?.body,
-            isTablet = isTablet,
             modifier = modifier
                 .constrainAs(body) {
                     top.linkTo(header.bottom)
@@ -81,23 +80,23 @@ fun LoginScreen(
     uiState.onLoginLink?.let { link ->
         scope.launch { sheetState.show() }
 
-        BottomSheetComponent(
+        BottomSheetView(
             content = { LegalContent(uiModel = link.toLegalContentModel()) },
             sheetState = sheetState,
             scope = scope
         ) {
-            viewModel.handleShownLoginLink()
+            viewModel.consumeLoginLinkEvent()
         }
     }
 
-    OnErrorHandler(uiState.warning) {
-        viewModel.onNavigationHandled()
-        viewModel.handleShownWarning()
-        onNavigation(uiState.navigationModel)
+    OnBannerHandler(uiState.warning) {
+        viewModel.consumeNavigationEvent()
+        viewModel.consumeWarningEvent()
+        uiState.navigationModel?.let { navigationModel -> onNavigation(navigationModel) }
     }
 
-    OnErrorHandler(uiState.errorModel) {
-        viewModel.handleShownError()
+    OnBannerHandler(uiState.errorModel) {
+        viewModel.consumeErrorEvent()
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)
@@ -109,10 +108,7 @@ private fun handleAction(
 ) {
     (uiAction as? LoginUiAction)?.let {
         when (uiAction) {
-            ForgotPassword -> {
-                // FIXME: Navigate to ForgotPasswordScreen
-                Timber.d("ForgotPasswordButton clicked")
-            }
+            ForgotPassword -> viewModel.forgotPassword()
 
             Login -> viewModel.login()
 

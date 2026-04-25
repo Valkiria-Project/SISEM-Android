@@ -1,5 +1,10 @@
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.detekt)
     alias(libs.plugins.ktlint)
@@ -8,16 +13,19 @@ plugins {
 
 android {
     namespace = "com.valkiria.uicomponents"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
-        minSdk = 31
+        minSdk = 30
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
     buildTypes {
         create("staging") {
+            initWith(getByName("debug"))
+        }
+        create("preProd") {
             initWith(getByName("debug"))
         }
         release {
@@ -27,22 +35,32 @@ android {
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
+        viewBinding = true
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-        freeCompilerArgs += listOf(
+}
+
+tasks.withType<KotlinCompile>().configureEach {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
+        freeCompilerArgs.addAll(
             "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
-            "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi"
+            "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
         )
     }
+}
+
+composeCompiler {
+    featureFlags.addAll(
+        ComposeFeatureFlag.OptimizeNonSkippingGroups,
+        ComposeFeatureFlag.StrongSkipping
+    )
+
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
 }
 
 dependencies {
@@ -50,6 +68,7 @@ dependencies {
     // Android
     implementation(libs.activity.compose)
     implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.material)
 
     // Compose
@@ -59,6 +78,7 @@ dependencies {
     implementation(libs.ui.text.google.fonts)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
+    implementation(libs.material.icons.extended)
 
     // Logging
     implementation(libs.timber)
@@ -67,9 +87,7 @@ dependencies {
     implementation(libs.accompanist.placeholder.material)
     implementation(libs.coil.compose)
     implementation(libs.compose.html)
-
-    // Maps
-    implementation(libs.mapbox.android)
+    implementation(libs.compressor)
 
     // Unit Testing
     testImplementation(libs.junit)

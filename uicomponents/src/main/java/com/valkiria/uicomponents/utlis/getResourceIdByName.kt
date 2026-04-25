@@ -1,3 +1,4 @@
+@file:Suppress("ktlint:standard:filename")
 package com.valkiria.uicomponents.utlis
 
 import android.content.Context

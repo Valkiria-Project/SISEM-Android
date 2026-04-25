@@ -2,6 +2,7 @@ package com.valkiria.uicomponents.components.segmentedswitch
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -23,19 +24,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.valkiria.uicomponents.model.mocks.getDeviceAuthSegmentedSwitchUiModel
-import com.valkiria.uicomponents.model.props.toTextStyle
-import com.valkiria.uicomponents.model.ui.segmentedswitch.SegmentedSwitchUiModel
+import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.label.toTextStyle
+import com.valkiria.uicomponents.mocks.getDeviceAuthSegmentedSwitchUiModel
 
 @Suppress("LongMethod", "MagicNumber", "UnusedPrivateMember")
 @Composable
 fun SegmentedSwitchComponent(
     uiModel: SegmentedSwitchUiModel,
-    isTablet: Boolean = false,
-    onAction: (id: String, status: Boolean) -> Unit
+    onAction: (id: String, status: Boolean, viewsVisibility: Map<String, Boolean>) -> Unit
 ) {
     val items = uiModel.options.map { it.text }
-    var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
+    var selectedIndex by rememberSaveable(uiModel.selected) {
+        mutableIntStateOf(if (uiModel.selected) 0 else 1)
+    }
 
     Row(
         modifier = uiModel.modifier.fillMaxWidth(),
@@ -48,11 +50,7 @@ fun SegmentedSwitchComponent(
             modifier = Modifier
                 .fillMaxWidth(0.35f)
                 .padding(end = 8.dp),
-            color = if (selectedIndex == 0) {
-                Color.White
-            } else {
-                MaterialTheme.colorScheme.error
-            }
+            color = Color.White
         )
 
         Row(
@@ -65,7 +63,7 @@ fun SegmentedSwitchComponent(
                             Modifier
                                 .wrapContentSize()
                                 .offset(0.dp, 0.dp)
-                                .zIndex(if (selectedIndex == index) 1f else 0f)
+                                .zIndex(if (selectedIndex == 0) 1f else 0f)
                         }
 
                         else -> {
@@ -77,7 +75,13 @@ fun SegmentedSwitchComponent(
                     },
                     onClick = {
                         selectedIndex = index
-                        onAction(uiModel.identifier, index == 0)
+
+                        val viewsVisibility = mutableMapOf<String, Boolean>()
+                        uiModel.selectionVisibility?.forEach {
+                            viewsVisibility[it.key] = index == 0
+                        }
+
+                        onAction(uiModel.identifier, index == 0, viewsVisibility)
                     },
                     shape = when (index) {
                         /**
@@ -119,6 +123,7 @@ fun SegmentedSwitchComponent(
                     } else {
                         ButtonDefaults.outlinedButtonColors(containerColor = Color.DarkGray)
                     },
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
                 ) {
                     Text(
                         text = item,
@@ -127,7 +132,8 @@ fun SegmentedSwitchComponent(
                         } else {
                             Color.White
                         },
-                        maxLines = 1
+                        maxLines = 1,
+                        style = TextStyle.BUTTON_2.toTextStyle()
                     )
                 }
             }
@@ -140,6 +146,6 @@ fun SegmentedSwitchComponent(
 fun SegmentedSwitchComponentPreview() {
     SegmentedSwitchComponent(
         uiModel = getDeviceAuthSegmentedSwitchUiModel(),
-        onAction = { _, _ -> }
+        onAction = { _, _, _ -> }
     )
 }

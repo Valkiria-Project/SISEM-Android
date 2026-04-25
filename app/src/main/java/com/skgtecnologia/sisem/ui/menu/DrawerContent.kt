@@ -1,7 +1,8 @@
 package com.skgtecnologia.sisem.ui.menu
 
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.runtime.Composable
@@ -15,7 +16,7 @@ import com.skgtecnologia.sisem.ui.menu.header.CrewMemberMenuItemModel
 import com.skgtecnologia.sisem.ui.menu.header.MenuHeaderComponent
 import com.skgtecnologia.sisem.ui.menu.items.DrawerMenuItemModel
 import com.skgtecnologia.sisem.ui.menu.items.MenuItemsComponent
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
+import com.skgtecnologia.sisem.ui.navigation.NavRoute
 
 @Suppress("LongParameterList")
 @Composable
@@ -24,12 +25,14 @@ fun DrawerContent(
     vehicleConfig: VehicleConfigModel?,
     crewMenuItems: List<CrewMemberMenuItemModel>,
     menuItems: List<DrawerMenuItemModel>,
-    onMenuItemClick: (MainNavigationRoute) -> Unit,
+    onMenuItemClick: (NavRoute) -> Unit,
     onLogout: (CrewMemberMenuItemModel) -> Unit
 ) {
     ModalDrawerSheet {
         ConstraintLayout(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(306.dp)
         ) {
             val (personalComponent, itemsComponent, bottomComponent) = createRefs()
 

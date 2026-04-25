@@ -23,18 +23,28 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.valkiria.uicomponents.R
+import com.valkiria.uicomponents.bricks.banner.report.ReportDetailUiModel
+import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel
+import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import com.valkiria.uicomponents.bricks.chip.SuggestionChipView
-import com.valkiria.uicomponents.model.props.toTextStyle
-import com.valkiria.uicomponents.model.ui.card.InfoCardUiModel
-import com.valkiria.uicomponents.model.ui.chip.ChipSectionUiModel
-import com.valkiria.uicomponents.model.ui.report.ReportsDetailUiModel
+import com.valkiria.uicomponents.components.header.HeaderUiModel
+import com.valkiria.uicomponents.components.label.ListPatientUiModel
+import com.valkiria.uicomponents.components.label.ListTextUiModel
+import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.label.TextUiModel
+import com.valkiria.uicomponents.components.label.toTextStyle
+import com.valkiria.uicomponents.extensions.shadow
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 
@@ -44,10 +54,7 @@ private const val MAX_FINDINGS = 3
 @Composable
 fun InfoCardComponent(
     uiModel: InfoCardUiModel,
-    isTablet: Boolean = false,
-    onAction: () -> Unit,
-    onNewsAction: (reportDetail: ReportsDetailUiModel) -> Unit,
-    onFindingsAction: (chipSection: ChipSectionUiModel) -> Unit
+    onAction: (cardUiModel: CardUiModel) -> Unit
 ) {
     val iconResourceId = LocalContext.current.getResourceIdByName(
         uiModel.icon, DefType.DRAWABLE
@@ -64,119 +71,256 @@ fun InfoCardComponent(
         modifier = uiModel.modifier
             .fillMaxWidth()
             .shadow(
-                elevation = 25.dp,
-                ambientColor = Color.Black,
-                spotColor = Color.Black
+                borderRadius = 20.dp,
+                offsetX = 15.dp,
+                offsetY = 15.dp,
+                spread = 10.dp,
+                blurRadius = 10.dp,
             ),
         shape = RoundedCornerShape(20.dp),
     ) {
         Box(
             modifier = Modifier
-                .clickable { onAction() }
+                .clickable {
+                    onAction(
+                        CardUiModel(
+                            identifier = uiModel.identifier,
+                            isClickCard = true
+                        )
+                    )
+                }
                 .background(brush = brush)
                 .fillMaxWidth()
         ) {
             Column(
                 modifier = Modifier.padding(horizontal = 32.dp, vertical = 24.dp)
             ) {
-                Row(verticalAlignment = Alignment.Bottom) {
+                ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
+                    val (icon, text, badged) = createRefs()
+
                     iconResourceId?.let {
                         Icon(
-                            painter = painterResource(id = iconResourceId),
+                            imageVector = ImageVector.vectorResource(id = iconResourceId),
                             contentDescription = "",
                             modifier = Modifier
-                                .size(40.dp)
-                                .align(Alignment.CenterVertically),
+                                .constrainAs(icon) {
+                                    start.linkTo(parent.start)
+                                    top.linkTo(parent.top)
+                                    bottom.linkTo(parent.bottom)
+                                }
+                                .size(40.dp),
                             tint = MaterialTheme.colorScheme.primary,
                         )
                     }
 
-                    Column(modifier = Modifier.padding(start = 12.dp, end = 8.dp)) {
+                    Column(
+                        modifier = Modifier
+                            .constrainAs(text) {
+                                start.linkTo(icon.end)
+                                top.linkTo(parent.top)
+                                bottom.linkTo(parent.bottom)
+                                if (uiModel.reportsDetail != null) {
+                                    end.linkTo(badged.start)
+                                } else {
+                                    end.linkTo(parent.end)
+                                }
+                                width = Dimension.fillToConstraints
+                            }
+                            .padding(start = 12.dp)
+                    ) {
                         Text(
-                            text = uiModel.titleText,
-                            style = uiModel.titleTextStyle.toTextStyle(),
+                            text = uiModel.title.text,
+                            style = uiModel.title.textStyle.toTextStyle(),
                         )
 
-                        Text(
-                            modifier = Modifier
-                                .padding(top = 5.dp)
-                                .background(
-                                    color = Color(parseColor(uiModel.pillColor)),
-                                    shape = RoundedCornerShape(25.dp)
+                        uiModel.pill?.let {
+                            val leftIcon = LocalContext.current.getResourceIdByName(
+                                it.leftIcon.orEmpty(), DefType.DRAWABLE
+                            )
+
+                            Row(
+                                modifier = Modifier
+                                    .clickable {
+                                        onAction(
+                                            CardUiModel(
+                                                identifier = uiModel.identifier,
+                                                isPill = true
+                                            )
+                                        )
+                                    }
+                                    .padding(top = 5.dp)
+                                    .background(
+                                        color = Color(parseColor(it.color)),
+                                        shape = RoundedCornerShape(25.dp)
+                                    )
+                                    .padding(horizontal = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                leftIcon?.let {
+                                    Icon(
+                                        imageVector = ImageVector.vectorResource(id = leftIcon),
+                                        contentDescription = "",
+                                        modifier = Modifier
+                                            .padding(end = 8.dp)
+                                            .size(20.dp),
+                                        tint = Color.Black,
+                                    )
+                                }
+
+                                Text(
+                                    text = it.title.text,
+                                    style = it.title.textStyle.toTextStyle(),
+                                    color = Color.Black,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
-                                .padding(horizontal = 8.dp),
-                            text = uiModel.pillText,
-                            style = uiModel.pillTextStyle.toTextStyle(),
-                            color = Color.Black
-                        )
+                            }
+                        }
                     }
 
                     uiModel.reportsDetail?.let {
                         BadgedBoxView(
+                            modifier = Modifier
+                                .constrainAs(badged) {
+                                    end.linkTo(parent.end)
+                                    top.linkTo(parent.top)
+                                    bottom.linkTo(parent.bottom)
+                                }
+                                .padding(start = 12.dp),
                             count = it.details.size,
                             reportDetail = it,
-                            onAction = onNewsAction
+                            onAction = onAction
                         )
                     }
                 }
 
-                Row(
-                    modifier = Modifier.padding(top = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(end = 8.dp),
-                        painter = painterResource(id = R.drawable.ic_calendar),
-                        contentDescription = "",
-                        tint = MaterialTheme.colorScheme.primary,
-                    )
+                uiModel.date?.textStyle?.let {
+                    Row(
+                        modifier = Modifier.padding(top = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(end = 8.dp),
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_calendar),
+                            contentDescription = "",
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
 
-                    Text(
-                        text = uiModel.dateText?.split(" - ")?.firstOrNull().orEmpty(),
-                        style = uiModel.dateTextStyle.toTextStyle(),
-                        modifier = Modifier.padding(end = 12.dp),
-                    )
+                        Text(
+                            text = uiModel.date.text,
+                            style = uiModel.date.textStyle.toTextStyle(),
+                            modifier = Modifier.padding(end = 12.dp),
+                        )
 
-                    Icon(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(end = 8.dp),
-                        painter = painterResource(id = R.drawable.ic_clock),
-                        contentDescription = "",
-                        tint = MaterialTheme.colorScheme.primary,
-                    )
+                        Icon(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(end = 8.dp),
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_clock),
+                            contentDescription = "",
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
 
-                    Text(
-                        text = uiModel.dateText?.split(" - ")?.lastOrNull().orEmpty(),
-                        style = uiModel.dateTextStyle.toTextStyle(),
-                    )
+                        Text(
+                            text = uiModel.time?.text.orEmpty(),
+                            style = uiModel.time?.textStyle.toTextStyle(),
+                        )
+                    }
                 }
 
                 uiModel.chipSection?.let {
                     Text(
-                        text = it.title,
-                        style = it.titleTextStyle.toTextStyle(),
+                        text = it.title.text,
+                        style = it.title.textStyle.toTextStyle(),
                         modifier = Modifier.padding(top = 10.dp),
                     )
 
-                    FlowRow(
-                        modifier = Modifier
-                            .padding(top = 8.dp)
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(6.dp)
-                    ) {
-                        it.listText.forEachIndexed { index, text ->
-                            if (index < MAX_FINDINGS) {
-                                SuggestionChipView(text = text, textStyle = it.listTextStyle)
-                            } else {
-                                SuggestionChipView(
-                                    text = "...",
-                                    textStyle = it.listTextStyle,
-                                    onClick = { onFindingsAction(it) }
-                                )
-                                return@forEachIndexed
+                    if (it.listPatient != null) {
+                        Column {
+                            val icon = LocalContext.current.getResourceIdByName(
+                                it.listPatient.icon, DefType.DRAWABLE
+                            )
+
+                            it.listPatient.texts.forEach { text ->
+                                Row(
+                                    modifier = Modifier
+                                        .clickable {
+                                            onAction(
+                                                CardUiModel(
+                                                    identifier = uiModel.identifier,
+                                                    patientAph = text.component1()
+                                                )
+                                            )
+                                        }
+                                        .padding(top = 10.dp)
+                                        .background(
+                                            color = Color.DarkGray,
+                                            shape = RoundedCornerShape(25.dp)
+                                        )
+                                        .padding(horizontal = 8.dp),
+                                ) {
+                                    icon?.let {
+                                        Icon(
+                                            imageVector = ImageVector.vectorResource(id = icon),
+                                            contentDescription = "",
+                                            modifier = Modifier
+                                                .padding(end = 8.dp)
+                                                .size(20.dp),
+                                            tint = Color.White,
+                                        )
+                                    }
+
+                                    Text(
+                                        text = text.component2(),
+                                        style = it.listPatient.textStyle.toTextStyle(),
+                                        color = Color.White,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                }
+                            }
+                        }
+                    } else {
+                        FlowRow(
+                            modifier = Modifier
+                                .padding(top = 8.dp)
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            var count = 0
+
+                            it.listText?.texts?.forEachIndexed { index, text ->
+                                when {
+                                    uiModel.date?.textStyle == null ->
+                                        SuggestionChipView(
+                                            text = text,
+                                            textStyle = it.listText.textStyle
+                                        )
+
+                                    index < MAX_FINDINGS ->
+                                        SuggestionChipView(
+                                            text = text,
+                                            textStyle = it.listText.textStyle
+                                        )
+
+                                    count == 0 -> {
+                                        SuggestionChipView(
+                                            text = "...",
+                                            textStyle = it.listText.textStyle,
+                                        ) { _ ->
+                                            onAction(
+                                                CardUiModel(
+                                                    identifier = uiModel.identifier,
+                                                    chipSection = it
+                                                )
+                                            )
+                                        }
+
+                                        count++
+                                    }
+                                }
                             }
                         }
                     }
@@ -188,13 +332,14 @@ fun InfoCardComponent(
 
 @Composable
 fun BadgedBoxView(
+    modifier: Modifier = Modifier,
     count: Int,
     reportDetail: ReportsDetailUiModel,
-    onAction: (reportDetail: ReportsDetailUiModel) -> Unit
+    onAction: (cardUiModel: CardUiModel) -> Unit
 ) {
     BadgedBox(
-        modifier = Modifier
-            .clickable { onAction(reportDetail) }
+        modifier = modifier
+            .clickable { onAction(CardUiModel(reportDetail = reportDetail)) }
             .size(25.dp),
         badge = {
             Badge {
@@ -205,9 +350,155 @@ fun BadgedBoxView(
         Icon(
             modifier = Modifier
                 .fillMaxSize(),
-            painter = painterResource(id = R.drawable.ic_news),
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_news),
             contentDescription = "",
             tint = MaterialTheme.colorScheme.primary,
         )
     }
+}
+
+@Suppress("LongMethod")
+@Preview(showBackground = true)
+@Composable
+fun InfoCardComponentPreview() {
+    InfoCardComponent(
+        uiModel = InfoCardUiModel(
+            identifier = "identifier",
+            icon = "ic_aux",
+            title = TextUiModel(
+                text = "Title",
+                textStyle = TextStyle.HEADLINE_4
+            ),
+            pill = PillUiModel(
+                title = TextUiModel(
+                    text = "Anterior: RODOLFO EDINSON BARRIOS GOMEZ",
+                    textStyle = TextStyle.HEADLINE_7
+                ),
+                color = "#FF0000",
+                leftIcon = "ic_aux"
+            ),
+            date = TextUiModel(
+                text = "09/05/2024",
+                textStyle = TextStyle.HEADLINE_4
+            ),
+            time = TextUiModel(
+                text = "13:39:13",
+                textStyle = TextStyle.HEADLINE_4
+            ),
+            chipSection = ChipSectionUiModel(
+                title = TextUiModel(
+                    text = "ChipSection",
+                    textStyle = TextStyle.HEADLINE_7
+                ),
+                listText = ListTextUiModel(
+                    listOf("Prueba1", "Prueba2"),
+                    textStyle = TextStyle.HEADLINE_7
+                ),
+                listPatient = ListPatientUiModel(
+                    texts = mapOf("1" to "Prueba1", "2" to "Prueba2"),
+                    icon = "ic_user_2",
+                    textStyle = TextStyle.HEADLINE_7
+                )
+            ),
+            reportsDetail = ReportsDetailUiModel(
+                header = HeaderUiModel(
+                    identifier = "identifier",
+                    title = TextUiModel(
+                        text = "Title",
+                        textStyle = TextStyle.HEADLINE_4
+                    ),
+                    arrangement = Arrangement.Center,
+                    modifier = Modifier
+                ),
+                details = listOf(
+                    ReportDetailUiModel(
+                        images = listOf("ic_aux"),
+                        title = TextUiModel(
+                            text = "Title",
+                            textStyle = TextStyle.HEADLINE_4
+                        ),
+                        subtitle = TextUiModel(
+                            text = "Subtitle",
+                            textStyle = TextStyle.HEADLINE_7
+                        ),
+                        description = TextUiModel(
+                            text = "Description",
+                            textStyle = TextStyle.HEADLINE_7
+                        ),
+                        modifier = Modifier
+                    )
+                )
+            ),
+            arrangement = Arrangement.Center,
+            modifier = Modifier
+        ),
+        onAction = {}
+    )
+}
+
+@Suppress("LongMethod")
+@Preview(showBackground = true)
+@Composable
+fun InfoCardComponentPreview2() {
+    InfoCardComponent(
+        uiModel = InfoCardUiModel(
+            identifier = "identifier",
+            icon = "ic_aux",
+            title = TextUiModel(
+                text = "Title",
+                textStyle = TextStyle.HEADLINE_4
+            ),
+            pill = null,
+            date = TextUiModel(
+                text = "09/05/2024",
+                textStyle = TextStyle.HEADLINE_4
+            ),
+            time = TextUiModel(
+                text = "13:39:13",
+                textStyle = TextStyle.HEADLINE_4
+            ),
+            chipSection = ChipSectionUiModel(
+                title = TextUiModel(
+                    text = "ChipSection",
+                    textStyle = TextStyle.HEADLINE_7
+                ),
+                listText = ListTextUiModel(
+                    listOf("Prueba1", "Prueba2"),
+                    textStyle = TextStyle.HEADLINE_7
+                )
+            ),
+            reportsDetail = ReportsDetailUiModel(
+                header = HeaderUiModel(
+                    identifier = "identifier",
+                    title = TextUiModel(
+                        text = "Title",
+                        textStyle = TextStyle.HEADLINE_4
+                    ),
+                    arrangement = Arrangement.Center,
+                    modifier = Modifier
+                ),
+                details = listOf(
+                    ReportDetailUiModel(
+                        images = listOf("ic_aux"),
+                        title = TextUiModel(
+                            text = "Title",
+                            textStyle = TextStyle.HEADLINE_4
+                        ),
+                        subtitle = TextUiModel(
+                            text = "Subtitle",
+                            textStyle = TextStyle.HEADLINE_7
+                        ),
+                        description = TextUiModel(
+                            text = "Description",
+                            textStyle = TextStyle.HEADLINE_7
+                        ),
+                        modifier = Modifier
+                    )
+                )
+            ),
+            arrangement = Arrangement.Center,
+            modifier = Modifier
+        ),
+        onAction = {}
+    )
 }

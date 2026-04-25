@@ -14,8 +14,12 @@ data class AccessTokenModel(
     val isAdmin: Boolean,
     val nameUser: String,
     val preoperational: PreOperationalModel?,
+    val configPreoperational: Boolean = false,
     val turn: TurnModel?,
     val warning: BannerModel? = null,
+    val isWarning: Boolean,
     val docType: String,
-    val document: String
+    val document: String,
+    val refreshDateTime: LocalDateTime,
+    val expDate: LocalDateTime
 )
