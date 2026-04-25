@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SISEM – Flujo de Envío de Ubicación</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    :root {
+      --bg: #181a1f;
+      --card: #1f2228;
+      --card2: #252830;
+      --border: #30333b;
+      --text: #f4f5f5;
+      --text-sec: #83868d;
+      --blue: #5c70fa;
+      --blue-light: #7a95ff;
+      --green: #50d853;
+      --orange: #ff9d47;
+      --red: #fb5067;
+      --yellow: #FFE600;
+      --purple: #a78bfa;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --mono: 'JetBrains Mono', 'Fira Code', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      background: var(--yellow);
+      padding: 0 32px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,.4);
+    }
+    nav .logo { font-weight: 800; font-size: 18px; color: #111; letter-spacing: -.5px; }
+    nav .sep { color: #555; font-size: 18px; }
+    nav .title { font-size: 13px; font-weight: 600; color: #333; }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #1a1d24 0%, #1f2330 60%, #1a1d24 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 56px 32px 48px;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 36px; font-weight: 800; letter-spacing: -1px;
+      background: linear-gradient(135deg, var(--blue-light), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+    .hero p { color: var(--text-sec); font-size: 16px; max-width: 600px; margin: 0 auto; }
+    .badge-row { display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+    .badge {
+      padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+      border: 1px solid;
+    }
+    .badge.blue  { color: var(--blue-light);  border-color: rgba(92,112,250,.4);  background: rgba(92,112,250,.1); }
+    .badge.green { color: var(--green);        border-color: rgba(80,216,83,.4);   background: rgba(80,216,83,.1); }
+    .badge.orange{ color: var(--orange);       border-color: rgba(255,157,71,.4);  background: rgba(255,157,71,.1); }
+
+    /* LAYOUT */
+    .container { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
+    .section-title {
+      font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--text-sec);
+      margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+    }
+    .section-title::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* FLOW DIAGRAM */
+    .flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+      margin-bottom: 56px;
+    }
+    .flow-step {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 0 20px;
+      position: relative;
+    }
+    .flow-step:not(:last-child) .step-line { display: block; }
+    .step-num-col { display: flex; flex-direction: column; align-items: center; }
+    .step-num {
+      width: 48px; height: 48px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 16px; flex-shrink: 0;
+      position: relative; z-index: 1;
+      border: 2px solid;
+    }
+    .step-line {
+      width: 2px; flex: 1; min-height: 24px;
+      background: linear-gradient(to bottom, var(--border), transparent);
+      display: none;
+    }
+    .step-body {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      transition: border-color .2s;
+    }
+    .step-body:hover { border-color: var(--blue); }
+    .step-body h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .step-body p { color: var(--text-sec); font-size: 13.5px; margin-bottom: 8px; }
+    .step-body code {
+      font-family: var(--mono);
+      font-size: 12px;
+      background: rgba(255,255,255,.06);
+      padding: 2px 7px;
+      border-radius: 4px;
+      color: var(--blue-light);
+    }
+    .file-ref {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: var(--mono); font-size: 11px; color: var(--text-sec);
+      background: rgba(255,255,255,.04); border: 1px solid var(--border);
+      padding: 3px 8px; border-radius: 4px; margin-top: 8px;
+    }
+    .file-ref .icon { font-size: 13px; }
+
+    .step-num.gps   { color: var(--blue);   border-color: var(--blue);   background: rgba(92,112,250,.1); }
+    .step-num.svc   { color: var(--purple);  border-color: var(--purple); background: rgba(167,139,250,.1); }
+    .step-num.repo  { color: var(--orange);  border-color: var(--orange); background: rgba(255,157,71,.1); }
+    .step-num.api   { color: var(--green);   border-color: var(--green);  background: rgba(80,216,83,.1); }
+
+    /* TIMELINE INTERVAL BOX */
+    .interval-box {
+      display: flex; align-items: center; gap: 16px;
+      background: var(--card);
+      border: 1px solid rgba(92,112,250,.35);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 48px;
+    }
+    .interval-num {
+      font-size: 48px; font-weight: 800;
+      color: var(--blue-light);
+      line-height: 1;
+      letter-spacing: -2px;
+      flex-shrink: 0;
+    }
+    .interval-desc h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .interval-desc p { color: var(--text-sec); font-size: 13.5px; }
+    .interval-desc .constraints {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;
+    }
+    .constraint-pill {
+      font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 20px;
+      background: rgba(255,255,255,.06); border: 1px solid var(--border);
+      color: var(--text-sec);
+    }
+
+    /* FAILURE POINTS */
+    .failures-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+      margin-bottom: 56px;
+    }
+    .failure-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      border-left: 4px solid;
+      transition: transform .15s;
+    }
+    .failure-card:hover { transform: translateY(-2px); }
+    .failure-card.high   { border-left-color: var(--red); }
+    .failure-card.medium { border-left-color: var(--orange); }
+    .failure-card.low    { border-left-color: var(--yellow); }
+    .failure-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+    .failure-icon { font-size: 24px; flex-shrink: 0; line-height: 1; }
+    .failure-title { font-size: 14px; font-weight: 700; }
+    .severity {
+      font-size: 10px; font-weight: 700; letter-spacing: .8px;
+      text-transform: uppercase; padding: 2px 8px; border-radius: 10px;
+      display: inline-block; margin-top: 2px;
+    }
+    .severity.high   { color: var(--red);    background: rgba(251,80,103,.12); }
+    .severity.medium { color: var(--orange);  background: rgba(255,157,71,.12); }
+    .severity.low    { color: var(--yellow);  background: rgba(255,230,0,.1); }
+    .failure-desc { color: var(--text-sec); font-size: 13px; line-height: 1.55; }
+    .failure-code { font-family: var(--mono); font-size: 11.5px; color: var(--blue-light); margin-top: 6px; display: block; }
+
+    /* IMPROVEMENT TABLE */
+    .improve-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      margin-bottom: 56px;
+    }
+    .improve-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+    .improve-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+    .improve-card.rec::before  { background: linear-gradient(90deg, var(--green), var(--blue)); }
+    .improve-card.opt::before  { background: linear-gradient(90deg, var(--blue), var(--purple)); }
+    .improve-card.nice::before { background: linear-gradient(90deg, var(--purple), var(--orange)); }
+    .improve-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .improve-label.rec  { color: var(--green); }
+    .improve-label.opt  { color: var(--blue-light); }
+    .improve-label.nice { color: var(--purple); }
+    .improve-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .improve-card p  { color: var(--text-sec); font-size: 13.5px; line-height: 1.55; margin-bottom: 12px; }
+    .improve-card ul { list-style: none; padding: 0; }
+    .improve-card ul li {
+      font-size: 13px; color: var(--text-sec); padding: 4px 0;
+      display: flex; gap: 8px; align-items: flex-start;
+    }
+    .improve-card ul li::before { content: '→'; color: var(--blue-light); flex-shrink: 0; }
+    .snippet {
+      background: #14161b; border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 16px;
+      font-family: var(--mono); font-size: 11.5px;
+      color: #adb5bd; line-height: 1.7; overflow-x: auto; margin-top: 12px;
+    }
+    .snippet .kw  { color: var(--purple); }
+    .snippet .fn  { color: var(--blue-light); }
+    .snippet .str { color: var(--green); }
+    .snippet .cm  { color: #565c66; font-style: italic; }
+    .snippet .num { color: var(--orange); }
+
+    /* COMPARISON TABLE */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 56px;
+      font-size: 13.5px;
+    }
+    .compare-table th {
+      background: var(--card2);
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 11px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--text-sec);
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-table td {
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-sec);
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: rgba(255,255,255,.02); }
+    .compare-table td:first-child { color: var(--text); font-weight: 600; }
+    .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+    .dot.g { background: var(--green); }
+    .dot.r { background: var(--red); }
+    .dot.o { background: var(--orange); }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 32px;
+      text-align: center;
+      color: var(--text-sec);
+      font-size: 12px;
+    }
+    footer strong { color: var(--text); }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 26px; }
+      .interval-num { font-size: 36px; }
+      .failures-grid, .improve-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="logo">SISEM</span>
+  <span class="sep">|</span>
+  <span class="title">Análisis: Envío de Ubicación</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Flujo de Envío de Ubicación</h1>
+  <p>Cómo el app rastrea y envía coordenadas GPS al servidor, puntos de falla potenciales y mejoras recomendadas.</p>
+  <div class="badge-row">
+    <span class="badge blue">LocationService</span>
+    <span class="badge blue">FusedLocationProvider</span>
+    <span class="badge green">Retrofit / REST</span>
+    <span class="badge orange">Foreground Service</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- INTERVAL -->
+  <div class="section-title">Frecuencia de envío</div>
+  <div class="interval-box">
+    <div class="interval-num">5s</div>
+    <div class="interval-desc">
+      <h3>Actualización cada 5 segundos</h3>
+      <p>
+        Definido en <code>LocationService.kt</code> como <code>LOCATION_INTERVAL = 5000L</code>.
+        El mismo valor controla tanto la solicitud GPS como el envío al servidor — no hay separación entre frecuencia de muestreo y frecuencia de reporte.
+      </p>
+      <div class="constraints">
+        <span class="constraint-pill">minUpdateInterval: 5000ms</span>
+        <span class="constraint-pill">maxUpdateDelay: 5000ms</span>
+        <span class="constraint-pill">minDistance: 50m</span>
+        <span class="constraint-pill">Priority: HIGH_ACCURACY</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOW -->
+  <div class="section-title">Flujo paso a paso</div>
+  <div class="flow">
+
+    <div class="flow-step">
+      <div class="step-num-col">
+        <div class="step-num gps">1</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-body">
+        <h3>📡 GPS / FusedLocationProviderClient</h3>
+        <p>
+          <code>DefaultLocationProvider</code> construye un <code>LocationRequest</code> con <code>PRIORITY_HIGH_ACCURACY</code>
+          y lo registra en <code>FusedLocationProviderClient</code>. Valida permisos y que GPS + Network estén habilitados antes de iniciar.
+          El resultado llega como un <code>Flow&lt;Location&gt;</code> via <code>callbackFlow</code>.
+        </p>
+        <span class="file-ref"><span class="icon">📄</span>DefaultLocationProvider.kt · línea 29</span>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="step-num-col">
+        <div class="step-num svc">2</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-body">
+        <h3>⚙️ LocationService (Foreground Service)</h3>
+        <p>
+          Escucha el flow con <code>.onEach { location → }</code>. Por cada emisión: actualiza la notificación persistente,
+          escribe en el archivo local <code>android_location</code> (log de respaldo), y llama al use case <code>UpdateLocation</code>.
+          Corre en <code>Dispatchers.IO</code> con un <code>SupervisorJob</code>.
+        </p>
+        <span class="file-ref"><span class="icon">📄</span>LocationService.kt · línea 78–88</span>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="step-num-col">
+        <div class="step-num repo">3</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-body">
+        <h3>🗄️ LocationRepositoryImpl</h3>
+        <p>
+          Construye el payload enriqueciendo la coordenada con: <code>vehicleCode</code> (leído desde Room/cache de operación),
+          <code>androidId</code> del dispositivo, timestamp actual con <code>TimeUtils</code>, e <code>idIncident</code> si hay
+          un incidente activo en cache. Todos estos datos son lecturas síncronas del cache local.
+        </p>
+        <span class="file-ref"><span class="icon">📄</span>LocationRepositoryImpl.kt · línea 22–35</span>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="step-num-col">
+        <div class="step-num api">4</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-body">
+        <h3>🌐 HTTP POST → API de ubicación</h3>
+        <p>
+          <code>LocationRemoteDataSource</code> llama a <code>LocationApi.updateLocation()</code> via Retrofit,
+          envuelto en <code>NetworkApi.apiCall{}</code>. El endpoint es <code>LOCATION_URL + "location"</code> (varía por build variant).
+          Si el servidor responde con error, <code>apiCall</code> lo mapea a un <code>BannerModel</code> — pero el resultado
+          es ignorado en <code>LocationService</code> (fire-and-forget).
+        </p>
+        <span class="file-ref"><span class="icon">📄</span>LocationRemoteDataSource.kt · línea 22</span>
+        <span class="file-ref" style="margin-left:8px"><span class="icon">📄</span>LocationApi.kt · línea 11</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FAILURE POINTS -->
+  <div class="section-title">Puntos de falla potenciales</div>
+  <div class="failures-grid">
+
+    <div class="failure-card high">
+      <div class="failure-header">
+        <div class="failure-icon">🔥</div>
+        <div>
+          <div class="failure-title">Fire-and-forget sin reintentos</div>
+          <span class="severity high">Alta severidad</span>
+        </div>
+      </div>
+      <p class="failure-desc">
+        El resultado de <code>UpdateLocation</code> se llama con <code>invoke()</code> pero su <code>Result&lt;Unit&gt;</code>
+        es ignorado completamente en <code>LocationService</code>. Si la red falla, el dato se pierde sin posibilidad de reintento.
+      </p>
+      <code class="failure-code">LocationService.kt:88 — updateLocation.invoke(lat, lon) // resultado descartado</code>
+    </div>
+
+    <div class="failure-card high">
+      <div class="failure-icon">📶</div>
+      <div class="failure-header">
+        <div>
+          <div class="failure-title">Sin offline queue / persistencia</div>
+          <span class="severity high">Alta severidad</span>
+        </div>
+      </div>
+      <p class="failure-desc">
+        Si el dispositivo pierde conectividad (túneles, zonas rurales), los envíos fallidos simplemente se descartan.
+        El archivo local <code>android_location</code> acumula datos pero nunca se usa para reenvío automático.
+      </p>
+      <code class="failure-code">LocationService.kt:96 — storeLocation() escribe pero nunca relee</code>
+    </div>
+
+    <div class="failure-card high">
+      <div class="failure-icon">🧵</div>
+      <div>
+        <div class="failure-title">Callback en MainLooper</div>
+        <span class="severity high">Alta severidad</span>
+      </div>
+      <div class="failure-header"></div>
+      <p class="failure-desc">
+        <code>FusedLocationProviderClient.requestLocationUpdates()</code> recibe <code>Looper.getMainLooper()</code>.
+        Si el hilo principal está ocupado, los callbacks de ubicación se retrasan o se pierden.
+      </p>
+      <code class="failure-code">DefaultLocationProvider.kt:64 — Looper.getMainLooper()</code>
+    </div>
+
+    <div class="failure-card medium">
+      <div class="failure-icon">🚗</div>
+      <div>
+        <div class="failure-title">vehicleCode vacío en el payload</div>
+        <span class="severity medium">Media severidad</span>
+      </div>
+      <div class="failure-header"></div>
+      <p class="failure-desc">
+        Si la cache de operación aún no cargó (app recién iniciada, error previo), <code>vehicleCode</code> llega como
+        <code>""</code> gracias al <code>.orEmpty()</code>. El servidor podría rechazar o guardar datos inválidos.
+      </p>
+      <code class="failure-code">LocationRepositoryImpl.kt:27 — .vehicleCode.orEmpty()</code>
+    </div>
+
+    <div class="failure-card medium">
+      <div class="failure-icon">🔒</div>
+      <div>
+        <div class="failure-title">Detención silenciosa del servicio</div>
+        <span class="severity medium">Media severidad</span>
+      </div>
+      <div class="failure-header"></div>
+      <p class="failure-desc">
+        Android puede matar el foreground service en condiciones de memoria baja. El flag de retorno
+        <code>super.onStartCommand()</code> por defecto no garantiza reinicio automático (<code>START_STICKY</code> no está explícito).
+      </p>
+      <code class="failure-code">LocationService.kt:56 — return super.onStartCommand(...)</code>
+    </div>
+
+    <div class="failure-card medium">
+      <div class="failure-icon">⚡</div>
+      <div>
+        <div class="failure-title">Batería: HIGH_ACCURACY siempre activo</div>
+        <span class="severity medium">Media severidad</span>
+      </div>
+      <div class="failure-header"></div>
+      <p class="failure-desc">
+        <code>PRIORITY_HIGH_ACCURACY</code> activa GPS, WiFi y red celular continuamente. En zonas con mala señal GPS
+        el consumo se dispara y el dispositivo puede entrar en modo ahorro de batería, interrumpiendo el servicio.
+      </p>
+      <code class="failure-code">DefaultLocationProvider.kt:50 — Priority.PRIORITY_HIGH_ACCURACY</code>
+    </div>
+
+    <div class="failure-card low">
+      <div class="failure-icon">📏</div>
+      <div>
+        <div class="failure-title">minDistance 50m ignora movimientos menores</div>
+        <span class="severity low">Baja severidad</span>
+      </div>
+      <div class="failure-header"></div>
+      <p class="failure-desc">
+        Si la ambulancia está estacionada o en tráfico lento (&lt;50m en 5s), FusedLocation puede no emitir nuevas coordenadas
+        aunque hayan pasado los 5 segundos. El servidor no recibe heartbeat de "siguen en el mismo lugar".
+      </p>
+      <code class="failure-code">DefaultLocationProvider.kt:49 — setMinUpdateDistanceMeters(50f)</code>
+    </div>
+
+    <div class="failure-card low">
+      <div class="failure-icon">🕐</div>
+      <div>
+        <div class="failure-title">Sin separación muestra/envío</div>
+        <span class="severity low">Baja severidad</span>
+      </div>
+      <div class="failure-header"></div>
+      <p class="failure-desc">
+        El intervalo GPS y el intervalo de envío HTTP son el mismo valor hardcodeado. No es posible ajustar
+        "muestreo rápido + envío cada N muestras" sin tocar el servicio.
+      </p>
+      <code class="failure-code">LocationService.kt:30 — LOCATION_INTERVAL = 5000L</code>
+    </div>
+
+  </div>
+
+  <!-- IMPROVEMENTS -->
+  <div class="section-title">Mejoras recomendadas</div>
+  <div class="improve-grid">
+
+    <div class="improve-card rec">
+      <div class="improve-label rec">⭐ Recomendado — Mayor impacto</div>
+      <h3>Cola de envío con WorkManager</h3>
+      <p>
+        Encolar cada actualización de ubicación como una <code>OneTimeWorkRequest</code> con
+        <code>NETWORK_CONNECTED</code> como constraint. WorkManager garantiza el reintento automático
+        con backoff exponencial, survives reboots, y libera al servicio de manejar fallos de red.
+      </p>
+      <ul>
+        <li>Cero pérdidas por corte de red</li>
+        <li>Reenvío automático al recuperar conectividad</li>
+        <li>Backoff configurable (lineal o exponencial)</li>
+        <li>Persiste entre reinicios del dispositivo</li>
+      </ul>
+      <div class="snippet">
+<span class="cm">// LocationWorker.kt</span>
+<span class="kw">val</span> request = <span class="fn">OneTimeWorkRequestBuilder</span>&lt;LocationWorker&gt;()
+    .<span class="fn">setConstraints</span>(
+        <span class="fn">Constraints</span>(requiredNetworkType = <span class="fn">CONNECTED</span>)
+    )
+    .<span class="fn">setBackoffCriteria</span>(<span class="fn">EXPONENTIAL</span>, <span class="num">15</span>, SECONDS)
+    .<span class="fn">setInputData</span>(<span class="fn">workDataOf</span>(
+        <span class="str">"lat"</span> to lat, <span class="str">"lon"</span> to lon
+    ))
+    .<span class="fn">build</span>()
+WorkManager.<span class="fn">getInstance</span>(context).<span class="fn">enqueue</span>(request)
+      </div>
+    </div>
+
+    <div class="improve-card rec">
+      <div class="improve-label rec">⭐ Recomendado — Confiabilidad</div>
+      <h3>START_STICKY + reinicio explícito</h3>
+      <p>
+        Devolver <code>START_STICKY</code> en <code>onStartCommand</code> para que Android
+        reinicie el servicio automáticamente si es matado por el sistema. Complementar con
+        un <code>BroadcastReceiver</code> para <code>BOOT_COMPLETED</code>.
+      </p>
+      <ul>
+        <li>El servicio se reactiva tras muerte por OOM</li>
+        <li>Arranque automático post-reinicio del dispositivo</li>
+        <li>Sin intervención del usuario</li>
+      </ul>
+      <div class="snippet">
+<span class="kw">override fun</span> <span class="fn">onStartCommand</span>(...): <span class="fn">Int</span> {
+    <span class="kw">when</span> (intent?.action) {
+        ACTION_START -> <span class="fn">start</span>()
+        ACTION_STOP  -> <span class="fn">stop</span>()
+    }
+    <span class="kw">return</span> START_STICKY <span class="cm">// ← garantiza reinicio</span>
+}
+      </div>
+    </div>
+
+    <div class="improve-card opt">
+      <div class="improve-label opt">✦ Optimización</div>
+      <h3>Looper dedicado para GPS</h3>
+      <p>
+        Mover los callbacks de <code>FusedLocationProviderClient</code> a un
+        <code>HandlerThread</code> dedicado en lugar del MainLooper,
+        para evitar contención con el hilo de UI.
+      </p>
+      <ul>
+        <li>El UI thread queda libre para renderizado</li>
+        <li>Callbacks GPS sin retrasos por jank de UI</li>
+        <li>Cambio de 2 líneas en DefaultLocationProvider</li>
+      </ul>
+      <div class="snippet">
+<span class="kw">val</span> handlerThread = <span class="fn">HandlerThread</span>(<span class="str">"LocationCb"</span>)
+    .<span class="fn">also</span> { it.<span class="fn">start</span>() }
+client.<span class="fn">requestLocationUpdates</span>(
+    request,
+    locationCallback,
+    handlerThread.looper <span class="cm">// ← no más MainLooper</span>
+)
+      </div>
+    </div>
+
+    <div class="improve-card opt">
+      <div class="improve-label opt">✦ Optimización</div>
+      <h3>Prioridad adaptativa según velocidad</h3>
+      <p>
+        Usar <code>PRIORITY_BALANCED_POWER_ACCURACY</code> cuando el vehículo está detenido
+        y cambiar a <code>HIGH_ACCURACY</code> solo cuando hay movimiento significativo.
+        Reduce consumo de batería hasta un 40% en escenarios de espera.
+      </p>
+      <ul>
+        <li>Menor consumo en standby</li>
+        <li>Full accuracy en movimiento</li>
+        <li>Extiende vida de batería en turnos largos</li>
+      </ul>
+    </div>
+
+    <div class="improve-card nice">
+      <div class="improve-label nice">◈ Mejora adicional</div>
+      <h3>Heartbeat periódico aunque no haya movimiento</h3>
+      <p>
+        Enviar un "sigo aquí" al servidor cada N segundos aunque la posición no haya cambiado
+        los 50m mínimos. Permite al backend distinguir "ambulancia detenida" de "app caída".
+      </p>
+      <ul>
+        <li>Mejor observabilidad en el backend</li>
+        <li>Detección de dispositivos offline</li>
+        <li>Implementable con un timer paralelo en el servicio</li>
+      </ul>
+    </div>
+
+    <div class="improve-card nice">
+      <div class="improve-label nice">◈ Mejora adicional</div>
+      <h3>Aprovechar el archivo local para reenvío</h3>
+      <p>
+        El archivo <code>android_location</code> ya existe y acumula datos. Agregar un job periódico
+        (WorkManager <code>PeriodicWorkRequest</code>) que lea entradas sin confirmar y las reenvíe,
+        marcándolas como enviadas.
+      </p>
+      <ul>
+        <li>Reutilizar infraestructura ya existente</li>
+        <li>Recuperación de datos en gaps de conectividad largos</li>
+        <li>Log de auditoría con timestamps exactos</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- COMPARE TABLE -->
+  <div class="section-title">Comparativa: implementación actual vs. con WorkManager</div>
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Aspecto</th>
+        <th>Implementación actual</th>
+        <th>Con WorkManager + START_STICKY</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Pérdida de datos en corte de red</td>
+        <td><span class="dot r"></span>Sí — fire-and-forget</td>
+        <td><span class="dot g"></span>No — cola persistente con retry</td>
+      </tr>
+      <tr>
+        <td>Reinicio tras muerte del servicio</td>
+        <td><span class="dot r"></span>No garantizado</td>
+        <td><span class="dot g"></span>Sí — START_STICKY + BOOT_COMPLETED</td>
+      </tr>
+      <tr>
+        <td>Impacto en hilo UI</td>
+        <td><span class="dot o"></span>Posible (MainLooper)</td>
+        <td><span class="dot g"></span>Ninguno (HandlerThread dedicado)</td>
+      </tr>
+      <tr>
+        <td>Consumo de batería</td>
+        <td><span class="dot o"></span>Alto (HIGH_ACCURACY siempre)</td>
+        <td><span class="dot g"></span>Adaptativo según movimiento</td>
+      </tr>
+      <tr>
+        <td>vehicleCode vacío</td>
+        <td><span class="dot r"></span>Envía "" sin validación</td>
+        <td><span class="dot g"></span>Validar antes de encolar</td>
+      </tr>
+      <tr>
+        <td>Heartbeat en reposo</td>
+        <td><span class="dot r"></span>No (depende de movimiento &gt;50m)</td>
+        <td><span class="dot g"></span>Timer paralelo configurable</td>
+      </tr>
+      <tr>
+        <td>Complejidad de implementación</td>
+        <td><span class="dot g"></span>Simple</td>
+        <td><span class="dot o"></span>Moderada (+WorkManager dependency)</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<footer>
+  <strong>SISEM Android</strong> &nbsp;·&nbsp; Análisis técnico: Envío de Ubicación &nbsp;·&nbsp; Generado con html-builder · 25 abril 2026
+</footer>
+
+</body>
+</html>
