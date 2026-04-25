@@ -10,7 +10,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
-import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
@@ -18,28 +17,25 @@ import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.banner.OnErrorHandler
-import com.valkiria.uicomponents.components.loader.OnLoadingHandler
+import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
+import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @Suppress("LongMethod")
 @Composable
 fun DeviceAuthScreen(
-    isTablet: Boolean,
-    from: String,
     modifier: Modifier = Modifier,
-    onNavigation: (deviceAuthNavigationModel: NavigationModel?) -> Unit
+    viewModel: DeviceAuthViewModel = hiltViewModel(),
+    onNavigation: (deviceAuthNavigationModel: DeviceAuthNavigationModel) -> Unit
 ) {
-    val viewModel = hiltViewModel<DeviceAuthViewModel>()
-    viewModel.from = from
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState) {
         launch {
             when {
                 uiState.navigationModel != null -> {
-                    viewModel.onDeviceAuthHandled()
+                    viewModel.consumeNavigationEvent()
                     onNavigation(uiState.navigationModel)
                 }
             }
@@ -53,7 +49,7 @@ fun DeviceAuthScreen(
 
         uiState.screenModel?.header?.let {
             HeaderSection(
-                headerModel = it,
+                headerUiModel = it,
                 modifier = modifier.constrainAs(header) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
@@ -64,7 +60,6 @@ fun DeviceAuthScreen(
 
         BodySection(
             body = uiState.screenModel?.body,
-            isTablet = isTablet,
             modifier = modifier
                 .constrainAs(body) {
                     top.linkTo(header.bottom)
@@ -89,15 +84,15 @@ fun DeviceAuthScreen(
         }
     }
 
-    OnErrorHandler(uiModel = uiState.disassociateInfoModel) {
+    OnBannerHandler(uiModel = uiState.disassociateInfoModel) {
         handleFooterAction(
             uiAction = it,
             viewModel = viewModel
         )
     }
 
-    OnErrorHandler(uiModel = uiState.errorModel) {
-        viewModel.handleShownError()
+    OnBannerHandler(uiModel = uiState.errorModel) {
+        viewModel.handleEvent(it)
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)

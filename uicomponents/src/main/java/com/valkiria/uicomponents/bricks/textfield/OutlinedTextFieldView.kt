@@ -6,40 +6,51 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
-import com.valkiria.uicomponents.model.ui.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.components.label.toTextStyle
+import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
 import com.valkiria.uicomponents.extensions.toFailedValidation
-import com.valkiria.uicomponents.model.mocks.getLoginUserTextFieldUiModel
-import com.valkiria.uicomponents.model.props.toTextStyle
+import com.valkiria.uicomponents.mocks.getLoginUserTextFieldUiModel
 
 @Composable
 fun OutlinedTextFieldView(
     uiModel: TextFieldUiModel,
     validateFields: Boolean,
-    onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
+    onAction: (id: String, updatedValue: String, fieldValidated: Boolean, required: Boolean) -> Unit
 ) {
-    var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-        mutableStateOf(TextFieldValue(""))
+    var text by rememberSaveable(
+        stateSaver = TextFieldValue.Saver
+    ) {
+        mutableStateOf(TextFieldValue(uiModel.text))
+    }
+
+    val inputError = remember(text, validateFields) {
+        text.toFailedValidation(uiModel.validations, validateFields, uiModel.quantity)
     }
 
     OutlinedTextField(
         value = text,
         onValueChange = { updatedValue ->
-            text = updatedValue
-            onAction(
-                uiModel.identifier,
-                updatedValue.text,
-                text.toFailedValidation(uiModel.validations, validateFields) == null
-            )
+            if (updatedValue.text.length <= uiModel.charLimit) {
+                text = updatedValue
+                onAction(
+                    uiModel.identifier,
+                    updatedValue.text,
+                    text.toFailedValidation(uiModel.validations, true, uiModel.quantity) == null,
+                    uiModel.required
+                )
+            }
         },
         modifier = Modifier
             .fillMaxWidth()
@@ -53,18 +64,25 @@ fun OutlinedTextFieldView(
             }
         },
         supportingText = {
-            if (validateFields) {
+            if (inputError != null) {
                 Text(
-                    text = text.toFailedValidation(uiModel.validations)?.message.orEmpty(),
+                    text = inputError.message,
                     modifier = Modifier.fillMaxWidth(),
                     color = MaterialTheme.colorScheme.error
                 )
             }
         },
-        isError = text.toFailedValidation(uiModel.validations, validateFields) != null,
+        isError = inputError != null,
         keyboardOptions = uiModel.keyboardOptions,
         singleLine = uiModel.singleLine,
-        minLines = uiModel.minLines
+        minLines = uiModel.minLines,
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            focusedTrailingIconColor = Color.White,
+            unfocusedBorderColor = Color.White,
+            unfocusedLabelColor = Color.White,
+            unfocusedTrailingIconColor = Color.White
+        )
     )
 }
 
@@ -76,7 +94,7 @@ fun OutlinedTextFieldViewPreview() {
     ) {
         OutlinedTextFieldView(
             uiModel = getLoginUserTextFieldUiModel(),
-            onAction = { _, _, _ -> },
+            onAction = { _, _, _, _ -> },
             validateFields = true
         )
     }

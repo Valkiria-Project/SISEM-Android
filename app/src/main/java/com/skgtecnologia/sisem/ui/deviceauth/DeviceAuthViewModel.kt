@@ -3,18 +3,24 @@ package com.skgtecnologia.sisem.ui.deviceauth
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
+import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.usecases.DeleteAccessToken
+import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.AssociateDevice
 import com.skgtecnologia.sisem.domain.deviceauth.usecases.GetDeviceAuthScreen
-import com.skgtecnologia.sisem.domain.model.banner.disassociateDevice
+import com.skgtecnologia.sisem.domain.model.banner.disassociateDeviceBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
-import com.skgtecnologia.sisem.domain.model.body.SegmentedSwitchModel
 import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
+import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.skgtecnologia.sisem.ui.navigation.LOGIN
-import com.skgtecnologia.sisem.ui.navigation.model.DeviceAuthNavigationModel
+import com.valkiria.uicomponents.action.UiAction
+import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -23,12 +29,15 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 @HiltViewModel
 class DeviceAuthViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val androidIdProvider: AndroidIdProvider,
     private val associateDevice: AssociateDevice,
     private val getDeviceAuthScreen: GetDeviceAuthScreen,
-    private val deleteAccessToken: DeleteAccessToken
+    private val deleteAccessToken: DeleteAccessToken,
+    private val logoutCurrentUser: LogoutCurrentUser
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -36,10 +45,11 @@ class DeviceAuthViewModel @Inject constructor(
     var uiState by mutableStateOf(DeviceAuthUiState())
         private set
 
-    var from: String by mutableStateOf("")
-    var isAssociateDevice: Boolean by mutableStateOf(false)
+    private val from = savedStateHandle.toRoute<AuthRoute.DeviceAuthRoute>().from
 
-    var vehicleCode by mutableStateOf("") // FIXME
+    private var isAssociateDevice: Boolean by mutableStateOf(false)
+
+    var vehicleCode by mutableStateOf("")
     var isValidVehicleCode by mutableStateOf(false)
     var disassociateDeviceState by mutableStateOf(false)
 
@@ -47,7 +57,7 @@ class DeviceAuthViewModel @Inject constructor(
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             getDeviceAuthScreen.invoke(androidIdProvider.getAndroidId())
                 .onSuccess { deviceAuthScreenModel ->
                     withContext(Dispatchers.Main) {
@@ -61,15 +71,17 @@ class DeviceAuthViewModel @Inject constructor(
                 .onFailure { throwable ->
                     Timber.wtf(throwable, "This is a failure")
 
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        errorModel = throwable.mapToUi()
-                    )
+                    withContext(Dispatchers.Main) {
+                        uiState = uiState.copy(
+                            isLoading = false,
+                            errorModel = throwable.mapToUi()
+                        )
+                    }
                 }
         }
     }
 
-    private fun ScreenModel.isAssociateDevice() = body.find { it is SegmentedSwitchModel } == null
+    private fun ScreenModel.isAssociateDevice() = body.find { it is SegmentedSwitchUiModel } == null
 
     fun associateDevice() {
         if (isAssociateDevice) {
@@ -87,7 +99,7 @@ class DeviceAuthViewModel @Inject constructor(
         uiState = uiState.copy(isLoading = true)
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             associateDevice.invoke(
                 androidIdProvider.getAndroidId(),
                 vehicleCode,
@@ -97,10 +109,12 @@ class DeviceAuthViewModel @Inject constructor(
             }.onFailure { throwable ->
                 Timber.wtf(throwable, "This is a failure")
 
-                uiState = uiState.copy(
-                    isLoading = false,
-                    errorModel = throwable.mapToUi()
-                )
+                withContext(Dispatchers.Main) {
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        errorModel = throwable.mapToUi()
+                    )
+                }
             }
         }
     }
@@ -108,10 +122,10 @@ class DeviceAuthViewModel @Inject constructor(
     private suspend fun handleOnSuccess() {
         if (disassociateDeviceState) {
             withContext(Dispatchers.Main) {
-                onDeviceAuthHandled() // FIXME: maintains the previous state, we must clean
+                consumeNavigationEvent()
                 uiState = uiState.copy(
                     isLoading = false,
-                    disassociateInfoModel = disassociateDevice().mapToUi()
+                    disassociateInfoModel = disassociateDeviceBanner().mapToUi()
                 )
             }
         } else {
@@ -135,7 +149,7 @@ class DeviceAuthViewModel @Inject constructor(
             uiState = uiState.copy(isLoading = true)
 
             job?.cancel()
-            job = viewModelScope.launch(Dispatchers.IO) {
+            job = viewModelScope.launch {
                 deleteAccessToken.invoke().onSuccess {
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
@@ -157,12 +171,12 @@ class DeviceAuthViewModel @Inject constructor(
 
     fun cancelBanner() {
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             resetAppState()
         }
     }
 
-    fun onDeviceAuthHandled() {
+    fun consumeNavigationEvent() {
         uiState = uiState.copy(
             validateFields = false,
             navigationModel = null,
@@ -178,7 +192,23 @@ class DeviceAuthViewModel @Inject constructor(
         disassociateDeviceState = false
     }
 
-    fun handleShownError() {
+    fun handleEvent(uiAction: UiAction) {
+        consumeErrorEvent()
+
+        uiAction.handleAuthorizationErrorEvent {
+            job?.cancel()
+            job = viewModelScope.launch {
+                logoutCurrentUser.invoke()
+                    .onSuccess { username ->
+                        UnauthorizedEventHandler.publishUnauthorizedEvent(username)
+                    }.onFailure {
+                        UnauthorizedEventHandler.publishUnauthorizedEvent(it.toString())
+                    }
+            }
+        }
+    }
+
+    fun consumeErrorEvent() {
         uiState = uiState.copy(
             errorModel = null
         )

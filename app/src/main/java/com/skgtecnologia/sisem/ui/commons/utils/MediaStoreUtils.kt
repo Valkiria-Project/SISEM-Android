@@ -11,7 +11,7 @@ import java.io.File
 
 class MediaStoreUtils(private val context: Context) {
 
-    val mediaStoreCollection: Uri? =
+    private val mediaStoreCollection: Uri? =
         MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
 
     private suspend fun getMediaStoreImageCursor(mediaStoreCollection: Uri): Cursor? {

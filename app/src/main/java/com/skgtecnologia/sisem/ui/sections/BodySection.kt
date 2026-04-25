@@ -2,252 +2,608 @@ package com.skgtecnologia.sisem.ui.sections
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.authcards.model.AuthCardsIdentifier
 import com.skgtecnologia.sisem.domain.changepassword.model.ChangePasswordIdentifier
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
 import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
-import com.skgtecnologia.sisem.domain.model.body.BodyRowModel
-import com.skgtecnologia.sisem.domain.model.body.ButtonModel
-import com.skgtecnologia.sisem.domain.model.body.ChipModel
-import com.skgtecnologia.sisem.domain.model.body.ChipOptionsModel
-import com.skgtecnologia.sisem.domain.model.body.DetailedInfoListModel
-import com.skgtecnologia.sisem.domain.model.body.FiltersModel
-import com.skgtecnologia.sisem.domain.model.body.FindingModel
-import com.skgtecnologia.sisem.domain.model.body.FingerprintModel
-import com.skgtecnologia.sisem.domain.model.body.FooterBodyModel
-import com.skgtecnologia.sisem.domain.model.body.HeaderModel
-import com.skgtecnologia.sisem.domain.model.body.InfoCardModel
-import com.skgtecnologia.sisem.domain.model.body.InventoryCheckModel
-import com.skgtecnologia.sisem.domain.model.body.LabelModel
-import com.skgtecnologia.sisem.domain.model.body.PasswordTextFieldModel
-import com.skgtecnologia.sisem.domain.model.body.RichLabelModel
-import com.skgtecnologia.sisem.domain.model.body.SegmentedSwitchModel
-import com.skgtecnologia.sisem.domain.model.body.TermsAndConditionsModel
-import com.skgtecnologia.sisem.domain.model.body.TextFieldModel
-import com.skgtecnologia.sisem.domain.model.body.mapToSection
-import com.skgtecnologia.sisem.domain.model.body.mapToUiModel
+import com.skgtecnologia.sisem.domain.login.model.mapToLoginModel
 import com.skgtecnologia.sisem.domain.report.model.AddReportIdentifier
 import com.skgtecnologia.sisem.domain.report.model.AddReportRoleIdentifier
+import com.skgtecnologia.sisem.ui.dropdown.DropDownComponent
+import com.skgtecnologia.sisem.ui.humanbody.HumanBodyComponent
+import com.skgtecnologia.sisem.ui.inventory.view.ELEMENT_TYPE_KEY
+import com.skgtecnologia.sisem.ui.inventory.view.MOV_TYPE_KEY
+import com.skgtecnologia.sisem.ui.medicalhistory.medicine.MedsSelectorComponent
+import com.valkiria.uicomponents.action.AddReportUiAction
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.ConfirmPasswordInput
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.NewPasswordInput
 import com.valkiria.uicomponents.action.ChangePasswordUiAction.OldPasswordInput
 import com.valkiria.uicomponents.action.DeviceAuthUiAction.DeviceAuthCodeInput
 import com.valkiria.uicomponents.action.GenericUiAction
+import com.valkiria.uicomponents.action.HeaderUiAction
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
 import com.valkiria.uicomponents.action.LoginUiAction.Login
 import com.valkiria.uicomponents.action.LoginUiAction.LoginPasswordInput
 import com.valkiria.uicomponents.action.LoginUiAction.LoginUserInput
 import com.valkiria.uicomponents.action.LoginUiAction.TermsAndConditions
 import com.valkiria.uicomponents.action.NewsUiAction
-import com.valkiria.uicomponents.action.RecordNewsUiAction
 import com.valkiria.uicomponents.action.UiAction
+import com.valkiria.uicomponents.components.BodyRowModel
+import com.valkiria.uicomponents.components.BodyRowType
 import com.valkiria.uicomponents.components.button.ButtonComponent
+import com.valkiria.uicomponents.components.button.ButtonUiModel
+import com.valkiria.uicomponents.components.button.ImageButtonSectionComponent
+import com.valkiria.uicomponents.components.button.ImageButtonSectionUiModel
 import com.valkiria.uicomponents.components.card.InfoCardComponent
+import com.valkiria.uicomponents.components.card.InfoCardUiModel
+import com.valkiria.uicomponents.components.card.SimpleCardComponent
+import com.valkiria.uicomponents.components.card.SimpleCardUiModel
+import com.valkiria.uicomponents.components.card.StaggeredCardsComponent
+import com.valkiria.uicomponents.components.card.StaggeredCardsUiModel
 import com.valkiria.uicomponents.components.chip.ChipComponent
 import com.valkiria.uicomponents.components.chip.ChipOptionsComponent
+import com.valkiria.uicomponents.components.chip.ChipOptionsUiModel
+import com.valkiria.uicomponents.components.chip.ChipSelectionComponent
+import com.valkiria.uicomponents.components.chip.ChipSelectionComponent2
+import com.valkiria.uicomponents.components.chip.ChipSelectionUiModel
+import com.valkiria.uicomponents.components.chip.ChipUiModel
 import com.valkiria.uicomponents.components.chip.FiltersComponent
+import com.valkiria.uicomponents.components.chip.FiltersUiModel
 import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListComponent
+import com.valkiria.uicomponents.components.detailedinfolist.DetailedInfoListUiModel
+import com.valkiria.uicomponents.components.dropdown.DropDownUiModel
 import com.valkiria.uicomponents.components.finding.FindingComponent
+import com.valkiria.uicomponents.components.finding.FindingUiModel
+import com.valkiria.uicomponents.components.fingerprint.FingerprintUiModel
+import com.valkiria.uicomponents.components.footer.FooterBodyUiModel
+import com.valkiria.uicomponents.components.footer.mapToSection
+import com.valkiria.uicomponents.components.header.HeaderUiModel
+import com.valkiria.uicomponents.components.humanbody.HumanBodyUiModel
 import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckComponent
+import com.valkiria.uicomponents.components.inventorycheck.InventoryCheckUiModel
+import com.valkiria.uicomponents.components.inventorysearch.InventorySearchComponent
+import com.valkiria.uicomponents.components.inventorysearch.InventorySearchUiModel
 import com.valkiria.uicomponents.components.label.LabelComponent
+import com.valkiria.uicomponents.components.label.LabelUiModel
+import com.valkiria.uicomponents.components.media.MediaActionsComponent
+import com.valkiria.uicomponents.components.media.MediaActionsUiModel
+import com.valkiria.uicomponents.components.medsselector.MedsSelectorUiModel
+import com.valkiria.uicomponents.components.obstetrician.ObstetricianDataComponent
+import com.valkiria.uicomponents.components.obstetrician.ObstetricianDataUiModel
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
+import com.valkiria.uicomponents.components.richlabel.RichLabelUiModel
 import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchComponent
+import com.valkiria.uicomponents.components.segmentedswitch.SegmentedSwitchUiModel
+import com.valkiria.uicomponents.components.signature.CrewMemberSignatureComponent
+import com.valkiria.uicomponents.components.signature.CrewMemberSignatureUiModel
+import com.valkiria.uicomponents.components.signature.SignatureComponent
+import com.valkiria.uicomponents.components.signature.SignatureUiModel
+import com.valkiria.uicomponents.components.slider.SliderComponent
+import com.valkiria.uicomponents.components.slider.SliderUiModel
+import com.valkiria.uicomponents.components.stepper.StepperComponent
+import com.valkiria.uicomponents.components.stepper.StepperUiModel
 import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsComponent
+import com.valkiria.uicomponents.components.termsandconditions.TermsAndConditionsUiModel
 import com.valkiria.uicomponents.components.textfield.PasswordTextFieldComponent
+import com.valkiria.uicomponents.components.textfield.PasswordTextFieldUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldComponent
+import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
+import com.valkiria.uicomponents.components.timeline.TimelineComponent
+import com.valkiria.uicomponents.components.timeline.TimelineUiModel
+import com.valkiria.uicomponents.components.timepicker.TimePickerComponent
+import com.valkiria.uicomponents.components.timepicker.TimePickerUiModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
+
+private const val FILTERS_SCROLL_OFFSET = -120
+
+private val transferReturnIdentifier = listOf(
+    MOV_TYPE_KEY,
+    ELEMENT_TYPE_KEY
+)
 
 @Suppress("ComplexMethod", "LongMethod")
 @Composable
 fun BodySection(
     body: List<BodyRowModel>?,
-    isTablet: Boolean,
     modifier: Modifier = Modifier,
     validateFields: Boolean = false,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     val listState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
 
     if (body?.isNotEmpty() == true) {
-        LazyColumn(
-            modifier = modifier,
-            state = listState,
-            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Top),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            handleBodyRows(
-                body = body,
-                listState = listState,
-                coroutineScope = coroutineScope,
-                isTablet = isTablet,
-                validateFields = validateFields,
-                onAction = onAction
-            )
+        Box(modifier = modifier.fillMaxSize()) {
+            val stickyFooter = getStickyFooter(body)
+            val updatedModifier = if (stickyFooter != null) {
+                modifier.then(Modifier.padding(bottom = 60.dp))
+            } else {
+                modifier
+            }
+
+            LazyColumn(
+                modifier = updatedModifier,
+                state = listState,
+                contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Top),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                handleBodyRows(
+                    body = body,
+                    listState = listState,
+                    scope = scope,
+                    validateFields = validateFields,
+                    onAction = onAction
+                )
+            }
+
+            listState.HandleListScroll(body, onAction)
+
+            stickyFooter?.let { model ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter)
+                ) {
+                    StepperComponent(uiModel = model) { selectedIndex ->
+                        scope.launch {
+                            val selected = model.options[selectedIndex.toString()]
+
+                            val contentHeader = body.indexOfFirst {
+                                it is HeaderUiModel && it.title.text == selected
+                            }
+
+                            if (contentHeader >= 0) {
+                                listState.animateScrollToItem(
+                                    index = contentHeader,
+                                    scrollOffset = -100
+                                )
+                            }
+                        }
+
+                        if (selectedIndex == null) {
+                            onAction(GenericUiAction.StepperAction(identifier = model.identifier))
+                        }
+                    }
+                }
+            }
         }
     }
 }
+
+@Composable
+private fun LazyListState.HandleListScroll(
+    body: List<BodyRowModel>,
+    onAction: (actionInput: UiAction) -> Unit
+) {
+    if (body.none { it.type == BodyRowType.FILTERS }) {
+        return
+    }
+
+    val headers by remember {
+        val filtersComponent = body
+            .filterIsInstance<FiltersUiModel>()
+            .firstOrNull()
+
+        val headersFromBody = body
+            .filterIsInstance<HeaderUiModel>()
+            .filter { filtersComponent?.options?.contains(it.title.text) == true }
+            .map { it.identifier }
+
+        Timber.d("headersFromBody: $headersFromBody")
+        mutableStateOf(headersFromBody)
+    }
+
+    val firstVisibleSection by remember {
+        derivedStateOf {
+            val section = layoutInfo.visibleItemsInfo.firstOrNull {
+                it.key in headers
+            }
+            val header = body
+                .filterIsInstance<HeaderUiModel>()
+                .find { it.identifier == section?.key }
+            Timber.d("Section is: ${header?.title?.text}")
+            header
+        }
+    }
+
+    firstVisibleSection?.title?.text?.let {
+        onAction(GenericUiAction.FiltersAction(identifier = it))
+    }
+}
+
+private fun getStickyFooter(body: List<BodyRowModel>): StepperUiModel? = body
+    .filterIsInstance<StepperUiModel>()
+    .firstOrNull()
 
 @Suppress("ComplexMethod", "LongMethod", "LongParameterList")
 private fun LazyListScope.handleBodyRows(
     body: List<BodyRowModel>,
     listState: LazyListState,
-    coroutineScope: CoroutineScope,
-    isTablet: Boolean,
+    scope: CoroutineScope,
     validateFields: Boolean,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     body.forEach { model ->
         when (model) {
-            is ButtonModel -> item(key = model.identifier) {
-                HandleButtonRows(model, isTablet, onAction)
-            }
-
-            is ChipModel -> item(key = model.identifier) {
-                HandleChipRows(model, isTablet, onAction)
-            }
-
-            is ChipOptionsModel -> item(key = model.identifier) {
-                ChipOptionsComponent(uiModel = model.mapToUiModel()) { id, text, isSelection ->
-                    onAction(
-                        GenericUiAction.ChipOptionAction(
-                            identifier = id,
-                            text = text,
-                            status = isSelection
-                        )
-                    )
+            is ButtonUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    HandleButtonRows(model, onAction)
                 }
             }
 
-            is InfoCardModel -> item(key = model.identifier) {
-                HandleCrewMemberCardRows(model, isTablet, onAction)
+            is ChipUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    HandleChipRows(model, onAction)
+                }
             }
 
-            is DetailedInfoListModel -> item(key = model.identifier) {
-                DetailedInfoListComponent(
-                    uiModel = model.mapToUiModel(),
-                    isTablet = isTablet
-                )
+            is ChipOptionsUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    ChipOptionsComponent(
+                        uiModel = model,
+                        validateFields = validateFields
+                    ) { id, chipOptionItem ->
+                        onAction(
+                            GenericUiAction.ChipOptionAction(
+                                identifier = id,
+                                chipOptionUiModel = chipOptionItem
+                            )
+                        )
+                    }
+                }
             }
 
-            is FiltersModel -> stickyHeader(key = model.identifier) {
-                FiltersComponent(
-                    uiModel = model.mapToUiModel()
-                ) { selected, isSelection ->
-                    coroutineScope.launch {
-                        val contentHeader = body.indexOfFirst {
-                            it is HeaderModel && it.title.text == selected
+            is ChipSelectionUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    if (transferReturnIdentifier.contains(model.identifier)) {
+                        ChipSelectionComponent2(
+                            uiModel = model,
+                            validateFields = validateFields
+                        ) { id, chipSelectionItem, isSelection, viewsVisibility ->
+                            onAction(
+                                GenericUiAction.ChipSelectionAction(
+                                    identifier = id,
+                                    chipSelectionItemUiModel = chipSelectionItem,
+                                    status = isSelection,
+                                    viewsVisibility = viewsVisibility,
+                                    mapOf()
+                                )
+                            )
                         }
-
-                        if (contentHeader >= 0) {
-                            listState.animateScrollToItem(index = contentHeader)
+                    } else {
+                        ChipSelectionComponent(
+                            uiModel = model,
+                            validateFields = validateFields
+                        ) { id,
+                            chipSelectionItem,
+                            isSelection,
+                            viewsVisibility,
+                            viewsInvisibility ->
+                            onAction(
+                                GenericUiAction.ChipSelectionAction(
+                                    identifier = id,
+                                    chipSelectionItemUiModel = chipSelectionItem,
+                                    status = isSelection,
+                                    viewsVisibility = viewsVisibility,
+                                    viewsInvisibility = viewsInvisibility
+                                )
+                            )
                         }
                     }
                 }
             }
 
-            is FindingModel -> item(key = model.identifier) {
-                FindingComponent(
-                    uiModel = model.mapToUiModel(),
-                    isTablet = isTablet
-                ) { id, status ->
-                    onAction(GenericUiAction.FindingAction(identifier = id, status = status))
+            is CrewMemberSignatureUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    CrewMemberSignatureComponent(uiModel = model)
                 }
             }
 
-            is FingerprintModel -> item(key = model.identifier) {
+            is DetailedInfoListUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    DetailedInfoListComponent(uiModel = model)
+                }
+            }
+
+            is DropDownUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    DropDownComponent(model, validateFields) { dropDownInputUiModel ->
+                        onAction(
+                            GenericUiAction.DropDownAction(
+                                identifier = dropDownInputUiModel.identifier,
+                                id = dropDownInputUiModel.id,
+                                name = dropDownInputUiModel.name,
+                                quantity = dropDownInputUiModel.quantity,
+                                fieldValidated = dropDownInputUiModel.fieldValidated
+                            )
+                        )
+                    }
+                }
+            }
+
+            is FiltersUiModel -> if (model.visibility) {
+                stickyHeader(key = model.identifier) {
+                    FiltersComponent(uiModel = model) { selected, _ ->
+                        scope.launch {
+                            val contentHeader = body.indexOfFirst {
+                                it is HeaderUiModel && it.title.text == selected
+                            }
+
+                            if (contentHeader >= 0) {
+                                listState.animateScrollToItem(
+                                    index = contentHeader,
+                                    scrollOffset = FILTERS_SCROLL_OFFSET
+                                )
+                            }
+                        }
+                    }
+
+                    // TECH-DEBT: Send data to Stepper or create shared fun
+                }
+            }
+
+            is FindingUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    FindingComponent(uiModel = model) { id, status, findingDetail ->
+                        onAction(
+                            GenericUiAction.FindingAction(
+                                identifier = id,
+                                status = status,
+                                findingDetail = findingDetail
+                            )
+                        )
+                    }
+                }
+            }
+
+            is FingerprintUiModel -> item(key = model.identifier) {
                 Image(
                     modifier = Modifier.padding(vertical = 20.dp),
-                    painter = painterResource(id = R.drawable.ic_login_fingerprint),
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_login_fingerprint),
                     contentDescription = null
                 )
             }
 
-            is FooterBodyModel -> item(key = model.identifier) {
-                FooterSection(
-                    footerModel = model.mapToSection()
-                ) { uiAction ->
+            is FooterBodyUiModel -> item(key = model.identifier) {
+                FooterSection(footerModel = model.mapToSection()) { uiAction ->
                     onAction(uiAction)
                 }
             }
 
-            is HeaderModel -> item(key = model.identifier) {
-                HeaderSection(
-                    headerModel = model
-                )
+            is HeaderUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    HeaderSection(
+                        headerUiModel = model
+                    ) {
+                        onAction(HeaderUiAction.GoBack)
+                    }
+                }
             }
 
-            is InventoryCheckModel -> item(key = model.identifier) {
-                InventoryCheckComponent(
-                    uiModel = model.mapToUiModel(), isTablet,
-                    validateFields
-                ) { id, updatedValue, fieldValidated ->
-                    onAction(
-                        GenericUiAction.InventoryAction(
-                            identifier = id,
-                            updatedValue = updatedValue,
-                            fieldValidated = fieldValidated
+            is HumanBodyUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    HumanBodyComponent(model) { values ->
+                        onAction(GenericUiAction.HumanBodyAction(model.identifier, values))
+                    }
+                }
+            }
+
+            is ImageButtonSectionUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    ImageButtonSectionComponent(
+                        uiModel = model,
+                        validateFields = validateFields
+                    ) { id, itemId ->
+                        onAction(
+                            GenericUiAction.ImageButtonAction(
+                                identifier = id,
+                                itemIdentifier = itemId
+                            )
                         )
+                    }
+                }
+            }
+
+            is InfoCardUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    InfoCardComponent(
+                        uiModel = model,
+                        onAction = { cardUiModel ->
+                            onAction(
+                                GenericUiAction.InfoCardAction(
+                                    identifier = cardUiModel.identifier,
+                                    isPill = cardUiModel.isPill,
+                                    patient = cardUiModel.patientAph,
+                                    isClickCard = cardUiModel.isClickCard,
+                                    reportDetail = cardUiModel.reportDetail,
+                                    chipSection = cardUiModel.chipSection
+                                )
+                            )
+                        }
                     )
                 }
             }
 
-            is LabelModel -> item(key = model.identifier) {
-                LabelComponent(
-                    uiModel = model.mapToUiModel(),
-                    isTablet = isTablet
-                )
-            }
-
-            is SegmentedSwitchModel -> item(key = model.identifier) {
-                SegmentedSwitchComponent(
-                    uiModel = model.mapToUiModel(),
-                    isTablet = isTablet
-                ) { id, status ->
-                    onAction(
-                        GenericUiAction.SegmentedSwitchAction(
-                            identifier = id,
-                            status = status
+            is InventoryCheckUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    InventoryCheckComponent(
+                        uiModel = model,
+                        validateFields = validateFields
+                    ) { inputUiModel ->
+                        onAction(
+                            GenericUiAction.InventoryAction(
+                                identifier = model.identifier,
+                                itemIdentifier = inputUiModel.identifier,
+                                updatedValue = inputUiModel.updatedValue,
+                                fieldValidated = inputUiModel.fieldValidated
+                            )
                         )
-                    )
+                    }
                 }
             }
 
-            is PasswordTextFieldModel -> item(key = model.identifier) {
-                HandlePasswordTextFieldRows(model, isTablet, validateFields, onAction)
-            }
-
-            is RichLabelModel -> item(key = model.identifier) {
-                RichLabelComponent(uiModel = model.mapToUiModel())
-            }
-
-            is TermsAndConditionsModel -> item(key = model.identifier) {
-                TermsAndConditionsComponent(
-                    uiModel = model.mapToUiModel(),
-                    isTablet = isTablet
-                ) { link ->
-                    onAction(TermsAndConditions(link = link))
+            is InventorySearchUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    InventorySearchComponent(uiModel = model)
                 }
             }
 
-            is TextFieldModel -> item(key = model.identifier) {
-                HandleTextFieldRows(model, isTablet, validateFields, onAction)
+            is LabelUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    LabelComponent(uiModel = model)
+                }
+            }
+
+            is MediaActionsUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    val mediaActionsIndex by remember {
+                        mutableIntStateOf(body.indexOfFirst { it is MediaActionsUiModel })
+                    }
+
+                    MediaActionsComponent(
+                        uiModel = model,
+                        listState = listState,
+                        mediaActionsIndex = mediaActionsIndex
+                    ) { id, mediaAction ->
+                        onAction(
+                            GenericUiAction.MediaItemAction(
+                                identifier = id,
+                                mediaAction = mediaAction
+                            )
+                        )
+                    }
+                }
+            }
+
+            is MedsSelectorUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    MedsSelectorComponent(uiModel = model) { id ->
+                        onAction(GenericUiAction.MedsSelectorAction(identifier = id))
+                    }
+                }
+            }
+
+            is ObstetricianDataUiModel -> item(key = model.identifier) {
+                ObstetricianDataComponent(uiModel = model)
+            }
+
+            is PasswordTextFieldUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    HandlePasswordTextFieldRows(model, validateFields, onAction)
+                }
+            }
+
+            is RichLabelUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    RichLabelComponent(uiModel = model)
+                }
+            }
+
+            is SegmentedSwitchUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    SegmentedSwitchComponent(
+                        uiModel = model
+                    ) { id, status, viewsVisibility ->
+                        onAction(
+                            GenericUiAction.SegmentedSwitchAction(
+                                identifier = id,
+                                status = status,
+                                viewsVisibility = viewsVisibility
+                            )
+                        )
+                    }
+                }
+            }
+
+            is SignatureUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    SignatureComponent(
+                        uiModel = model,
+                        validateFields = validateFields
+                    ) { id ->
+                        onAction(GenericUiAction.SignatureAction(identifier = id))
+                    }
+                }
+            }
+
+            is SimpleCardUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    SimpleCardComponent(uiModel = model) { identifier ->
+                        onAction(GenericUiAction.SimpleCardAction(identifier = identifier))
+                    }
+                }
+            }
+
+            is SliderUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    SliderComponent(uiModel = model) { id, value ->
+                        onAction(GenericUiAction.SliderAction(identifier = id, value = value))
+                    }
+                }
+            }
+
+            is StaggeredCardsUiModel -> item(key = model.identifier) {
+                StaggeredCardsComponent(uiModel = model)
+            }
+
+            is TermsAndConditionsUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    TermsAndConditionsComponent(uiModel = model.mapToLoginModel()) { link ->
+                        onAction(TermsAndConditions(link = link))
+                    }
+                }
+            }
+
+            is TextFieldUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    HandleTextFieldRows(model, validateFields, onAction)
+                }
+            }
+
+            is TimelineUiModel -> item(key = model.identifier) {
+                TimelineComponent(uiModel = model)
+            }
+
+            is TimePickerUiModel -> if (model.visibility) {
+                item(key = model.identifier) {
+                    TimePickerComponent(uiModel = model) { id, hour, minute ->
+                        onAction(
+                            GenericUiAction.TimePickerAction(
+                                identifier = id,
+                                hour = hour,
+                                minute = minute
+                            )
+                        )
+                    }
+                }
             }
         }
     }
@@ -255,35 +611,30 @@ private fun LazyListScope.handleBodyRows(
 
 @Composable
 private fun HandleButtonRows(
-    model: ButtonModel,
-    isTablet: Boolean,
+    model: ButtonUiModel,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
         AuthCardsIdentifier.CREW_MEMBER_CARD_ADMIN_BUTTON.name -> ButtonComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet
+            uiModel = model
         ) {
             onAction(AuthCardsUiAction.AuthCard)
         }
 
         LoginIdentifier.LOGIN_FORGOT_PASSWORD_BUTTON.name -> ButtonComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet
+            uiModel = model
         ) {
             onAction(ForgotPassword)
         }
 
         LoginIdentifier.LOGIN_BUTTON.name -> ButtonComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet
+            uiModel = model
         ) {
             onAction(Login)
         }
 
         else -> ButtonComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet
+            uiModel = model
         ) { id ->
             onAction(GenericUiAction.ButtonAction(id))
         }
@@ -293,58 +644,48 @@ private fun HandleButtonRows(
 @Suppress("UnusedPrivateMember")
 @Composable
 private fun HandleChipRows(
-    model: ChipModel,
-    isTablet: Boolean,
+    model: ChipUiModel,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
-        AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_ASSISTANT.name,
-        AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DOCTOR.name,
+        AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_ASSISTANT.name -> ChipComponent(
+            uiModel = model,
+            onAction = {
+                onAction(
+                    NewsUiAction.NewsStepOneOnChipClick(OperationRole.AUXILIARY_AND_OR_TAPH.name)
+                )
+            }
+        )
+
+        AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DOCTOR.name -> ChipComponent(
+            uiModel = model,
+            onAction = {
+                onAction(NewsUiAction.NewsStepOneOnChipClick(OperationRole.MEDIC_APH.name))
+            }
+        )
+
         AddReportRoleIdentifier.ADD_REPORT_ROLE_CHIP_DRIVER.name -> ChipComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
-            onClick = { onAction(NewsUiAction.NewsStepOneOnChipClick(it)) }
+            uiModel = model,
+            onAction = {
+                onAction(NewsUiAction.NewsStepOneOnChipClick(OperationRole.DRIVER.name))
+            }
         )
 
         else -> ChipComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet
+            uiModel = model,
         )
-    }
-}
-
-@Composable
-private fun HandleCrewMemberCardRows(
-    model: InfoCardModel,
-    isTablet: Boolean,
-    onAction: (actionInput: UiAction) -> Unit
-) {
-    when (model.identifier) {
-        AuthCardsIdentifier.CREW_MEMBER_CARD_ASSISTANT.name,
-        AuthCardsIdentifier.CREW_MEMBER_CARD_DRIVER.name,
-        AuthCardsIdentifier.CREW_MEMBER_CARD_DOCTOR.name -> {
-            InfoCardComponent(
-                uiModel = model.mapToUiModel(),
-                isTablet = isTablet,
-                onAction = { onAction(AuthCardsUiAction.AuthCard) },
-                onNewsAction = { onAction(AuthCardsUiAction.AuthCardNews(it)) },
-                onFindingsAction = { onAction(AuthCardsUiAction.AuthCardFindings(it)) }
-            )
-        }
     }
 }
 
 @Composable
 private fun HandlePasswordTextFieldRows(
-    model: PasswordTextFieldModel,
-    isTablet: Boolean,
+    model: PasswordTextFieldUiModel,
     validateFields: Boolean,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
         ChangePasswordIdentifier.CHANGE_PASSWORD_CONFIRM.name -> PasswordTextFieldComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
+            uiModel = model,
             validateFields = validateFields
         ) { updatedValue, fieldValidated ->
             onAction(
@@ -356,8 +697,7 @@ private fun HandlePasswordTextFieldRows(
         }
 
         ChangePasswordIdentifier.CHANGE_PASSWORD_NEW.name -> PasswordTextFieldComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
+            uiModel = model,
             validateFields = validateFields
         ) { updatedValue, fieldValidated ->
             onAction(
@@ -369,8 +709,7 @@ private fun HandlePasswordTextFieldRows(
         }
 
         LoginIdentifier.LOGIN_PASSWORD.name -> PasswordTextFieldComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
+            uiModel = model,
             validateFields = validateFields
         ) { updatedValue, fieldValidated ->
             onAction(
@@ -386,84 +725,80 @@ private fun HandlePasswordTextFieldRows(
 @Suppress("LongMethod")
 @Composable
 private fun HandleTextFieldRows(
-    model: TextFieldModel,
-    isTablet: Boolean,
+    model: TextFieldUiModel,
     validateFields: Boolean,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     when (model.identifier) {
         DeviceAuthIdentifier.DEVICE_AUTH_CODE.name -> TextFieldComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
+            uiModel = model,
             validateFields = validateFields
-        ) { _, updatedValue, fieldValidated ->
+        ) { inputUiModel ->
             onAction(
                 DeviceAuthCodeInput(
-                    updatedValue = updatedValue,
-                    fieldValidated = fieldValidated
+                    updatedValue = inputUiModel.updatedValue,
+                    fieldValidated = inputUiModel.fieldValidated
                 )
             )
         }
 
         LoginIdentifier.LOGIN_EMAIL.name -> TextFieldComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
+            uiModel = model,
             validateFields = validateFields
-        ) { _, updatedValue, fieldValidated ->
+        ) { inputUiModel ->
             onAction(
                 LoginUserInput(
-                    updatedValue = updatedValue,
-                    fieldValidated = fieldValidated
+                    updatedValue = inputUiModel.updatedValue,
+                    fieldValidated = inputUiModel.fieldValidated
                 )
             )
         }
 
         ChangePasswordIdentifier.CHANGE_PASSWORD_CURRENT.name -> TextFieldComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
+            uiModel = model,
             validateFields = validateFields
-        ) { _, updatedValue, _ ->
+        ) { inputUiModel ->
             onAction(
                 OldPasswordInput(
-                    updatedValue = updatedValue
+                    updatedValue = inputUiModel.updatedValue
                 )
             )
         }
 
         AddReportIdentifier.ADD_REPORT_ENTRY_TOPIC.name -> TextFieldComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
+            uiModel = model,
             validateFields = validateFields
-        ) { _, updatedValue, _ ->
+        ) { inputUiModel ->
             onAction(
-                RecordNewsUiAction.TopicInput(
-                    updatedValue = updatedValue,
-                    fieldValidated = validateFields
+                AddReportUiAction.TopicInput(
+                    updatedValue = inputUiModel.updatedValue,
+                    fieldValidated = inputUiModel.fieldValidated
                 )
             )
         }
 
         AddReportIdentifier.ADD_REPORT_ENTRY_DESCRIPTION.name -> TextFieldComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
+            uiModel = model,
             validateFields = validateFields
-        ) { _, updatedValue, _ ->
+        ) { inputUiModel ->
             onAction(
-                RecordNewsUiAction.DescriptionInput(
-                    updatedValue = updatedValue,
-                    fieldValidated = validateFields
+                AddReportUiAction.DescriptionInput(
+                    updatedValue = inputUiModel.updatedValue,
+                    fieldValidated = inputUiModel.fieldValidated
                 )
             )
         }
 
         else -> TextFieldComponent(
-            uiModel = model.mapToUiModel(),
-            isTablet = isTablet,
+            uiModel = model,
             validateFields = validateFields
-        ) { id, updatedValue, fieldValidated ->
+        ) { inputUiModel ->
             onAction(
                 GenericUiAction.InputAction(
-                    identifier = id, updatedValue = updatedValue, fieldValidated = fieldValidated
+                    identifier = inputUiModel.identifier,
+                    updatedValue = inputUiModel.updatedValue,
+                    fieldValidated = inputUiModel.fieldValidated,
+                    required = inputUiModel.required
                 )
             )
         }

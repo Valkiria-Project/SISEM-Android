@@ -2,11 +2,11 @@ package com.skgtecnologia.sisem.commons.extensions
 
 import kotlin.contracts.contract
 
-fun validateOrThrow(value: Boolean, exception: () -> Exception) {
+fun validateOrThrow(validation: Boolean, exceptionCallback: () -> Exception) {
     contract {
-        returns() implies value
+        returns() implies validation
     }
-    if (!value) {
-        throw exception()
+    if (!validation) {
+        throw exceptionCallback()
     }
 }

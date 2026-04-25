@@ -7,7 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
 
@@ -22,12 +23,12 @@ fun LoginHeaderSection(
         horizontalArrangement = Arrangement.Center
     ) {
         Image(
-            painterResource(id = R.drawable.banner_sisem),
+            imageVector = ImageVector.vectorResource(id = R.drawable.banner_sisem),
             contentDescription = null,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
         Image(
-            painterResource(id = R.drawable.banner_gov),
+            imageVector = ImageVector.vectorResource(id = R.drawable.banner_gov),
             contentDescription = null,
             modifier = Modifier.padding(horizontal = 16.dp)
         )

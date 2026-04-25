@@ -8,6 +8,6 @@ import retrofit2.http.POST
 
 interface LoginApi {
 
-    @POST("screen/login")
+    @POST("v1/screen/login")
     suspend fun getLoginScreen(@Body screenBody: ScreenBody): Response<ScreenResponse>
 }

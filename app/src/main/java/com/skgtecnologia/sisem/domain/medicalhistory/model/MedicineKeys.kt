@@ -1,0 +1,10 @@
+package com.skgtecnologia.sisem.domain.medicalhistory.model
+
+const val GENERIC_NAME_KEY = "KEY_GENERIC_NAME"
+const val DATE_MEDICINE_KEY = "KEY_APPLICATION_DATE"
+const val APPLICATION_TIME_KEY = "KEY_APPLICATION_TIME"
+const val DOSE_UNIT_KEY = "KEY_DOSE_UNIT"
+const val APPLIED_DOSE_KEY = "KEY_DOSE_APPLIED"
+const val CODE_KEY = "CODE_KEY"
+const val QUANTITY_USED_KEY = "KEY_CANT_APPLIED"
+const val ADMINISTRATION_ROUTE_KEY = "KEY_VIA_ADMIN"

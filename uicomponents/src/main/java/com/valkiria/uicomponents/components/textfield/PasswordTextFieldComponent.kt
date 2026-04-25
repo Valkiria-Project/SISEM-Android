@@ -7,11 +7,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
@@ -31,12 +30,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
+import com.valkiria.uicomponents.components.label.toTextStyle
 import com.valkiria.uicomponents.extensions.toFailedValidation
-import com.valkiria.uicomponents.model.mocks.getLoginPasswordTextFieldUiModel
-import com.valkiria.uicomponents.model.mocks.getNoIconPasswordTextFieldUiModel
-import com.valkiria.uicomponents.model.props.TabletWidth
-import com.valkiria.uicomponents.model.props.toTextStyle
-import com.valkiria.uicomponents.model.ui.textfield.PasswordTextFieldUiModel
+import com.valkiria.uicomponents.mocks.getLoginPasswordTextFieldUiModel
+import com.valkiria.uicomponents.mocks.getNoIconPasswordTextFieldUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import timber.log.Timber
@@ -45,7 +42,6 @@ import timber.log.Timber
 @Composable
 fun PasswordTextFieldComponent(
     uiModel: PasswordTextFieldUiModel,
-    isTablet: Boolean = false,
     validateFields: Boolean = false,
     onAction: (updatedValue: String, fieldValidated: Boolean) -> Unit
 ) {
@@ -54,17 +50,13 @@ fun PasswordTextFieldComponent(
     )
 
     Row(
-        modifier = if (isTablet) {
-            uiModel.modifier.width(TabletWidth)
-        } else {
-            uiModel.modifier.fillMaxWidth()
-        },
+        modifier = uiModel.modifier.fillMaxWidth(),
         horizontalArrangement = uiModel.arrangement,
         verticalAlignment = Alignment.CenterVertically
     ) {
         iconResourceId?.let {
             Icon(
-                painter = painterResource(id = iconResourceId),
+                imageVector = ImageVector.vectorResource(id = iconResourceId),
                 contentDescription = null,
                 modifier = Modifier
                     .padding(end = 8.dp, bottom = 8.dp)
@@ -137,7 +129,14 @@ fun PasswordTextFieldComponent(
                 PasswordVisualTransformation()
             },
             keyboardOptions = uiModel.keyboardOptions,
-            singleLine = true
+            singleLine = true,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                focusedTrailingIconColor = Color.White,
+                unfocusedBorderColor = Color.White,
+                unfocusedLabelColor = Color.White,
+                unfocusedTrailingIconColor = Color.White
+            )
         )
     }
 }

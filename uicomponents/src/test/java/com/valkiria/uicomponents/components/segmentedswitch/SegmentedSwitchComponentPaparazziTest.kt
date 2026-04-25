@@ -11,7 +11,7 @@ class SegmentedSwitchComponentPaparazziTest {
     @get:Rule
     val paparazziRule: Paparazzi = Paparazzi(
         theme = "android:Theme.MaterialComponents.Light.NoActionBar",
-        deviceConfig = DeviceConfig.PIXEL_6_PRO.copy(softButtons = false, screenHeight = 1),
+        deviceConfig = DeviceConfig.PIXEL_6_PRO.copy(softButtons = false),
         renderingMode = V_SCROLL
     )
 

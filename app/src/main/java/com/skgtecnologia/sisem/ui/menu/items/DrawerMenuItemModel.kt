@@ -3,22 +3,14 @@ package com.skgtecnologia.sisem.ui.menu.items
 import android.content.Context
 import androidx.annotation.DrawableRes
 import com.skgtecnologia.sisem.R
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.CertificationsScreen
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.DeviceAuthScreen
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.DrivingGuideScreen
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.HCEUDCScreen
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.IncidentScreen
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.InventoryScreen
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.AddReportRoleScreen
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.NotificationsScreen
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.PreoperationalMainScreen
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.ShiftScreen
-import com.skgtecnologia.sisem.ui.navigation.MainNavigationRoute.SignatureAndFingerprint
+import com.skgtecnologia.sisem.ui.navigation.MAIN
+import com.skgtecnologia.sisem.ui.navigation.MainRoute
+import com.skgtecnologia.sisem.ui.navigation.NavRoute
+import com.skgtecnologia.sisem.ui.navigation.ReportRoute
 import com.valkiria.uicomponents.R.drawable
 
 data class DrawerMenuItemModel(
-    val drawerOption: MainNavigationRoute,
+    val drawerOption: NavRoute,
     val title: String,
     @DrawableRes val drawableId: Int
 )
@@ -33,60 +25,71 @@ fun getDrawerMenuItemList(context: Context, isAdmin: Boolean?): List<DrawerMenuI
 
 private fun getDrawerItems(context: Context) = listOf(
     DrawerMenuItemModel(
-        IncidentScreen,
+        MainRoute.IncidentsRoute,
         context.getString(R.string.drawer_incident),
         drawable.ic_incidents
     ),
     DrawerMenuItemModel(
-        InventoryScreen,
+        MainRoute.InventoryRoute,
         context.getString(R.string.drawer_inventory),
         drawable.ic_inventory
     ),
+    /* TECH-DEBT: Revert later
     DrawerMenuItemModel(
-        NotificationsScreen,
+        MainRoute.NotificationsRoute,
         context.getString(R.string.drawer_notifications),
         drawable.ic_notification
     ),
     DrawerMenuItemModel(
-        DrivingGuideScreen,
+        MainRoute.DrivingGuideRoute,
         context.getString(R.string.drawer_guides),
-        drawable.ic_driver
+        drawable.ic_folder
     ),
     DrawerMenuItemModel(
-        CertificationsScreen,
+        MainRoute.CertificationsRoute,
         context.getString(R.string.drawer_certifications),
         drawable.ic_certifications
     ),
+     */
     DrawerMenuItemModel(
-        AddReportRoleScreen,
+        ReportRoute.AddReportRoleRoute,
         context.getString(R.string.drawer_novelties),
         drawable.ic_news
     ),
+    /* TECH-DEBT: Revert later
     DrawerMenuItemModel(
-        ShiftScreen,
+        MainRoute.ShiftRoute,
         context.getString(R.string.drawer_turn_shift),
         drawable.ic_shift
     ),
+     */
     DrawerMenuItemModel(
-        PreoperationalMainScreen,
+        MainRoute.PreoperationalMainRoute,
         context.getString(R.string.drawer_pre_operational),
         drawable.ic_check
     ),
+    /* TECH-DEBT: Revert later
     DrawerMenuItemModel(
-        HCEUDCScreen,
+        MainRoute.HCEUDCRoute,
         context.getString(R.string.drawer_hceud),
         drawable.ic_hceud
+    ),
+     */
+    DrawerMenuItemModel(
+        MainRoute.PreStretcherRetentionRoute,
+        context.getString(R.string.drawer_stretcher_retention),
+        drawable.ic_stretcher
     )
 )
 
 private fun getLeaderDrawerItems(context: Context) = listOf(
     DrawerMenuItemModel(
-        DeviceAuthScreen,
+        MainRoute.DeviceAuthMainRoute(MAIN),
         context.getString(R.string.drawer_device_auth),
         drawable.ic_ambulance
     ),
     DrawerMenuItemModel(
-        SignatureAndFingerprint,
+        MainRoute.InitSignatureRoute,
         context.getString(R.string.drawer_signature_and_fingerprint),
         drawable.ic_fingerprint
     )

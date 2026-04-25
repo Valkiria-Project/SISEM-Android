@@ -10,33 +10,32 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.domain.changepassword.model.ChangePasswordIdentifier
-import com.skgtecnologia.sisem.ui.navigation.model.NavigationModel
+import com.skgtecnologia.sisem.ui.login.LoginNavigationModel
 import com.skgtecnologia.sisem.ui.sections.BodySection
 import com.skgtecnologia.sisem.ui.sections.FooterSection
 import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.ChangePasswordUiAction
 import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.UiAction
-import com.valkiria.uicomponents.components.banner.OnErrorHandler
-import com.valkiria.uicomponents.components.loader.OnLoadingHandler
+import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
+import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
 
 @Suppress("LongMethod")
 @Composable
 fun ChangePasswordScreen(
-    isTablet: Boolean,
     modifier: Modifier = Modifier,
-    onNavigation: (loginNavigationModel: NavigationModel?) -> Unit,
+    viewModel: ChangePasswordViewModel = hiltViewModel(),
+    onNavigation: (loginNavigationModel: LoginNavigationModel) -> Unit,
     onCancel: () -> Unit
 ) {
-    val viewModel = hiltViewModel<ChangePasswordViewModel>()
     val uiState = viewModel.uiState
 
     LaunchedEffect(uiState) {
         launch {
             when {
                 uiState.onCancel -> {
-                    viewModel.onCancelHandled()
+                    viewModel.consumeCancelEvent()
                     onCancel()
                 }
             }
@@ -50,7 +49,7 @@ fun ChangePasswordScreen(
 
         uiState.screenModel?.header?.let {
             HeaderSection(
-                headerModel = it,
+                headerUiModel = it,
                 modifier = modifier.constrainAs(header) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
@@ -61,7 +60,6 @@ fun ChangePasswordScreen(
 
         BodySection(
             body = uiState.screenModel?.body,
-            isTablet = isTablet,
             modifier = modifier
                 .constrainAs(body) {
                     top.linkTo(header.bottom)
@@ -86,13 +84,17 @@ fun ChangePasswordScreen(
         }
     }
 
-    OnErrorHandler(uiModel = uiState.successInfoModel) {
-        viewModel.onChangePasswordHandled()
-        onNavigation(uiState.loginNavigationModel)
+    OnBannerHandler(uiModel = uiState.successInfoModel) {
+        viewModel.consumeChangePasswordEvent()
+        uiState.loginNavigationModel?.let { loginNavigationModel ->
+            onNavigation(
+                loginNavigationModel
+            )
+        }
     }
 
-    OnErrorHandler(uiModel = uiState.errorModel) {
-        viewModel.handleShownError()
+    OnBannerHandler(uiModel = uiState.errorModel) {
+        viewModel.consumeErrorEvent()
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)

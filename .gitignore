@@ -1,6 +1,7 @@
 *.iml
 .gradle
 /local.properties
+/.idea/AndroidProjectSystem.xml
 /.idea/appInsightsSettings.xml
 /.idea/assetWizardSettings.xml
 /.idea/caches
@@ -11,6 +12,7 @@
 /.idea/migrations.xml
 /.idea/modules.xml
 /.idea/navEditor.xml
+/.idea/shelf
 /.idea/workspace.xml
 .DS_Store
 /build
@@ -18,3 +20,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+keystore.properties
+*.jks

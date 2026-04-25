@@ -1,13 +1,13 @@
 package com.valkiria.uicomponents.components.inventorycheck
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,29 +16,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.bricks.textfield.DigitsTextFieldView
+import com.valkiria.uicomponents.components.label.toTextStyle
 import com.valkiria.uicomponents.components.richlabel.RichLabelComponent
-import com.valkiria.uicomponents.model.mocks.getPreOperationalInventoryCheckUiModel
-import com.valkiria.uicomponents.model.props.FORTY_PERCENT_WEIGHT
-import com.valkiria.uicomponents.model.props.THIRTY_PERCENT_WEIGHT
-import com.valkiria.uicomponents.model.props.TabletWidth
-import com.valkiria.uicomponents.model.props.toTextStyle
-import com.valkiria.uicomponents.model.ui.inventorycheck.InventoryCheckUiModel
+import com.valkiria.uicomponents.components.textfield.InputUiModel
+import com.valkiria.uicomponents.mocks.getPreOperationalInventoryCheckUiModel
+import com.valkiria.uicomponents.utlis.FORTY_PERCENT_WEIGHT
+import com.valkiria.uicomponents.utlis.THIRTY_PERCENT_WEIGHT
 import timber.log.Timber
 
 @Suppress("UnusedPrivateMember")
 @Composable
 fun InventoryCheckComponent(
     uiModel: InventoryCheckUiModel,
-    isTablet: Boolean = false,
     validateFields: Boolean = false,
-    onAction: (id: String, updatedValue: String, fieldValidated: Boolean) -> Unit
+    onAction: (inputUiModel: InputUiModel) -> Unit
 ) {
     Column(
-        modifier = if (isTablet) {
-            uiModel.modifier.width(TabletWidth)
-        } else {
-            uiModel.modifier.fillMaxWidth()
-        }
+        modifier = uiModel.modifier.fillMaxWidth()
     ) {
         InventoryHeaderRow(uiModel)
 
@@ -52,7 +46,8 @@ fun InventoryCheckComponent(
                 Column(
                     modifier = Modifier
                         .weight(FORTY_PERCENT_WEIGHT),
-                    horizontalAlignment = Alignment.Start
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.Top
                 ) {
                     RichLabelComponent(uiModel = checkItemUiModel.name)
                 }
@@ -73,10 +68,12 @@ fun InventoryCheckComponent(
                 ) {
                     DigitsTextFieldView(
                         identifier = checkItemUiModel.name.identifier,
+                        value = checkItemUiModel.receivedValueText,
                         style = checkItemUiModel.registeredValueTextStyle.toTextStyle(),
+                        validations = uiModel.validations,
                         validateFields = validateFields
                     ) { id, updatedValue, fieldValidated ->
-                        onAction(id, updatedValue, fieldValidated)
+                        onAction(InputUiModel(id, updatedValue, fieldValidated))
                     }
                 }
             }
@@ -100,8 +97,8 @@ private fun InventoryHeaderRow(uiModel: InventoryCheckUiModel) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = uiModel.registeredText,
-                style = uiModel.registeredTextStyle.toTextStyle()
+                text = uiModel.registered.text,
+                style = uiModel.registered.textStyle.toTextStyle()
             )
         }
         Column(
@@ -110,8 +107,8 @@ private fun InventoryHeaderRow(uiModel: InventoryCheckUiModel) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = uiModel.receivedText,
-                style = uiModel.receivedTextStyle.toTextStyle()
+                text = uiModel.received.text,
+                style = uiModel.received.textStyle.toTextStyle()
             )
         }
     }
@@ -125,7 +122,7 @@ fun InventoryCheckComponentPreview() {
             .fillMaxSize()
             .background(Color.DarkGray)
     ) {
-        InventoryCheckComponent(uiModel = getPreOperationalInventoryCheckUiModel()) { _, _, _ ->
+        InventoryCheckComponent(uiModel = getPreOperationalInventoryCheckUiModel()) { _ ->
             Timber.d("Inventory action")
         }
     }

@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.skgtecnologia.sisem.data.auth.cache.model.AccessTokenEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AccessTokenDao {
@@ -13,22 +14,37 @@ interface AccessTokenDao {
     suspend fun insertAccessToken(accessTokenEntity: AccessTokenEntity)
 
     @Query("SELECT * FROM access_token order by date_time desc LIMIT 1")
-    suspend fun getAccessToken(): AccessTokenEntity?
+    fun observeAccessToken(): Flow<AccessTokenEntity?>
 
     @Query("SELECT * FROM access_token")
     suspend fun getAllAccessTokens(): List<AccessTokenEntity>
 
+    @Query("SELECT * FROM access_token WHERE user_name = :username")
+    suspend fun getAccessTokenByUsername(username: String): AccessTokenEntity
+
+    @Query("SELECT * FROM access_token WHERE role = :role")
+    suspend fun getAccessTokenByRole(role: String): AccessTokenEntity?
+
     @Query(
         """
             UPDATE access_token
-            SET pre_operational_status = false
+            SET pre_operational_status = :status
             WHERE role = :role
              """
     )
-    suspend fun updatePreOperationalStatus(role: String)
+    suspend fun updatePreOperationalStatus(role: String, status: Boolean)
+
+    @Query(
+        """
+            UPDATE access_token
+            SET turn_id = :turnId
+            WHERE turn_id = :previousTurnId
+             """
+    )
+    suspend fun updateTurn(turnId: String, previousTurnId: String)
 
     @Query("DELETE FROM access_token")
-    suspend fun deleteAccessToken() // FIXME: review this method
+    suspend fun deleteAccessToken()
 
     @Query("DELETE FROM access_token WHERE user_name = :username")
     suspend fun deleteAccessTokenByUsername(username: String)

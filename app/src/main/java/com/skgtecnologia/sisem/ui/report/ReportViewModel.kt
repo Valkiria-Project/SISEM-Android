@@ -1,243 +1,286 @@
 package com.skgtecnologia.sisem.ui.report
 
-import android.net.Uri
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.skgtecnologia.sisem.domain.model.banner.confirmFinding
-import com.skgtecnologia.sisem.domain.model.banner.confirmReport
+import androidx.navigation.toRoute
+import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
+import com.skgtecnologia.sisem.di.operation.OperationRole
+import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
+import com.skgtecnologia.sisem.domain.model.banner.fileSizeErrorBanner
+import com.skgtecnologia.sisem.domain.model.banner.findingCancellationBanner
+import com.skgtecnologia.sisem.domain.model.banner.findingConfirmationBanner
+import com.skgtecnologia.sisem.domain.model.banner.findingSavedBanner
+import com.skgtecnologia.sisem.domain.model.banner.imagesLimitErrorBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
-import com.skgtecnologia.sisem.domain.operation.usecases.RetrieveOperationConfig
+import com.skgtecnologia.sisem.domain.model.banner.reportCancellationBanner
+import com.skgtecnologia.sisem.domain.model.banner.reportConfirmationBanner
+import com.skgtecnologia.sisem.domain.model.banner.reportSentBanner
+import com.skgtecnologia.sisem.domain.operation.usecases.GetOperationConfigWithCurrentRole
+import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.domain.report.model.ImageModel
 import com.skgtecnologia.sisem.domain.report.usecases.SendReport
-import com.skgtecnologia.sisem.ui.navigation.model.ReportNavigationModel
-import com.valkiria.uicomponents.model.ui.banner.BannerUiModel
+import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
+import com.skgtecnologia.sisem.ui.navigation.ReportRoute
+import com.valkiria.uicomponents.action.UiAction
+import com.valkiria.uicomponents.components.media.MediaItemUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 @HiltViewModel
 class ReportViewModel @Inject constructor(
-    private val retrieveOperationConfig: RetrieveOperationConfig,
+    savedStateHandle: SavedStateHandle,
+    private val logoutCurrentUser: LogoutCurrentUser,
+    private val getOperationConfigWithCurrentRole: GetOperationConfigWithCurrentRole,
     private val sendReport: SendReport
 ) : ViewModel() {
 
     private var job: Job? = null
 
-    var uiState by mutableStateOf(ReportUiState())
+    var uiState: MutableStateFlow<ReportUiState> = MutableStateFlow(ReportUiState())
         private set
+
+    private val findingId = savedStateHandle.toRoute<ReportRoute.AddFindingRoute>().findingId
 
     var topic by mutableStateOf("")
     var description by mutableStateOf("")
     var isValidTopic by mutableStateOf(false)
     var isValidDescription by mutableStateOf(false)
+    var currentImage by mutableIntStateOf(0)
 
     init {
-        uiState = uiState.copy(isLoading = true)
+        uiState.update { it.copy(isLoading = true) }
 
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
-            retrieveOperationConfig.invoke()
+        job = viewModelScope.launch {
+            getOperationConfigWithCurrentRole.invoke()
                 .onSuccess { operationModel ->
                     withContext(Dispatchers.Main) {
-                        uiState = uiState.copy(
-                            operationModel = operationModel,
-                            isLoading = false
-                        )
+                        uiState.update {
+                            it.copy(
+                                operationConfig = operationModel,
+                                isLoading = false
+                            )
+                        }
                     }
                 }
                 .onFailure { throwable ->
-                    uiState = uiState.copy(
-                        isLoading = false,
-                        errorModel = throwable.mapToUi()
-                    )
-                }
-        }
-    }
-
-    fun goBack() {
-        uiState = uiState.copy(
-            navigationModel = ReportNavigationModel(
-                goBack = true
-            ),
-            cancelInfoModel = null
-        )
-    }
-
-    fun cancelFinding() {
-        uiState = uiState.copy(
-            navigationModel = ReportNavigationModel(
-                cancelFinding = true
-            ),
-            cancelInfoModel = com.skgtecnologia.sisem.domain.model.banner.cancelFinding().mapToUi()
-        )
-    }
-
-    fun cancelReport() {
-        uiState = uiState.copy(
-            navigationModel = ReportNavigationModel(
-                cancelReport = true
-            ),
-            cancelInfoModel = com.skgtecnologia.sisem.domain.model.banner.cancelReport().mapToUi()
-        )
-    }
-
-    fun updateSelectedImages(selectedImages: List<Uri>, role: String? = null) {
-        val imageLimit = when (role) {
-            "Conductor" -> uiState.operationModel?.numImgPreoperationalDriver ?: 0
-            "Médico" -> uiState.operationModel?.numImgPreoperationalDoctor ?: 0
-            "Auxiliar" -> uiState.operationModel?.numImgPreoperationalAux ?: 0
-            else -> 0
-        }
-
-        val updateSelectedImages = buildList {
-            uiState.selectedImageUris.forEach {
-                add(it)
-            }
-
-            selectedImages.forEachIndexed { index, image ->
-                if (imageLimit < uiState.selectedImageUris.size + index + 1) {
-                    uiState = uiState.copy(
-                        errorModel = BannerUiModel(
-                            icon = "ic_alert",
-                            title = "Cantidad de fotos",
-                            description = """Se ha excedido el número de imágenes permitido por
-                                | el sistema $imageLimit""".trimMargin()
+                    uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            infoEvent = throwable.mapToUi()
                         )
-                    )
-                    return@forEachIndexed
-                } else {
-                    add(image)
+                    }
                 }
-            }
         }
-
-        uiState = uiState.copy(
-            selectedImageUris = updateSelectedImages
-        )
     }
 
-    fun showCamera() {
-        uiState = uiState.copy(
-            navigationModel = ReportNavigationModel(
-                showCamera = true
+    fun navigateBackFromReport() {
+        uiState.update {
+            it.copy(
+                navigationModel = ReportNavigationModel(
+                    goBackFromReport = true
+                ),
+                successInfoModel = null,
+                cancelInfoModel = null,
+                confirmInfoModel = null
             )
-        )
+        }
     }
 
-    @Suppress("MagicNumber")
-    fun onPhotoTaken(savedUri: Uri, role: String? = null) {
-        val imageLimit = when (role) {
-            "Conductor" -> uiState.operationModel?.numImgPreoperationalDriver ?: 0
-            "Médico" -> uiState.operationModel?.numImgPreoperationalDoctor ?: 0
-            "Auxiliar" -> uiState.operationModel?.numImgPreoperationalAux ?: 0
-            else -> 3
-        }
-
-        val updatedSelectedImages = buildList {
-            uiState.selectedImageUris.forEach {
-                add(it)
-            }
-
-            if (imageLimit < uiState.selectedImageUris.size + 1) {
-                uiState = uiState.copy(
-                    errorModel = BannerUiModel(
-                        icon = "ic_alert",
-                        title = "Cantidad de fotos",
-                        description = """Se ha excedido el número de imágenes permitido por
-                                | el sistema $imageLimit""".trimMargin()
-                    )
-                )
-            } else {
-                add(savedUri)
-            }
-        }
-
-        uiState = uiState.copy(
-            selectedImageUris = updatedSelectedImages,
-            navigationModel = ReportNavigationModel(
-                photoTaken = true
+    fun navigateBackFromImages() {
+        uiState.update {
+            it.copy(
+                navigationModel = ReportNavigationModel(
+                    goBackFromImages = true
+                ),
+                successInfoModel = null,
+                cancelInfoModel = null,
+                confirmInfoModel = null
             )
-        )
+        }
+    }
+
+    // region AddFinding
+    fun cancelFinding() {
+        uiState.update {
+            it.copy(
+                navigationModel = ReportNavigationModel(
+                    cancelFinding = true
+                ),
+                cancelInfoModel = findingCancellationBanner().mapToUi()
+            )
+        }
     }
 
     fun saveFinding() {
-        uiState = uiState.copy(
-            validateFields = true
-        )
+        val (confirmInfoModel, navigationModel) =
+            if (isValidDescription && uiState.value.selectedMediaItems.isEmpty()) {
+                findingConfirmationBanner().mapToUi() to null
+            } else if (isValidDescription && uiState.value.selectedMediaItems.isNotEmpty()) {
+                null to ReportNavigationModel(
+                    closeFinding = true,
+                    imagesSize = uiState.value.selectedMediaItems.size
+                )
+            } else {
+                null to null
+            }
 
-        if (isValidDescription) {
-            uiState = uiState.copy(
+        uiState.update {
+            it.copy(
+                confirmInfoModel = confirmInfoModel,
+                validateFields = true,
+                navigationModel = navigationModel
+            )
+        }
+    }
+
+    fun confirmFinding() {
+        uiState.update {
+            it.copy(
+                successInfoModel = findingSavedBanner().mapToUi(),
                 navigationModel = ReportNavigationModel(
-                    saveFinding = true,
-                    imagesSize = uiState.selectedImageUris.size
+                    closeFinding = true,
+                    imagesSize = uiState.value.selectedMediaItems.size,
+                    novelty = Novelty(
+                        idPreoperational = findingId.orEmpty(),
+                        novelty = description,
+                        images = emptyList()
+                    )
                 )
             )
         }
     }
 
-    fun saveReport() {
-        uiState = uiState.copy(
-            validateFields = true
-        )
-
-        if (isValidTopic && isValidDescription) {
-            uiState = uiState.copy(
-                navigationModel = ReportNavigationModel(
-                    saveReport = true,
-                    imagesSize = uiState.selectedImageUris.size
-                )
+    fun saveFindingImages() {
+        uiState.update {
+            it.copy(
+                confirmInfoModel = findingConfirmationBanner().mapToUi()
             )
         }
     }
 
-    fun confirmSendFinding() {
-        uiState = uiState.copy(
-            navigationModel = ReportNavigationModel(
-                confirmFinding = true
-            ),
-            confirmInfoModel = confirmFinding().mapToUi()
-        )
-    }
-
-    fun confirmSendReport() {
-        uiState = uiState.copy(
-            navigationModel = ReportNavigationModel(
-                confirmSendReport = true
-            ),
-            confirmInfoModel = confirmReport().mapToUi()
-        )
-    }
-
-    @Suppress("UnusedPrivateMember")
-    fun saveFinding(images: List<String>) {
-        // FIXME: Save to the database with a key and retrieve this afterwards
-        uiState = uiState.copy(
-            confirmInfoModel = null,
-            successInfoModel = BannerUiModel(
-                icon = "ic_alert",
-                iconColor = "#42A4FA",
-                title = "Hallazgo guardado",
-                description = "El hallazgo ha sido almacenado con éxito."
-            ),
-            isLoading = false,
-            navigationModel = ReportNavigationModel(
-                closeFinding = true
+    fun confirmFindingImages(images: List<File>) {
+        uiState.update {
+            it.copy(
+                confirmInfoModel = null,
+                successInfoModel = findingSavedBanner().mapToUi(),
+                isLoading = false,
+                navigationModel = ReportNavigationModel(
+                    closeFinding = true,
+                    novelty = Novelty(
+                        idPreoperational = findingId.orEmpty(),
+                        novelty = description,
+                        images = images.mapIndexed { index, image ->
+                            ImageModel(
+                                fileName = "Img_$findingId" + "_$index.jpg",
+                                file = image
+                            )
+                        }
+                    )
+                )
             )
-        )
+        }
+    }
+    // endregion
+
+    // region AddReport
+    fun cancelReport() {
+        uiState.update {
+            it.copy(
+                navigationModel = ReportNavigationModel(
+                    cancelReport = true
+                ),
+                cancelInfoModel = reportCancellationBanner().mapToUi()
+            )
+        }
     }
 
-    fun sendReport(images: List<String>) {
-        uiState = uiState.copy(isLoading = true)
+    fun saveReport(roleName: String) {
+        val (confirmInfoModel, navigationModel) = if (
+            isValidTopic && isValidDescription && uiState.value.selectedMediaItems.isEmpty()
+        ) {
+            reportConfirmationBanner().mapToUi() to null
+        } else if (isValidTopic && isValidDescription && uiState.value.selectedMediaItems.isNotEmpty()) {
+            null to ReportNavigationModel(
+                closeReport = true,
+                imagesSize = uiState.value.selectedMediaItems.size
+            )
+        } else {
+            null to null
+        }
+
+        uiState.update {
+            it.copy(
+                roleName = roleName,
+                confirmInfoModel = confirmInfoModel,
+                validateFields = true,
+                navigationModel = navigationModel
+            )
+        }
+    }
+
+    fun confirmReport() {
         job?.cancel()
-        job = viewModelScope.launch(Dispatchers.IO) {
+        job = viewModelScope.launch {
             sendReport.invoke(
+                roleName = uiState.value.roleName,
+                topic = topic,
+                description = description,
+                images = listOf()
+            ).onSuccess {
+                withContext(Dispatchers.Main) {
+                    uiState.update {
+                        it.copy(
+                            confirmInfoModel = null,
+                            successInfoModel = reportSentBanner().mapToUi(),
+                            isLoading = false,
+                            navigationModel = ReportNavigationModel(
+                                closeReport = true
+                            )
+                        )
+                    }
+                }
+            }.onFailure { throwable ->
+                withContext(Dispatchers.Main) {
+                    uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            confirmInfoModel = null,
+                            infoEvent = throwable.mapToUi()
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun saveReportImages() {
+        uiState.update {
+            it.copy(
+                confirmInfoModel = reportConfirmationBanner().mapToUi()
+            )
+        }
+    }
+
+    fun confirmReportImages(images: List<File>) {
+        uiState.update { it.copy(isLoading = true) }
+        job?.cancel()
+        job = viewModelScope.launch {
+            sendReport.invoke(
+                roleName = uiState.value.roleName,
                 topic = topic,
                 description = description,
                 images = images.mapIndexed { index, image ->
@@ -247,47 +290,190 @@ class ReportViewModel @Inject constructor(
                     )
                 }
             ).onSuccess {
-                uiState = uiState.copy(
-                    confirmInfoModel = null,
-                    successInfoModel = BannerUiModel(
-                        icon = "ic_alert",
-                        iconColor = "#42A4FA",
-                        title = "Novedad guardada",
-                        description = "La novedad ha sido almacenada con éxito."
-                    ),
-                    isLoading = false,
-                    navigationModel = ReportNavigationModel(
-                        closeReport = true
-                    )
-                )
+                withContext(Dispatchers.Main) {
+                    uiState.update {
+                        it.copy(
+                            confirmInfoModel = null,
+                            successInfoModel = reportSentBanner().mapToUi(),
+                            isLoading = false,
+                            navigationModel = ReportNavigationModel(
+                                closeReport = true
+                            )
+                        )
+                    }
+                }
             }.onFailure { throwable ->
-                uiState = uiState.copy(
-                    isLoading = false,
-                    confirmInfoModel = null,
-                    errorModel = throwable.mapToUi()
+                withContext(Dispatchers.Main) {
+                    uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            confirmInfoModel = null,
+                            infoEvent = throwable.mapToUi()
+                        )
+                    }
+                }
+            }
+        }
+    }
+    // endregion
+
+    private fun getImageLimit(isFromPreOperational: Boolean) = if (isFromPreOperational.not()) {
+        uiState.value.operationConfig?.numImgNovelty ?: 0
+    } else {
+        when (uiState.value.operationConfig?.operationRole) {
+            OperationRole.AUXILIARY_AND_OR_TAPH ->
+                uiState.value.operationConfig?.numImgPreoperationalAux ?: 0
+
+            OperationRole.DRIVER -> uiState.value.operationConfig?.numImgPreoperationalDriver ?: 0
+            OperationRole.LEAD_APH -> 0
+            OperationRole.MEDIC_APH ->
+                uiState.value.operationConfig?.numImgPreoperationalDoctor ?: 0
+
+            null -> 0
+        }
+    }
+
+    // region ImageConfirmation
+    fun updateMediaActions(
+        mediaItems: List<MediaItemUiModel>,
+        isFromPreOperational: Boolean
+    ) {
+        val updateSelectedImages = buildList {
+            addAll(uiState.value.selectedMediaItems)
+
+            val imageLimit = getImageLimit(isFromPreOperational)
+            mediaItems.forEachIndexed { index, image ->
+                if (imageLimit <= (uiState.value.selectedMediaItems.size + index)) {
+                    uiState.update {
+                        it.copy(
+                            infoEvent = imagesLimitErrorBanner(imageLimit).mapToUi()
+                        )
+                    }
+                    return@forEachIndexed
+                } else if (!image.isSizeValid) {
+                    uiState.update {
+                        it.copy(
+                            infoEvent = fileSizeErrorBanner().mapToUi()
+                        )
+                    }
+                    return@forEachIndexed
+                } else {
+                    add(image)
+                }
+            }
+        }
+
+        uiState.update {
+            it.copy(
+                selectedMediaItems = updateSelectedImages
+            )
+        }
+    }
+
+    fun removeCurrentImage() {
+        val updateSelectedImages = buildList {
+            uiState.value.selectedMediaItems.mapIndexed { index, uri ->
+                if (index != currentImage) {
+                    add(uri)
+                }
+            }
+        }
+
+        uiState.update {
+            it.copy(
+                selectedMediaItems = updateSelectedImages
+            )
+        }
+    }
+    // endregion
+
+    fun showCamera(isFromPreOperational: Boolean) {
+        uiState.update {
+            it.copy(
+                isFromPreOperational = isFromPreOperational,
+                navigationModel = ReportNavigationModel(
+                    showCamera = true
                 )
+            )
+        }
+    }
+
+    fun onPhotoStarted() {
+        uiState.update { it.copy(isLoading = true) }
+    }
+
+    fun onPhotoTaken(mediaItemUiModel: MediaItemUiModel) {
+        val imageLimit = getImageLimit(
+            uiState.value.isFromPreOperational
+        )
+        val isOverImageLimit = uiState.value.selectedMediaItems.size >= imageLimit
+
+        val updatedSelectedImages = buildList {
+            addAll(uiState.value.selectedMediaItems)
+
+            if (!isOverImageLimit && mediaItemUiModel.isSizeValid) add(mediaItemUiModel)
+        }
+
+        val invalidMediaSelected = !mediaItemUiModel.isSizeValid
+
+        uiState.update {
+            it.copy(
+                isLoading = false,
+                selectedMediaItems = updatedSelectedImages,
+                navigationModel = ReportNavigationModel(
+                    photoTaken = true
+                ),
+                infoEvent = if (isOverImageLimit) {
+                    imagesLimitErrorBanner(imageLimit).mapToUi()
+                } else if (invalidMediaSelected) {
+                    fileSizeErrorBanner().mapToUi()
+                } else {
+                    null
+                }
+            )
+        }
+    }
+
+    fun consumeShownConfirm() {
+        uiState.update {
+            it.copy(
+                confirmInfoModel = null
+            )
+        }
+    }
+
+    fun handleEvent(uiAction: UiAction) {
+        consumeShownError()
+
+        uiAction.handleAuthorizationErrorEvent {
+            job?.cancel()
+            job = viewModelScope.launch {
+                logoutCurrentUser.invoke()
+                    .onSuccess { username ->
+                        UnauthorizedEventHandler.publishUnauthorizedEvent(username)
+                    }.onFailure {
+                        UnauthorizedEventHandler.publishUnauthorizedEvent(it.toString())
+                    }
             }
         }
     }
 
-    fun handleNavigation() {
-        uiState = uiState.copy(
-            validateFields = false,
-            cancelInfoModel = null,
-            confirmInfoModel = null,
-            navigationModel = null
-        )
+    fun consumeShownError() {
+        uiState.update {
+            it.copy(
+                infoEvent = null
+            )
+        }
     }
 
-    fun handleShownError() {
-        uiState = uiState.copy(
-            errorModel = null
-        )
-    }
-
-    fun handleShownConfirm() {
-        uiState = uiState.copy(
-            confirmInfoModel = null
-        )
+    fun consumeNavigationEvent() {
+        uiState.update {
+            it.copy(
+                validateFields = false,
+                cancelInfoModel = null,
+                confirmInfoModel = null,
+                navigationModel = null
+            )
+        }
     }
 }

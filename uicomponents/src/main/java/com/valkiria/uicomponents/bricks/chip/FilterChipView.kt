@@ -7,37 +7,33 @@ import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.valkiria.uicomponents.model.props.TextStyle
-import com.valkiria.uicomponents.model.props.toTextStyle
+import com.valkiria.uicomponents.components.label.TextStyle
+import com.valkiria.uicomponents.components.label.toTextStyle
 
+@Suppress("LongParameterList")
 @Composable
 fun FilterChipView(
     id: String,
     text: String,
+    isSelected: Boolean,
     textStyle: TextStyle,
     modifier: Modifier = Modifier,
+    isError: Boolean = false,
     onAction: (id: String, text: String, isSelection: Boolean) -> Unit
 ) {
-    var selected by remember { mutableStateOf(false) }
-
     FilterChip(
-        selected = selected,
+        selected = isSelected,
         onClick = {
-            selected = !selected
-            onAction(id, text, selected)
+            onAction(id, text, !isSelected)
         },
         label = {
             Text(
                 text = text,
                 style = textStyle.toTextStyle(),
-                color = if (selected) {
+                color = if (isSelected) {
                     Color.Black
                 } else {
                     Color.White
@@ -48,6 +44,18 @@ fun FilterChipView(
         shape = RoundedCornerShape(20.dp),
         colors = FilterChipDefaults.filterChipColors(
             selectedContainerColor = MaterialTheme.colorScheme.primary
-        )
+        ),
+        border = if (isError) {
+            FilterChipDefaults.filterChipBorder(
+                enabled = true,
+                selected = isSelected,
+                borderColor = MaterialTheme.colorScheme.error,
+            )
+        } else {
+            FilterChipDefaults.filterChipBorder(
+                enabled = true,
+                selected = isSelected,
+            )
+        }
     )
 }

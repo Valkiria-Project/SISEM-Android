@@ -6,10 +6,6 @@ import javax.inject.Qualifier
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class Audit
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
 annotation class BasicAuthentication
 
 @Qualifier

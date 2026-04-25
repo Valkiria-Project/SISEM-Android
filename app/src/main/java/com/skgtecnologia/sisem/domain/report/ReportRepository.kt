@@ -10,6 +10,7 @@ interface ReportRepository {
     suspend fun getAddReportScreen(): ScreenModel
 
     suspend fun sendReport(
+        roleName: String?,
         topic: String,
         description: String,
         images: List<ImageModel>

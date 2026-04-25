@@ -38,12 +38,14 @@ inline fun <T, R> T.resultOf(block: T.() -> R): Result<R> {
 
 /**
  * Like [mapCatching], but uses [resultOf] instead of [runCatching].
+ * Properly handles Result<T?> where success value can be null.
  */
+@Suppress("UNCHECKED_CAST")
 inline fun <R, T> Result<T>.mapResult(transform: (value: T) -> R): Result<R> {
-    val successResult = getOrNull()
-    return when {
-        successResult != null -> resultOf { transform(successResult) }
-        else -> Result.failure(exceptionOrNull() ?: error("Unreachable state"))
+    return if (isSuccess) {
+        resultOf { transform(getOrNull() as T) }
+    } else {
+        Result.failure(exceptionOrNull() ?: error("Unreachable state"))
     }
 }
 
