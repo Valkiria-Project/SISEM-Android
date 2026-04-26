@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.location.LocationManager
-import android.os.Looper
+import android.os.HandlerThread
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -18,15 +18,16 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-private const val MIN_UPDATE_DISTANCE_METERS = 50f
-
 class DefaultLocationProvider(
     private val context: Context,
     private val client: FusedLocationProviderClient
 ) : LocationProvider {
 
     @SuppressLint("MissingPermission")
-    override fun getLocationUpdates(interval: Long): Flow<Location> {
+    override fun getLocationUpdates(
+        interval: Long,
+        priority: Int
+    ): Flow<Location> {
         return callbackFlow {
             validateOrThrow(context.hasMapLocationPermission()) {
                 Timber.tag("Location").d("Missing location permissions")
@@ -46,14 +47,12 @@ class DefaultLocationProvider(
             val request = LocationRequest.Builder(interval)
                 .setMinUpdateIntervalMillis(interval)
                 .setMaxUpdateDelayMillis(interval)
-                .setMinUpdateDistanceMeters(MIN_UPDATE_DISTANCE_METERS)
-                .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
+                .setPriority(priority)
                 .build()
 
             val locationCallback = object : LocationCallback() {
                 override fun onLocationResult(result: LocationResult) {
                     super.onLocationResult(result)
-
                     Timber.tag("Location").d("Location result: ${result.lastLocation}")
                     result.locations.lastOrNull()?.let { location ->
                         launch { send(location) }
@@ -61,14 +60,17 @@ class DefaultLocationProvider(
                 }
             }
 
+            val handlerThread = HandlerThread("LocationCb").also { it.start() }
+
             client.requestLocationUpdates(
                 request,
                 locationCallback,
-                Looper.getMainLooper()
+                handlerThread.looper
             )
 
             awaitClose {
                 client.removeLocationUpdates(locationCallback)
+                handlerThread.quitSafely()
             }
         }
     }
