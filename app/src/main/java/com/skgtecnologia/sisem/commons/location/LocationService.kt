@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
+import com.google.android.gms.location.Priority
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.location.usecases.UpdateLocation
 import com.valkiria.uicomponents.utlis.TimeUtils
@@ -30,6 +31,12 @@ private const val CHANNEL_NAME = "Location"
 private const val LOCATION_INTERVAL = 5000L
 
 private const val FILE_NAME = "android_location"
+
+internal const val STATIONARY_SPEED_THRESHOLD = 0.5f // m/s (~2 km/h)
+
+internal fun decidePriority(speed: Float): Int =
+    if (speed < STATIONARY_SPEED_THRESHOLD) Priority.PRIORITY_BALANCED_POWER_ACCURACY
+    else Priority.PRIORITY_HIGH_ACCURACY
 
 @AndroidEntryPoint
 class LocationService : Service() {
