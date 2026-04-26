@@ -1,0 +1,23 @@
+docs/superpowers/specs/2026-04-26-location-reliability-design.md
+  5243d77cbd6fc249 1-209
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "eeb551d0464e85ebbf646b0dec0dc072ad3190ed",
+  "prompts": {
+    "5243d77cbd6fc249": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9f81bb6b-a0e9-4531-b9a4-b1f59651838f",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Juan Camilo Villada",
+      "messages": [],
+      "total_additions": 211,
+      "total_deletions": 5374,
+      "accepted_lines": 209,
+      "overriden_lines": 0
+    }
+  }
+}
