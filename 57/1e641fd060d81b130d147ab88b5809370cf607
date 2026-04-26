@@ -1,0 +1,23 @@
+app/src/main/java/com/skgtecnologia/sisem/commons/location/LocationService.kt
+  5243d77cbd6fc249 11-16,19,24,32,57-60,67,86-99,104,110,112-117,120,122-138
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "571e641fd060d81b130d147ab88b5809370cf607",
+  "prompts": {
+    "5243d77cbd6fc249": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9f81bb6b-a0e9-4531-b9a4-b1f59651838f",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Juan Camilo Villada",
+      "messages": [],
+      "total_additions": 54,
+      "total_deletions": 16,
+      "accepted_lines": 54,
+      "overriden_lines": 0
+    }
+  }
+}
