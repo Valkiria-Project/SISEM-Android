@@ -22,7 +22,7 @@ class MessagingService : FirebaseMessagingService() {
     lateinit var notificationsManager: NotificationsManager
 
     private val serviceJob = SupervisorJob()
-    private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
+    private val serviceScope = CoroutineScope(Dispatchers.IO + serviceJob)
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Timber.d("From: ${remoteMessage.from}")
