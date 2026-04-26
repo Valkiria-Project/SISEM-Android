@@ -1,0 +1,23 @@
+docs/superpowers/plans/2026-04-26-location-reliability.md
+  5243d77cbd6fc249 1-885
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "2649f734e2331a9ddcd452c4e58bf0f59c59dcee",
+  "prompts": {
+    "5243d77cbd6fc249": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9f81bb6b-a0e9-4531-b9a4-b1f59651838f",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Juan Camilo Villada",
+      "messages": [],
+      "total_additions": 901,
+      "total_deletions": 15,
+      "accepted_lines": 886,
+      "overriden_lines": 0
+    }
+  }
+}
