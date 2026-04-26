@@ -28,11 +28,17 @@ class NotificationRepositoryImplTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @MockK private lateinit var androidIdProvider: AndroidIdProvider
+
     @MockK private lateinit var authCacheDataSource: AuthCacheDataSource
+
     @MockK private lateinit var incidentCacheDataSource: IncidentCacheDataSource
+
     @MockK private lateinit var incidentRemoteDataSource: IncidentRemoteDataSource
+
     @MockK private lateinit var notificationCacheDataSource: NotificationCacheDataSource
+
     @MockK private lateinit var operationCacheDataSource: OperationCacheDataSource
+
     @MockK private lateinit var operationRemoteDataSource: OperationRemoteDataSource
 
     private lateinit var repository: NotificationRepositoryImpl

@@ -73,6 +73,7 @@ import com.skgtecnologia.sisem.ui.stretcherretention.view.StretcherRetentionView
 import timber.log.Timber
 
 @OptIn(ExperimentalPermissionsApi::class)
+@Suppress("LongMethod")
 @Composable
 fun SisemNavGraph(navigationModel: StartupNavigationModel?) {
     Scaffold(
