@@ -80,6 +80,9 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.material.icons.extended)
 
+    // Maps
+    implementation(libs.mapbox.navigation.android)
+
     // Logging
     implementation(libs.timber)
 
