@@ -1,8 +1,11 @@
 package com.skgtecnologia.sisem.ui.navigation
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -19,6 +22,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import com.skgtecnologia.sisem.commons.communication.AppEvent
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.extensions.navigateBack
@@ -63,7 +70,9 @@ import com.skgtecnologia.sisem.ui.signature.view.SignatureScreen
 import com.skgtecnologia.sisem.ui.stretcherretention.create.StretcherRetentionScreen
 import com.skgtecnologia.sisem.ui.stretcherretention.pre.PreStretcherRetentionScreen
 import com.skgtecnologia.sisem.ui.stretcherretention.view.StretcherRetentionViewScreen
+import timber.log.Timber
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun SisemNavGraph(navigationModel: StartupNavigationModel?) {
     Scaffold(
@@ -91,6 +100,31 @@ fun SisemNavGraph(navigationModel: StartupNavigationModel?) {
                             inclusive = true
                         }
                     }
+                }
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val notificationPermission = rememberPermissionState(
+                Manifest.permission.POST_NOTIFICATIONS
+            )
+
+            LaunchedEffect(notificationPermission.status) {
+                if (!notificationPermission.status.isGranted &&
+                    !notificationPermission.status.shouldShowRationale
+                ) {
+                    notificationPermission.launchPermissionRequest()
+                }
+            }
+
+            if (!notificationPermission.status.isGranted &&
+                notificationPermission.status.shouldShowRationale
+            ) {
+                LaunchedEffect(Unit) {
+                    Timber.w(
+                        "POST_NOTIFICATIONS permanently denied — enable in Settings: %s",
+                        Uri.fromParts("package", context.packageName, null)
+                    )
                 }
             }
         }
