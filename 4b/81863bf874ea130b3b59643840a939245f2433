@@ -1,0 +1,26 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "4b81863bf874ea130b3b59643840a939245f2433",
+  "prompts": {
+    "5243d77cbd6fc249": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9f81bb6b-a0e9-4531-b9a4-b1f59651838f",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Juan Camilo Villada",
+      "messages": [],
+      "total_additions": 5382,
+      "total_deletions": 5482,
+      "accepted_lines": 696,
+      "overriden_lines": 0
+    }
+  },
+  "humans": {
+    "h_47db550670ba00": {
+      "author": "Juan Camilo Villada"
+    }
+  }
+}
