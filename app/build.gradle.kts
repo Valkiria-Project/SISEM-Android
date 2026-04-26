@@ -84,6 +84,7 @@ android {
             buildConfigField("String", "REFRESH_URL", "\"https://admin-preprod.sisem.co/auth/realms/sisem/protocol/openid-connect/token\"")
         }
         release {
+            isDebuggable = true
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("String", "AUTH_BASE_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-api/\"")
@@ -221,6 +222,11 @@ dependencies {
     // Maps
     implementation(libs.mapbox.navigation.android)
     implementation(libs.mapbox.navigation.ui.components)
+
+    // WorkManager
+    implementation(libs.work.runtime.ktx)
+    implementation(libs.hilt.work)
+    testImplementation(libs.work.testing)
 
     // Unit Testing
     testImplementation(libs.junit)
