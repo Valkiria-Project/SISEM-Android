@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SISEM – Flujo de Notificaciones Push</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    :root {
+      --bg: #181a1f;
+      --card: #1f2228;
+      --card2: #252830;
+      --border: #30333b;
+      --text: #f4f5f5;
+      --text-sec: #83868d;
+      --blue: #5c70fa;
+      --blue-light: #7a95ff;
+      --green: #50d853;
+      --orange: #ff9d47;
+      --red: #fb5067;
+      --yellow: #FFE600;
+      --purple: #a78bfa;
+      --cyan: #3cf2dd;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --mono: 'JetBrains Mono', 'Fira Code', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15px; line-height: 1.6; }
+
+    nav {
+      background: var(--yellow); padding: 0 32px; height: 56px;
+      display: flex; align-items: center; gap: 14px;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,.4);
+    }
+    nav .logo { font-weight: 800; font-size: 18px; color: #111; letter-spacing: -.5px; }
+    nav .sep  { color: #555; font-size: 18px; }
+    nav .title{ font-size: 13px; font-weight: 600; color: #333; }
+
+    .hero {
+      background: linear-gradient(135deg, #1a1d24, #1e2135, #1a1d24);
+      border-bottom: 1px solid var(--border);
+      padding: 56px 32px 48px; text-align: center;
+    }
+    .hero h1 {
+      font-size: 36px; font-weight: 800; letter-spacing: -1px;
+      background: linear-gradient(135deg, var(--cyan), var(--blue-light));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+    .hero p { color: var(--text-sec); font-size: 16px; max-width: 620px; margin: 0 auto; }
+    .badge-row { display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+    .badge { padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; border: 1px solid; }
+    .badge.blue   { color: var(--blue-light); border-color: rgba(92,112,250,.4);  background: rgba(92,112,250,.1); }
+    .badge.green  { color: var(--green);       border-color: rgba(80,216,83,.4);   background: rgba(80,216,83,.1); }
+    .badge.orange { color: var(--orange);      border-color: rgba(255,157,71,.4);  background: rgba(255,157,71,.1); }
+    .badge.cyan   { color: var(--cyan);        border-color: rgba(60,242,221,.4);  background: rgba(60,242,221,.1); }
+
+    .container { max-width: 1120px; margin: 0 auto; padding: 48px 24px 80px; }
+
+    .section-title {
+      font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--text-sec);
+      margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+    }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* NOTIFICATION TYPES GRID */
+    .types-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px; margin-bottom: 56px;
+    }
+    .type-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 18px 20px;
+      border-left: 4px solid; transition: transform .15s;
+    }
+    .type-card:hover { transform: translateY(-2px); }
+    .type-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .type-icon { font-size: 22px; flex-shrink: 0; }
+    .type-name { font-size: 13px; font-weight: 700; }
+    .type-enum { font-family: var(--mono); font-size: 10px; color: var(--text-sec); margin-bottom: 6px; }
+    .type-desc { color: var(--text-sec); font-size: 12.5px; line-height: 1.5; }
+    .type-payload {
+      margin-top: 8px; display: flex; flex-wrap: wrap; gap: 5px;
+    }
+    .pill {
+      font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 10px;
+      background: rgba(255,255,255,.06); border: 1px solid var(--border); color: var(--text-sec);
+    }
+
+    /* FLOW */
+    .flow { display: flex; flex-direction: column; gap: 0; margin-bottom: 56px; }
+    .flow-step { display: grid; grid-template-columns: 48px 1fr; gap: 0 20px; }
+    .step-num-col { display: flex; flex-direction: column; align-items: center; }
+    .step-num {
+      width: 48px; height: 48px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 15px; flex-shrink: 0;
+      border: 2px solid; position: relative; z-index: 1;
+    }
+    .step-line { width: 2px; flex: 1; min-height: 20px; background: linear-gradient(to bottom, var(--border), transparent); }
+    .step-body {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 18px 22px; margin-bottom: 18px;
+      transition: border-color .2s;
+    }
+    .step-body:hover { border-color: var(--blue); }
+    .step-body h3 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .step-body p  { color: var(--text-sec); font-size: 13px; }
+    .step-body code {
+      font-family: var(--mono); font-size: 11.5px;
+      background: rgba(255,255,255,.06); padding: 2px 6px;
+      border-radius: 4px; color: var(--blue-light);
+    }
+    .file-ref {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: var(--mono); font-size: 11px; color: var(--text-sec);
+      background: rgba(255,255,255,.04); border: 1px solid var(--border);
+      padding: 3px 8px; border-radius: 4px; margin-top: 8px;
+    }
+    .dual-path {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;
+    }
+    .path-box {
+      background: rgba(255,255,255,.04); border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 14px;
+    }
+    .path-box .label { font-size: 10px; font-weight: 700; letter-spacing: .8px;
+      text-transform: uppercase; margin-bottom: 4px; }
+    .path-box p { font-size: 12px; color: var(--text-sec); }
+
+    .step-num.fcm  { color: var(--orange);     border-color: var(--orange);     background: rgba(255,157,71,.1); }
+    .step-num.svc  { color: var(--blue-light);  border-color: var(--blue-light); background: rgba(92,112,250,.1); }
+    .step-num.mgr  { color: var(--purple);      border-color: var(--purple);     background: rgba(167,139,250,.1); }
+    .step-num.repo { color: var(--cyan);        border-color: var(--cyan);       background: rgba(60,242,221,.1); }
+    .step-num.db   { color: var(--green);       border-color: var(--green);      background: rgba(80,216,83,.1); }
+    .step-num.ui   { color: var(--yellow);      border-color: var(--yellow);     background: rgba(255,230,0,.1); }
+
+    /* FAILURES */
+    .failures-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 16px; margin-bottom: 56px;
+    }
+    .failure-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 20px; border-left: 4px solid;
+      transition: transform .15s;
+    }
+    .failure-card:hover { transform: translateY(-2px); }
+    .failure-card.high   { border-left-color: var(--red); }
+    .failure-card.medium { border-left-color: var(--orange); }
+    .failure-card.low    { border-left-color: var(--yellow); }
+    .failure-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+    .failure-icon { font-size: 24px; flex-shrink: 0; }
+    .failure-title { font-size: 14px; font-weight: 700; }
+    .severity {
+      font-size: 10px; font-weight: 700; letter-spacing: .8px;
+      text-transform: uppercase; padding: 2px 8px; border-radius: 10px;
+      display: inline-block; margin-top: 2px;
+    }
+    .severity.high   { color: var(--red);    background: rgba(251,80,103,.12); }
+    .severity.medium { color: var(--orange);  background: rgba(255,157,71,.12); }
+    .severity.low    { color: var(--yellow);  background: rgba(255,230,0,.1); }
+    .failure-desc { color: var(--text-sec); font-size: 13px; line-height: 1.55; }
+    .failure-code { font-family: var(--mono); font-size: 11px; color: var(--blue-light);
+      margin-top: 8px; display: block; background: rgba(255,255,255,.04);
+      padding: 6px 10px; border-radius: 6px; }
+
+    /* IMPROVEMENTS */
+    .improve-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 16px; margin-bottom: 56px;
+    }
+    .improve-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 22px; position: relative; overflow: hidden;
+    }
+    .improve-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+    .improve-card.rec::before  { background: linear-gradient(90deg, var(--green), var(--cyan)); }
+    .improve-card.opt::before  { background: linear-gradient(90deg, var(--blue), var(--purple)); }
+    .improve-card.nice::before { background: linear-gradient(90deg, var(--purple), var(--orange)); }
+    .improve-label { font-size: 10px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 8px; }
+    .improve-label.rec  { color: var(--green); }
+    .improve-label.opt  { color: var(--blue-light); }
+    .improve-label.nice { color: var(--purple); }
+    .improve-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .improve-card p  { color: var(--text-sec); font-size: 13.5px; line-height: 1.55; margin-bottom: 10px; }
+    .improve-card ul { list-style: none; }
+    .improve-card ul li {
+      font-size: 13px; color: var(--text-sec); padding: 4px 0;
+      display: flex; gap: 8px; align-items: flex-start;
+    }
+    .improve-card ul li::before { content: '→'; color: var(--cyan); flex-shrink: 0; }
+    .snippet {
+      background: #14161b; border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px 14px;
+      font-family: var(--mono); font-size: 11px;
+      color: #adb5bd; line-height: 1.7; overflow-x: auto; margin-top: 10px;
+    }
+    .snippet .kw  { color: var(--purple); }
+    .snippet .fn  { color: var(--blue-light); }
+    .snippet .str { color: var(--green); }
+    .snippet .cm  { color: #565c66; font-style: italic; }
+    .snippet .num { color: var(--orange); }
+
+    /* COMPARE */
+    .compare-table { width: 100%; border-collapse: collapse; margin-bottom: 56px; font-size: 13.5px; }
+    .compare-table th {
+      background: var(--card2); padding: 12px 16px; text-align: left;
+      font-size: 11px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--text-sec);
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-table td { padding: 13px 16px; border-bottom: 1px solid var(--border); color: var(--text-sec); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: rgba(255,255,255,.02); }
+    .compare-table td:first-child { color: var(--text); font-weight: 600; }
+    .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+    .dot.g { background: var(--green); }
+    .dot.r { background: var(--red); }
+    .dot.o { background: var(--orange); }
+
+    footer {
+      border-top: 1px solid var(--border); padding: 24px 32px;
+      text-align: center; color: var(--text-sec); font-size: 12px;
+    }
+    footer strong { color: var(--text); }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 26px; }
+      .types-grid, .failures-grid, .improve-grid { grid-template-columns: 1fr; }
+      .dual-path { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">SISEM</span>
+  <span class="sep">|</span>
+  <span class="title">Análisis: Notificaciones Push</span>
+</nav>
+
+<div class="hero">
+  <h1>Flujo de Notificaciones Push</h1>
+  <p>Cómo el app recibe, procesa y muestra las 10 notificaciones push, puntos de falla críticos y oportunidades de mejora en la confiabilidad.</p>
+  <div class="badge-row">
+    <span class="badge orange">Firebase FCM</span>
+    <span class="badge blue">MessagingService</span>
+    <span class="badge green">Room DB</span>
+    <span class="badge cyan">EventBus</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- NOTIFICATION TYPES -->
+  <div class="section-title">10 tipos de notificación</div>
+  <div class="types-grid">
+
+    <div class="type-card" style="border-left-color:#fb5067">
+      <div class="type-header"><span class="type-icon">⏰</span><span class="type-name">Auth Time</span></div>
+      <div class="type-enum">AUTH_TIME</div>
+      <p class="type-desc">Alerta cuando el tiempo de login es menor al establecido.</p>
+    </div>
+
+    <div class="type-card" style="border-left-color:#42A4FA">
+      <div class="type-header"><span class="type-icon">📋</span><span class="type-name">Cierre APH</span></div>
+      <div class="type-enum">CLOSING_OF_APH</div>
+      <p class="type-desc">Cierre del registro de atención pre-hospitalaria.</p>
+      <div class="type-payload">
+        <span class="pill">consecutiveNumber</span>
+        <span class="pill">updateTimeObservations</span>
+      </div>
+    </div>
+
+    <div class="type-card" style="border-left-color:#50d853">
+      <div class="type-header"><span class="type-icon">🚨</span><span class="type-name">Incidente Asignado</span></div>
+      <div class="type-enum">INCIDENT_ASSIGNED</div>
+      <p class="type-desc">Nueva asignación de incidente. Dispara fetch remoto al servidor + actualización de cache.</p>
+      <div class="type-payload">
+        <span class="pill">cru</span><span class="pill">incidentNumber</span>
+        <span class="pill">incidentType</span><span class="pill">incidentPriority</span>
+        <span class="pill">incidentDate</span><span class="pill">address</span>
+        <span class="pill">hour</span><span class="pill">geolocation</span>
+      </div>
+    </div>
+
+    <div class="type-card" style="border-left-color:#42A4FA">
+      <div class="type-header"><span class="type-icon">🏥</span><span class="type-name">Paciente a IPS</span></div>
+      <div class="type-enum">IPS_PATIENT_TRANSFERRED</div>
+      <p class="type-desc">Traslado de paciente a IPS. Actualiza coordenadas del incidente activo en cache.</p>
+      <div class="type-payload">
+        <span class="pill">headquartersName</span>
+        <span class="pill">headquartersAddress</span>
+        <span class="pill">geolocation</span>
+      </div>
+    </div>
+
+    <div class="type-card" style="border-left-color:#fb5067">
+      <div class="type-header"><span class="type-icon">⚠️</span><span class="type-name">Sin Preoperacional</span></div>
+      <div class="type-enum">NO_PRE_OPERATIONAL_GENERATED_CRUE</div>
+      <p class="type-desc">Alerta de preoperacional no generado para reporte al CRUE.</p>
+    </div>
+
+    <div class="type-card" style="border-left-color:#42A4FA">
+      <div class="type-header"><span class="type-icon">🛏️</span><span class="type-name">Retención Camilla</span></div>
+      <div class="type-enum">STRETCHER_RETENTION_ENABLE</div>
+      <p class="type-desc">Habilitación de retención de camilla en la unidad.</p>
+    </div>
+
+    <div class="type-card" style="border-left-color:#42A4FA">
+      <div class="type-header"><span class="type-icon">🚑</span><span class="type-name">Apoyo en Camino</span></div>
+      <div class="type-enum">SUPPORT_REQUEST_ON_THE_WAY</div>
+      <p class="type-desc">Unidad de apoyo en tránsito hacia el incidente.</p>
+      <div class="type-payload"><span class="pill">resourceTypeCode</span></div>
+    </div>
+
+    <div class="type-card" style="border-left-color:#3cf2dd">
+      <div class="type-header"><span class="type-icon">🚌</span><span class="type-name">Transmilenio Autorizado</span></div>
+      <div class="type-enum">TRANSMILENIO_AUTHORIZATION</div>
+      <p class="type-desc">Carril de Transmilenio autorizado. Agrega a la lista de transmiRequests del incidente.</p>
+      <div class="type-payload">
+        <span class="pill">authorizationNumber</span>
+        <span class="pill">authorizes</span><span class="pill">journey</span>
+      </div>
+    </div>
+
+    <div class="type-card" style="border-left-color:#fb5067">
+      <div class="type-header"><span class="type-icon">🚫</span><span class="type-name">Transmilenio Denegado</span></div>
+      <div class="type-enum">TRANSMILENIO_DENIED</div>
+      <p class="type-desc">Carril de Transmilenio no autorizado. Agrega a transmiRequests como denegado.</p>
+      <div class="type-payload"><span class="pill">authorizationNumber</span></div>
+    </div>
+
+    <div class="type-card" style="border-left-color:#42A4FA">
+      <div class="type-header"><span class="type-icon">🔄</span><span class="type-name">Estado Vehículo</span></div>
+      <div class="type-enum">UPDATE_VEHICLE_STATUS</div>
+      <p class="type-desc">Actualización de estado del vehículo. Dispara refetch remoto de operationConfig.</p>
+    </div>
+
+  </div>
+
+  <!-- FLOW -->
+  <div class="section-title">Flujo de recepción paso a paso</div>
+  <div class="flow">
+
+    <div class="flow-step">
+      <div class="step-num-col">
+        <div class="step-num fcm">1</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-body">
+        <h3>🔥 Firebase Cloud Messaging (FCM)</h3>
+        <p>El backend envía un mensaje FCM tipo <strong>data payload</strong> (no notification payload). Llega como <code>Map&lt;String, String&gt;</code> con un campo <code>type</code> que determina el tipo de notificación. FCM gestiona la entrega en background a nivel de sistema operativo.</p>
+        <span class="file-ref">📄 google-services.json · project: sisem-notification</span>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="step-num-col">
+        <div class="step-num svc">2</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-body">
+        <h3>⚙️ MessagingService.onMessageReceived()</h3>
+        <p>
+          <code>FirebaseMessagingService</code> recibe el mensaje. Si <code>remoteMessage.data.isNotEmpty()</code> llama a <code>handlePushNotification()</code>.
+          Usa un <code>CoroutineScope(Dispatchers.Main + SupervisorJob)</code> — las coroutines se ejecutan en el hilo principal.
+        </p>
+        <span class="file-ref">📄 MessagingService.kt · línea 26</span>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="step-num-col">
+        <div class="step-num mgr">3</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-body">
+        <h3>🔔 NotificationsManager.buildNotificationData()</h3>
+        <p>Parsea el <code>Map&lt;String, String&gt;</code> a un <code>NotificationData</code> según el tipo. Luego hace dos cosas en paralelo:</p>
+        <div class="dual-path">
+          <div class="path-box">
+            <div class="label" style="color:var(--cyan)">Notificación Android</div>
+            <p>Crea <code>NotificationCompat</code> con sonido, prioridad HIGH, y <code>PendingIntent</code> a MainActivity. La publica con <code>NotificationManager.notify()</code>.</p>
+          </div>
+          <div class="path-box">
+            <div class="label" style="color:var(--purple)">EventBus</div>
+            <p>Publica el <code>NotificationData</code> en el <code>MutableSharedFlow</code> del EventBus para mostrar el popup en UI inmediatamente.</p>
+          </div>
+        </div>
+        <span class="file-ref" style="margin-top:12px">📄 NotificationsManager.kt · línea 37</span>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="step-num-col">
+        <div class="step-num repo">4</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-body">
+        <h3>🗄️ NotificationRepositoryImpl.storeNotification()</h3>
+        <p>Persiste en Room y ejecuta lógica específica según el tipo:</p>
+        <div class="dual-path">
+          <div class="path-box">
+            <div class="label" style="color:var(--orange)">INCIDENT_ASSIGNED</div>
+            <p>Fetch remoto de detalles del incidente → extrae coordenadas de <code>geolocation</code> → actualiza cache del incidente.</p>
+          </div>
+          <div class="path-box">
+            <div class="label" style="color:var(--blue-light)">UPDATE_VEHICLE_STATUS</div>
+            <p>Refetch remoto de <code>operationConfig</code> → actualiza cache de operación.</p>
+          </div>
+        </div>
+        <span class="file-ref" style="margin-top:12px">📄 NotificationRepositoryImpl.kt · línea 38</span>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="step-num-col">
+        <div class="step-num db">5</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-body">
+        <h3>💾 Room DB — NotificationDao</h3>
+        <p>
+          <code>insertNotification()</code> con estrategia <code>OnConflictStrategy.REPLACE</code> basada en un índice único sobre el campo <code>data</code>.
+          El <code>observeNotifications()</code> retorna un <code>Flow</code> que emite cada vez que cambia la tabla, ordenado por <code>dateTime DESC</code>.
+        </p>
+        <span class="file-ref">📄 NotificationDao.kt · línea 14</span>
+        <span class="file-ref" style="margin-left:8px">📄 NotificationEntity.kt · índice único en data</span>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="step-num-col">
+        <div class="step-num ui">6</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-body">
+        <h3>🖥️ UI — Popup + Lista</h3>
+        <p>Dos canales simultáneos actualizan la UI:</p>
+        <div class="dual-path">
+          <div class="path-box">
+            <div class="label" style="color:var(--yellow)">Popup inmediato</div>
+            <p><code>NotificationView</code> escucha el EventBus y muestra un popup animado. Se auto-descarta a los 800ms o con swipe.</p>
+          </div>
+          <div class="path-box">
+            <div class="label" style="color:var(--green)">Lista persistente</div>
+            <p><code>ObserveNotifications</code> use case expone el Flow de Room. <code>MapViewModel</code> combina incident + notifications en el UiState.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FAILURE POINTS -->
+  <div class="section-title">Puntos de falla — No recepción de notificaciones</div>
+  <div class="failures-grid">
+
+    <div class="failure-card high">
+      <div class="failure-header">
+        <div class="failure-icon">🔕</div>
+        <div>
+          <div class="failure-title">POST_NOTIFICATIONS no concedido (Android 13+)</div>
+          <span class="severity high">Alta severidad</span>
+        </div>
+      </div>
+      <p class="failure-desc">
+        En Android 13+, <code>POST_NOTIFICATIONS</code> es un permiso de runtime. Si el usuario lo deniega,
+        las notificaciones del sistema no se muestran. El app no verifica si el permiso fue concedido antes
+        de intentar mostrar notificaciones, y no tiene flujo de re-solicitud.
+      </p>
+      <code class="failure-code">AndroidManifest.xml — POST_NOTIFICATIONS declarado pero sin verificación en runtime</code>
+    </div>
+
+    <div class="failure-card high">
+      <div class="failure-icon">🔑</div>
+      <div>
+        <div class="failure-header">
+          <div class="failure-title">Token FCM no registrado en el backend</div>
+          <span class="severity high">Alta severidad</span>
+        </div>
+      </div>
+      <p class="failure-desc">
+        El token FCM se loguea en <code>SisemApplication</code> pero <strong>nunca se envía al servidor</strong>.
+        No existe endpoint ni lógica para registrar/actualizar el token del dispositivo. Si el backend no tiene
+        el token actualizado, ninguna notificación llega.
+      </p>
+      <code class="failure-code">SisemApplication.kt — Timber.d("FCM token: ${task.result}") // solo log, nunca se envía</code>
+    </div>
+
+    <div class="failure-card high">
+      <div class="failure-icon">🔄</div>
+      <div>
+        <div class="failure-header">
+          <div class="failure-title">Token FCM rotado sin actualización en backend</div>
+          <span class="severity high">Alta severidad</span>
+        </div>
+      </div>
+      <p class="failure-desc">
+        <code>onNewToken()</code> se llama cuando FCM rota el token (reinstalación, borrado de datos, cambio de cuenta Google).
+        El método solo loguea el nuevo token — nunca lo envía al backend. El dispositivo queda invisible para FCM.
+      </p>
+      <code class="failure-code">MessagingService.kt:34 — onNewToken(token) { Timber.d(...) } // token perdido</code>
+    </div>
+
+    <div class="failure-card high">
+      <div class="failure-icon">📡</div>
+      <div>
+        <div class="failure-header">
+          <div class="failure-title">INCIDENT_ASSIGNED: fetch remoto puede fallar silenciosamente</div>
+          <span class="severity high">Alta severidad</span>
+        </div>
+      </div>
+      <p class="failure-desc">
+        Al recibir <code>INCIDENT_ASSIGNED</code>, se hace un fetch remoto de los detalles. Si falla (sin red, timeout),
+        el incidente se guarda en Room con datos parciales (solo los del payload FCM, sin prioridad ni detalles).
+        El operador ve una notificación pero el mapa puede quedar sin datos.
+      </p>
+      <code class="failure-code">NotificationRepositoryImpl.kt:56 — .onFailure { IncidentEventHandler.publishIncidentErrorEvent(it) }</code>
+    </div>
+
+    <div class="failure-card high">
+      <div class="failure-icon">💣</div>
+      <div>
+        <div class="failure-header">
+          <div class="failure-title">checkNotNull() crashea en IPS y Transmi</div>
+          <span class="severity high">Alta severidad</span>
+        </div>
+      </div>
+      <p class="failure-desc">
+        <code>handleIpsPatientTransferredNotification()</code> y <code>handleTransmiNotification()</code> usan
+        <code>checkNotNull()</code> sin manejo de excepción. Si no hay incidente activo en cache (ej: app recién iniciada,
+        cache limpiada), lanza <code>IllegalStateException</code> que mata la coroutine silenciosamente.
+      </p>
+      <code class="failure-code">NotificationRepositoryImpl.kt:72 — checkNotNull(notification.geolocation?.split(","))</code>
+    </div>
+
+    <div class="failure-card medium">
+      <div class="failure-icon">⚡</div>
+      <div>
+        <div class="failure-header">
+          <div class="failure-title">EventBus con collectLatest — notificaciones simultáneas se descartan</div>
+          <span class="severity medium">Media severidad</span>
+        </div>
+      </div>
+      <p class="failure-desc">
+        El <code>EventBus</code> usa <code>collectLatest</code>, que cancela el procesamiento anterior cuando llega
+        uno nuevo. Si dos notificaciones llegan en ráfaga (ej: incidente + apoyo en camino), solo la segunda se procesa en UI.
+      </p>
+      <code class="failure-code">EventBus.kt:14 — events.filterIsInstance&lt;T&gt;().collectLatest { onEvent(it) }</code>
+    </div>
+
+    <div class="failure-card medium">
+      <div class="failure-icon">🔒</div>
+      <div>
+        <div class="failure-header">
+          <div class="failure-title">PendingIntent con FLAG_ONE_SHOT — solo funciona una vez</div>
+          <span class="severity medium">Media severidad</span>
+        </div>
+      </div>
+      <p class="failure-desc">
+        El <code>PendingIntent</code> de la notificación del sistema usa <code>FLAG_ONE_SHOT</code>. Si el usuario
+        recibe dos notificaciones del mismo tipo y toca la segunda sin haber tocado la primera, el intent puede ya
+        no ser válido y no se navega correctamente.
+      </p>
+      <code class="failure-code">NotificationsManager.kt:68 — FLAG_ONE_SHOT or FLAG_IMMUTABLE</code>
+    </div>
+
+    <div class="failure-card medium">
+      <div class="failure-icon">📦</div>
+      <div>
+        <div class="failure-header">
+          <div class="failure-title">Índice único en data puede rechazar duplicados válidos</div>
+          <span class="severity medium">Media severidad</span>
+        </div>
+      </div>
+      <p class="failure-desc">
+        La tabla <code>notification</code> tiene un índice único sobre el campo <code>data</code>. Si el backend
+        reenvía la misma notificación (retry de FCM), Room la ignora con <code>REPLACE</code> — no es un crash,
+        pero sí puede provocar que notificaciones reenviadas no se muestren al usuario.
+      </p>
+      <code class="failure-code">NotificationEntity.kt — Index(value = ["data"], unique = true)</code>
+    </div>
+
+    <div class="failure-card medium">
+      <div class="failure-icon">🏃</div>
+      <div>
+        <div class="failure-header">
+          <div class="failure-title">Dispatchers.Main en MessagingService — riesgo de ANR</div>
+          <span class="severity medium">Media severidad</span>
+        </div>
+      </div>
+      <p class="failure-desc">
+        El <code>serviceScope</code> usa <code>Dispatchers.Main</code>. Si el procesamiento de la notificación
+        (fetch remoto + escritura Room) tarda, bloquea el hilo principal del servicio. En Android el FCM service
+        tiene un timeout limitado (~10s) antes de ser terminado por el sistema.
+      </p>
+      <code class="failure-code">MessagingService.kt:19 — CoroutineScope(Dispatchers.Main + SupervisorJob())</code>
+    </div>
+
+    <div class="failure-card low">
+      <div class="failure-icon">⏱️</div>
+      <div>
+        <div class="failure-header">
+          <div class="failure-title">delay(500) hardcodeado en MainActivity</div>
+          <span class="severity low">Baja severidad</span>
+        </div>
+      </div>
+      <p class="failure-desc">
+        Al abrir el app desde una notificación, hay un <code>delay(500)</code> antes de publicar el evento en el
+        EventBus. Si la UI no está lista en ese momento (pantallas pesadas), el popup puede perderse.
+      </p>
+      <code class="failure-code">MainActivity.kt — delay(500) // workaround sin garantía</code>
+    </div>
+
+    <div class="failure-card low">
+      <div class="failure-icon">🌐</div>
+      <div>
+        <div class="failure-header">
+          <div class="failure-title">Sin canal de notificación diferenciado por tipo</div>
+          <span class="severity low">Baja severidad</span>
+        </div>
+      </div>
+      <p class="failure-desc">
+        Todas las notificaciones van al mismo canal <code>"notifications"</code> con importancia <code>DEFAULT</code>
+        pero prioridad <code>HIGH</code>. El usuario no puede silenciar solo los tipos menos críticos (AUTH_TIME)
+        sin silenciar también los urgentes (INCIDENT_ASSIGNED).
+      </p>
+      <code class="failure-code">NotificationsManager.kt — CHANNEL_ID = "notifications" (único para todos)</code>
+    </div>
+
+  </div>
+
+  <!-- IMPROVEMENTS -->
+  <div class="section-title">Oportunidades de mejora</div>
+  <div class="improve-grid">
+
+    <div class="improve-card rec">
+      <div class="improve-label rec">⭐ Crítico — Implementar ahora</div>
+      <h3>Registrar el token FCM en el backend</h3>
+      <p>Sin esto, el backend no sabe a qué dispositivo enviar. Enviar el token en login y en <code>onNewToken()</code>, asociándolo al usuario/vehículo activo.</p>
+      <ul>
+        <li>Registrar en login exitoso</li>
+        <li>Actualizar en <code>onNewToken()</code></li>
+        <li>Limpiar al hacer logout</li>
+      </ul>
+      <div class="snippet">
+<span class="cm">// MessagingService.kt</span>
+<span class="kw">override fun</span> <span class="fn">onNewToken</span>(token: String) {
+    serviceScope.<span class="fn">launch</span> {
+        registerTokenUseCase.<span class="fn">invoke</span>(token) <span class="cm">// ← enviar al backend</span>
+    }
+}
+      </div>
+    </div>
+
+    <div class="improve-card rec">
+      <div class="improve-label rec">⭐ Crítico — Confiabilidad</div>
+      <h3>Verificar permiso POST_NOTIFICATIONS en runtime</h3>
+      <p>Mostrar un diálogo explicativo antes de solicitar el permiso y ofrecer ir a Settings si fue denegado permanentemente.</p>
+      <ul>
+        <li>Verificar al iniciar sesión</li>
+        <li>Banner persistente si está denegado</li>
+        <li>Deep link a Settings del sistema</li>
+      </ul>
+      <div class="snippet">
+<span class="kw">if</span> (!<span class="fn">hasNotificationPermission</span>()) {
+    <span class="fn">requestPermissionLauncher</span>.<span class="fn">launch</span>(
+        Manifest.permission.POST_NOTIFICATIONS
+    )
+}
+      </div>
+    </div>
+
+    <div class="improve-card rec">
+      <div class="improve-label rec">⭐ Recomendado</div>
+      <h3>Reemplazar collectLatest por collect en EventBus</h3>
+      <p>Cambiar a <code>collect</code> para garantizar que todas las notificaciones se procesen, incluso en ráfagas. Si el popup es costoso, usar un buffer o una cola.</p>
+      <ul>
+        <li>Ninguna notificación se descarta</li>
+        <li>Ráfagas de notificaciones manejadas correctamente</li>
+        <li>Cambio de 1 línea</li>
+      </ul>
+      <div class="snippet">
+<span class="cm">// EventBus.kt</span>
+events.<span class="fn">filterIsInstance</span>&lt;T&gt;()
+    .<span class="fn">collect</span> { event -> <span class="cm">// ← no más collectLatest</span>
+        coroutineContext.<span class="fn">ensureActive</span>()
+        <span class="fn">onEvent</span>(event)
+    }
+      </div>
+    </div>
+
+    <div class="improve-card opt">
+      <div class="improve-label opt">✦ Optimización</div>
+      <h3>Mover MessagingService a Dispatchers.IO</h3>
+      <p>El procesamiento de notificaciones (fetch + Room) debe correr en IO, no en Main. El hilo principal debe quedar libre para la UI.</p>
+      <ul>
+        <li>Sin riesgo de ANR en el servicio FCM</li>
+        <li>Mayor tiempo disponible para procesar antes del timeout del sistema</li>
+      </ul>
+      <div class="snippet">
+<span class="cm">// MessagingService.kt</span>
+<span class="kw">private val</span> serviceScope =
+    <span class="fn">CoroutineScope</span>(Dispatchers.IO + serviceJob)
+      </div>
+    </div>
+
+    <div class="improve-card opt">
+      <div class="improve-label opt">✦ Optimización</div>
+      <h3>Canales diferenciados por criticidad</h3>
+      <p>Crear al menos 2 canales: uno para alertas operativas críticas (INCIDENT_ASSIGNED) y otro para informativas (AUTH_TIME, UPDATE_VEHICLE_STATUS).</p>
+      <ul>
+        <li>Canal URGENTE: importancia HIGH, sonido específico</li>
+        <li>Canal INFORMATIVO: importancia DEFAULT, sin sonido</li>
+        <li>El usuario puede configurarlos individualmente</li>
+      </ul>
+    </div>
+
+    <div class="improve-card opt">
+      <div class="improve-label opt">✦ Seguridad</div>
+      <h3>Proteger checkNotNull con manejo de errores</h3>
+      <p>Reemplazar los <code>checkNotNull()</code> sin catch en IPS y Transmi por validaciones explícitas que logueen y retornen sin crash.</p>
+      <ul>
+        <li>Evita crasheos silenciosos en coroutines</li>
+        <li>Logueo de Timber para debugging</li>
+        <li>Comportamiento degradado en lugar de fallo total</li>
+      </ul>
+      <div class="snippet">
+<span class="kw">val</span> incident = incidentCacheDataSource
+    .<span class="fn">observeActiveIncident</span>().<span class="fn">first</span>()
+    ?: <span class="kw">return</span> <span class="fn">Timber</span>.<span class="fn">w</span>(<span class="str">"No active incident"</span>)
+      </div>
+    </div>
+
+    <div class="improve-card nice">
+      <div class="improve-label nice">◈ Mejora adicional</div>
+      <h3>Reemplazar delay(500) con lifecycle-aware</h3>
+      <p>Usar <code>repeatOnLifecycle(RESUMED)</code> para publicar el evento solo cuando la UI esté lista, eliminando el delay hardcodeado.</p>
+      <ul>
+        <li>Sin race condition entre UI init y eventos</li>
+        <li>Funciona con cualquier velocidad de carga</li>
+      </ul>
+    </div>
+
+    <div class="improve-card nice">
+      <div class="improve-label nice">◈ Mejora adicional</div>
+      <h3>Aprovechar el payload FCM para INCIDENT_ASSIGNED</h3>
+      <p>El payload ya trae <code>incidentType</code>, <code>incidentPriority</code>, <code>address</code>, <code>geolocation</code>. Mostrar el incidente inmediatamente desde el payload sin esperar el fetch remoto. Hacer el fetch en segundo plano para enriquecer.</p>
+      <ul>
+        <li>Incidente visible aunque falle la red</li>
+        <li>UX más rápida — sin spinner esperando el fetch</li>
+        <li>Fetch remoto como enriquecimiento opcional</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- COMPARE -->
+  <div class="section-title">Resumen: estado actual vs. con mejoras</div>
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Aspecto</th>
+        <th>Estado actual</th>
+        <th>Con mejoras aplicadas</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Token FCM registrado en backend</td>
+        <td><span class="dot r"></span>No — solo se loguea localmente</td>
+        <td><span class="dot g"></span>Sí — en login y en onNewToken()</td>
+      </tr>
+      <tr>
+        <td>Permiso POST_NOTIFICATIONS</td>
+        <td><span class="dot r"></span>Declarado pero sin verificación runtime</td>
+        <td><span class="dot g"></span>Verificado con diálogo explicativo</td>
+      </tr>
+      <tr>
+        <td>Notificaciones en ráfaga</td>
+        <td><span class="dot r"></span>Solo la última se procesa (collectLatest)</td>
+        <td><span class="dot g"></span>Todas procesadas (collect)</td>
+      </tr>
+      <tr>
+        <td>Crash con incidente no cacheado</td>
+        <td><span class="dot r"></span>checkNotNull() sin catch → coroutine muere</td>
+        <td><span class="dot g"></span>Validación explícita con fallback</td>
+      </tr>
+      <tr>
+        <td>Thread del MessagingService</td>
+        <td><span class="dot o"></span>Main thread → riesgo ANR</td>
+        <td><span class="dot g"></span>Dispatchers.IO → hilo de trabajo</td>
+      </tr>
+      <tr>
+        <td>INCIDENT_ASSIGNED sin red</td>
+        <td><span class="dot r"></span>Datos parciales, incidente incompleto</td>
+        <td><span class="dot g"></span>Muestra payload FCM, enriquece en background</td>
+      </tr>
+      <tr>
+        <td>Canales de notificación</td>
+        <td><span class="dot o"></span>Un único canal para todo</td>
+        <td><span class="dot g"></span>Canal urgente + canal informativo</td>
+      </tr>
+      <tr>
+        <td>Token FCM rotado</td>
+        <td><span class="dot r"></span>Perdido — dispositivo deja de recibir notifs</td>
+        <td><span class="dot g"></span>Enviado al backend automáticamente</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<footer>
+  <strong>SISEM Android</strong> &nbsp;·&nbsp; Análisis técnico: Notificaciones Push &nbsp;·&nbsp; Generado con html-builder · 25 abril 2026
+</footer>
+
+</body>
+</html>
