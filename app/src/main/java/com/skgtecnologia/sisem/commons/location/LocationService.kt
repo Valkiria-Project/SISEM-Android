@@ -38,6 +38,7 @@ private const val CHANNEL_ID = "location"
 private const val CHANNEL_NAME = "Location"
 private const val LOCATION_INTERVAL = 5000L
 private const val FILE_NAME = "android_location"
+private const val BACKOFF_DELAY_SECONDS = 15L
 
 internal const val STATIONARY_SPEED_THRESHOLD = 0.5f // m/s (~2 km/h)
 
@@ -129,7 +130,7 @@ class LocationService : Service() {
                     .setRequiredNetworkType(NetworkType.CONNECTED)
                     .build()
             )
-            .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 15, TimeUnit.SECONDS)
+            .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, BACKOFF_DELAY_SECONDS, TimeUnit.SECONDS)
             .setInputData(
                 workDataOf(
                     LocationWorker.KEY_LATITUDE to latitude,
