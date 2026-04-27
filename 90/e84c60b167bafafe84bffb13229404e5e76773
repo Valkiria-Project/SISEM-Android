@@ -1,0 +1,29 @@
+app/src/main/java/com/skgtecnologia/sisem/ui/authcards/create/AuthCardsScreen.kt
+  5243d77cbd6fc249 144,156
+app/src/main/java/com/skgtecnologia/sisem/ui/authcards/view/AuthCardViewScreen.kt
+  5243d77cbd6fc249 93,105
+app/src/main/java/com/skgtecnologia/sisem/ui/preoperational/view/PreOperationalViewScreen.kt
+  5243d77cbd6fc249 62
+app/src/main/java/com/skgtecnologia/sisem/ui/login/LoginScreen.kt
+  5243d77cbd6fc249 81
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "90e84c60b167bafafe84bffb13229404e5e76773",
+  "prompts": {
+    "5243d77cbd6fc249": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9f81bb6b-a0e9-4531-b9a4-b1f59651838f",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Juan Camilo Villada",
+      "messages": [],
+      "total_additions": 1037,
+      "total_deletions": 193,
+      "accepted_lines": 1866,
+      "overriden_lines": 0
+    }
+  }
+}
