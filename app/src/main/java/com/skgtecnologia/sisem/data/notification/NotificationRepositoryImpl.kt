@@ -78,26 +78,30 @@ class NotificationRepositoryImpl @Inject constructor(
     private suspend fun handleIpsPatientTransferredNotification(
         notification: IpsPatientTransferredNotification
     ) {
-        val (longitude, latitude) = checkNotNull(notification.geolocation?.split(","))
-        val incident = checkNotNull(
-            incidentCacheDataSource.observeActiveIncident().first()?.copy(
+        val geolocation = notification.geolocation
+            ?: return Timber.w("IPS notification missing geolocation, skipping").let { }
+        val (longitude, latitude) = geolocation.split(",")
+
+        val incident = incidentCacheDataSource.observeActiveIncident().first()
+            ?: return Timber.w("No active incident for IPS notification, skipping").let { }
+
+        incidentCacheDataSource.storeIncident(
+            incident.copy(
                 latitude = latitude.toDoubleOrNull(),
                 longitude = longitude.toDoubleOrNull()
             )
         )
-
-        incidentCacheDataSource.storeIncident(incident)
     }
 
     private suspend fun handleTransmiNotification(notification: TransmiNotification) {
-        val incident = checkNotNull(incidentCacheDataSource.observeActiveIncident().first())
+        val incident = incidentCacheDataSource.observeActiveIncident().first()
+            ?: return Timber.w("No active incident for Transmi notification, skipping").let { }
 
         if (incident.id != null) {
             val transmiRequests = buildList {
                 incident.transmiRequests?.let { addAll(it) }
                 add(notification)
             }
-
             incidentCacheDataSource.updateTransmiStatus(incident.id!!, transmiRequests)
         }
     }
