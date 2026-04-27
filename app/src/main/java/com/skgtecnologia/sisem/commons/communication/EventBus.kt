@@ -2,7 +2,7 @@ package com.skgtecnologia.sisem.commons.communication
 
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlin.coroutines.coroutineContext
 
@@ -16,7 +16,7 @@ internal object EventBus {
 
     suspend inline fun <reified T> subscribe(crossinline onEvent: (T) -> Unit) {
         events.filterIsInstance<T>()
-            .collectLatest { event ->
+            .collect { event ->
                 coroutineContext.ensureActive()
                 onEvent(event)
             }
