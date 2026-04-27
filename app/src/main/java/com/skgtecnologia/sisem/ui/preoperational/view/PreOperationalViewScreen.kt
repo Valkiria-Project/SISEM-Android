@@ -59,7 +59,7 @@ fun PreOperationalViewScreen(
     }
 
     uiState.findingDetail?.let {
-        scope.launch { sheetState.show() }
+        LaunchedEffect(it) { sheetState.show() }
 
         BottomSheetView(
             content = { FindingDetailContent(model = uiState.findingDetail) },
