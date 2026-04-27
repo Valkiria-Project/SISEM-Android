@@ -42,8 +42,11 @@ private const val FILE_NAME = "android_location"
 internal const val STATIONARY_SPEED_THRESHOLD = 0.5f // m/s (~2 km/h)
 
 internal fun decidePriority(speed: Float): Int =
-    if (speed < STATIONARY_SPEED_THRESHOLD) Priority.PRIORITY_BALANCED_POWER_ACCURACY
-    else Priority.PRIORITY_HIGH_ACCURACY
+    if (speed < STATIONARY_SPEED_THRESHOLD) {
+        Priority.PRIORITY_BALANCED_POWER_ACCURACY
+    } else {
+        Priority.PRIORITY_HIGH_ACCURACY
+    }
 
 @AndroidEntryPoint
 class LocationService : Service() {

@@ -31,6 +31,7 @@ class LocationWorkerTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @MockK private lateinit var updateLocation: UpdateLocation
+
     @MockK private lateinit var operationCacheDataSource: OperationCacheDataSource
 
     private lateinit var context: Context

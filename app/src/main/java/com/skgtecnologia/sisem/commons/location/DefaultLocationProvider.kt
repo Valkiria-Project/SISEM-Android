@@ -9,7 +9,6 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.Priority
 import com.skgtecnologia.sisem.commons.extensions.hasMapLocationPermission
 import com.skgtecnologia.sisem.commons.extensions.validateOrThrow
 import kotlinx.coroutines.channels.awaitClose
