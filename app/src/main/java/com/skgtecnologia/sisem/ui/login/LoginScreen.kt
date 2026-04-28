@@ -78,7 +78,7 @@ fun LoginScreen(
     }
 
     uiState.onLoginLink?.let { link ->
-        scope.launch { sheetState.show() }
+        LaunchedEffect(link) { sheetState.show() }
 
         BottomSheetView(
             content = { LegalContent(uiModel = link.toLegalContentModel()) },

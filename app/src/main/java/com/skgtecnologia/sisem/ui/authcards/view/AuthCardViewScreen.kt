@@ -90,7 +90,7 @@ fun AuthCardViewScreen(
     }
 
     uiState.reportDetail?.let {
-        scope.launch { sheetState.show() }
+        LaunchedEffect(it) { sheetState.show() }
 
         BottomSheetView(
             content = { ReportDetailContent(model = uiState.reportDetail) },
@@ -102,7 +102,7 @@ fun AuthCardViewScreen(
     }
 
     uiState.chipSection?.let {
-        scope.launch { sheetState.show() }
+        LaunchedEffect(it) { sheetState.show() }
 
         BottomSheetView(
             content = {
