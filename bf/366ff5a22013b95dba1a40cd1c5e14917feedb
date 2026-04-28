@@ -1,0 +1,33 @@
+app/src/main/java/com/skgtecnologia/sisem/data/notification/NotificationsManager.kt
+  5243d77cbd6fc249 13,29
+app/src/main/java/com/skgtecnologia/sisem/ui/authcards/view/AuthCardViewScreen.kt
+  5243d77cbd6fc249 93,105
+app/src/main/java/com/skgtecnologia/sisem/ui/preoperational/view/PreOperationalViewScreen.kt
+  5243d77cbd6fc249 62
+app/src/main/java/com/skgtecnologia/sisem/ui/login/LoginScreen.kt
+  5243d77cbd6fc249 81
+app/src/main/java/com/skgtecnologia/sisem/ui/MainActivity.kt
+  5243d77cbd6fc249 114
+app/src/main/java/com/skgtecnologia/sisem/ui/authcards/create/AuthCardsScreen.kt
+  5243d77cbd6fc249 143,155
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "bf366ff5a22013b95dba1a40cd1c5e14917feedb",
+  "prompts": {
+    "5243d77cbd6fc249": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9f81bb6b-a0e9-4531-b9a4-b1f59651838f",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Juan Camilo Villada",
+      "messages": [],
+      "total_additions": 235,
+      "total_deletions": 325,
+      "accepted_lines": 1779,
+      "overriden_lines": 0
+    }
+  }
+}
