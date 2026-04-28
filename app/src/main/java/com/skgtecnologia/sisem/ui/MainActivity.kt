@@ -111,6 +111,7 @@ class MainActivity : FragmentActivity() {
             val intent = Intent(packageContext, MainActivity::class.java).apply {
                 putExtra(STARTUP_NAVIGATION_MODEL, model)
                 bundle?.let { putExtras(it) }
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
             }
 
             packageContext.startActivity(intent)
