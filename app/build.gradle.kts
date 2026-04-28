@@ -223,6 +223,11 @@ dependencies {
     implementation(libs.mapbox.navigation.android)
     implementation(libs.mapbox.navigation.ui.components)
 
+    // WorkManager
+    implementation(libs.work.runtime.ktx)
+    implementation(libs.hilt.work)
+    testImplementation(libs.work.testing)
+
     // Unit Testing
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
