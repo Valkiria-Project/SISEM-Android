@@ -36,7 +36,6 @@ import com.valkiria.uicomponents.bricks.bottomsheet.BottomSheetView
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import com.valkiria.uicomponents.bricks.notification.OnNotificationHandler
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @Composable
@@ -141,7 +140,7 @@ private fun AuthCardsScreenRender(
     }
 
     uiState.reportDetail?.let {
-        scope.launch { sheetState.show() }
+        LaunchedEffect(it) { sheetState.show() }
 
         BottomSheetView(
             content = { ReportDetailContent(model = uiState.reportDetail) },
@@ -153,7 +152,7 @@ private fun AuthCardsScreenRender(
     }
 
     uiState.chipSection?.let {
-        scope.launch { sheetState.show() }
+        LaunchedEffect(it) { sheetState.show() }
 
         BottomSheetView(
             content = {

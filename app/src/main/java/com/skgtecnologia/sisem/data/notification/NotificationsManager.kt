@@ -10,7 +10,7 @@ import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
-import com.skgtecnologia.sisem.ui.MainActivity
+import com.skgtecnologia.sisem.ui.splash.SplashActivity
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import com.valkiria.uicomponents.bricks.notification.model.NotificationType
 import com.valkiria.uicomponents.bricks.notification.model.getNotificationDataByType
@@ -26,7 +26,7 @@ class NotificationsManager @Inject constructor(private val context: Context) {
     fun buildNotificationData(notificationDataMap: Map<String, String>): NotificationData? {
         val notificationData = getNotificationDataByType(notificationDataMap)
 
-        val intent = Intent(context, MainActivity::class.java).apply {
+        val intent = Intent(context, SplashActivity::class.java).apply {
             when (notificationData?.notificationType) {
                 NotificationType.INCIDENT_ASSIGNED -> {
                     val bundle = Bundle()
