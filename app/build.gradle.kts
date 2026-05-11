@@ -61,10 +61,10 @@ android {
         debug {
             applicationIdSuffix = ".debug"
             isDebuggable = true
-            buildConfigField("String", "AUTH_BASE_URL", "\"https://test.emergencias-sisem.co/dev/sisem-api/\"")
-            buildConfigField("String", "BASE_URL", "\"https://test.emergencias-sisem.co/dev/sisem-api/v1/\"")
-            buildConfigField("String", "LOCATION_URL", "\"https://test.emergencias-sisem.co/dev/sisem-location-api/v1/\"")
-            buildConfigField("String", "REFRESH_URL", "\"https://admin.qa.sisembogota.com/auth/realms/sisem/protocol/openid-connect/token\"")
+            buildConfigField("String", "AUTH_BASE_URL", "\"https://test.sisem.co/dev/sisem-api/\"")
+            buildConfigField("String", "BASE_URL", "\"https://test.sisem.co/dev/sisem-api/v1/\"")
+            buildConfigField("String", "LOCATION_URL", "\"https://test.sisem.co/dev/sisem-location-api/v1/\"")
+            buildConfigField("String", "REFRESH_URL", "\"https://admin.qa.sisem.co/auth/realms/sisem/protocol/openid-connect/token\"")
         }
         create("staging") {
             initWith(getByName("debug"))

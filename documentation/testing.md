@@ -11,20 +11,35 @@ For QA against the Bogotá production-ish backend, use the **staging** variant �
 adb install -r app/build/outputs/apk/staging/com.skgtecnologia.sisem-v*.apk
 ```
 
-| Variant   | Base URL                                      |
-|-----------|-----------------------------------------------|
-| debug     | test.emergencias-sisem.co                     |
-| staging   | api.emergencias.saludcapital.gov.co           |
-| preProd   | mobile-preprod.sisem.co                       |
-| release   | api.emergencias.saludcapital.gov.co           |
+| Variant   | Base URL                                      | Purpose            |
+|-----------|-----------------------------------------------|--------------------|
+| debug     | test.sisem.co                                 | QA environment     |
+| staging   | api.emergencias.saludcapital.gov.co           | Pre-release smoke  |
+| preProd   | mobile-preprod.sisem.co                       | Pre-production     |
+| release   | api.emergencias.saludcapital.gov.co           | Production         |
 
-## Test users (course role — "Cursos")
+For QA testing use **debug**:
+
+```bash
+./gradlew assembleDebug
+adb install -r app/build/outputs/apk/debug/com.skgtecnologia.sisem-v*-debug.apk
+```
+
+## Test users
+
+### Cursos (staging — `api.emergencias.saludcapital.gov.co`)
 
 | Role        | Username   | Password   |
 |-------------|-----------|------------|
 | Médico      | OMEDICO   | 22042601   |
 | Conductor   | OCONDUCTOR| 22042602   |
 | Auxiliar APH| OAUXILIAR | 22042603   |
+
+### QA (debug — `test.sisem.co`)
+
+| Role | Username   | Password   |
+|------|-----------|------------|
+| —    | GJARRISON | 29042601   |
 
 These users are tied to a vehicle that has been pre-registered in the backend with a specific device serial (see next section). If you try to log in from an emulator that the backend doesn't know, the device-auth screen blocks you.
 
