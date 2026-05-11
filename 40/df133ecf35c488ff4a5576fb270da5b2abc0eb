@@ -1,0 +1,14 @@
+app/build.gradle.kts
+  h_7b6b777b3e4637 43-44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.6",
+  "base_commit_sha": "40df133ecf35c488ff4a5576fb270da5b2abc0eb",
+  "prompts": {},
+  "humans": {
+    "h_7b6b777b3e4637": {
+      "author": "Juan Camilo Villada <jvillad1@gmail.com>"
+    }
+  }
+}
