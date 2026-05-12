@@ -69,10 +69,10 @@ android {
         create("staging") {
             initWith(getByName("debug"))
             applicationIdSuffix = ".debugStaging"
-            buildConfigField("String", "AUTH_BASE_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-api/\"")
-            buildConfigField("String", "BASE_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-api/v1/\"")
-            buildConfigField("String", "LOCATION_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-location-api/v1/\"")
-            buildConfigField("String", "REFRESH_URL", "\"https://admin.emergencias.saludcapital.gov.co/auth/realms/sisem/protocol/openid-connect/token\"")
+            buildConfigField("String", "AUTH_BASE_URL", "\"https://test.sisem.co/qa/sisem-api/\"")
+            buildConfigField("String", "BASE_URL", "\"https://test.sisem.co/qa/sisem-api/v1/\"")
+            buildConfigField("String", "LOCATION_URL", "\"https://test.sisem.co/qa/sisem-location-api/v1/\"")
+            buildConfigField("String", "REFRESH_URL", "\"https://admin.qa.sisem.co/auth/realms/sisem/protocol/openid-connect/token\"")
         }
         create("preProd") {
             initWith(getByName("debug"))

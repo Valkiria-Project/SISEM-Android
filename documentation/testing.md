@@ -13,33 +13,35 @@ adb install -r app/build/outputs/apk/staging/com.skgtecnologia.sisem-v*.apk
 
 | Variant   | Base URL                                      | Purpose            |
 |-----------|-----------------------------------------------|--------------------|
-| debug     | test.sisem.co                                 | QA environment     |
-| staging   | api.emergencias.saludcapital.gov.co           | Pre-release smoke  |
+| debug     | test.sisem.co/dev/                            | Local dev          |
+| staging   | test.sisem.co/qa/                             | QA environment     |
 | preProd   | mobile-preprod.sisem.co                       | Pre-production     |
 | release   | api.emergencias.saludcapital.gov.co           | Production         |
 
-For QA testing use **debug**:
+For QA testing use **staging**:
 
 ```bash
-./gradlew assembleDebug
-adb install -r app/build/outputs/apk/debug/com.skgtecnologia.sisem-v*-debug.apk
+./gradlew assembleStaging
+adb install -r app/build/outputs/apk/staging/com.skgtecnologia.sisem-v*-staging.apk
 ```
 
 ## Test users
 
-### Cursos (staging — `api.emergencias.saludcapital.gov.co`)
+### QA (staging — `test.sisem.co/qa/`)
+
+| Role | Username   | Password   |
+|------|-----------|------------|
+| —    | GJARRISON | 29042601   |
+
+### Cursos (production-like — historical)
+
+These users were tied to the previous staging endpoint (`api.emergencias.saludcapital.gov.co`). After the QA migration, they live on the production/release variant only.
 
 | Role        | Username   | Password   |
 |-------------|-----------|------------|
 | Médico      | OMEDICO   | 22042601   |
 | Conductor   | OCONDUCTOR| 22042602   |
 | Auxiliar APH| OAUXILIAR | 22042603   |
-
-### QA (debug — `test.sisem.co`)
-
-| Role | Username   | Password   |
-|------|-----------|------------|
-| —    | GJARRISON | 29042601   |
 
 These users are tied to a vehicle that has been pre-registered in the backend with a specific device serial (see next section). If you try to log in from an emulator that the backend doesn't know, the device-auth screen blocks you.
 
