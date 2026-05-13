@@ -28,14 +28,16 @@ class LocationWorker @AssistedInject constructor(
 
         // Drop stale samples that piled up while offline so the backend
         // does not record ancient positions as if they were current.
-        if (capturedAtMillis > 0L) {
-            val ageMillis = System.currentTimeMillis() - capturedAtMillis
-            if (ageMillis > MAX_STALENESS_MILLIS) {
-                Timber.tag("Location").d(
-                    "Dropping stale sample ageMs=$ageMillis (lat=$lat, lon=$lon)"
-                )
-                return ListenableWorker.Result.success()
-            }
+        val ageMillis = if (capturedAtMillis > 0L) {
+            System.currentTimeMillis() - capturedAtMillis
+        } else {
+            0L
+        }
+        if (ageMillis > MAX_STALENESS_MILLIS) {
+            Timber.tag("Location").d(
+                "Dropping stale sample ageMs=$ageMillis (lat=$lat, lon=$lon)"
+            )
+            return ListenableWorker.Result.success()
         }
 
         val vehicleCode = operationCacheDataSource
@@ -44,23 +46,26 @@ class LocationWorker @AssistedInject constructor(
             ?.vehicleCode
             .orEmpty()
 
-        // Retry instead of failing so the worker is preserved across
-        // re-authentication. Failing would drop the queued sample.
-        if (vehicleCode.isBlank()) {
-            Timber.tag("Location").d("vehicleCode blank, retrying later")
-            return ListenableWorker.Result.retry()
+        // Retry instead of failing when the cached vehicleCode is missing
+        // (e.g. mid re-authentication) so the queued sample survives until
+        // the operation config is back instead of being silently dropped.
+        return when {
+            vehicleCode.isBlank() -> {
+                Timber.tag("Location").d("vehicleCode blank, retrying later")
+                ListenableWorker.Result.retry()
+            }
+            else -> {
+                val capturedAt = if (capturedAtMillis > 0L) {
+                    Instant.ofEpochMilli(capturedAtMillis)
+                } else {
+                    Instant.now()
+                }
+                updateLocation.invoke(lat, lon, capturedAt).fold(
+                    onSuccess = { ListenableWorker.Result.success() },
+                    onFailure = { ListenableWorker.Result.retry() }
+                )
+            }
         }
-
-        val capturedAt = if (capturedAtMillis > 0L) {
-            Instant.ofEpochMilli(capturedAtMillis)
-        } else {
-            Instant.now()
-        }
-
-        return updateLocation.invoke(lat, lon, capturedAt).fold(
-            onSuccess = { ListenableWorker.Result.success() },
-            onFailure = { ListenableWorker.Result.retry() }
-        )
     }
 
     companion object {
