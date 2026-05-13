@@ -11,14 +11,31 @@ For QA against the Bogotá production-ish backend, use the **staging** variant �
 adb install -r app/build/outputs/apk/staging/com.skgtecnologia.sisem-v*.apk
 ```
 
-| Variant   | Base URL                                      |
-|-----------|-----------------------------------------------|
-| debug     | test.emergencias-sisem.co                     |
-| staging   | api.emergencias.saludcapital.gov.co           |
-| preProd   | mobile-preprod.sisem.co                       |
-| release   | api.emergencias.saludcapital.gov.co           |
+| Variant   | Base URL                                      | Purpose            |
+|-----------|-----------------------------------------------|--------------------|
+| debug     | test.sisem.co/dev/                            | Local dev          |
+| staging   | test.sisem.co/qa/                             | QA environment     |
+| preProd   | mobile-preprod.sisem.co                       | Pre-production     |
+| release   | api.emergencias.saludcapital.gov.co           | Production         |
 
-## Test users (course role — "Cursos")
+For QA testing use **staging**:
+
+```bash
+./gradlew assembleStaging
+adb install -r app/build/outputs/apk/staging/com.skgtecnologia.sisem-v*-staging.apk
+```
+
+## Test users
+
+### QA (staging — `test.sisem.co/qa/`)
+
+| Role | Username   | Password   |
+|------|-----------|------------|
+| —    | GJARRISON | 29042601   |
+
+### Cursos (production-like — historical)
+
+These users were tied to the previous staging endpoint (`api.emergencias.saludcapital.gov.co`). After the QA migration, they live on the production/release variant only.
 
 | Role        | Username   | Password   |
 |-------------|-----------|------------|
