@@ -140,6 +140,13 @@ class AccessTokenAuthenticator @Inject constructor(
                     ).toByteArray()
                 )
 
+                // Drop the dead token from the cache. If we keep it, the next
+                // 401-driven authenticate() call reads the same expired refresh
+                // token, fails again, and emits another UnauthorizedSession event
+                // — looping the user back to the login screen on every retry.
+                runBlocking {
+                    authRepository.deleteAccessTokenByUsername(currentToken.username)
+                }
                 UnauthorizedEventHandler.publishUnauthorizedEvent(currentToken.username)
                 return@synchronized null
             }
