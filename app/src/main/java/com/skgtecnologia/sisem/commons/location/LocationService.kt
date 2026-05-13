@@ -134,7 +134,8 @@ class LocationService : Service() {
             .setInputData(
                 workDataOf(
                     LocationWorker.KEY_LATITUDE to latitude,
-                    LocationWorker.KEY_LONGITUDE to longitude
+                    LocationWorker.KEY_LONGITUDE to longitude,
+                    LocationWorker.KEY_CAPTURED_AT to System.currentTimeMillis()
                 )
             )
             .build()
