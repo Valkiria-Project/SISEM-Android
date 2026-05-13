@@ -72,7 +72,7 @@ class MainActivity : FragmentActivity() {
         }
 
         intent.extras?.also { bundle ->
-            handlePushNotification(bundle)
+            handlePushNotification(bundle, source = "onCreate")
         }
 
         setContent {
@@ -82,16 +82,35 @@ class MainActivity : FragmentActivity() {
         }
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        // Required so subsequent `intent.extras` reads return the new bundle.
+        setIntent(intent)
+        intent.extras?.also { bundle ->
+            handlePushNotification(bundle, source = "onNewIntent")
+        }
+    }
+
     @Suppress("MagicNumber")
-    private fun handlePushNotification(bundle: Bundle) {
-        Timber.d("handlePushNotification")
+    private fun handlePushNotification(bundle: Bundle, source: String) {
+        Timber.tag("PushFlow").d(
+            "handlePushNotification source=$source keys=${bundle.keySet()}"
+        )
 
         lifecycleScope.launch {
-            getNotificationDataByType(bundle)?.also { notificationData ->
-                storeNotification.invoke(notificationData)
-                delay(500)
-                NotificationEventHandler.publishNotificationEvent(notificationData)
+            val notificationData = getNotificationDataByType(bundle)
+            if (notificationData == null) {
+                Timber.tag("PushFlow").d(
+                    "no notification_type found in extras, skipping"
+                )
+                return@launch
             }
+            Timber.tag("PushFlow").d(
+                "parsed notificationType=${notificationData.notificationType}"
+            )
+            storeNotification.invoke(notificationData)
+            delay(500)
+            NotificationEventHandler.publishNotificationEvent(notificationData)
         }
     }
 
