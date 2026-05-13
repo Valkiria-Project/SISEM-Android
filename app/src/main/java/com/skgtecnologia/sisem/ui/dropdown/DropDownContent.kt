@@ -16,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -64,6 +65,10 @@ fun DropDownContent(
             mutableStateOf(itemList.find { it.name == defaultSelected })
         }
 
+        val filteredItems by remember(itemList) {
+            derivedStateOf { itemList.filter { it.name.contains(text, ignoreCase = true) } }
+        }
+
         OutlinedTextField(
             modifier = Modifier
                 .constrainAs(searchHeader) {
@@ -106,9 +111,8 @@ fun DropDownContent(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(
-                    itemList.filter {
-                        it.name.contains(text, true)
-                    }
+                    items = filteredItems,
+                    key = { it.id }
                 ) {
                     Text(
                         modifier = Modifier
@@ -135,7 +139,7 @@ fun DropDownContent(
                 contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(itemList) {
+                items(items = itemList, key = { it.id }) {
                     Text(
                         modifier = Modifier
                             .fillMaxWidth()

@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.di
 
+import android.content.Context
 import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.data.remote.interceptors.AccessTokenAuthenticator
 import com.skgtecnologia.sisem.data.remote.interceptors.AccessTokenInterceptor
@@ -10,11 +11,14 @@ import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -25,13 +29,16 @@ object BearerNetworkModule {
     @BearerAuthentication
     @Singleton
     @Provides
+    @Suppress("LongParameterList")
     internal fun providesOkHttpClient(
+        @ApplicationContext context: Context,
         accessTokenAuthenticator: AccessTokenAuthenticator,
         accessTokenInterceptor: AccessTokenInterceptor,
         auditInterceptor: AuditInterceptor,
         loggingInterceptor: HttpLoggingInterceptor?,
         networkInterceptor: NetworkInterceptor
     ): OkHttpClient = OkHttpClient.Builder().apply {
+        cache(Cache(File(context.cacheDir, "http-bearer"), HTTP_CACHE_SIZE_BYTES))
         connectTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
         readTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
         writeTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
