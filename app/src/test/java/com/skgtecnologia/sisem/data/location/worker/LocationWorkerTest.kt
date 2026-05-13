@@ -42,12 +42,17 @@ class LocationWorkerTest {
         context = RuntimeEnvironment.getApplication()
     }
 
-    private fun buildWorker(lat: Double, lon: Double): LocationWorker {
+    private fun buildWorker(
+        lat: Double,
+        lon: Double,
+        capturedAtMillis: Long = System.currentTimeMillis(),
+    ): LocationWorker {
         return TestListenableWorkerBuilder<LocationWorker>(
             context = context,
             inputData = workDataOf(
                 LocationWorker.KEY_LATITUDE to lat,
-                LocationWorker.KEY_LONGITUDE to lon
+                LocationWorker.KEY_LONGITUDE to lon,
+                LocationWorker.KEY_CAPTURED_AT to capturedAtMillis
             )
         ).setWorkerFactory(object : WorkerFactory() {
             override fun createWorker(
@@ -68,24 +73,26 @@ class LocationWorkerTest {
         coEvery { operationCacheDataSource.observeOperationConfig() } returns flowOf(
             mockk(relaxed = true) { io.mockk.every { vehicleCode } returns "AMB-001" }
         )
-        coEvery { updateLocation.invoke(any(), any()) } returns kotlin.Result.success(Unit)
+        coEvery {
+            updateLocation.invoke(any(), any(), any())
+        } returns kotlin.Result.success(Unit)
 
         val result = buildWorker(4.60, -74.08).doWork()
 
         assertEquals(ListenableWorker.Result.success(), result)
-        coVerify { updateLocation.invoke(4.60, -74.08) }
+        coVerify { updateLocation.invoke(4.60, -74.08, any()) }
     }
 
     @Test
-    fun `blank vehicleCode returns failure without calling updateLocation`() = runTest {
+    fun `blank vehicleCode returns retry without calling updateLocation`() = runTest {
         coEvery { operationCacheDataSource.observeOperationConfig() } returns flowOf(
             mockk(relaxed = true) { io.mockk.every { vehicleCode } returns "" }
         )
 
         val result = buildWorker(4.60, -74.08).doWork()
 
-        assertEquals(ListenableWorker.Result.failure(), result)
-        coVerify(exactly = 0) { updateLocation.invoke(any(), any()) }
+        assertEquals(ListenableWorker.Result.retry(), result)
+        coVerify(exactly = 0) { updateLocation.invoke(any(), any(), any()) }
     }
 
     @Test
@@ -93,10 +100,23 @@ class LocationWorkerTest {
         coEvery { operationCacheDataSource.observeOperationConfig() } returns flowOf(
             mockk(relaxed = true) { io.mockk.every { vehicleCode } returns "AMB-001" }
         )
-        coEvery { updateLocation.invoke(any(), any()) } returns kotlin.Result.failure(Throwable("network error"))
+        coEvery {
+            updateLocation.invoke(any(), any(), any())
+        } returns kotlin.Result.failure(Throwable("network error"))
 
         val result = buildWorker(4.60, -74.08).doWork()
 
         assertEquals(ListenableWorker.Result.retry(), result)
+    }
+
+    @Test
+    fun `stale captured-at sample is dropped silently`() = runTest {
+        // Six minutes old — exceeds the 5 min staleness threshold.
+        val staleCapturedAt = System.currentTimeMillis() - 6 * 60 * 1000L
+
+        val result = buildWorker(4.60, -74.08, staleCapturedAt).doWork()
+
+        assertEquals(ListenableWorker.Result.success(), result)
+        coVerify(exactly = 0) { updateLocation.invoke(any(), any(), any()) }
     }
 }

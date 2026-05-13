@@ -19,7 +19,11 @@ class LocationRepositoryImpl @Inject constructor(
     private val operationCacheDataSource: OperationCacheDataSource
 ) : LocationRepository {
 
-    override suspend fun updateLocation(latitude: Double, longitude: Double) {
+    override suspend fun updateLocation(
+        latitude: Double,
+        longitude: Double,
+        capturedAt: Instant,
+    ) {
         locationRemoteDataSource.sendUpdatedLocation(
             idVehicle = operationCacheDataSource
                 .observeOperationConfig()
@@ -29,7 +33,7 @@ class LocationRepositoryImpl @Inject constructor(
             idOrigin = MOBILE_APP_ORIGIN,
             latitude = latitude,
             longitude = longitude,
-            originAt = TimeUtils.getLocalDateTime(Instant.now()).toString(),
+            originAt = TimeUtils.getLocalDateTime(capturedAt).toString(),
             idIncident = notificationCacheDataSource.getActiveIncidentNotification()?.incidentNumber
         )
     }
