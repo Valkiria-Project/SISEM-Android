@@ -1,0 +1,23 @@
+app/src/main/java/com/skgtecnologia/sisem/domain/notification/usecases/StoreNotification.kt
+  s_283f1b41a6a1c8::t_1236f89712f6f9 3,7,11-12,16-21
+app/src/main/java/com/skgtecnologia/sisem/commons/communication/NotificationDeduplicator.kt
+  s_283f1b41a6a1c8::t_808d096cfc78d2 1-53
+app/src/main/java/com/skgtecnologia/sisem/ui/MainActivity.kt
+  s_283f1b41a6a1c8::t_429d3b607bfc5f 75,85-93,95-98,101-106,108-113
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.7",
+  "base_commit_sha": "a0923a74ce2f2a2f777bfd603e8d386eb3c66ac1",
+  "prompts": {},
+  "sessions": {
+    "s_283f1b41a6a1c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "007b110d-defa-466a-89e4-0c1617de9671",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Juan Camilo Villada <jvillad1@gmail.com>"
+    }
+  }
+}
