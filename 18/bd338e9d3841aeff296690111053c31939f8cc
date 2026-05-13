@@ -1,0 +1,35 @@
+app/src/main/java/com/skgtecnologia/sisem/ui/dropdown/DropDownContent.kt
+  s_283f1b41a6a1c8::t_3419b18cc336b3 19
+  s_283f1b41a6a1c8::t_732cf6987f12ee 142
+  s_283f1b41a6a1c8::t_10e3c9a9010fc1 68-71
+  s_283f1b41a6a1c8::t_4aa90d85dcbde1 114-115
+app/src/main/java/com/skgtecnologia/sisem/di/auth/AuthNetworkModule.kt
+  s_283f1b41a6a1c8::t_51560eb067a361 3,10,16,18,23,35,40
+gradle.properties
+  s_283f1b41a6a1c8::t_dc77dbfe133d4b 9-13
+uicomponents/src/main/java/com/valkiria/uicomponents/components/chip/FiltersComponent.kt
+  s_283f1b41a6a1c8::t_d3d485b0f53d71 65
+app/src/main/java/com/skgtecnologia/sisem/di/CoreNetworkModule.kt
+  s_283f1b41a6a1c8::t_ead02f2ddb6333 60
+app/src/main/java/com/skgtecnologia/sisem/commons/resources/AndroidIdProviderImpl.kt
+  s_283f1b41a6a1c8::t_5a5a4eddd91aa7 9,13,18-20,23-27,29-30,33-34,36,38-40,42-43,45
+app/src/main/java/com/skgtecnologia/sisem/di/BearerNetworkModule.kt
+  s_283f1b41a6a1c8::t_8ca8e11e4e4cab 3,14,16,21,34,41
+  s_283f1b41a6a1c8::t_b1d283d9fe19fa 32
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.7",
+  "base_commit_sha": "18bd338e9d3841aeff296690111053c31939f8cc",
+  "prompts": {},
+  "sessions": {
+    "s_283f1b41a6a1c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "007b110d-defa-466a-89e4-0c1617de9671",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Juan Camilo Villada <jvillad1@gmail.com>"
+    }
+  }
+}
