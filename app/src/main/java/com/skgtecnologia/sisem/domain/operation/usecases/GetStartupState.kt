@@ -16,19 +16,18 @@ class GetStartupState @Inject constructor(
 
     @CheckResult
     suspend operator fun invoke(): Result<StartupNavigationModel> = resultOf {
-        val accessToken = authRepository.observeCurrentAccessToken()
+        val token = authRepository.observeCurrentAccessToken().first()
         val operationConfig = getOperationConfigWithCurrentRole.invoke().getOrNull()
         val configPreoperational = PreoperationalStatus.getStatusByName(
             operationConfig?.vehicleConfig?.preoperational.orEmpty()
         ) == PreoperationalStatus.SI
 
         StartupNavigationModel(
-            isAdmin = accessToken.first()?.isAdmin == true,
-            isTurnStarted = accessToken.first()?.turn?.isComplete == true,
-            isWarning = accessToken.first()?.isWarning == true,
-            requiresPreOperational = accessToken.first()?.preoperational?.status == true &&
-                configPreoperational,
-            preOperationRole = OperationRole.getRoleByName(accessToken.first()?.role.orEmpty()),
+            isAdmin = token?.isAdmin == true,
+            isTurnStarted = token?.turn?.isComplete == true,
+            isWarning = token?.isWarning == true,
+            requiresPreOperational = token?.preoperational?.status == true && configPreoperational,
+            preOperationRole = OperationRole.getRoleByName(token?.role.orEmpty()),
             vehicleCode = operationConfig?.vehicleCode
         )
     }
