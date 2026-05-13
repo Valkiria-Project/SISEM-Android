@@ -1,0 +1,26 @@
+app/src/test/java/com/skgtecnologia/sisem/data/remote/interceptors/AccessTokenInterceptorTest.kt
+  s_8e1f1c13b22364::t_80723bb71e45b4 103,111,127,132,135,141
+app/src/main/java/com/skgtecnologia/sisem/data/remote/interceptors/AccessTokenInterceptor.kt
+  s_8e1f1c13b22364::t_0076efbefc9c48 11
+  s_8e1f1c13b22364::t_f8349750a48ad5 100-103,105-126,128-154,156-175
+app/src/test/java/com/skgtecnologia/sisem/data/remote/interceptors/AccessTokenAuthenticatorTest.kt
+  s_8e1f1c13b22364::t_3769e461282114 126,130,135
+app/src/main/java/com/skgtecnologia/sisem/data/remote/interceptors/AccessTokenAuthenticator.kt
+  s_8e1f1c13b22364::t_c55359c3fcd7e7 143-149
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.7",
+  "base_commit_sha": "5be128d1538f2a8447af7a06fe4d34482391e537",
+  "prompts": {},
+  "sessions": {
+    "s_8e1f1c13b22364": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0e5ec449-e3bb-45dc-a0b7-501bf8a58fb2",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Juan Camilo Villada <jvillad1@gmail.com>"
+    }
+  }
+}
