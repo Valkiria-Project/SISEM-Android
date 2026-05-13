@@ -100,7 +100,7 @@ class AccessTokenInterceptorTest {
     }
 
     @Test
-    fun `when token expired and refresh fails with BannerModel, publishes event without deleting token`() = runTest {
+    fun `when token expired and refresh fails with BannerModel, deletes dead token and publishes event`() = runTest {
         val bannerError = BannerModel(
             icon = "ic_alert",
             title = "Token expired",
@@ -108,6 +108,7 @@ class AccessTokenInterceptorTest {
         )
         coEvery { authRepository.getAllAccessTokens() } returns listOf(expiredToken)
         coEvery { authRepository.refreshToken(expiredToken) } throws bannerError
+        coEvery { authRepository.deleteAccessTokenByUsername("testuser") } just runs
         coEvery { authRepository.getLastToken() } returns expiredToken.accessToken
         every { UnauthorizedEventHandler.publishUnauthorizedEvent("testuser") } just runs
 
@@ -123,20 +124,21 @@ class AccessTokenInterceptorTest {
                 }
             )
         }
-        coVerify(exactly = 0) { authRepository.deleteAccessTokenByUsername(any()) }
+        coVerify(exactly = 1) { authRepository.deleteAccessTokenByUsername("testuser") }
         verify(exactly = 1) { UnauthorizedEventHandler.publishUnauthorizedEvent("testuser") }
     }
 
     @Test
-    fun `when token expired and refresh fails with exception, publishes event without deleting`() = runTest {
+    fun `when token expired and refresh fails with exception, deletes dead token and publishes event`() = runTest {
         coEvery { authRepository.getAllAccessTokens() } returns listOf(expiredToken)
         coEvery { authRepository.refreshToken(expiredToken) } throws RuntimeException("network error")
+        coEvery { authRepository.deleteAccessTokenByUsername("testuser") } just runs
         coEvery { authRepository.getLastToken() } returns expiredToken.accessToken
         every { UnauthorizedEventHandler.publishUnauthorizedEvent("testuser") } just runs
 
         interceptor.intercept(chain)
 
-        coVerify(exactly = 0) { authRepository.deleteAccessTokenByUsername(any()) }
+        coVerify(exactly = 1) { authRepository.deleteAccessTokenByUsername("testuser") }
         verify(exactly = 1) { UnauthorizedEventHandler.publishUnauthorizedEvent("testuser") }
     }
 

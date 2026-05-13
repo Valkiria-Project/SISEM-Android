@@ -8,6 +8,7 @@ import com.skgtecnologia.sisem.commons.resources.StorageProvider
 import com.skgtecnologia.sisem.data.remote.extensions.signWithToken
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
+import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.model.banner.BannerModel
 import com.valkiria.uicomponents.utlis.TimeUtils
 import kotlinx.coroutines.runBlocking
@@ -96,57 +97,81 @@ class AccessTokenInterceptor @Inject constructor(
     }
 
     private suspend fun Request.handleTokenExpirationTime() {
-        authRepository.getAllAccessTokens().map { accessTokenModel ->
-            if (LocalDateTime.now() > accessTokenModel.expDate) {
-                val authenticateContent = TimeUtils.getLocalDateTime(Instant.now()).toString() +
-                    "\t Authenticate intent: " + url +
-                    "\t with Token model: " + accessTokenModel +
-                    "\t using the refresh token: " + accessTokenModel.refreshToken +
-                    "\t refreshed on: " + accessTokenModel.refreshDateTime +
-                    "\n\n"
+        authRepository.getAllAccessTokens()
+            .filter { LocalDateTime.now() > it.expDate }
+            .forEach { refreshExpiredToken(it) }
+    }
 
-                storageProvider.storeContent(
-                    ANDROID_NETWORKING_FILE_NAME,
-                    Context.MODE_APPEND,
-                    authenticateContent.toByteArray()
-                )
+    private suspend fun Request.refreshExpiredToken(accessTokenModel: AccessTokenModel) {
+        val authenticateContent = TimeUtils.getLocalDateTime(Instant.now()).toString() +
+            "\t Authenticate intent: " + url +
+            "\t with Token model: " + accessTokenModel +
+            "\t using the refresh token: " + accessTokenModel.refreshToken +
+            "\t refreshed on: " + accessTokenModel.refreshDateTime +
+            "\n\n"
 
-                resultOf { authRepository.refreshToken(accessTokenModel) }
-                    .onSuccess { refreshedTokenModel ->
-                        val refreshSuccessfulContent =
-                            TimeUtils.getLocalDateTime(Instant.now()).toString() +
-                                "\t Refreshed Token model: " + refreshedTokenModel +
-                                "\t using the refresh token: " + accessTokenModel.refreshToken +
-                                "\t refreshed on: " + refreshedTokenModel.refreshDateTime +
-                                "\n\n"
+        storageProvider.storeContent(
+            ANDROID_NETWORKING_FILE_NAME,
+            Context.MODE_APPEND,
+            authenticateContent.toByteArray()
+        )
 
-                        storageProvider.storeContent(
-                            ANDROID_NETWORKING_FILE_NAME,
-                            Context.MODE_APPEND,
-                            refreshSuccessfulContent.toByteArray()
-                        )
-                    }
-                    .onFailure { throwable ->
-                        val errorMessage = if (throwable is BannerModel) {
-                            "${throwable.title}: ${throwable.description}"
-                        } else {
-                            throwable.message ?: throwable::class.simpleName ?: "UnknownError"
-                        }
-
-                        storageProvider.storeContent(
-                            ANDROID_NETWORKING_FILE_NAME,
-                            Context.MODE_APPEND,
-                            (
-                                TimeUtils.getLocalDateTime(Instant.now()).toString() +
-                                "\t Refreshed Token failure: " + errorMessage +
-                                "\t using the refresh token: " + accessTokenModel.refreshToken +
-                                "\n\n"
-                            ).toByteArray()
-                        )
-
-                        UnauthorizedEventHandler.publishUnauthorizedEvent(accessTokenModel.username)
-                    }
-            }
+        val refreshResult = resultOf { authRepository.refreshToken(accessTokenModel) }
+        val refreshedToken = refreshResult.getOrNull()
+        if (refreshedToken != null) {
+            logRefreshSuccess(accessTokenModel, refreshedToken)
+        } else {
+            handleRefreshFailure(accessTokenModel, refreshResult.exceptionOrNull())
         }
+    }
+
+    private fun logRefreshSuccess(
+        previousToken: AccessTokenModel,
+        refreshedToken: AccessTokenModel
+    ) {
+        val refreshSuccessfulContent =
+            TimeUtils.getLocalDateTime(Instant.now()).toString() +
+                "\t Refreshed Token model: " + refreshedToken +
+                "\t using the refresh token: " + previousToken.refreshToken +
+                "\t refreshed on: " + refreshedToken.refreshDateTime +
+                "\n\n"
+
+        storageProvider.storeContent(
+            ANDROID_NETWORKING_FILE_NAME,
+            Context.MODE_APPEND,
+            refreshSuccessfulContent.toByteArray()
+        )
+    }
+
+    private suspend fun handleRefreshFailure(
+        accessTokenModel: AccessTokenModel,
+        throwable: Throwable?
+    ) {
+        val errorMessage = when {
+            throwable is BannerModel -> "${throwable.title}: ${throwable.description}"
+            throwable != null ->
+                throwable.message ?: throwable::class.simpleName ?: "UnknownError"
+            else -> "UnknownError"
+        }
+
+        storageProvider.storeContent(
+            ANDROID_NETWORKING_FILE_NAME,
+            Context.MODE_APPEND,
+            (
+                TimeUtils.getLocalDateTime(Instant.now()).toString() +
+                    "\t Refreshed Token failure: " + errorMessage +
+                    "\t using the refresh token: " + accessTokenModel.refreshToken +
+                    "\n\n"
+                ).toByteArray()
+        )
+
+        // Remove the dead token from the cache so subsequent requests do not
+        // keep hitting Keycloak with an already-expired refresh token. Without
+        // this the next intercepted request (e.g. the periodic LocationWorker
+        // POST) finds the same expired entry, retries the refresh, fails again,
+        // and emits another UnauthorizedSession event — re-navigating the user
+        // back to the login screen mid-typing.
+        authRepository.deleteAccessTokenByUsername(accessTokenModel.username)
+        UnauthorizedEventHandler.publishUnauthorizedEvent(accessTokenModel.username)
     }
 }
