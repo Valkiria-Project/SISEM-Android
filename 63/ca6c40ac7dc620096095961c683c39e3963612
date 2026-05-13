@@ -1,0 +1,20 @@
+gradle/libs.versions.toml
+  s_283f1b41a6a1c8::t_36789e4ba40ba3 33
+  s_283f1b41a6a1c8::t_7eb5012fd0d67b 29
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.7",
+  "base_commit_sha": "63ca6c40ac7dc620096095961c683c39e3963612",
+  "prompts": {},
+  "sessions": {
+    "s_283f1b41a6a1c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "007b110d-defa-466a-89e4-0c1617de9671",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Juan Camilo Villada <jvillad1@gmail.com>"
+    }
+  }
+}
