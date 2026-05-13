@@ -62,7 +62,7 @@ fun FiltersComponent(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        items(uiModel.options) { chipText ->
+        items(items = uiModel.options, key = { it }) { chipText ->
             val isSelected = chipText == selected
 
             FilterChipView(

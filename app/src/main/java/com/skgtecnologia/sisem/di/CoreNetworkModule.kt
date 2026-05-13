@@ -57,6 +57,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Singleton
 
 const val CLIENT_TIMEOUT_DEFAULTS = 15_000L
+const val HTTP_CACHE_SIZE_BYTES: Long = 10L * 1024 * 1024 // 10 MB
 
 @Module
 @InstallIn(SingletonComponent::class)

@@ -1,21 +1,26 @@
 package com.skgtecnologia.sisem.di.auth
 
+import android.content.Context
 import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.data.auth.remote.AuthApi
 import com.skgtecnologia.sisem.data.remote.interceptors.AuditInterceptor
 import com.skgtecnologia.sisem.data.remote.interceptors.NetworkInterceptor
 import com.skgtecnologia.sisem.di.CLIENT_TIMEOUT_DEFAULTS
 import com.skgtecnologia.sisem.di.CoreNetworkModule
+import com.skgtecnologia.sisem.di.HTTP_CACHE_SIZE_BYTES
 import com.skgtecnologia.sisem.di.qualifiers.BasicAuthentication
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -27,10 +32,12 @@ object AuthNetworkModule {
     @Singleton
     @Provides
     internal fun providesOkHttpClient(
+        @ApplicationContext context: Context,
         loggingInterceptor: HttpLoggingInterceptor?,
         auditInterceptor: AuditInterceptor,
         networkInterceptor: NetworkInterceptor
     ): OkHttpClient = OkHttpClient.Builder().apply {
+        cache(Cache(File(context.cacheDir, "http-auth"), HTTP_CACHE_SIZE_BYTES))
         connectTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
         readTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
         writeTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
