@@ -1,0 +1,27 @@
+app/src/main/java/com/skgtecnologia/sisem/commons/location/LocationService.kt
+  s_283f1b41a6a1c8::t_6b58381ec1f97f 137-138
+app/src/main/java/com/skgtecnologia/sisem/data/location/worker/LocationWorker.kt
+  s_283f1b41a6a1c8::t_e31373cb56eaa4 13-14,27-39,47-48,50-51,54-60,69-72
+app/src/main/java/com/skgtecnologia/sisem/domain/location/LocationRepository.kt
+  s_283f1b41a6a1c8::t_5f86076a5fadce 3-4,7-11
+app/src/main/java/com/skgtecnologia/sisem/domain/location/usecases/UpdateLocation.kt
+  s_283f1b41a6a1c8::t_ee18c4bd30d011 5,12-17
+app/src/main/java/com/skgtecnologia/sisem/data/location/LocationRepositoryImpl.kt
+  s_283f1b41a6a1c8::t_4cf4b3dc3b9433 22-26,36
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.7",
+  "base_commit_sha": "b0ea695594e88300b46a1cfa37aac8d9b060664a",
+  "prompts": {},
+  "sessions": {
+    "s_283f1b41a6a1c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "007b110d-defa-466a-89e4-0c1617de9671",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Juan Camilo Villada <jvillad1@gmail.com>"
+    }
+  }
+}
