@@ -1,0 +1,19 @@
+app/src/test/java/com/skgtecnologia/sisem/data/location/worker/LocationWorkerTest.kt
+  s_283f1b41a6a1c8::t_6bf3e56244c8de 45-49,54-55,76-78,83,87,94-95,103-105,111-120
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.7",
+  "base_commit_sha": "249646fe0dc2337645eea84344b32506f5395872",
+  "prompts": {},
+  "sessions": {
+    "s_283f1b41a6a1c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "007b110d-defa-466a-89e4-0c1617de9671",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Juan Camilo Villada <jvillad1@gmail.com>"
+    }
+  }
+}
