@@ -123,8 +123,9 @@ fun SignatureScreen(
 fun handleFooterAction(uiAction: UiAction, viewModel: SignatureViewModel) {
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
-            SignatureIdentifier.SIGNATURE_REGISTRATION_ADD_BUTTON.name ->
+            SignatureIdentifier.SIGNATURE_REGISTRATION_ADD_BUTTON.name -> {
                 viewModel.showSignaturePad()
+            }
         }
     }
 }

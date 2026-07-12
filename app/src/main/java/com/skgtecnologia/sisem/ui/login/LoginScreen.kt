@@ -108,9 +108,13 @@ private fun handleAction(
 ) {
     (uiAction as? LoginUiAction)?.let {
         when (uiAction) {
-            ForgotPassword -> viewModel.forgotPassword()
+            ForgotPassword -> {
+                viewModel.forgotPassword()
+            }
 
-            Login -> viewModel.login()
+            Login -> {
+                viewModel.login()
+            }
 
             is LoginPasswordInput -> {
                 viewModel.password = uiAction.updatedValue
@@ -122,9 +126,11 @@ private fun handleAction(
                 viewModel.isValidUsername = uiAction.fieldValidated
             }
 
-            is TermsAndConditions -> viewModel.showLoginLink(
+            is TermsAndConditions -> {
+                viewModel.showLoginLink(
                 LoginLink.getLinkByName(link = uiAction.link)
             )
+            }
         }
     }
 }

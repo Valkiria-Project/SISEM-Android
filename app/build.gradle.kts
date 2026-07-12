@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
@@ -130,10 +129,6 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 }
 
 composeCompiler {
-    featureFlags.addAll(
-        ComposeFeatureFlag.OptimizeNonSkippingGroups
-    )
-
     reportsDestination = layout.buildDirectory.dir("compose_compiler")
 }
 

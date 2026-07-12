@@ -66,28 +66,34 @@ fun TextFieldComponent(
         )
 
         when (uiModel.style) {
-            TextFieldStyle.DATE_PICKER -> DatePickerTextFieldView(
+            TextFieldStyle.DATE_PICKER -> {
+                DatePickerTextFieldView(
                 uiModel = uiModel,
                 validateFields = shouldValidateFields
             ) { id, updatedValue, fieldValidated, required ->
                 onAction(InputUiModel(id, updatedValue, fieldValidated, required))
             }
+            }
 
-            TextFieldStyle.FILLED -> FilledTextFieldView(
+            TextFieldStyle.FILLED -> {
+                FilledTextFieldView(
                 uiModel = uiModel,
                 validateFields = shouldValidateFields
             ) { id, updatedValue, fieldValidated, required ->
                 onAction(InputUiModel(id, updatedValue, fieldValidated, required))
             }
+            }
 
-            TextFieldStyle.FIXED_DATE -> FixedDateTextFieldView(
+            TextFieldStyle.FIXED_DATE -> {
+                FixedDateTextFieldView(
                 uiModel = uiModel,
                 validateFields = shouldValidateFields
             ) { id, updatedValue, fieldValidated, required ->
                 onAction(InputUiModel(id, updatedValue, fieldValidated, required))
             }
+            }
 
-            TextFieldStyle.OUTLINED ->
+            TextFieldStyle.OUTLINED -> {
                 if (transfersReturnIdentifiers.contains(uiModel.identifier)) {
                     OutlinedTextFieldView2(
                         uiModel = uiModel,
@@ -103,6 +109,7 @@ fun TextFieldComponent(
                         onAction(InputUiModel(id, updatedValue, fieldValidated, required))
                     }
                 }
+            }
         }
     }
 }

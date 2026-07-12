@@ -48,27 +48,30 @@ class AccessTokenInterceptor @Inject constructor(
         when {
             url.toString().contains(ASSISTANT_PRE_OP) ||
                 url.toString().contains(ASSISTANT_FINDING) ||
-                url.toString().contains(ASSISTANT_NOVELTY) ->
-                authRepository.getTokenByRole(OperationRole.AUXILIARY_AND_OR_TAPH.name.lowercase())
+                url.toString().contains(ASSISTANT_NOVELTY) -> {
+                    authRepository.getTokenByRole(OperationRole.AUXILIARY_AND_OR_TAPH.name.lowercase())
                     ?.let { token ->
                         signWithToken(token.accessToken)
                     }
+            }
 
             url.toString().contains(DOCTOR_PRE_OP) ||
                 url.toString().contains(DOCTOR_FINDING) ||
-                url.toString().contains(DOCTOR_NOVELTY) ->
-                authRepository.getTokenByRole(OperationRole.MEDIC_APH.name.lowercase())
+                url.toString().contains(DOCTOR_NOVELTY) -> {
+                    authRepository.getTokenByRole(OperationRole.MEDIC_APH.name.lowercase())
                     ?.let { token ->
                         signWithToken(token.accessToken)
                     }
+            }
 
             url.toString().contains(DRIVER_PRE_OP) ||
                 url.toString().contains(DRIVER_FINDING) ||
-                url.toString().contains(DRIVER_NOVELTY) ->
-                authRepository.getTokenByRole(OperationRole.DRIVER.name.lowercase())
+                url.toString().contains(DRIVER_NOVELTY) -> {
+                    authRepository.getTokenByRole(OperationRole.DRIVER.name.lowercase())
                     ?.let { token ->
                         signWithToken(token.accessToken)
                     }
+            }
 
             url.toString().contains(APH) -> {
                 val token = authRepository.getTokenByRole(
@@ -90,8 +93,10 @@ class AccessTokenInterceptor @Inject constructor(
                 token?.let { signWithToken(token.accessToken) }
             }
 
-            else -> authRepository.getLastToken()?.let { accessToken ->
+            else -> {
+                authRepository.getLastToken()?.let { accessToken ->
                 signWithToken(accessToken)
+            }
             }
         }
     }
@@ -148,10 +153,17 @@ class AccessTokenInterceptor @Inject constructor(
         throwable: Throwable?
     ) {
         val errorMessage = when {
-            throwable is BannerModel -> "${throwable.title}: ${throwable.description}"
-            throwable != null ->
+            throwable is BannerModel -> {
+                "${throwable.title}: ${throwable.description}"
+            }
+
+            throwable != null -> {
                 throwable.message ?: throwable::class.simpleName ?: "UnknownError"
-            else -> "UnknownError"
+            }
+
+            else -> {
+                "UnknownError"
+            }
         }
 
         storageProvider.storeContent(

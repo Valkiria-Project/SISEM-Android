@@ -321,15 +321,25 @@ class ReportViewModel @Inject constructor(
         uiState.value.operationConfig?.numImgNovelty ?: 0
     } else {
         when (uiState.value.operationConfig?.operationRole) {
-            OperationRole.AUXILIARY_AND_OR_TAPH ->
+            OperationRole.AUXILIARY_AND_OR_TAPH -> {
                 uiState.value.operationConfig?.numImgPreoperationalAux ?: 0
+            }
 
-            OperationRole.DRIVER -> uiState.value.operationConfig?.numImgPreoperationalDriver ?: 0
-            OperationRole.LEAD_APH -> 0
-            OperationRole.MEDIC_APH ->
+            OperationRole.DRIVER -> {
+                uiState.value.operationConfig?.numImgPreoperationalDriver ?: 0
+            }
+
+            OperationRole.LEAD_APH -> {
+                0
+            }
+
+            OperationRole.MEDIC_APH -> {
                 uiState.value.operationConfig?.numImgPreoperationalDoctor ?: 0
+            }
 
-            null -> 0
+            null -> {
+                0
+            }
         }
     }
 

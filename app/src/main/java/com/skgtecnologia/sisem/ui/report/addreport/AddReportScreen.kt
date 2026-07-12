@@ -137,7 +137,9 @@ fun AddReportScreen(
             MediaActionsComponent(uiModel = MediaActionsUiModel()) { _, mediaAction ->
                 when (mediaAction) {
                     Camera -> viewModel.showCamera(isFromPreOperational = false)
+
                     is MediaFile -> Timber.d("no-op")
+
                     is Gallery -> scope.launch {
                         val uris = mediaAction.uris
                         val mediaItems = context.handleMediaUris(
@@ -206,15 +208,25 @@ private fun handleFooterAction(
 ) {
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
-            AddReportIdentifier.ADD_REPORT_ENTRY_CANCEL_BUTTON.name -> viewModel.cancelReport()
-            AddReportIdentifier.SEND_REPORT_ENTRY_SEND_BUTTON.name -> viewModel.saveReport(roleName)
+            AddReportIdentifier.ADD_REPORT_ENTRY_CANCEL_BUTTON.name -> {
+                viewModel.cancelReport()
+            }
 
-            AddReportIdentifier.ADD_REPORT_CANCEL_BANNER.name -> viewModel.consumeNavigationEvent()
-            AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name ->
-                viewModel.navigateBackFromReport()
+            AddReportIdentifier.SEND_REPORT_ENTRY_SEND_BUTTON.name -> {
+                viewModel.saveReport(roleName)
+            }
 
-            ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_CANCEL_BANNER.name ->
+            AddReportIdentifier.ADD_REPORT_CANCEL_BANNER.name -> {
                 viewModel.consumeNavigationEvent()
+            }
+
+            AddReportIdentifier.ADD_REPORT_CONTINUE_BANNER.name -> {
+                viewModel.navigateBackFromReport()
+            }
+
+            ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_CANCEL_BANNER.name -> {
+                viewModel.consumeNavigationEvent()
+            }
 
             ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name -> {
                 viewModel.confirmReport()

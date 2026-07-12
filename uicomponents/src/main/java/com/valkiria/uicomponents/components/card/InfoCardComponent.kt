@@ -293,17 +293,19 @@ fun InfoCardComponent(
 
                             it.listText?.texts?.forEachIndexed { index, text ->
                                 when {
-                                    uiModel.date?.textStyle == null ->
+                                    uiModel.date?.textStyle == null -> {
                                         SuggestionChipView(
                                             text = text,
                                             textStyle = it.listText.textStyle
                                         )
+                                    }
 
-                                    index < MAX_FINDINGS ->
+                                    index < MAX_FINDINGS -> {
                                         SuggestionChipView(
                                             text = text,
                                             textStyle = it.listText.textStyle
                                         )
+                                    }
 
                                     count == 0 -> {
                                         SuggestionChipView(

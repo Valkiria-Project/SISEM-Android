@@ -21,24 +21,31 @@ data class LoginNavigationModel(
         super.navigate(navController)
 
         when {
-            isWarning -> navController.navigate(AuthRoute.ChangePasswordRoute)
-            isAdmin && requiresDeviceAuth -> navController.navigate(
+            isWarning -> {
+                navController.navigate(AuthRoute.ChangePasswordRoute)
+            }
+
+            isAdmin && requiresDeviceAuth -> {
+                navController.navigate(
                 AuthRoute.DeviceAuthRoute(LOGIN)
             )
+            }
 
-            isAdmin && !requiresDeviceAuth ->
+            isAdmin && !requiresDeviceAuth -> {
                 navController.navigate(NavGraph.MainGraph) {
                     popUpTo(AuthRoute.AuthCardsRoute) {
                         inclusive = true
                     }
                 }
+            }
 
-            isTurnComplete && requiresPreOperational.not() ->
+            isTurnComplete && requiresPreOperational.not() -> {
                 navController.navigate(NavGraph.MainGraph) {
                     popUpTo(AuthRoute.AuthCardsRoute) {
                         inclusive = true
                     }
                 }
+            }
 
             requiresPreOperational -> {
                 navController.navigate(AuthRoute.PreOperationalRoute()) {
@@ -48,9 +55,13 @@ data class LoginNavigationModel(
                 }
             }
 
-            forgotPassword -> navController.navigate(AuthRoute.ForgotPasswordRoute)
+            forgotPassword -> {
+                navController.navigate(AuthRoute.ForgotPasswordRoute)
+            }
 
-            else -> navController.navigate(AuthRoute.AuthCardsRoute)
+            else -> {
+                navController.navigate(AuthRoute.AuthCardsRoute)
+            }
         }
     }
 }

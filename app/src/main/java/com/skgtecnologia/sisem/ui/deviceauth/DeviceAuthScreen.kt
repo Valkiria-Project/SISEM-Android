@@ -108,10 +108,13 @@ private fun handleAction(
             viewModel.isValidVehicleCode = uiAction.fieldValidated
         }
 
-        is GenericUiAction.SegmentedSwitchAction ->
+        is GenericUiAction.SegmentedSwitchAction -> {
             viewModel.disassociateDeviceState = uiAction.status == false
+        }
 
-        else -> Timber.d("no-op")
+        else -> {
+            Timber.d("no-op")
+        }
     }
 }
 

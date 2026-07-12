@@ -55,7 +55,9 @@ class NotificationsManager @Inject constructor(private val context: Context) {
                     putExtras(bundle)
                 }
 
-                else -> Timber.d("no-op")
+                else -> {
+                    Timber.d("no-op")
+                }
             }
         }
 

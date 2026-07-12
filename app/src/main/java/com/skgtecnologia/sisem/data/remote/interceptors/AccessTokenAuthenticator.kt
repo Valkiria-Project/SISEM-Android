@@ -39,53 +39,11 @@ class AccessTokenAuthenticator @Inject constructor(
         return count
     }
 
-    @Suppress("ComplexMethod")
     override fun authenticate(route: Route?, response: Response): Request? {
         return if (response.isUnauthorized() && responseCount(response) <= MAX_ATTEMPTS) {
             val url = response.request.url
 
-            val token = runBlocking {
-                when {
-                    url.toString().contains(ASSISTANT_PRE_OP) ||
-                        url.toString().contains(ASSISTANT_FINDING) ||
-                        url.toString().contains(ASSISTANT_NOVELTY) ->
-                        authRepository.getTokenByRole(
-                            OperationRole.AUXILIARY_AND_OR_TAPH.name.lowercase()
-                        )
-
-                    url.toString().contains(DOCTOR_PRE_OP) ||
-                        url.toString().contains(DOCTOR_FINDING) ||
-                        url.toString().contains(DOCTOR_NOVELTY) ->
-                        authRepository.getTokenByRole(OperationRole.MEDIC_APH.name.lowercase())
-
-                    url.toString().contains(DRIVER_PRE_OP) ||
-                        url.toString().contains(DRIVER_FINDING) ||
-                        url.toString().contains(DRIVER_NOVELTY) ->
-                        authRepository.getTokenByRole(OperationRole.DRIVER.name.lowercase())
-
-                    url.toString().contains(APH) -> {
-                        val token = authRepository.getTokenByRole(
-                            OperationRole.AUXILIARY_AND_OR_TAPH.name.lowercase()
-                        ) ?: authRepository.getTokenByRole(
-                            OperationRole.MEDIC_APH.name.lowercase()
-                        )
-
-                        token
-                    }
-
-                    url.toString().contains(LOCATION) -> {
-                        val token = authRepository.getTokenByRole(
-                            OperationRole.AUXILIARY_AND_OR_TAPH.name.lowercase()
-                        ) ?: authRepository.getTokenByRole(
-                            OperationRole.MEDIC_APH.name.lowercase()
-                        )
-
-                        token
-                    }
-
-                    else -> authRepository.observeCurrentAccessToken().first()
-                }
-            }
+            val token = runBlocking { resolveTokenFor(url.toString()) }
 
             val authenticateContent = TimeUtils.getLocalDateTime(Instant.now()).toString() +
                 "\t Authenticate intent: " + url +
@@ -108,6 +66,36 @@ class AccessTokenAuthenticator @Inject constructor(
         }
     }
 
+    @Suppress("ComplexMethod")
+    private suspend fun resolveTokenFor(url: String): AccessTokenModel? = when {
+        url.contains(ASSISTANT_PRE_OP) ||
+            url.contains(ASSISTANT_FINDING) ||
+            url.contains(ASSISTANT_NOVELTY) -> {
+            authRepository.getTokenByRole(OperationRole.AUXILIARY_AND_OR_TAPH.name.lowercase())
+        }
+
+        url.contains(DOCTOR_PRE_OP) ||
+            url.contains(DOCTOR_FINDING) ||
+            url.contains(DOCTOR_NOVELTY) -> {
+            authRepository.getTokenByRole(OperationRole.MEDIC_APH.name.lowercase())
+        }
+
+        url.contains(DRIVER_PRE_OP) ||
+            url.contains(DRIVER_FINDING) ||
+            url.contains(DRIVER_NOVELTY) -> {
+            authRepository.getTokenByRole(OperationRole.DRIVER.name.lowercase())
+        }
+
+        url.contains(APH) || url.contains(LOCATION) -> {
+            authRepository.getTokenByRole(OperationRole.AUXILIARY_AND_OR_TAPH.name.lowercase())
+                ?: authRepository.getTokenByRole(OperationRole.MEDIC_APH.name.lowercase())
+        }
+
+        else -> {
+            authRepository.observeCurrentAccessToken().first()
+        }
+    }
+
     private fun Response.createSignedRequest(currentToken: AccessTokenModel): Request? =
         synchronized(this) {
             val result = runBlocking {
@@ -122,11 +110,18 @@ class AccessTokenAuthenticator @Inject constructor(
             if (newToken == null) {
                 val throwable = result.exceptionOrNull()
                 val errorMessage = when {
-                    throwable is BannerModel -> "${throwable.title}: ${throwable.description}"
-                    throwable != null ->
+                    throwable is BannerModel -> {
+                        "${throwable.title}: ${throwable.description}"
+                    }
+
+                    throwable != null -> {
                         throwable.message ?: throwable::class.simpleName
                         ?: "UnknownError"
-                    else -> "UnknownError"
+                    }
+
+                    else -> {
+                        "UnknownError"
+                    }
                 }
 
                 storageProvider.storeContent(

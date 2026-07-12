@@ -98,7 +98,6 @@ fun InventoryScreen(
 private fun handleAction(uiAction: UiAction, viewModel: InventoryViewModel) {
     when (uiAction) {
         is GenericUiAction.SimpleCardAction -> viewModel.navigate(uiAction.identifier)
-
         else -> Timber.d("no-op")
     }
 }

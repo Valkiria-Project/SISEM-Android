@@ -37,13 +37,25 @@ class NotificationRepositoryImpl @Inject constructor(
         notificationCacheDataSource.storeNotification(notification)
 
         when (notification) {
-            is IncidentAssignedNotification -> handleIncidentAssignedNotification(notification)
-            is IpsPatientTransferredNotification ->
-                handleIpsPatientTransferredNotification(notification)
+            is IncidentAssignedNotification -> {
+                handleIncidentAssignedNotification(notification)
+            }
 
-            is TransmiNotification -> handleTransmiNotification(notification)
-            is UpdateVehicleStatusNotification -> handleUpdateVehicleStatusNotification()
-            else -> Timber.d("no-op")
+            is IpsPatientTransferredNotification -> {
+                handleIpsPatientTransferredNotification(notification)
+            }
+
+            is TransmiNotification -> {
+                handleTransmiNotification(notification)
+            }
+
+            is UpdateVehicleStatusNotification -> {
+                handleUpdateVehicleStatusNotification()
+            }
+
+            else -> {
+                Timber.d("no-op")
+            }
         }
     }
 
