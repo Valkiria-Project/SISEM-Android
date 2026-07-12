@@ -356,7 +356,9 @@ class InventoryViewViewModel @Inject constructor(
         model: BodyRowModel,
         viewsVisibility: Map.Entry<String, Boolean>
     ) = when (model) {
-        is DetailedInfoListUiModel -> model.copy(visibility = viewsVisibility.value)
+        is DetailedInfoListUiModel -> {
+            model.copy(visibility = viewsVisibility.value)
+        }
 
         is DropDownUiModel -> {
             if (viewsVisibility.value) {
@@ -371,12 +373,16 @@ class InventoryViewViewModel @Inject constructor(
             )
         }
 
-        is LabelUiModel -> model.copy(text = "0")
+        is LabelUiModel -> {
+            model.copy(text = "0")
+        }
 
-        is RichLabelUiModel -> model.copy(
+        is RichLabelUiModel -> {
+            model.copy(
             text = "",
             visibility = viewsVisibility.value
         )
+        }
 
         is TextFieldUiModel -> {
             if (viewsVisibility.value) {
@@ -393,7 +399,9 @@ class InventoryViewViewModel @Inject constructor(
             )
         }
 
-        else -> model
+        else -> {
+            model
+        }
     }
 
     fun save() {

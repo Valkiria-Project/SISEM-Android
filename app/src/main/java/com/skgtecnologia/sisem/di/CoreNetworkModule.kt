@@ -223,6 +223,8 @@ object CoreNetworkModule {
             }
         }
 
-        else -> null
+        else -> {
+            null
+        }
     }
 }

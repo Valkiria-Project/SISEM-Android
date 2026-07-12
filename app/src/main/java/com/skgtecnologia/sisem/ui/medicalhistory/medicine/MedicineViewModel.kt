@@ -83,12 +83,14 @@ class MedicineViewModel @Inject constructor(
     private fun ScreenModel.getFormInitialValues() {
         this.body.forEach { bodyRowModel ->
             when (bodyRowModel) {
-                is TextFieldUiModel -> fieldsValues[bodyRowModel.identifier] = InputUiModel(
+                is TextFieldUiModel -> {
+                    fieldsValues[bodyRowModel.identifier] = InputUiModel(
                     identifier = bodyRowModel.identifier,
                     updatedValue = bodyRowModel.text,
                     fieldValidated = bodyRowModel.text.isNotEmpty(),
                     required = bodyRowModel.required
                 )
+                }
 
                 is TimePickerUiModel -> {
                     initialTimeValue = GenericUiAction.TimePickerAction(
@@ -162,10 +164,13 @@ class MedicineViewModel @Inject constructor(
                             )
                         }
 
-                        model is TimePickerUiModel && !isSameDay(inputAction.updatedValue) ->
+                        model is TimePickerUiModel && !isSameDay(inputAction.updatedValue) -> {
                             model.copy(date = inputAction.updatedValue)
+                        }
 
-                        else -> model
+                        else -> {
+                            model
+                        }
                     }
                 }
             ).also { body -> updatedBody = body }

@@ -132,7 +132,9 @@ fun AddFindingScreen(
         MediaActionsComponent(uiModel = MediaActionsUiModel()) { _, mediaAction ->
             when (mediaAction) {
                 Camera -> viewModel.showCamera(isFromPreOperational = true)
+
                 is MediaFile -> Timber.d("no-op")
+
                 is Gallery -> scope.launch {
                     val uris = mediaAction.uris
                     val mediaItems = context.handleMediaUris(
@@ -225,17 +227,25 @@ private fun handleFooterAction(
 ) {
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
-            AddFindingIdentifier.ADD_FINDING_CANCEL_BUTTON.name -> viewModel.cancelFinding()
-            AddFindingIdentifier.ADD_FINDING_SAVE_BUTTON.name -> viewModel.saveFinding()
+            AddFindingIdentifier.ADD_FINDING_CANCEL_BUTTON.name -> {
+                viewModel.cancelFinding()
+            }
 
-            AddFindingIdentifier.ADD_FINDING_CANCEL_BANNER.name ->
+            AddFindingIdentifier.ADD_FINDING_SAVE_BUTTON.name -> {
+                viewModel.saveFinding()
+            }
+
+            AddFindingIdentifier.ADD_FINDING_CANCEL_BANNER.name -> {
                 viewModel.consumeNavigationEvent()
+            }
 
-            AddFindingIdentifier.ADD_FINDING_CONTINUE_BANNER.name ->
+            AddFindingIdentifier.ADD_FINDING_CONTINUE_BANNER.name -> {
                 viewModel.navigateBackFromReport()
+            }
 
-            ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_CANCEL_BANNER.name ->
+            ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_CANCEL_BANNER.name -> {
                 viewModel.consumeNavigationEvent()
+            }
 
             ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name -> {
                 viewModel.confirmFinding()

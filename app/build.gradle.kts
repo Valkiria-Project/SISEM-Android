@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
@@ -40,8 +39,8 @@ android {
         applicationId = "com.skgtecnologia.sisem"
         minSdk = 30
         targetSdk = 36
-        versionCode = 85
-        versionName = "2.4.2"
+        versionCode = 86
+        versionName = "2.4.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -130,10 +129,6 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 }
 
 composeCompiler {
-    featureFlags.addAll(
-        ComposeFeatureFlag.OptimizeNonSkippingGroups
-    )
-
     reportsDestination = layout.buildDirectory.dir("compose_compiler")
 }
 

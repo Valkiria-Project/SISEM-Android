@@ -223,7 +223,7 @@ fun captureBitmap(
      **/
     fun captureBitmap(): Bitmap = composeView.drawToBitmap()
 
-    /** Use Native View inside Composable **/
+    // Use Native View inside Composable
     AndroidView(
         factory = {
             composeView.apply {
@@ -234,6 +234,6 @@ fun captureBitmap(
         },
     )
 
-    /** returning callback to bitmap **/
+    // returning callback to bitmap
     return ::captureBitmap
 }

@@ -182,13 +182,15 @@ class StretcherRetentionViewModel @Inject constructor(
         when {
             chipOption != null && chipOption.find {
                 it.id == chipOptionAction.chipOptionUiModel.id
-            } != null ->
+            } != null -> {
                 chipOption.removeIf { it.id == chipOptionAction.chipOptionUiModel.id }
+            }
 
             chipOption != null && chipOption.find {
                 it.id == chipOptionAction.chipOptionUiModel.id
-            } == null ->
+            } == null -> {
                 chipOption.add(chipOptionAction.chipOptionUiModel)
+            }
 
             else -> {
                 chipOption = mutableListOf(chipOptionAction.chipOptionUiModel)
@@ -431,6 +433,8 @@ class StretcherRetentionViewModel @Inject constructor(
             }
         }
 
-        else -> model
+        else -> {
+            model
+        }
     }
 }

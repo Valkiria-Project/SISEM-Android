@@ -106,15 +106,10 @@ fun handleAction(
 ) {
     when (uiAction) {
         is GenericUiAction.ButtonAction -> viewModel.saveMedicine()
-
         is GenericUiAction.ChipSelectionAction -> viewModel.handleChipSelectionAction(uiAction)
-
         is GenericUiAction.DropDownAction -> viewModel.handleDropDownAction(uiAction)
-
         is GenericUiAction.InputAction -> viewModel.handleInputAction(uiAction)
-
         is GenericUiAction.TimePickerAction -> viewModel.handleTimePickerAction(uiAction)
-
         else -> Timber.d("no-op")
     }
 }

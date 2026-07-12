@@ -119,7 +119,7 @@ class NetworkApi @Inject constructor(
                 errorResponse
             }
 
-            code == HTTP_FORBIDDEN_STATUS_CODE || code == HTTP_UNAUTHORIZED_STATUS_CODE ->
+            code == HTTP_FORBIDDEN_STATUS_CODE || code == HTTP_UNAUTHORIZED_STATUS_CODE -> {
                 ErrorResponse(
                     icon = stringProvider.getString(R.string.alert_icon),
                     title = stringProvider.getString(R.string.error_unauthorized_title),
@@ -143,12 +143,15 @@ class NetworkApi @Inject constructor(
                         )
                     )
                 }
+            }
 
-            else -> ErrorResponse(
+            else -> {
+                ErrorResponse(
                 icon = stringProvider.getString(R.string.alert_icon),
                 title = stringProvider.getString(R.string.error_general_title),
                 description = stringProvider.getString(R.string.error_general_description)
             )
+            }
         }
     }
 

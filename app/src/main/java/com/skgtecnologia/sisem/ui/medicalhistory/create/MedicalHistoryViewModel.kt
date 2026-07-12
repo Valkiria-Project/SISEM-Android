@@ -424,7 +424,8 @@ class MedicalHistoryViewModel @Inject constructor(
                     }
                 }
 
-                is InfoCardUiModel -> if (bodyRowModel.identifier == INITIAL_VITAL_SIGNS) {
+                is InfoCardUiModel -> {
+                    if (bodyRowModel.identifier == INITIAL_VITAL_SIGNS) {
                     initialVitalSignsTas = bodyRowModel.chipSection?.listText?.texts?.find {
                         it.startsWith(TAS_KEY)
                     }?.substringAfter(TAS_KEY)?.trim()?.toInt() ?: 0
@@ -435,19 +436,23 @@ class MedicalHistoryViewModel @Inject constructor(
                 } else {
                     vitalSignsChipSection = bodyRowModel.chipSection
                 }
+                }
 
-                is SegmentedSwitchUiModel ->
+                is SegmentedSwitchUiModel -> {
                     segmentedValues[bodyRowModel.identifier] = bodyRowModel.selected
+                }
 
-                is SignatureUiModel ->
+                is SignatureUiModel -> {
                     if ((bodyRowModel.required && bodyRowModel.visibility) ||
                         !bodyRowModel.signature.isNullOrEmpty()
                     ) {
                         signatureValues[bodyRowModel.identifier] = bodyRowModel.signature.orEmpty()
                     }
+                }
 
-                is SliderUiModel ->
+                is SliderUiModel -> {
                     sliderValues[bodyRowModel.identifier] = bodyRowModel.selected.toString()
+                }
 
                 is TextFieldUiModel -> {
                     if ((bodyRowModel.required && bodyRowModel.visibility) ||
@@ -471,13 +476,15 @@ class MedicalHistoryViewModel @Inject constructor(
         when {
             chipOption != null && chipOption.find {
                 it.id == action.chipOptionUiModel.id
-            } != null ->
+            } != null -> {
                 chipOption.removeIf { it.id == action.chipOptionUiModel.id }
+            }
 
             chipOption != null && chipOption.find {
                 it.id == action.chipOptionUiModel.id
-            } == null ->
+            } == null -> {
                 chipOption.add(action.chipOptionUiModel)
+            }
 
             else -> {
                 chipOption = mutableListOf(action.chipOptionUiModel)
@@ -1038,7 +1045,9 @@ class MedicalHistoryViewModel @Inject constructor(
                     temporalWeeksModel
                 }
 
-                else -> it
+                else -> {
+                    it
+                }
             }
         }.orEmpty()
 
@@ -1153,13 +1162,15 @@ class MedicalHistoryViewModel @Inject constructor(
                 }.also { body -> transformedBody = body }
             }
 
-            else -> action.viewsVisibility.forEach { viewVisibility ->
+            else -> {
+                action.viewsVisibility.forEach { viewVisibility ->
                 updateBodyModel(
                     uiModels = transformedBody,
                     identifier = viewVisibility.key
                 ) { model ->
                     updateComponentVisibility(model, viewVisibility)
                 }.also { body -> transformedBody = body }
+            }
             }
         }
 
@@ -1209,7 +1220,9 @@ class MedicalHistoryViewModel @Inject constructor(
             }
         }
 
-        is DetailedInfoListUiModel -> model.copy(visibility = viewsVisibility.value)
+        is DetailedInfoListUiModel -> {
+            model.copy(visibility = viewsVisibility.value)
+        }
 
         is DropDownUiModel -> {
             if (viewsVisibility.value) {
@@ -1230,7 +1243,9 @@ class MedicalHistoryViewModel @Inject constructor(
             }
         }
 
-        is HeaderUiModel -> model.copy(visibility = viewsVisibility.value)
+        is HeaderUiModel -> {
+            model.copy(visibility = viewsVisibility.value)
+        }
 
         is ImageButtonSectionUiModel -> {
             if (viewsVisibility.value) {
@@ -1254,8 +1269,9 @@ class MedicalHistoryViewModel @Inject constructor(
 
         is InfoCardUiModel -> {
             when {
-                viewsVisibility.key == INITIAL_VITAL_SIGNS || viewsVisibility.value ->
+                viewsVisibility.key == INITIAL_VITAL_SIGNS || viewsVisibility.value -> {
                     model.copy(visibility = viewsVisibility.value)
+                }
 
                 else -> {
                     vitalSignsValues.remove(viewsVisibility.key)
@@ -1267,9 +1283,13 @@ class MedicalHistoryViewModel @Inject constructor(
             }
         }
 
-        is LabelUiModel -> model.copy(visibility = viewsVisibility.value)
+        is LabelUiModel -> {
+            model.copy(visibility = viewsVisibility.value)
+        }
 
-        is RichLabelUiModel -> model.copy(visibility = viewsVisibility.value)
+        is RichLabelUiModel -> {
+            model.copy(visibility = viewsVisibility.value)
+        }
 
         is SignatureUiModel -> {
             if (viewsVisibility.value) {
@@ -1325,7 +1345,9 @@ class MedicalHistoryViewModel @Inject constructor(
             }
         }
 
-        else -> model
+        else -> {
+            model
+        }
     }
 
     fun handleSliderAction(action: GenericUiAction.SliderAction) {

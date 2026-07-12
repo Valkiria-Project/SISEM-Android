@@ -129,12 +129,16 @@ private fun handleAction(
     scope: CoroutineScope
 ) {
     when (uiAction) {
-        is FiltersAction -> viewModel.handleFiltersAction(uiAction)
+        is FiltersAction -> {
+            viewModel.handleFiltersAction(uiAction)
+        }
 
         is InputAction -> {}
 
-        is MediaItemAction -> when (uiAction.mediaAction) {
+        is MediaItemAction -> {
+            when (uiAction.mediaAction) {
             MediaAction.Camera -> viewModel.showCamera()
+
             is MediaAction.MediaFile -> scope.launch {
                 val uris = (uiAction.mediaAction as MediaAction.MediaFile).uris
                 val mediaItems = context.handleMediaUris(
@@ -163,13 +167,18 @@ private fun handleAction(
                 (uiAction.mediaAction as MediaAction.RemoveFile).index
             )
         }
+        }
 
-        is GenericUiAction.StepperAction -> scope.launch {
+        is GenericUiAction.StepperAction -> {
+            scope.launch {
             val images = viewModel.uiState.selectedMediaItems.mapNotNull { it.file }
             val description = viewModel.uiState.description
             viewModel.sendMedicalHistoryView(images, description)
         }
+        }
 
-        else -> Timber.d("no-op")
+        else -> {
+            Timber.d("no-op")
+        }
     }
 }

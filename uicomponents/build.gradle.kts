@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
+import com.android.build.api.dsl.LibraryExtension
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -11,7 +11,7 @@ plugins {
     alias(libs.plugins.paparazzi)
 }
 
-android {
+configure<LibraryExtension> {
     namespace = "com.valkiria.uicomponents"
     compileSdk = 36
 
@@ -55,11 +55,6 @@ tasks.withType<KotlinCompile>().configureEach {
 }
 
 composeCompiler {
-    featureFlags.addAll(
-        ComposeFeatureFlag.OptimizeNonSkippingGroups,
-        ComposeFeatureFlag.StrongSkipping
-    )
-
     reportsDestination = layout.buildDirectory.dir("compose_compiler")
 }
 

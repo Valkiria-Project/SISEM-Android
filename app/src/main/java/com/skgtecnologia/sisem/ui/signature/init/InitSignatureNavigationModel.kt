@@ -15,6 +15,7 @@ data class InitSignatureNavigationModel(
 
         when {
             back -> navController.navigateBack()
+
             document?.isNotEmpty() == true -> navController.navigate(
                 MainRoute.SignatureRoute(document)
             )

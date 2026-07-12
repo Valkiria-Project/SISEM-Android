@@ -17,6 +17,7 @@ data class IncidentNavigationModel(
 
         when {
             back -> navController.navigateBack()
+
             patientAph != null -> navController.navigate(
                 AphRoute.MedicalHistoryViewRoute(patientAph)
             )

@@ -146,6 +146,8 @@ private fun handleAction(uiAction: UiAction, viewModel: AuthCardViewViewModel) {
             }
         }
 
-        else -> Timber.d("no-op")
+        else -> {
+            Timber.d("no-op")
+        }
     }
 }
