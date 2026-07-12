@@ -35,6 +35,7 @@ interface AuthApi {
 
     @GET("auth/logout")
     suspend fun logout(
-        @Header("username") username: String
+        @Header("username") username: String,
+        @Header("refresh_token") refreshToken: String
     ): Response<LogoutResponse>
 }

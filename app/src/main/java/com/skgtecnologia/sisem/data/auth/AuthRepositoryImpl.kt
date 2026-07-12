@@ -92,7 +92,10 @@ class AuthRepositoryImpl @Inject constructor(
         authCacheDataSource.retrieveAccessTokenByRole(role)
 
     override suspend fun logout(username: String): String =
-        authRemoteDataSource.logout(username)
+        authRemoteDataSource.logout(
+            username = username,
+            refreshToken = authCacheDataSource.retrieveAccessTokenByUsername(username).refreshToken
+        )
             .onSuccess {
                 authCacheDataSource.deleteAccessTokenByUsername(username = username)
                 authCacheDataSource.observeAccessToken().first()?.let { accessToken ->
@@ -107,9 +110,12 @@ class AuthRepositoryImpl @Inject constructor(
             }.getOrThrow()
 
     override suspend fun logoutCurrentUser(): String {
-        val username = authCacheDataSource.observeAccessToken().first()?.username.orEmpty()
+        val currentToken = authCacheDataSource.observeAccessToken().first()
 
-        return authRemoteDataSource.logout(username)
+        return authRemoteDataSource.logout(
+            username = currentToken?.username.orEmpty(),
+            refreshToken = currentToken?.refreshToken.orEmpty()
+        )
             .onSuccess {
                 authCacheDataSource.observeAccessToken().first()?.let { accessToken ->
                     authCacheDataSource.storeAccessToken(
