@@ -131,8 +131,9 @@ fun handleAction(uiAction: UiAction, viewModel: InitSignatureViewModel) {
 fun handleFooterAction(uiAction: UiAction, viewModel: InitSignatureViewModel) {
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
-            SignatureIdentifier.SIGNATURE_REGISTRATION_SEARCH_BUTTON.name ->
+            SignatureIdentifier.SIGNATURE_REGISTRATION_SEARCH_BUTTON.name -> {
                 viewModel.searchDocument()
+            }
         }
     }
 }

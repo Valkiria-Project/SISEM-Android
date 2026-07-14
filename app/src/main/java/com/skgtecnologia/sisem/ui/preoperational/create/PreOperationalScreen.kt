@@ -105,15 +105,10 @@ private fun handleBodyAction(
 ) {
     when (uiAction) {
         is GenericUiAction.ButtonAction -> viewModel.savePreOperational()
-
         is GenericUiAction.FiltersAction -> viewModel.handleFiltersAction(uiAction)
-
         is GenericUiAction.FindingAction -> viewModel.handleFindingAction(uiAction)
-
         is GenericUiAction.InputAction -> viewModel.handleInputAction(uiAction)
-
         is GenericUiAction.InventoryAction -> viewModel.handleInventoryAction(uiAction)
-
         else -> Timber.d("no-op")
     }
 }

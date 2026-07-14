@@ -17,7 +17,9 @@ data class AuthCardViewNavigationModel(
         super.navigate(navController)
 
         when {
-            back -> navController.navigateBack()
+            back -> {
+                navController.navigateBack()
+            }
 
             role != null && !isPendingPreOperational -> {
                 navController.navigate(MainRoute.PreoperationalViewRoute(role.name))

@@ -22,6 +22,7 @@ data class MedicalHistoryViewNavigationModel(
             sendMedical != null -> navController.navigate(AphRoute.SendEmailRoute(sendMedical))
 
             showCamera -> navController.navigate(AphRoute.CameraViewRoute)
+
             photoTaken -> with(navController) {
                 navigateBack()
 

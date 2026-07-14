@@ -54,6 +54,7 @@ class LocationWorker @AssistedInject constructor(
                 Timber.tag("Location").d("vehicleCode blank, retrying later")
                 ListenableWorker.Result.retry()
             }
+
             else -> {
                 val capturedAt = if (capturedAtMillis > 0L) {
                     Instant.ofEpochMilli(capturedAtMillis)

@@ -28,22 +28,36 @@ data class ReportNavigationModel(
         super.navigate(navController)
 
         when {
-            goBackFromReport -> with(navController) {
+            goBackFromReport -> {
+                with(navController) {
                 navigateBack()
 
                 currentBackStackEntry
                     ?.savedStateHandle
                     ?.set(NavigationArgument.REVERT_FINDING, true)
             }
+            }
 
-            goBackFromImages -> navController.navigateBack()
-            showCamera -> navController.navigate(ReportRoute.ReportCameraRoute)
-            photoTaken -> navController.navigateBack()
-            closeFinding && imagesSize > 0 -> navController.navigate(
+            goBackFromImages -> {
+                navController.navigateBack()
+            }
+
+            showCamera -> {
+                navController.navigate(ReportRoute.ReportCameraRoute)
+            }
+
+            photoTaken -> {
+                navController.navigateBack()
+            }
+
+            closeFinding && imagesSize > 0 -> {
+                navController.navigate(
                 ReportRoute.ImagesConfirmationRoute(FINDING)
             )
+            }
 
-            closeFinding -> with(navController) {
+            closeFinding -> {
+                with(navController) {
                 popBackStack(
                     route = AuthRoute.PreOperationalRoute(),
                     inclusive = false
@@ -53,17 +67,21 @@ data class ReportNavigationModel(
                     ?.savedStateHandle
                     ?.set(NavigationArgument.NOVELTY, novelty)
             }
+            }
 
-            closeReport && imagesSize > 0 -> navController.navigate(
+            closeReport && imagesSize > 0 -> {
+                navController.navigate(
                 ReportRoute.ImagesConfirmationRoute(REPORT)
             )
+            }
 
-            closeReport ->
+            closeReport -> {
                 navController.navigate(NavGraph.MainGraph) {
                     popUpTo(ReportRoute.AddReportRoleRoute) {
                         inclusive = true
                     }
                 }
+            }
         }
     }
 }

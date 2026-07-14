@@ -16,19 +16,24 @@ data class PreOpNavigationModel(
         super.navigate(navController)
 
         when {
-            isTurnComplete -> navController.navigate(NavGraph.MainGraph) {
+            isTurnComplete -> {
+                navController.navigate(NavGraph.MainGraph) {
                 popUpTo(AuthRoute.AuthCardsRoute) {
                     inclusive = true
                 }
             }
+            }
 
-            isNewFinding && findingId != null ->
+            isNewFinding && findingId != null -> {
                 navController.navigate(ReportRoute.AddFindingRoute(findingId))
+            }
 
-            else -> navController.navigate(AuthRoute.AuthCardsRoute) {
+            else -> {
+                navController.navigate(AuthRoute.AuthCardsRoute) {
                 popUpTo(AuthRoute.PreOperationalRoute()) {
                     inclusive = true
                 }
+            }
             }
         }
     }

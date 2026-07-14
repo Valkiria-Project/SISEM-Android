@@ -104,9 +104,12 @@ private fun handleAction(
     viewModel: PreStretcherRetentionViewModel
 ) {
     when (uiAction) {
-        is GenericUiAction.SimpleCardAction ->
+        is GenericUiAction.SimpleCardAction -> {
             viewModel.navigateToStretcherView(uiAction.identifier)
+        }
 
-        else -> Timber.d("no-op")
+        else -> {
+            Timber.d("no-op")
+        }
     }
 }

@@ -40,20 +40,27 @@ class PreOperationalRemoteDataSource @Inject constructor(
         )
 
         when (role) {
-            OperationRole.AUXILIARY_AND_OR_TAPH -> preOperationalApi.getAuxPreOperationalScreen(
+            OperationRole.AUXILIARY_AND_OR_TAPH -> {
+                preOperationalApi.getAuxPreOperationalScreen(
                 screenBody = screenBody
             )
+            }
 
-            OperationRole.DRIVER -> preOperationalApi.getDriverPreOperationalScreen(
+            OperationRole.DRIVER -> {
+                preOperationalApi.getDriverPreOperationalScreen(
                 screenBody = screenBody
             )
+            }
 
-            OperationRole.MEDIC_APH -> preOperationalApi.getDoctorPreOperationalScreen(
+            OperationRole.MEDIC_APH -> {
+                preOperationalApi.getDoctorPreOperationalScreen(
                 screenBody = screenBody
             )
+            }
 
-            OperationRole.LEAD_APH ->
+            OperationRole.LEAD_APH -> {
                 throw IllegalArgumentException("Lead APH role not supported")
+            }
         }
     }.mapResult {
         it.mapToDomain()
@@ -134,7 +141,8 @@ class PreOperationalRemoteDataSource @Inject constructor(
         if (novelty.images.isNotEmpty()) {
             networkApi.apiCall {
                 when (role) {
-                    OperationRole.AUXILIARY_AND_OR_TAPH -> preOperationalApi.sendAuxFinding(
+                    OperationRole.AUXILIARY_AND_OR_TAPH -> {
+                        preOperationalApi.sendAuxFinding(
                         type = role.name.createRequestBody(),
                         idPreoperational = novelty.idPreoperational.createRequestBody(),
                         idTurn = idTurn.createRequestBody(),
@@ -148,8 +156,10 @@ class PreOperationalRemoteDataSource @Inject constructor(
                             )
                         }
                     )
+                    }
 
-                    OperationRole.DRIVER -> preOperationalApi.sendDriverFinding(
+                    OperationRole.DRIVER -> {
+                        preOperationalApi.sendDriverFinding(
                         type = role.name.createRequestBody(),
                         idPreoperational = novelty.idPreoperational.createRequestBody(),
                         idTurn = idTurn.createRequestBody(),
@@ -163,8 +173,10 @@ class PreOperationalRemoteDataSource @Inject constructor(
                             )
                         }
                     )
+                    }
 
-                    OperationRole.MEDIC_APH -> preOperationalApi.sendDoctorFinding(
+                    OperationRole.MEDIC_APH -> {
+                        preOperationalApi.sendDoctorFinding(
                         type = role.name.createRequestBody(),
                         idPreoperational = novelty.idPreoperational.createRequestBody(),
                         idTurn = idTurn.createRequestBody(),
@@ -178,9 +190,11 @@ class PreOperationalRemoteDataSource @Inject constructor(
                             )
                         }
                     )
+                    }
 
-                    OperationRole.LEAD_APH ->
+                    OperationRole.LEAD_APH -> {
                         throw IllegalArgumentException("Lead APH role not supported")
+                    }
                 }
             }
         }
@@ -219,20 +233,27 @@ class PreOperationalRemoteDataSource @Inject constructor(
         )
 
         when (role) {
-            OperationRole.AUXILIARY_AND_OR_TAPH -> preOperationalApi.getAuxPreOperationalScreenView(
+            OperationRole.AUXILIARY_AND_OR_TAPH -> {
+                preOperationalApi.getAuxPreOperationalScreenView(
                 screenBody = screenBody
             )
+            }
 
-            OperationRole.DRIVER -> preOperationalApi.getDriverPreOperationalScreenView(
+            OperationRole.DRIVER -> {
+                preOperationalApi.getDriverPreOperationalScreenView(
                 screenBody = screenBody
             )
+            }
 
-            OperationRole.MEDIC_APH -> preOperationalApi.getDoctorPreOperationalScreenView(
+            OperationRole.MEDIC_APH -> {
+                preOperationalApi.getDoctorPreOperationalScreenView(
                 screenBody = screenBody
             )
+            }
 
-            OperationRole.LEAD_APH ->
+            OperationRole.LEAD_APH -> {
                 throw IllegalArgumentException("Lead APH role not supported")
+            }
         }
     }.mapResult {
         it.mapToDomain()

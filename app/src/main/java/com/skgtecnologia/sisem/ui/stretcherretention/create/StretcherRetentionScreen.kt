@@ -111,13 +111,9 @@ private fun handleAction(
 ) {
     when (uiAction) {
         is GenericUiAction.ButtonAction -> viewModel.saveRetention()
-
         is GenericUiAction.ChipOptionAction -> viewModel.handleChipOptionAction(uiAction)
-
         is GenericUiAction.ChipSelectionAction -> viewModel.handleChipSelectionAction(uiAction)
-
         is GenericUiAction.InputAction -> viewModel.handleInputAction(uiAction)
-
         else -> Timber.d("no-op")
     }
 }

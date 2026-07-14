@@ -28,6 +28,7 @@ data class MedicalHistoryNavigationModel(
             isSignatureEvent -> navController.navigate(AphRoute.SignaturePadRoute)
 
             showCamera -> navController.navigate(AphRoute.CameraRoute)
+
             photoTaken -> with(navController) {
                 navigateBack()
 

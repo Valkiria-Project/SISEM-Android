@@ -184,7 +184,9 @@ private fun handleAction(
     onNavigation: (route: AuthRoute) -> Unit
 ) {
     when (uiAction) {
-        is AuthCardsUiAction.AuthCard -> onNavigation(AuthRoute.LoginRoute())
+        is AuthCardsUiAction.AuthCard -> {
+            onNavigation(AuthRoute.LoginRoute())
+        }
 
         is GenericUiAction.InfoCardAction -> {
             if (uiAction.isClickCard) {
@@ -201,6 +203,8 @@ private fun handleAction(
             }
         }
 
-        else -> Timber.d("no-op")
+        else -> {
+            Timber.d("no-op")
+        }
     }
 }

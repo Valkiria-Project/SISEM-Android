@@ -104,6 +104,8 @@ fun handleAction(uiAction: UiAction, viewModel: IncidentViewModel) {
             }
         }
 
-        else -> Timber.d("no-op")
+        else -> {
+            Timber.d("no-op")
+        }
     }
 }

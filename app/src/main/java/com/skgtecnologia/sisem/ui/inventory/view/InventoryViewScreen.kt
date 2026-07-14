@@ -119,13 +119,9 @@ fun InventoryViewScreen(
 fun handleAction(uiAction: UiAction, viewModel: InventoryViewViewModel) {
     when (uiAction) {
         is GenericUiAction.ButtonAction -> viewModel.save()
-
         is GenericUiAction.DropDownAction -> viewModel.handleDropDownAction(uiAction)
-
         is GenericUiAction.InputAction -> viewModel.handleInputAction(uiAction)
-
         is GenericUiAction.ChipSelectionAction -> viewModel.handleChipSelectionAction(uiAction)
-
         else -> Timber.d("no-op")
     }
 }
@@ -133,11 +129,13 @@ fun handleAction(uiAction: UiAction, viewModel: InventoryViewViewModel) {
 fun handleFooterAction(uiAction: UiAction, viewModel: InventoryViewViewModel) {
     (uiAction as? FooterUiAction)?.let {
         when (it.identifier) {
-            TransferReturnIdentifiers.TRANSFER_RETURN_CANCEL_BANNER.name ->
+            TransferReturnIdentifiers.TRANSFER_RETURN_CANCEL_BANNER.name -> {
                 viewModel.consumeInfoEvent()
+            }
 
-            TransferReturnIdentifiers.TRANSFER_RETURN_SAVE_BANNER.name ->
+            TransferReturnIdentifiers.TRANSFER_RETURN_SAVE_BANNER.name -> {
                 viewModel.saveTransferReturn()
+            }
         }
     }
 }

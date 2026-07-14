@@ -17,28 +17,33 @@ data class DeviceAuthNavigationModel(
         super.navigate(navController)
 
         when {
-            isCrewList && from == LOGIN ->
+            isCrewList && from == LOGIN -> {
                 navController.navigate(AuthRoute.AuthCardsRoute) {
                     popUpTo(AuthRoute.AuthCardsRoute) {
                         inclusive = true
                     }
                 }
+            }
 
-            isCrewList && from == "" ->
+            isCrewList && from == "" -> {
                 navController.navigate(AuthRoute.AuthCardsRoute) {
                     popUpTo(AuthRoute.DeviceAuthRoute) {
                         inclusive = true
                     }
                 }
+            }
 
-            isCrewList && from == MAIN ->
+            isCrewList && from == MAIN -> {
                 navController.navigate(AuthRoute.AuthCardsRoute) {
                     popUpTo(NavGraph.MainGraph) {
                         inclusive = true
                     }
                 }
+            }
 
-            isCancel && from == MAIN -> navController.popBackStack()
+            isCancel && from == MAIN -> {
+                navController.popBackStack()
+            }
         }
     }
 }

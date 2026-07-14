@@ -208,10 +208,12 @@ private fun handleAction(
 ) {
     (uiAction as? FooterUiAction)?.let {
         when (uiAction.identifier) {
-            ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_CANCEL_BANNER.name ->
+            ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_CANCEL_BANNER.name -> {
                 viewModel.consumeNavigationEvent()
+            }
 
-            ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name -> scope.launch {
+            ImagesConfirmationIdentifier.IMAGES_CONFIRMATION_SEND_BANNER.name -> {
+                scope.launch {
                 val images = uiState.selectedMediaItems.mapNotNull { it.file }
 
                 if (from == REPORT) {
@@ -222,8 +224,11 @@ private fun handleAction(
 
                 viewModel.consumeShownConfirm()
             }
+            }
 
-            else -> Timber.d("no-op")
+            else -> {
+                Timber.d("no-op")
+            }
         }
     }
 }

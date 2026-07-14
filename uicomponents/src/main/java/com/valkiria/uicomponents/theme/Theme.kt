@@ -50,6 +50,7 @@ fun UiComponentsTheme(
          */
 
         darkTheme -> DarkColorScheme
+
         else -> LightColorScheme
     }
     val view = LocalView.current

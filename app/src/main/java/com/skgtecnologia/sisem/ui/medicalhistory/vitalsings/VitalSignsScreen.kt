@@ -106,13 +106,18 @@ private fun handleAction(
     viewModel: VitalSignsViewModel
 ) {
     when (uiAction) {
-        is GenericUiAction.InputAction ->
+        is GenericUiAction.InputAction -> {
             viewModel.fieldsValues[uiAction.identifier] = InputUiModel(
                 uiAction.identifier,
                 uiAction.updatedValue,
                 uiAction.fieldValidated
             )
-        is GenericUiAction.ButtonAction -> viewModel.saveVitalSigns()
+        }
+
+        is GenericUiAction.ButtonAction -> {
+            viewModel.saveVitalSigns()
+        }
+
         else -> { }
     }
 }

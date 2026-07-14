@@ -41,7 +41,8 @@ class ReportRemoteDataSource @Inject constructor(
         turnId: String
     ): Result<Unit> = networkApi.apiCall {
         when (role) {
-            OperationRole.AUXILIARY_AND_OR_TAPH -> reportApi.sendAuxReport(
+            OperationRole.AUXILIARY_AND_OR_TAPH -> {
+                reportApi.sendAuxReport(
                 turnId,
                 topic = topic.createRequestBody(),
                 description = description.createRequestBody(),
@@ -54,8 +55,10 @@ class ReportRemoteDataSource @Inject constructor(
                     )
                 }
             )
+            }
 
-            OperationRole.DRIVER -> reportApi.sendDriverReport(
+            OperationRole.DRIVER -> {
+                reportApi.sendDriverReport(
                 turnId,
                 topic = topic.createRequestBody(),
                 description = description.createRequestBody(),
@@ -68,8 +71,10 @@ class ReportRemoteDataSource @Inject constructor(
                     )
                 }
             )
+            }
 
-            OperationRole.MEDIC_APH -> reportApi.sendDoctorReport(
+            OperationRole.MEDIC_APH -> {
+                reportApi.sendDoctorReport(
                 turnId,
                 topic = topic.createRequestBody(),
                 description = description.createRequestBody(),
@@ -82,9 +87,11 @@ class ReportRemoteDataSource @Inject constructor(
                     )
                 }
             )
+            }
 
-            OperationRole.LEAD_APH ->
+            OperationRole.LEAD_APH -> {
                 throw IllegalArgumentException("Lead APH role not supported")
+            }
         }
     }
 }

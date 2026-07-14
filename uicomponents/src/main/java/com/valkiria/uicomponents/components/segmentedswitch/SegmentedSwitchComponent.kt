@@ -84,23 +84,19 @@ fun SegmentedSwitchComponent(
                         onAction(uiModel.identifier, index == 0, viewsVisibility)
                     },
                     shape = when (index) {
-                        /**
-                         * left outer button
-                         */
+                        // left outer button
                         0 -> RoundedCornerShape(
                             topStartPercent = 50,
                             bottomStartPercent = 50,
                         )
-                        /**
-                         * right outer button
-                         */
+
+                        // right outer button
                         items.size - 1 -> RoundedCornerShape(
                             topEndPercent = 50,
                             bottomEndPercent = 50
                         )
-                        /**
-                         * middle button
-                         */
+
+                        // middle button
                         else -> RoundedCornerShape(
                             topStartPercent = 0,
                             topEndPercent = 0,

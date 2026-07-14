@@ -165,6 +165,7 @@ fun handleAction(
 
         is GenericUiAction.MediaItemAction -> when (uiAction.mediaAction) {
             Camera -> viewModel.showCamera()
+
             is MediaFile -> scope.launch {
                 val uris = (uiAction.mediaAction as MediaFile).uris
                 val mediaItems = context.handleMediaUris(

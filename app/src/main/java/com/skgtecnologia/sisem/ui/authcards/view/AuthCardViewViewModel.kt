@@ -118,16 +118,21 @@ class AuthCardViewViewModel @Inject constructor(
 
     private fun String.identifierToRole(): OperationRole {
         return when (this) {
-            PreOperationalViewIdentifier.CREW_MEMBER_CARD_ASSISTANT.name ->
+            PreOperationalViewIdentifier.CREW_MEMBER_CARD_ASSISTANT.name -> {
                 OperationRole.AUXILIARY_AND_OR_TAPH
+            }
 
-            PreOperationalViewIdentifier.CREW_MEMBER_CARD_DRIVER.name ->
+            PreOperationalViewIdentifier.CREW_MEMBER_CARD_DRIVER.name -> {
                 OperationRole.DRIVER
+            }
 
-            PreOperationalViewIdentifier.CREW_MEMBER_CARD_DOCTOR.name ->
+            PreOperationalViewIdentifier.CREW_MEMBER_CARD_DOCTOR.name -> {
                 OperationRole.MEDIC_APH
+            }
 
-            else -> throw IllegalArgumentException("Identifier $this not supported")
+            else -> {
+                throw IllegalArgumentException("Identifier $this not supported")
+            }
         }
     }
 
