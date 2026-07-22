@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.data.operation
 
 import com.skgtecnologia.sisem.commons.extensions.mapResult
 import com.skgtecnologia.sisem.data.auth.cache.AuthCacheDataSource
+import com.skgtecnologia.sisem.data.auth.remote.AuthRemoteDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.data.operation.remote.OperationRemoteDataSource
 import com.skgtecnologia.sisem.domain.authcards.model.OperationModel
@@ -12,6 +13,7 @@ import javax.inject.Inject
 
 class OperationRepositoryImpl @Inject constructor(
     private val authCacheDataSource: AuthCacheDataSource,
+    private val authRemoteDataSource: AuthRemoteDataSource,
     private val operationCacheDataSource: OperationCacheDataSource,
     private val operationRemoteDataSource: OperationRemoteDataSource
 ) : OperationRepository {
@@ -29,15 +31,23 @@ class OperationRepositoryImpl @Inject constructor(
     override suspend fun logoutTurn(username: String): String {
         val previousTurnId = authCacheDataSource.observeAccessToken()
             .first()?.turn?.id?.toString().orEmpty()
-        val idEmployed = authCacheDataSource.retrieveAccessTokenByUsername(username)
-            .userId.toString()
+        val accessToken = authCacheDataSource.retrieveAccessTokenByUsername(username)
         val code = operationCacheDataSource.observeOperationConfig().first()?.vehicleCode.orEmpty()
 
         return operationRemoteDataSource.logoutTurn(
             idTurn = previousTurnId,
-            idEmployed = idEmployed,
+            idEmployed = accessToken.userId.toString(),
             vehicleCode = code
-        ).onSuccess {
+        ).mapResult { turnId ->
+            // Closing the turn does not invalidate the Keycloak session; without
+            // this call the crew member cannot authenticate again (SMA-753).
+            authRemoteDataSource.logout(
+                username = username,
+                refreshToken = accessToken.refreshToken
+            ).getOrThrow()
+
+            turnId
+        }.onSuccess {
             authCacheDataSource.deleteAccessTokenByUsername(username = username)
             authCacheDataSource.observeAccessToken().first()?.let { accessToken ->
                 authCacheDataSource.storeAccessToken(
