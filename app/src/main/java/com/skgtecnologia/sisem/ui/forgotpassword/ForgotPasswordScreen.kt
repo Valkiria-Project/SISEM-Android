@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.forgotpassword
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,7 +44,13 @@ fun ForgotPasswordScreen(
     }
 
     ConstraintLayout(
-        modifier = modifier.fillMaxSize()
+        // Inset the whole layout, not the list inside it: the body is pinned between the
+        // header and the footer, so padding applied inside it shrinks the visible area to
+        // nothing once the keyboard is tall enough (reported on a Motorola G47). Insetting
+        // here lifts the footer above the keyboard and leaves the body the rest.
+        modifier = modifier
+            .fillMaxSize()
+            .imePadding()
     ) {
         val (header, body, footer) = createRefs()
 
@@ -67,7 +74,8 @@ fun ForgotPasswordScreen(
                     height = Dimension.fillToConstraints
                 }
                 .padding(top = 20.dp),
-            validateFields = uiState.validateFields
+            validateFields = uiState.validateFields,
+            applyImePadding = false
         ) { uiAction ->
             handleAction(uiAction, viewModel)
         }
