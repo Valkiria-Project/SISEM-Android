@@ -3,6 +3,12 @@ Ajustes y correcciones aplicadas segun versiones:
 
 
 
+# version 2.4.6 *(27.07.2026)*
+----------------------------------------
+### Correcciones
+
+- **Recuperar contraseña en pantallas pequeñas:** Se corrige un problema donde, al abrir el teclado en la pantalla *"Olvidó su contraseña"*, desaparecían el campo de correo y los botones Cancelar y Enviar, dejando la pantalla inutilizable. Se presentaba en equipos donde el teclado ocupa una porción mayor de la pantalla, como el Motorola G47. Ahora el contenido y los botones permanecen visibles sobre el teclado.
+
 # version 2.4.5 *(26.07.2026)*
 ----------------------------------------
 ### Correcciones
