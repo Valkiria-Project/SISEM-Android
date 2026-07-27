@@ -7,6 +7,7 @@ import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifyOrder
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.just
@@ -131,6 +132,39 @@ class AccessTokenAuthenticatorTest {
 
         val result = authenticator.authenticate(null, response)
 
+        assertNull(result)
+        coVerify(exactly = 1) { authRepository.deleteAccessTokenByUsername("testuser") }
+        verify(exactly = 1) { UnauthorizedEventHandler.publishUnauthorizedEvent("testuser") }
+    }
+
+    @Test
+    fun `when 401 and refresh fails, ends the session before dropping the token`() = runTest {
+        val response = build401Response(totalAttemptCount = 1)
+        coEvery { authRepository.observeCurrentAccessToken() } returns flowOf(expiredToken)
+        coEvery { authRepository.refreshToken(expiredToken) } throws RuntimeException("refresh failed")
+        coEvery { authRepository.logout("testuser") } returns "testuser"
+        coEvery { authRepository.deleteAccessTokenByUsername("testuser") } just runs
+
+        authenticator.authenticate(null, response)
+
+        coVerifyOrder {
+            authRepository.logout("testuser")
+            authRepository.deleteAccessTokenByUsername("testuser")
+        }
+    }
+
+    @Test
+    fun `when 401 and both refresh and logout fail, still drops the token and notifies`() = runTest {
+        val response = build401Response(totalAttemptCount = 1)
+        coEvery { authRepository.observeCurrentAccessToken() } returns flowOf(expiredToken)
+        coEvery { authRepository.refreshToken(expiredToken) } throws RuntimeException("refresh failed")
+        coEvery { authRepository.logout("testuser") } throws RuntimeException("logout failed")
+        coEvery { authRepository.deleteAccessTokenByUsername("testuser") } just runs
+
+        val result = authenticator.authenticate(null, response)
+
+        // A failed logout must not strand the user: the dead token still goes away and
+        // the app still routes to the login screen.
         assertNull(result)
         coVerify(exactly = 1) { authRepository.deleteAccessTokenByUsername("testuser") }
         verify(exactly = 1) { UnauthorizedEventHandler.publishUnauthorizedEvent("testuser") }
