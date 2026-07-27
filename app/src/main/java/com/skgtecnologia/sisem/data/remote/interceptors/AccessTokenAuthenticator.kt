@@ -135,11 +135,18 @@ class AccessTokenAuthenticator @Inject constructor(
                     ).toByteArray()
                 )
 
-                // Drop the dead token from the cache. If we keep it, the next
-                // 401-driven authenticate() call reads the same expired refresh
-                // token, fails again, and emits another UnauthorizedSession event
-                // — looping the user back to the login screen on every retry.
                 runBlocking {
+                    // End the session server-side before discarding the token. This path
+                    // sends the user to the login screen, and without the logout the
+                    // Keycloak session stays open — the next sign-in is then rejected as
+                    // invalid credentials. Failures are swallowed on purpose: the token is
+                    // already dead, so there is nothing left to retry with.
+                    runCatching { authRepository.logout(currentToken.username) }
+
+                    // Drop the dead token from the cache. If we keep it, the next
+                    // 401-driven authenticate() call reads the same expired refresh
+                    // token, fails again, and emits another UnauthorizedSession event
+                    // — looping the user back to the login screen on every retry.
                     authRepository.deleteAccessTokenByUsername(currentToken.username)
                 }
                 UnauthorizedEventHandler.publishUnauthorizedEvent(currentToken.username)

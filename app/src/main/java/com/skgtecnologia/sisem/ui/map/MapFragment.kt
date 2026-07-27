@@ -71,12 +71,10 @@ import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.extensions.biLet
 import com.skgtecnologia.sisem.databinding.FragmentMapBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.time.Duration.Companion.minutes
 
-private const val ACTIVE_INCIDENT_OBSERVATION_DELAY = 3000L
 private const val PADDING_TOP_SMALL = 140.0
 private const val PADDING_TOP_LARGE = 180.0
 private const val PADDING_HORIZONTAL = 40.0
@@ -88,7 +86,11 @@ private const val PADDING_BOTTOM_LARGE = 150.0
 @AndroidEntryPoint
 class MapFragment : Fragment(R.layout.fragment_map) {
 
-    private lateinit var binding: FragmentMapBinding
+    // Only valid between onCreateView and onDestroyView. Callbacks that can outlive
+    // the view must read [mapBinding] defensively instead of assuming it.
+    private var mapBinding: FragmentMapBinding? = null
+    private val binding
+        get() = requireNotNull(mapBinding) { "Accessed binding outside the view lifecycle" }
     val viewModel: MapFragmentViewModel by viewModels()
 
     private var destinationLocation: Location? = null
@@ -102,7 +104,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     private val onPositionChangedListener = OnIndicatorPositionChangedListener { point ->
         val result = routeLineApi.updateTraveledRouteLine(point)
-        binding.mapView.mapboxMap.style?.apply {
+        mapBinding?.mapView?.mapboxMap?.style?.apply {
             routeLineView.renderRouteLineUpdate(this, result)
         }
     }
@@ -128,9 +130,11 @@ class MapFragment : Fragment(R.layout.fragment_map) {
             .build()
     }
 
-    private val routeCalloutView by lazy {
-        MapboxRouteCalloutView(binding.mapView, routeCalloutViewOptions)
-    }
+    // Bound to the MapView, so it must be rebuilt whenever the view is recreated —
+    // a lazy here would keep rendering into the destroyed MapView.
+    private var routeCalloutView: MapboxRouteCalloutView? = null
+
+    private var isNavigationInitializedForView = false
 
     private val routeLineApiOptions: MapboxRouteLineApiOptions by lazy {
         MapboxRouteLineApiOptions.Builder()
@@ -203,7 +207,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 newRoutes = routesResult.navigationRoutes,
                 alternativeRoutesMetadata = metadata,
             ).apply {
-                routeCalloutView.renderCallouts(this)
+                routeCalloutView?.renderCallouts(this)
             }
 
             // update the camera position to account for the new route
@@ -307,14 +311,29 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentMapBinding.inflate(inflater, container, false)
+        mapBinding = FragmentMapBinding.inflate(inflater, container, false)
 
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        // Everything below is tied to the MapView being destroyed. Without this the
+        // observers kept rendering into a detached map when the app came back from
+        // the background, leaving the map frozen and the incident invisible (SMA-755).
+        mapBinding?.mapView?.location?.removeOnIndicatorPositionChangedListener(
+            onPositionChangedListener
+        )
+        routeCalloutView = null
+        isNavigationInitializedForView = false
+        mapBinding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        routeCalloutView = MapboxRouteCalloutView(binding.mapView, routeCalloutViewOptions)
         viewportDataSource = MapboxNavigationViewportDataSource(binding.mapView.mapboxMap)
         navigationCamera = NavigationCamera(
             binding.mapView.mapboxMap,
@@ -376,6 +395,8 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
         initViewInteractions()
         initObservers()
+        // No-op when Mapbox already initialized navigation for this view.
+        initNavigation()
     }
 
     private fun initViewInteractions() {
@@ -402,8 +423,9 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     }
 
     private fun initObservers() {
-        lifecycleScope.launch {
-            delay(ACTIVE_INCIDENT_OBSERVATION_DELAY)
+        // viewLifecycleOwner, not the fragment: onViewCreated runs again every time the
+        // view is recreated, and a fragment-scoped collector would survive and stack up.
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { mapFragmentUiState ->
                     val incident = mapFragmentUiState.incident
@@ -421,10 +443,17 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         }
     }
 
+    /**
+     * Invoked both by Mapbox's `onInitialize` callback and by [onViewCreated], since the
+     * SDK can initialize before the view exists. Guarded so the puck is wired exactly
+     * once per view, on whichever of the two happens last.
+     */
     private fun initNavigation() {
         Timber.d("initNavigation")
-        lifecycleScope.launch {
-            delay(ACTIVE_INCIDENT_OBSERVATION_DELAY)
+        if (view == null || isNavigationInitializedForView) return
+        isNavigationInitializedForView = true
+
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 // initialize location puck
                 binding.mapView.location.apply {

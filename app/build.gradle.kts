@@ -18,6 +18,11 @@ plugins {
 val keystorePropertiesFile = rootProject.file("keystore.properties")
 val keystorePropertiesExist = keystorePropertiesFile.exists()
 
+// Pairs a debug/staging build with a vehicle already registered in the backend, so QA
+// scenarios can be reproduced without rewriting the cached android_id by hand. Set it in
+// ~/.gradle/gradle.properties or pass -PsisemTestSerial=<serial>; never commit a value.
+val testDeviceSerial: String = providers.gradleProperty("sisemTestSerial").getOrElse("")
+
 android {
     signingConfigs {
         if (keystorePropertiesExist) {
@@ -39,13 +44,18 @@ android {
         applicationId = "com.skgtecnologia.sisem"
         minSdk = 30
         targetSdk = 36
-        versionCode = 87
-        versionName = "2.4.4"
+        versionCode = 88
+        versionName = "2.4.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        // Secure by default: screenshots blocked and no device-serial override.
+        // Only the debug and staging build types opt out, below.
+        buildConfigField("Boolean", "ALLOW_SCREENSHOTS", "false")
+        buildConfigField("String", "TEST_DEVICE_SERIAL", "\"\"")
 
         room {
             schemaDirectory("$projectDir/schemas")
@@ -64,6 +74,8 @@ android {
             buildConfigField("String", "BASE_URL", "\"https://test.sisem.co/dev/sisem-api/v1/\"")
             buildConfigField("String", "LOCATION_URL", "\"https://test.sisem.co/dev/sisem-location-api/v1/\"")
             buildConfigField("String", "REFRESH_URL", "\"https://admin.qa.sisem.co/auth/realms/sisem/protocol/openid-connect/token\"")
+            buildConfigField("Boolean", "ALLOW_SCREENSHOTS", "true")
+            buildConfigField("String", "TEST_DEVICE_SERIAL", "\"$testDeviceSerial\"")
         }
         create("staging") {
             initWith(getByName("debug"))
@@ -81,6 +93,10 @@ android {
             buildConfigField("String", "BASE_URL", "\"https://mobile-preprod.sisem.co/sisem-api/v1/\"")
             buildConfigField("String", "LOCATION_URL", "\"https://mobile-preprod.sisem.co/sisem-location-api/v1/\"")
             buildConfigField("String", "REFRESH_URL", "\"https://admin-preprod.sisem.co/auth/realms/sisem/protocol/openid-connect/token\"")
+            // initWith(debug) copies the test-only opt-outs, but preProd runs against
+            // pre-production data — undo them.
+            buildConfigField("Boolean", "ALLOW_SCREENSHOTS", "false")
+            buildConfigField("String", "TEST_DEVICE_SERIAL", "\"\"")
         }
         release {
             isDebuggable = true
