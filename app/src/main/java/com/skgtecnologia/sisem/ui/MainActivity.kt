@@ -55,8 +55,9 @@ class MainActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // Prevent Screenshots on all build types but debug
-        if (BuildConfig.BUILD_TYPE != "debug") {
+        // Block screenshots wherever real patient data can appear. Debug and staging opt
+        // out so QA can capture evidence against the test backend.
+        if (!BuildConfig.ALLOW_SCREENSHOTS) {
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE

@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.commons.resources
 import android.annotation.SuppressLint
 import android.content.Context
 import android.provider.Settings
+import com.skgtecnologia.sisem.BuildConfig
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
@@ -22,9 +23,17 @@ class AndroidIdProviderImpl @Inject constructor(
     override fun getAndroidId(): String {
         cachedAndroidId?.let { return it }
         return synchronized(this) {
-            cachedAndroidId ?: readOrInitializeAndroidId().also { cachedAndroidId = it }
+            cachedAndroidId ?: resolveAndroidId().also { cachedAndroidId = it }
         }
     }
+
+    /**
+     * Debug and staging builds may be pinned to a serial already registered against a
+     * vehicle in the backend (see `sisemTestSerial`). The field is empty everywhere else,
+     * so preProd and release always fall through to the real device id.
+     */
+    private fun resolveAndroidId(): String =
+        BuildConfig.TEST_DEVICE_SERIAL.ifEmpty { readOrInitializeAndroidId() }
 
     @SuppressLint("HardwareIds")
     private fun readOrInitializeAndroidId(): String {
