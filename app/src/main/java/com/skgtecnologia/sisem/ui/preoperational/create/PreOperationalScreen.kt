@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.ui.preoperational.create
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -9,7 +8,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
@@ -91,8 +89,7 @@ private fun PreOperationalScreenRender(
     BodySection(
         body = uiState.screenModel?.body,
         modifier = modifier
-            .fillMaxSize()
-            .padding(top = 20.dp),
+            .fillMaxSize(),
         validateFields = uiState.validateFields
     ) { uiAction ->
         handleBodyAction(uiAction, viewModel)
