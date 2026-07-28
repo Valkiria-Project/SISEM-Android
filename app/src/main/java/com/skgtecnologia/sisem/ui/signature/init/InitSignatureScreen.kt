@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.signature.init
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -56,7 +57,12 @@ fun InitSignatureScreen(
     }
 
     ConstraintLayout(
-        modifier = modifier.fillMaxSize()
+        // The body is pinned between the header and the footer, so insetting it for the
+        // keyboard eats its fixed height instead of scrolling. Inset the whole layout so
+        // the footer rises above the keyboard and the body keeps the rest.
+        modifier = modifier
+            .fillMaxSize()
+            .imePadding()
     ) {
         val (header, body, footer) = createRefs()
 
@@ -84,7 +90,8 @@ fun InitSignatureScreen(
                     height = Dimension.fillToConstraints
                 }
                 .padding(top = 20.dp),
-            validateFields = uiState.validateFields
+            validateFields = uiState.validateFields,
+            applyImePadding = false
         ) { uiAction ->
             handleAction(uiAction, viewModel)
         }

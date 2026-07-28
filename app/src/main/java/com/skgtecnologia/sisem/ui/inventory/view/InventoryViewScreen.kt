@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.inventory.view
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -53,7 +54,11 @@ fun InventoryViewScreen(
     }
 
     ConstraintLayout(
-        modifier = modifier.fillMaxSize()
+        // The footer is anchored to the bottom of the layout, so insetting only the body
+        // leaves the footer buttons behind the keyboard. Inset the whole layout instead.
+        modifier = modifier
+            .fillMaxSize()
+            .imePadding()
     ) {
         val (header, body, footer) = createRefs()
 
@@ -79,7 +84,8 @@ fun InventoryViewScreen(
                 bottom.linkTo(parent.bottom)
                 height = Dimension.fillToConstraints
             },
-            validateFields = uiState.validateFields
+            validateFields = uiState.validateFields,
+            applyImePadding = false
         ) { uiAction ->
             handleAction(uiAction, viewModel)
         }
