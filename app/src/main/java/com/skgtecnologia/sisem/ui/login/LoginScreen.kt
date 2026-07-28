@@ -90,9 +90,15 @@ fun LoginScreen(
     }
 
     OnBannerHandler(uiState.warning) {
+        // Read the destination before consuming it: uiState is backed by the collected
+        // flow, so once consumeNavigationEvent clears it there is nothing left to
+        // navigate to and dismissing the expired-password warning strands the user on
+        // the login screen (SMA-757).
+        val navigationModel = uiState.navigationModel
+
         viewModel.consumeNavigationEvent()
         viewModel.consumeWarningEvent()
-        uiState.navigationModel?.let { navigationModel -> onNavigation(navigationModel) }
+        navigationModel?.let { onNavigation(it) }
     }
 
     OnBannerHandler(uiState.errorModel) {
