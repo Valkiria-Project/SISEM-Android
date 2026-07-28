@@ -3,6 +3,12 @@ Ajustes y correcciones aplicadas segun versiones:
 
 
 
+# version 2.4.7 *(27.07.2026)*
+----------------------------------------
+### Correcciones
+
+- **Teclado en pantallas con botones fijos:** Se extiende a otras pantallas la corrección aplicada en la 2.4.6 a *"Olvidó su contraseña"*. Al abrir el teclado en *Cambio de contraseña*, *Autenticación del dispositivo*, *Firma*, *Registro de firma*, *Novedades* e *Inventario (detalle)*, el contenido y los botones inferiores quedaban ocultos o inaccesibles en equipos donde el teclado ocupa una porción mayor de la pantalla, como el Motorola G47. Ahora los botones se elevan sobre el teclado y el contenido permanece visible.
+
 # version 2.4.6 *(27.07.2026)*
 ----------------------------------------
 ### Correcciones
