@@ -18,8 +18,7 @@ fun LoginHeaderSection(
 ) {
     Row(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(top = 20.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
         Image(
