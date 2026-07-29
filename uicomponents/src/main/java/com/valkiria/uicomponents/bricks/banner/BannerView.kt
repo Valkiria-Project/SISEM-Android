@@ -32,6 +32,7 @@ import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.button.ButtonView
 import com.valkiria.uicomponents.mocks.getLoginBlockedErrorUiModel
+import com.valkiria.uicomponents.mocks.getLoginDuplicatedWithActionsUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import timber.log.Timber
@@ -146,5 +147,14 @@ fun BannerViewPreview() {
     BannerView(
         uiModel = getLoginBlockedErrorUiModel(),
         onAction = { Timber.d("Closed") }
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BannerViewWithActionsPreview() {
+    BannerView(
+        uiModel = getLoginDuplicatedWithActionsUiModel(),
+        onAction = { Timber.d("Answered") }
     )
 }

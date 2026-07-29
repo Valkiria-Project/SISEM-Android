@@ -4,6 +4,7 @@ import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.android.ide.common.rendering.api.SessionParams.RenderingMode.V_SCROLL
 import com.valkiria.uicomponents.bricks.banner.BannerViewPreview
+import com.valkiria.uicomponents.bricks.banner.BannerViewWithActionsPreview
 import org.junit.Rule
 import org.junit.Test
 
@@ -20,6 +21,13 @@ class BannerViewPaparazziTest {
     fun snapBannerView() {
         paparazziRule.snapshot {
             BannerViewPreview()
+        }
+    }
+
+    @Test
+    fun snapBannerViewWithActions() {
+        paparazziRule.snapshot {
+            BannerViewWithActionsPreview()
         }
     }
 }

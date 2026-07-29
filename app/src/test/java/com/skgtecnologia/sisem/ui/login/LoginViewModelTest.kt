@@ -4,11 +4,14 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.testing.invoke
 import com.skgtecnologia.sisem.commons.ANDROID_ID
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
+import com.skgtecnologia.sisem.commons.PASSWORD
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.USERNAME
 import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
+import com.skgtecnologia.sisem.commons.resources.StringProvider
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
+import com.skgtecnologia.sisem.domain.auth.usecases.CloseActiveSession
 import com.skgtecnologia.sisem.domain.auth.usecases.Login
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
@@ -16,6 +19,7 @@ import com.skgtecnologia.sisem.domain.model.banner.BannerModel
 import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.test.runTest
@@ -26,6 +30,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import java.time.LocalDateTime
+
+private const val CLOSE_SESSION_TITLE = "Sesión cerrada"
 
 @RunWith(RobolectricTestRunner::class)
 class LoginViewModelTest {
@@ -42,6 +48,12 @@ class LoginViewModelTest {
     @MockK
     private lateinit var androidIdProvider: AndroidIdProvider
 
+    @MockK
+    private lateinit var stringProvider: StringProvider
+
+    @MockK
+    private lateinit var closeActiveSession: CloseActiveSession
+
     private val savedStateHandle: SavedStateHandle = SavedStateHandle(
         route = AuthRoute.LoginRoute(username = USERNAME)
     )
@@ -53,7 +65,17 @@ class LoginViewModelTest {
         MockKAnnotations.init(this)
 
         every { androidIdProvider.getAndroidId() } returns ANDROID_ID
+        every { stringProvider.getString(any()) } returns ""
     }
+
+    private fun createViewModel() = LoginViewModel(
+        savedStateHandle = savedStateHandle,
+        androidIdProvider = androidIdProvider,
+        stringProvider = stringProvider,
+        getLoginScreen = getLoginScreen,
+        closeActiveSession = closeActiveSession,
+        login = login
+    )
 
     @Test
     fun `when getLoginScreen is success`() = runTest {
@@ -61,7 +83,7 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
+        loginViewModel = createViewModel()
         val uiState = loginViewModel.uiState
 
         Assert.assertEquals(emptyScreenModel, uiState.value.screenModel)
@@ -74,7 +96,7 @@ class LoginViewModelTest {
             Throwable()
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
+        loginViewModel = createViewModel()
         val uiState = loginViewModel.uiState
 
         Assert.assertEquals(null, uiState.value.screenModel)
@@ -87,7 +109,7 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
+        loginViewModel = createViewModel()
         loginViewModel.forgotPassword()
 
         Assert.assertEquals(true, loginViewModel.uiState.value.navigationModel?.forgotPassword)
@@ -99,7 +121,7 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
+        loginViewModel = createViewModel()
         loginViewModel.login()
 
         Assert.assertEquals(true, loginViewModel.uiState.value.validateFields)
@@ -112,7 +134,7 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
+        loginViewModel = createViewModel()
 
         loginViewModel.isValidUsername = true
         loginViewModel.isValidPassword = true
@@ -139,7 +161,7 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
+        loginViewModel = createViewModel()
         loginViewModel.isValidUsername = true
         loginViewModel.isValidPassword = true
         val accessTokenModel = createAccessToken(null)
@@ -159,7 +181,7 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
+        loginViewModel = createViewModel()
         loginViewModel.isValidUsername = true
         loginViewModel.isValidPassword = true
 
@@ -176,7 +198,7 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
+        loginViewModel = createViewModel()
         loginViewModel.consumeNavigationEvent()
 
         Assert.assertEquals(false, loginViewModel.uiState.value.validateFields)
@@ -192,7 +214,7 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
+        loginViewModel = createViewModel()
         val loginLink = LoginLink.TERMS_AND_CONDITIONS
         loginViewModel.showLoginLink(loginLink)
 
@@ -205,7 +227,7 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
+        loginViewModel = createViewModel()
         loginViewModel.consumeLoginLinkEvent()
 
         Assert.assertEquals(null, loginViewModel.uiState.value.onLoginLink)
@@ -217,7 +239,7 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
+        loginViewModel = createViewModel()
         loginViewModel.consumeErrorEvent()
 
         Assert.assertEquals(null, loginViewModel.uiState.value.errorModel)
@@ -229,10 +251,64 @@ class LoginViewModelTest {
             emptyScreenModel
         )
 
-        loginViewModel = LoginViewModel(savedStateHandle, androidIdProvider, getLoginScreen, login)
+        loginViewModel = createViewModel()
         loginViewModel.consumeWarningEvent()
 
         Assert.assertEquals(null, loginViewModel.uiState.value.warning)
+    }
+
+    @Test
+    fun `when closeActiveSession succeeds it shows the success banner and stays put`() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
+        every { stringProvider.getString(any()) } returns CLOSE_SESSION_TITLE
+        coEvery { closeActiveSession.invoke(any(), any()) } returns Result.success(Unit)
+
+        loginViewModel = createViewModel()
+        loginViewModel.closeActiveSession()
+
+        Assert.assertEquals(
+            CLOSE_SESSION_TITLE,
+            loginViewModel.uiState.value.successBanner?.title
+        )
+        Assert.assertEquals(null, loginViewModel.uiState.value.errorModel)
+        Assert.assertEquals(null, loginViewModel.uiState.value.navigationModel)
+        Assert.assertEquals(false, loginViewModel.uiState.value.isLoading)
+    }
+
+    @Test
+    fun `when closeActiveSession fails it surfaces the error`() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
+        coEvery { closeActiveSession.invoke(any(), any()) } returns Result.failure(Throwable())
+
+        loginViewModel = createViewModel()
+        loginViewModel.closeActiveSession()
+
+        Assert.assertEquals(SERVER_ERROR_TITLE, loginViewModel.uiState.value.errorModel?.title)
+        Assert.assertEquals(null, loginViewModel.uiState.value.successBanner)
+        Assert.assertEquals(false, loginViewModel.uiState.value.isLoading)
+    }
+
+    @Test
+    fun `when closeActiveSession is called it uses the typed credentials`() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
+        coEvery { closeActiveSession.invoke(any(), any()) } returns Result.success(Unit)
+
+        loginViewModel = createViewModel()
+        loginViewModel.username = USERNAME
+        loginViewModel.password = PASSWORD
+        loginViewModel.closeActiveSession()
+
+        coVerify { closeActiveSession.invoke(USERNAME, PASSWORD) }
+    }
+
+    @Test
+    fun `when call consumeSuccessEvent uiState should have successBanner clear`() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
+
+        loginViewModel = createViewModel()
+        loginViewModel.consumeSuccessEvent()
+
+        Assert.assertEquals(null, loginViewModel.uiState.value.successBanner)
     }
 
     private fun createAccessToken(warning: BannerModel?) = AccessTokenModel(

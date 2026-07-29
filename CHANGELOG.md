@@ -3,6 +3,12 @@ Ajustes y correcciones aplicadas segun versiones:
 
 
 
+# version 2.4.8 *(28.07.2026)*
+----------------------------------------
+### Correcciones
+
+- **Sesión activa en otro dispositivo:** Se corrige un problema donde, al intentar iniciar sesión teniendo una sesión abierta en otro dispositivo o navegador, la aplicación quedaba bloqueada en el inicio de sesión sin forma de continuar. Ahora se muestra el aviso *"Duplicidad"* con las opciones **Sí** y **No**: al elegir **Sí** se cierra la sesión del otro dispositivo y se confirma en pantalla, quedando el usuario habilitado para ingresar.
+
 # version 2.4.7 *(27.07.2026)*
 ----------------------------------------
 ### Correcciones

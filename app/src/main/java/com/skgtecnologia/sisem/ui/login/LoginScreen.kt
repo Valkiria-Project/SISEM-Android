@@ -13,10 +13,12 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.model.toLegalContentModel
 import com.skgtecnologia.sisem.ui.login.legal.LegalContent
 import com.skgtecnologia.sisem.ui.sections.BodySection
+import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.LoginUiAction
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
 import com.valkiria.uicomponents.action.LoginUiAction.Login
@@ -101,8 +103,20 @@ fun LoginScreen(
         navigationModel?.let { onNavigation(it) }
     }
 
-    OnBannerHandler(uiState.errorModel) {
-        viewModel.consumeErrorEvent()
+    OnBannerHandler(uiState.errorModel) { uiAction ->
+        // The duplicate-session banner carries two buttons; every other error banner just
+        // has the close icon, which lands here as a dismiss.
+        val identifier = (uiAction as? FooterUiAction.FooterButton)?.identifier
+
+        if (identifier == LoginIdentifier.LOGIN_CLOSE_SESSION_CONFIRM.name) {
+            viewModel.closeActiveSession()
+        } else {
+            viewModel.consumeErrorEvent()
+        }
+    }
+
+    OnBannerHandler(uiState.successBanner) {
+        viewModel.consumeSuccessEvent()
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)

@@ -7,14 +7,18 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
+import com.skgtecnologia.sisem.commons.resources.StringProvider
 import com.skgtecnologia.sisem.di.operation.OperationRole
+import com.skgtecnologia.sisem.domain.auth.usecases.CloseActiveSession
 import com.skgtecnologia.sisem.domain.auth.usecases.Login
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
 import com.skgtecnologia.sisem.ui.navigation.AuthRoute
+import com.valkiria.uicomponents.bricks.banner.BannerUiModel
 import com.valkiria.uicomponents.components.BodyRowModel
 import com.valkiria.uicomponents.components.chip.ChipUiModel
 import com.valkiria.uicomponents.components.textfield.TextFieldUiModel
@@ -35,7 +39,9 @@ private const val LOGIN_EMAIL_IDENTIFIER = "LOGIN_EMAIL"
 class LoginViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val androidIdProvider: AndroidIdProvider,
+    private val stringProvider: StringProvider,
     private val getLoginScreen: GetLoginScreen,
+    private val closeActiveSession: CloseActiveSession,
     private val login: Login
 ) : ViewModel() {
 
@@ -234,10 +240,68 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Answers yes to the duplicate-session banner. The other session is closed server-side
+     * and the user is left on this screen to sign in again — the close call authenticates
+     * against Keycloak but returns none of the data the app needs to navigate (SMA-753).
+     */
+    fun closeActiveSession() {
+        uiState.update {
+            it.copy(
+                errorModel = null,
+                isLoading = true
+            )
+        }
+
+        job?.cancel()
+        job = viewModelScope.launch {
+            closeActiveSession.invoke(username, password)
+                .onSuccess {
+                    withContext(Dispatchers.Main) {
+                        uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                successBanner = BannerUiModel(
+                                    icon = stringProvider.getString(
+                                        R.string.close_session_success_icon
+                                    ),
+                                    title = stringProvider.getString(
+                                        R.string.close_session_success_title
+                                    ),
+                                    description = stringProvider.getString(
+                                        R.string.close_session_success_description
+                                    )
+                                )
+                            )
+                        }
+                    }
+                }
+                .onFailure { throwable ->
+                    Timber.wtf(throwable, "Closing the active session failed")
+                    withContext(Dispatchers.Main) {
+                        uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                errorModel = throwable.mapToUi()
+                            )
+                        }
+                    }
+                }
+        }
+    }
+
     fun consumeErrorEvent() {
         uiState.update {
             it.copy(
                 errorModel = null
+            )
+        }
+    }
+
+    fun consumeSuccessEvent() {
+        uiState.update {
+            it.copy(
+                successBanner = null
             )
         }
     }
