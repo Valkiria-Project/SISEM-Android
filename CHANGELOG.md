@@ -5,9 +5,17 @@ Ajustes y correcciones aplicadas segun versiones:
 
 # version 2.4.8 *(28.07.2026)*
 ----------------------------------------
+### Mejoras de interfaz
+
+- **Pantallas de inicio de sesión y preoperacional mejor ajustadas:** Se corrigió un espacio vacío excesivo que aparecía en la parte superior de estas pantallas, haciendo que el contenido se vea más ordenado y aproveche mejor el espacio de la pantalla del dispositivo.
+- **Teclado se cierra automáticamente al aparecer un aviso:** Cuando la aplicación muestra un mensaje de alerta o confirmación (como "Guardar cambios"), el teclado del dispositivo ahora se oculta automáticamente para que el aviso sea completamente visible.
+- **Botones de avisos siempre visibles:** Los botones de acción dentro de las ventanas emergentes (como "Cancelar" o "Guardar") ya no quedaban ocultos detrás de la barra de navegación del dispositivo. Ahora siempre son accesibles.
+
 ### Correcciones
 
 - **Sesión activa en otro dispositivo:** Se corrige un problema donde, al intentar iniciar sesión teniendo una sesión abierta en otro dispositivo o navegador, la aplicación quedaba bloqueada en el inicio de sesión sin forma de continuar. Ahora se muestra el aviso *"Duplicidad"* con las opciones **Sí** y **No**: al elegir **Sí** se cierra la sesión del otro dispositivo y se confirma en pantalla, quedando el usuario habilitado para ingresar.
+
+- **Cierre inesperado al expirar la sesión:** Se corrigió un error poco frecuente que podía cerrar la aplicación abruptamente al intentar redirigir al usuario al inicio de sesión por sesión expirada.
 
 # version 2.4.7 *(27.07.2026)*
 ----------------------------------------
