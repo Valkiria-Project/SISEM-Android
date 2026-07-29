@@ -37,6 +37,11 @@ class AuthRemoteDataSource @Inject constructor(
         it.mapToDomain()
     }
 
+    suspend fun closeActiveSession(username: String, password: String): Result<Unit> =
+        networkApi.apiCall {
+            authApi.closeActiveSession(username = username, password = password)
+        }.mapResult { }
+
     suspend fun logout(username: String, refreshToken: String): Result<String> =
         networkApi.apiCall {
             authApi.logout(username = username, refreshToken = refreshToken)
