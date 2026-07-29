@@ -1,14 +1,12 @@
 package com.skgtecnologia.sisem.ui.login
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -66,13 +64,12 @@ fun LoginScreen(
 
         BodySection(
             body = uiState.screenModel?.body,
-            modifier = modifier
+            modifier = Modifier
                 .constrainAs(body) {
                     top.linkTo(header.bottom)
                     bottom.linkTo(parent.bottom)
                     height = Dimension.fillToConstraints
-                }
-                .padding(top = 20.dp),
+                },
             validateFields = uiState.validateFields
         ) { uiAction ->
             handleAction(uiAction, viewModel)

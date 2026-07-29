@@ -96,10 +96,14 @@ fun SisemNavGraph(navigationModel: StartupNavigationModel?) {
         LaunchedEffect(Unit) {
             UnauthorizedEventHandler.subscribeUnauthorizedEvent { appEvent ->
                 if (appEvent is AppEvent.UnauthorizedSession) {
-                    navController.navigate(AuthRoute.LoginRoute(appEvent.username)) {
-                        popUpTo(NavGraph.MainGraph) {
-                            inclusive = true
+                    try {
+                        navController.navigate(AuthRoute.LoginRoute(appEvent.username)) {
+                            popUpTo(NavGraph.MainGraph) {
+                                inclusive = true
+                            }
                         }
+                    } catch (e: IllegalStateException) {
+                        Timber.e(e, "Navigation to login skipped: invalid lifecycle state")
                     }
                 }
             }
