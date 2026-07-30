@@ -3,7 +3,7 @@ Ajustes y correcciones aplicadas segun versiones:
 
 
 
-# version 2.4.X *(XX.XX.XXXX)*
+# Version 2.4.9 *(30.07.2026)*
 ----------------------------------------
 ### Correcciones
 
@@ -12,14 +12,18 @@ Ajustes y correcciones aplicadas segun versiones:
 ### Mejoras de rendimiento
 
 - **Cierre de sesión más rápido:** Se corrige un problema donde al cerrar sesión la aplicación realizaba decenas de peticiones innecesarias al servidor de ubicación y servicios externos, provocando que el proceso fuera lento. Ahora el servicio de rastreo GPS y las tareas pendientes de envío de ubicación se detienen inmediatamente al iniciar el cierre de sesión.
-
 - **Reducción de peticiones a servicio de IP:** La consulta de IP pública usada para auditoría ahora se renueva cada 10 minutos en lugar de ejecutarse en cada petición al servidor, reduciendo significativamente el tráfico de red innecesario.
 
 ### Control de acceso
 
 - **Restricción de inicio de sesión tras cierre de turno:** Al cerrar sesión un tripulante, la pantalla de selección de usuario solo permite iniciar sesión con el mismo tipo de rol que cerró la sesión. Si se intenta seleccionar un rol diferente, se muestra un aviso indicando qué tipo de tripulante debe ingresar. Esto evita que la tripulación quede incompleta al reemplazar roles incorrectos.
+- **Cierre de sesión duplicada y navegación automática:** Al confirmar el cierre de una sesión activa en otro dispositivo, la aplicación ahora completa el proceso de autenticación automáticamente y navega a la siguiente pantalla sin requerir que el usuario inicie sesión manualmente por segunda vez.
 
-# version 2.4.8 *(28.07.2026)*
+### Correcciones de mapa
+
+- **Ruta de navegación no se restauraba al reabrir la app:** Se corrige un problema donde, al cerrar completamente la aplicación y volver a abrirla, el mapa cargaba pero no mostraba la ruta de navegación activa hacia el incidente asignado. Ahora la ruta se reanuda correctamente tanto si la app fue minimizada como si fue cerrada por completo.
+
+# Version 2.4.8 *(28.07.2026)*
 ----------------------------------------
 ### Mejoras de interfaz
 
@@ -33,13 +37,13 @@ Ajustes y correcciones aplicadas segun versiones:
 
 - **Cierre inesperado al expirar la sesión:** Se corrigió un error poco frecuente que podía cerrar la aplicación abruptamente al intentar redirigir al usuario al inicio de sesión por sesión expirada.
 
-# version 2.4.7 *(27.07.2026)*
+# Version 2.4.7 *(27.07.2026)*
 ----------------------------------------
 ### Correcciones
 
 - **Teclado en pantallas con botones fijos:** Se extiende a otras pantallas la corrección aplicada en la 2.4.6 a *"Olvidó su contraseña"*. Al abrir el teclado en *Cambio de contraseña*, *Autenticación del dispositivo*, *Firma*, *Registro de firma*, *Novedades* e *Inventario (detalle)*, el contenido y los botones inferiores quedaban ocultos o inaccesibles en equipos donde el teclado ocupa una porción mayor de la pantalla, como el Motorola G47. Ahora los botones se elevan sobre el teclado y el contenido permanece visible.
 
-# version 2.4.6 *(27.07.2026)*
+# Version 2.4.6 *(27.07.2026)*
 ----------------------------------------
 ### Correcciones
 
@@ -47,7 +51,7 @@ Ajustes y correcciones aplicadas segun versiones:
 
 - **Recuperar contraseña en pantallas pequeñas:** Se corrige un problema donde, al abrir el teclado en la pantalla *"Olvidó su contraseña"*, desaparecían el campo de correo y los botones Cancelar y Enviar, dejando la pantalla inutilizable. Se presentaba en equipos donde el teclado ocupa una porción mayor de la pantalla, como el Motorola G47. Ahora el contenido y los botones permanecen visibles sobre el teclado.
 
-# version 2.4.5 *(26.07.2026)*
+# Version 2.4.5 *(26.07.2026)*
 ----------------------------------------
 ### Correcciones
 

@@ -44,8 +44,8 @@ android {
         applicationId = "com.skgtecnologia.sisem"
         minSdk = 30
         targetSdk = 36
-        versionCode = 91
-        versionName = "2.4.8"
+        versionCode = 92
+        versionName = "2.4.9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -70,10 +70,10 @@ android {
         debug {
             applicationIdSuffix = ".debug"
             isDebuggable = true
-            buildConfigField("String", "AUTH_BASE_URL", "\"https://test.sisem.co/dev/sisem-api/\"")
-            buildConfigField("String", "BASE_URL", "\"https://test.sisem.co/dev/sisem-api/v1/\"")
-            buildConfigField("String", "LOCATION_URL", "\"https://test.sisem.co/dev/sisem-location-api/v1/\"")
-            buildConfigField("String", "REFRESH_URL", "\"https://admin.qa.sisem.co/auth/realms/sisem/protocol/openid-connect/token\"")
+            buildConfigField("String", "AUTH_BASE_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-api/\"")
+            buildConfigField("String", "BASE_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-api/v1/\"")
+            buildConfigField("String", "LOCATION_URL", "\"https://api.emergencias.saludcapital.gov.co/sisem-location-api/v1/\"")
+            buildConfigField("String", "REFRESH_URL", "\"https://admin.emergencias.saludcapital.gov.co/auth/realms/sisem/protocol/openid-connect/token\"")
             buildConfigField("Boolean", "ALLOW_SCREENSHOTS", "true")
             buildConfigField("String", "TEST_DEVICE_SERIAL", "\"$testDeviceSerial\"")
         }
