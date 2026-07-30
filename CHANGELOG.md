@@ -3,6 +3,12 @@ Ajustes y correcciones aplicadas segun versiones:
 
 
 
+# version 2.4.X *(XX.XX.XXXX)*
+----------------------------------------
+### Correcciones
+
+- **Navegación hacia atrás tras cerrar sesión:** Se corrige un problema donde, al presionar el botón físico de retroceso después de cerrar sesión, la aplicación navegaba incorrectamente hacia pantallas preoperacionales o de inicio de sesión de otros usuarios. Ahora al cerrar sesión, ya sea manualmente o por expiración de sesión, la pila de navegación se limpia completamente y no es posible volver a pantallas de sesiones anteriores.
+
 # version 2.4.8 *(28.07.2026)*
 ----------------------------------------
 ### Mejoras de interfaz
