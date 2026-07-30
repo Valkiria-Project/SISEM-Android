@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.report.addreport
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,7 +42,12 @@ fun AddReportRoleScreen(
     }
 
     ConstraintLayout(
-        modifier = modifier.fillMaxSize()
+        // The body is pinned between the header and the footer, so insetting it for the
+        // keyboard eats its fixed height instead of scrolling. Inset the whole layout so
+        // the footer rises above the keyboard and the body keeps the rest.
+        modifier = modifier
+            .fillMaxSize()
+            .imePadding()
     ) {
         val (header, body, footer) = createRefs()
 
@@ -64,7 +70,8 @@ fun AddReportRoleScreen(
                     bottom.linkTo(footer.top)
                     height = Dimension.fillToConstraints
                 }
-                .padding(top = 20.dp)
+                .padding(top = 20.dp),
+            applyImePadding = false
         ) { uiAction ->
             handleUiAction(uiAction, onNavigation)
         }

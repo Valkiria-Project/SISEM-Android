@@ -15,6 +15,7 @@ import timber.log.Timber
 import java.time.Instant
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class AuthRepositoryImpl @Inject constructor(
     private val authCacheDataSource: AuthCacheDataSource,
     private val authRemoteDataSource: AuthRemoteDataSource,
@@ -90,6 +91,16 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun getTokenByRole(role: String): AccessTokenModel? =
         authCacheDataSource.retrieveAccessTokenByRole(role)
+
+    override suspend fun closeActiveSession(username: String, password: String) {
+        // Nothing is cached here on purpose. The call returns a fresh token, but the user
+        // has not logged into this device yet, so storing it would leave the app holding a
+        // session it cannot navigate with.
+        authRemoteDataSource.closeActiveSession(
+            username = username,
+            password = password
+        ).getOrThrow()
+    }
 
     override suspend fun logout(username: String): String =
         authRemoteDataSource.logout(

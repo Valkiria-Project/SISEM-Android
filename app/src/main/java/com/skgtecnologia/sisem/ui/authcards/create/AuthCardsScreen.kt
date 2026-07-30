@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.authcards.create
 
 import android.Manifest
+import android.content.Context
 import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -15,6 +16,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -22,7 +27,10 @@ import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
+import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
+import com.skgtecnologia.sisem.di.operation.OperationRole
+import com.skgtecnologia.sisem.domain.authcards.model.AuthCardsIdentifier
 import com.skgtecnologia.sisem.ui.authcards.create.report.FindingsContent
 import com.skgtecnologia.sisem.ui.authcards.create.report.ReportDetailContent
 import com.skgtecnologia.sisem.ui.navigation.AuthRoute
@@ -31,6 +39,7 @@ import com.skgtecnologia.sisem.ui.sections.HeaderSection
 import com.valkiria.uicomponents.action.AuthCardsUiAction
 import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
+import com.valkiria.uicomponents.bricks.banner.BannerUiModel
 import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.bottomsheet.BottomSheetView
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
@@ -93,6 +102,10 @@ fun AuthCardsScreen(
         }
     }
 
+    OnBannerHandler(uiModel = uiState.roleRestrictionBanner) {
+        viewModel.consumeRoleRestrictionBanner()
+    }
+
     OnBannerHandler(uiModel = uiState.errorModel) {
         viewModel.consumeErrorEvent()
     }
@@ -106,6 +119,7 @@ private fun AuthCardsScreenRender(
     modifier: Modifier,
     onNavigation: (route: AuthRoute) -> Unit
 ) {
+    val context = LocalContext.current
     val uiState = viewModel.uiState
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -135,7 +149,7 @@ private fun AuthCardsScreenRender(
                 height = Dimension.fillToConstraints
             }
         ) { uiAction ->
-            handleAction(uiAction, viewModel, onNavigation)
+            handleAction(uiAction, viewModel, onNavigation, context)
         }
     }
 
@@ -174,15 +188,18 @@ private fun arePermissionsGranted(
         true
     } else {
         notificationsPermissionState.status.isGranted &&
-            fineLocationPermissionState.status.isGranted
+                 fineLocationPermissionState.status.isGranted
     }
 }
 
 private fun handleAction(
     uiAction: UiAction,
     viewModel: AuthCardsViewModel,
-    onNavigation: (route: AuthRoute) -> Unit
+    onNavigation: (route: AuthRoute) -> Unit,
+    context: Context
 ) {
+    val loggedOutRole = viewModel.uiState.loggedOutRole
+
     when (uiAction) {
         is AuthCardsUiAction.AuthCard -> {
             onNavigation(AuthRoute.LoginRoute())
@@ -190,6 +207,14 @@ private fun handleAction(
 
         is GenericUiAction.InfoCardAction -> {
             if (uiAction.isClickCard) {
+                if (loggedOutRole != null && !isCardRoleAllowed(
+                        uiAction.identifier,
+                        loggedOutRole
+                    )
+                ) {
+                    viewModel.showRoleRestrictionBanner(buildRoleRestrictionBanner(loggedOutRole, context))
+                    return
+                }
                 onNavigation(AuthRoute.LoginRoute())
                 return
             }
@@ -207,4 +232,29 @@ private fun handleAction(
             Timber.d("no-op")
         }
     }
+}
+
+private fun buildRoleRestrictionBanner(loggedOutRole: String, context: Context): BannerUiModel {
+    val roleName = OperationRole.getRoleByName(loggedOutRole)?.humanizedName ?: loggedOutRole
+    val description = buildAnnotatedString {
+        append(context.getString(R.string.auth_cards_role_restriction_description_prefix))
+        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append(roleName) }
+        append(context.getString(R.string.auth_cards_role_restriction_description_suffix))
+    }
+    return BannerUiModel(
+        icon = context.getString(R.string.alert_icon),
+        title = context.getString(R.string.auth_cards_role_restriction_title),
+        description = description.text,
+        descriptionAnnotated = description
+    )
+}
+
+private fun isCardRoleAllowed(cardIdentifier: String, loggedOutRole: String): Boolean {
+    val cardRole = when (cardIdentifier) {
+        AuthCardsIdentifier.CREW_MEMBER_CARD_DRIVER.name -> OperationRole.DRIVER.name
+        AuthCardsIdentifier.CREW_MEMBER_CARD_DOCTOR.name -> OperationRole.MEDIC_APH.name
+        AuthCardsIdentifier.CREW_MEMBER_CARD_ASSISTANT.name -> OperationRole.AUXILIARY_AND_OR_TAPH.name
+        else -> null
+    }
+    return cardRole?.equals(loggedOutRole, ignoreCase = true) == true
 }

@@ -33,6 +33,16 @@ adb install -r app/build/outputs/apk/staging/com.skgtecnologia.sisem-v*-staging.
 |------|-----------|------------|
 | —    | GJARRISON | 29042601   |
 
+Crew of the vehicle registered under serial `3BF698C04A767D07` (see below). Use these to
+exercise the role-specific flows — turn start, preoperational, incident assignment, and the
+crew logout path, which differs from the leader's:
+
+| Role         | Username    | Password  |
+|--------------|-------------|-----------|
+| Auxiliar APH | Lauxiliar   | 801148751 |
+| Conductor    | Aconductor1 | 801148752 |
+| Médico       | pmedico     | 801148753 |
+
 ### Cursos (production-like — historical)
 
 These users were tied to the previous staging endpoint (`api.emergencias.saludcapital.gov.co`). After the QA migration, they live on the production/release variant only.
@@ -57,9 +67,27 @@ How it works:
 1. On first read, the app creates `<app filesDir>/android_id`. If empty, it falls back to `Settings.Secure.ANDROID_ID` and caches the value inside that file.
 2. On every subsequent read it returns the cached value. So if you overwrite the file, the new value sticks until the app data is cleared.
 
-**Serial registered for the test users:** `7ec2c127b2095132`
+**Serials registered for the test users:**
 
-### Steps to inject it (emulator or rooted device)
+| Serial             | Backend                     | Users                                  |
+|--------------------|-----------------------------|----------------------------------------|
+| `3BF698C04A767D07` | QA (`test.sisem.co/qa/`)    | Lauxiliar, Aconductor1, pmedico        |
+| `7ec2c127b2095132` | Production (historical)     | OMEDICO, OCONDUCTOR, OAUXILIAR         |
+
+### Preferred: pin the serial at build time
+
+`debug` and `staging` read the serial from the `sisemTestSerial` Gradle property and use it
+instead of the device id, so nothing has to be rewritten on the device after each install:
+
+```bash
+./gradlew assembleStaging -PsisemTestSerial=3BF698C04A767D07
+```
+
+Put `sisemTestSerial=3BF698C04A767D07` in `~/.gradle/gradle.properties` to avoid passing the
+flag every time. The property is ignored by `preProd` and `release`, which always use the real
+device id.
+
+### Fallback: inject it on the device (emulator or rooted device)
 
 ```bash
 # 1. Install + run the staging APK once so the app's filesDir exists
@@ -131,6 +159,7 @@ adb shell "run-as com.skgtecnologia.sisem cat files/android_networking.txt"
 
 ## Notes for future tests
 
+- Screenshots and screen recording work on `debug` and `staging`. `preProd` and `release` set `FLAG_SECURE`, so `adb exec-out screencap` returns a black image there — use `adb shell uiautomator dump` to inspect those builds instead.
 - Always force-stop the app after rewriting `files/android_id` — the value is read on demand but cached in memory after the first call.
 - The `pre-aph-stretcher-retention` call also depends on the **active incident** held in `IncidentCacheDataSource`. If you wipe app data you'll need to re-login *and* have a fresh incident assigned, otherwise the pre-screen shows the empty state (`emptyStretcherRetentionHeader()`).
 - Test users for the `Cursos` course role share the same vehicle serial, so all three can sign in on the same emulator if you switch sessions.

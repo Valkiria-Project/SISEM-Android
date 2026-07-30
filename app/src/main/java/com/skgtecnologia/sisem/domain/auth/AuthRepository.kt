@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.domain.auth
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import kotlinx.coroutines.flow.Flow
 
+@Suppress("TooManyFunctions")
 interface AuthRepository {
 
     suspend fun authenticate(username: String, password: String): AccessTokenModel
@@ -16,6 +17,8 @@ interface AuthRepository {
     suspend fun getAllAccessTokens(): List<AccessTokenModel>
 
     suspend fun getTokenByRole(role: String): AccessTokenModel?
+
+    suspend fun closeActiveSession(username: String, password: String)
 
     suspend fun logout(username: String): String
 

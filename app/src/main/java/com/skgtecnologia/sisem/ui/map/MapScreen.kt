@@ -36,7 +36,7 @@ fun MapScreen(
     viewModel: MapViewModel = hiltViewModel(),
     onMenuAction: (NavRoute) -> Unit,
     onAction: (aphRoute: AphRoute) -> Unit,
-    onLogout: () -> Unit
+    onLogout: (loggedOutRole: String?) -> Unit
 ) {
     val currentMenuAction by rememberUpdatedState(onMenuAction)
     val currentOnAction by rememberUpdatedState(onAction)

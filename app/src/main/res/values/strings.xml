@@ -24,6 +24,11 @@
     <string name="error_unauthorized_title">Autenticación</string>
     <string name="error_unauthorized_description">Se requiere re-autenticación</string>
     <string name="error_unauthorized_cta">Re Autenticar</string>
+    <string name="close_session_confirm_cta">SÍ</string>
+    <string name="close_session_cancel_cta">NO</string>
+    <string name="close_session_success_icon">ic_duplicated</string>
+    <string name="close_session_success_title">Sesión cerrada</string>
+    <string name="close_session_success_description">La sesión en el otro dispositivo se cerró correctamente. Ya puede iniciar sesión aquí.</string>
     <string name="error_general_title">Ha ocurrido un error</string>
     <string name="error_general_description">Intenta más tarde</string>
     <string name="error_server_title">Servicio no disponible</string>
@@ -130,6 +135,11 @@
 
         La presente Política de Protección y Tratamiento de Datos Personales está rigiendo a partir de su publicación en la SDS y en el portal web de la entidad.
     </string>
+
+    <!-- Auth cards role restriction -->
+    <string name="auth_cards_role_restriction_title">Inicio de sesión no permitido</string>
+    <string name="auth_cards_role_restriction_description_prefix">En este momento solo puede ingresar el tripulante de tipo </string>
+    <string name="auth_cards_role_restriction_description_suffix">.</string>
 
     <!-- Findings dialog -->
     <string name="finding_subtitle">Revise los hallazgos registrados en el preoperacional del turno anterior.</string>

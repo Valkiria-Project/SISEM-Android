@@ -125,6 +125,7 @@ class LocationService : Service() {
 
     private fun enqueueLocationWork(latitude: Double, longitude: Double) {
         val workRequest = OneTimeWorkRequestBuilder<LocationWorker>()
+            .addTag(WORK_TAG)
             .setConstraints(
                 Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -159,5 +160,9 @@ class LocationService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         serviceScope.cancel()
+    }
+
+    companion object {
+        const val WORK_TAG = "location_update"
     }
 }

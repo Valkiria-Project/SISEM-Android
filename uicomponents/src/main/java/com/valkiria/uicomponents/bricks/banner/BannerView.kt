@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
@@ -33,6 +34,7 @@ import com.valkiria.uicomponents.action.GenericUiAction
 import com.valkiria.uicomponents.action.UiAction
 import com.valkiria.uicomponents.bricks.button.ButtonView
 import com.valkiria.uicomponents.mocks.getLoginBlockedErrorUiModel
+import com.valkiria.uicomponents.mocks.getLoginDuplicatedWithActionsUiModel
 import com.valkiria.uicomponents.utlis.DefType
 import com.valkiria.uicomponents.utlis.getResourceIdByName
 import timber.log.Timber
@@ -110,7 +112,8 @@ internal fun BannerView(
                     }
                 }
                 Text(
-                    text = uiModel.description,
+                    text = uiModel.descriptionAnnotated
+                        ?: AnnotatedString(uiModel.description),
                     modifier = Modifier.padding(20.dp),
                     color = Color.White,
                     style = MaterialTheme.typography.bodyLarge
@@ -148,5 +151,14 @@ fun BannerViewPreview() {
     BannerView(
         uiModel = getLoginBlockedErrorUiModel(),
         onAction = { Timber.d("Closed") }
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BannerViewWithActionsPreview() {
+    BannerView(
+        uiModel = getLoginDuplicatedWithActionsUiModel(),
+        onAction = { Timber.d("Answered") }
     )
 }

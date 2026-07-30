@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.extensions.recoverResult
@@ -116,7 +117,7 @@ class NetworkApi @Inject constructor(
 
         return when {
             errorResponse != null -> {
-                errorResponse
+                errorResponse.withCloseSessionActions()
             }
 
             code == HTTP_FORBIDDEN_STATUS_CODE || code == HTTP_UNAUTHORIZED_STATUS_CODE -> {
@@ -154,6 +155,54 @@ class NetworkApi @Inject constructor(
             }
         }
     }
+
+    /**
+     * Turns the duplicate-session banner into a question the user can answer. The backend
+     * only tells us the session exists; the yes/no buttons are ours, and LoginScreen acts
+     * on their identifiers.
+     */
+    private fun ErrorResponse.withCloseSessionActions(): ErrorResponse = apply {
+        if (actionCloseSession) {
+            footerModel = FooterUiModel(
+                leftButton = bannerButton(
+                    identifier = LoginIdentifier.LOGIN_CLOSE_SESSION_CANCEL.name,
+                    label = stringProvider.getString(R.string.close_session_cancel_cta),
+                    style = ButtonStyle.TRANSPARENT,
+                    // The banner paints itself dark regardless of the theme, so a
+                    // transparent button has to spell its text colour out or it comes
+                    // out dark-on-dark.
+                    overrideColor = Color.White
+                ),
+                rightButton = bannerButton(
+                    identifier = LoginIdentifier.LOGIN_CLOSE_SESSION_CONFIRM.name,
+                    label = stringProvider.getString(R.string.close_session_confirm_cta),
+                    style = ButtonStyle.LOUD
+                )
+            )
+        }
+    }
+
+    private fun bannerButton(
+        identifier: String,
+        label: String,
+        style: ButtonStyle,
+        overrideColor: Color? = null
+    ) = ButtonUiModel(
+        identifier = identifier,
+        label = label,
+        style = style,
+        overrideColor = overrideColor,
+        textStyle = TextStyle.HEADLINE_5,
+        onClick = OnClick.DISMISS,
+        size = ButtonSize.DEFAULT,
+        arrangement = Arrangement.Start,
+        modifier = Modifier.padding(
+            start = 0.dp,
+            top = 20.dp,
+            end = 0.dp,
+            bottom = 0.dp
+        )
+    )
 
     @Suppress("SwallowedException", "TooGenericExceptionCaught")
     private fun ResponseBody.toError(code: Int): ErrorResponse? = try {

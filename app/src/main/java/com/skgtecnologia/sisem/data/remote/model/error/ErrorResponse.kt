@@ -10,7 +10,11 @@ import com.valkiria.uicomponents.components.footer.FooterUiModel
 data class ErrorResponse(
     @Json(name = "icon") val icon: String,
     @Json(name = "title") val title: String,
-    @Json(name = "description") val description: String
+    @Json(name = "description") val description: String,
+    // Sent by the backend on a 403 when the user already has a session open somewhere
+    // else. It turns the banner into a question: the two buttons are attached in
+    // NetworkApi, and answering yes closes the other session (SMA-753).
+    @Json(name = "action_close_session") val actionCloseSession: Boolean = false
 ) {
     @Transient
     var footerModel: FooterUiModel? = null

@@ -14,7 +14,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.compose.rememberFragmentState
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -22,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
+import androidx.work.WorkManager
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -30,6 +30,7 @@ import com.skgtecnologia.sisem.commons.communication.AppEvent
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.extensions.navigateBack
 import com.skgtecnologia.sisem.commons.location.ACTION_START
+import com.skgtecnologia.sisem.commons.location.ACTION_STOP
 import com.skgtecnologia.sisem.commons.location.LocationService
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.ui.authcards.create.AuthCardsScreen
@@ -97,8 +98,9 @@ fun SisemNavGraph(navigationModel: StartupNavigationModel?) {
             UnauthorizedEventHandler.subscribeUnauthorizedEvent { appEvent ->
                 if (appEvent is AppEvent.UnauthorizedSession) {
                     try {
+                        stopLocationTracking(context)
                         navController.navigate(AuthRoute.LoginRoute(appEvent.username)) {
-                            popUpTo(NavGraph.MainGraph) {
+                            popUpTo(navController.graph.id) {
                                 inclusive = true
                             }
                         }
@@ -254,18 +256,19 @@ private fun NavGraphBuilder.mainGraph(
     navigation<NavGraph.MainGraph>(startDestination = MainRoute.MapRoute::class) {
         composable<MainRoute.MapRoute> {
             val fragmentState = rememberFragmentState()
+            val context = LocalContext.current
 
             MapScreen(
                 modifier = modifier,
                 fragmentState = fragmentState,
                 onMenuAction = { navRoute -> navController.navigate(route = navRoute) },
                 onAction = { aphRoute -> navController.navigate(route = aphRoute) },
-                onLogout = {
-                    navController.navigate(AuthRoute.AuthCardsRoute) {
-                        popUpTo(navController.graph.findStartDestination().id) {
+                onLogout = { loggedOutRole ->
+                    stopLocationTracking(context)
+                    navController.navigate(AuthRoute.AuthCardsRoute(loggedOutRole = loggedOutRole)) {
+                        popUpTo(navController.graph.id) {
                             inclusive = true
                         }
-
                         launchSingleTop = true
                     }
                 }
@@ -533,4 +536,13 @@ private fun NavGraphBuilder.reportGraph(
             )
         }
     }
+}
+
+private fun stopLocationTracking(context: Context) {
+    Intent(context.applicationContext, LocationService::class.java).apply {
+        action = ACTION_STOP
+        context.startService(this)
+    }
+    WorkManager.getInstance(context.applicationContext)
+        .cancelAllWorkByTag(LocationService.WORK_TAG)
 }

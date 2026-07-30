@@ -11,10 +11,12 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.model.toLegalContentModel
 import com.skgtecnologia.sisem.ui.login.legal.LegalContent
 import com.skgtecnologia.sisem.ui.sections.BodySection
+import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.LoginUiAction
 import com.valkiria.uicomponents.action.LoginUiAction.ForgotPassword
 import com.valkiria.uicomponents.action.LoginUiAction.Login
@@ -87,13 +89,31 @@ fun LoginScreen(
     }
 
     OnBannerHandler(uiState.warning) {
+        // Read the destination before consuming it: uiState is backed by the collected
+        // flow, so once consumeNavigationEvent clears it there is nothing left to
+        // navigate to and dismissing the expired-password warning strands the user on
+        // the login screen (SMA-757).
+        val navigationModel = uiState.navigationModel
+
         viewModel.consumeNavigationEvent()
         viewModel.consumeWarningEvent()
-        uiState.navigationModel?.let { navigationModel -> onNavigation(navigationModel) }
+        navigationModel?.let { onNavigation(it) }
     }
 
-    OnBannerHandler(uiState.errorModel) {
-        viewModel.consumeErrorEvent()
+    OnBannerHandler(uiState.errorModel) { uiAction ->
+        // The duplicate-session banner carries two buttons; every other error banner just
+        // has the close icon, which lands here as a dismiss.
+        val identifier = (uiAction as? FooterUiAction.FooterButton)?.identifier
+
+        if (identifier == LoginIdentifier.LOGIN_CLOSE_SESSION_CONFIRM.name) {
+            viewModel.closeActiveSession()
+        } else {
+            viewModel.consumeErrorEvent()
+        }
+    }
+
+    OnBannerHandler(uiState.successBanner) {
+        viewModel.consumeSuccessEvent()
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)

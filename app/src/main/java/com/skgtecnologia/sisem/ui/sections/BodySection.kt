@@ -135,6 +135,11 @@ fun BodySection(
     body: List<BodyRowModel>?,
     modifier: Modifier = Modifier,
     validateFields: Boolean = false,
+    // Insetting the list only works when the body can grow; on screens whose body is
+    // pinned between a header and a footer the padding eats the fixed height instead and
+    // the content vanishes behind the keyboard. Those screens inset the whole layout and
+    // opt out here — grep for `applyImePadding = false` to find them.
+    applyImePadding: Boolean = true,
     onAction: (actionInput: UiAction) -> Unit
 ) {
     val listState = rememberLazyListState()
@@ -150,7 +155,7 @@ fun BodySection(
             }
 
             LazyColumn(
-                modifier = updatedModifier.imePadding(),
+                modifier = if (applyImePadding) updatedModifier.imePadding() else updatedModifier,
                 state = listState,
                 contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(0.dp, Alignment.Top),

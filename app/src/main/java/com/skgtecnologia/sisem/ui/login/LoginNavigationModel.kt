@@ -33,7 +33,7 @@ data class LoginNavigationModel(
 
             isAdmin && !requiresDeviceAuth -> {
                 navController.navigate(NavGraph.MainGraph) {
-                    popUpTo(AuthRoute.AuthCardsRoute) {
+                    popUpTo(AuthRoute.AuthCardsRoute()) {
                         inclusive = true
                     }
                 }
@@ -41,7 +41,7 @@ data class LoginNavigationModel(
 
             isTurnComplete && requiresPreOperational.not() -> {
                 navController.navigate(NavGraph.MainGraph) {
-                    popUpTo(AuthRoute.AuthCardsRoute) {
+                    popUpTo(AuthRoute.AuthCardsRoute()) {
                         inclusive = true
                     }
                 }
@@ -49,7 +49,7 @@ data class LoginNavigationModel(
 
             requiresPreOperational -> {
                 navController.navigate(AuthRoute.PreOperationalRoute()) {
-                    popUpTo(AuthRoute.AuthCardsRoute) {
+                    popUpTo(AuthRoute.AuthCardsRoute()) {
                         inclusive = true
                     }
                 }
@@ -60,7 +60,7 @@ data class LoginNavigationModel(
             }
 
             else -> {
-                navController.navigate(AuthRoute.AuthCardsRoute)
+                navController.navigate(AuthRoute.AuthCardsRoute())
             }
         }
     }
