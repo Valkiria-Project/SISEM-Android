@@ -14,7 +14,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.compose.rememberFragmentState
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -98,7 +97,7 @@ fun SisemNavGraph(navigationModel: StartupNavigationModel?) {
                 if (appEvent is AppEvent.UnauthorizedSession) {
                     try {
                         navController.navigate(AuthRoute.LoginRoute(appEvent.username)) {
-                            popUpTo(NavGraph.MainGraph) {
+                            popUpTo(navController.graph.id) {
                                 inclusive = true
                             }
                         }
@@ -262,10 +261,9 @@ private fun NavGraphBuilder.mainGraph(
                 onAction = { aphRoute -> navController.navigate(route = aphRoute) },
                 onLogout = {
                     navController.navigate(AuthRoute.AuthCardsRoute) {
-                        popUpTo(navController.graph.findStartDestination().id) {
+                        popUpTo(navController.graph.id) {
                             inclusive = true
                         }
-
                         launchSingleTop = true
                     }
                 }
