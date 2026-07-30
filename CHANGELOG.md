@@ -9,6 +9,12 @@ Ajustes y correcciones aplicadas segun versiones:
 
 - **Navegación hacia atrás tras cerrar sesión:** Se corrige un problema donde, al presionar el botón físico de retroceso después de cerrar sesión, la aplicación navegaba incorrectamente hacia pantallas preoperacionales o de inicio de sesión de otros usuarios. Ahora al cerrar sesión, ya sea manualmente o por expiración de sesión, la pila de navegación se limpia completamente y no es posible volver a pantallas de sesiones anteriores.
 
+### Mejoras de rendimiento
+
+- **Cierre de sesión más rápido:** Se corrige un problema donde al cerrar sesión la aplicación realizaba decenas de peticiones innecesarias al servidor de ubicación y servicios externos, provocando que el proceso fuera lento. Ahora el servicio de rastreo GPS y las tareas pendientes de envío de ubicación se detienen inmediatamente al iniciar el cierre de sesión.
+
+- **Reducción de peticiones a servicio de IP:** La consulta de IP pública usada para auditoría ahora se renueva cada 10 minutos en lugar de ejecutarse en cada petición al servidor, reduciendo significativamente el tráfico de red innecesario.
+
 # version 2.4.8 *(28.07.2026)*
 ----------------------------------------
 ### Mejoras de interfaz
