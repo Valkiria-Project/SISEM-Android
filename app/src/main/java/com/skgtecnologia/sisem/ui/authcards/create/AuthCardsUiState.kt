@@ -9,6 +9,8 @@ data class AuthCardsUiState(
     val screenModel: ScreenModel? = null,
     val reportDetail: ReportsDetailUiModel? = null,
     val chipSection: ChipSectionUiModel? = null,
+    val loggedOutRole: String? = null,
+    val roleRestrictionBanner: BannerUiModel? = null,
     val isLoading: Boolean = false,
     val errorModel: BannerUiModel? = null
 )

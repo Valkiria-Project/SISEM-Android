@@ -263,9 +263,9 @@ private fun NavGraphBuilder.mainGraph(
                 fragmentState = fragmentState,
                 onMenuAction = { navRoute -> navController.navigate(route = navRoute) },
                 onAction = { aphRoute -> navController.navigate(route = aphRoute) },
-                onLogout = {
+                onLogout = { loggedOutRole ->
                     stopLocationTracking(context)
-                    navController.navigate(AuthRoute.AuthCardsRoute) {
+                    navController.navigate(AuthRoute.AuthCardsRoute(loggedOutRole = loggedOutRole)) {
                         popUpTo(navController.graph.id) {
                             inclusive = true
                         }

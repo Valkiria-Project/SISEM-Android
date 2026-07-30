@@ -24,5 +24,5 @@ fun getAuthStartDestination(model: StartupNavigationModel?): AuthRoute = when {
     model?.isWarning == true -> AuthRoute.ChangePasswordRoute
     model?.isAdmin == true -> AuthRoute.DeviceAuthRoute(APP_STARTED)
     model?.requiresPreOperational == true -> AuthRoute.PreOperationalRoute()
-    else -> AuthRoute.AuthCardsRoute
+    else -> AuthRoute.AuthCardsRoute()
 }

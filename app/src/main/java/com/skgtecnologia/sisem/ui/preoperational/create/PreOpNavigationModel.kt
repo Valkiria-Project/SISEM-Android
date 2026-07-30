@@ -18,7 +18,7 @@ data class PreOpNavigationModel(
         when {
             isTurnComplete -> {
                 navController.navigate(NavGraph.MainGraph) {
-                popUpTo(AuthRoute.AuthCardsRoute) {
+                popUpTo(AuthRoute.AuthCardsRoute()) {
                     inclusive = true
                 }
             }
@@ -29,7 +29,7 @@ data class PreOpNavigationModel(
             }
 
             else -> {
-                navController.navigate(AuthRoute.AuthCardsRoute) {
+                navController.navigate(AuthRoute.AuthCardsRoute()) {
                 popUpTo(AuthRoute.PreOperationalRoute()) {
                     inclusive = true
                 }

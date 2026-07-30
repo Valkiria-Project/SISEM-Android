@@ -26,7 +26,7 @@ fun MenuDrawer(
     viewModel: MenuViewModel = hiltViewModel(),
     drawerState: DrawerState,
     onClick: (NavRoute) -> Unit,
-    onLogout: () -> Unit,
+    onLogout: (loggedOutRole: String?) -> Unit,
     content: @Composable () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -42,7 +42,7 @@ fun MenuDrawer(
     LaunchedEffect(uiState) {
         launch {
             if (uiState.isLogout) {
-                onLogout()
+                onLogout(uiState.loggedOutRole)
             }
         }
     }
@@ -83,6 +83,6 @@ fun MenuDrawerPreview() {
     MenuDrawer(
         drawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
         onClick = {},
-        onLogout = {}
+        onLogout = { _ -> }
     ) {}
 }

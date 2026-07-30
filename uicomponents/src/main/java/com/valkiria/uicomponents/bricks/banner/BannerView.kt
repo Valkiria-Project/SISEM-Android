@@ -111,7 +111,7 @@ internal fun BannerView(
                     }
                 }
                 Text(
-                    text = uiModel.description,
+                    text = uiModel.descriptionAnnotated ?: androidx.compose.ui.text.AnnotatedString(uiModel.description),
                     modifier = Modifier.padding(20.dp),
                     color = Color.White,
                     style = MaterialTheme.typography.bodyLarge
