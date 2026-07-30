@@ -260,6 +260,11 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                         .maxDuration(0) // instant transition
                         .build()
                 )
+                // If the process was killed the Mapbox routes are gone. Re-request
+                // the route now that we have a valid origin location.
+                if (mapboxNavigation.getNavigationRoutes().isEmpty()) {
+                    destinationLocation?.let { findRoute(it) }
+                }
             }
         }
     }
@@ -375,15 +380,9 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
         // load map style
 
-        binding.mapView.mapboxMap.loadStyle(Style.DARK) {
-            // Ensure that the route line related layers are present before the route arrow
-            routeLineView.initializeLayers(it)
-
-            binding.mapView.compass.updateSettings {
-                enabled = false
-            }
-
-            // add long click listener that search for a route to the clicked destination
+        binding.mapView.mapboxMap.loadStyle(Style.DARK) { style ->
+            routeLineView.initializeLayers(style)
+            binding.mapView.compass.updateSettings { enabled = false }
             binding.mapView.gestures.addOnMapLongClickListener { point ->
                 findRoute(
                     Location.Builder().longitude(point.longitude()).latitude(point.latitude())
@@ -391,12 +390,24 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 )
                 true
             }
+            restoreRouteIfNeeded(style)
         }
 
         initViewInteractions()
         initObservers()
         // No-op when Mapbox already initialized navigation for this view.
         initNavigation()
+    }
+
+    private fun restoreRouteIfNeeded(style: com.mapbox.maps.Style) {
+        val existingRoutes = mapboxNavigation.getNavigationRoutes()
+        if (existingRoutes.isNotEmpty()) {
+            routeLineApi.setNavigationRoutes(existingRoutes) { value ->
+                routeLineView.renderRouteDrawData(style, value)
+            }
+            viewportDataSource.onRouteChanged(existingRoutes.first())
+            viewportDataSource.evaluate()
+        }
     }
 
     private fun initViewInteractions() {
