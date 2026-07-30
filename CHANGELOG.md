@@ -15,6 +15,10 @@ Ajustes y correcciones aplicadas segun versiones:
 
 - **Reducción de peticiones a servicio de IP:** La consulta de IP pública usada para auditoría ahora se renueva cada 10 minutos en lugar de ejecutarse en cada petición al servidor, reduciendo significativamente el tráfico de red innecesario.
 
+### Control de acceso
+
+- **Restricción de inicio de sesión tras cierre de turno:** Al cerrar sesión un tripulante, la pantalla de selección de usuario solo permite iniciar sesión con el mismo tipo de rol que cerró la sesión. Si se intenta seleccionar un rol diferente, se muestra un aviso indicando qué tipo de tripulante debe ingresar. Esto evita que la tripulación quede incompleta al reemplazar roles incorrectos.
+
 # version 2.4.8 *(28.07.2026)*
 ----------------------------------------
 ### Mejoras de interfaz
