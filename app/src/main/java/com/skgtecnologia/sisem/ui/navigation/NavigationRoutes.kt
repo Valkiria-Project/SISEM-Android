@@ -24,7 +24,7 @@ sealed interface NavRoute
 // region Auth Routes
 sealed interface AuthRoute : NavRoute {
     @Serializable
-    data object AuthCardsRoute : AuthRoute
+    data class AuthCardsRoute(val loggedOutRole: String? = null) : AuthRoute
 
     @Serializable
     data object ChangePasswordRoute : AuthRoute

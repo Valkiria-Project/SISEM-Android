@@ -136,6 +136,11 @@
         La presente Política de Protección y Tratamiento de Datos Personales está rigiendo a partir de su publicación en la SDS y en el portal web de la entidad.
     </string>
 
+    <!-- Auth cards role restriction -->
+    <string name="auth_cards_role_restriction_title">Inicio de sesión no permitido</string>
+    <string name="auth_cards_role_restriction_description_prefix">En este momento solo puede ingresar el tripulante de tipo </string>
+    <string name="auth_cards_role_restriction_description_suffix">.</string>
+
     <!-- Findings dialog -->
     <string name="finding_subtitle">Revise los hallazgos registrados en el preoperacional del turno anterior.</string>
     <string name="finding_left_icon">ic_finding</string>
