@@ -40,20 +40,6 @@ interface AuthApi {
      * them: the user stays on the login screen and signs in again through `auth`, which is
      * the only call that returns the role, turn and preoperational data the app needs.
      */
-    @Suppress("LongParameterList")
-    @FormUrlEncoded
-    @POST
-    suspend fun closeActiveSession(
-        @Url url: String = BuildConfig.REFRESH_URL,
-        @Field("grant_type") grantType: String = "password",
-        @Field("client_id") clientId: String = "sisem_real_app_mobile",
-        @Field("client_secret") clientSecret: String = "",
-        @Field("username") username: String,
-        @Field("password") password: String,
-        @Field("scope") scope: String = "offline_access",
-        @Field("force_close_session") forceCloseSession: Boolean = true
-    ): Response<RefreshTokenResponse>
-
     @GET("auth/logout")
     suspend fun logout(
         @Header("username") username: String,

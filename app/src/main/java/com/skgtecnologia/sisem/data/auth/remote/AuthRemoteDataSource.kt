@@ -17,14 +17,16 @@ class AuthRemoteDataSource @Inject constructor(
         username: String,
         password: String,
         code: String,
-        turnId: String
+        turnId: String,
+        forceCloseSession: Boolean = false
     ): Result<AccessTokenModel> = networkApi.apiCall {
         authApi.authenticate(
             authenticateBody = AuthenticateBody(
                 username = username,
                 password = password,
                 code = code,
-                idTurn = turnId
+                idTurn = turnId,
+                forceCloseSession = forceCloseSession
             )
         )
     }.mapResult {
@@ -36,11 +38,6 @@ class AuthRemoteDataSource @Inject constructor(
     }.mapResult {
         it.mapToDomain()
     }
-
-    suspend fun closeActiveSession(username: String, password: String): Result<Unit> =
-        networkApi.apiCall {
-            authApi.closeActiveSession(username = username, password = password)
-        }.mapResult { }
 
     suspend fun logout(username: String, refreshToken: String): Result<String> =
         networkApi.apiCall {
