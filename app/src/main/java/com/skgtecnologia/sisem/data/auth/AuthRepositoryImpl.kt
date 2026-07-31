@@ -22,7 +22,11 @@ class AuthRepositoryImpl @Inject constructor(
     private val operationCacheDataSource: OperationCacheDataSource
 ) : AuthRepository {
 
-    override suspend fun authenticate(username: String, password: String): AccessTokenModel {
+    override suspend fun authenticate(
+        username: String,
+        password: String,
+        forceCloseSession: Boolean
+    ): AccessTokenModel {
         val code = operationCacheDataSource.observeOperationConfig().first()?.vehicleCode.orEmpty()
         val turn = authCacheDataSource.observeAccessToken().first()?.turn
         val turnId = turn?.id?.toString()
@@ -31,7 +35,8 @@ class AuthRepositoryImpl @Inject constructor(
             username = username,
             password = password,
             code = code,
-            turnId = turnId.orEmpty()
+            turnId = turnId.orEmpty(),
+            forceCloseSession = forceCloseSession
         ).mapResult { accessTokenModel ->
             if (accessTokenModel.isAdmin) {
                 getAllAccessTokens().forEach { accessToken ->
@@ -91,16 +96,6 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun getTokenByRole(role: String): AccessTokenModel? =
         authCacheDataSource.retrieveAccessTokenByRole(role)
-
-    override suspend fun closeActiveSession(username: String, password: String) {
-        // Nothing is cached here on purpose. The call returns a fresh token, but the user
-        // has not logged into this device yet, so storing it would leave the app holding a
-        // session it cannot navigate with.
-        authRemoteDataSource.closeActiveSession(
-            username = username,
-            password = password
-        ).getOrThrow()
-    }
 
     override suspend fun logout(username: String): String =
         authRemoteDataSource.logout(
