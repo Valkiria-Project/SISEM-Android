@@ -123,8 +123,16 @@ class NotificationRepositoryImpl @Inject constructor(
             .first()?.turn?.id?.toString()
 
         operationRemoteDataSource.getOperationConfig(androidIdProvider.getAndroidId(), turnId)
-            .onSuccess {
-                operationCacheDataSource.storeOperationConfig(it)
+            .onSuccess { operationModel ->
+                operationCacheDataSource.storeOperationConfig(operationModel)
+
+                incidentCacheDataSource.observeActiveIncident().first()?.let { activeIncident ->
+                    incidentCacheDataSource.storeIncident(
+                        activeIncident.copy(
+                            isActive = operationModel.status
+                        )
+                    )
+                }
             }
     }
 
