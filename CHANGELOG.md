@@ -2,9 +2,19 @@
 Ajustes y correcciones aplicadas segun versiones:
 
 
-
 # Version 2.4.11 *(02.08.2026)*
 ----------------------------------------
+### Mejoras de interfaz — Registro APH
+
+- **Espacio y teclado en formulario APH:** Se corrige el espacio excesivo entre el encabezado y el contenido del formulario. Al abrir el teclado, el layout ahora se ajusta correctamente permitiendo interactuar con todos los campos sin que queden ocultos.
+- **Vista de detalle APH e incidentes:** Se aplica el mismo ajuste de layout a la pantalla de detalle de un registro APH y a la pantalla de listado de incidentes, corrigiendo el espacio y el comportamiento del teclado.
+
+### Mejoras de firma
+
+- **Firma en modo landscape:** Al ingresar a la pantalla de firma, la aplicación rota automáticamente a modo horizontal para aprovechar todo el ancho de la pantalla al firmar. Al guardar o cancelar, regresa a modo vertical.
+- **Área de firma identificable:** El pad de firma ahora tiene un fondo diferenciado y borde redondeado para indicar claramente el área donde se debe firmar.
+- **Firma completa en el formulario:** Se corrige un problema donde la firma capturada se mostraba recortada en el formulario. Ahora se muestra completa y proporcional independientemente del tamaño del pad.
+
 ### Correcciones
 - Se agregan mejoras para corregir el flujo de navegacion cuando el usuario ya no tinene incidentes asignados
 
