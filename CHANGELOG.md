@@ -5,6 +5,9 @@ Ajustes y correcciones aplicadas segun versiones:
 
 # Version 2.4.11 *(02.08.2026)*
 ----------------------------------------
+### Correcciones
+- Se agregan mejoras para corregir el flujo de navegacion cuando el usuario ya no tinene incidentes asignados
+
 ### Diagnóstico (temporal)
 
 - **Registro de logs en almacenamiento:** La aplicación ahora guarda un registro diario de actividad y errores en la carpeta **Descargas / SISEM-Logs/** del dispositivo. Los archivos se eliminan automáticamente después de 10 días. Esta función es temporal y permite al equipo recibir logs de forma manual para diagnosticar problemas en campo.
