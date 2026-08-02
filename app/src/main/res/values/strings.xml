@@ -136,6 +136,12 @@
         La presente Política de Protección y Tratamiento de Datos Personales está rigiendo a partir de su publicación en la SDS y en el portal web de la entidad.
     </string>
 
+    <!-- Location background permission dialog -->
+    <string name="location_bg_permission_title">Ubicación en segundo plano</string>
+    <string name="location_bg_permission_description">Para rastrear la ambulancia mientras la app está minimizada, selecciona \"Permitir todo el tiempo\" en los ajustes de la app en el permiso de Ubicación.</string>
+    <string name="location_bg_permission_go_to_settings">Ir a ajustes</string>
+    <string name="location_bg_permission_dismiss">Ahora no</string>
+
     <!-- Auth cards role restriction -->
     <string name="auth_cards_role_restriction_title">Inicio de sesión no permitido</string>
     <string name="auth_cards_role_restriction_description_prefix">En este momento solo puede ingresar el tripulante de tipo </string>

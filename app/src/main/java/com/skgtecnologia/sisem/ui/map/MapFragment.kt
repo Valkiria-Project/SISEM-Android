@@ -164,7 +164,19 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 mapboxNavigation.registerRoutesObserver(routesObserver)
                 mapboxNavigation.registerLocationObserver(locationObserver)
                 mapboxNavigation.registerRouteProgressObserver(routeProgressObserver)
-                mapboxNavigation.startTripSession()
+                // Guard against SecurityException on Android 14+ when location
+                // permission is absent or the app is not yet in eligible FGS state.
+                val hasLocation = androidx.core.content.ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+                if (hasLocation) {
+                    mapboxNavigation.startTripSession()
+                } else {
+                    // Explicitly stop so Android does not restart NavigationNotificationService.
+                    mapboxNavigation.stopTripSession()
+                    Timber.w("Skipping startTripSession — location permission not granted")
+                }
             }
 
             override fun onDetached(mapboxNavigation: MapboxNavigation) {
