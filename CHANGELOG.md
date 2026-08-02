@@ -16,7 +16,7 @@ Ajustes y correcciones aplicadas segun versiones:
 - **Firma completa en el formulario:** Se corrige un problema donde la firma capturada se mostraba recortada en el formulario. Ahora se muestra completa y proporcional independientemente del tamaño del pad.
 
 ### Correcciones
-- Se agregan mejoras para corregir el flujo de navegacion cuando el usuario ya no tinene incidentes asignados
+- Se agregan mejoras para corregir el flujo de navegacion cuando el usuario ya no tiene incidentes asignados, para no mostrar navegacion activa cuando recibe un actualizacion de estado tipo 508
 
 ### Diagnóstico (temporal)
 
@@ -27,7 +27,6 @@ Ajustes y correcciones aplicadas segun versiones:
 ### Correcciones
 
 - **Cierre de sesión duplicada y navegación automática:** Al confirmar el cierre de una sesión activa en otro dispositivo, la aplicación reintenta el inicio de sesión automáticamente enviando el parámetro `force_close_session` al servidor. Esto elimina la sesión remota y autentica al usuario en un solo paso, navegando directamente a la pantalla correspondiente sin requerir un segundo inicio de sesión manual.
-
 - **Crash al volver al mapa tras animación de cámara:** Se corrige un error que cerraba la aplicación abruptamente cuando la animación de la cámara de navegación terminaba después de que el mapa había sido destruido en segundo plano.
 
 # Version 2.4.9 *(30.07.2026)*
