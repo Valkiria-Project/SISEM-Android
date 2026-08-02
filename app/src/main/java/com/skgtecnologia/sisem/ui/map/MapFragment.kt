@@ -68,7 +68,6 @@ import com.mapbox.navigation.ui.maps.route.line.api.MapboxRouteLineView
 import com.mapbox.navigation.ui.maps.route.line.model.MapboxRouteLineApiOptions
 import com.mapbox.navigation.ui.maps.route.line.model.MapboxRouteLineViewOptions
 import com.skgtecnologia.sisem.R
-import com.skgtecnologia.sisem.commons.extensions.biLet
 import com.skgtecnologia.sisem.databinding.FragmentMapBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -454,13 +453,17 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 viewModel.uiState.collect { mapFragmentUiState ->
                     val incident = mapFragmentUiState.incident
 
-                    biLet(incident?.longitude, incident?.latitude) { longitude, latitude ->
+                    if (incident?.longitude != null && incident.latitude != null) {
                         destinationLocation = Location.Builder()
-                            .longitude(longitude)
-                            .latitude(latitude)
+                            .longitude(incident.longitude!!)
+                            .latitude(incident.latitude!!)
                             .build()
 
                         destinationLocation?.let { findRoute(it) }
+                    } else {
+                        mapboxNavigation.setNavigationRoutes(emptyList())
+                        binding.tripProgressCard.visibility = View.GONE
+                        destinationLocation = null
                     }
                 }
             }
