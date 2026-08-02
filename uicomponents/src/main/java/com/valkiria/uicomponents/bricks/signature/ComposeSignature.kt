@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -63,45 +64,25 @@ fun ComposeSignature(
     val drawColor = remember { mutableStateOf(signatureColor) }
     val drawBrush = remember { mutableStateOf(signatureThickness) }
 
-    val columnModifier = if (fillHeight) {
-        modifier // use provided modifier as-is (e.g. weight(1f)) — lets Column expand
-    } else {
-        modifier.wrapContentWidth().wrapContentHeight()
-    }
-
-    Column(modifier = columnModifier) {
-
+    Column(
+        modifier = if (fillHeight) {
+            modifier
+        } else {
+            modifier.wrapContentWidth().wrapContentHeight()
+        }
+    ) {
         viewModel.setPathState(PathState(Path(), drawColor.value, drawBrush.value))
 
-        // weight(1f) must be applied in Column scope — pass it via captureBitmap's modifier.
-        val signatureBitmap = if (fillHeight) {
-            captureBitmap(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .clip(RoundedCornerShape(12.dp))
-            ) {
-                DrawingCanvas(
-                    viewModel = viewModel,
-                    drawColor = drawColor,
-                    drawBrush = drawBrush,
-                    path = path.value,
-                    modifier = Modifier.fillMaxWidth().fillMaxHeight(),
-                    signaturePadColor = signaturePadColor,
-                )
-            }
-        } else {
-            captureBitmap {
-                DrawingCanvas(
-                    viewModel = viewModel,
-                    drawColor = drawColor,
-                    drawBrush = drawBrush,
-                    path = path.value,
-                    modifier = modifier.then(canvasModifier),
-                    signaturePadColor = signaturePadColor,
-                )
-            }
-        }
+        val signatureBitmap = signatureCanvas(
+            fillHeight = fillHeight,
+            viewModel = viewModel,
+            drawColor = drawColor,
+            drawBrush = drawBrush,
+            path = path,
+            signaturePadColor = signaturePadColor,
+            modifier = modifier,
+            canvasModifier = canvasModifier
+        )
 
         Spacer(
             modifier = Modifier
@@ -115,27 +96,93 @@ fun ComposeSignature(
             Spacer(modifier = Modifier.weight(1f))
         }
 
-        Row(
-            modifier = modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
+        SignatureButtons(
+            modifier = modifier,
+            viewModel = viewModel,
+            signatureBitmap = signatureBitmap,
+            hasAlpha = hasAlpha,
+            clearComponent = clearComponent,
+            completeComponent = completeComponent,
+            onClear = onClear,
+            onComplete = onComplete
+        )
+    }
+}
+
+@Suppress("LongParameterList")
+@Composable
+private fun ColumnScope.signatureCanvas(
+    fillHeight: Boolean,
+    viewModel: SignaturePadViewModel,
+    drawColor: MutableState<Color>,
+    drawBrush: MutableState<Float>,
+    path: androidx.compose.runtime.State<MutableList<PathState>>,
+    signaturePadColor: Color,
+    modifier: Modifier,
+    canvasModifier: Modifier
+): () -> Bitmap {
+    return if (fillHeight) {
+        captureBitmap(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .clip(RoundedCornerShape(12.dp))
         ) {
-            clearComponent {
-                onClear()
-                viewModel.clearPathState()
-            }
-            completeComponent {
-                onComplete(
-                    if (viewModel.isValidSignature) {
-                        signatureBitmap.invoke().apply {
-                            setHasAlpha(hasAlpha)
-                        }
-                    } else {
-                        null
-                    },
-                )
-            }
+            DrawingCanvas(
+                viewModel = viewModel,
+                drawColor = drawColor,
+                drawBrush = drawBrush,
+                path = path.value,
+                modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+                signaturePadColor = signaturePadColor,
+            )
+        }
+    } else {
+        captureBitmap {
+            DrawingCanvas(
+                viewModel = viewModel,
+                drawColor = drawColor,
+                drawBrush = drawBrush,
+                path = path.value,
+                modifier = modifier.then(canvasModifier),
+                signaturePadColor = signaturePadColor,
+            )
+        }
+    }
+}
+
+@Suppress("LongParameterList")
+@Composable
+private fun SignatureButtons(
+    modifier: Modifier,
+    viewModel: SignaturePadViewModel,
+    signatureBitmap: () -> Bitmap,
+    hasAlpha: Boolean,
+    clearComponent: @Composable (onClick: () -> Unit) -> Unit,
+    completeComponent: @Composable (onClick: () -> Unit) -> Unit,
+    onClear: () -> Unit,
+    onComplete: (Bitmap?) -> Unit
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        clearComponent {
+            onClear()
+            viewModel.clearPathState()
+        }
+        completeComponent {
+            onComplete(
+                if (viewModel.isValidSignature) {
+                    signatureBitmap.invoke().apply {
+                        setHasAlpha(hasAlpha)
+                    }
+                } else {
+                    null
+                },
+            )
         }
     }
 }

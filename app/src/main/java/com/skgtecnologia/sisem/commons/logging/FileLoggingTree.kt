@@ -40,12 +40,12 @@ class FileLoggingTree(context: Context) : Timber.Tree() {
 
         val level = when (priority) {
             Log.VERBOSE -> "V"
-            Log.DEBUG   -> "D"
-            Log.INFO    -> "I"
-            Log.WARN    -> "W"
-            Log.ERROR   -> "E"
-            Log.ASSERT  -> "A"
-            else        -> "?"
+            Log.DEBUG -> "D"
+            Log.INFO -> "I"
+            Log.WARN -> "W"
+            Log.ERROR -> "E"
+            Log.ASSERT -> "A"
+            else -> "?"
         }
 
         val timestamp = LocalDateTime.now().format(TIMESTAMP_FORMAT)
@@ -60,7 +60,7 @@ class FileLoggingTree(context: Context) : Timber.Tree() {
 
         val logFile = File(logDir, "${LocalDate.now().format(DATE_FORMAT)}.log")
         runCatching {
-            FileWriter(logFile, /* append = */ true).use { it.write(entry) }
+            FileWriter(logFile, true).use { it.write(entry) }
         }
     }
 
