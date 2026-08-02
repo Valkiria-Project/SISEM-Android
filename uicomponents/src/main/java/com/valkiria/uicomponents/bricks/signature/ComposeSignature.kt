@@ -115,27 +115,51 @@ fun ComposeSignature(
             Spacer(modifier = Modifier.weight(1f))
         }
 
-        Row(
-            modifier = modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            clearComponent {
-                onClear()
-                viewModel.clearPathState()
-            }
-            completeComponent {
-                onComplete(
-                    if (viewModel.isValidSignature) {
-                        signatureBitmap.invoke().apply {
-                            setHasAlpha(hasAlpha)
-                        }
-                    } else {
-                        null
-                    },
-                )
-            }
+        SignatureButtons(
+            modifier = modifier,
+            viewModel = viewModel,
+            signatureBitmap = signatureBitmap,
+            hasAlpha = hasAlpha,
+            clearComponent = clearComponent,
+            completeComponent = completeComponent,
+            onClear = onClear,
+            onComplete = onComplete
+        )
+    }
+}
+
+@Suppress("LongParameterList")
+@Composable
+private fun SignatureButtons(
+    modifier: Modifier,
+    viewModel: SignaturePadViewModel,
+    signatureBitmap: () -> Bitmap,
+    hasAlpha: Boolean,
+    clearComponent: @Composable (onClick: () -> Unit) -> Unit,
+    completeComponent: @Composable (onClick: () -> Unit) -> Unit,
+    onClear: () -> Unit,
+    onComplete: (Bitmap?) -> Unit
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        clearComponent {
+            onClear()
+            viewModel.clearPathState()
+        }
+        completeComponent {
+            onComplete(
+                if (viewModel.isValidSignature) {
+                    signatureBitmap.invoke().apply {
+                        setHasAlpha(hasAlpha)
+                    }
+                } else {
+                    null
+                },
+            )
         }
     }
 }

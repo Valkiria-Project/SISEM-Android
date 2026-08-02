@@ -224,9 +224,9 @@ object CoreNetworkModule {
         }
         return HttpLoggingInterceptor(logger).apply {
             level = if (BuildConfig.DEBUG) {
-                HttpLoggingInterceptor.Level.BODY    // full request + response in debug
+                HttpLoggingInterceptor.Level.BODY
             } else {
-                HttpLoggingInterceptor.Level.BASIC   // only URL + status in release/staging
+                HttpLoggingInterceptor.Level.BASIC
             }
         }
     }
