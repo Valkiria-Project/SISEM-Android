@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -46,6 +47,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun ComposeSignature(
     modifier: Modifier = Modifier,
+    canvasModifier: Modifier = Modifier.height(150.dp),
+    fillHeight: Boolean = false,
     signaturePadColor: Color = Color(0xFFEEEEEE),
     signatureColor: Color = Color.Black,
     signatureThickness: Float = 10f,
@@ -60,23 +63,44 @@ fun ComposeSignature(
     val drawColor = remember { mutableStateOf(signatureColor) }
     val drawBrush = remember { mutableStateOf(signatureThickness) }
 
-    Column(
-        modifier = modifier
-            .wrapContentWidth()
-            .wrapContentHeight()
-    ) {
+    val columnModifier = if (fillHeight) {
+        modifier // use provided modifier as-is (e.g. weight(1f)) — lets Column expand
+    } else {
+        modifier.wrapContentWidth().wrapContentHeight()
+    }
+
+    Column(modifier = columnModifier) {
 
         viewModel.setPathState(PathState(Path(), drawColor.value, drawBrush.value))
 
-        val signatureBitmap = captureBitmap {
-            DrawingCanvas(
-                viewModel = viewModel,
-                drawColor = drawColor,
-                drawBrush = drawBrush,
-                path = path.value,
-                modifier = modifier.height(150.dp),
-                signaturePadColor = signaturePadColor,
-            )
+        // weight(1f) must be applied in Column scope — pass it via captureBitmap's modifier.
+        val signatureBitmap = if (fillHeight) {
+            captureBitmap(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .clip(RoundedCornerShape(12.dp))
+            ) {
+                DrawingCanvas(
+                    viewModel = viewModel,
+                    drawColor = drawColor,
+                    drawBrush = drawBrush,
+                    path = path.value,
+                    modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+                    signaturePadColor = signaturePadColor,
+                )
+            }
+        } else {
+            captureBitmap {
+                DrawingCanvas(
+                    viewModel = viewModel,
+                    drawColor = drawColor,
+                    drawBrush = drawBrush,
+                    path = path.value,
+                    modifier = modifier.then(canvasModifier),
+                    signaturePadColor = signaturePadColor,
+                )
+            }
         }
 
         Spacer(
@@ -87,7 +111,9 @@ fun ComposeSignature(
                 .background(color = MaterialTheme.colorScheme.primary)
         )
 
-        Spacer(modifier = Modifier.weight(1f))
+        if (!fillHeight) {
+            Spacer(modifier = Modifier.weight(1f))
+        }
 
         Row(
             modifier = modifier
@@ -208,25 +234,26 @@ fun ButtonComponent(
 
 @Composable
 fun captureBitmap(
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ): () -> Bitmap {
     val context = LocalContext.current
 
-    /**
-     * ComposeView that would take composable as its content
-     * Kept in remember so recomposition doesn't re-initialize it
-     **/
     val composeView = remember { ComposeView(context) }
 
-    /**
-     * Callback function which could get latest image bitmap
-     **/
     fun captureBitmap(): Bitmap = composeView.drawToBitmap()
 
-    // Use Native View inside Composable
     AndroidView(
+        modifier = modifier,
         factory = {
             composeView.apply {
+                // MATCH_PARENT so the ComposeView fills the AndroidView's measured bounds,
+                // ensuring drawToBitmap() captures the full visible area and not just
+                // the default WRAP_CONTENT size.
+                layoutParams = android.view.ViewGroup.LayoutParams(
+                    android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                    android.view.ViewGroup.LayoutParams.MATCH_PARENT
+                )
                 setContent {
                     content.invoke()
                 }
@@ -234,6 +261,5 @@ fun captureBitmap(
         },
     )
 
-    // returning callback to bitmap
     return ::captureBitmap
 }
