@@ -20,8 +20,15 @@ class IncidentCacheDataSource @Inject constructor(
     private val incidentDao: IncidentDao
 ) {
 
-    suspend fun storeIncident(incidentUiModel: IncidentUiModel) =
-        incidentDao.insertIncident(incidentUiModel.mapToCache())
+    suspend fun storeIncident(incidentUiModel: IncidentUiModel) {
+        val existingIncident = incidentDao.getIncidentByIncidentId(incidentUiModel.incident.id)
+
+        incidentDao.insertIncident(
+            incidentUiModel.mapToCache().apply {
+                this.id = existingIncident?.id ?: 0
+            }
+        )
+    }
 
     suspend fun updateTransmiStatus(
         incidentId: Long,

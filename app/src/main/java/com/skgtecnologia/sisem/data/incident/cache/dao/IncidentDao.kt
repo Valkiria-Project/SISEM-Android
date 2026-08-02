@@ -34,4 +34,7 @@ interface IncidentDao {
 
     @Query("SELECT * FROM incident WHERE is_active = :isActive ORDER BY id desc LIMIT 1")
     fun observeActiveIncident(isActive: Boolean = true): Flow<IncidentEntity?>
+
+    @Query("SELECT * FROM incident WHERE incident_id = :incidentId LIMIT 1")
+    suspend fun getIncidentByIncidentId(incidentId: Int): IncidentEntity?
 }

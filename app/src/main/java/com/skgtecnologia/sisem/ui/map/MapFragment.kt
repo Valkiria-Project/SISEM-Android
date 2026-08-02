@@ -68,7 +68,6 @@ import com.mapbox.navigation.ui.maps.route.line.api.MapboxRouteLineView
 import com.mapbox.navigation.ui.maps.route.line.model.MapboxRouteLineApiOptions
 import com.mapbox.navigation.ui.maps.route.line.model.MapboxRouteLineViewOptions
 import com.skgtecnologia.sisem.R
-import com.skgtecnologia.sisem.commons.extensions.biLet
 import com.skgtecnologia.sisem.databinding.FragmentMapBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -164,7 +163,19 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 mapboxNavigation.registerRoutesObserver(routesObserver)
                 mapboxNavigation.registerLocationObserver(locationObserver)
                 mapboxNavigation.registerRouteProgressObserver(routeProgressObserver)
-                mapboxNavigation.startTripSession()
+                // Guard against SecurityException on Android 14+ when location
+                // permission is absent or the app is not yet in eligible FGS state.
+                val hasLocation = androidx.core.content.ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+                if (hasLocation) {
+                    mapboxNavigation.startTripSession()
+                } else {
+                    // Explicitly stop so Android does not restart NavigationNotificationService.
+                    mapboxNavigation.stopTripSession()
+                    Timber.w("Skipping startTripSession — location permission not granted")
+                }
             }
 
             override fun onDetached(mapboxNavigation: MapboxNavigation) {
@@ -417,14 +428,15 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         )
 
         navigationCamera.registerNavigationCameraStateChangeObserver { navigationCameraState ->
-            // shows/hide the recenter button depending on the camera state
+            // Guard against animations completing after onDestroyView nulls mapBinding.
+            val b = mapBinding ?: return@registerNavigationCameraStateChangeObserver
             when (navigationCameraState) {
                 NavigationCameraState.TRANSITION_TO_FOLLOWING,
-                NavigationCameraState.FOLLOWING -> binding.recenter.visibility = View.INVISIBLE
+                NavigationCameraState.FOLLOWING -> b.recenter.visibility = View.INVISIBLE
 
                 NavigationCameraState.TRANSITION_TO_OVERVIEW,
                 NavigationCameraState.OVERVIEW,
-                NavigationCameraState.IDLE -> binding.recenter.visibility = View.VISIBLE
+                NavigationCameraState.IDLE -> b.recenter.visibility = View.VISIBLE
             }
         }
 
@@ -441,13 +453,17 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 viewModel.uiState.collect { mapFragmentUiState ->
                     val incident = mapFragmentUiState.incident
 
-                    biLet(incident?.longitude, incident?.latitude) { longitude, latitude ->
+                    if (incident?.longitude != null && incident.latitude != null) {
                         destinationLocation = Location.Builder()
-                            .longitude(longitude)
-                            .latitude(latitude)
+                            .longitude(incident.longitude!!)
+                            .latitude(incident.latitude!!)
                             .build()
 
                         destinationLocation?.let { findRoute(it) }
+                    } else {
+                        mapboxNavigation.setNavigationRoutes(emptyList())
+                        binding.tripProgressCard.visibility = View.GONE
+                        destinationLocation = null
                     }
                 }
             }
