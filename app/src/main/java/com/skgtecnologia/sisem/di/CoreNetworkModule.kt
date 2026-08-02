@@ -54,6 +54,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.logging.HttpLoggingInterceptor
+import timber.log.Timber
 import javax.inject.Singleton
 
 const val CLIENT_TIMEOUT_DEFAULTS = 15_000L
@@ -216,15 +217,17 @@ object CoreNetworkModule {
 
     @Singleton
     @Provides
-    internal fun providesLoggingInterceptor(): HttpLoggingInterceptor? = when {
-        BuildConfig.DEBUG -> {
-            HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            }
+    internal fun providesLoggingInterceptor(): HttpLoggingInterceptor {
+        // Route OkHttp logs through Timber so FileLoggingTree captures them.
+        val logger = HttpLoggingInterceptor.Logger { message ->
+            Timber.tag("OkHttp").d(message)
         }
-
-        else -> {
-            null
+        return HttpLoggingInterceptor(logger).apply {
+            level = if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY    // full request + response in debug
+            } else {
+                HttpLoggingInterceptor.Level.BASIC   // only URL + status in release/staging
+            }
         }
     }
 }

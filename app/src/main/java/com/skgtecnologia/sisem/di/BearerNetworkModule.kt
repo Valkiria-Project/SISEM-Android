@@ -35,7 +35,7 @@ object BearerNetworkModule {
         accessTokenAuthenticator: AccessTokenAuthenticator,
         accessTokenInterceptor: AccessTokenInterceptor,
         auditInterceptor: AuditInterceptor,
-        loggingInterceptor: HttpLoggingInterceptor?,
+        loggingInterceptor: HttpLoggingInterceptor,
         networkInterceptor: NetworkInterceptor
     ): OkHttpClient = OkHttpClient.Builder().apply {
         cache(Cache(File(context.cacheDir, "http-bearer"), HTTP_CACHE_SIZE_BYTES))
@@ -44,7 +44,7 @@ object BearerNetworkModule {
         writeTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
         addInterceptor(auditInterceptor)
         addInterceptor(accessTokenInterceptor)
-        loggingInterceptor?.also { addInterceptor(it) }
+        addInterceptor(loggingInterceptor)
         addInterceptor(networkInterceptor)
         authenticator(accessTokenAuthenticator)
     }.build()

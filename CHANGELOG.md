@@ -3,9 +3,19 @@ Ajustes y correcciones aplicadas segun versiones:
 
 
 
+# Version 2.4.11 *(02.08.2026)*
+----------------------------------------
+### Diagnóstico (temporal)
+
+- **Registro de logs en almacenamiento:** La aplicación ahora guarda un registro diario de actividad y errores en la carpeta **Descargas / SISEM-Logs/** del dispositivo. Los archivos se eliminan automáticamente después de 10 días. Esta función es temporal y permite al equipo recibir logs de forma manual para diagnosticar problemas en campo.
+
 # Version 2.4.10 *(30.07.2026)*
 ----------------------------------------
+### Correcciones
+
 - **Cierre de sesión duplicada y navegación automática:** Al confirmar el cierre de una sesión activa en otro dispositivo, la aplicación reintenta el inicio de sesión automáticamente enviando el parámetro `force_close_session` al servidor. Esto elimina la sesión remota y autentica al usuario en un solo paso, navegando directamente a la pantalla correspondiente sin requerir un segundo inicio de sesión manual.
+
+- **Crash al volver al mapa tras animación de cámara:** Se corrige un error que cerraba la aplicación abruptamente cuando la animación de la cámara de navegación terminaba después de que el mapa había sido destruido en segundo plano.
 
 # Version 2.4.9 *(30.07.2026)*
 ----------------------------------------
@@ -23,7 +33,7 @@ Ajustes y correcciones aplicadas segun versiones:
 - **Restricción de inicio de sesión tras cierre de turno:** Al cerrar sesión un tripulante, la pantalla de selección de usuario solo permite iniciar sesión con el mismo tipo de rol que cerró la sesión. Si se intenta seleccionar un rol diferente, se muestra un aviso indicando qué tipo de tripulante debe ingresar. Esto evita que la tripulación quede incompleta al reemplazar roles incorrectos.
 
 ### Correcciones de mapa
-
+ 
 - **Ruta de navegación no se restauraba al reabrir la app:** Se corrige un problema donde, al cerrar completamente la aplicación y volver a abrirla, el mapa cargaba pero no mostraba la ruta de navegación activa hacia el incidente asignado. Ahora la ruta se reanuda correctamente tanto si la app fue minimizada como si fue cerrada por completo.
 
 # Version 2.4.8 *(28.07.2026)*

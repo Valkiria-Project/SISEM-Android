@@ -417,14 +417,15 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         )
 
         navigationCamera.registerNavigationCameraStateChangeObserver { navigationCameraState ->
-            // shows/hide the recenter button depending on the camera state
+            // Guard against animations completing after onDestroyView nulls mapBinding.
+            val b = mapBinding ?: return@registerNavigationCameraStateChangeObserver
             when (navigationCameraState) {
                 NavigationCameraState.TRANSITION_TO_FOLLOWING,
-                NavigationCameraState.FOLLOWING -> binding.recenter.visibility = View.INVISIBLE
+                NavigationCameraState.FOLLOWING -> b.recenter.visibility = View.INVISIBLE
 
                 NavigationCameraState.TRANSITION_TO_OVERVIEW,
                 NavigationCameraState.OVERVIEW,
-                NavigationCameraState.IDLE -> binding.recenter.visibility = View.VISIBLE
+                NavigationCameraState.IDLE -> b.recenter.visibility = View.VISIBLE
             }
         }
 
