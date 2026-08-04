@@ -27,6 +27,13 @@ private const val IP_ADDRESS_HEADER = "x-ip"
 private const val UNAVAILABLE_IP_ADDRESS = "UNAVAILABLE_LOCATION"
 private const val IP_CACHE_TTL_MS = 10 * 60 * 1000L
 
+// Far shorter than the IP one, and deliberately so: an IP barely changes over a shift,
+// a moving ambulance does. This is only meant to collapse the burst of calls a single
+// user action fires - saving a record hits the API several times in a row, and each of
+// those was paying up to AUDIT_TIMEOUT for a position that had not meaningfully moved.
+// At highway speed five seconds is under a hundred metres.
+private const val LOCATION_CACHE_TTL_MS = 5 * 1000L
+
 @Singleton
 class AuditInterceptor @Inject constructor(
     private val fusedLocationClient: FusedLocationProviderClient
@@ -37,6 +44,12 @@ class AuditInterceptor @Inject constructor(
 
     @Volatile
     private var ipCachedAt: Long = 0L
+
+    @Volatile
+    private var cachedLocation: String? = null
+
+    @Volatile
+    private var locationCachedAt: Long = 0L
 
     private val ipClient = OkHttpClient()
 
@@ -53,21 +66,34 @@ class AuditInterceptor @Inject constructor(
     }
 
     private fun Request.Builder.withCurrentLocation(): Request.Builder = runBlocking {
-        val location = runCatching {
-            withTimeout(AUDIT_TIMEOUT) {
-                fusedLocationClient
-                    .locationFlow()
-                    .catch { throwable ->
-                        Timber.d("Unable to get location $throwable")
-                    }
-                    .first()
-            }
-        }.getOrNull()
+        val now = System.currentTimeMillis()
+        val cached = cachedLocation
 
-        val formattedLocation = if (location != null) {
-            "${location.latitude}, ${location.longitude}"
+        val formattedLocation = if (cached != null && now - locationCachedAt < LOCATION_CACHE_TTL_MS) {
+            cached
         } else {
-            UNAVAILABLE_LOCATION
+            val location = runCatching {
+                withTimeout(AUDIT_TIMEOUT) {
+                    fusedLocationClient
+                        .locationFlow()
+                        .catch { throwable ->
+                            Timber.d("Unable to get location $throwable")
+                        }
+                        .first()
+                }
+            }.getOrNull()
+
+            // Unlike the IP, an expired position is not reused when the read fails. This
+            // header ends up in an audit trail, and placing a crew where they no longer
+            // are is worse than admitting we do not know.
+            if (location != null) {
+                "${location.latitude}, ${location.longitude}".also {
+                    cachedLocation = it
+                    locationCachedAt = now
+                }
+            } else {
+                UNAVAILABLE_LOCATION
+            }
         }
 
         this@withCurrentLocation.header(
