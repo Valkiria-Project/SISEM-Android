@@ -247,14 +247,6 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun consumeSuccessEvent() {
-        uiState.update {
-            it.copy(
-                successBanner = null
-            )
-        }
-    }
-
     fun consumeWarningEvent() {
         uiState.update {
             it.copy(

@@ -11,8 +11,5 @@ data class LoginUiState(
     val navigationModel: LoginNavigationModel? = null,
     val isLoading: Boolean = false,
     val warning: BannerUiModel? = null,
-    val errorModel: BannerUiModel? = null,
-    // Kept apart from `warning`, which navigates to the change-password screen when it is
-    // dismissed. This one only confirms the other session was closed and stays put.
-    val successBanner: BannerUiModel? = null
+    val errorModel: BannerUiModel? = null
 )
