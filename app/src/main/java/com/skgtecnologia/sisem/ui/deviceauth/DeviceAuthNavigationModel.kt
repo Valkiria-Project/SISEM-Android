@@ -18,7 +18,7 @@ data class DeviceAuthNavigationModel(
 
         when {
             isCrewList && from == LOGIN -> {
-                navController.navigate(AuthRoute.AuthCardsRoute) {
+                navController.navigate(AuthRoute.AuthCardsRoute()) {
                     popUpTo(AuthRoute.AuthCardsRoute) {
                         inclusive = true
                     }
@@ -26,7 +26,7 @@ data class DeviceAuthNavigationModel(
             }
 
             isCrewList && from == "" -> {
-                navController.navigate(AuthRoute.AuthCardsRoute) {
+                navController.navigate(AuthRoute.AuthCardsRoute()) {
                     popUpTo(AuthRoute.DeviceAuthRoute) {
                         inclusive = true
                     }
@@ -34,7 +34,7 @@ data class DeviceAuthNavigationModel(
             }
 
             isCrewList && from == MAIN -> {
-                navController.navigate(AuthRoute.AuthCardsRoute) {
+                navController.navigate(AuthRoute.AuthCardsRoute()) {
                     popUpTo(NavGraph.MainGraph) {
                         inclusive = true
                     }
