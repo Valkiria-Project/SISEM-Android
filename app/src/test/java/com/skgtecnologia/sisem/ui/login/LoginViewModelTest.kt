@@ -280,16 +280,6 @@ class LoginViewModelTest {
         Assert.assertEquals(false, loginViewModel.uiState.value.isLoading)
     }
 
-    @Test
-    fun `when call consumeSuccessEvent uiState should have successBanner clear`() = runTest {
-        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
-
-        loginViewModel = createViewModel()
-        loginViewModel.consumeSuccessEvent()
-
-        Assert.assertEquals(null, loginViewModel.uiState.value.successBanner)
-    }
-
     private fun createAccessToken(warning: BannerModel?) = AccessTokenModel(
         userId = 1,
         dateTime = LocalDateTime.now(),

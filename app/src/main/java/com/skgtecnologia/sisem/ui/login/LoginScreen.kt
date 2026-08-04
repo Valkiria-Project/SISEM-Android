@@ -112,10 +112,6 @@ fun LoginScreen(
         }
     }
 
-    OnBannerHandler(uiState.successBanner) {
-        viewModel.consumeSuccessEvent()
-    }
-
     OnLoadingHandler(uiState.isLoading, modifier)
 }
 

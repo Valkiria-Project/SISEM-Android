@@ -33,13 +33,6 @@ interface AuthApi {
         @Field("scope") scope: String = "offline_access"
     ): Response<RefreshTokenResponse>
 
-    /**
-     * Closes whatever session the user has open elsewhere. This goes straight to Keycloak
-     * rather than through the SISEM API, on the same token endpoint the refresh call uses.
-     * It authenticates as a side effect and hands back tokens, but we deliberately drop
-     * them: the user stays on the login screen and signs in again through `auth`, which is
-     * the only call that returns the role, turn and preoperational data the app needs.
-     */
     @GET("auth/logout")
     suspend fun logout(
         @Header("username") username: String,

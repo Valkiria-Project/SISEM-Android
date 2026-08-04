@@ -26,9 +26,6 @@
     <string name="error_unauthorized_cta">Re Autenticar</string>
     <string name="close_session_confirm_cta">SÍ</string>
     <string name="close_session_cancel_cta">NO</string>
-    <string name="close_session_success_icon">ic_duplicated</string>
-    <string name="close_session_success_title">Sesión cerrada</string>
-    <string name="close_session_success_description">La sesión en el otro dispositivo se cerró correctamente. Ya puede iniciar sesión aquí.</string>
     <string name="error_general_title">Ha ocurrido un error</string>
     <string name="error_general_description">Intenta más tarde</string>
     <string name="error_server_title">Servicio no disponible</string>
