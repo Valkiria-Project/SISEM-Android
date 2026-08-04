@@ -1,18 +1,24 @@
 package com.skgtecnologia.sisem.ui.medicalhistory.signaturepad
 
+import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
+import androidx.activity.ComponentActivity
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R.string
@@ -39,6 +45,15 @@ fun SignaturePadScreen(
     modifier: Modifier = Modifier,
     onNavigation: (signaturePadNavigationModel: SignaturePadNavigationModel) -> Unit
 ) {
+    val context = LocalContext.current
+    DisposableEffect(Unit) {
+        val activity = context as? ComponentActivity
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+        onDispose {
+            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+        }
+    }
+
     var notificationData by remember { mutableStateOf<NotificationData?>(null) }
     NotificationEventHandler.subscribeNotificationEvent {
         notificationData = it
@@ -67,9 +82,16 @@ fun SignaturePadScreen(
         ComposeSignature(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            signaturePadColor = MaterialTheme.colorScheme.background,
-            signatureColor = MaterialTheme.colorScheme.onBackground,
+                .weight(1f)
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .border(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.outline,
+                    shape = RoundedCornerShape(12.dp)
+                ),
+            fillHeight = true,
+            signaturePadColor = MaterialTheme.colorScheme.surfaceVariant,
+            signatureColor = MaterialTheme.colorScheme.onSurface,
             signatureThickness = 10f,
             completeComponent = { onClick ->
                 ButtonView(

@@ -8,6 +8,8 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
 import com.mapbox.navigation.base.options.NavigationOptions
 import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
+import com.skgtecnologia.sisem.commons.logging.CrashFileHandler
+import com.skgtecnologia.sisem.commons.logging.FileLoggingTree
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import javax.inject.Inject
@@ -25,6 +27,9 @@ class SisemApplication : Application(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
+
+        Timber.plant(FileLoggingTree(this))
+        CrashFileHandler.install()
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())

@@ -8,6 +8,7 @@ data class MenuUiState(
     val accessTokenModelList: List<AccessTokenModel>? = null,
     val vehicleConfig: VehicleConfigModel? = null,
     val isLogout: Boolean = false,
+    val loggedOutRole: String? = null,
     val isLoading: Boolean = false,
     val errorModel: BannerUiModel? = null
 )

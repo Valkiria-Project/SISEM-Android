@@ -8,8 +8,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -46,6 +48,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun ComposeSignature(
     modifier: Modifier = Modifier,
+    canvasModifier: Modifier = Modifier.height(150.dp),
+    fillHeight: Boolean = false,
     signaturePadColor: Color = Color(0xFFEEEEEE),
     signatureColor: Color = Color.Black,
     signatureThickness: Float = 10f,
@@ -61,23 +65,24 @@ fun ComposeSignature(
     val drawBrush = remember { mutableStateOf(signatureThickness) }
 
     Column(
-        modifier = modifier
-            .wrapContentWidth()
-            .wrapContentHeight()
+        modifier = if (fillHeight) {
+            modifier
+        } else {
+            modifier.wrapContentWidth().wrapContentHeight()
+        }
     ) {
-
         viewModel.setPathState(PathState(Path(), drawColor.value, drawBrush.value))
 
-        val signatureBitmap = captureBitmap {
-            DrawingCanvas(
-                viewModel = viewModel,
-                drawColor = drawColor,
-                drawBrush = drawBrush,
-                path = path.value,
-                modifier = modifier.height(150.dp),
-                signaturePadColor = signaturePadColor,
-            )
-        }
+        val signatureBitmap = signatureCanvas(
+            fillHeight = fillHeight,
+            viewModel = viewModel,
+            drawColor = drawColor,
+            drawBrush = drawBrush,
+            path = path,
+            signaturePadColor = signaturePadColor,
+            modifier = modifier,
+            canvasModifier = canvasModifier
+        )
 
         Spacer(
             modifier = Modifier
@@ -87,29 +92,97 @@ fun ComposeSignature(
                 .background(color = MaterialTheme.colorScheme.primary)
         )
 
-        Spacer(modifier = Modifier.weight(1f))
+        if (!fillHeight) {
+            Spacer(modifier = Modifier.weight(1f))
+        }
 
-        Row(
-            modifier = modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
+        SignatureButtons(
+            modifier = modifier,
+            viewModel = viewModel,
+            signatureBitmap = signatureBitmap,
+            hasAlpha = hasAlpha,
+            clearComponent = clearComponent,
+            completeComponent = completeComponent,
+            onClear = onClear,
+            onComplete = onComplete
+        )
+    }
+}
+
+@Suppress("LongParameterList")
+@Composable
+private fun ColumnScope.signatureCanvas(
+    fillHeight: Boolean,
+    viewModel: SignaturePadViewModel,
+    drawColor: MutableState<Color>,
+    drawBrush: MutableState<Float>,
+    path: androidx.compose.runtime.State<MutableList<PathState>>,
+    signaturePadColor: Color,
+    modifier: Modifier,
+    canvasModifier: Modifier
+): () -> Bitmap {
+    return if (fillHeight) {
+        captureBitmap(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .clip(RoundedCornerShape(12.dp))
         ) {
-            clearComponent {
-                onClear()
-                viewModel.clearPathState()
-            }
-            completeComponent {
-                onComplete(
-                    if (viewModel.isValidSignature) {
-                        signatureBitmap.invoke().apply {
-                            setHasAlpha(hasAlpha)
-                        }
-                    } else {
-                        null
-                    },
-                )
-            }
+            DrawingCanvas(
+                viewModel = viewModel,
+                drawColor = drawColor,
+                drawBrush = drawBrush,
+                path = path.value,
+                modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+                signaturePadColor = signaturePadColor,
+            )
+        }
+    } else {
+        captureBitmap {
+            DrawingCanvas(
+                viewModel = viewModel,
+                drawColor = drawColor,
+                drawBrush = drawBrush,
+                path = path.value,
+                modifier = modifier.then(canvasModifier),
+                signaturePadColor = signaturePadColor,
+            )
+        }
+    }
+}
+
+@Suppress("LongParameterList")
+@Composable
+private fun SignatureButtons(
+    modifier: Modifier,
+    viewModel: SignaturePadViewModel,
+    signatureBitmap: () -> Bitmap,
+    hasAlpha: Boolean,
+    clearComponent: @Composable (onClick: () -> Unit) -> Unit,
+    completeComponent: @Composable (onClick: () -> Unit) -> Unit,
+    onClear: () -> Unit,
+    onComplete: (Bitmap?) -> Unit
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        clearComponent {
+            onClear()
+            viewModel.clearPathState()
+        }
+        completeComponent {
+            onComplete(
+                if (viewModel.isValidSignature) {
+                    signatureBitmap.invoke().apply {
+                        setHasAlpha(hasAlpha)
+                    }
+                } else {
+                    null
+                },
+            )
         }
     }
 }
@@ -208,25 +281,26 @@ fun ButtonComponent(
 
 @Composable
 fun captureBitmap(
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ): () -> Bitmap {
     val context = LocalContext.current
 
-    /**
-     * ComposeView that would take composable as its content
-     * Kept in remember so recomposition doesn't re-initialize it
-     **/
     val composeView = remember { ComposeView(context) }
 
-    /**
-     * Callback function which could get latest image bitmap
-     **/
     fun captureBitmap(): Bitmap = composeView.drawToBitmap()
 
-    // Use Native View inside Composable
     AndroidView(
+        modifier = modifier,
         factory = {
             composeView.apply {
+                // MATCH_PARENT so the ComposeView fills the AndroidView's measured bounds,
+                // ensuring drawToBitmap() captures the full visible area and not just
+                // the default WRAP_CONTENT size.
+                layoutParams = android.view.ViewGroup.LayoutParams(
+                    android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                    android.view.ViewGroup.LayoutParams.MATCH_PARENT
+                )
                 setContent {
                     content.invoke()
                 }
@@ -234,6 +308,5 @@ fun captureBitmap(
         },
     )
 
-    // returning callback to bitmap
     return ::captureBitmap
 }

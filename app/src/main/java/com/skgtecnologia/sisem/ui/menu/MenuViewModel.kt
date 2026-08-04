@@ -99,6 +99,10 @@ class MenuViewModel @Inject constructor(
         )
 
     fun logout(username: String) {
+        val role = uiState.value.accessTokenModelList
+            ?.firstOrNull { it.username == username }
+            ?.role
+
         uiState.update { it.copy(isLoading = true) }
 
         job?.cancel()
@@ -109,7 +113,8 @@ class MenuViewModel @Inject constructor(
                         uiState.update {
                             it.copy(
                                 isLoading = false,
-                                isLogout = true
+                                isLogout = true,
+                                loggedOutRole = role
                             )
                         }
                     }

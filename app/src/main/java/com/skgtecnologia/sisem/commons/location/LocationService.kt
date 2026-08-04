@@ -88,7 +88,14 @@ class LocationService : Service() {
             .setContentText(getString(R.string.location_tracking_content))
 
         startWithPriority(Priority.PRIORITY_HIGH_ACCURACY, notificationManager, notificationBuilder)
-        startForeground(1, notificationBuilder.build(), FOREGROUND_SERVICE_TYPE_LOCATION)
+        try {
+            startForeground(1, notificationBuilder.build(), FOREGROUND_SERVICE_TYPE_LOCATION)
+        } catch (e: SecurityException) {
+            // Location permission was revoked while the app was in the background
+            // or the app is not yet in the eligible foreground state (Android 14+).
+            Timber.e(e, "Cannot start location FGS — missing permission or not in foreground")
+            stopSelf()
+        }
     }
 
     private fun startWithPriority(
@@ -125,6 +132,7 @@ class LocationService : Service() {
 
     private fun enqueueLocationWork(latitude: Double, longitude: Double) {
         val workRequest = OneTimeWorkRequestBuilder<LocationWorker>()
+            .addTag(WORK_TAG)
             .setConstraints(
                 Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -159,5 +167,9 @@ class LocationService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         serviceScope.cancel()
+    }
+
+    companion object {
+        const val WORK_TAG = "location_update"
     }
 }

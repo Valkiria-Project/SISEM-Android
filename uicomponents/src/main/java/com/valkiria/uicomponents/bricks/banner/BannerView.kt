@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valkiria.uicomponents.R
@@ -111,7 +112,8 @@ internal fun BannerView(
                     }
                 }
                 Text(
-                    text = uiModel.description,
+                    text = uiModel.descriptionAnnotated
+                        ?: AnnotatedString(uiModel.description),
                     modifier = Modifier.padding(20.dp),
                     color = Color.White,
                     style = MaterialTheme.typography.bodyLarge

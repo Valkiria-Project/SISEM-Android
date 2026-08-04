@@ -16,9 +16,10 @@ class Login @Inject constructor(
     @CheckResult
     suspend operator fun invoke(
         username: String,
-        password: String
+        password: String,
+        forceCloseSession: Boolean = false
     ): Result<AccessTokenModel> = resultOf {
-        val accessToken = authRepository.authenticate(username, password)
+        val accessToken = authRepository.authenticate(username, password, forceCloseSession)
         val operationConfig = getOperationConfigWithCurrentRole.invoke().getOrNull()
         val configPreoperational = PreoperationalStatus.getStatusByName(
             operationConfig?.vehicleConfig?.preoperational.orEmpty()

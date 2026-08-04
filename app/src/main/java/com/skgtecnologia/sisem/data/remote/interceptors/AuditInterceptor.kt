@@ -25,11 +25,20 @@ private const val AUDIT_TIMEOUT = 1000L
 private const val IP_ADDRESS_URL = "https://api.ipify.org/"
 private const val IP_ADDRESS_HEADER = "x-ip"
 private const val UNAVAILABLE_IP_ADDRESS = "UNAVAILABLE_LOCATION"
+private const val IP_CACHE_TTL_MS = 10 * 60 * 1000L
 
 @Singleton
 class AuditInterceptor @Inject constructor(
     private val fusedLocationClient: FusedLocationProviderClient
 ) : Interceptor {
+
+    @Volatile
+    private var cachedIpAddress: String? = null
+
+    @Volatile
+    private var ipCachedAt: Long = 0L
+
+    private val ipClient = OkHttpClient()
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain
@@ -67,23 +76,29 @@ class AuditInterceptor @Inject constructor(
     }
 
     private fun Request.Builder.withCurrentIPAddress(): Request.Builder = runBlocking {
-        val ipAddress = runCatching {
-            withTimeout(AUDIT_TIMEOUT) {
-                val client = OkHttpClient()
-                val response = withContext(Dispatchers.IO) {
-                    val request: Request = Request.Builder()
-                        .url(IP_ADDRESS_URL)
-                        .build()
-                    client.newCall(request).execute()
+        val now = System.currentTimeMillis()
+        val cached = cachedIpAddress
+        val ipAddress = if (cached != null && now - ipCachedAt < IP_CACHE_TTL_MS) {
+            cached
+        } else {
+            runCatching {
+                withTimeout(AUDIT_TIMEOUT) {
+                    val response = withContext(Dispatchers.IO) {
+                        val request: Request = Request.Builder()
+                            .url(IP_ADDRESS_URL)
+                            .build()
+                        ipClient.newCall(request).execute()
+                    }
+                    response.body?.string().orEmpty().also {
+                        response.body?.close()
+                    }
                 }
-                response.body?.string().orEmpty().also {
-                    response.body?.close()
-                }
-            }
-        }.getOrNull() ?: UNAVAILABLE_IP_ADDRESS
+            }.getOrNull()?.also {
+                cachedIpAddress = it
+                ipCachedAt = now
+            } ?: cached ?: UNAVAILABLE_IP_ADDRESS
+        }
 
-        this@withCurrentIPAddress.header(
-            IP_ADDRESS_HEADER, ipAddress
-        )
+        this@withCurrentIPAddress.header(IP_ADDRESS_HEADER, ipAddress)
     }
 }

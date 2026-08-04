@@ -1,6 +1,8 @@
 package com.skgtecnologia.sisem.ui.incident
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -8,8 +10,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.ui.sections.BodySection
@@ -48,20 +48,9 @@ fun IncidentScreen(
         }
     }
 
-    ConstraintLayout(
-        modifier = modifier.fillMaxSize()
-    ) {
-        val (header, body) = createRefs()
-
+    Column(modifier = modifier.fillMaxSize().imePadding()) {
         uiState.screenModel?.header?.let {
-            HeaderSection(
-                headerUiModel = it,
-                modifier = modifier.constrainAs(header) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
-            ) { uiAction ->
+            HeaderSection(headerUiModel = it) { uiAction ->
                 if (uiAction is HeaderUiAction.GoBack) {
                     viewModel.goBack()
                 }
@@ -70,11 +59,8 @@ fun IncidentScreen(
 
         BodySection(
             body = uiState.screenModel?.body,
-            modifier = modifier.constrainAs(body) {
-                top.linkTo(header.bottom)
-                bottom.linkTo(parent.bottom)
-                height = Dimension.fillToConstraints
-            }
+            modifier = Modifier.weight(1f),
+            applyImePadding = false
         ) { uiAction ->
             handleAction(uiAction, viewModel)
         }

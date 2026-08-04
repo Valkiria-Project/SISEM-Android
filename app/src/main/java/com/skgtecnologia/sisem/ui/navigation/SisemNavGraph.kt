@@ -10,11 +10,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.compose.rememberFragmentState
-import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -22,6 +29,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
+import androidx.work.WorkManager
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -30,6 +38,7 @@ import com.skgtecnologia.sisem.commons.communication.AppEvent
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.extensions.navigateBack
 import com.skgtecnologia.sisem.commons.location.ACTION_START
+import com.skgtecnologia.sisem.commons.location.ACTION_STOP
 import com.skgtecnologia.sisem.commons.location.LocationService
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.ui.authcards.create.AuthCardsScreen
@@ -86,10 +95,7 @@ fun SisemNavGraph(navigationModel: StartupNavigationModel?) {
 
         LaunchedEffect(Unit) {
             if (startDestination == NavGraph.MainGraph) {
-                Intent(context.applicationContext, LocationService::class.java).apply {
-                    action = ACTION_START
-                    context.startService(this)
-                }
+                startLocationTracking(context)
             }
         }
 
@@ -97,8 +103,9 @@ fun SisemNavGraph(navigationModel: StartupNavigationModel?) {
             UnauthorizedEventHandler.subscribeUnauthorizedEvent { appEvent ->
                 if (appEvent is AppEvent.UnauthorizedSession) {
                     try {
+                        stopLocationTracking(context)
                         navController.navigate(AuthRoute.LoginRoute(appEvent.username)) {
-                            popUpTo(NavGraph.MainGraph) {
+                            popUpTo(navController.graph.id) {
                                 inclusive = true
                             }
                         }
@@ -108,6 +115,28 @@ fun SisemNavGraph(navigationModel: StartupNavigationModel?) {
                 }
             }
         }
+
+        // --- Location permission: request on every resume ---
+        val lifecycleOwner = LocalLifecycleOwner.current
+        val fineLocationPermission = rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
+        var locationResumeTick by remember { mutableIntStateOf(0) }
+
+        DisposableEffect(lifecycleOwner) {
+            val observer = LifecycleEventObserver { _, event ->
+                if (event == Lifecycle.Event.ON_RESUME) locationResumeTick++
+            }
+            lifecycleOwner.lifecycle.addObserver(observer)
+            onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+        }
+
+        LaunchedEffect(fineLocationPermission.status, locationResumeTick) {
+            if (!fineLocationPermission.status.isGranted) {
+                fineLocationPermission.launchPermissionRequest()
+            } else if (startDestination == NavGraph.MainGraph) {
+                startLocationTracking(context)
+            }
+        }
+        // ----------------------------------------------------
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val notificationPermission = rememberPermissionState(
@@ -173,10 +202,7 @@ private fun NavGraphBuilder.authGraph(
             ) { navigationModel ->
                 with(navigationModel) {
                     if (isTurnComplete && requiresPreOperational.not()) {
-                        Intent(context.applicationContext, LocationService::class.java).apply {
-                            action = ACTION_START
-                            context.startService(this)
-                        }
+                        startLocationTracking(context)
                     }
                     navigate(navController)
                 }
@@ -222,10 +248,7 @@ private fun NavGraphBuilder.authGraph(
             ) { navigationModel ->
                 with(navigationModel) {
                     if (isTurnComplete) {
-                        Intent(context.applicationContext, LocationService::class.java).apply {
-                            action = ACTION_START
-                            context.startService(this)
-                        }
+                        startLocationTracking(context)
                     }
                     navigate(navController)
                 }
@@ -254,18 +277,19 @@ private fun NavGraphBuilder.mainGraph(
     navigation<NavGraph.MainGraph>(startDestination = MainRoute.MapRoute::class) {
         composable<MainRoute.MapRoute> {
             val fragmentState = rememberFragmentState()
+            val context = LocalContext.current
 
             MapScreen(
                 modifier = modifier,
                 fragmentState = fragmentState,
                 onMenuAction = { navRoute -> navController.navigate(route = navRoute) },
                 onAction = { aphRoute -> navController.navigate(route = aphRoute) },
-                onLogout = {
-                    navController.navigate(AuthRoute.AuthCardsRoute) {
-                        popUpTo(navController.graph.findStartDestination().id) {
+                onLogout = { loggedOutRole ->
+                    stopLocationTracking(context)
+                    navController.navigate(AuthRoute.AuthCardsRoute(loggedOutRole = loggedOutRole)) {
+                        popUpTo(navController.graph.id) {
                             inclusive = true
                         }
-
                         launchSingleTop = true
                     }
                 }
@@ -533,4 +557,25 @@ private fun NavGraphBuilder.reportGraph(
             )
         }
     }
+}
+
+private fun startLocationTracking(context: Context) {
+    val hasPermission = androidx.core.content.ContextCompat.checkSelfPermission(
+        context,
+        android.Manifest.permission.ACCESS_FINE_LOCATION
+    ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+    if (!hasPermission) return
+    Intent(context.applicationContext, LocationService::class.java).apply {
+        action = ACTION_START
+        context.startService(this)
+    }
+}
+
+private fun stopLocationTracking(context: Context) {
+    Intent(context.applicationContext, LocationService::class.java).apply {
+        action = ACTION_STOP
+        context.startService(this)
+    }
+    WorkManager.getInstance(context.applicationContext)
+        .cancelAllWorkByTag(LocationService.WORK_TAG)
 }

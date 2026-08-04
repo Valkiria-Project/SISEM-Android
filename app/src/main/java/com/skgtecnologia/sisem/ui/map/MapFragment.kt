@@ -68,7 +68,6 @@ import com.mapbox.navigation.ui.maps.route.line.api.MapboxRouteLineView
 import com.mapbox.navigation.ui.maps.route.line.model.MapboxRouteLineApiOptions
 import com.mapbox.navigation.ui.maps.route.line.model.MapboxRouteLineViewOptions
 import com.skgtecnologia.sisem.R
-import com.skgtecnologia.sisem.commons.extensions.biLet
 import com.skgtecnologia.sisem.databinding.FragmentMapBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -164,7 +163,19 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 mapboxNavigation.registerRoutesObserver(routesObserver)
                 mapboxNavigation.registerLocationObserver(locationObserver)
                 mapboxNavigation.registerRouteProgressObserver(routeProgressObserver)
-                mapboxNavigation.startTripSession()
+                // Guard against SecurityException on Android 14+ when location
+                // permission is absent or the app is not yet in eligible FGS state.
+                val hasLocation = androidx.core.content.ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+                if (hasLocation) {
+                    mapboxNavigation.startTripSession()
+                } else {
+                    // Explicitly stop so Android does not restart NavigationNotificationService.
+                    mapboxNavigation.stopTripSession()
+                    Timber.w("Skipping startTripSession — location permission not granted")
+                }
             }
 
             override fun onDetached(mapboxNavigation: MapboxNavigation) {
@@ -260,6 +271,11 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                         .maxDuration(0) // instant transition
                         .build()
                 )
+                // If the process was killed the Mapbox routes are gone. Re-request
+                // the route now that we have a valid origin location.
+                if (mapboxNavigation.getNavigationRoutes().isEmpty()) {
+                    destinationLocation?.let { findRoute(it) }
+                }
             }
         }
     }
@@ -375,15 +391,9 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
         // load map style
 
-        binding.mapView.mapboxMap.loadStyle(Style.DARK) {
-            // Ensure that the route line related layers are present before the route arrow
-            routeLineView.initializeLayers(it)
-
-            binding.mapView.compass.updateSettings {
-                enabled = false
-            }
-
-            // add long click listener that search for a route to the clicked destination
+        binding.mapView.mapboxMap.loadStyle(Style.DARK) { style ->
+            routeLineView.initializeLayers(style)
+            binding.mapView.compass.updateSettings { enabled = false }
             binding.mapView.gestures.addOnMapLongClickListener { point ->
                 findRoute(
                     Location.Builder().longitude(point.longitude()).latitude(point.latitude())
@@ -391,12 +401,24 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 )
                 true
             }
+            restoreRouteIfNeeded(style)
         }
 
         initViewInteractions()
         initObservers()
         // No-op when Mapbox already initialized navigation for this view.
         initNavigation()
+    }
+
+    private fun restoreRouteIfNeeded(style: com.mapbox.maps.Style) {
+        val existingRoutes = mapboxNavigation.getNavigationRoutes()
+        if (existingRoutes.isNotEmpty()) {
+            routeLineApi.setNavigationRoutes(existingRoutes) { value ->
+                routeLineView.renderRouteDrawData(style, value)
+            }
+            viewportDataSource.onRouteChanged(existingRoutes.first())
+            viewportDataSource.evaluate()
+        }
     }
 
     private fun initViewInteractions() {
@@ -406,14 +428,15 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         )
 
         navigationCamera.registerNavigationCameraStateChangeObserver { navigationCameraState ->
-            // shows/hide the recenter button depending on the camera state
+            // Guard against animations completing after onDestroyView nulls mapBinding.
+            val b = mapBinding ?: return@registerNavigationCameraStateChangeObserver
             when (navigationCameraState) {
                 NavigationCameraState.TRANSITION_TO_FOLLOWING,
-                NavigationCameraState.FOLLOWING -> binding.recenter.visibility = View.INVISIBLE
+                NavigationCameraState.FOLLOWING -> b.recenter.visibility = View.INVISIBLE
 
                 NavigationCameraState.TRANSITION_TO_OVERVIEW,
                 NavigationCameraState.OVERVIEW,
-                NavigationCameraState.IDLE -> binding.recenter.visibility = View.VISIBLE
+                NavigationCameraState.IDLE -> b.recenter.visibility = View.VISIBLE
             }
         }
 
@@ -430,13 +453,17 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 viewModel.uiState.collect { mapFragmentUiState ->
                     val incident = mapFragmentUiState.incident
 
-                    biLet(incident?.longitude, incident?.latitude) { longitude, latitude ->
+                    if (incident?.longitude != null && incident.latitude != null) {
                         destinationLocation = Location.Builder()
-                            .longitude(longitude)
-                            .latitude(latitude)
+                            .longitude(incident.longitude!!)
+                            .latitude(incident.latitude!!)
                             .build()
 
                         destinationLocation?.let { findRoute(it) }
+                    } else {
+                        mapboxNavigation.setNavigationRoutes(emptyList())
+                        binding.tripProgressCard.visibility = View.GONE
+                        destinationLocation = null
                     }
                 }
             }

@@ -6,8 +6,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -68,23 +68,26 @@ fun SignatureComponent(
                 modifier = uiModel.modifier
             )
 
+            val bitmap = remember(uiModel.signature) {
+                uiModel.signature.decodeAsBase64Bitmap()
+            }
+            val aspectRatio = bitmap.width.toFloat() / bitmap.height.toFloat()
+
             Box(
                 modifier = uiModel.modifier
                     .fillMaxWidth()
-                    .height(150.dp)
+                    .aspectRatio(aspectRatio)
                     .border(
                         BorderStroke(
-                            16.dp,
-                            MaterialTheme.colorScheme.background
+                            2.dp,
+                            MaterialTheme.colorScheme.outline
                         )
                     )
             ) {
                 Image(
-                    bitmap = uiModel.signature
-                        .decodeAsBase64Bitmap()
-                        .asImageBitmap(), // TECH-DEBT: Temporal hack
+                    bitmap = bitmap.asImageBitmap(),
                     contentDescription = uiModel.signature,
-                    contentScale = ContentScale.Crop,
+                    contentScale = ContentScale.Fit,
                     alpha = 1f,
                     modifier = Modifier.fillMaxWidth()
                 )

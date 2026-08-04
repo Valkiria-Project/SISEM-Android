@@ -6,7 +6,11 @@ import kotlinx.coroutines.flow.Flow
 @Suppress("TooManyFunctions")
 interface AuthRepository {
 
-    suspend fun authenticate(username: String, password: String): AccessTokenModel
+    suspend fun authenticate(
+        username: String,
+        password: String,
+        forceCloseSession: Boolean = false
+    ): AccessTokenModel
 
     suspend fun refreshToken(currentToken: AccessTokenModel): AccessTokenModel
 
@@ -17,8 +21,6 @@ interface AuthRepository {
     suspend fun getAllAccessTokens(): List<AccessTokenModel>
 
     suspend fun getTokenByRole(role: String): AccessTokenModel?
-
-    suspend fun closeActiveSession(username: String, password: String)
 
     suspend fun logout(username: String): String
 
