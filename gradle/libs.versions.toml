@@ -37,6 +37,8 @@ kotlin-serialization = "1.11.0"
 ksp = "2.3.10"
 ktlint = "14.2.0"
 leakcanary-android = "2.14"
+mlkit-face-detection = "16.1.5"
+androidx-security-crypto = "1.1.0-alpha06"
 lifecycle = "2.10.0" # held back: 2.11+ requires compileSdk 37 / AGP 9.1
 mapbox-navigation = "3.4.0-beta.1"
 mockk = "1.14.11"
@@ -87,6 +89,8 @@ desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref 
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
+mlkit-face-detection = { module = "com.google.mlkit:face-detection", version.ref = "mlkit-face-detection" }
+androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "androidx-security-crypto" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt-android" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

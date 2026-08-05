@@ -7,6 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.skgtecnologia.sisem.commons.biometric.FaceCredentialStore
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.authcards.usecases.GetAuthCardsScreen
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
@@ -27,6 +28,7 @@ class AuthCardsViewModel @Inject constructor(
     private val androidIdProvider: AndroidIdProvider,
     private val getAuthCardsScreen: GetAuthCardsScreen,
     private val getOperationConfig: GetOperationConfig,
+    private val faceCredentialStore: FaceCredentialStore,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -37,7 +39,8 @@ class AuthCardsViewModel @Inject constructor(
 
     init {
         val loggedOutRole = savedStateHandle.toRoute<AuthRoute.AuthCardsRoute>().loggedOutRole
-        uiState = uiState.copy(isLoading = true, loggedOutRole = loggedOutRole)
+        val hasFaces = faceCredentialStore.enrolledUsernames().isNotEmpty()
+        uiState = uiState.copy(isLoading = true, loggedOutRole = loggedOutRole, hasEnrolledFaces = hasFaces)
 
         job?.cancel()
         job = viewModelScope.launch {

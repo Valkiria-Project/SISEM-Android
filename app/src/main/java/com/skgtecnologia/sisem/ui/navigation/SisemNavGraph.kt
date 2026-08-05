@@ -199,6 +199,11 @@ private fun NavGraphBuilder.authGraph(
         composable<AuthRoute.LoginRoute> {
             LoginScreen(
                 modifier = modifier,
+                onFaceEnroll = { username ->
+                    navController.navigate(
+                        AuthRoute.FaceCameraRoute(mode = "ENROLL", username = username)
+                    )
+                }
             ) { navigationModel ->
                 with(navigationModel) {
                     if (isTurnComplete && requiresPreOperational.not()) {
@@ -264,6 +269,20 @@ private fun NavGraphBuilder.authGraph(
                     }
                 },
                 onCancel = { navController.navigateUp() }
+            )
+        }
+
+        composable<AuthRoute.FaceCameraRoute> {
+            com.skgtecnologia.sisem.ui.authcards.face.FaceCameraScreen(
+                onNavigate = { faceNavModel ->
+                    if (faceNavModel.isTurnComplete && !faceNavModel.requiresPreOperational) {
+                        startLocationTracking(context)
+                    }
+                    navController.navigate(NavGraph.MainGraph) {
+                        popUpTo(navController.graph.id) { inclusive = true }
+                    }
+                },
+                onBack = { navController.navigateUp() }
             )
         }
     }

@@ -40,6 +40,19 @@ sealed interface AuthRoute : NavRoute {
 
     @Serializable
     data class PreOperationalRoute(val role: String? = null) : AuthRoute
+
+    /**
+     * mode: "ENROLL" | "VERIFY"
+     * username: empty when VERIFY (identified by face)
+     * loggedOutRole: non-empty when VERIFY after a logout — only a face that matches
+     *   this role may authenticate (security check).
+     */
+    @Serializable
+    data class FaceCameraRoute(
+        val mode: String,
+        val username: String = "",
+        val loggedOutRole: String = ""
+    ) : AuthRoute
 }
 // endregion
 

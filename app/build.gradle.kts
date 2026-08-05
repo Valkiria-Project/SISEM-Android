@@ -223,6 +223,10 @@ dependencies {
     implementation(libs.androidx.camera.extensions)
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.view)
+
+    // Face recognition (on-device, no server)
+    implementation(libs.mlkit.face.detection)
+    implementation(libs.androidx.security.crypto)
     implementation(libs.accompanist.permissions)
     implementation(libs.accompanist.placeholder.material)
     implementation(libs.coil.compose)

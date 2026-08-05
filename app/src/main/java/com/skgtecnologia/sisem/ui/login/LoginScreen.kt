@@ -1,16 +1,21 @@
 package com.skgtecnologia.sisem.ui.login
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.model.toLegalContentModel
@@ -35,6 +40,7 @@ import kotlinx.coroutines.launch
 fun LoginScreen(
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel(),
+    onFaceEnroll: (username: String) -> Unit = {},
     onNavigation: (loginNavigationModel: LoginNavigationModel) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -45,7 +51,9 @@ fun LoginScreen(
     LaunchedEffect(uiState) {
         launch {
             when {
-                uiState.navigationModel != null && uiState.warning == null -> {
+                uiState.navigationModel != null &&
+                    !uiState.promptFaceEnrollment &&
+                    uiState.warning == null -> {
                     viewModel.consumeNavigationEvent()
                     onNavigation(checkNotNull(uiState.navigationModel))
                 }
@@ -114,6 +122,26 @@ fun LoginScreen(
 
     OnBannerHandler(uiState.successBanner) {
         viewModel.consumeSuccessEvent()
+    }
+
+    if (uiState.promptFaceEnrollment) {
+        AlertDialog(
+            onDismissRequest = { viewModel.dismissFaceEnrollmentPrompt() },
+            title = { Text(stringResource(R.string.face_camera_enroll_prompt_title)) },
+            text = { Text(stringResource(R.string.face_camera_enroll_prompt_description)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    val username = uiState.enrollUsername ?: ""
+                    viewModel.dismissFaceEnrollmentPrompt()
+                    onFaceEnroll(username)
+                }) { Text(stringResource(R.string.face_camera_enroll_prompt_confirm)) }
+            },
+            dismissButton = {
+                TextButton(onClick = { viewModel.dismissFaceEnrollmentPrompt() }) {
+                    Text(stringResource(R.string.face_camera_enroll_prompt_dismiss))
+                }
+            }
+        )
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)

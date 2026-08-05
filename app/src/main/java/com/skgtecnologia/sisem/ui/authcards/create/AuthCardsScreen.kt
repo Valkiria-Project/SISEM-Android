@@ -6,6 +6,14 @@ import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,10 +24,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -113,6 +123,7 @@ fun AuthCardsScreen(
     OnLoadingHandler(uiState.isLoading, modifier)
 }
 
+@Suppress("LongMethod")
 @Composable
 private fun AuthCardsScreenRender(
     viewModel: AuthCardsViewModel,
@@ -128,7 +139,7 @@ private fun AuthCardsScreenRender(
     ConstraintLayout(
         modifier = modifier.fillMaxSize()
     ) {
-        val (header, body) = createRefs()
+        val (header, body, faceBtn) = createRefs()
 
         uiState.screenModel?.header?.let {
             HeaderSection(
@@ -150,6 +161,32 @@ private fun AuthCardsScreenRender(
             }
         ) { uiAction ->
             handleAction(uiAction, viewModel, onNavigation, context)
+        }
+
+        if (uiState.hasEnrolledFaces) {
+            FloatingActionButton(
+                onClick = {
+                    onNavigation(
+                        AuthRoute.FaceCameraRoute(
+                            mode = "VERIFY",
+                            loggedOutRole = uiState.loggedOutRole.orEmpty()
+                        )
+                    )
+                },
+                containerColor = MaterialTheme.colorScheme.primary,
+                modifier = modifier
+                    .constrainAs(faceBtn) {
+                        end.linkTo(parent.end)
+                        bottom.linkTo(parent.bottom)
+                    }
+                    .navigationBarsPadding()
+                    .padding(end = 16.dp, bottom = 16.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Face,
+                    contentDescription = stringResource(R.string.face_auth_button)
+                )
+            }
         }
     }
 

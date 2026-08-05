@@ -7,6 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.skgtecnologia.sisem.commons.biometric.FaceCredentialStore
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.usecases.Login
@@ -36,7 +37,8 @@ class LoginViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val androidIdProvider: AndroidIdProvider,
     private val getLoginScreen: GetLoginScreen,
-    private val login: Login
+    private val login: Login,
+    private val faceCredentialStore: FaceCredentialStore
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -151,18 +153,32 @@ class LoginViewModel @Inject constructor(
                 .onSuccess { accessTokenModel ->
                     Timber.d("Successful login with ${accessTokenModel.username}")
                     if (accessTokenModel.warning == null) {
+                        // Store credentials for future face authentication
+                        faceCredentialStore.storeRefreshToken(
+                            accessTokenModel.username,
+                            accessTokenModel.refreshToken
+                        )
+                        faceCredentialStore.storeRole(
+                            accessTokenModel.username,
+                            accessTokenModel.role
+                        )
+                        val navModel = with(accessTokenModel) {
+                            LoginNavigationModel(
+                                isAdmin = isAdmin,
+                                isTurnComplete = turn?.isComplete == true,
+                                requiresPreOperational =
+                                preoperational?.status == true && configPreoperational,
+                                preOperationRole = OperationRole.getRoleByName(role),
+                                requiresDeviceAuth = code.isEmpty()
+                            )
+                        }
+                        val shouldOfferEnrollment = !accessTokenModel.isAdmin &&
+                            !faceCredentialStore.hasEmbedding(accessTokenModel.username)
                         uiState.update {
                             it.copy(
-                                navigationModel = with(accessTokenModel) {
-                                    LoginNavigationModel(
-                                        isAdmin = isAdmin,
-                                        isTurnComplete = turn?.isComplete == true,
-                                        requiresPreOperational =
-                                        preoperational?.status == true && configPreoperational,
-                                        preOperationRole = OperationRole.getRoleByName(role),
-                                        requiresDeviceAuth = code.isEmpty()
-                                    )
-                                }
+                                navigationModel = navModel,
+                                promptFaceEnrollment = shouldOfferEnrollment,
+                                enrollUsername = if (shouldOfferEnrollment) accessTokenModel.username else null
                             )
                         }
                     } else {
@@ -237,6 +253,10 @@ class LoginViewModel @Inject constructor(
     fun closeActiveSession() {
         uiState.update { it.copy(errorModel = null) }
         authenticate(forceCloseSession = true)
+    }
+
+    fun dismissFaceEnrollmentPrompt() {
+        uiState.update { it.copy(promptFaceEnrollment = false, enrollUsername = null) }
     }
 
     fun consumeErrorEvent() {
