@@ -126,6 +126,9 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    androidResources {
+        noCompress += "tflite"
+    }
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
@@ -226,6 +229,8 @@ dependencies {
 
     // Face recognition (on-device, no server)
     implementation(libs.mlkit.face.detection)
+    implementation(libs.tensorflow.lite)
+    implementation(libs.tensorflow.lite.support)
     implementation(libs.androidx.security.crypto)
     implementation(libs.accompanist.permissions)
     implementation(libs.accompanist.placeholder.material)

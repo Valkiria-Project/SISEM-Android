@@ -1,5 +1,6 @@
 package com.skgtecnologia.sisem.ui.authcards.face
 
+import android.graphics.Bitmap
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,7 +17,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.math.abs
 
 enum class FaceCameraMode { ENROLL, VERIFY }
 
@@ -65,7 +65,8 @@ private const val LOG_SAMPLE = 8
 @HiltViewModel
 class FaceCameraViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val faceCredentialStore: FaceCredentialStore
+    private val faceCredentialStore: FaceCredentialStore,
+    private val faceEmbeddingHelper: FaceEmbeddingHelper
 ) : ViewModel() {
 
     private val route = savedStateHandle.toRoute<AuthRoute.FaceCameraRoute>()
@@ -94,16 +95,11 @@ class FaceCameraViewModel @Inject constructor(
     // ── Main entry point ─────────────────────────────────────────────────────
 
     @Suppress("ReturnCount")
-    fun onFaceDetected(face: Face) {
+    fun onFaceDetected(face: Face, bitmap: Bitmap) {
         if (isProcessing) return
 
         // 1. Reject if the face is too far from the camera (bounding box too small)
         if (face.boundingBox.width() < FaceEmbeddingHelper.MIN_FACE_PX) {
-            stableFrameCount = 0
-            return
-        }
-
-        val embedding = FaceEmbeddingHelper.extractEmbedding(face) ?: run {
             stableFrameCount = 0
             return
         }
@@ -119,6 +115,10 @@ class FaceCameraViewModel @Inject constructor(
             if (stableFrameCount < minStableFrames) return
             stableFrameCount = 0
         }
+
+        // TFLite inference runs only after stability is confirmed (enrollment)
+        // or on the first qualifying frame (verify), gated by isProcessing.
+        val embedding = faceEmbeddingHelper.extractEmbedding(face, bitmap) ?: return
 
         isProcessing = true
         viewModelScope.launch {

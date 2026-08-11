@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.ui.authcards.face
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.util.Size
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -43,6 +44,7 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.face.FaceDetection
 import com.google.mlkit.vision.face.FaceDetectorOptions
 import com.skgtecnologia.sisem.R
+import com.skgtecnologia.sisem.commons.biometric.rotateTo
 import timber.log.Timber
 import java.util.concurrent.Executors
 import androidx.compose.ui.geometry.Size as ComposeSize
@@ -124,7 +126,7 @@ private fun CameraPreview(
     lifecycleOwner: androidx.lifecycle.LifecycleOwner,
     detector: com.google.mlkit.vision.face.FaceDetector,
     executor: java.util.concurrent.Executor,
-    onFaceDetected: (com.google.mlkit.vision.face.Face) -> Unit
+    onFaceDetected: (com.google.mlkit.vision.face.Face, Bitmap) -> Unit
 ) {
     AndroidView(
         modifier = Modifier.fillMaxSize(),
@@ -142,13 +144,15 @@ private fun CameraPreview(
                 imageAnalysis.setAnalyzer(executor) { imageProxy ->
                     val mediaImage = imageProxy.image
                     if (mediaImage != null) {
-                        val inputImage = InputImage.fromMediaImage(
-                            mediaImage,
-                            imageProxy.imageInfo.rotationDegrees
-                        )
+                        val rotation = imageProxy.imageInfo.rotationDegrees
+                        // Capture bitmap before async detection so pixel data remains
+                        // valid after imageProxy.close(). rotateTo() aligns the bitmap
+                        // to ML Kit's coordinate space (same rotation applied internally).
+                        val frameBitmap = imageProxy.toBitmap().rotateTo(rotation)
+                        val inputImage = InputImage.fromMediaImage(mediaImage, rotation)
                         detector.process(inputImage)
                             .addOnSuccessListener { faces ->
-                                faces.firstOrNull()?.let { onFaceDetected(it) }
+                                faces.firstOrNull()?.let { onFaceDetected(it, frameBitmap) }
                             }
                             .addOnFailureListener { Timber.w(it, "Face detection error") }
                             .addOnCompleteListener { imageProxy.close() }
