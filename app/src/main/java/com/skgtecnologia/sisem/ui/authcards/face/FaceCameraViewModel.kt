@@ -87,9 +87,13 @@ class FaceCameraViewModel @Inject constructor(
     val enrollUsername: String? = route.username.ifBlank { null }
     private val loggedOutRole: String = route.loggedOutRole
 
+    // Pre-pick the enroll challenge so it can seed the initial UI state synchronously.
+    private val initialEnrollChallenge =
+        if (mode == FaceCameraMode.ENROLL) LivenessChallenge.entries.random() else null
+
     private val _state = MutableStateFlow<FaceCameraState>(
         if (mode == FaceCameraMode.ENROLL) {
-            FaceCameraState.Enrolling(EnrollmentStep.FRONTAL, 0, TOTAL_ENROLLMENT_STEPS)
+            FaceCameraState.AwaitingLiveness(initialEnrollChallenge!!, LIVENESS_TIMEOUT_SECONDS)
         } else {
             FaceCameraState.Scanning
         }
@@ -104,15 +108,24 @@ class FaceCameraViewModel @Inject constructor(
     private var stableFrameCount = 0
     private val minStableFrames = MIN_STABLE_FRAMES
 
-    // ── Liveness detection (VERIFY mode only) ────────────────────────────────
+    // ── Liveness detection (ENROLL + VERIFY) ─────────────────────────────────
 
     private enum class VerifyPhase { DETECTING, AWAITING_LIVENESS, VERIFYING }
+    private enum class EnrollPhase { LIVENESS, CAPTURING }
 
     private var verifyPhase = VerifyPhase.DETECTING
+    private var enrollPhase = EnrollPhase.LIVENESS
     private var stableFaceFrames = 0
     private var currentLivenessChallenge: LivenessChallenge? = null
     private var eyesWereClosed = false
     private var livenessJob: Job? = null
+
+    init {
+        if (mode == FaceCameraMode.ENROLL) {
+            currentLivenessChallenge = initialEnrollChallenge
+            startEnrollLivenessCountdown(initialEnrollChallenge!!)
+        }
+    }
 
     // ── Main entry point ─────────────────────────────────────────────────────
 
@@ -127,17 +140,7 @@ class FaceCameraViewModel @Inject constructor(
         }
 
         if (mode == FaceCameraMode.ENROLL) {
-            if (!currentStep.isActive(face.headEulerAngleY)) {
-                stableFrameCount = 0
-                return
-            }
-            stableFrameCount++
-            if (stableFrameCount < minStableFrames) return
-            stableFrameCount = 0
-
-            val embedding = faceEmbeddingHelper.extractEmbedding(face, bitmap) ?: return
-            isProcessing = true
-            viewModelScope.launch { handleEnrollStep(face, embedding) }
+            handleEnrollFrame(face, bitmap)
         } else {
             handleVerifyFrame(face, bitmap)
         }
@@ -170,6 +173,64 @@ class FaceCameraViewModel @Inject constructor(
             VerifyPhase.VERIFYING -> {
                 Unit
             } // isProcessing gates further frames
+        }
+    }
+
+    // ── Enroll with liveness challenge ───────────────────────────────────────
+
+    @Suppress("ReturnCount")
+    private fun handleEnrollFrame(face: Face, bitmap: Bitmap) {
+        when (enrollPhase) {
+            EnrollPhase.LIVENESS -> {
+                val challenge = currentLivenessChallenge ?: return
+                if (!isChallengePassed(challenge, face)) return
+                // Challenge passed — begin multi-angle capture
+                enrollPhase = EnrollPhase.CAPTURING
+                livenessJob?.cancel()
+                livenessJob = null
+                Timber.d("[Liveness] Enroll challenge passed — starting capture")
+                _state.update { FaceCameraState.Enrolling(EnrollmentStep.FRONTAL, 0, TOTAL_ENROLLMENT_STEPS) }
+            }
+
+            EnrollPhase.CAPTURING -> {
+                if (!currentStep.isActive(face.headEulerAngleY)) {
+                    stableFrameCount = 0
+                    return
+                }
+                stableFrameCount++
+                if (stableFrameCount < minStableFrames) return
+                stableFrameCount = 0
+                val embedding = faceEmbeddingHelper.extractEmbedding(face, bitmap) ?: return
+                isProcessing = true
+                viewModelScope.launch { handleEnrollStep(face, embedding) }
+            }
+        }
+    }
+
+    private fun startEnrollLivenessChallenge() {
+        val challenge = LivenessChallenge.entries.random()
+        currentLivenessChallenge = challenge
+        startEnrollLivenessCountdown(challenge)
+    }
+
+    private fun startEnrollLivenessCountdown(challenge: LivenessChallenge) {
+        eyesWereClosed = false
+        enrollPhase = EnrollPhase.LIVENESS
+        Timber.d("[Liveness] Enroll challenge issued: $challenge")
+
+        livenessJob?.cancel()
+        livenessJob = viewModelScope.launch {
+            var remaining = LIVENESS_TIMEOUT_SECONDS
+            while (remaining > 0) {
+                _state.update { FaceCameraState.AwaitingLiveness(challenge, remaining) }
+                delay(1_000)
+                remaining--
+            }
+            Timber.w("[Liveness] Enroll liveness timeout")
+            _state.update {
+                FaceCameraState.NoMatch("No se pudo verificar que eres una persona real. Inténtalo de nuevo.")
+            }
+            resetLivenessState()
         }
     }
 
@@ -222,6 +283,7 @@ class FaceCameraViewModel @Inject constructor(
 
     private fun resetLivenessState() {
         verifyPhase = VerifyPhase.DETECTING
+        enrollPhase = EnrollPhase.LIVENESS
         stableFaceFrames = 0
         currentLivenessChallenge = null
         eyesWereClosed = false
@@ -353,12 +415,10 @@ class FaceCameraViewModel @Inject constructor(
         stableFrameCount = 0
         livenessJob?.cancel()
         resetLivenessState()
-        _state.update {
-            if (mode == FaceCameraMode.ENROLL) {
-                FaceCameraState.Enrolling(EnrollmentStep.FRONTAL, 0, TOTAL_ENROLLMENT_STEPS)
-            } else {
-                FaceCameraState.Scanning
-            }
+        if (mode == FaceCameraMode.ENROLL) {
+            startEnrollLivenessChallenge()
+        } else {
+            _state.update { FaceCameraState.Scanning }
         }
     }
 
