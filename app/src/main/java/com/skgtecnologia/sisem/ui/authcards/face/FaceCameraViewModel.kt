@@ -11,6 +11,8 @@ import com.skgtecnologia.sisem.commons.biometric.FaceEmbeddingHelper
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -41,9 +43,13 @@ enum class EnrollmentStep(val eulerYMin: Float, val eulerYMax: Float) {
     }
 }
 
+/** Random action the user must perform to prove they are a live person (anti-spoofing). */
+enum class LivenessChallenge { BLINK, TURN_LEFT, TURN_RIGHT }
+
 sealed interface FaceCameraState {
     data object Scanning : FaceCameraState
     data class Enrolling(val step: EnrollmentStep, val captured: Int, val total: Int) : FaceCameraState
+    data class AwaitingLiveness(val challenge: LivenessChallenge, val secondsLeft: Int) : FaceCameraState
     data object Processing : FaceCameraState
     data class Success(val username: String, val navigationModel: FaceNavigationModel) : FaceCameraState
     data class NoMatch(val message: String) : FaceCameraState
@@ -61,6 +67,13 @@ data class FaceNavigationModel(
 private const val TOTAL_ENROLLMENT_STEPS = 3
 private const val MIN_STABLE_FRAMES = 6
 private const val LOG_SAMPLE = 8
+
+// Liveness detection
+private const val MIN_STABLE_FOR_LIVENESS = 3 // frames before issuing challenge
+private const val LIVENESS_TIMEOUT_SECONDS = 8
+private const val BLINK_CLOSED_THRESHOLD = 0.3f // eye open probability → "closed"
+private const val BLINK_OPEN_THRESHOLD = 0.7f // eye open probability → "open" after blink
+private const val TURN_LIVENESS_THRESHOLD = 20f // degrees of head rotation
 
 @HiltViewModel
 class FaceCameraViewModel @Inject constructor(
@@ -87,10 +100,19 @@ class FaceCameraViewModel @Inject constructor(
     private val capturedEmbeddings = mutableListOf<FloatArray>()
     private var currentStep = EnrollmentStep.FRONTAL
 
-    // Stability: face must hold the correct position for this many consecutive
-    // frames before a capture is accepted — prevents premature or blurry captures.
+    // Stability for enrollment: face must hold position for N consecutive frames.
     private var stableFrameCount = 0
     private val minStableFrames = MIN_STABLE_FRAMES
+
+    // ── Liveness detection (VERIFY mode only) ────────────────────────────────
+
+    private enum class VerifyPhase { DETECTING, AWAITING_LIVENESS, VERIFYING }
+
+    private var verifyPhase = VerifyPhase.DETECTING
+    private var stableFaceFrames = 0
+    private var currentLivenessChallenge: LivenessChallenge? = null
+    private var eyesWereClosed = false
+    private var livenessJob: Job? = null
 
     // ── Main entry point ─────────────────────────────────────────────────────
 
@@ -98,37 +120,112 @@ class FaceCameraViewModel @Inject constructor(
     fun onFaceDetected(face: Face, bitmap: Bitmap) {
         if (isProcessing) return
 
-        // 1. Reject if the face is too far from the camera (bounding box too small)
         if (face.boundingBox.width() < FaceEmbeddingHelper.MIN_FACE_PX) {
             stableFrameCount = 0
+            stableFaceFrames = 0
             return
         }
 
         if (mode == FaceCameraMode.ENROLL) {
-            // 2. Reject if face is not at the required angle for the current step
             if (!currentStep.isActive(face.headEulerAngleY)) {
                 stableFrameCount = 0
                 return
             }
-            // 3. Require N consecutive stable frames before accepting the capture
             stableFrameCount++
             if (stableFrameCount < minStableFrames) return
             stableFrameCount = 0
+
+            val embedding = faceEmbeddingHelper.extractEmbedding(face, bitmap) ?: return
+            isProcessing = true
+            viewModelScope.launch { handleEnrollStep(face, embedding) }
+        } else {
+            handleVerifyFrame(face, bitmap)
         }
+    }
 
-        // TFLite inference runs only after stability is confirmed (enrollment)
-        // or on the first qualifying frame (verify), gated by isProcessing.
-        val embedding = faceEmbeddingHelper.extractEmbedding(face, bitmap) ?: return
+    // ── Verify with liveness challenge ───────────────────────────────────────
 
-        isProcessing = true
-        viewModelScope.launch {
-            if (mode == FaceCameraMode.ENROLL) {
-                handleEnrollStep(face, embedding)
-            } else {
-                _state.update { FaceCameraState.Processing }
-                verify(embedding)
+    @Suppress("ReturnCount")
+    private fun handleVerifyFrame(face: Face, bitmap: Bitmap) {
+        when (verifyPhase) {
+            VerifyPhase.DETECTING -> {
+                stableFaceFrames++
+                if (stableFaceFrames >= MIN_STABLE_FOR_LIVENESS) startLivenessChallenge()
+            }
+
+            VerifyPhase.AWAITING_LIVENESS -> {
+                val challenge = currentLivenessChallenge ?: return
+                if (!isChallengePassed(challenge, face)) return
+                // Challenge passed — extract embedding and verify identity
+                verifyPhase = VerifyPhase.VERIFYING
+                livenessJob?.cancel()
+                val embedding = faceEmbeddingHelper.extractEmbedding(face, bitmap) ?: return
+                isProcessing = true
+                viewModelScope.launch {
+                    _state.update { FaceCameraState.Processing }
+                    verify(embedding)
+                }
+            }
+
+            VerifyPhase.VERIFYING -> {
+                Unit
+            } // isProcessing gates further frames
+        }
+    }
+
+    private fun startLivenessChallenge() {
+        val challenge = LivenessChallenge.entries.random()
+        currentLivenessChallenge = challenge
+        eyesWereClosed = false
+        verifyPhase = VerifyPhase.AWAITING_LIVENESS
+        Timber.d("[Liveness] Challenge issued: $challenge")
+
+        livenessJob?.cancel()
+        livenessJob = viewModelScope.launch {
+            var remaining = LIVENESS_TIMEOUT_SECONDS
+            while (remaining > 0) {
+                _state.update { FaceCameraState.AwaitingLiveness(challenge, remaining) }
+                delay(1_000)
+                remaining--
+            }
+            Timber.w("[Liveness] Timeout — challenge not completed")
+            _state.update {
+                FaceCameraState.NoMatch(
+                    "No se pudo verificar que eres una persona real. Inténtalo de nuevo."
+                )
+            }
+            resetLivenessState()
+        }
+    }
+
+    @Suppress("MagicNumber")
+    private fun isChallengePassed(challenge: LivenessChallenge, face: Face): Boolean =
+        when (challenge) {
+            LivenessChallenge.BLINK -> {
+                val leftOpen = face.leftEyeOpenProbability ?: 1f
+                val rightOpen = face.rightEyeOpenProbability ?: 1f
+                if (leftOpen < BLINK_CLOSED_THRESHOLD && rightOpen < BLINK_CLOSED_THRESHOLD) {
+                    eyesWereClosed = true
+                }
+                eyesWereClosed && leftOpen > BLINK_OPEN_THRESHOLD && rightOpen > BLINK_OPEN_THRESHOLD
+            }
+
+            // eulerY > 0 → face points camera-right = user's head turned to their left
+            LivenessChallenge.TURN_LEFT -> {
+                face.headEulerAngleY > TURN_LIVENESS_THRESHOLD
+            }
+
+            LivenessChallenge.TURN_RIGHT -> {
+                face.headEulerAngleY < -TURN_LIVENESS_THRESHOLD
             }
         }
+
+    private fun resetLivenessState() {
+        verifyPhase = VerifyPhase.DETECTING
+        stableFaceFrames = 0
+        currentLivenessChallenge = null
+        eyesWereClosed = false
+        livenessJob = null
     }
 
     // ── Enrollment (multi-angle) ──────────────────────────────────────────────
@@ -254,6 +351,8 @@ class FaceCameraViewModel @Inject constructor(
         capturedEmbeddings.clear()
         currentStep = EnrollmentStep.FRONTAL
         stableFrameCount = 0
+        livenessJob?.cancel()
+        resetLivenessState()
         _state.update {
             if (mode == FaceCameraMode.ENROLL) {
                 FaceCameraState.Enrolling(EnrollmentStep.FRONTAL, 0, TOTAL_ENROLLMENT_STEPS)

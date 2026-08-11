@@ -152,6 +152,10 @@
     <string name="face_camera_enroll_prompt_confirm">Registrar ahora</string>
     <string name="face_camera_enroll_prompt_dismiss">Más tarde</string>
     <string name="face_auth_button">Ingresar con rostro</string>
+    <!-- Liveness detection challenges -->
+    <string name="face_liveness_blink">Parpadea para confirmar que eres una persona real</string>
+    <string name="face_liveness_turn_left">Gira lentamente tu cabeza hacia la izquierda</string>
+    <string name="face_liveness_turn_right">Gira lentamente tu cabeza hacia la derecha</string>
 
     <!-- Location background permission dialog -->
     <string name="location_bg_permission_title">Ubicación en segundo plano</string>

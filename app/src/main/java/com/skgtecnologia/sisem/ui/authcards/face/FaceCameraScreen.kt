@@ -64,6 +64,9 @@ private val GREEN = Color(0xFF4CAF50)
 @Suppress("MagicNumber")
 private val RED = Color(0xFFF44336)
 
+@Suppress("MagicNumber")
+private val YELLOW = Color(0xFFFFEB3B)
+
 @SuppressLint("UnsafeOptInUsageError")
 @Suppress("LongMethod")
 @Composable
@@ -80,7 +83,9 @@ fun FaceCameraScreen(
             FaceDetectorOptions.Builder()
                 .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
                 .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
-                .setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL) // 36-point outline
+                .setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
+                // Required for liveness: provides eye-open probability for blink detection
+                .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
                 .setMinFaceSize(MIN_FACE_SIZE)
                 .build()
         )
@@ -219,6 +224,21 @@ private fun FaceStatusControls(
         when (val s = state) {
             FaceCameraState.Scanning -> {
                 StatusText(stringResource(R.string.face_camera_verify_hint))
+            }
+
+            is FaceCameraState.AwaitingLiveness -> {
+                val instruction = when (s.challenge) {
+                    LivenessChallenge.BLINK -> stringResource(R.string.face_liveness_blink)
+                    LivenessChallenge.TURN_LEFT -> stringResource(R.string.face_liveness_turn_left)
+                    LivenessChallenge.TURN_RIGHT -> stringResource(R.string.face_liveness_turn_right)
+                }
+                StatusText(instruction, YELLOW)
+                Text(
+                    text = "${s.secondsLeft}s",
+                    color = YELLOW.copy(alpha = 0.8f),
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
             }
 
             is FaceCameraState.Enrolling -> {
