@@ -74,8 +74,10 @@ private const val LIVENESS_TIMEOUT_SECONDS = 8
 private const val BLINK_CLOSED_THRESHOLD = 0.3f // eye open probability → "closed"
 private const val BLINK_OPEN_THRESHOLD = 0.7f // eye open probability → "open" after blink
 private const val TURN_LIVENESS_THRESHOLD = 20f // degrees of head rotation
+private const val LIVENESS_TICK_MS = 1_000L // countdown interval
 
 @HiltViewModel
+@Suppress("TooManyFunctions")
 class FaceCameraViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val faceCredentialStore: FaceCredentialStore,
@@ -223,7 +225,7 @@ class FaceCameraViewModel @Inject constructor(
             var remaining = LIVENESS_TIMEOUT_SECONDS
             while (remaining > 0) {
                 _state.update { FaceCameraState.AwaitingLiveness(challenge, remaining) }
-                delay(1_000)
+                delay(LIVENESS_TICK_MS)
                 remaining--
             }
             Timber.w("[Liveness] Enroll liveness timeout")
@@ -246,7 +248,7 @@ class FaceCameraViewModel @Inject constructor(
             var remaining = LIVENESS_TIMEOUT_SECONDS
             while (remaining > 0) {
                 _state.update { FaceCameraState.AwaitingLiveness(challenge, remaining) }
-                delay(1_000)
+                delay(LIVENESS_TICK_MS)
                 remaining--
             }
             Timber.w("[Liveness] Timeout — challenge not completed")
