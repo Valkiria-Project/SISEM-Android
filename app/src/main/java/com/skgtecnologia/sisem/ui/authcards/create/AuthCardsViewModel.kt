@@ -39,11 +39,13 @@ class AuthCardsViewModel @Inject constructor(
 
     init {
         val loggedOutRole = savedStateHandle.toRoute<AuthRoute.AuthCardsRoute>().loggedOutRole
-        val hasFaces = faceCredentialStore.enrolledUsernames().isNotEmpty()
-        uiState = uiState.copy(isLoading = true, loggedOutRole = loggedOutRole, hasEnrolledFaces = hasFaces)
+        uiState = uiState.copy(isLoading = true, loggedOutRole = loggedOutRole)
 
         job?.cancel()
         job = viewModelScope.launch {
+            val hasFaces = faceCredentialStore.enrolledUsernames().isNotEmpty()
+            uiState = uiState.copy(hasEnrolledFaces = hasFaces)
+
             getOperationConfig.invoke(androidIdProvider.getAndroidId())
                 .onSuccess {
                     getAuthCardsScreen()

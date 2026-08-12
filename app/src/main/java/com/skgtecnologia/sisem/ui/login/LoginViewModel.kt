@@ -11,6 +11,7 @@ import com.skgtecnologia.sisem.commons.biometric.FaceCredentialStore
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.usecases.Login
+import com.skgtecnologia.sisem.domain.biometric.usecases.FetchBiometric
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
@@ -38,7 +39,8 @@ class LoginViewModel @Inject constructor(
     private val androidIdProvider: AndroidIdProvider,
     private val getLoginScreen: GetLoginScreen,
     private val login: Login,
-    private val faceCredentialStore: FaceCredentialStore
+    private val faceCredentialStore: FaceCredentialStore,
+    private val fetchBiometric: FetchBiometric
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -153,7 +155,7 @@ class LoginViewModel @Inject constructor(
                 .onSuccess { accessTokenModel ->
                     Timber.d("Successful login with ${accessTokenModel.username}")
                     if (accessTokenModel.warning == null) {
-                        // Store credentials for future face authentication
+                        // Persist credentials needed for face authentication
                         faceCredentialStore.storeRefreshToken(
                             accessTokenModel.username,
                             accessTokenModel.refreshToken
@@ -172,8 +174,13 @@ class LoginViewModel @Inject constructor(
                                 requiresDeviceAuth = code.isEmpty()
                             )
                         }
-                        val shouldOfferEnrollment = !accessTokenModel.isAdmin &&
-                            !faceCredentialStore.hasEmbedding(accessTokenModel.username)
+                        val hasLocalEmbedding =
+                            faceCredentialStore.hasEmbedding(accessTokenModel.username)
+                        // Non-admin users without local embeddings: check the cloud first.
+                        // If the user enrolled on another device, we pull the data here so
+                        // they can authenticate with face immediately without re-enrolling.
+                        val shouldOfferEnrollment = !accessTokenModel.isAdmin && !hasLocalEmbedding &&
+                            !fetchBiometric(accessTokenModel.username)
                         uiState.update {
                             it.copy(
                                 navigationModel = navModel,

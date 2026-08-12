@@ -81,7 +81,8 @@ private const val LIVENESS_TICK_MS = 1_000L // countdown interval
 class FaceCameraViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val faceCredentialStore: FaceCredentialStore,
-    private val faceEmbeddingHelper: FaceEmbeddingHelper
+    private val faceEmbeddingHelper: FaceEmbeddingHelper,
+    private val uploadBiometric: com.skgtecnologia.sisem.domain.biometric.usecases.UploadBiometric
 ) : ViewModel() {
 
     private val route = savedStateHandle.toRoute<AuthRoute.FaceCameraRoute>()
@@ -295,7 +296,7 @@ class FaceCameraViewModel @Inject constructor(
     // ── Enrollment (multi-angle) ──────────────────────────────────────────────
 
     @Suppress("ReturnCount")
-    private fun handleEnrollStep(face: Face, embedding: FloatArray) {
+    private suspend fun handleEnrollStep(face: Face, embedding: FloatArray) {
         val eulerY = face.headEulerAngleY
         if (!currentStep.isActive(eulerY)) {
             isProcessing = false
@@ -336,6 +337,8 @@ class FaceCameraViewModel @Inject constructor(
             }
             Timber.d("[FaceEnroll] Stored ${capturedEmbeddings.size} embeddings for $username")
             faceCredentialStore.dumpToLog()
+            // Upload to cloud in background — WorkManager handles retry on failure
+            viewModelScope.launch { uploadBiometric(username) }
             _state.update { FaceCameraState.Enrolled }
         } else {
             currentStep = next
@@ -349,7 +352,7 @@ class FaceCameraViewModel @Inject constructor(
     // ── Verification (1:N with role check) ───────────────────────────────────
 
     @Suppress("ReturnCount")
-    private fun verify(embedding: FloatArray) {
+    private suspend fun verify(embedding: FloatArray) {
         val enrolled = faceCredentialStore.enrolledUsernames()
         if (enrolled.isEmpty()) {
             _state.update { FaceCameraState.NoMatch("No hay rostros registrados.") }
@@ -425,11 +428,11 @@ class FaceCameraViewModel @Inject constructor(
     }
 
     fun storeRefreshToken(username: String, refreshToken: String) {
-        faceCredentialStore.storeRefreshToken(username, refreshToken)
+        viewModelScope.launch { faceCredentialStore.storeRefreshToken(username, refreshToken) }
     }
 
     fun storeRole(username: String, role: String) {
-        faceCredentialStore.storeRole(username, role)
+        viewModelScope.launch { faceCredentialStore.storeRole(username, role) }
     }
 
     /**
@@ -437,7 +440,10 @@ class FaceCameraViewModel @Inject constructor(
      * [newEmbeddings], or null if no conflict is found.
      * [excludeUsername] is skipped so re-enrolling the same user doesn't self-block.
      */
-    private fun findConflictingUser(newEmbeddings: List<FloatArray>, excludeUsername: String): String? =
+    private suspend fun findConflictingUser(
+        newEmbeddings: List<FloatArray>,
+        excludeUsername: String
+    ): String? =
         faceCredentialStore.enrolledUsernames()
             .filter { it != excludeUsername }
             .firstOrNull { otherUsername ->
@@ -449,7 +455,8 @@ class FaceCameraViewModel @Inject constructor(
                 }
             }
 
-    fun hasEnrolledFace(username: String): Boolean = faceCredentialStore.hasEmbedding(username)
+    suspend fun hasEnrolledFace(username: String): Boolean =
+        faceCredentialStore.hasEmbedding(username)
 
-    fun enrolledUsernames(): List<String> = faceCredentialStore.enrolledUsernames()
+    suspend fun enrolledUsernames(): List<String> = faceCredentialStore.enrolledUsernames()
 }
