@@ -94,6 +94,11 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     private var destinationLocation: Location? = null
 
+    // Last coordinates used for a successful route request. findRoute() is skipped
+    // when the incoming destination matches this value to avoid resetting navigation
+    // on every uiState emission that carries the same incident location.
+    private var lastRoutedDestination: Pair<Double, Double>? = null
+
     private lateinit var navigationCamera: NavigationCamera
     private lateinit var routeArrowView: MapboxRouteArrowView
     private lateinit var tripProgressApi: MapboxTripProgressApi
@@ -454,16 +459,24 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                     val incident = mapFragmentUiState.incident
 
                     if (incident?.longitude != null && incident.latitude != null) {
-                        destinationLocation = Location.Builder()
-                            .longitude(incident.longitude!!)
-                            .latitude(incident.latitude!!)
-                            .build()
+                        val incomingKey = incident.longitude!! to incident.latitude!!
 
-                        destinationLocation?.let { findRoute(it) }
+                        // Skip redundant findRoute() calls: if the destination coordinates
+                        // haven't changed since the last successful request, the active
+                        // navigation session already covers this location.
+                        if (incomingKey != lastRoutedDestination) {
+                            destinationLocation = Location.Builder()
+                                .longitude(incident.longitude!!)
+                                .latitude(incident.latitude!!)
+                                .build()
+
+                            destinationLocation?.let { findRoute(it) }
+                        }
                     } else {
                         mapboxNavigation.setNavigationRoutes(emptyList())
                         binding.tripProgressCard.visibility = View.GONE
                         destinationLocation = null
+                        lastRoutedDestination = null
                     }
                 }
             }
@@ -503,21 +516,23 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     }
 
     private fun findRoute(destinationLocation: Location) {
-        Timber.d("findRoute with location ${destinationLocation.latitude} and ${destinationLocation.longitude}")
+        Timber.d("findRoute → lat=${destinationLocation.latitude} lng=${destinationLocation.longitude}")
+
         val originLocation = navigationLocationProvider.lastLocation
-        val originPoint = originLocation?.let {
-            Point.fromLngLat(it.longitude, it.latitude)
+        if (originLocation == null) {
+            // GPS fix not yet available. The locationObserver already has a retry guard
+            // (`firstLocationUpdateReceived`) that calls findRoute() on the first valid
+            // location — nothing more to do here.
+            Timber.w("findRoute: no GPS fix yet, will retry on first location update")
+            return
         }
+
+        val originPoint = Point.fromLngLat(originLocation.longitude, originLocation.latitude)
         val destinationPoint = Point.fromLngLat(
             destinationLocation.longitude,
             destinationLocation.latitude
         )
 
-        // execute a route request
-        // it's recommended to use the
-        // applyDefaultNavigationOptions and applyLanguageAndVoiceUnitOptions
-        // that make sure the route request is optimized
-        // to allow for support of all of the Navigation SDK features
         mapboxNavigation.requestRoutes(
             RouteOptions.builder()
                 .applyDefaultNavigationOptions()
@@ -525,14 +540,10 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 .coordinatesList(listOf(originPoint, destinationPoint))
                 .alternatives(true)
                 .apply {
-                    // provide the bearing for the origin of the request to ensure
-                    // that the returned route faces in the direction of the current user movement
-                    originLocation?.bearing?.let { bearing ->
+                    originLocation.bearing?.let { bearing ->
                         bearingsList(
                             listOf(
-                                Bearing.builder()
-                                    .angle(bearing)
-                                    .build(),
+                                Bearing.builder().angle(bearing).build(),
                                 null
                             )
                         )
@@ -542,17 +553,22 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 .build(),
             object : NavigationRouterCallback {
                 override fun onCanceled(routeOptions: RouteOptions, routerOrigin: String) {
-                    // no impl
+                    Timber.w("findRoute: request cancelled")
                 }
 
                 override fun onFailure(reasons: List<RouterFailure>, routeOptions: RouteOptions) {
-                    // no impl
+                    // Log the reasons so we know if this is a network error, API key issue, etc.
+                    // Reset lastRoutedDestination so the next uiState emission retries the request.
+                    Timber.e("findRoute failed: $reasons")
+                    lastRoutedDestination = null
                 }
 
                 override fun onRoutesReady(
                     routes: List<NavigationRoute>,
                     routerOrigin: String
                 ) {
+                    lastRoutedDestination =
+                        destinationLocation.longitude to destinationLocation.latitude
                     setRouteAndStartNavigation(routes)
                 }
             }
