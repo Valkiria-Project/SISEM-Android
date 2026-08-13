@@ -136,6 +136,27 @@
         La presente Política de Protección y Tratamiento de Datos Personales está rigiendo a partir de su publicación en la SDS y en el portal web de la entidad.
     </string>
 
+    <!-- Face camera screen -->
+    <string name="face_camera_enroll_hint">Centra tu rostro mirando de frente a la cámara</string>
+    <string name="face_camera_step_frontal">Paso 1/3 — Mira de frente a la cámara</string>
+    <string name="face_camera_step_left">Paso 2/3 — Gira lentamente tu cabeza hacia la izquierda</string>
+    <string name="face_camera_step_right">Paso 3/3 — Gira lentamente tu cabeza hacia la derecha</string>
+    <string name="face_camera_verify_hint">Mira la cámara para ingresar</string>
+    <string name="face_camera_detected">Rostro detectado…</string>
+    <string name="face_camera_enrolled">¡Rostro registrado exitosamente!</string>
+    <string name="face_camera_success">Bienvenido, %s</string>
+    <string name="face_camera_retry">Intentar de nuevo</string>
+    <string name="face_camera_use_password">Usar contraseña</string>
+    <string name="face_camera_enroll_prompt_title">Acceso por reconocimiento facial</string>
+    <string name="face_camera_enroll_prompt_description">Registra tu rostro para ingresar rápidamente la próxima vez sin escribir tu contraseña.</string>
+    <string name="face_camera_enroll_prompt_confirm">Registrar ahora</string>
+    <string name="face_camera_enroll_prompt_dismiss">Más tarde</string>
+    <string name="face_auth_button">Ingresar con rostro</string>
+    <!-- Liveness detection challenges -->
+    <string name="face_liveness_blink">Parpadea para confirmar que eres una persona real</string>
+    <string name="face_liveness_turn_left">Gira lentamente tu cabeza hacia la izquierda</string>
+    <string name="face_liveness_turn_right">Gira lentamente tu cabeza hacia la derecha</string>
+
     <!-- Location background permission dialog -->
     <string name="location_bg_permission_title">Ubicación en segundo plano</string>
     <string name="location_bg_permission_description">Para rastrear la ambulancia mientras la app está minimizada, selecciona \"Permitir todo el tiempo\" en los ajustes de la app en el permiso de Ubicación.</string>

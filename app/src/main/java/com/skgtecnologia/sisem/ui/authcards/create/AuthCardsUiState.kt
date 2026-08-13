@@ -11,6 +11,7 @@ data class AuthCardsUiState(
     val chipSection: ChipSectionUiModel? = null,
     val loggedOutRole: String? = null,
     val roleRestrictionBanner: BannerUiModel? = null,
+    val hasEnrolledFaces: Boolean = false,
     val isLoading: Boolean = false,
     val errorModel: BannerUiModel? = null
 )

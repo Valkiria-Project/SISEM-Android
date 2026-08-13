@@ -2,6 +2,25 @@
 Ajustes y correcciones aplicadas segun versiones:
 
 
+# Version 2.4.12 *(XX.XX.XXXX)*
+----------------------------------------
+### Autenticación biométrica por reconocimiento facial
+
+- **Motor FaceNet 512 (TFLite):** El sistema de reconocimiento facial migra de un enfoque geométrico basado en contornos a un modelo de aprendizaje profundo (FaceNet 512 dimensiones) ejecutado completamente en el dispositivo. La precisión de comparación mejora de ~70-80% a ~99%, sin enviar imágenes a ningún servidor.
+
+- **Liveness detection — anti-suplantación:** Antes de capturar o verificar un rostro, la app emite un desafío aleatorio (parpadear, girar la cabeza a la izquierda o a la derecha) con un contador regresivo de 8 segundos. Esto impide el acceso mediante fotos impresas, pantallas con la imagen del usuario o videos pregrabados. El desafío aplica tanto al registro como a la verificación.
+z
+- **Registro en base de datos local (Room):** Los embeddings biométricos se almacenan ahora en una tabla cifrada de la base de datos del dispositivo (`biometric_credentials`) en lugar de preferencias compartidas. Esto mejora la gestión, la trazabilidad y el control del ciclo de vida de los datos biométricos por usuario.
+
+- **Sincronización en la nube:** Al completar el registro facial, los embeddings se suben automáticamente a un servicio en la nube. Si la subida falla por falta de conexión, WorkManager reintenta el envío en segundo plano con backoff exponencial cuando se restaura la red.
+
+- **Portabilidad entre dispositivos:** Al iniciar sesión en un dispositivo donde el usuario no tiene biometría registrada localmente, la aplicación consulta la nube automáticamente. Si el usuario ya se registró en otro dispositivo, sus datos se descargan y almacenan localmente, permitiendo autenticarse con el rostro sin necesidad de volver a registrarse.
+
+### Correcciones
+
+- **Doble navegación al aceptar el enroll facial:** Al pulsar "Registrar ahora" en el diálogo de enrollment, se producían dos navegaciones simultáneas que corrompían el historial de pantallas. Corregido limpiando el evento de navegación pendiente antes de redirigir a la cámara de registro.
+    - Resuelve https://skgtecnologia.atlassian.net/browse/SMA-762
+
 # Version 2.4.11 *(02.08.2026)*
 ----------------------------------------
 ### Mejoras de interfaz — Registro APH

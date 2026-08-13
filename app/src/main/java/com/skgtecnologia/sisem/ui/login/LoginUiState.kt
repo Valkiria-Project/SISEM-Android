@@ -12,7 +12,8 @@ data class LoginUiState(
     val isLoading: Boolean = false,
     val warning: BannerUiModel? = null,
     val errorModel: BannerUiModel? = null,
-    // Kept apart from `warning`, which navigates to the change-password screen when it is
-    // dismissed. This one only confirms the other session was closed and stays put.
-    val successBanner: BannerUiModel? = null
+    val successBanner: BannerUiModel? = null,
+    /** Set after a successful login to offer face enrolment. */
+    val promptFaceEnrollment: Boolean = false,
+    val enrollUsername: String? = null,
 )

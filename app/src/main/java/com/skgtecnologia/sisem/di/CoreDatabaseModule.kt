@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.di
 import android.content.Context
 import androidx.room.Room
 import com.skgtecnologia.sisem.data.auth.cache.dao.AccessTokenDao
+import com.skgtecnologia.sisem.data.biometric.cache.BiometricCredentialDao
 import com.skgtecnologia.sisem.data.cache.SisemDatabase
 import com.skgtecnologia.sisem.data.incident.cache.dao.IncidentDao
 import com.skgtecnologia.sisem.data.notification.cache.dao.NotificationDao
@@ -28,6 +29,10 @@ object CoreDatabaseModule {
     @Provides
     fun provideAccessTokenDao(sisemDatabase: SisemDatabase): AccessTokenDao =
         sisemDatabase.accessTokenDao()
+
+    @Provides
+    fun provideBiometricCredentialDao(sisemDatabase: SisemDatabase): BiometricCredentialDao =
+        sisemDatabase.biometricCredentialDao()
 
     @Provides
     fun provideIncidentDao(sisemDatabase: SisemDatabase): IncidentDao = sisemDatabase.incidentDao()
