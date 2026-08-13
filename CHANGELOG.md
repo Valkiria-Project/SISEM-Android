@@ -19,6 +19,7 @@ Ajustes y correcciones aplicadas segun versiones:
 ### Correcciones
 
 - **Doble navegación al aceptar el enroll facial:** Al pulsar "Registrar ahora" en el diálogo de enrollment, se producían dos navegaciones simultáneas que corrompían el historial de pantallas. Corregido limpiando el evento de navegación pendiente antes de redirigir a la cámara de registro.
+    - Resuelve https://skgtecnologia.atlassian.net/browse/SMA-762
 
 # Version 2.4.11 *(02.08.2026)*
 ----------------------------------------
