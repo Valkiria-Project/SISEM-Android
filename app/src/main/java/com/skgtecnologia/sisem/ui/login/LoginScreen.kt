@@ -132,6 +132,11 @@ fun LoginScreen(
             confirmButton = {
                 TextButton(onClick = {
                     val username = uiState.enrollUsername ?: ""
+                    // Consume the pending navigation before dismissing the prompt:
+                    // dismissFaceEnrollmentPrompt() sets promptFaceEnrollment=false which
+                    // satisfies the LaunchedEffect condition and would trigger a second
+                    // navigation (to AuthCards/PreOp) racing against onFaceEnroll.
+                    viewModel.consumeNavigationEvent()
                     viewModel.dismissFaceEnrollmentPrompt()
                     onFaceEnroll(username)
                 }) { Text(stringResource(R.string.face_camera_enroll_prompt_confirm)) }
