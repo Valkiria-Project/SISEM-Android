@@ -79,6 +79,7 @@ private const val PADDING_TOP_LARGE = 180.0
 private const val PADDING_HORIZONTAL = 40.0
 private const val PADDING_BOTTOM_SMALL = 120.0
 private const val PADDING_BOTTOM_LARGE = 150.0
+private const val ROUTE_CLICK_PADDING_DP = 80f
 
 @Suppress("TooManyFunctions")
 @OptIn(ExperimentalPreviewMapboxNavigationAPI::class)
@@ -396,6 +397,23 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
         // load map style
 
+        // routeSelectionOverlay (XML) sits above MapView but below all buttons,
+        // so it captures taps on Mapbox ViewAnnotation callout bubbles (which live
+        // inside MapView and consume touches before MapView's own listeners fire).
+        // Every event is forwarded to MapView so pan/zoom/long-press still work.
+        binding.routeSelectionOverlay.setOnTouchListener { _, event ->
+            binding.mapView.dispatchTouchEvent(event) // preserve all map gestures
+            if (event.action == android.view.MotionEvent.ACTION_UP) {
+                val screenCoord = com.mapbox.maps.ScreenCoordinate(
+                    event.x.toDouble(),
+                    event.y.toDouble()
+                )
+                val geoPoint = binding.mapView.mapboxMap.coordinateForPixel(screenCoord)
+                selectAlternativeRouteIfClicked(geoPoint)
+            }
+            true // consumed — already dispatched to MapView manually
+        }
+
         binding.mapView.mapboxMap.loadStyle(Style.DARK) { style ->
             routeLineView.initializeLayers(style)
             binding.mapView.compass.updateSettings { enabled = false }
@@ -513,6 +531,83 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 }
             }
         }
+    }
+
+    /**
+     * Checks whether the user tapped an alternative route line and, if so, promotes it
+     * to the primary route without requesting a new Mapbox Directions call.
+     *
+     * Mapbox renders all routes on the map but only reacts to taps when an explicit
+     * [OnMapClickListener] calls [routeLineApi.findClosestRoute].
+     */
+
+    /**
+     * Checks whether the tap is close enough to an alternative route line and, if so,
+     * promotes that route to primary.
+     *
+     * We avoid [MapboxRouteLineApi.findClosestRoute] because it is private in the current
+     * Mapbox Navigation beta. Instead we project sampled route coordinates to screen space
+     * and check their pixel distance to the tap — the same geometry the SDK renders.
+     */
+    @Suppress("MagicNumber")
+    private fun selectAlternativeRouteIfClicked(point: com.mapbox.geojson.Point) {
+        val currentRoutes = mapboxNavigation.getNavigationRoutes()
+        Timber.d("[RouteSelect] routes=${currentRoutes.size}")
+        if (currentRoutes.size < 2) return
+
+        val paddingPx = ROUTE_CLICK_PADDING_DP * resources.displayMetrics.density
+        val tapScreen = binding.mapView.mapboxMap.pixelForCoordinate(point)
+        Timber.d("[RouteSelect] tap screen=(${tapScreen.x.toInt()}, ${tapScreen.y.toInt()}) padding=${paddingPx.toInt()}px")
+
+        currentRoutes.drop(1).forEachIndexed { idx, route ->
+            val near = isTapNearRoute(route, tapScreen, paddingPx)
+            Timber.d("[RouteSelect] alt[$idx] near=$near")
+            if (near) {
+                val reordered = currentRoutes.toMutableList().apply {
+                    remove(route)
+                    add(0, route)
+                }
+                Timber.d("[RouteSelect] → promoting alt[$idx] to primary")
+                mapboxNavigation.setNavigationRoutes(reordered)
+                return
+            }
+        }
+        Timber.d("[RouteSelect] no alternative matched")
+    }
+
+    private fun isTapNearRoute(
+        route: com.mapbox.navigation.base.route.NavigationRoute,
+        tapScreen: com.mapbox.maps.ScreenCoordinate,
+        paddingPx: Float
+    ): Boolean {
+        val encodedGeometry = route.directionsRoute.geometry()
+        if (encodedGeometry.isNullOrEmpty()) {
+            Timber.w("[RouteSelect] route geometry is null/empty")
+            return false
+        }
+
+        val coords = com.mapbox.geojson.LineString
+            .fromPolyline(encodedGeometry, com.mapbox.core.constants.Constants.PRECISION_6)
+            .coordinates()
+
+        if (coords.isEmpty()) return false
+
+        val stride = maxOf(1, coords.size / 80)
+        val paddingSq = paddingPx * paddingPx
+        var minDistSq = Double.MAX_VALUE
+
+        coords.filterIndexed { i, _ -> i % stride == 0 }.forEach { coord ->
+            val screen = binding.mapView.mapboxMap.pixelForCoordinate(
+                com.mapbox.geojson.Point.fromLngLat(coord.longitude(), coord.latitude())
+            )
+            val dx = screen.x - tapScreen.x
+            val dy = screen.y - tapScreen.y
+            val dSq = dx * dx + dy * dy
+            if (dSq < minDistSq) minDistSq = dSq
+        }
+
+        Timber.d("[RouteSelect] minDist=${kotlin.math.sqrt(minDistSq).toInt()}px threshold=${paddingPx.toInt()}px pts=${coords.size}")
+        return minDistSq <= paddingSq
     }
 
     private fun findRoute(destinationLocation: Location) {
