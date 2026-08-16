@@ -2,6 +2,12 @@
 Ajustes y correcciones aplicadas segun versiones:
 
 
+# Version 2.4.12 *(15.08.2026)*
+----------------------------------------
+### Correcciones
+
+- **Navegación tras autenticar el dispositivo:** Se corrige un problema en las tres salidas de la pantalla de autenticación del dispositivo, donde el destino no se resolvía correctamente al volver a las tarjetas de autorización.
+
 # Version 2.4.11 *(02.08.2026)*
 ----------------------------------------
 ### Mejoras de interfaz — Registro APH
