@@ -16,6 +16,12 @@ z
 
 - **Portabilidad entre dispositivos:** Al iniciar sesión en un dispositivo donde el usuario no tiene biometría registrada localmente, la aplicación consulta la nube automáticamente. Si el usuario ya se registró en otro dispositivo, sus datos se descargan y almacenan localmente, permitiendo autenticarse con el rostro sin necesidad de volver a registrarse.
 
+- **Falla de modal en vista de mapa en tablet:** Se corrige la visualizacion de como se mostraba la info de un incidente en ruta en un modal, asi mismo los datos de distancia que se sobreponian
+    - Resuelve:  https://skgtecnologia.atlassian.net/browse/SMA-763
+
+- **Pad de firma:** Se corrige la visualizacion de pad de firma en vista de tablet
+    - Resuelve:  https://skgtecnologia.atlassian.net/browse/SMA-764
+
 ### Correcciones
 
 - **Doble navegación al aceptar el enroll facial:** Al pulsar "Registrar ahora" en el diálogo de enrollment, se producían dos navegaciones simultáneas que corrompían el historial de pantallas. Corregido limpiando el evento de navegación pendiente antes de redirigir a la cámara de registro.
