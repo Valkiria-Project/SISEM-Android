@@ -213,7 +213,20 @@
     <string name="drawer_hceud">HCEUD</string>
     <string name="drawer_device_auth">Asociar dispositivo al vehículo</string>
     <string name="drawer_signature_and_fingerprint">Registrar firma y huella</string>
+    <string name="drawer_biometric_registration">Registrar biometría</string>
     <string name="drawer_stretcher_retention">Registra retención de camilla</string>
+
+    <!-- Biometric registration screen -->
+    <string name="biometric_selection_title">Biometría</string>
+    <string name="biometric_selection_subtitle">Registre o actualice firma y biometría del tripulante.</string>
+    <string name="biometric_selection_signature">Registro de firma</string>
+    <string name="biometric_selection_biometric">Registro de biometría</string>
+    <string name="biometric_crew_list_title">Registro biométrico</string>
+    <string name="biometric_crew_list_subtitle">Seleccione el tripulante a registrar</string>
+    <string name="biometric_registration_enrolled">Registrado</string>
+    <string name="biometric_registration_pending">Pendiente</string>
+    <string name="biometric_registration_enroll_action">Registrar</string>
+    <string name="biometric_registration_all_enrolled">Todos los tripulantes han completado el registro biométrico</string>
 
     <!-- Wounds dialog -->
     <string name="wounds_burn_description">¿Que tipo de quemadura presenta el paciente?</string>

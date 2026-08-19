@@ -79,6 +79,9 @@ private const val PADDING_TOP_LARGE = 180.0
 private const val PADDING_HORIZONTAL = 40.0
 private const val PADDING_BOTTOM_SMALL = 120.0
 private const val PADDING_BOTTOM_LARGE = 150.0
+private const val STRIDE_SIZE = 80
+private const val ROUTE_CLICK_PADDING_DP = 80f
+private const val INCIDENT_SHEET_PEEK_DP = 140f
 
 @Suppress("TooManyFunctions")
 @OptIn(ExperimentalPreviewMapboxNavigationAPI::class)
@@ -93,6 +96,11 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     val viewModel: MapFragmentViewModel by viewModels()
 
     private var destinationLocation: Location? = null
+
+    // Last coordinates used for a successful route request. findRoute() is skipped
+    // when the incoming destination matches this value to avoid resetting navigation
+    // on every uiState emission that carries the same incident location.
+    private var lastRoutedDestination: Pair<Double, Double>? = null
 
     private lateinit var navigationCamera: NavigationCamera
     private lateinit var routeArrowView: MapboxRouteArrowView
@@ -361,6 +369,34 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         viewportDataSource.overviewPadding = overviewPadding
         viewportDataSource.followingPadding = followingPadding
 
+        setupTripProgressApi()
+
+        // initialize maneuver arrow view to draw arrows on the map
+        val routeArrowOptions = RouteArrowOptions.Builder(requireActivity()).build()
+        routeArrowView = MapboxRouteArrowView(routeArrowOptions)
+
+        setupRouteSelectionOverlay()
+
+        binding.mapView.mapboxMap.loadStyle(Style.DARK) { style ->
+            routeLineView.initializeLayers(style)
+            binding.mapView.compass.updateSettings { enabled = false }
+            binding.mapView.gestures.addOnMapLongClickListener { point ->
+                findRoute(
+                    Location.Builder().longitude(point.longitude()).latitude(point.latitude())
+                        .build()
+                )
+                true
+            }
+            restoreRouteIfNeeded(style)
+        }
+
+        initViewInteractions()
+        initObservers()
+        // No-op when Mapbox already initialized navigation for this view.
+        initNavigation()
+    }
+
+    private fun setupTripProgressApi() {
         val distanceFormatterOptions = DistanceFormatterOptions.Builder(requireActivity())
             .unitType(UnitType.METRIC)
             .build()
@@ -384,30 +420,25 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 )
                 .build()
         )
+    }
 
-        // initialize maneuver arrow view to draw arrows on the map
-        val routeArrowOptions = RouteArrowOptions.Builder(requireActivity()).build()
-        routeArrowView = MapboxRouteArrowView(routeArrowOptions)
-
-        // load map style
-
-        binding.mapView.mapboxMap.loadStyle(Style.DARK) { style ->
-            routeLineView.initializeLayers(style)
-            binding.mapView.compass.updateSettings { enabled = false }
-            binding.mapView.gestures.addOnMapLongClickListener { point ->
-                findRoute(
-                    Location.Builder().longitude(point.longitude()).latitude(point.latitude())
-                        .build()
+    private fun setupRouteSelectionOverlay() {
+        // routeSelectionOverlay (XML) sits above MapView but below all buttons,
+        // so it captures taps on Mapbox ViewAnnotation callout bubbles (which live
+        // inside MapView and consume touches before MapView's own listeners fire).
+        // Every event is forwarded to MapView so pan/zoom/long-press still work.
+        binding.routeSelectionOverlay.setOnTouchListener { _, event ->
+            binding.mapView.dispatchTouchEvent(event) // preserve all map gestures
+            if (event.action == android.view.MotionEvent.ACTION_UP) {
+                val screenCoord = com.mapbox.maps.ScreenCoordinate(
+                    event.x.toDouble(),
+                    event.y.toDouble()
                 )
-                true
+                val geoPoint = binding.mapView.mapboxMap.coordinateForPixel(screenCoord)
+                selectAlternativeRouteIfClicked(geoPoint)
             }
-            restoreRouteIfNeeded(style)
+            true // consumed — already dispatched to MapView manually
         }
-
-        initViewInteractions()
-        initObservers()
-        // No-op when Mapbox already initialized navigation for this view.
-        initNavigation()
     }
 
     private fun restoreRouteIfNeeded(style: com.mapbox.maps.Style) {
@@ -454,16 +485,29 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                     val incident = mapFragmentUiState.incident
 
                     if (incident?.longitude != null && incident.latitude != null) {
-                        destinationLocation = Location.Builder()
-                            .longitude(incident.longitude!!)
-                            .latitude(incident.latitude!!)
-                            .build()
+                        val incomingKey = incident.longitude!! to incident.latitude!!
 
-                        destinationLocation?.let { findRoute(it) }
+                        // Skip redundant findRoute() calls: if the destination coordinates
+                        // haven't changed since the last successful request, the active
+                        // navigation session already covers this location.
+                        if (incomingKey != lastRoutedDestination) {
+                            destinationLocation = Location.Builder()
+                                .longitude(incident.longitude!!)
+                                .latitude(incident.latitude!!)
+                                .build()
+
+                            destinationLocation?.let { findRoute(it) }
+                        }
                     } else {
                         mapboxNavigation.setNavigationRoutes(emptyList())
-                        binding.tripProgressCard.visibility = View.GONE
+                        val card = binding.tripProgressCard
+                        val lp = card.layoutParams as
+                            androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
+                        lp.bottomMargin = 0
+                        card.layoutParams = lp
+                        card.visibility = View.GONE
                         destinationLocation = null
+                        lastRoutedDestination = null
                     }
                 }
             }
@@ -502,22 +546,108 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         }
     }
 
-    private fun findRoute(destinationLocation: Location) {
-        Timber.d("findRoute with location ${destinationLocation.latitude} and ${destinationLocation.longitude}")
-        val originLocation = navigationLocationProvider.lastLocation
-        val originPoint = originLocation?.let {
-            Point.fromLngLat(it.longitude, it.latitude)
+    /**
+     * Checks whether the tap is close enough to an alternative route line and, if so,
+     * promotes that route to primary.
+     *
+     * We avoid [MapboxRouteLineApi.findClosestRoute] because it is private in the current
+     * Mapbox Navigation beta. Instead we project sampled route coordinates to screen space
+     * and check their pixel distance to the tap — the same geometry the SDK renders.
+     */
+    private fun selectAlternativeRouteIfClicked(point: com.mapbox.geojson.Point) {
+        val currentRoutes = mapboxNavigation.getNavigationRoutes()
+        Timber.d("[RouteSelect] routes=${currentRoutes.size}")
+        if (currentRoutes.size < 2) return
+
+        val paddingPx = ROUTE_CLICK_PADDING_DP * resources.displayMetrics.density
+        val tapScreen = binding.mapView.mapboxMap.pixelForCoordinate(point)
+        Timber.d(
+            "[RouteSelect] tap screen=(${tapScreen.x.toInt()}, ${tapScreen.y.toInt()}) " +
+                "padding=${paddingPx.toInt()}px"
+        )
+
+        currentRoutes.drop(1).forEachIndexed { idx, route ->
+            val near = isTapNearRoute(route, tapScreen, paddingPx)
+            Timber.d("[RouteSelect] alt[$idx] near=$near")
+            if (near) {
+                val reordered = currentRoutes.toMutableList().apply {
+                    remove(route)
+                    add(0, route)
+                }
+                Timber.d("[RouteSelect] → promoting alt[$idx] to primary")
+                mapboxNavigation.setNavigationRoutes(reordered)
+                return
+            }
         }
+        Timber.d("[RouteSelect] no alternative matched")
+    }
+
+    private fun isTapNearRoute(
+        route: com.mapbox.navigation.base.route.NavigationRoute,
+        tapScreen: com.mapbox.maps.ScreenCoordinate,
+        paddingPx: Float
+    ): Boolean {
+        val encodedGeometry = route.directionsRoute.geometry()
+        if (encodedGeometry.isNullOrEmpty()) {
+            Timber.w("[RouteSelect] route geometry is null/empty")
+            return false
+        }
+
+        val coords = com.mapbox.geojson.LineString
+            .fromPolyline(encodedGeometry, com.mapbox.core.constants.Constants.PRECISION_6)
+            .coordinates()
+
+        return if (coords.isEmpty()) {
+            false
+        } else {
+            checkDistanceToTap(coords, tapScreen, paddingPx)
+        }
+    }
+
+    private fun checkDistanceToTap(
+        coords: List<com.mapbox.geojson.Point>,
+        tapScreen: com.mapbox.maps.ScreenCoordinate,
+        paddingPx: Float
+    ): Boolean {
+        val stride = maxOf(1, coords.size / STRIDE_SIZE)
+        val paddingSq = paddingPx * paddingPx
+        var minDistSq = Double.MAX_VALUE
+
+        coords.filterIndexed { i, _ -> i % stride == 0 }.forEach { coord ->
+            val screen = binding.mapView.mapboxMap.pixelForCoordinate(
+                com.mapbox.geojson.Point.fromLngLat(coord.longitude(), coord.latitude())
+            )
+            val dx = screen.x - tapScreen.x
+            val dy = screen.y - tapScreen.y
+            val dSq = dx * dx + dy * dy
+            if (dSq < minDistSq) minDistSq = dSq
+        }
+
+        Timber.d(
+            "[RouteSelect] minDist=${kotlin.math.sqrt(minDistSq).toInt()}px " +
+                "threshold=${paddingPx.toInt()}px pts=${coords.size}"
+        )
+        return minDistSq <= paddingSq
+    }
+
+    private fun findRoute(destinationLocation: Location) {
+        Timber.d("findRoute → lat=${destinationLocation.latitude} lng=${destinationLocation.longitude}")
+
+        val originLocation = navigationLocationProvider.lastLocation
+        if (originLocation == null) {
+            // GPS fix not yet available. The locationObserver already has a retry guard
+            // (`firstLocationUpdateReceived`) that calls findRoute() on the first valid
+            // location — nothing more to do here.
+            Timber.w("findRoute: no GPS fix yet, will retry on first location update")
+            return
+        }
+
+        val originPoint = Point.fromLngLat(originLocation.longitude, originLocation.latitude)
         val destinationPoint = Point.fromLngLat(
             destinationLocation.longitude,
             destinationLocation.latitude
         )
 
-        // execute a route request
-        // it's recommended to use the
-        // applyDefaultNavigationOptions and applyLanguageAndVoiceUnitOptions
-        // that make sure the route request is optimized
-        // to allow for support of all of the Navigation SDK features
         mapboxNavigation.requestRoutes(
             RouteOptions.builder()
                 .applyDefaultNavigationOptions()
@@ -525,14 +655,10 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 .coordinatesList(listOf(originPoint, destinationPoint))
                 .alternatives(true)
                 .apply {
-                    // provide the bearing for the origin of the request to ensure
-                    // that the returned route faces in the direction of the current user movement
-                    originLocation?.bearing?.let { bearing ->
+                    originLocation.bearing?.let { bearing ->
                         bearingsList(
                             listOf(
-                                Bearing.builder()
-                                    .angle(bearing)
-                                    .build(),
+                                Bearing.builder().angle(bearing).build(),
                                 null
                             )
                         )
@@ -542,17 +668,22 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 .build(),
             object : NavigationRouterCallback {
                 override fun onCanceled(routeOptions: RouteOptions, routerOrigin: String) {
-                    // no impl
+                    Timber.w("findRoute: request cancelled")
                 }
 
                 override fun onFailure(reasons: List<RouterFailure>, routeOptions: RouteOptions) {
-                    // no impl
+                    // Log the reasons so we know if this is a network error, API key issue, etc.
+                    // Reset lastRoutedDestination so the next uiState emission retries the request.
+                    Timber.e("findRoute failed: $reasons")
+                    lastRoutedDestination = null
                 }
 
                 override fun onRoutesReady(
                     routes: List<NavigationRoute>,
                     routerOrigin: String
                 ) {
+                    lastRoutedDestination =
+                        destinationLocation.longitude to destinationLocation.latitude
                     setRouteAndStartNavigation(routes)
                 }
             }
@@ -561,7 +692,11 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     private fun setRouteAndStartNavigation(routes: List<NavigationRoute>) {
         mapboxNavigation.setNavigationRoutes(routes)
-        binding.tripProgressCard.visibility = View.VISIBLE
+        val card = binding.tripProgressCard
+        val lp = card.layoutParams as androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
+        lp.bottomMargin = (INCIDENT_SHEET_PEEK_DP * Resources.getSystem().displayMetrics.density).toInt()
+        card.layoutParams = lp
+        card.visibility = View.VISIBLE
         navigationCamera.requestNavigationCameraToFollowing()
     }
 }

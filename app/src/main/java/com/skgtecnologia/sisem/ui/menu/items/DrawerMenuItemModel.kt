@@ -15,11 +15,24 @@ data class DrawerMenuItemModel(
     @DrawableRes val drawableId: Int
 )
 
-fun getDrawerMenuItemList(context: Context, isAdmin: Boolean?): List<DrawerMenuItemModel> {
-    return if (isAdmin == true) {
+fun getDrawerMenuItemList(
+    context: Context,
+    isAdmin: Boolean?,
+    hasPendingBiometric: Boolean = false
+): List<DrawerMenuItemModel> {
+    val items = if (isAdmin == true) {
         getLeaderDrawerItems(context)
     } else {
         getDrawerItems(context)
+    }
+    return if (hasPendingBiometric) {
+        items + DrawerMenuItemModel(
+            MainRoute.BiometricRegistrationRoute,
+            context.getString(R.string.drawer_biometric_registration),
+            drawable.ic_biometric
+        )
+    } else {
+        items
     }
 }
 

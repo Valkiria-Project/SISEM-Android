@@ -2,7 +2,7 @@
 Ajustes y correcciones aplicadas segun versiones:
 
 
-# Version 2.4.12 *(XX.XX.XXXX)*
+# Version 2.4.12 *(19.08.2026)*
 ----------------------------------------
 ### Autenticación biométrica por reconocimiento facial
 
@@ -15,6 +15,12 @@ z
 - **Sincronización en la nube:** Al completar el registro facial, los embeddings se suben automáticamente a un servicio en la nube. Si la subida falla por falta de conexión, WorkManager reintenta el envío en segundo plano con backoff exponencial cuando se restaura la red.
 
 - **Portabilidad entre dispositivos:** Al iniciar sesión en un dispositivo donde el usuario no tiene biometría registrada localmente, la aplicación consulta la nube automáticamente. Si el usuario ya se registró en otro dispositivo, sus datos se descargan y almacenan localmente, permitiendo autenticarse con el rostro sin necesidad de volver a registrarse.
+
+- **Falla de modal en vista de mapa en tablet:** Se corrige la visualizacion de como se mostraba la info de un incidente en ruta en un modal, asi mismo los datos de distancia que se sobreponian
+    - Resuelve:  https://skgtecnologia.atlassian.net/browse/SMA-763
+
+- **Pad de firma:** Se corrige la visualizacion de pad de firma en vista de tablet
+    - Resuelve:  https://skgtecnologia.atlassian.net/browse/SMA-764
 
 ### Correcciones
 

@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.ui.menu
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skgtecnologia.sisem.commons.biometric.FaceCredentialStore
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
 import com.skgtecnologia.sisem.domain.auth.usecases.Logout
@@ -33,6 +34,7 @@ class MenuViewModel @Inject constructor(
     private val logout: Logout,
     private val logoutCurrentUser: LogoutCurrentUser,
     private val logoutTurn: LogoutTurn,
+    private val faceCredentialStore: FaceCredentialStore,
     observeOperationConfig: ObserveOperationConfig
 ) : ViewModel() {
 
@@ -48,10 +50,13 @@ class MenuViewModel @Inject constructor(
                 .onSuccess { accessTokenModels ->
                     Timber.d("Success getting the users")
 
+                    val hasPending = checkPendingBiometric(accessTokenModels)
+
                     withContext(Dispatchers.Main) {
                         uiState.update {
                             it.copy(
-                                accessTokenModelList = accessTokenModels
+                                accessTokenModelList = accessTokenModels,
+                                hasPendingBiometric = hasPending
                             )
                         }
                     }
@@ -187,5 +192,11 @@ class MenuViewModel @Inject constructor(
                 errorModel = null
             )
         }
+    }
+
+    private suspend fun checkPendingBiometric(
+        accessTokenModels: List<com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel>
+    ): Boolean = accessTokenModels.any { token ->
+        !faceCredentialStore.hasEmbedding(token.username)
     }
 }

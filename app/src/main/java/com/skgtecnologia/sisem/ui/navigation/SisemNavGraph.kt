@@ -43,6 +43,8 @@ import com.skgtecnologia.sisem.commons.location.LocationService
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.ui.authcards.create.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.authcards.view.AuthCardViewScreen
+import com.skgtecnologia.sisem.ui.biometric.BiometricCrewListScreen
+import com.skgtecnologia.sisem.ui.biometric.BiometricRegistrationScreen
 import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.sharedViewModel
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
@@ -380,6 +382,28 @@ private fun NavGraphBuilder.mainGraph(
             ) { navigationModel ->
                 navigationModel.navigate(navController)
             }
+        }
+
+        composable<MainRoute.BiometricRegistrationRoute> {
+            BiometricRegistrationScreen(
+                modifier = modifier,
+                onBiometric = {
+                    navController.navigate(MainRoute.BiometricCrewListRoute)
+                },
+                onBack = { navController.navigateUp() }
+            )
+        }
+
+        composable<MainRoute.BiometricCrewListRoute> {
+            BiometricCrewListScreen(
+                modifier = modifier,
+                onEnroll = { username ->
+                    navController.navigate(
+                        AuthRoute.FaceCameraRoute(mode = "ENROLL", username = username)
+                    )
+                },
+                onBack = { navController.navigateUp() }
+            )
         }
 
         composable<MainRoute.PreStretcherRetentionRoute> {

@@ -9,7 +9,12 @@ import com.google.mlkit.vision.face.Face
 import com.skgtecnologia.sisem.commons.biometric.FaceCredentialStore
 import com.skgtecnologia.sisem.commons.biometric.FaceEmbeddingHelper
 import com.skgtecnologia.sisem.di.operation.OperationRole
+import com.skgtecnologia.sisem.domain.model.banner.faceEnrollmentSuccessBanner
+import com.skgtecnologia.sisem.domain.model.banner.faceErrorBanner
+import com.skgtecnologia.sisem.domain.model.banner.faceVerificationSuccessBanner
+import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.ui.navigation.AuthRoute
+import com.valkiria.uicomponents.bricks.banner.BannerUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -103,6 +108,9 @@ class FaceCameraViewModel @Inject constructor(
     )
     val state: StateFlow<FaceCameraState> = _state
 
+    private val _banner = MutableStateFlow<BannerUiModel?>(null)
+    val banner: StateFlow<BannerUiModel?> = _banner
+
     private var isProcessing = false
     private val capturedEmbeddings = mutableListOf<FloatArray>()
     private var currentStep = EnrollmentStep.FRONTAL
@@ -127,6 +135,13 @@ class FaceCameraViewModel @Inject constructor(
         if (mode == FaceCameraMode.ENROLL) {
             currentLivenessChallenge = initialEnrollChallenge
             startEnrollLivenessCountdown(initialEnrollChallenge!!)
+        }
+        viewModelScope.launch {
+            _state.collect { newState ->
+                if (newState is FaceCameraState.NoMatch) {
+                    _banner.update { faceErrorBanner(newState.message).mapToUi() }
+                }
+            }
         }
     }
 
@@ -337,9 +352,9 @@ class FaceCameraViewModel @Inject constructor(
             }
             Timber.d("[FaceEnroll] Stored ${capturedEmbeddings.size} embeddings for $username")
             faceCredentialStore.dumpToLog()
-            // Upload to cloud in background — WorkManager handles retry on failure
             viewModelScope.launch { uploadBiometric(username) }
             _state.update { FaceCameraState.Enrolled }
+            _banner.update { faceEnrollmentSuccessBanner().mapToUi() }
         } else {
             currentStep = next
             _state.update {
@@ -408,10 +423,15 @@ class FaceCameraViewModel @Inject constructor(
         _state.update {
             FaceCameraState.Success(username = bestUsername, navigationModel = FaceNavigationModel())
         }
+        _banner.update { faceVerificationSuccessBanner(bestUsername).mapToUi() }
         isProcessing = false
     }
 
     // ── Public helpers ───────────────────────────────────────────────────────
+
+    fun consumeBanner() {
+        _banner.update { null }
+    }
 
     fun reset() {
         isProcessing = false

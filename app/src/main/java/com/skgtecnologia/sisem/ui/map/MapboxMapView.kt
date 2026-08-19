@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -82,7 +83,8 @@ fun MapboxMapView(
         },
         scaffoldState = scaffoldState,
         sheetPeekHeight = if (currentIncident != null) 140.dp else 0.dp,
-        sheetSwipeEnabled = true
+        sheetSwipeEnabled = true,
+        sheetMaxWidth = Dp.Unspecified
     ) { innerPadding ->
         Box(modifier.padding(innerPadding)) {
             AndroidFragment<MapFragment>(

@@ -15,6 +15,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--
+         Transparent overlay that sits above the MapView (so it captures taps on
+         Mapbox ViewAnnotation callout bubbles) but below the UI controls (so the
+         CardView and RecenterButton still receive their own touches normally).
+         All touch events are forwarded to the MapView so panning/zooming/long-press
+         still work; ACTION_UP is also used to detect alternative-route selection.
+    -->
+    <View
+        android:id="@+id/routeSelectionOverlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/tripProgressCard"
         android:layout_width="0dp"
