@@ -80,6 +80,7 @@ private const val PADDING_HORIZONTAL = 40.0
 private const val PADDING_BOTTOM_SMALL = 120.0
 private const val PADDING_BOTTOM_LARGE = 150.0
 private const val ROUTE_CLICK_PADDING_DP = 80f
+private const val INCIDENT_SHEET_PEEK_DP = 140f
 
 @Suppress("TooManyFunctions")
 @OptIn(ExperimentalPreviewMapboxNavigationAPI::class)
@@ -492,7 +493,12 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                         }
                     } else {
                         mapboxNavigation.setNavigationRoutes(emptyList())
-                        binding.tripProgressCard.visibility = View.GONE
+                        val card = binding.tripProgressCard
+                        val lp = card.layoutParams as
+                            androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
+                        lp.bottomMargin = 0
+                        card.layoutParams = lp
+                        card.visibility = View.GONE
                         destinationLocation = null
                         lastRoutedDestination = null
                     }
@@ -672,7 +678,11 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     private fun setRouteAndStartNavigation(routes: List<NavigationRoute>) {
         mapboxNavigation.setNavigationRoutes(routes)
-        binding.tripProgressCard.visibility = View.VISIBLE
+        val card = binding.tripProgressCard
+        val lp = card.layoutParams as androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
+        lp.bottomMargin = (INCIDENT_SHEET_PEEK_DP * Resources.getSystem().displayMetrics.density).toInt()
+        card.layoutParams = lp
+        card.visibility = View.VISIBLE
         navigationCamera.requestNavigationCameraToFollowing()
     }
 }
