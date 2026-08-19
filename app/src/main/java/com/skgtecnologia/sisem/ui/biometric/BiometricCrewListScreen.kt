@@ -151,10 +151,6 @@ private fun CrewMemberInfoCard(
     val drawableName = status.role.toCrewDrawable()
     val iconResourceId = context.getResourceIdByName(drawableName, DefType.DRAWABLE)
 
-    val brush = Brush.horizontalGradient(
-        colors = listOf(Color.Black, MaterialTheme.colorScheme.background)
-    )
-
     val badgeColor = if (status.isEnrolled) Color(GREEN_HEX) else Color(ORANGE_HEX)
 
     ElevatedCard(
@@ -169,56 +165,75 @@ private fun CrewMemberInfoCard(
             ),
         shape = RoundedCornerShape(CARD_RADIUS.dp)
     ) {
-        Box(
-            modifier = Modifier
-                .then(
-                    if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier
-                )
-                .background(brush = brush)
-                .fillMaxWidth()
+        CrewMemberCardContent(
+            status = status,
+            iconResourceId = iconResourceId,
+            badgeColor = badgeColor,
+            onClick = onClick
+        )
+    }
+}
+
+@Composable
+private fun CrewMemberCardContent(
+    status: CrewBiometricStatus,
+    iconResourceId: Int?,
+    badgeColor: Color,
+    onClick: (() -> Unit)?
+) {
+    val brush = Brush.horizontalGradient(
+        colors = listOf(Color.Black, MaterialTheme.colorScheme.background)
+    )
+
+    Box(
+        modifier = Modifier
+            .then(
+                if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier
+            )
+            .background(brush = brush)
+            .fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 32.dp, vertical = 24.dp)
         ) {
-            Column(
-                modifier = Modifier.padding(horizontal = 32.dp, vertical = 24.dp)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    iconResourceId?.let {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = it),
-                            contentDescription = null,
-                            modifier = Modifier.size(ICON_SIZE.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-
-                    Column(
-                        modifier = Modifier
-                            .padding(start = 12.dp)
-                            .weight(1f)
-                    ) {
-                        Text(
-                            text = status.role.uppercase(),
-                            style = MaterialTheme.typography.headlineMedium.copy(
-                                fontWeight = FontWeight.Bold
-                            )
-                        )
-
-                        CrewMemberBadge(
-                            name = status.name,
-                            badgeColor = badgeColor
-                        )
-                    }
+                iconResourceId?.let {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = it),
+                        contentDescription = null,
+                        modifier = Modifier.size(ICON_SIZE.dp),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
                 }
 
-                Text(
-                    text = status.document,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
+                Column(
+                    modifier = Modifier
+                        .padding(start = 12.dp)
+                        .weight(1f)
+                ) {
+                    Text(
+                        text = status.role.uppercase(),
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+
+                    CrewMemberBadge(
+                        name = status.name,
+                        badgeColor = badgeColor
+                    )
+                }
             }
+
+            Text(
+                text = status.document,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(top = 8.dp)
+            )
         }
     }
 }

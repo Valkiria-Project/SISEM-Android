@@ -79,6 +79,7 @@ private const val PADDING_TOP_LARGE = 180.0
 private const val PADDING_HORIZONTAL = 40.0
 private const val PADDING_BOTTOM_SMALL = 120.0
 private const val PADDING_BOTTOM_LARGE = 150.0
+private const val STRIDE_SIZE = 80
 private const val ROUTE_CLICK_PADDING_DP = 80f
 private const val INCIDENT_SHEET_PEEK_DP = 140f
 
@@ -553,7 +554,6 @@ class MapFragment : Fragment(R.layout.fragment_map) {
      * Mapbox Navigation beta. Instead we project sampled route coordinates to screen space
      * and check their pixel distance to the tap — the same geometry the SDK renders.
      */
-    @Suppress("MagicNumber")
     private fun selectAlternativeRouteIfClicked(point: com.mapbox.geojson.Point) {
         val currentRoutes = mapboxNavigation.getNavigationRoutes()
         Timber.d("[RouteSelect] routes=${currentRoutes.size}")
@@ -609,8 +609,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         tapScreen: com.mapbox.maps.ScreenCoordinate,
         paddingPx: Float
     ): Boolean {
-        val strideSize = 80
-        val stride = maxOf(1, coords.size / strideSize)
+        val stride = maxOf(1, coords.size / STRIDE_SIZE)
         val paddingSq = paddingPx * paddingPx
         var minDistSq = Double.MAX_VALUE
 
