@@ -2,7 +2,7 @@
 Ajustes y correcciones aplicadas segun versiones:
 
 
-# Version 2.4.12 *(XX.XX.XXXX)*
+# Version 2.4.12 *(19.08.2026)*
 ----------------------------------------
 ### Autenticación biométrica por reconocimiento facial
 
