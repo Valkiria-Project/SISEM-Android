@@ -389,3 +389,23 @@ fun sendEmailScreenSuccessBanner(): BannerModel = BannerModel(
     title = "Éxito",
     description = "Correo enviado exitosamente"
 )
+
+fun faceEnrollmentSuccessBanner(): BannerModel = BannerModel(
+    icon = "ic_alert",
+    iconColor = "#42A4FA",
+    title = "Registro exitoso",
+    description = "El registro facial ha sido guardado exitosamente."
+)
+
+fun faceVerificationSuccessBanner(username: String): BannerModel = BannerModel(
+    icon = "ic_alert",
+    iconColor = "#42A4FA",
+    title = "Verificación exitosa",
+    description = "Rostro verificado correctamente para $username."
+)
+
+fun faceErrorBanner(message: String): BannerModel = BannerModel(
+    icon = "ic_alert",
+    title = "Error de reconocimiento",
+    description = message
+)

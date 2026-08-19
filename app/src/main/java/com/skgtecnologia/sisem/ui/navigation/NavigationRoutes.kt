@@ -98,6 +98,12 @@ sealed interface MainRoute : NavRoute {
     data object PreStretcherRetentionRoute : MainRoute
 
     @Serializable
+    data object BiometricRegistrationRoute : MainRoute
+
+    @Serializable
+    data object BiometricCrewListRoute : MainRoute
+
+    @Serializable
     data class SignatureRoute(val document: String) : MainRoute
 
     @Serializable

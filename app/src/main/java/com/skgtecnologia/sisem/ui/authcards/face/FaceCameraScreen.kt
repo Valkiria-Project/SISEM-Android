@@ -45,6 +45,7 @@ import com.google.mlkit.vision.face.FaceDetection
 import com.google.mlkit.vision.face.FaceDetectorOptions
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.biometric.rotateTo
+import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import timber.log.Timber
 import java.util.concurrent.Executors
 import androidx.compose.ui.geometry.Size as ComposeSize
@@ -55,7 +56,6 @@ private const val OVAL_WIDTH_FRACTION = 0.65f
 private const val OVAL_HEIGHT_RATIO = 1.35f
 private const val OVERLAY_ALPHA = 0.55f
 private const val BORDER_WIDTH_DP = 3
-private const val ENROLL_SUCCESS_DELAY_MS = 1_500L
 private const val MIN_FACE_SIZE = 0.25f
 
 @Suppress("MagicNumber")
@@ -77,6 +77,7 @@ fun FaceCameraScreen(
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val state by viewModel.state.collectAsState()
+    val bannerModel by viewModel.banner.collectAsState()
 
     val detector = remember {
         FaceDetection.getClient(
@@ -84,24 +85,12 @@ fun FaceCameraScreen(
                 .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
                 .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
                 .setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
-                // Required for liveness: provides eye-open probability for blink detection
                 .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
                 .setMinFaceSize(MIN_FACE_SIZE)
                 .build()
         )
     }
     val analysisExecutor = remember { Executors.newSingleThreadExecutor() }
-
-    LaunchedEffect(state) {
-        when (val s = state) {
-            is FaceCameraState.Success -> onNavigate(s.navigationModel)
-
-            // After enrollment show success briefly then go back automatically
-            FaceCameraState.Enrolled -> kotlinx.coroutines.delay(ENROLL_SUCCESS_DELAY_MS).also { onBack() }
-
-            else -> Unit
-        }
-    }
 
     Box(modifier = Modifier.fillMaxSize().background(Color.Black)) {
         CameraPreview(
@@ -122,6 +111,16 @@ fun FaceCameraScreen(
                 .navigationBarsPadding()
                 .padding(bottom = 24.dp)
         )
+    }
+
+    OnBannerHandler(uiModel = bannerModel) {
+        viewModel.consumeBanner()
+        when (val s = state) {
+            is FaceCameraState.Success -> onNavigate(s.navigationModel)
+            FaceCameraState.Enrolled -> onBack()
+            is FaceCameraState.NoMatch -> viewModel.reset()
+            else -> Unit
+        }
     }
 }
 
