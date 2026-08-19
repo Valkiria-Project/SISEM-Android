@@ -32,7 +32,6 @@ private const val CARD_ALPHA = 0.35f
 @Composable
 fun BiometricRegistrationScreen(
     modifier: Modifier = Modifier,
-    onSignature: () -> Unit,
     onBiometric: () -> Unit,
     onBack: () -> Unit
 ) {

@@ -368,6 +368,34 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         viewportDataSource.overviewPadding = overviewPadding
         viewportDataSource.followingPadding = followingPadding
 
+        setupTripProgressApi()
+
+        // initialize maneuver arrow view to draw arrows on the map
+        val routeArrowOptions = RouteArrowOptions.Builder(requireActivity()).build()
+        routeArrowView = MapboxRouteArrowView(routeArrowOptions)
+
+        setupRouteSelectionOverlay()
+
+        binding.mapView.mapboxMap.loadStyle(Style.DARK) { style ->
+            routeLineView.initializeLayers(style)
+            binding.mapView.compass.updateSettings { enabled = false }
+            binding.mapView.gestures.addOnMapLongClickListener { point ->
+                findRoute(
+                    Location.Builder().longitude(point.longitude()).latitude(point.latitude())
+                        .build()
+                )
+                true
+            }
+            restoreRouteIfNeeded(style)
+        }
+
+        initViewInteractions()
+        initObservers()
+        // No-op when Mapbox already initialized navigation for this view.
+        initNavigation()
+    }
+
+    private fun setupTripProgressApi() {
         val distanceFormatterOptions = DistanceFormatterOptions.Builder(requireActivity())
             .unitType(UnitType.METRIC)
             .build()
@@ -391,13 +419,9 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 )
                 .build()
         )
+    }
 
-        // initialize maneuver arrow view to draw arrows on the map
-        val routeArrowOptions = RouteArrowOptions.Builder(requireActivity()).build()
-        routeArrowView = MapboxRouteArrowView(routeArrowOptions)
-
-        // load map style
-
+    private fun setupRouteSelectionOverlay() {
         // routeSelectionOverlay (XML) sits above MapView but below all buttons,
         // so it captures taps on Mapbox ViewAnnotation callout bubbles (which live
         // inside MapView and consume touches before MapView's own listeners fire).
@@ -414,24 +438,6 @@ class MapFragment : Fragment(R.layout.fragment_map) {
             }
             true // consumed — already dispatched to MapView manually
         }
-
-        binding.mapView.mapboxMap.loadStyle(Style.DARK) { style ->
-            routeLineView.initializeLayers(style)
-            binding.mapView.compass.updateSettings { enabled = false }
-            binding.mapView.gestures.addOnMapLongClickListener { point ->
-                findRoute(
-                    Location.Builder().longitude(point.longitude()).latitude(point.latitude())
-                        .build()
-                )
-                true
-            }
-            restoreRouteIfNeeded(style)
-        }
-
-        initViewInteractions()
-        initObservers()
-        // No-op when Mapbox already initialized navigation for this view.
-        initNavigation()
     }
 
     private fun restoreRouteIfNeeded(style: com.mapbox.maps.Style) {
@@ -540,14 +546,6 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     }
 
     /**
-     * Checks whether the user tapped an alternative route line and, if so, promotes it
-     * to the primary route without requesting a new Mapbox Directions call.
-     *
-     * Mapbox renders all routes on the map but only reacts to taps when an explicit
-     * [OnMapClickListener] calls [routeLineApi.findClosestRoute].
-     */
-
-    /**
      * Checks whether the tap is close enough to an alternative route line and, if so,
      * promotes that route to primary.
      *
@@ -563,7 +561,10 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
         val paddingPx = ROUTE_CLICK_PADDING_DP * resources.displayMetrics.density
         val tapScreen = binding.mapView.mapboxMap.pixelForCoordinate(point)
-        Timber.d("[RouteSelect] tap screen=(${tapScreen.x.toInt()}, ${tapScreen.y.toInt()}) padding=${paddingPx.toInt()}px")
+        Timber.d(
+            "[RouteSelect] tap screen=(${tapScreen.x.toInt()}, ${tapScreen.y.toInt()}) " +
+                "padding=${paddingPx.toInt()}px"
+        )
 
         currentRoutes.drop(1).forEachIndexed { idx, route ->
             val near = isTapNearRoute(route, tapScreen, paddingPx)
@@ -596,9 +597,20 @@ class MapFragment : Fragment(R.layout.fragment_map) {
             .fromPolyline(encodedGeometry, com.mapbox.core.constants.Constants.PRECISION_6)
             .coordinates()
 
-        if (coords.isEmpty()) return false
+        return if (coords.isEmpty()) {
+            false
+        } else {
+            checkDistanceToTap(coords, tapScreen, paddingPx)
+        }
+    }
 
-        val stride = maxOf(1, coords.size / 80)
+    private fun checkDistanceToTap(
+        coords: List<com.mapbox.geojson.Point>,
+        tapScreen: com.mapbox.maps.ScreenCoordinate,
+        paddingPx: Float
+    ): Boolean {
+        val strideSize = 80
+        val stride = maxOf(1, coords.size / strideSize)
         val paddingSq = paddingPx * paddingPx
         var minDistSq = Double.MAX_VALUE
 
@@ -612,7 +624,10 @@ class MapFragment : Fragment(R.layout.fragment_map) {
             if (dSq < minDistSq) minDistSq = dSq
         }
 
-        Timber.d("[RouteSelect] minDist=${kotlin.math.sqrt(minDistSq).toInt()}px threshold=${paddingPx.toInt()}px pts=${coords.size}")
+        Timber.d(
+            "[RouteSelect] minDist=${kotlin.math.sqrt(minDistSq).toInt()}px " +
+                "threshold=${paddingPx.toInt()}px pts=${coords.size}"
+        )
         return minDistSq <= paddingSq
     }
 

@@ -387,9 +387,6 @@ private fun NavGraphBuilder.mainGraph(
         composable<MainRoute.BiometricRegistrationRoute> {
             BiometricRegistrationScreen(
                 modifier = modifier,
-                onSignature = {
-                    navController.navigate(MainRoute.InitSignatureRoute)
-                },
                 onBiometric = {
                     navController.navigate(MainRoute.BiometricCrewListRoute)
                 },

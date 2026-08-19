@@ -205,24 +205,10 @@ private fun CrewMemberInfoCard(
                             )
                         )
 
-                        Row(
-                            modifier = Modifier
-                                .padding(top = 5.dp)
-                                .background(
-                                    color = badgeColor,
-                                    shape = RoundedCornerShape(PILL_RADIUS.dp)
-                                )
-                                .padding(horizontal = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = status.name,
-                                style = MaterialTheme.typography.labelLarge,
-                                color = Color.Black,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                        }
+                        CrewMemberBadge(
+                            name = status.name,
+                            badgeColor = badgeColor
+                        )
                     }
                 }
 
@@ -234,6 +220,31 @@ private fun CrewMemberInfoCard(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun CrewMemberBadge(
+    name: String,
+    badgeColor: Color
+) {
+    Row(
+        modifier = Modifier
+            .padding(top = 5.dp)
+            .background(
+                color = badgeColor,
+                shape = RoundedCornerShape(PILL_RADIUS.dp)
+            )
+            .padding(horizontal = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = name,
+            style = MaterialTheme.typography.labelLarge,
+            color = Color.Black,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }
 
