@@ -35,6 +35,8 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.extensions.encodeAsBase64
 import timber.log.Timber
 
+private const val SIGNATURE_PAD_HEIGHT_FRACTION = 0.5f
+
 @Suppress("LongMethod")
 @Composable
 fun SignaturePadScreen(
@@ -69,7 +71,7 @@ fun SignaturePadScreen(
         ComposeSignature(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.5f)
+                .fillMaxHeight(SIGNATURE_PAD_HEIGHT_FRACTION)
                 .padding(16.dp),
             fillHeight = true,
             signaturePadColor = Color.White,

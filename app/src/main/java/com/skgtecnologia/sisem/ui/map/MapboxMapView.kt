@@ -114,7 +114,7 @@ fun MapboxMapView(
                     .offset {
                         val sheetOffset = try {
                             scaffoldState.bottomSheetState.requireOffset()
-                        } catch (e: Exception) {
+                        } catch (_: IllegalStateException) {
                             constraints.maxHeight.toFloat()
                         }
                         IntOffset(x = 0, y = -(constraints.maxHeight - sheetOffset.toInt()))
