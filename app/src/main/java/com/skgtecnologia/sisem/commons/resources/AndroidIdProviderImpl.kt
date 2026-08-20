@@ -25,7 +25,6 @@ class AndroidIdProviderImpl @Inject constructor(
         return synchronized(this) {
             cachedAndroidId ?: resolveAndroidId().also { cachedAndroidId = it }
         }
-        return resolveAndroidId().also { cachedAndroidId = it }
     }
 
     /**
