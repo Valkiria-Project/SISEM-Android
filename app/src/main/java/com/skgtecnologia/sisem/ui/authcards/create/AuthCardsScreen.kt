@@ -36,7 +36,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.permissions.shouldShowRationale
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.di.operation.OperationRole
@@ -86,21 +85,23 @@ fun AuthCardsScreen(
     val fineLocationPermissionState: PermissionState =
         rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
 
-    LaunchedEffect(notificationsPermissionState?.status) {
-        if (notificationsPermissionState?.status?.isGranted == false &&
-            !notificationsPermissionState.status.shouldShowRationale
-        ) {
-            notificationsPermissionState.launchPermissionRequest()
+    val cameraPermissionState: PermissionState =
+        rememberPermissionState(Manifest.permission.CAMERA)
+
+    val backgroundLocationPermissionState: PermissionState? =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            rememberPermissionState(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+        } else {
+            null
         }
 
-        if (!fineLocationPermissionState.status.isGranted &&
-            !fineLocationPermissionState.status.shouldShowRationale
-        ) {
-            fineLocationPermissionState.launchPermissionRequest()
-        }
-    }
-
-    if (arePermissionsGranted(notificationsPermissionState, fineLocationPermissionState)) {
+    if (arePermissionsGranted(
+            notificationsPermissionState,
+            fineLocationPermissionState,
+            cameraPermissionState,
+            backgroundLocationPermissionState
+        )
+    ) {
         AuthCardsScreenRender(viewModel, modifier, onNavigation)
 
         OnNotificationHandler(notificationData) {
@@ -110,6 +111,14 @@ fun AuthCardsScreen(
                 Timber.d("Navigate to MapScreen")
             }
         }
+    } else {
+        PermissionCarousel(
+            notificationsPermissionState = notificationsPermissionState,
+            fineLocationPermissionState = fineLocationPermissionState,
+            cameraPermissionState = cameraPermissionState,
+            backgroundLocationPermissionState = backgroundLocationPermissionState,
+            modifier = modifier
+        )
     }
 
     OnBannerHandler(uiModel = uiState.roleRestrictionBanner) {
@@ -219,14 +228,15 @@ private fun AuthCardsScreenRender(
 
 private fun arePermissionsGranted(
     notificationsPermissionState: PermissionState?,
-    fineLocationPermissionState: PermissionState
+    fineLocationPermissionState: PermissionState,
+    cameraPermissionState: PermissionState,
+    backgroundLocationPermissionState: PermissionState?
 ): Boolean {
-    return if (notificationsPermissionState == null) {
-        true
-    } else {
-        notificationsPermissionState.status.isGranted &&
-                 fineLocationPermissionState.status.isGranted
-    }
+    val locationGranted = fineLocationPermissionState.status.isGranted
+    val cameraGranted = cameraPermissionState.status.isGranted
+    val notificationsGranted = notificationsPermissionState?.status?.isGranted != false
+    val bgLocationGranted = backgroundLocationPermissionState?.status?.isGranted != false
+    return locationGranted && cameraGranted && notificationsGranted && bgLocationGranted
 }
 
 private fun handleAction(
