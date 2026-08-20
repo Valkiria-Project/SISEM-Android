@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -118,49 +117,39 @@ fun SisemNavGraph(navigationModel: StartupNavigationModel?) {
             }
         }
 
-        // --- Location permission: request on every resume ---
-        val lifecycleOwner = LocalLifecycleOwner.current
-        val fineLocationPermission = rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
-        var locationResumeTick by remember { mutableIntStateOf(0) }
+        if (startDestination == NavGraph.MainGraph) {
+            val lifecycleOwner = LocalLifecycleOwner.current
+            val fineLocationPermission =
+                rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
+            var locationResumeTick by remember { mutableIntStateOf(0) }
 
-        DisposableEffect(lifecycleOwner) {
-            val observer = LifecycleEventObserver { _, event ->
-                if (event == Lifecycle.Event.ON_RESUME) locationResumeTick++
+            DisposableEffect(lifecycleOwner) {
+                val observer = LifecycleEventObserver { _, event ->
+                    if (event == Lifecycle.Event.ON_RESUME) locationResumeTick++
+                }
+                lifecycleOwner.lifecycle.addObserver(observer)
+                onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
             }
-            lifecycleOwner.lifecycle.addObserver(observer)
-            onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
-        }
 
-        LaunchedEffect(fineLocationPermission.status, locationResumeTick) {
-            if (!fineLocationPermission.status.isGranted) {
-                fineLocationPermission.launchPermissionRequest()
-            } else if (startDestination == NavGraph.MainGraph) {
-                startLocationTracking(context)
-            }
-        }
-        // ----------------------------------------------------
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            val notificationPermission = rememberPermissionState(
-                Manifest.permission.POST_NOTIFICATIONS
-            )
-
-            LaunchedEffect(notificationPermission.status) {
-                if (!notificationPermission.status.isGranted &&
-                    !notificationPermission.status.shouldShowRationale
-                ) {
-                    notificationPermission.launchPermissionRequest()
+            LaunchedEffect(fineLocationPermission.status, locationResumeTick) {
+                if (!fineLocationPermission.status.isGranted) {
+                    fineLocationPermission.launchPermissionRequest()
+                } else {
+                    startLocationTracking(context)
                 }
             }
 
-            if (!notificationPermission.status.isGranted &&
-                notificationPermission.status.shouldShowRationale
-            ) {
-                LaunchedEffect(Unit) {
-                    Timber.w(
-                        "POST_NOTIFICATIONS permanently denied — enable in Settings: %s",
-                        Uri.fromParts("package", context.packageName, null)
-                    )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                val notificationPermission = rememberPermissionState(
+                    Manifest.permission.POST_NOTIFICATIONS
+                )
+
+                LaunchedEffect(notificationPermission.status) {
+                    if (!notificationPermission.status.isGranted &&
+                        !notificationPermission.status.shouldShowRationale
+                    ) {
+                        notificationPermission.launchPermissionRequest()
+                    }
                 }
             }
         }

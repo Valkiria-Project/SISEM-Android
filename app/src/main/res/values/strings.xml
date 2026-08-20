@@ -157,6 +157,19 @@
     <string name="face_liveness_turn_left">Gira lentamente tu cabeza hacia la izquierda</string>
     <string name="face_liveness_turn_right">Gira lentamente tu cabeza hacia la derecha</string>
 
+    <!-- Permissions carousel -->
+    <string name="permission_carousel_title">Permisos necesarios</string>
+    <string name="permission_carousel_subtitle">Para funcionar correctamente, la app necesita los siguientes permisos</string>
+    <string name="permission_location_title">Ubicación</string>
+    <string name="permission_location_description">Permite rastrear la ambulancia en tiempo real y reportar su posición al centro de emergencias.</string>
+    <string name="permission_notifications_title">Notificaciones</string>
+    <string name="permission_notifications_description">Permite recibir alertas de incidentes asignados y novedades del turno.</string>
+    <string name="permission_bg_location_title">Ubicación en segundo plano</string>
+    <string name="permission_bg_location_description">Permite rastrear la ambulancia mientras la app está minimizada. Selecciona \"Permitir todo el tiempo\" en los ajustes del permiso de Ubicación.</string>
+    <string name="permission_allow_cta">PERMITIR</string>
+    <string name="permission_go_to_settings_cta">Ir a ajustes</string>
+    <string name="permission_granted_label">Concedido</string>
+
     <!-- Location background permission dialog -->
     <string name="location_bg_permission_title">Ubicación en segundo plano</string>
     <string name="location_bg_permission_description">Para rastrear la ambulancia mientras la app está minimizada, selecciona \"Permitir todo el tiempo\" en los ajustes de la app en el permiso de Ubicación.</string>
