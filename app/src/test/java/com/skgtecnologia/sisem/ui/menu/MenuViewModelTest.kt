@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.ui.menu
 
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
+import com.skgtecnologia.sisem.commons.biometric.FaceCredentialStore
 import com.skgtecnologia.sisem.commons.uiAction
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
@@ -16,18 +17,24 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
 private const val USERNAME = "username"
 
+@RunWith(RobolectricTestRunner::class)
 class MenuViewModelTest {
 
     @get:Rule
@@ -48,35 +55,40 @@ class MenuViewModelTest {
     @MockK
     private lateinit var logoutTurn: LogoutTurn
 
+    @MockK
+    private lateinit var faceCredentialStore: FaceCredentialStore
+
     private lateinit var viewModel: MenuViewModel
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
+
+        coEvery { faceCredentialStore.hasEmbedding(any()) } returns true
     }
 
     @Test
     fun `when getAllAccessTokens failure`() = runTest {
-        val vehicleConfigModel = mockk<VehicleConfigModel>()
-        val operationConfig = mockk<OperationModel> {
-            every { vehicleConfig } returns vehicleConfigModel
-        }
         coEvery { getAllAccessTokens.invoke() } returns Result.failure(Throwable())
-        coEvery { observeOperationConfig.invoke() } returns flowOf(operationConfig)
+        coEvery { observeOperationConfig.invoke() } returns MutableSharedFlow()
 
         viewModel = MenuViewModel(
             getAllAccessTokens = getAllAccessTokens,
             logout = logout,
             logoutCurrentUser = logoutCurrentUser,
             logoutTurn = logoutTurn,
+            faceCredentialStore = faceCredentialStore,
             observeOperationConfig = observeOperationConfig
         )
 
-        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+        val job = backgroundScope.launch {
             viewModel.operationConfig.collect()
         }
 
+        viewModel.uiState.first { it.errorModel != null }
+
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.value.errorModel?.title)
+        job.cancel()
     }
 
     @Test
@@ -94,12 +106,14 @@ class MenuViewModelTest {
             logout = logout,
             logoutCurrentUser = logoutCurrentUser,
             logoutTurn = logoutTurn,
+            faceCredentialStore = faceCredentialStore,
             observeOperationConfig = observeOperationConfig
         )
 
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
             viewModel.operationConfig.collect()
         }
+        advanceUntilIdle()
 
         Assert.assertEquals(vehicleConfigModel, viewModel.uiState.value.vehicleConfig)
         Assert.assertEquals(accessTokens, viewModel.uiState.value.accessTokenModelList)
@@ -115,12 +129,14 @@ class MenuViewModelTest {
             logout = logout,
             logoutCurrentUser = logoutCurrentUser,
             logoutTurn = logoutTurn,
+            faceCredentialStore = faceCredentialStore,
             observeOperationConfig = observeOperationConfig
         )
 
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
             viewModel.operationConfig.collect()
         }
+        advanceUntilIdle()
 
         Assert.assertEquals(null, viewModel.uiState.value.accessTokenModelList)
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.value.errorModel?.title)
@@ -142,6 +158,7 @@ class MenuViewModelTest {
             logout = logout,
             logoutCurrentUser = logoutCurrentUser,
             logoutTurn = logoutTurn,
+            faceCredentialStore = faceCredentialStore,
             observeOperationConfig = observeOperationConfig
         )
 
@@ -166,6 +183,7 @@ class MenuViewModelTest {
             logout = logout,
             logoutCurrentUser = logoutCurrentUser,
             logoutTurn = logoutTurn,
+            faceCredentialStore = faceCredentialStore,
             observeOperationConfig = observeOperationConfig
         )
 
@@ -190,6 +208,7 @@ class MenuViewModelTest {
             logout = logout,
             logoutCurrentUser = logoutCurrentUser,
             logoutTurn = logoutTurn,
+            faceCredentialStore = faceCredentialStore,
             observeOperationConfig = observeOperationConfig
         )
 

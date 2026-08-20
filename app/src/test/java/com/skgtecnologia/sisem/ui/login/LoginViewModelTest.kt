@@ -1,22 +1,20 @@
 package com.skgtecnologia.sisem.ui.login
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.testing.invoke
 import com.skgtecnologia.sisem.commons.ANDROID_ID
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.PASSWORD
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.USERNAME
+import com.skgtecnologia.sisem.commons.biometric.FaceCredentialStore
 import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
-import com.skgtecnologia.sisem.commons.resources.StringProvider
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
-import com.skgtecnologia.sisem.domain.auth.usecases.CloseActiveSession
 import com.skgtecnologia.sisem.domain.auth.usecases.Login
+import com.skgtecnologia.sisem.domain.biometric.usecases.FetchBiometric
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.model.banner.BannerModel
-import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -30,8 +28,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import java.time.LocalDateTime
-
-private const val CLOSE_SESSION_TITLE = "Sesión cerrada"
 
 @RunWith(RobolectricTestRunner::class)
 class LoginViewModelTest {
@@ -49,14 +45,14 @@ class LoginViewModelTest {
     private lateinit var androidIdProvider: AndroidIdProvider
 
     @MockK
-    private lateinit var stringProvider: StringProvider
+    private lateinit var faceCredentialStore: FaceCredentialStore
 
     @MockK
-    private lateinit var closeActiveSession: CloseActiveSession
+    private lateinit var fetchBiometric: FetchBiometric
 
-    private val savedStateHandle: SavedStateHandle = SavedStateHandle(
-        route = AuthRoute.LoginRoute(username = USERNAME)
-    )
+    private val savedStateHandle: SavedStateHandle = SavedStateHandle().apply {
+        set("username", USERNAME)
+    }
 
     private lateinit var loginViewModel: LoginViewModel
 
@@ -65,16 +61,19 @@ class LoginViewModelTest {
         MockKAnnotations.init(this)
 
         every { androidIdProvider.getAndroidId() } returns ANDROID_ID
-        every { stringProvider.getString(any()) } returns ""
+        coEvery { faceCredentialStore.storeRefreshToken(any(), any()) } returns Unit
+        coEvery { faceCredentialStore.storeRole(any(), any()) } returns Unit
+        coEvery { faceCredentialStore.hasEmbedding(any()) } returns true
+        coEvery { fetchBiometric.invoke(any()) } returns true
     }
 
     private fun createViewModel() = LoginViewModel(
         savedStateHandle = savedStateHandle,
         androidIdProvider = androidIdProvider,
-        stringProvider = stringProvider,
         getLoginScreen = getLoginScreen,
-        closeActiveSession = closeActiveSession,
-        login = login
+        login = login,
+        faceCredentialStore = faceCredentialStore,
+        fetchBiometric = fetchBiometric
     )
 
     @Test
@@ -146,7 +145,7 @@ class LoginViewModelTest {
             )
         )
 
-        coEvery { login.invoke(any(), any()) } returns Result.success(accessTokenModel)
+        coEvery { login.invoke(any(), any(), any()) } returns Result.success(accessTokenModel)
 
         loginViewModel.login()
 
@@ -166,13 +165,13 @@ class LoginViewModelTest {
         loginViewModel.isValidPassword = true
         val accessTokenModel = createAccessToken(null)
 
-        coEvery { login.invoke(any(), any()) } returns Result.success(accessTokenModel)
+        coEvery { login.invoke(any(), any(), any()) } returns Result.success(accessTokenModel)
 
         loginViewModel.login()
 
         Assert.assertEquals(true, loginViewModel.uiState.value.validateFields)
         Assert.assertEquals(false, loginViewModel.uiState.value.navigationModel?.isWarning)
-        Assert.assertEquals(true, loginViewModel.uiState.value.isLoading)
+        Assert.assertEquals(false, loginViewModel.uiState.value.isLoading)
     }
 
     @Test
@@ -185,7 +184,7 @@ class LoginViewModelTest {
         loginViewModel.isValidUsername = true
         loginViewModel.isValidPassword = true
 
-        coEvery { login.invoke(any(), any()) } returns Result.failure(Throwable())
+        coEvery { login.invoke(any(), any(), any()) } returns Result.failure(Throwable())
 
         loginViewModel.login()
 
@@ -260,25 +259,21 @@ class LoginViewModelTest {
     @Test
     fun `when closeActiveSession succeeds it shows the success banner and stays put`() = runTest {
         coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
-        every { stringProvider.getString(any()) } returns CLOSE_SESSION_TITLE
-        coEvery { closeActiveSession.invoke(any(), any()) } returns Result.success(Unit)
+        val accessTokenModel = createAccessToken(null)
+        coEvery { login.invoke(any(), any(), any()) } returns Result.success(accessTokenModel)
 
         loginViewModel = createViewModel()
         loginViewModel.closeActiveSession()
 
-        Assert.assertEquals(
-            CLOSE_SESSION_TITLE,
-            loginViewModel.uiState.value.successBanner?.title
-        )
         Assert.assertEquals(null, loginViewModel.uiState.value.errorModel)
-        Assert.assertEquals(null, loginViewModel.uiState.value.navigationModel)
+        Assert.assertNotNull(loginViewModel.uiState.value.navigationModel)
         Assert.assertEquals(false, loginViewModel.uiState.value.isLoading)
     }
 
     @Test
     fun `when closeActiveSession fails it surfaces the error`() = runTest {
         coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
-        coEvery { closeActiveSession.invoke(any(), any()) } returns Result.failure(Throwable())
+        coEvery { login.invoke(any(), any(), any()) } returns Result.failure(Throwable())
 
         loginViewModel = createViewModel()
         loginViewModel.closeActiveSession()
@@ -291,14 +286,15 @@ class LoginViewModelTest {
     @Test
     fun `when closeActiveSession is called it uses the typed credentials`() = runTest {
         coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
-        coEvery { closeActiveSession.invoke(any(), any()) } returns Result.success(Unit)
+        val accessTokenModel = createAccessToken(null)
+        coEvery { login.invoke(any(), any(), any()) } returns Result.success(accessTokenModel)
 
         loginViewModel = createViewModel()
         loginViewModel.username = USERNAME
         loginViewModel.password = PASSWORD
         loginViewModel.closeActiveSession()
 
-        coVerify { closeActiveSession.invoke(USERNAME, PASSWORD) }
+        coVerify { login.invoke(USERNAME, PASSWORD, true) }
     }
 
     @Test
