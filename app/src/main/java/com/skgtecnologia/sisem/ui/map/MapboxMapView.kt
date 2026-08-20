@@ -3,11 +3,12 @@ package com.skgtecnologia.sisem.ui.map
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -40,6 +41,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -91,28 +93,32 @@ fun MapboxMapView(
 
     BottomSheetScaffold(
         sheetContent = {
-            Column(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                TripProgressCard(mapFragmentUiState.tripProgress)
-
-                currentIncident?.let {
-                    IncidentContent(incidentUiModel = it, onAction = onAction)
-                }
+            currentIncident?.let {
+                IncidentContent(incidentUiModel = it, onAction = onAction)
             }
         },
         scaffoldState = scaffoldState,
-        sheetPeekHeight = if (currentIncident != null) {
-            if (mapFragmentUiState.tripProgress != null) 220.dp else 140.dp
-        } else {
-            0.dp
-        },
+        sheetPeekHeight = if (currentIncident != null) 140.dp else 0.dp,
         sheetSwipeEnabled = true,
         sheetMaxWidth = Dp.Unspecified
     ) {
-        Box(modifier) {
+        BoxWithConstraints(modifier) {
             AndroidFragment<MapFragment>(
                 fragmentState = fragmentState
+            )
+
+            TripProgressCard(
+                tripProgress = mapFragmentUiState.tripProgress,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .offset {
+                        val sheetOffset = try {
+                            scaffoldState.bottomSheetState.requireOffset()
+                        } catch (e: Exception) {
+                            constraints.maxHeight.toFloat()
+                        }
+                        IntOffset(x = 0, y = -(constraints.maxHeight - sheetOffset.toInt()))
+                    }
             )
 
             IconButton(
@@ -182,7 +188,7 @@ private fun TripProgressCard(
         Card(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 8.dp),
+                .padding(vertical = 28.dp),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
             shape = RoundedCornerShape(20.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White)
