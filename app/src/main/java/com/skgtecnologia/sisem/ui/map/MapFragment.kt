@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -81,7 +81,6 @@ private const val PADDING_BOTTOM_SMALL = 120.0
 private const val PADDING_BOTTOM_LARGE = 150.0
 private const val STRIDE_SIZE = 80
 private const val ROUTE_CLICK_PADDING_DP = 80f
-private const val INCIDENT_SHEET_PEEK_DP = 140f
 
 @Suppress("TooManyFunctions")
 @OptIn(ExperimentalPreviewMapboxNavigationAPI::class)
@@ -93,7 +92,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     private var mapBinding: FragmentMapBinding? = null
     private val binding
         get() = requireNotNull(mapBinding) { "Accessed binding outside the view lifecycle" }
-    val viewModel: MapFragmentViewModel by viewModels()
+    val viewModel: MapFragmentViewModel by activityViewModels()
 
     private var destinationLocation: Location? = null
 
@@ -307,9 +306,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         }
 
         // update bottom trip progress summary
-        binding.tripProgressView.render(
-            tripProgressApi.getTripProgress(routeProgress)
-        )
+        viewModel.updateTripProgress(tripProgressApi.getTripProgress(routeProgress))
     }
 
     private val pixelDensity = Resources.getSystem().displayMetrics.density
@@ -500,12 +497,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                         }
                     } else {
                         mapboxNavigation.setNavigationRoutes(emptyList())
-                        val card = binding.tripProgressCard
-                        val lp = card.layoutParams as
-                            androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
-                        lp.bottomMargin = 0
-                        card.layoutParams = lp
-                        card.visibility = View.GONE
+                        viewModel.updateTripProgress(null)
                         destinationLocation = null
                         lastRoutedDestination = null
                     }
@@ -692,11 +684,6 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     private fun setRouteAndStartNavigation(routes: List<NavigationRoute>) {
         mapboxNavigation.setNavigationRoutes(routes)
-        val card = binding.tripProgressCard
-        val lp = card.layoutParams as androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
-        lp.bottomMargin = (INCIDENT_SHEET_PEEK_DP * Resources.getSystem().displayMetrics.density).toInt()
-        card.layoutParams = lp
-        card.visibility = View.VISIBLE
         navigationCamera.requestNavigationCameraToFollowing()
     }
 }

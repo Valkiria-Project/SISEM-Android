@@ -11,11 +11,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons.Outlined
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,16 +35,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.compose.AndroidFragment
 import androidx.fragment.compose.FragmentState
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mapbox.navigation.tripdata.progress.model.TripProgressUpdateValue
+import com.mapbox.navigation.ui.components.tripprogress.view.MapboxTripProgressView
 import com.valkiria.uicomponents.R
 import com.valkiria.uicomponents.action.GenericUiAction.NotificationAction
 import com.valkiria.uicomponents.bricks.banner.BannerUiModel
@@ -69,6 +79,10 @@ fun MapboxMapView(
     onIncidentErrorAction: () -> Unit,
     onAction: (idAph: Int) -> Unit
 ) {
+    val context = LocalContext.current
+    val mapFragmentViewModel: MapFragmentViewModel = hiltViewModel(context as FragmentActivity)
+    val mapFragmentUiState by mapFragmentViewModel.uiState.collectAsStateWithLifecycle()
+
     val scaffoldState = rememberBottomSheetScaffoldState()
     val scope = rememberCoroutineScope()
     var showNotificationsDialog by remember { mutableStateOf(false) }
@@ -77,16 +91,26 @@ fun MapboxMapView(
 
     BottomSheetScaffold(
         sheetContent = {
-            currentIncident?.let {
-                IncidentContent(incidentUiModel = it, onAction = onAction)
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                TripProgressCard(mapFragmentUiState.tripProgress)
+
+                currentIncident?.let {
+                    IncidentContent(incidentUiModel = it, onAction = onAction)
+                }
             }
         },
         scaffoldState = scaffoldState,
-        sheetPeekHeight = if (currentIncident != null) 140.dp else 0.dp,
+        sheetPeekHeight = if (currentIncident != null) {
+            if (mapFragmentUiState.tripProgress != null) 220.dp else 140.dp
+        } else {
+            0.dp
+        },
         sheetSwipeEnabled = true,
         sheetMaxWidth = Dp.Unspecified
-    ) { innerPadding ->
-        Box(modifier.padding(innerPadding)) {
+    ) {
+        Box(modifier) {
             AndroidFragment<MapFragment>(
                 fragmentState = fragmentState
             )
@@ -145,6 +169,33 @@ fun MapboxMapView(
             OnBannerHandler(uiModel = incidentErrorData) {
                 onIncidentErrorAction()
             }
+        }
+    }
+}
+
+@Composable
+private fun TripProgressCard(
+    tripProgress: TripProgressUpdateValue?,
+    modifier: Modifier = Modifier
+) {
+    if (tripProgress != null) {
+        Card(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 8.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White)
+        ) {
+            AndroidView(
+                factory = { context ->
+                    MapboxTripProgressView(context)
+                },
+                update = { view ->
+                    view.render(tripProgress)
+                },
+                modifier = Modifier.padding(16.dp)
+            )
         }
     }
 }
