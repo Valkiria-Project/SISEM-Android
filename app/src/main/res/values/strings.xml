@@ -164,6 +164,8 @@
     <string name="permission_location_description">Permite rastrear la ambulancia en tiempo real y reportar su posición al centro de emergencias.</string>
     <string name="permission_notifications_title">Notificaciones</string>
     <string name="permission_notifications_description">Permite recibir alertas de incidentes asignados y novedades del turno.</string>
+    <string name="permission_camera_title">Cámara</string>
+    <string name="permission_camera_description">Permite tomar fotos para registros de atención prehospitalaria, hallazgos y reportes.</string>
     <string name="permission_bg_location_title">Ubicación en segundo plano</string>
     <string name="permission_bg_location_description">Permite rastrear la ambulancia mientras la app está minimizada. Selecciona \"Permitir todo el tiempo\" en los ajustes del permiso de Ubicación.</string>
     <string name="permission_allow_cta">PERMITIR</string>

@@ -85,6 +85,9 @@ fun AuthCardsScreen(
     val fineLocationPermissionState: PermissionState =
         rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
 
+    val cameraPermissionState: PermissionState =
+        rememberPermissionState(Manifest.permission.CAMERA)
+
     val backgroundLocationPermissionState: PermissionState? =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             rememberPermissionState(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
@@ -95,6 +98,7 @@ fun AuthCardsScreen(
     if (arePermissionsGranted(
             notificationsPermissionState,
             fineLocationPermissionState,
+            cameraPermissionState,
             backgroundLocationPermissionState
         )
     ) {
@@ -111,6 +115,7 @@ fun AuthCardsScreen(
         PermissionCarousel(
             notificationsPermissionState = notificationsPermissionState,
             fineLocationPermissionState = fineLocationPermissionState,
+            cameraPermissionState = cameraPermissionState,
             backgroundLocationPermissionState = backgroundLocationPermissionState,
             modifier = modifier
         )
@@ -224,12 +229,14 @@ private fun AuthCardsScreenRender(
 private fun arePermissionsGranted(
     notificationsPermissionState: PermissionState?,
     fineLocationPermissionState: PermissionState,
+    cameraPermissionState: PermissionState,
     backgroundLocationPermissionState: PermissionState?
 ): Boolean {
     val locationGranted = fineLocationPermissionState.status.isGranted
+    val cameraGranted = cameraPermissionState.status.isGranted
     val notificationsGranted = notificationsPermissionState?.status?.isGranted != false
     val bgLocationGranted = backgroundLocationPermissionState?.status?.isGranted != false
-    return locationGranted && notificationsGranted && bgLocationGranted
+    return locationGranted && cameraGranted && notificationsGranted && bgLocationGranted
 }
 
 private fun handleAction(

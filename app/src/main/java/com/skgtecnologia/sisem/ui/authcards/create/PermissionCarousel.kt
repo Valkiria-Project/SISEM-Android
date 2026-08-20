@@ -18,6 +18,7 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.ShareLocation
@@ -48,12 +49,14 @@ import com.skgtecnologia.sisem.ui.authcards.create.report.PagerIndicator
 internal fun PermissionCarousel(
     notificationsPermissionState: PermissionState?,
     fineLocationPermissionState: PermissionState,
+    cameraPermissionState: PermissionState,
     backgroundLocationPermissionState: PermissionState?,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     val states = PermissionStates(
         fineLocation = fineLocationPermissionState,
+        camera = cameraPermissionState,
         notifications = notificationsPermissionState,
         backgroundLocation = backgroundLocationPermissionState
     )
@@ -96,6 +99,7 @@ private fun AutoAdvanceOnGrant(
 ) {
     LaunchedEffect(
         states.fineLocation.status.isGranted,
+        states.camera.status.isGranted,
         states.notifications?.status?.isGranted,
         states.backgroundLocation?.status?.isGranted
     ) {
@@ -232,6 +236,7 @@ private fun rememberPermissionPages(
 ) {
     buildList {
         add(PermissionPage.Location)
+        add(PermissionPage.Camera)
         if (states.notifications != null) {
             add(PermissionPage.Notifications)
         }
@@ -243,6 +248,7 @@ private fun rememberPermissionPages(
 
 internal data class PermissionStates(
     val fineLocation: PermissionState,
+    val camera: PermissionState,
     val notifications: PermissionState?,
     val backgroundLocation: PermissionState?
 )
@@ -260,6 +266,12 @@ private enum class PermissionPage(
         actionLabelRes = R.string.permission_allow_cta,
         icon = Icons.Outlined.LocationOn
     ),
+    Camera(
+        titleRes = R.string.permission_camera_title,
+        descriptionRes = R.string.permission_camera_description,
+        actionLabelRes = R.string.permission_allow_cta,
+        icon = Icons.Outlined.CameraAlt
+    ),
     Notifications(
         titleRes = R.string.permission_notifications_title,
         descriptionRes = R.string.permission_notifications_description,
@@ -276,12 +288,14 @@ private enum class PermissionPage(
 
     fun isGranted(states: PermissionStates): Boolean = when (this) {
         Location -> states.fineLocation.status.isGranted
+        Camera -> states.camera.status.isGranted
         Notifications -> states.notifications?.status?.isGranted == true
         BackgroundLocation -> states.backgroundLocation?.status?.isGranted == true
     }
 
     fun hasRationale(states: PermissionStates): Boolean = when (this) {
         Location -> states.fineLocation.status.shouldShowRationale
+        Camera -> states.camera.status.shouldShowRationale
         Notifications -> states.notifications?.status?.shouldShowRationale == true
         BackgroundLocation -> false
     }
@@ -289,6 +303,7 @@ private enum class PermissionPage(
     fun performAction(states: PermissionStates, context: Context) {
         when (this) {
             Location -> states.fineLocation.launchPermissionRequest()
+            Camera -> states.camera.launchPermissionRequest()
             Notifications -> states.notifications?.launchPermissionRequest()
             BackgroundLocation -> openAppSettings(context)
         }
