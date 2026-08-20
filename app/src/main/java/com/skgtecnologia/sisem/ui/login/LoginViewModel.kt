@@ -185,7 +185,8 @@ class LoginViewModel @Inject constructor(
                             it.copy(
                                 navigationModel = navModel,
                                 promptFaceEnrollment = shouldOfferEnrollment,
-                                enrollUsername = if (shouldOfferEnrollment) accessTokenModel.username else null
+                                enrollUsername = if (shouldOfferEnrollment) accessTokenModel.username else null,
+                                isLoading = false
                             )
                         }
                     } else {

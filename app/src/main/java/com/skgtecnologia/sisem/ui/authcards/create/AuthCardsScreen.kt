@@ -163,7 +163,7 @@ private fun AuthCardsScreenRender(
             handleAction(uiAction, viewModel, onNavigation, context)
         }
 
-        if (uiState.hasEnrolledFaces) {
+        if (uiState.hasEnrolledFaces && uiState.loggedOutRole != null) {
             FloatingActionButton(
                 onClick = {
                     onNavigation(

@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.view.MotionEvent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,8 +24,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -54,6 +58,7 @@ fun ComposeSignature(
     signatureColor: Color = Color.Black,
     signatureThickness: Float = 10f,
     hasAlpha: Boolean = false,
+    canvasBorderColor: Color = Color.Transparent,
     completeComponent: @Composable (onClick: () -> Unit) -> Unit,
     clearComponent: @Composable (onClick: () -> Unit) -> Unit,
     onComplete: (Bitmap?) -> Unit,
@@ -80,6 +85,7 @@ fun ComposeSignature(
             drawBrush = drawBrush,
             path = path,
             signaturePadColor = signaturePadColor,
+            canvasBorderColor = canvasBorderColor,
             modifier = modifier,
             canvasModifier = canvasModifier
         )
@@ -97,7 +103,6 @@ fun ComposeSignature(
         }
 
         SignatureButtons(
-            modifier = modifier,
             viewModel = viewModel,
             signatureBitmap = signatureBitmap,
             hasAlpha = hasAlpha,
@@ -118,16 +123,23 @@ private fun ColumnScope.signatureCanvas(
     drawBrush: MutableState<Float>,
     path: androidx.compose.runtime.State<MutableList<PathState>>,
     signaturePadColor: Color,
+    canvasBorderColor: Color,
     modifier: Modifier,
     canvasModifier: Modifier
 ): () -> Bitmap {
     return if (fillHeight) {
-        captureBitmap(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .clip(RoundedCornerShape(12.dp))
-        ) {
+        val canvasAreaModifier = Modifier
+            .fillMaxWidth()
+            .weight(1f)
+            .clip(RoundedCornerShape(12.dp))
+            .then(
+                if (canvasBorderColor != Color.Transparent) {
+                    Modifier.border(2.dp, canvasBorderColor, RoundedCornerShape(12.dp))
+                } else {
+                    Modifier
+                }
+            )
+        captureBitmap(modifier = canvasAreaModifier) {
             DrawingCanvas(
                 viewModel = viewModel,
                 drawColor = drawColor,
@@ -154,7 +166,6 @@ private fun ColumnScope.signatureCanvas(
 @Suppress("LongParameterList")
 @Composable
 private fun SignatureButtons(
-    modifier: Modifier,
     viewModel: SignaturePadViewModel,
     signatureBitmap: () -> Bitmap,
     hasAlpha: Boolean,
@@ -164,8 +175,9 @@ private fun SignatureButtons(
     onComplete: (Bitmap?) -> Unit
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
@@ -201,17 +213,22 @@ fun DrawingCanvas(
     val currentPath = path.last().path
     val movePath = remember { mutableStateOf<Offset?>(null) }
 
+    var canvasWidth by remember { mutableFloatStateOf(0f) }
+    var canvasHeight by remember { mutableFloatStateOf(0f) }
+
     Canvas(
         modifier = modifier
             .background(signaturePadColor)
             .pointerInteropFilter {
+                val x = it.x.coerceIn(0f, canvasWidth)
+                val y = it.y.coerceIn(0f, canvasHeight)
                 when (it.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        currentPath.moveTo(it.x, it.y)
+                        currentPath.moveTo(x, y)
                     }
 
                     MotionEvent.ACTION_MOVE -> {
-                        movePath.value = Offset(it.x, it.y)
+                        movePath.value = Offset(x, y)
                     }
 
                     else -> {
@@ -221,6 +238,8 @@ fun DrawingCanvas(
                 true
             },
     ) {
+        canvasWidth = size.width
+        canvasHeight = size.height
         movePath.value?.let {
             viewModel.isValidSignature = true
             currentPath.lineTo(it.x, it.y)
