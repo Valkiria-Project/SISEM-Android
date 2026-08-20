@@ -22,6 +22,9 @@ class AndroidIdProviderImpl @Inject constructor(
     @SuppressLint("HardwareIds")
     override fun getAndroidId(): String {
         cachedAndroidId?.let { return it }
+        return synchronized(this) {
+            cachedAndroidId ?: resolveAndroidId().also { cachedAndroidId = it }
+        }
         return resolveAndroidId().also { cachedAndroidId = it }
     }
 
