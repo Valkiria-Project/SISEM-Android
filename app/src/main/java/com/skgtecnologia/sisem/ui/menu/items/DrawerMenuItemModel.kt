@@ -17,22 +17,12 @@ data class DrawerMenuItemModel(
 
 fun getDrawerMenuItemList(
     context: Context,
-    isAdmin: Boolean?,
-    hasPendingBiometric: Boolean = false
+    isAdmin: Boolean?
 ): List<DrawerMenuItemModel> {
-    val items = if (isAdmin == true) {
+    return if (isAdmin == true) {
         getLeaderDrawerItems(context)
     } else {
         getDrawerItems(context)
-    }
-    return if (hasPendingBiometric) {
-        items + DrawerMenuItemModel(
-            MainRoute.BiometricRegistrationRoute,
-            context.getString(R.string.drawer_biometric_registration),
-            drawable.ic_biometric
-        )
-    } else {
-        items
     }
 }
 
@@ -103,7 +93,7 @@ private fun getLeaderDrawerItems(context: Context) = listOf(
     ),
     DrawerMenuItemModel(
         MainRoute.InitSignatureRoute,
-        context.getString(R.string.drawer_signature_and_fingerprint),
-        drawable.ic_fingerprint
+        context.getString(R.string.drawer_signature_and_biometric),
+        drawable.ic_biometric
     )
 )

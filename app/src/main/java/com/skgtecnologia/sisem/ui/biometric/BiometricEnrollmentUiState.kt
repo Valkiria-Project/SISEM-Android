@@ -10,8 +10,9 @@ data class CrewBiometricStatus(
     val isEnrolled: Boolean
 )
 
-data class BiometricRegistrationUiState(
-    val crewStatuses: List<CrewBiometricStatus> = emptyList(),
+data class BiometricEnrollmentUiState(
+    val document: String = "",
+    val crewMember: CrewBiometricStatus? = null,
     val isLoading: Boolean = false,
     val errorModel: BannerUiModel? = null
 )

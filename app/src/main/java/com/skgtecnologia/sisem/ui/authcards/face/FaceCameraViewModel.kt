@@ -87,12 +87,14 @@ class FaceCameraViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val faceCredentialStore: FaceCredentialStore,
     private val faceEmbeddingHelper: FaceEmbeddingHelper,
-    private val uploadBiometric: com.skgtecnologia.sisem.domain.biometric.usecases.UploadBiometric
+    private val uploadBiometric: com.skgtecnologia.sisem.domain.biometric.usecases.UploadBiometric,
+    private val uploadBiometricByDocument: com.skgtecnologia.sisem.domain.biometric.usecases.UploadBiometricByDocument
 ) : ViewModel() {
 
     private val route = savedStateHandle.toRoute<AuthRoute.FaceCameraRoute>()
     val mode: FaceCameraMode = if (route.mode == "ENROLL") FaceCameraMode.ENROLL else FaceCameraMode.VERIFY
     val enrollUsername: String? = route.username.ifBlank { null }
+    private val enrollDocument: String? = route.document.ifBlank { null }
     private val loggedOutRole: String = route.loggedOutRole
 
     // Pre-pick the enroll challenge so it can seed the initial UI state synchronously.
@@ -310,7 +312,6 @@ class FaceCameraViewModel @Inject constructor(
 
     // ── Enrollment (multi-angle) ──────────────────────────────────────────────
 
-    @Suppress("ReturnCount")
     private suspend fun handleEnrollStep(face: Face, embedding: FloatArray) {
         val eulerY = face.headEulerAngleY
         if (!currentStep.isActive(eulerY)) {
@@ -323,44 +324,77 @@ class FaceCameraViewModel @Inject constructor(
         val next = currentStep.next()
 
         if (next == null) {
-            // All steps done — validate uniqueness then save
-            val username = enrollUsername
-            if (username == null) {
-                _state.update { FaceCameraState.NoMatch("Usuario no especificado.") }
-                isProcessing = false
-                return
-            }
-            // Reject if this face is already enrolled under another user
-            val conflict = findConflictingUser(capturedEmbeddings, excludeUsername = username)
-            if (conflict != null) {
-                Timber.w("Enrollment rejected: face matches existing user $conflict")
-                _state.update {
-                    FaceCameraState.NoMatch(
-                        "Este rostro ya está registrado para otro tripulante. " +
-                            "Cada persona debe registrar su propio rostro."
-                    )
-                }
-                isProcessing = false
-                return
-            }
-            faceCredentialStore.storeEmbeddings(username, capturedEmbeddings.toList())
-            capturedEmbeddings.forEachIndexed { idx, emb ->
-                Timber.d(
-                    "[FaceEnroll] $username angle[$idx] size=${emb.size} " +
-                        "values=${emb.take(LOG_SAMPLE).joinToString { "%.4f".format(it) }}..."
-                )
-            }
-            Timber.d("[FaceEnroll] Stored ${capturedEmbeddings.size} embeddings for $username")
-            faceCredentialStore.dumpToLog()
-            viewModelScope.launch { uploadBiometric(username) }
-            _state.update { FaceCameraState.Enrolled }
-            _banner.update { faceEnrollmentSuccessBanner().mapToUi() }
+            finishEnrollment()
         } else {
             currentStep = next
             _state.update {
                 FaceCameraState.Enrolling(currentStep, captured, TOTAL_ENROLLMENT_STEPS)
             }
+            isProcessing = false
         }
+    }
+
+    private suspend fun finishEnrollment() {
+        // Líder APH flow: upload to the backend by document, no local storage.
+        enrollDocument?.let { document ->
+            enrollByDocument(document)
+            return
+        }
+        enrollLocally()
+    }
+
+    private suspend fun enrollByDocument(document: String) {
+        _state.update { FaceCameraState.Processing }
+        uploadBiometricByDocument(document, capturedEmbeddings.toList())
+            .onSuccess {
+                _state.update { FaceCameraState.Enrolled }
+                _banner.update { faceEnrollmentSuccessBanner().mapToUi() }
+            }
+            .onFailure {
+                Timber.w(it, "[FaceEnroll] Upload by document failed for $document")
+                _state.update {
+                    FaceCameraState.NoMatch(
+                        "No se pudo registrar la biometría. Inténtalo de nuevo."
+                    )
+                }
+            }
+        isProcessing = false
+    }
+
+    @Suppress("ReturnCount")
+    private suspend fun enrollLocally() {
+        // All steps done — validate uniqueness then save
+        val username = enrollUsername
+        if (username == null) {
+            _state.update { FaceCameraState.NoMatch("Usuario no especificado.") }
+            isProcessing = false
+            return
+        }
+        // Reject if this face is already enrolled under another user
+        val conflict = findConflictingUser(capturedEmbeddings, excludeUsername = username)
+        if (conflict != null) {
+            Timber.w("Enrollment rejected: face matches existing user $conflict")
+            _state.update {
+                FaceCameraState.NoMatch(
+                    "Este rostro ya está registrado para otro tripulante. " +
+                        "Cada persona debe registrar su propio rostro."
+                )
+            }
+            isProcessing = false
+            return
+        }
+        faceCredentialStore.storeEmbeddings(username, capturedEmbeddings.toList())
+        capturedEmbeddings.forEachIndexed { idx, emb ->
+            Timber.d(
+                "[FaceEnroll] $username angle[$idx] size=${emb.size} " +
+                    "values=${emb.take(LOG_SAMPLE).joinToString { "%.4f".format(it) }}..."
+            )
+        }
+        Timber.d("[FaceEnroll] Stored ${capturedEmbeddings.size} embeddings for $username")
+        faceCredentialStore.dumpToLog()
+        viewModelScope.launch { uploadBiometric(username) }
+        _state.update { FaceCameraState.Enrolled }
+        _banner.update { faceEnrollmentSuccessBanner().mapToUi() }
         isProcessing = false
     }
 
@@ -370,7 +404,7 @@ class FaceCameraViewModel @Inject constructor(
     private suspend fun verify(embedding: FloatArray) {
         val enrolled = faceCredentialStore.enrolledUsernames()
         if (enrolled.isEmpty()) {
-            _state.update { FaceCameraState.NoMatch("No hay rostros registrados.") }
+            _state.update { FaceCameraState.NoMatch("Usuario no reconocido. Usa tu contraseña.") }
             isProcessing = false
             return
         }

@@ -32,6 +32,7 @@ private const val CARD_ALPHA = 0.35f
 @Composable
 fun BiometricRegistrationScreen(
     modifier: Modifier = Modifier,
+    onSignature: () -> Unit,
     onBiometric: () -> Unit,
     onBack: () -> Unit
 ) {
@@ -69,13 +70,12 @@ fun BiometricRegistrationScreen(
             fontSize = 15.sp,
             modifier = Modifier.padding(top = 12.dp)
         )
-//        Spacer(modifier = Modifier.height(24.dp))
-//
-//        OptionCard(
-//            iconResId = UiR.drawable.ic_edit,
-//            label = stringResource(R.string.biometric_selection_signature),
-//            onClick = onSignature
-//        )
+        Spacer(modifier = Modifier.height(24.dp))
+        OptionCard(
+            iconResId = UiR.drawable.ic_edit,
+            label = stringResource(R.string.biometric_selection_signature),
+            onClick = onSignature
+        )
         Spacer(modifier = Modifier.height(16.dp))
         OptionCard(
             iconResId = UiR.drawable.ic_biometric,

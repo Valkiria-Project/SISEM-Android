@@ -7,7 +7,6 @@ import com.valkiria.uicomponents.bricks.banner.BannerUiModel
 data class MenuUiState(
     val accessTokenModelList: List<AccessTokenModel>? = null,
     val vehicleConfig: VehicleConfigModel? = null,
-    val hasPendingBiometric: Boolean = false,
     val isLogout: Boolean = false,
     val loggedOutRole: String? = null,
     val isLoading: Boolean = false,
