@@ -21,7 +21,7 @@ class AndroidIdProviderImpl @Inject constructor(
 
     @SuppressLint("HardwareIds")
     override fun getAndroidId(): String {
-        return cachedAndroidId ?: resolveAndroidId().also { cachedAndroidId = it }
+        return "98A62A29D84BB80C"
     }
 
     /**

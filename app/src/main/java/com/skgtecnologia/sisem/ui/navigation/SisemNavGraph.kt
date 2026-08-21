@@ -265,12 +265,12 @@ private fun NavGraphBuilder.authGraph(
 
         composable<AuthRoute.FaceCameraRoute> {
             com.skgtecnologia.sisem.ui.authcards.face.FaceCameraScreen(
-                onNavigate = { faceNavModel ->
-                    if (faceNavModel.isTurnComplete && !faceNavModel.requiresPreOperational) {
-                        startLocationTracking(context)
-                    }
-                    navController.navigate(NavGraph.MainGraph) {
-                        popUpTo(navController.graph.id) { inclusive = true }
+                onVerified = { username ->
+                    // A face match returns to the login screen, which silently re-authenticates
+                    // with the matched user's decrypted credentials (the normal login flow then
+                    // handles turn/pre-operational/device-auth routing).
+                    navController.navigate(AuthRoute.LoginRoute(biometricUsername = username)) {
+                        popUpTo(AuthRoute.LoginRoute()) { inclusive = true }
                     }
                 },
                 onBack = { navController.navigateUp() }

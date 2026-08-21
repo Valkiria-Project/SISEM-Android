@@ -410,13 +410,6 @@ fun faceErrorBanner(message: String): BannerModel = BannerModel(
     description = message
 )
 
-fun incompleteCrewBanner(): BannerModel = BannerModel(
-    icon = "ic_alert",
-    title = "Tripulación incompleta",
-    description = "Para ingresar con biometría todos los tripulantes deben haber " +
-        "iniciado sesión en este dispositivo."
-)
-
 fun biometricIntermittencyBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "Intermitencia de red",

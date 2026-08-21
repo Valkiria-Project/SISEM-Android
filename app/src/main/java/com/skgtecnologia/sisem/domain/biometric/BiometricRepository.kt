@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.domain.biometric
 
 import com.skgtecnologia.sisem.domain.biometric.model.BiometricRegistrationStatus
+import com.skgtecnologia.sisem.domain.biometric.model.LoginCredentials
 
 @Suppress("TooManyFunctions")
 interface BiometricRepository {
@@ -20,6 +21,11 @@ interface BiometricRepository {
     suspend fun updateMeta(username: String, role: String? = null, refreshToken: String? = null)
     suspend fun clearUser(username: String)
     suspend fun clearAll()
+
+    // ── Encrypted credentials + inactivity purge ───────────────────────────────
+    suspend fun storeLoginCredentials(username: String, password: String)
+    suspend fun getLoginCredentials(username: String): LoginCredentials?
+    suspend fun purgeStale(maxIdleDays: Int)
 
     // ── Cloud sync ───────────────────────────────────────────────────────────
     suspend fun uploadToCloud(username: String): Result<Unit>

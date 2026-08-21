@@ -56,18 +56,10 @@ sealed interface FaceCameraState {
     data class Enrolling(val step: EnrollmentStep, val captured: Int, val total: Int) : FaceCameraState
     data class AwaitingLiveness(val challenge: LivenessChallenge, val secondsLeft: Int) : FaceCameraState
     data object Processing : FaceCameraState
-    data class Success(val username: String, val navigationModel: FaceNavigationModel) : FaceCameraState
+    data class Success(val username: String) : FaceCameraState
     data class NoMatch(val message: String) : FaceCameraState
     data object Enrolled : FaceCameraState
 }
-
-data class FaceNavigationModel(
-    val isAdmin: Boolean = false,
-    val isTurnComplete: Boolean = true,
-    val requiresPreOperational: Boolean = false,
-    val preOperationRole: OperationRole? = null,
-    val requiresDeviceAuth: Boolean = false
-)
 
 private const val TOTAL_ENROLLMENT_STEPS = 3
 private const val MIN_STABLE_FRAMES = 6
@@ -455,7 +447,7 @@ class FaceCameraViewModel @Inject constructor(
 
         Timber.d("Face verified: $bestUsername (sim=$bestSim)")
         _state.update {
-            FaceCameraState.Success(username = bestUsername, navigationModel = FaceNavigationModel())
+            FaceCameraState.Success(username = bestUsername)
         }
         _banner.update { faceVerificationSuccessBanner(bestUsername).mapToUi() }
         isProcessing = false

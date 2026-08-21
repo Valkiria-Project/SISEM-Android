@@ -33,9 +33,13 @@ class BiometricCacheDataSource @Inject constructor(
             BiometricCredentialEntity(
                 username = username,
                 role = role.ifBlank { existing?.role.orEmpty() },
+                documentNumber = existing?.documentNumber.orEmpty(),
                 refreshToken = refreshToken.ifBlank { existing?.refreshToken.orEmpty() },
                 embeddings = serialized,
                 cloudSynced = false,
+                encryptedPassword = existing?.encryptedPassword.orEmpty(),
+                credentialIv = existing?.credentialIv.orEmpty(),
+                lastLoginAt = existing?.lastLoginAt ?: 0L,
                 createdAt = existing?.createdAt ?: System.currentTimeMillis(),
                 updatedAt = System.currentTimeMillis()
             )
@@ -58,11 +62,44 @@ class BiometricCacheDataSource @Inject constructor(
                 refreshToken = existing?.refreshToken.orEmpty(),
                 embeddings = serialized,
                 cloudSynced = true,
+                encryptedPassword = existing?.encryptedPassword.orEmpty(),
+                credentialIv = existing?.credentialIv.orEmpty(),
+                lastLoginAt = existing?.lastLoginAt ?: 0L,
                 createdAt = existing?.createdAt ?: System.currentTimeMillis(),
                 updatedAt = System.currentTimeMillis()
             )
         )
     }
+
+    /**
+     * Persists the AES/GCM-encrypted login password and stamps [lastLoginAt] with now, so a
+     * constant user keeps sliding out of the inactivity purge on every login. Embeddings and
+     * other metadata are preserved.
+     */
+    suspend fun storeCredentials(username: String, encryptedPassword: String, iv: String) {
+        val existing = dao.getByUsername(username)
+        val now = System.currentTimeMillis()
+        dao.upsert(
+            BiometricCredentialEntity(
+                username = username,
+                role = existing?.role.orEmpty(),
+                documentNumber = existing?.documentNumber.orEmpty(),
+                refreshToken = existing?.refreshToken.orEmpty(),
+                embeddings = existing?.embeddings.orEmpty(),
+                cloudSynced = existing?.cloudSynced ?: false,
+                encryptedPassword = encryptedPassword,
+                credentialIv = iv,
+                lastLoginAt = now,
+                createdAt = existing?.createdAt ?: now,
+                updatedAt = now
+            )
+        )
+    }
+
+    suspend fun getCredentials(username: String): BiometricCredentialEntity? =
+        dao.getByUsername(username)
+
+    suspend fun deleteStale(cutoff: Long) = dao.deleteStale(cutoff)
 
     suspend fun upsertMeta(username: String, role: String? = null, refreshToken: String? = null) {
         val existing = dao.getByUsername(username)

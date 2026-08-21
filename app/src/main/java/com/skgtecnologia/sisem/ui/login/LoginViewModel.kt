@@ -10,14 +10,13 @@ import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.commons.biometric.FaceCredentialStore
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.di.operation.OperationRole
-import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
 import com.skgtecnologia.sisem.domain.auth.usecases.Login
-import com.skgtecnologia.sisem.domain.authcards.model.AuthCardsIdentifier
-import com.skgtecnologia.sisem.domain.authcards.usecases.GetAuthCardsScreen
+import com.skgtecnologia.sisem.domain.biometric.usecases.GetLoginCredentials
+import com.skgtecnologia.sisem.domain.biometric.usecases.PurgeStaleBiometrics
 import com.skgtecnologia.sisem.domain.biometric.usecases.StoreBiometricFromLogin
+import com.skgtecnologia.sisem.domain.biometric.usecases.StoreLoginCredentials
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
-import com.skgtecnologia.sisem.domain.model.banner.incompleteCrewBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
 import com.skgtecnologia.sisem.ui.navigation.AuthRoute
@@ -36,12 +35,6 @@ import javax.inject.Inject
 
 private const val LOGIN_EMAIL_IDENTIFIER = "LOGIN_EMAIL"
 
-private val CREW_CARD_IDENTIFIERS = setOf(
-    AuthCardsIdentifier.CREW_MEMBER_CARD_DRIVER.name,
-    AuthCardsIdentifier.CREW_MEMBER_CARD_DOCTOR.name,
-    AuthCardsIdentifier.CREW_MEMBER_CARD_ASSISTANT.name
-)
-
 @Suppress("TooManyFunctions", "LongParameterList")
 @HiltViewModel
 class LoginViewModel @Inject constructor(
@@ -51,8 +44,9 @@ class LoginViewModel @Inject constructor(
     private val login: Login,
     private val faceCredentialStore: FaceCredentialStore,
     private val storeBiometricFromLogin: StoreBiometricFromLogin,
-    private val getAllAccessTokens: GetAllAccessTokens,
-    private val getAuthCardsScreen: GetAuthCardsScreen
+    private val storeLoginCredentials: StoreLoginCredentials,
+    private val getLoginCredentials: GetLoginCredentials,
+    private val purgeStaleBiometrics: PurgeStaleBiometrics
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -62,6 +56,7 @@ class LoginViewModel @Inject constructor(
 
     private val previousUsername = savedStateHandle.toRoute<AuthRoute.LoginRoute>().username
     private val loggedOutRole = savedStateHandle.toRoute<AuthRoute.LoginRoute>().loggedOutRole
+    private val biometricUsername = savedStateHandle.toRoute<AuthRoute.LoginRoute>().biometricUsername
 
     private var code by mutableStateOf("")
     var username by mutableStateOf("")
@@ -71,6 +66,10 @@ class LoginViewModel @Inject constructor(
 
     init {
         uiState.update { it.copy(isLoading = true, loggedOutRole = loggedOutRole) }
+
+        // Every login-screen load evicts biometric records idle for more than the inactivity
+        // window (record + encrypted credentials), independent of the screen fetch.
+        viewModelScope.launch { purgeStaleBiometrics() }
 
         job?.cancel()
         job = viewModelScope.launch {
@@ -102,6 +101,28 @@ class LoginViewModel @Inject constructor(
                     }
                 }
         }
+
+        // Arriving from a biometric match: wait for the screen (so the vehicle code is parsed)
+        // then silently re-authenticate with the matched user's decrypted credentials.
+        biometricUsername?.let { matchedUsername ->
+            viewModelScope.launch {
+                job?.join()
+                autoLoginWithBiometric(matchedUsername)
+            }
+        }
+    }
+
+    private suspend fun autoLoginWithBiometric(matchedUsername: String) {
+        val credentials = getLoginCredentials(matchedUsername)
+        if (credentials == null) {
+            Timber.w("[Biometric] No stored credentials for $matchedUsername; manual login required")
+            return
+        }
+        username = credentials.username
+        password = credentials.password
+        isValidUsername = true
+        isValidPassword = true
+        authenticate()
     }
 
     private fun List<BodyRowModel>.toVehicleCode() {
@@ -134,57 +155,16 @@ class LoginViewModel @Inject constructor(
     }
 
     /**
-     * Biometric login is a fast re-entry into an already-active crew session on this
-     * shared device, so it is only allowed once every expected crew member has signed in
-     * with their password. The expected crew size is the number of crew cards returned by
-     * the crewList screen (admin button excluded); the signed-in count is the number of
-     * stored sessions. If the crew is incomplete the camera is not opened and an
-     * exception banner is shown instead.
-     *
-     * Exception: during a shift change ([loggedOutRole] is set) the crew is intentionally
-     * incomplete while one member is replaced, so the gate is skipped and only the vacated
-     * role is enforced against the matched face downstream.
+     * Biometric login is just a shortcut that runs the normal login with the matched user's
+     * stored credentials, so it is always available — it does not require the rest of the crew
+     * to have an active session. The matched face resolves to a user, the login executes, and
+     * routing lands on that user's cards like a manual login. During a shift change
+     * ([loggedOutRole] is set) the vacated role is still enforced against the matched face
+     * downstream in FaceCameraViewModel.verify().
      */
     fun onBiometricLogin() {
-        // During a shift change (a crew member logged out and is being replaced) the crew
-        // is intentionally incomplete, so the crew-completeness gate is skipped. The vacated
-        // role is enforced later against the matched face in FaceCameraViewModel.verify().
-        if (!loggedOutRole.isNullOrBlank()) {
-            uiState.update { it.copy(navigateToBiometric = true) }
-            return
-        }
-
-        uiState.update { it.copy(isLoading = true) }
-
-        job?.cancel()
-        job = viewModelScope.launch {
-            val expectedCrew = fetchExpectedCrewSize()
-            val signedInCount = getAllAccessTokens.invoke().getOrNull()?.size ?: 0
-
-            if (expectedCrew > 0 && signedInCount < expectedCrew) {
-                uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        errorModel = incompleteCrewBanner().mapToUi()
-                    )
-                }
-            } else {
-                uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        navigateToBiometric = true
-                    )
-                }
-            }
-        }
+        uiState.update { it.copy(navigateToBiometric = true) }
     }
-
-    private suspend fun fetchExpectedCrewSize(): Int =
-        getAuthCardsScreen.invoke(androidIdProvider.getAndroidId())
-            .getOrNull()
-            ?.body
-            ?.count { it.identifier in CREW_CARD_IDENTIFIERS }
-            ?: 0
 
     fun consumeBiometricNavigationEvent() {
         uiState.update { it.copy(navigateToBiometric = false) }
@@ -243,6 +223,9 @@ class LoginViewModel @Inject constructor(
                             documentNumber = accessTokenModel.document,
                             embeddings = accessTokenModel.embeddings
                         )
+                        // Persist the password encrypted so a later biometric match can silently
+                        // re-authenticate; this also refreshes the inactivity window.
+                        storeLoginCredentials(accessTokenModel.username, password)
                         val navModel = with(accessTokenModel) {
                             LoginNavigationModel(
                                 isAdmin = isAdmin,

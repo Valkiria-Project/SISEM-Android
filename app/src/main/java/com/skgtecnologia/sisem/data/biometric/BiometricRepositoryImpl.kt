@@ -1,16 +1,20 @@
 package com.skgtecnologia.sisem.data.biometric
 
+import com.skgtecnologia.sisem.commons.security.CredentialCipher
 import com.skgtecnologia.sisem.data.biometric.cache.BiometricCacheDataSource
 import com.skgtecnologia.sisem.data.biometric.remote.BiometricRemoteDataSource
 import com.skgtecnologia.sisem.data.biometric.remote.BiometricSerializer
 import com.skgtecnologia.sisem.domain.biometric.BiometricRepository
 import com.skgtecnologia.sisem.domain.biometric.model.BiometricRegistrationStatus
+import com.skgtecnologia.sisem.domain.biometric.model.LoginCredentials
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 class BiometricRepositoryImpl @Inject constructor(
     private val cacheDataSource: BiometricCacheDataSource,
-    private val remoteDataSource: BiometricRemoteDataSource
+    private val remoteDataSource: BiometricRemoteDataSource,
+    private val credentialCipher: CredentialCipher
 ) : BiometricRepository {
 
     override suspend fun storeLocal(
@@ -48,6 +52,25 @@ class BiometricRepositoryImpl @Inject constructor(
     override suspend fun clearUser(username: String) = cacheDataSource.clearUser(username)
 
     override suspend fun clearAll() = cacheDataSource.clearAll()
+
+    override suspend fun storeLoginCredentials(username: String, password: String) {
+        val encrypted = credentialCipher.encrypt(password)
+        cacheDataSource.storeCredentials(username, encrypted.ciphertext, encrypted.iv)
+    }
+
+    override suspend fun getLoginCredentials(username: String): LoginCredentials? {
+        val entity = cacheDataSource.getCredentials(username) ?: return null
+        if (entity.encryptedPassword.isBlank() || entity.credentialIv.isBlank()) return null
+        val password = runCatching {
+            credentialCipher.decrypt(entity.encryptedPassword, entity.credentialIv)
+        }.getOrNull() ?: return null
+        return LoginCredentials(username = username, password = password)
+    }
+
+    override suspend fun purgeStale(maxIdleDays: Int) {
+        val cutoff = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(maxIdleDays.toLong())
+        cacheDataSource.deleteStale(cutoff)
+    }
 
     override suspend fun uploadToCloud(username: String): Result<Unit> {
         val embeddings = cacheDataSource.getEmbeddings(username)

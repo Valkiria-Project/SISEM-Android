@@ -38,7 +38,9 @@ sealed interface AuthRoute : NavRoute {
     @Serializable
     data class LoginRoute(
         val username: String? = null,
-        val loggedOutRole: String? = null
+        val loggedOutRole: String? = null,
+        /** Set after a biometric match: triggers a silent auto-login with stored credentials. */
+        val biometricUsername: String? = null
     ) : AuthRoute
 
     @Serializable

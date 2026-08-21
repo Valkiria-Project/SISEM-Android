@@ -71,7 +71,7 @@ private val YELLOW = Color(0xFFFFEB3B)
 @Suppress("LongMethod")
 @Composable
 fun FaceCameraScreen(
-    onNavigate: (FaceNavigationModel) -> Unit,
+    onVerified: (username: String) -> Unit,
     onBack: () -> Unit,
     viewModel: FaceCameraViewModel = hiltViewModel()
 ) {
@@ -116,7 +116,7 @@ fun FaceCameraScreen(
     OnBannerHandler(uiModel = bannerModel) {
         viewModel.consumeBanner()
         when (val s = state) {
-            is FaceCameraState.Success -> onNavigate(s.navigationModel)
+            is FaceCameraState.Success -> onVerified(s.username)
             FaceCameraState.Enrolled -> onBack()
             is FaceCameraState.NoMatch -> viewModel.reset()
             else -> Unit
