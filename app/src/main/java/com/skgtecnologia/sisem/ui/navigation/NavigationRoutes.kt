@@ -36,7 +36,12 @@ sealed interface AuthRoute : NavRoute {
     data object ForgotPasswordRoute : AuthRoute
 
     @Serializable
-    data class LoginRoute(val username: String? = null) : AuthRoute
+    data class LoginRoute(
+        val username: String? = null,
+        val loggedOutRole: String? = null,
+        /** Set after a biometric match: triggers a silent auto-login with stored credentials. */
+        val biometricUsername: String? = null
+    ) : AuthRoute
 
     @Serializable
     data class PreOperationalRoute(val role: String? = null) : AuthRoute
@@ -44,6 +49,8 @@ sealed interface AuthRoute : NavRoute {
     /**
      * mode: "ENROLL" | "VERIFY"
      * username: empty when VERIFY (identified by face)
+     * document: set for ENROLL from the líder APH flow — biometrics are uploaded to the
+     *   backend by document number, with no local storage or token.
      * loggedOutRole: non-empty when VERIFY after a logout — only a face that matches
      *   this role may authenticate (security check).
      */
@@ -51,6 +58,7 @@ sealed interface AuthRoute : NavRoute {
     data class FaceCameraRoute(
         val mode: String,
         val username: String = "",
+        val document: String = "",
         val loggedOutRole: String = ""
     ) : AuthRoute
 }
@@ -98,10 +106,10 @@ sealed interface MainRoute : NavRoute {
     data object PreStretcherRetentionRoute : MainRoute
 
     @Serializable
-    data object BiometricRegistrationRoute : MainRoute
+    data class SignatureBiometricRoute(val document: String) : MainRoute
 
     @Serializable
-    data object BiometricCrewListRoute : MainRoute
+    data class BiometricEnrollmentRoute(val document: String) : MainRoute
 
     @Serializable
     data class SignatureRoute(val document: String) : MainRoute

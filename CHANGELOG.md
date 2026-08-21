@@ -2,6 +2,30 @@
 Ajustes y correcciones aplicadas segun versiones:
 
 
+# Version 2.4.13 *(21.08.2026)*
+----------------------------------------
+### Rediseño del registro y validación biométrica facial
+
+- **El registro facial ahora lo realiza el líder APH:** El enrolamiento del rostro se traslada al flujo de firma del líder APH. En lugar de que cada tripulante se registre tras su propio inicio de sesión, el líder registra a la tripulación buscando por número de documento, sin necesidad de que la persona tenga una sesión activa en el dispositivo. Se elimina el registro biométrico por tripulante y su ítem del menú lateral.
+
+- **La huella dactilar se reemplaza por biometría facial:** En la pantalla de firma, el componente de huella deja de mostrarse; el registro biométrico pasa a ser exclusivamente por reconocimiento facial.
+
+- **Nuevo botón "Ingresar con Biometría" en la pantalla de login:** Aparece automáticamente cuando el dispositivo ya tiene un rostro enrolado con credenciales previas. Solo se muestra si existe al menos un registro biométrico válido en el dispositivo.
+
+- **Inicio de sesión biométrico como atajo (re-autenticación silenciosa):** Al reconocer el rostro, la aplicación recupera las credenciales del usuario y ejecuta el inicio de sesión normal de forma automática, redirigiendo a las tarjetas de cada tripulante igual que un login manual. Funciona como atajo independiente del estado de sesión de los demás tripulantes: no requiere que el resto de la tripulación tenga su sesión activa.
+
+- **Credenciales almacenadas de forma cifrada:** La contraseña se guarda localmente cifrada con AES/GCM; la llave de cifrado reside en el Android Keystore del dispositivo. Esto permite la re-autenticación por rostro sin exponer la contraseña en texto plano.
+
+- **Embeddings biométricos entregados en la respuesta de inicio de sesión:** Los datos faciales del usuario ahora llegan directamente en la respuesta de login y se almacenan localmente en ese momento, eliminando una consulta adicional al servidor. El botón de biometría queda disponible en la siguiente visita a la pantalla de login.
+
+- **Depuración automática por inactividad (10 días):** Los registros biométricos y sus credenciales cifradas que permanezcan sin uso por más de 10 días se eliminan automáticamente al cargar la pantalla de login. Cada inicio de sesión exitoso (manual o biométrico) renueva la vigencia del registro, por lo que un usuario activo nunca se depura (ventana deslizante).
+
+- **Los datos biométricos sobreviven a las actualizaciones de la app:** La migración de la base de datos local es no destructiva, garantizando que la tripulación no deba volver a registrarse tras actualizar la aplicación.
+
+### Correcciones
+
+- **Resolución del Android ID:** Se restaura la resolución dinámica del identificador del dispositivo con almacenamiento en caché, evitando valores fijos.
+
 # Version 2.4.12 *(19.08.2026)*
 ----------------------------------------
 ### Autenticación biométrica por reconocimiento facial

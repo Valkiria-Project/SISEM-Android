@@ -11,7 +11,10 @@ import com.skgtecnologia.sisem.commons.biometric.FaceCredentialStore
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.usecases.Login
-import com.skgtecnologia.sisem.domain.biometric.usecases.FetchBiometric
+import com.skgtecnologia.sisem.domain.biometric.usecases.GetLoginCredentials
+import com.skgtecnologia.sisem.domain.biometric.usecases.PurgeStaleBiometrics
+import com.skgtecnologia.sisem.domain.biometric.usecases.StoreBiometricFromLogin
+import com.skgtecnologia.sisem.domain.biometric.usecases.StoreLoginCredentials
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
@@ -32,7 +35,7 @@ import javax.inject.Inject
 
 private const val LOGIN_EMAIL_IDENTIFIER = "LOGIN_EMAIL"
 
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "LongParameterList")
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
@@ -40,7 +43,10 @@ class LoginViewModel @Inject constructor(
     private val getLoginScreen: GetLoginScreen,
     private val login: Login,
     private val faceCredentialStore: FaceCredentialStore,
-    private val fetchBiometric: FetchBiometric
+    private val storeBiometricFromLogin: StoreBiometricFromLogin,
+    private val storeLoginCredentials: StoreLoginCredentials,
+    private val getLoginCredentials: GetLoginCredentials,
+    private val purgeStaleBiometrics: PurgeStaleBiometrics
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -49,6 +55,8 @@ class LoginViewModel @Inject constructor(
         private set
 
     private val previousUsername = savedStateHandle.toRoute<AuthRoute.LoginRoute>().username
+    private val loggedOutRole = savedStateHandle.toRoute<AuthRoute.LoginRoute>().loggedOutRole
+    private val biometricUsername = savedStateHandle.toRoute<AuthRoute.LoginRoute>().biometricUsername
 
     private var code by mutableStateOf("")
     var username by mutableStateOf("")
@@ -57,7 +65,11 @@ class LoginViewModel @Inject constructor(
     var isValidPassword by mutableStateOf(false)
 
     init {
-        uiState.update { it.copy(isLoading = true) }
+        uiState.update { it.copy(isLoading = true, loggedOutRole = loggedOutRole) }
+
+        // Every login-screen load evicts biometric records idle for more than the inactivity
+        // window (record + encrypted credentials), independent of the screen fetch.
+        viewModelScope.launch { purgeStaleBiometrics() }
 
         job?.cancel()
         job = viewModelScope.launch {
@@ -89,6 +101,28 @@ class LoginViewModel @Inject constructor(
                     }
                 }
         }
+
+        // Arriving from a biometric match: wait for the screen (so the vehicle code is parsed)
+        // then silently re-authenticate with the matched user's decrypted credentials.
+        biometricUsername?.let { matchedUsername ->
+            viewModelScope.launch {
+                job?.join()
+                autoLoginWithBiometric(matchedUsername)
+            }
+        }
+    }
+
+    private suspend fun autoLoginWithBiometric(matchedUsername: String) {
+        val credentials = getLoginCredentials(matchedUsername)
+        if (credentials == null) {
+            Timber.w("[Biometric] No stored credentials for $matchedUsername; manual login required")
+            return
+        }
+        username = credentials.username
+        password = credentials.password
+        isValidUsername = true
+        isValidPassword = true
+        authenticate()
     }
 
     private fun List<BodyRowModel>.toVehicleCode() {
@@ -118,6 +152,22 @@ class LoginViewModel @Inject constructor(
                 }
             )
         }
+    }
+
+    /**
+     * Biometric login is just a shortcut that runs the normal login with the matched user's
+     * stored credentials, so it is always available — it does not require the rest of the crew
+     * to have an active session. The matched face resolves to a user, the login executes, and
+     * routing lands on that user's cards like a manual login. During a shift change
+     * ([loggedOutRole] is set) the vacated role is still enforced against the matched face
+     * downstream in FaceCameraViewModel.verify().
+     */
+    fun onBiometricLogin() {
+        uiState.update { it.copy(navigateToBiometric = true) }
+    }
+
+    fun consumeBiometricNavigationEvent() {
+        uiState.update { it.copy(navigateToBiometric = false) }
     }
 
     fun forgotPassword() {
@@ -164,6 +214,18 @@ class LoginViewModel @Inject constructor(
                             accessTokenModel.username,
                             accessTokenModel.role
                         )
+                        // The auth/login response now carries the enrolled embeddings, so they
+                        // are persisted locally straight from it (no separate fetch call). This
+                        // lets the biometric login button appear on the next visit.
+                        storeBiometricFromLogin(
+                            username = accessTokenModel.username,
+                            role = accessTokenModel.role,
+                            documentNumber = accessTokenModel.document,
+                            embeddings = accessTokenModel.embeddings
+                        )
+                        // Persist the password encrypted so a later biometric match can silently
+                        // re-authenticate; this also refreshes the inactivity window.
+                        storeLoginCredentials(accessTokenModel.username, password)
                         val navModel = with(accessTokenModel) {
                             LoginNavigationModel(
                                 isAdmin = isAdmin,
@@ -174,18 +236,9 @@ class LoginViewModel @Inject constructor(
                                 requiresDeviceAuth = code.isEmpty()
                             )
                         }
-                        val hasLocalEmbedding =
-                            faceCredentialStore.hasEmbedding(accessTokenModel.username)
-                        // Non-admin users without local embeddings: check the cloud first.
-                        // If the user enrolled on another device, we pull the data here so
-                        // they can authenticate with face immediately without re-enrolling.
-                        val shouldOfferEnrollment = !accessTokenModel.isAdmin && !hasLocalEmbedding &&
-                            !fetchBiometric(accessTokenModel.username)
                         uiState.update {
                             it.copy(
                                 navigationModel = navModel,
-                                promptFaceEnrollment = shouldOfferEnrollment,
-                                enrollUsername = if (shouldOfferEnrollment) accessTokenModel.username else null,
                                 isLoading = false
                             )
                         }
@@ -261,10 +314,6 @@ class LoginViewModel @Inject constructor(
     fun closeActiveSession() {
         uiState.update { it.copy(errorModel = null) }
         authenticate(forceCloseSession = true)
-    }
-
-    fun dismissFaceEnrollmentPrompt() {
-        uiState.update { it.copy(promptFaceEnrollment = false, enrollUsername = null) }
     }
 
     fun consumeErrorEvent() {

@@ -409,3 +409,17 @@ fun faceErrorBanner(message: String): BannerModel = BannerModel(
     title = "Error de reconocimiento",
     description = message
 )
+
+fun biometricIntermittencyBanner(): BannerModel = BannerModel(
+    icon = "ic_alert",
+    title = "Intermitencia de red",
+    description = "No fue posible consultar la biometría por intermitencia de red. " +
+        "Verifique su conexión e intente nuevamente."
+)
+
+fun biometricQueryErrorBanner(): BannerModel = BannerModel(
+    icon = "ic_alert",
+    title = "Error de consulta",
+    description = "Ocurrió un error al consultar la biometría de este documento. " +
+        "Intente nuevamente más tarde."
+)

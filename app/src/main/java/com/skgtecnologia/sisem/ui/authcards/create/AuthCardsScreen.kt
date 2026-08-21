@@ -262,7 +262,7 @@ private fun handleAction(
                     viewModel.showRoleRestrictionBanner(buildRoleRestrictionBanner(loggedOutRole, context))
                     return
                 }
-                onNavigation(AuthRoute.LoginRoute())
+                onNavigation(AuthRoute.LoginRoute(loggedOutRole = loggedOutRole))
                 return
             }
 

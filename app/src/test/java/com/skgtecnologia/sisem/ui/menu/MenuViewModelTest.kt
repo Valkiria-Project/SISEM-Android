@@ -2,7 +2,6 @@ package com.skgtecnologia.sisem.ui.menu
 
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
-import com.skgtecnologia.sisem.commons.biometric.FaceCredentialStore
 import com.skgtecnologia.sisem.commons.uiAction
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
@@ -55,16 +54,11 @@ class MenuViewModelTest {
     @MockK
     private lateinit var logoutTurn: LogoutTurn
 
-    @MockK
-    private lateinit var faceCredentialStore: FaceCredentialStore
-
     private lateinit var viewModel: MenuViewModel
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-
-        coEvery { faceCredentialStore.hasEmbedding(any()) } returns true
     }
 
     @Test
@@ -77,7 +71,6 @@ class MenuViewModelTest {
             logout = logout,
             logoutCurrentUser = logoutCurrentUser,
             logoutTurn = logoutTurn,
-            faceCredentialStore = faceCredentialStore,
             observeOperationConfig = observeOperationConfig
         )
 
@@ -106,7 +99,6 @@ class MenuViewModelTest {
             logout = logout,
             logoutCurrentUser = logoutCurrentUser,
             logoutTurn = logoutTurn,
-            faceCredentialStore = faceCredentialStore,
             observeOperationConfig = observeOperationConfig
         )
 
@@ -129,7 +121,6 @@ class MenuViewModelTest {
             logout = logout,
             logoutCurrentUser = logoutCurrentUser,
             logoutTurn = logoutTurn,
-            faceCredentialStore = faceCredentialStore,
             observeOperationConfig = observeOperationConfig
         )
 
@@ -158,7 +149,6 @@ class MenuViewModelTest {
             logout = logout,
             logoutCurrentUser = logoutCurrentUser,
             logoutTurn = logoutTurn,
-            faceCredentialStore = faceCredentialStore,
             observeOperationConfig = observeOperationConfig
         )
 
@@ -183,7 +173,6 @@ class MenuViewModelTest {
             logout = logout,
             logoutCurrentUser = logoutCurrentUser,
             logoutTurn = logoutTurn,
-            faceCredentialStore = faceCredentialStore,
             observeOperationConfig = observeOperationConfig
         )
 
@@ -208,7 +197,6 @@ class MenuViewModelTest {
             logout = logout,
             logoutCurrentUser = logoutCurrentUser,
             logoutTurn = logoutTurn,
-            faceCredentialStore = faceCredentialStore,
             observeOperationConfig = observeOperationConfig
         )
 

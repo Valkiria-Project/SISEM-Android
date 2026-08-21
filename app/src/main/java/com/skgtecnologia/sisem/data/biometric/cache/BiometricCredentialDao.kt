@@ -22,6 +22,10 @@ interface BiometricCredentialDao {
     @Query("DELETE FROM biometric_credentials WHERE username = :username")
     suspend fun deleteByUsername(username: String)
 
+    /** Removes records (and their encrypted credentials) idle since before [cutoff]. */
+    @Query("DELETE FROM biometric_credentials WHERE lastLoginAt > 0 AND lastLoginAt < :cutoff")
+    suspend fun deleteStale(cutoff: Long)
+
     @Query("DELETE FROM biometric_credentials")
     suspend fun clearAll()
 

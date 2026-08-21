@@ -21,5 +21,6 @@ data class AccessTokenModel(
     val docType: String,
     val document: String,
     val refreshDateTime: LocalDateTime,
-    val expDate: LocalDateTime
+    val expDate: LocalDateTime,
+    val embeddings: List<String> = emptyList()
 )

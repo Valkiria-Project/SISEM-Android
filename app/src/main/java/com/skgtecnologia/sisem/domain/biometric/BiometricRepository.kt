@@ -1,12 +1,18 @@
 package com.skgtecnologia.sisem.domain.biometric
 
-import com.skgtecnologia.sisem.domain.biometric.model.BiometricModel
+import com.skgtecnologia.sisem.domain.biometric.model.BiometricRegistrationStatus
+import com.skgtecnologia.sisem.domain.biometric.model.LoginCredentials
 
 @Suppress("TooManyFunctions")
 interface BiometricRepository {
     // ── Local ────────────────────────────────────────────────────────────────
     suspend fun storeLocal(username: String, role: String, refreshToken: String, embeddings: List<FloatArray>)
-    suspend fun storeFromCloud(username: String, role: String, embeddings: List<FloatArray>)
+    suspend fun storeFromCloud(
+        username: String,
+        role: String,
+        documentNumber: String,
+        embeddings: List<FloatArray>
+    )
     suspend fun getEmbeddings(username: String): List<FloatArray>
     suspend fun hasEmbedding(username: String): Boolean
     suspend fun enrolledUsernames(): List<String>
@@ -16,9 +22,21 @@ interface BiometricRepository {
     suspend fun clearUser(username: String)
     suspend fun clearAll()
 
+    // ── Encrypted credentials + inactivity purge ───────────────────────────────
+    suspend fun storeLoginCredentials(username: String, password: String)
+    suspend fun getLoginCredentials(username: String): LoginCredentials?
+    suspend fun purgeStale(maxIdleDays: Int)
+
     // ── Cloud sync ───────────────────────────────────────────────────────────
     suspend fun uploadToCloud(username: String): Result<Unit>
-    suspend fun fetchFromCloud(username: String): BiometricModel?
+    suspend fun uploadByDocument(document: String, embeddings: List<FloatArray>): Result<Unit>
+    suspend fun storeFromLogin(
+        username: String,
+        role: String,
+        documentNumber: String,
+        embeddings: List<String>
+    )
+    suspend fun registrationStatus(documentNumber: String): BiometricRegistrationStatus
     suspend fun getPendingSync(): List<String>
     suspend fun markCloudSynced(username: String)
 }

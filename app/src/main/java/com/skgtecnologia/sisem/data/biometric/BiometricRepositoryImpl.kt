@@ -1,15 +1,20 @@
 package com.skgtecnologia.sisem.data.biometric
 
+import com.skgtecnologia.sisem.commons.security.CredentialCipher
 import com.skgtecnologia.sisem.data.biometric.cache.BiometricCacheDataSource
 import com.skgtecnologia.sisem.data.biometric.remote.BiometricRemoteDataSource
+import com.skgtecnologia.sisem.data.biometric.remote.BiometricSerializer
 import com.skgtecnologia.sisem.domain.biometric.BiometricRepository
-import com.skgtecnologia.sisem.domain.biometric.model.BiometricModel
+import com.skgtecnologia.sisem.domain.biometric.model.BiometricRegistrationStatus
+import com.skgtecnologia.sisem.domain.biometric.model.LoginCredentials
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 class BiometricRepositoryImpl @Inject constructor(
     private val cacheDataSource: BiometricCacheDataSource,
-    private val remoteDataSource: BiometricRemoteDataSource
+    private val remoteDataSource: BiometricRemoteDataSource,
+    private val credentialCipher: CredentialCipher
 ) : BiometricRepository {
 
     override suspend fun storeLocal(
@@ -22,8 +27,9 @@ class BiometricRepositoryImpl @Inject constructor(
     override suspend fun storeFromCloud(
         username: String,
         role: String,
+        documentNumber: String,
         embeddings: List<FloatArray>
-    ) = cacheDataSource.storeFromCloud(username, role, embeddings)
+    ) = cacheDataSource.storeFromCloud(username, role, documentNumber, embeddings)
 
     override suspend fun getEmbeddings(username: String): List<FloatArray> =
         cacheDataSource.getEmbeddings(username)
@@ -47,6 +53,27 @@ class BiometricRepositoryImpl @Inject constructor(
 
     override suspend fun clearAll() = cacheDataSource.clearAll()
 
+    override suspend fun storeLoginCredentials(username: String, password: String) {
+        val encrypted = credentialCipher.encrypt(password)
+        cacheDataSource.storeCredentials(username, encrypted.ciphertext, encrypted.iv)
+    }
+
+    override suspend fun getLoginCredentials(username: String): LoginCredentials? {
+        val password = cacheDataSource.getCredentials(username)
+            ?.takeIf { it.encryptedPassword.isNotBlank() && it.credentialIv.isNotBlank() }
+            ?.let {
+                runCatching {
+                    credentialCipher.decrypt(it.encryptedPassword, it.credentialIv)
+                }.getOrNull()
+            }
+        return password?.let { LoginCredentials(username = username, password = it) }
+    }
+
+    override suspend fun purgeStale(maxIdleDays: Int) {
+        val cutoff = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(maxIdleDays.toLong())
+        cacheDataSource.deleteStale(cutoff)
+    }
+
     override suspend fun uploadToCloud(username: String): Result<Unit> {
         val embeddings = cacheDataSource.getEmbeddings(username)
         val role = cacheDataSource.getRole(username).orEmpty()
@@ -55,8 +82,25 @@ class BiometricRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchFromCloud(username: String): BiometricModel? =
-        remoteDataSource.fetch(username)
+    override suspend fun uploadByDocument(
+        document: String,
+        embeddings: List<FloatArray>
+    ): Result<Unit> = remoteDataSource.uploadByDocument(document, embeddings)
+
+    override suspend fun storeFromLogin(
+        username: String,
+        role: String,
+        documentNumber: String,
+        embeddings: List<String>
+    ) = cacheDataSource.storeFromCloud(
+        username = username,
+        role = role,
+        documentNumber = documentNumber,
+        embeddings = embeddings.map { BiometricSerializer.base64ToFloatArray(it) }
+    )
+
+    override suspend fun registrationStatus(documentNumber: String): BiometricRegistrationStatus =
+        remoteDataSource.exists(documentNumber)
 
     override suspend fun getPendingSync(): List<String> =
         cacheDataSource.getPendingSync().map { it.username }

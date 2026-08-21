@@ -55,8 +55,7 @@ fun MenuDrawer(
                 crewMenuItems = crewMenuItems,
                 menuItems = getDrawerMenuItemList(
                     LocalContext.current,
-                    isAdmin,
-                    uiState.hasPendingBiometric
+                    isAdmin
                 ),
                 onMenuItemClick = onClick,
                 onLogout = {
