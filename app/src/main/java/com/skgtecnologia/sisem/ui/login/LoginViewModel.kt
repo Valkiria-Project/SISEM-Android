@@ -14,7 +14,7 @@ import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
 import com.skgtecnologia.sisem.domain.auth.usecases.Login
 import com.skgtecnologia.sisem.domain.authcards.model.AuthCardsIdentifier
 import com.skgtecnologia.sisem.domain.authcards.usecases.GetAuthCardsScreen
-import com.skgtecnologia.sisem.domain.biometric.usecases.FetchBiometric
+import com.skgtecnologia.sisem.domain.biometric.usecases.StoreBiometricFromLogin
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.model.banner.incompleteCrewBanner
@@ -31,12 +31,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.withTimeoutOrNull
 import timber.log.Timber
 import javax.inject.Inject
 
 private const val LOGIN_EMAIL_IDENTIFIER = "LOGIN_EMAIL"
-private const val BIOMETRIC_FETCH_TIMEOUT_MS = 5_000L
 
 private val CREW_CARD_IDENTIFIERS = setOf(
     AuthCardsIdentifier.CREW_MEMBER_CARD_DRIVER.name,
@@ -52,7 +50,7 @@ class LoginViewModel @Inject constructor(
     private val getLoginScreen: GetLoginScreen,
     private val login: Login,
     private val faceCredentialStore: FaceCredentialStore,
-    private val fetchBiometric: FetchBiometric,
+    private val storeBiometricFromLogin: StoreBiometricFromLogin,
     private val getAllAccessTokens: GetAllAccessTokens,
     private val getAuthCardsScreen: GetAuthCardsScreen
 ) : ViewModel() {
@@ -236,19 +234,15 @@ class LoginViewModel @Inject constructor(
                             accessTokenModel.username,
                             accessTokenModel.role
                         )
-                        // Pull any cloud-enrolled embedding (keyed by document) down to local
-                        // storage so the biometric login button can appear on the next visit.
-                        // Awaited here (not fire-and-forget): navigation clears this ViewModel
-                        // right after login, which would cancel a detached coroutine before the
-                        // request is even dispatched. Bounded so a slow/unreachable biometric
-                        // service never stalls the login.
-                        withTimeoutOrNull(BIOMETRIC_FETCH_TIMEOUT_MS) {
-                            fetchBiometric(
-                                username = accessTokenModel.username,
-                                role = accessTokenModel.role,
-                                documentNumber = accessTokenModel.document
-                            )
-                        }
+                        // The auth/login response now carries the enrolled embeddings, so they
+                        // are persisted locally straight from it (no separate fetch call). This
+                        // lets the biometric login button appear on the next visit.
+                        storeBiometricFromLogin(
+                            username = accessTokenModel.username,
+                            role = accessTokenModel.role,
+                            documentNumber = accessTokenModel.document,
+                            embeddings = accessTokenModel.embeddings
+                        )
                         val navModel = with(accessTokenModel) {
                             LoginNavigationModel(
                                 isAdmin = isAdmin,

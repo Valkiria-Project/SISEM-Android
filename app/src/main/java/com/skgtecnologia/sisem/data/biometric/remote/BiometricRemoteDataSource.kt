@@ -5,7 +5,6 @@ import com.skgtecnologia.sisem.data.biometric.remote.model.BiometricDocumentRequ
 import com.skgtecnologia.sisem.data.biometric.remote.model.BiometricRequest
 import com.skgtecnologia.sisem.data.remote.api.NetworkApi
 import com.skgtecnologia.sisem.data.remote.extensions.HTTP_NOT_FOUND_STATUS_CODE
-import com.skgtecnologia.sisem.domain.biometric.model.BiometricModel
 import com.skgtecnologia.sisem.domain.biometric.model.BiometricRegistrationStatus
 import timber.log.Timber
 import java.io.IOException
@@ -45,22 +44,6 @@ class BiometricRemoteDataSource @Inject constructor(
             )
         )
     }.mapResult { }
-
-    /**
-     * Returns the cloud-stored biometrics for [documentNumber], or null if the person has
-     * never enrolled (404) or if the request fails (network error).
-     */
-    suspend fun fetch(documentNumber: String): BiometricModel? =
-        networkApi.apiCall {
-            biometricApi.fetchBiometric(documentNumber)
-        }.mapResult { response ->
-            BiometricModel(
-                documentNumber = response.documentNumber,
-                embeddings = response.embeddings.map { BiometricSerializer.base64ToFloatArray(it) }
-            )
-        }.onFailure {
-            Timber.d("[BiometricRemote] fetch: no cloud record for $documentNumber (${it.message})")
-        }.getOrNull()
 
     /**
      * Existence check that maps HTTP outcomes to a domain status. It bypasses

@@ -1,6 +1,5 @@
 package com.skgtecnologia.sisem.domain.biometric
 
-import com.skgtecnologia.sisem.domain.biometric.model.BiometricModel
 import com.skgtecnologia.sisem.domain.biometric.model.BiometricRegistrationStatus
 
 @Suppress("TooManyFunctions")
@@ -25,7 +24,12 @@ interface BiometricRepository {
     // ── Cloud sync ───────────────────────────────────────────────────────────
     suspend fun uploadToCloud(username: String): Result<Unit>
     suspend fun uploadByDocument(document: String, embeddings: List<FloatArray>): Result<Unit>
-    suspend fun fetchFromCloud(documentNumber: String): BiometricModel?
+    suspend fun storeFromLogin(
+        username: String,
+        role: String,
+        documentNumber: String,
+        embeddings: List<String>
+    )
     suspend fun registrationStatus(documentNumber: String): BiometricRegistrationStatus
     suspend fun getPendingSync(): List<String>
     suspend fun markCloudSynced(username: String)

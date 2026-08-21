@@ -2,8 +2,8 @@ package com.skgtecnologia.sisem.data.biometric
 
 import com.skgtecnologia.sisem.data.biometric.cache.BiometricCacheDataSource
 import com.skgtecnologia.sisem.data.biometric.remote.BiometricRemoteDataSource
+import com.skgtecnologia.sisem.data.biometric.remote.BiometricSerializer
 import com.skgtecnologia.sisem.domain.biometric.BiometricRepository
-import com.skgtecnologia.sisem.domain.biometric.model.BiometricModel
 import com.skgtecnologia.sisem.domain.biometric.model.BiometricRegistrationStatus
 import javax.inject.Inject
 
@@ -62,8 +62,17 @@ class BiometricRepositoryImpl @Inject constructor(
         embeddings: List<FloatArray>
     ): Result<Unit> = remoteDataSource.uploadByDocument(document, embeddings)
 
-    override suspend fun fetchFromCloud(documentNumber: String): BiometricModel? =
-        remoteDataSource.fetch(documentNumber)
+    override suspend fun storeFromLogin(
+        username: String,
+        role: String,
+        documentNumber: String,
+        embeddings: List<String>
+    ) = cacheDataSource.storeFromCloud(
+        username = username,
+        role = role,
+        documentNumber = documentNumber,
+        embeddings = embeddings.map { BiometricSerializer.base64ToFloatArray(it) }
+    )
 
     override suspend fun registrationStatus(documentNumber: String): BiometricRegistrationStatus =
         remoteDataSource.exists(documentNumber)

@@ -14,7 +14,7 @@ import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
 import com.skgtecnologia.sisem.domain.auth.usecases.Login
 import com.skgtecnologia.sisem.domain.authcards.model.AuthCardsIdentifier
 import com.skgtecnologia.sisem.domain.authcards.usecases.GetAuthCardsScreen
-import com.skgtecnologia.sisem.domain.biometric.usecases.FetchBiometric
+import com.skgtecnologia.sisem.domain.biometric.usecases.StoreBiometricFromLogin
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.model.banner.BannerModel
@@ -54,7 +54,7 @@ class LoginViewModelTest {
     private lateinit var faceCredentialStore: FaceCredentialStore
 
     @MockK
-    private lateinit var fetchBiometric: FetchBiometric
+    private lateinit var storeBiometricFromLogin: StoreBiometricFromLogin
 
     @MockK
     private lateinit var getAllAccessTokens: GetAllAccessTokens
@@ -76,7 +76,7 @@ class LoginViewModelTest {
         coEvery { faceCredentialStore.storeRefreshToken(any(), any()) } returns Unit
         coEvery { faceCredentialStore.storeRole(any(), any()) } returns Unit
         coEvery { faceCredentialStore.enrolledUsernames() } returns emptyList()
-        coEvery { fetchBiometric.invoke(any(), any(), any()) } returns false
+        coEvery { storeBiometricFromLogin.invoke(any(), any(), any(), any()) } returns Unit
         coEvery { getAllAccessTokens.invoke() } returns Result.success(emptyList())
         coEvery { getAuthCardsScreen.invoke(any()) } returns Result.success(emptyScreenModel)
     }
@@ -87,7 +87,7 @@ class LoginViewModelTest {
         getLoginScreen = getLoginScreen,
         login = login,
         faceCredentialStore = faceCredentialStore,
-        fetchBiometric = fetchBiometric,
+        storeBiometricFromLogin = storeBiometricFromLogin,
         getAllAccessTokens = getAllAccessTokens,
         getAuthCardsScreen = getAuthCardsScreen
     )
@@ -387,7 +387,7 @@ class LoginViewModelTest {
             getLoginScreen = getLoginScreen,
             login = login,
             faceCredentialStore = faceCredentialStore,
-            fetchBiometric = fetchBiometric,
+            storeBiometricFromLogin = storeBiometricFromLogin,
             getAllAccessTokens = getAllAccessTokens,
             getAuthCardsScreen = getAuthCardsScreen
         )
