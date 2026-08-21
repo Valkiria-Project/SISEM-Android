@@ -17,17 +17,17 @@ import retrofit2.http.POST
  */
 interface BiometricApi {
 
-    @GET("v1/biometric/exists")
+    @GET("biometric/exists")
     suspend fun biometricExists(
         @Header("documentNumber") documentNumber: String
     ): Response<BiometricExistsResponse>
 
-    @POST("v1/biometric")
+    @POST("biometric")
     suspend fun uploadBiometric(
         @Body request: BiometricRequest
     ): Response<Unit>
 
-    @POST("v1/biometric")
+    @POST("biometric")
     suspend fun uploadBiometricByDocument(
         @Body request: BiometricDocumentRequest
     ): Response<Unit>
