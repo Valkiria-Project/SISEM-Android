@@ -51,6 +51,9 @@ enum class EnrollmentStep(val eulerYMin: Float, val eulerYMax: Float) {
 /** Random action the user must perform to prove they are a live person (anti-spoofing). */
 enum class LivenessChallenge { BLINK, TURN_LEFT, TURN_RIGHT }
 
+/** Real-time positioning feedback shown while the scanner looks for a well-framed face. */
+enum class FaceGuidance { NO_FACE, TOO_FAR, TOO_CLOSE, GOOD }
+
 sealed interface FaceCameraState {
     data object Scanning : FaceCameraState
     data class Enrolling(val step: EnrollmentStep, val captured: Int, val total: Int) : FaceCameraState
@@ -64,6 +67,10 @@ sealed interface FaceCameraState {
 private const val TOTAL_ENROLLMENT_STEPS = 3
 private const val MIN_STABLE_FRAMES = 6
 private const val LOG_SAMPLE = 8
+
+// Distance guidance — face box width as a fraction of the frame width.
+private const val FACE_MIN_FRACTION = 0.38f
+private const val FACE_MAX_FRACTION = 0.72f
 
 // Liveness detection
 private const val MIN_STABLE_FOR_LIVENESS = 3 // frames before issuing challenge
@@ -104,6 +111,9 @@ class FaceCameraViewModel @Inject constructor(
 
     private val _banner = MutableStateFlow<BannerUiModel?>(null)
     val banner: StateFlow<BannerUiModel?> = _banner
+
+    private val _guidance = MutableStateFlow(FaceGuidance.NO_FACE)
+    val guidance: StateFlow<FaceGuidance> = _guidance
 
     private var isProcessing = false
     private val capturedEmbeddings = mutableListOf<FloatArray>()
@@ -146,15 +156,26 @@ class FaceCameraViewModel @Inject constructor(
         if (isProcessing) return
 
         if (face.boundingBox.width() < FaceEmbeddingHelper.MIN_FACE_PX) {
+            _guidance.update { FaceGuidance.TOO_FAR }
             stableFrameCount = 0
             stableFaceFrames = 0
             return
         }
+        _guidance.update { faceGuidanceFor(face, bitmap) }
 
         if (mode == FaceCameraMode.ENROLL) {
             handleEnrollFrame(face, bitmap)
         } else {
             handleVerifyFrame(face, bitmap)
+        }
+    }
+
+    private fun faceGuidanceFor(face: Face, bitmap: Bitmap): FaceGuidance {
+        val fraction = face.boundingBox.width().toFloat() / bitmap.width.coerceAtLeast(1)
+        return when {
+            fraction < FACE_MIN_FRACTION -> FaceGuidance.TOO_FAR
+            fraction > FACE_MAX_FRACTION -> FaceGuidance.TOO_CLOSE
+            else -> FaceGuidance.GOOD
         }
     }
 
@@ -464,6 +485,7 @@ class FaceCameraViewModel @Inject constructor(
         capturedEmbeddings.clear()
         currentStep = EnrollmentStep.FRONTAL
         stableFrameCount = 0
+        _guidance.update { FaceGuidance.NO_FACE }
         livenessJob?.cancel()
         resetLivenessState()
         if (mode == FaceCameraMode.ENROLL) {

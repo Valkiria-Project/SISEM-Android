@@ -273,6 +273,14 @@ private fun NavGraphBuilder.authGraph(
                         popUpTo(AuthRoute.LoginRoute()) { inclusive = true }
                     }
                 },
+                onEnrolled = {
+                    // Líder APH enrollment finished: land on the map like the signature
+                    // register/update flow, clearing the enrollment/camera back stack.
+                    navController.navigate(NavGraph.MainGraph) {
+                        popUpTo(NavGraph.MainGraph) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                },
                 onBack = { navController.navigateUp() }
             )
         }

@@ -22,6 +22,16 @@ Ajustes y correcciones aplicadas segun versiones:
 
 - **Los datos biométricos sobreviven a las actualizaciones de la app:** La migración de la base de datos local es no destructiva, garantizando que la tripulación no deba volver a registrarse tras actualizar la aplicación.
 
+### Rediseño visual del scanner biométrico
+
+- **Nueva interfaz de captura:** El scanner se rediseña con encabezado de título y subtítulo, óvalo guía punteado, esquinas de encuadre (brackets) y un fondo atenuado que resalta el área del rostro. El nuevo diseño aplica tanto al registro (enrolamiento) como a la verificación (inicio de sesión).
+
+- **Guías de distancia en tiempo real:** Mientras se ubica el rostro, la app indica al usuario si debe acercarse, alejarse o si su posición es correcta, mejorando la tasa de captura exitosa. Se conserva el desafío de liveness (anti-suplantación).
+
+- **Indicadores de estado (cargando, éxito y falla):** Durante el procesamiento se muestra un círculo de carga; al finalizar, un círculo con check de éxito o cruz de falla comunica claramente el resultado del registro o la verificación.
+
+- **Navegación automática al mapa tras enrolamiento exitoso:** Cuando el líder APH captura y envía correctamente el registro biométrico, la aplicación navega al mapa, replicando el comportamiento de registrar o actualizar la firma.
+
 ### Correcciones
 
 - **Resolución del Android ID:** Se restaura la resolución dinámica del identificador del dispositivo con almacenamiento en caché, evitando valores fijos.
