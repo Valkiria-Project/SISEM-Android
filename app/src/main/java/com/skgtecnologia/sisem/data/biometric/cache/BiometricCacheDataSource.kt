@@ -45,6 +45,7 @@ class BiometricCacheDataSource @Inject constructor(
     suspend fun storeFromCloud(
         username: String,
         role: String,
+        documentNumber: String,
         embeddings: List<FloatArray>
     ) {
         val serialized = embeddings.joinToString(ANGLE_SEPARATOR) { it.joinToString(VALUE_SEPARATOR) }
@@ -53,6 +54,7 @@ class BiometricCacheDataSource @Inject constructor(
             BiometricCredentialEntity(
                 username = username,
                 role = role.ifBlank { existing?.role.orEmpty() },
+                documentNumber = documentNumber.ifBlank { existing?.documentNumber.orEmpty() },
                 refreshToken = existing?.refreshToken.orEmpty(),
                 embeddings = serialized,
                 cloudSynced = true,

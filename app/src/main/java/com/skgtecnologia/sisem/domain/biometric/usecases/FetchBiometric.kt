@@ -9,22 +9,23 @@ class FetchBiometric @Inject constructor(
 ) {
 
     /**
-     * Checks the cloud for biometrics registered for [username].
+     * Checks the cloud for biometrics registered under [documentNumber] and, when found,
+     * persists them locally keyed by [username] (with [role] and [documentNumber]) so the
+     * biometric login button can appear. Username and role come from the caller's session
+     * because the cloud record is keyed only by document.
      *
-     * Returns `true` if cloud data was found and stored locally — the caller should
-     * skip the enrollment prompt.
-     * Returns `false` if the user has never enrolled (404) or if a network error
-     * occurred — the caller should show the enrollment prompt.
+     * Returns `true` if cloud data was found and stored locally, `false` on 404/network error.
      */
-    suspend operator fun invoke(username: String): Boolean {
-        val remote = biometricRepository.fetchFromCloud(username) ?: run {
-            Timber.d("[Biometric] No cloud record for $username")
+    suspend operator fun invoke(username: String, role: String, documentNumber: String): Boolean {
+        val remote = biometricRepository.fetchFromCloud(documentNumber) ?: run {
+            Timber.d("[Biometric] No cloud record for document $documentNumber")
             return false
         }
-        Timber.d("[Biometric] Cloud record found for $username — persisting locally")
+        Timber.d("[Biometric] Cloud record found for $username (doc $documentNumber) — persisting locally")
         biometricRepository.storeFromCloud(
-            username = remote.username,
-            role = remote.role,
+            username = username,
+            role = role,
+            documentNumber = remote.documentNumber,
             embeddings = remote.embeddings
         )
         return true

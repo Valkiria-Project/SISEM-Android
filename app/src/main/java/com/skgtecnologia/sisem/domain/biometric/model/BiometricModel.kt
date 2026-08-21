@@ -1,7 +1,6 @@
 package com.skgtecnologia.sisem.domain.biometric.model
 
 data class BiometricModel(
-    val username: String,
-    val role: String,
+    val documentNumber: String,
     val embeddings: List<FloatArray>
 )

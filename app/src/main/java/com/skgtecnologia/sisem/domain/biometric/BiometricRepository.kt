@@ -6,7 +6,12 @@ import com.skgtecnologia.sisem.domain.biometric.model.BiometricModel
 interface BiometricRepository {
     // ── Local ────────────────────────────────────────────────────────────────
     suspend fun storeLocal(username: String, role: String, refreshToken: String, embeddings: List<FloatArray>)
-    suspend fun storeFromCloud(username: String, role: String, embeddings: List<FloatArray>)
+    suspend fun storeFromCloud(
+        username: String,
+        role: String,
+        documentNumber: String,
+        embeddings: List<FloatArray>
+    )
     suspend fun getEmbeddings(username: String): List<FloatArray>
     suspend fun hasEmbedding(username: String): Boolean
     suspend fun enrolledUsernames(): List<String>
@@ -18,7 +23,8 @@ interface BiometricRepository {
 
     // ── Cloud sync ───────────────────────────────────────────────────────────
     suspend fun uploadToCloud(username: String): Result<Unit>
-    suspend fun fetchFromCloud(username: String): BiometricModel?
+    suspend fun uploadByDocument(document: String, embeddings: List<FloatArray>): Result<Unit>
+    suspend fun fetchFromCloud(documentNumber: String): BiometricModel?
     suspend fun getPendingSync(): List<String>
     suspend fun markCloudSynced(username: String)
 }

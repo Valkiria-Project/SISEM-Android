@@ -22,8 +22,9 @@ class BiometricRepositoryImpl @Inject constructor(
     override suspend fun storeFromCloud(
         username: String,
         role: String,
+        documentNumber: String,
         embeddings: List<FloatArray>
-    ) = cacheDataSource.storeFromCloud(username, role, embeddings)
+    ) = cacheDataSource.storeFromCloud(username, role, documentNumber, embeddings)
 
     override suspend fun getEmbeddings(username: String): List<FloatArray> =
         cacheDataSource.getEmbeddings(username)
@@ -55,8 +56,13 @@ class BiometricRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchFromCloud(username: String): BiometricModel? =
-        remoteDataSource.fetch(username)
+    override suspend fun uploadByDocument(
+        document: String,
+        embeddings: List<FloatArray>
+    ): Result<Unit> = remoteDataSource.uploadByDocument(document, embeddings)
+
+    override suspend fun fetchFromCloud(documentNumber: String): BiometricModel? =
+        remoteDataSource.fetch(documentNumber)
 
     override suspend fun getPendingSync(): List<String> =
         cacheDataSource.getPendingSync().map { it.username }

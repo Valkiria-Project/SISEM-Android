@@ -23,7 +23,7 @@ import com.skgtecnologia.sisem.data.operation.cache.model.OperationEntity
         NotificationEntity::class,
         OperationEntity::class
     ],
-    version = 23,
+    version = 24,
     exportSchema = true
 )
 @TypeConverters(CacheConverters::class)

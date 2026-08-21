@@ -15,6 +15,7 @@ import androidx.room.PrimaryKey
 data class BiometricCredentialEntity(
     @PrimaryKey val username: String,
     val role: String,
+    val documentNumber: String = "",
     val refreshToken: String,
     val embeddings: String,
     val cloudSynced: Boolean = false,

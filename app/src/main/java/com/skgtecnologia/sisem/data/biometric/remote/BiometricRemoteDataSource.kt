@@ -1,6 +1,7 @@
 package com.skgtecnologia.sisem.data.biometric.remote
 
 import com.skgtecnologia.sisem.commons.extensions.mapResult
+import com.skgtecnologia.sisem.data.biometric.remote.model.BiometricDocumentRequest
 import com.skgtecnologia.sisem.data.biometric.remote.model.BiometricRequest
 import com.skgtecnologia.sisem.data.remote.api.NetworkApi
 import com.skgtecnologia.sisem.domain.biometric.model.BiometricModel
@@ -27,19 +28,34 @@ class BiometricRemoteDataSource @Inject constructor(
     }.mapResult { }
 
     /**
-     * Returns the cloud-stored biometrics, or null if the user has never enrolled
-     * (404) or if the request fails (network error — caller shows enrollment prompt).
+     * Uploads the líder-registered biometrics identified only by document number.
+     * No token/username/role is sent.
      */
-    suspend fun fetch(username: String): BiometricModel? =
+    suspend fun uploadByDocument(
+        document: String,
+        embeddings: List<FloatArray>
+    ): Result<Unit> = networkApi.apiCall {
+        biometricApi.uploadBiometricByDocument(
+            BiometricDocumentRequest(
+                documentNumber = document,
+                embeddings = embeddings.map { BiometricSerializer.floatArrayToBase64(it) }
+            )
+        )
+    }.mapResult { }
+
+    /**
+     * Returns the cloud-stored biometrics for [documentNumber], or null if the person has
+     * never enrolled (404) or if the request fails (network error).
+     */
+    suspend fun fetch(documentNumber: String): BiometricModel? =
         networkApi.apiCall {
-            biometricApi.fetchBiometric(username)
+            biometricApi.fetchBiometric(documentNumber)
         }.mapResult { response ->
             BiometricModel(
-                username = response.username,
-                role = response.role,
+                documentNumber = response.documentNumber,
                 embeddings = response.embeddings.map { BiometricSerializer.base64ToFloatArray(it) }
             )
         }.onFailure {
-            Timber.d("[BiometricRemote] fetch: no cloud record for $username (${it.message})")
+            Timber.d("[BiometricRemote] fetch: no cloud record for $documentNumber (${it.message})")
         }.getOrNull()
 }
