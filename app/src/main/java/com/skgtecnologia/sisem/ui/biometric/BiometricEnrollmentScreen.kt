@@ -123,27 +123,22 @@ private fun CrewMemberEnrollment(
 
     Spacer(modifier = Modifier.height(40.dp))
 
+    BiometricRegistrationAction(
+        isRegistered = isRegistered,
+        onEnroll = onEnroll
+    )
+}
+
+@Composable
+private fun BiometricRegistrationAction(
+    isRegistered: Boolean,
+    onEnroll: () -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            modifier = Modifier
-                .size(FACE_CIRCLE_SIZE.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.primary,
-                    shape = CircleShape
-                ),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Icon(
-                imageVector = ImageVector.vectorResource(id = UiR.drawable.ic_biometric),
-                contentDescription = stringResource(R.string.biometric_enrollment_face_title),
-                tint = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.size(FACE_ICON_SIZE.dp)
-            )
-        }
+        FaceIllustration()
 
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -186,6 +181,27 @@ private fun CrewMemberEnrollment(
                 color = MaterialTheme.colorScheme.onPrimary
             )
         }
+    }
+}
+
+@Composable
+private fun FaceIllustration() {
+    Column(
+        modifier = Modifier
+            .size(FACE_CIRCLE_SIZE.dp)
+            .background(
+                color = MaterialTheme.colorScheme.primary,
+                shape = CircleShape
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Icon(
+            imageVector = ImageVector.vectorResource(id = UiR.drawable.ic_biometric),
+            contentDescription = stringResource(R.string.biometric_enrollment_face_title),
+            tint = MaterialTheme.colorScheme.onPrimary,
+            modifier = Modifier.size(FACE_ICON_SIZE.dp)
+        )
     }
 }
 
