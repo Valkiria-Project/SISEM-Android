@@ -147,6 +147,17 @@
     <string name="face_camera_success">Bienvenido, %s</string>
     <string name="face_camera_retry">Intentar de nuevo</string>
     <string name="face_camera_use_password">Usar contraseña</string>
+    <string name="face_camera_cancel">Cancelar</string>
+    <!-- Scanner chrome and distance guidance -->
+    <string name="face_camera_scanner_title">Autorización biométrica</string>
+    <string name="face_camera_scanner_subtitle">Reconocimiento Biométrico</string>
+    <string name="face_camera_guidance_no_face">Ubica tu rostro en el óvalo</string>
+    <string name="face_camera_guidance_move_closer">¡Acércate a la pantalla!</string>
+    <string name="face_camera_guidance_move_away">¡Aleja un poco la pantalla!</string>
+    <string name="face_camera_guidance_perfect">¡Estás perfecto!</string>
+    <string name="face_camera_loading_enroll">Cargando registro</string>
+    <string name="face_camera_enroll_success">¡Registro exitoso!</string>
+    <string name="face_camera_enroll_failed">¡Registro fallido!</string>
     <string name="face_auth_button">Ingresar con rostro</string>
     <string name="login_biometric_button">Ingresar con Biometría</string>
     <!-- Liveness detection challenges -->
