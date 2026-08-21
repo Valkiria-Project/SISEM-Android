@@ -10,11 +10,17 @@ import com.skgtecnologia.sisem.commons.biometric.FaceCredentialStore
 import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
+import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
 import com.skgtecnologia.sisem.domain.auth.usecases.Login
+import com.skgtecnologia.sisem.domain.authcards.model.AuthCardsIdentifier
+import com.skgtecnologia.sisem.domain.authcards.usecases.GetAuthCardsScreen
 import com.skgtecnologia.sisem.domain.biometric.usecases.FetchBiometric
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.model.banner.BannerModel
+import com.skgtecnologia.sisem.domain.model.screen.ScreenModel
+import com.valkiria.uicomponents.components.BodyRowModel
+import com.valkiria.uicomponents.components.BodyRowType
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -50,6 +56,12 @@ class LoginViewModelTest {
     @MockK
     private lateinit var fetchBiometric: FetchBiometric
 
+    @MockK
+    private lateinit var getAllAccessTokens: GetAllAccessTokens
+
+    @MockK
+    private lateinit var getAuthCardsScreen: GetAuthCardsScreen
+
     private val savedStateHandle: SavedStateHandle = SavedStateHandle().apply {
         set("username", USERNAME)
     }
@@ -63,8 +75,10 @@ class LoginViewModelTest {
         every { androidIdProvider.getAndroidId() } returns ANDROID_ID
         coEvery { faceCredentialStore.storeRefreshToken(any(), any()) } returns Unit
         coEvery { faceCredentialStore.storeRole(any(), any()) } returns Unit
-        coEvery { faceCredentialStore.hasEmbedding(any()) } returns true
-        coEvery { fetchBiometric.invoke(any()) } returns true
+        coEvery { faceCredentialStore.enrolledUsernames() } returns emptyList()
+        coEvery { fetchBiometric.invoke(any(), any(), any()) } returns false
+        coEvery { getAllAccessTokens.invoke() } returns Result.success(emptyList())
+        coEvery { getAuthCardsScreen.invoke(any()) } returns Result.success(emptyScreenModel)
     }
 
     private fun createViewModel() = LoginViewModel(
@@ -73,7 +87,9 @@ class LoginViewModelTest {
         getLoginScreen = getLoginScreen,
         login = login,
         faceCredentialStore = faceCredentialStore,
-        fetchBiometric = fetchBiometric
+        fetchBiometric = fetchBiometric,
+        getAllAccessTokens = getAllAccessTokens,
+        getAuthCardsScreen = getAuthCardsScreen
     )
 
     @Test
@@ -305,6 +321,96 @@ class LoginViewModelTest {
         loginViewModel.consumeSuccessEvent()
 
         Assert.assertEquals(null, loginViewModel.uiState.value.successBanner)
+    }
+
+    @Test
+    fun `when onBiometricLogin and crew is complete it requests navigation`() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
+        coEvery { getAuthCardsScreen.invoke(ANDROID_ID) } returns Result.success(
+            ScreenModel(body = listOf(crewCard(AuthCardsIdentifier.CREW_MEMBER_CARD_DRIVER.name)))
+        )
+        coEvery { getAllAccessTokens.invoke() } returns Result.success(
+            listOf(createAccessToken(null))
+        )
+
+        loginViewModel = createViewModel()
+        loginViewModel.onBiometricLogin()
+
+        Assert.assertEquals(true, loginViewModel.uiState.value.navigateToBiometric)
+        Assert.assertEquals(null, loginViewModel.uiState.value.errorModel)
+        Assert.assertEquals(false, loginViewModel.uiState.value.isLoading)
+    }
+
+    @Test
+    fun `when onBiometricLogin and crew is incomplete it shows the exception banner`() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
+        coEvery { getAuthCardsScreen.invoke(ANDROID_ID) } returns Result.success(
+            ScreenModel(
+                body = listOf(
+                    crewCard(AuthCardsIdentifier.CREW_MEMBER_CARD_DRIVER.name),
+                    crewCard(AuthCardsIdentifier.CREW_MEMBER_CARD_DOCTOR.name)
+                )
+            )
+        )
+        coEvery { getAllAccessTokens.invoke() } returns Result.success(
+            listOf(createAccessToken(null))
+        )
+
+        loginViewModel = createViewModel()
+        loginViewModel.onBiometricLogin()
+
+        Assert.assertEquals(false, loginViewModel.uiState.value.navigateToBiometric)
+        Assert.assertNotNull(loginViewModel.uiState.value.errorModel)
+        Assert.assertEquals(false, loginViewModel.uiState.value.isLoading)
+    }
+
+    @Test
+    fun `when onBiometricLogin during a shift change it skips the crew gate`() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
+        coEvery { getAuthCardsScreen.invoke(ANDROID_ID) } returns Result.success(
+            ScreenModel(
+                body = listOf(
+                    crewCard(AuthCardsIdentifier.CREW_MEMBER_CARD_DRIVER.name),
+                    crewCard(AuthCardsIdentifier.CREW_MEMBER_CARD_DOCTOR.name)
+                )
+            )
+        )
+        coEvery { getAllAccessTokens.invoke() } returns Result.success(emptyList())
+
+        val shiftChangeHandle = SavedStateHandle().apply {
+            set("username", USERNAME)
+            set("loggedOutRole", "DRIVER")
+        }
+        loginViewModel = LoginViewModel(
+            savedStateHandle = shiftChangeHandle,
+            androidIdProvider = androidIdProvider,
+            getLoginScreen = getLoginScreen,
+            login = login,
+            faceCredentialStore = faceCredentialStore,
+            fetchBiometric = fetchBiometric,
+            getAllAccessTokens = getAllAccessTokens,
+            getAuthCardsScreen = getAuthCardsScreen
+        )
+        loginViewModel.onBiometricLogin()
+
+        Assert.assertEquals(true, loginViewModel.uiState.value.navigateToBiometric)
+        Assert.assertEquals(null, loginViewModel.uiState.value.errorModel)
+        coVerify(exactly = 0) { getAuthCardsScreen.invoke(any()) }
+    }
+
+    @Test
+    fun `when consumeBiometricNavigationEvent clears the flag`() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
+
+        loginViewModel = createViewModel()
+        loginViewModel.consumeBiometricNavigationEvent()
+
+        Assert.assertEquals(false, loginViewModel.uiState.value.navigateToBiometric)
+    }
+
+    private fun crewCard(cardIdentifier: String) = object : BodyRowModel {
+        override val identifier: String = cardIdentifier
+        override val type: BodyRowType = BodyRowType.INFO_CARD
     }
 
     private fun createAccessToken(warning: BannerModel?) = AccessTokenModel(

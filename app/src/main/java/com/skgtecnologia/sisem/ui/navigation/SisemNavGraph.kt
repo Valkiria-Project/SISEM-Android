@@ -42,7 +42,7 @@ import com.skgtecnologia.sisem.commons.location.LocationService
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.ui.authcards.create.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.authcards.view.AuthCardViewScreen
-import com.skgtecnologia.sisem.ui.biometric.BiometricCrewListScreen
+import com.skgtecnologia.sisem.ui.biometric.BiometricEnrollmentScreen
 import com.skgtecnologia.sisem.ui.biometric.BiometricRegistrationScreen
 import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.sharedViewModel
@@ -190,9 +190,9 @@ private fun NavGraphBuilder.authGraph(
         composable<AuthRoute.LoginRoute> {
             LoginScreen(
                 modifier = modifier,
-                onFaceEnroll = { username ->
+                onBiometricLogin = { loggedOutRole ->
                     navController.navigate(
-                        AuthRoute.FaceCameraRoute(mode = "ENROLL", username = username)
+                        AuthRoute.FaceCameraRoute(mode = "VERIFY", loggedOutRole = loggedOutRole)
                     )
                 }
             ) { navigationModel ->
@@ -373,22 +373,27 @@ private fun NavGraphBuilder.mainGraph(
             }
         }
 
-        composable<MainRoute.BiometricRegistrationRoute> {
+        composable<MainRoute.SignatureBiometricRoute> { backStackEntry ->
+            val document = backStackEntry.toRoute<MainRoute.SignatureBiometricRoute>().document
             BiometricRegistrationScreen(
                 modifier = modifier,
+                onSignature = {
+                    navController.navigate(MainRoute.SignatureRoute(document))
+                },
                 onBiometric = {
-                    navController.navigate(MainRoute.BiometricCrewListRoute)
+                    navController.navigate(MainRoute.BiometricEnrollmentRoute(document))
                 },
                 onBack = { navController.navigateUp() }
             )
         }
 
-        composable<MainRoute.BiometricCrewListRoute> {
-            BiometricCrewListScreen(
+        composable<MainRoute.BiometricEnrollmentRoute> { backStackEntry ->
+            val document = backStackEntry.toRoute<MainRoute.BiometricEnrollmentRoute>().document
+            BiometricEnrollmentScreen(
                 modifier = modifier,
-                onEnroll = { username ->
+                onEnroll = {
                     navController.navigate(
-                        AuthRoute.FaceCameraRoute(mode = "ENROLL", username = username)
+                        AuthRoute.FaceCameraRoute(mode = "ENROLL", document = document)
                     )
                 },
                 onBack = { navController.navigateUp() }

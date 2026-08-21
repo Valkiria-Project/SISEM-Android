@@ -13,7 +13,6 @@ data class LoginUiState(
     val warning: BannerUiModel? = null,
     val errorModel: BannerUiModel? = null,
     val successBanner: BannerUiModel? = null,
-    /** Set after a successful login to offer face enrolment. */
-    val promptFaceEnrollment: Boolean = false,
-    val enrollUsername: String? = null,
+    val navigateToBiometric: Boolean = false,
+    val loggedOutRole: String? = null,
 )

@@ -10,10 +10,14 @@ import androidx.navigation.toRoute
 import com.skgtecnologia.sisem.commons.biometric.FaceCredentialStore
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.di.operation.OperationRole
+import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
 import com.skgtecnologia.sisem.domain.auth.usecases.Login
+import com.skgtecnologia.sisem.domain.authcards.model.AuthCardsIdentifier
+import com.skgtecnologia.sisem.domain.authcards.usecases.GetAuthCardsScreen
 import com.skgtecnologia.sisem.domain.biometric.usecases.FetchBiometric
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
+import com.skgtecnologia.sisem.domain.model.banner.incompleteCrewBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.ui.commons.extensions.updateBodyModel
 import com.skgtecnologia.sisem.ui.navigation.AuthRoute
@@ -27,12 +31,20 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 import timber.log.Timber
 import javax.inject.Inject
 
 private const val LOGIN_EMAIL_IDENTIFIER = "LOGIN_EMAIL"
+private const val BIOMETRIC_FETCH_TIMEOUT_MS = 5_000L
 
-@Suppress("TooManyFunctions")
+private val CREW_CARD_IDENTIFIERS = setOf(
+    AuthCardsIdentifier.CREW_MEMBER_CARD_DRIVER.name,
+    AuthCardsIdentifier.CREW_MEMBER_CARD_DOCTOR.name,
+    AuthCardsIdentifier.CREW_MEMBER_CARD_ASSISTANT.name
+)
+
+@Suppress("TooManyFunctions", "LongParameterList")
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
@@ -40,7 +52,9 @@ class LoginViewModel @Inject constructor(
     private val getLoginScreen: GetLoginScreen,
     private val login: Login,
     private val faceCredentialStore: FaceCredentialStore,
-    private val fetchBiometric: FetchBiometric
+    private val fetchBiometric: FetchBiometric,
+    private val getAllAccessTokens: GetAllAccessTokens,
+    private val getAuthCardsScreen: GetAuthCardsScreen
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -49,6 +63,7 @@ class LoginViewModel @Inject constructor(
         private set
 
     private val previousUsername = savedStateHandle.toRoute<AuthRoute.LoginRoute>().username
+    private val loggedOutRole = savedStateHandle.toRoute<AuthRoute.LoginRoute>().loggedOutRole
 
     private var code by mutableStateOf("")
     var username by mutableStateOf("")
@@ -57,7 +72,7 @@ class LoginViewModel @Inject constructor(
     var isValidPassword by mutableStateOf(false)
 
     init {
-        uiState.update { it.copy(isLoading = true) }
+        uiState.update { it.copy(isLoading = true, loggedOutRole = loggedOutRole) }
 
         job?.cancel()
         job = viewModelScope.launch {
@@ -120,6 +135,63 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Biometric login is a fast re-entry into an already-active crew session on this
+     * shared device, so it is only allowed once every expected crew member has signed in
+     * with their password. The expected crew size is the number of crew cards returned by
+     * the crewList screen (admin button excluded); the signed-in count is the number of
+     * stored sessions. If the crew is incomplete the camera is not opened and an
+     * exception banner is shown instead.
+     *
+     * Exception: during a shift change ([loggedOutRole] is set) the crew is intentionally
+     * incomplete while one member is replaced, so the gate is skipped and only the vacated
+     * role is enforced against the matched face downstream.
+     */
+    fun onBiometricLogin() {
+        // During a shift change (a crew member logged out and is being replaced) the crew
+        // is intentionally incomplete, so the crew-completeness gate is skipped. The vacated
+        // role is enforced later against the matched face in FaceCameraViewModel.verify().
+        if (!loggedOutRole.isNullOrBlank()) {
+            uiState.update { it.copy(navigateToBiometric = true) }
+            return
+        }
+
+        uiState.update { it.copy(isLoading = true) }
+
+        job?.cancel()
+        job = viewModelScope.launch {
+            val expectedCrew = fetchExpectedCrewSize()
+            val signedInCount = getAllAccessTokens.invoke().getOrNull()?.size ?: 0
+
+            if (expectedCrew > 0 && signedInCount < expectedCrew) {
+                uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorModel = incompleteCrewBanner().mapToUi()
+                    )
+                }
+            } else {
+                uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        navigateToBiometric = true
+                    )
+                }
+            }
+        }
+    }
+
+    private suspend fun fetchExpectedCrewSize(): Int =
+        getAuthCardsScreen.invoke(androidIdProvider.getAndroidId())
+            .getOrNull()
+            ?.body
+            ?.count { it.identifier in CREW_CARD_IDENTIFIERS }
+            ?: 0
+
+    fun consumeBiometricNavigationEvent() {
+        uiState.update { it.copy(navigateToBiometric = false) }
+    }
+
     fun forgotPassword() {
         uiState.update {
             it.copy(
@@ -164,6 +236,19 @@ class LoginViewModel @Inject constructor(
                             accessTokenModel.username,
                             accessTokenModel.role
                         )
+                        // Pull any cloud-enrolled embedding (keyed by document) down to local
+                        // storage so the biometric login button can appear on the next visit.
+                        // Awaited here (not fire-and-forget): navigation clears this ViewModel
+                        // right after login, which would cancel a detached coroutine before the
+                        // request is even dispatched. Bounded so a slow/unreachable biometric
+                        // service never stalls the login.
+                        withTimeoutOrNull(BIOMETRIC_FETCH_TIMEOUT_MS) {
+                            fetchBiometric(
+                                username = accessTokenModel.username,
+                                role = accessTokenModel.role,
+                                documentNumber = accessTokenModel.document
+                            )
+                        }
                         val navModel = with(accessTokenModel) {
                             LoginNavigationModel(
                                 isAdmin = isAdmin,
@@ -174,18 +259,9 @@ class LoginViewModel @Inject constructor(
                                 requiresDeviceAuth = code.isEmpty()
                             )
                         }
-                        val hasLocalEmbedding =
-                            faceCredentialStore.hasEmbedding(accessTokenModel.username)
-                        // Non-admin users without local embeddings: check the cloud first.
-                        // If the user enrolled on another device, we pull the data here so
-                        // they can authenticate with face immediately without re-enrolling.
-                        val shouldOfferEnrollment = !accessTokenModel.isAdmin && !hasLocalEmbedding &&
-                            !fetchBiometric(accessTokenModel.username)
                         uiState.update {
                             it.copy(
                                 navigationModel = navModel,
-                                promptFaceEnrollment = shouldOfferEnrollment,
-                                enrollUsername = if (shouldOfferEnrollment) accessTokenModel.username else null,
                                 isLoading = false
                             )
                         }
@@ -261,10 +337,6 @@ class LoginViewModel @Inject constructor(
     fun closeActiveSession() {
         uiState.update { it.copy(errorModel = null) }
         authenticate(forceCloseSession = true)
-    }
-
-    fun dismissFaceEnrollmentPrompt() {
-        uiState.update { it.copy(promptFaceEnrollment = false, enrollUsername = null) }
     }
 
     fun consumeErrorEvent() {
