@@ -59,12 +59,14 @@ class BiometricRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getLoginCredentials(username: String): LoginCredentials? {
-        val entity = cacheDataSource.getCredentials(username) ?: return null
-        if (entity.encryptedPassword.isBlank() || entity.credentialIv.isBlank()) return null
-        val password = runCatching {
-            credentialCipher.decrypt(entity.encryptedPassword, entity.credentialIv)
-        }.getOrNull() ?: return null
-        return LoginCredentials(username = username, password = password)
+        val password = cacheDataSource.getCredentials(username)
+            ?.takeIf { it.encryptedPassword.isNotBlank() && it.credentialIv.isNotBlank() }
+            ?.let {
+                runCatching {
+                    credentialCipher.decrypt(it.encryptedPassword, it.credentialIv)
+                }.getOrNull()
+            }
+        return password?.let { LoginCredentials(username = username, password = it) }
     }
 
     override suspend fun purgeStale(maxIdleDays: Int) {
