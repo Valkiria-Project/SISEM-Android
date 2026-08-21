@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -88,6 +89,7 @@ fun BiometricEnrollmentScreen(
         CrewMemberEnrollment(
             crewMember = uiState.crewMember,
             document = uiState.document,
+            isRegistered = uiState.isRegistered,
             onEnroll = onEnroll
         )
     }
@@ -102,6 +104,7 @@ fun BiometricEnrollmentScreen(
 private fun CrewMemberEnrollment(
     crewMember: CrewBiometricStatus?,
     document: String,
+    isRegistered: Boolean,
     onEnroll: () -> Unit
 ) {
     if (crewMember != null) {
@@ -130,8 +133,7 @@ private fun CrewMemberEnrollment(
                 .background(
                     color = MaterialTheme.colorScheme.primary,
                     shape = CircleShape
-                )
-                .clickable { onEnroll() },
+                ),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -146,15 +148,19 @@ private fun CrewMemberEnrollment(
         Spacer(modifier = Modifier.height(20.dp))
 
         Text(
-            text = stringResource(R.string.biometric_enrollment_face_title),
+            text = if (isRegistered) {
+                stringResource(R.string.biometric_enrollment_update)
+            } else {
+                stringResource(R.string.biometric_enrollment_register)
+            },
             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center
         )
 
         Text(
-            text = if (crewMember?.isEnrolled == true) {
-                stringResource(R.string.biometric_enrollment_enrolled)
+            text = if (isRegistered) {
+                stringResource(R.string.biometric_enrollment_update_description)
             } else {
                 stringResource(R.string.biometric_enrollment_face_description)
             },
@@ -163,6 +169,23 @@ private fun CrewMemberEnrollment(
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(top = 8.dp, start = 24.dp, end = 24.dp)
         )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Button(
+            onClick = onEnroll,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = if (isRegistered) {
+                    stringResource(R.string.biometric_enrollment_update)
+                } else {
+                    stringResource(R.string.biometric_enrollment_register)
+                },
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+        }
     }
 }
 

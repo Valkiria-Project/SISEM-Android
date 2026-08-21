@@ -1,8 +1,12 @@
 package com.skgtecnologia.sisem.ui.signature.init
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -57,12 +61,7 @@ fun InitSignatureScreen(
     }
 
     ConstraintLayout(
-        // The body is pinned between the header and the footer, so insetting it for the
-        // keyboard eats its fixed height instead of scrolling. Inset the whole layout so
-        // the footer rises above the keyboard and the body keeps the rest.
-        modifier = modifier
-            .fillMaxSize()
-            .imePadding()
+        modifier = modifier.fillMaxSize()
     ) {
         val (header, body, footer) = createRefs()
 
@@ -86,7 +85,7 @@ fun InitSignatureScreen(
             modifier = modifier
                 .constrainAs(body) {
                     top.linkTo(header.bottom)
-                    bottom.linkTo(footer.top)
+                    bottom.linkTo(parent.bottom)
                     height = Dimension.fillToConstraints
                 }
                 .padding(top = 20.dp),
@@ -99,9 +98,14 @@ fun InitSignatureScreen(
         uiState.screenModel?.footer?.let {
             FooterSection(
                 footerModel = it,
-                modifier = modifier.constrainAs(footer) {
-                    bottom.linkTo(parent.bottom)
-                }
+                // The screen-level `modifier` already lifts `parent.bottom` above the
+                // navigation bar, so excluding it from the ime inset makes the footer sit
+                // flush against the keyboard instead of a navigation-bar gap above it.
+                modifier = Modifier
+                    .constrainAs(footer) {
+                        bottom.linkTo(parent.bottom)
+                    }
+                    .windowInsetsPadding(WindowInsets.ime.exclude(WindowInsets.navigationBars))
             ) { uiAction ->
                 handleFooterAction(uiAction, viewModel)
             }

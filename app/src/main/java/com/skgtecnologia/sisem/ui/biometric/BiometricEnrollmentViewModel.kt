@@ -4,9 +4,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.skgtecnologia.sisem.commons.biometric.FaceCredentialStore
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
+import com.skgtecnologia.sisem.domain.biometric.model.BiometricRegistrationStatus
+import com.skgtecnologia.sisem.domain.biometric.usecases.GetBiometricRegistrationStatus
+import com.skgtecnologia.sisem.domain.model.banner.biometricIntermittencyBanner
+import com.skgtecnologia.sisem.domain.model.banner.biometricQueryErrorBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.ui.navigation.MainRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +26,7 @@ import javax.inject.Inject
 class BiometricEnrollmentViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getAllAccessTokens: GetAllAccessTokens,
-    private val faceCredentialStore: FaceCredentialStore
+    private val getBiometricRegistrationStatus: GetBiometricRegistrationStatus
 ) : ViewModel() {
 
     private val document = savedStateHandle.toRoute<MainRoute.BiometricEnrollmentRoute>().document
@@ -54,17 +57,41 @@ class BiometricEnrollmentViewModel @Inject constructor(
                             username = it.username,
                             name = it.nameUser,
                             role = humanRole,
-                            document = "${it.docType} ${it.document}",
-                            isEnrolled = faceCredentialStore.hasEmbedding(it.username)
+                            document = "${it.docType} ${it.document}"
                         )
                     }
 
+                    // The CTA (register vs update) reflects the cloud, not local state: a
+                    // líder may enroll a crew member who has never logged in on this device.
+                    val status = getBiometricRegistrationStatus(document)
+
                     withContext(Dispatchers.Main) {
-                        _uiState.update {
-                            it.copy(
-                                crewMember = crewMember,
-                                isLoading = false
-                            )
+                        _uiState.update { state ->
+                            when (status) {
+                                BiometricRegistrationStatus.Registered -> state.copy(
+                                    crewMember = crewMember,
+                                    isRegistered = true,
+                                    isLoading = false
+                                )
+
+                                BiometricRegistrationStatus.NotRegistered -> state.copy(
+                                    crewMember = crewMember,
+                                    isRegistered = false,
+                                    isLoading = false
+                                )
+
+                                BiometricRegistrationStatus.NetworkIntermittency -> state.copy(
+                                    crewMember = crewMember,
+                                    isLoading = false,
+                                    errorModel = biometricIntermittencyBanner().mapToUi()
+                                )
+
+                                BiometricRegistrationStatus.QueryError -> state.copy(
+                                    crewMember = crewMember,
+                                    isLoading = false,
+                                    errorModel = biometricQueryErrorBanner().mapToUi()
+                                )
+                            }
                         }
                     }
                 }

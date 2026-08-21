@@ -4,6 +4,7 @@ import com.skgtecnologia.sisem.data.biometric.cache.BiometricCacheDataSource
 import com.skgtecnologia.sisem.data.biometric.remote.BiometricRemoteDataSource
 import com.skgtecnologia.sisem.domain.biometric.BiometricRepository
 import com.skgtecnologia.sisem.domain.biometric.model.BiometricModel
+import com.skgtecnologia.sisem.domain.biometric.model.BiometricRegistrationStatus
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -63,6 +64,9 @@ class BiometricRepositoryImpl @Inject constructor(
 
     override suspend fun fetchFromCloud(documentNumber: String): BiometricModel? =
         remoteDataSource.fetch(documentNumber)
+
+    override suspend fun registrationStatus(documentNumber: String): BiometricRegistrationStatus =
+        remoteDataSource.exists(documentNumber)
 
     override suspend fun getPendingSync(): List<String> =
         cacheDataSource.getPendingSync().map { it.username }
