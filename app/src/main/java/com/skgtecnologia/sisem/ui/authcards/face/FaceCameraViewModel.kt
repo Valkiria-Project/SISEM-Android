@@ -1,6 +1,11 @@
 package com.skgtecnologia.sisem.ui.authcards.face
 
 import android.graphics.Bitmap
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +14,7 @@ import com.google.mlkit.vision.face.Face
 import com.skgtecnologia.sisem.commons.biometric.FaceCredentialStore
 import com.skgtecnologia.sisem.commons.biometric.FaceEmbeddingHelper
 import com.skgtecnologia.sisem.di.operation.OperationRole
+import com.skgtecnologia.sisem.domain.auth.usecases.GetConflictingActiveSession
 import com.skgtecnologia.sisem.domain.model.banner.faceEnrollmentSuccessBanner
 import com.skgtecnologia.sisem.domain.model.banner.faceErrorBanner
 import com.skgtecnologia.sisem.domain.model.banner.faceVerificationSuccessBanner
@@ -60,7 +66,7 @@ sealed interface FaceCameraState {
     data class AwaitingLiveness(val challenge: LivenessChallenge, val secondsLeft: Int) : FaceCameraState
     data object Processing : FaceCameraState
     data class Success(val username: String) : FaceCameraState
-    data class NoMatch(val message: String) : FaceCameraState
+    data class NoMatch(val message: String, val descriptionAnnotated: AnnotatedString? = null) : FaceCameraState
     data object Enrolled : FaceCameraState
 }
 
@@ -87,7 +93,8 @@ class FaceCameraViewModel @Inject constructor(
     private val faceCredentialStore: FaceCredentialStore,
     private val faceEmbeddingHelper: FaceEmbeddingHelper,
     private val uploadBiometric: com.skgtecnologia.sisem.domain.biometric.usecases.UploadBiometric,
-    private val uploadBiometricByDocument: com.skgtecnologia.sisem.domain.biometric.usecases.UploadBiometricByDocument
+    private val uploadBiometricByDocument: com.skgtecnologia.sisem.domain.biometric.usecases.UploadBiometricByDocument,
+    private val getConflictingActiveSession: GetConflictingActiveSession
 ) : ViewModel() {
 
     private val route = savedStateHandle.toRoute<AuthRoute.FaceCameraRoute>()
@@ -95,6 +102,7 @@ class FaceCameraViewModel @Inject constructor(
     val enrollUsername: String? = route.username.ifBlank { null }
     private val enrollDocument: String? = route.document.ifBlank { null }
     private val loggedOutRole: String = route.loggedOutRole
+    private val targetRole: String = route.targetRole
 
     // Pre-pick the enroll challenge so it can seed the initial UI state synchronously.
     private val initialEnrollChallenge =
@@ -143,7 +151,10 @@ class FaceCameraViewModel @Inject constructor(
         viewModelScope.launch {
             _state.collect { newState ->
                 if (newState is FaceCameraState.NoMatch) {
-                    _banner.update { faceErrorBanner(newState.message).mapToUi() }
+                    _banner.update {
+                        faceErrorBanner(newState.message).mapToUi()
+                            .copy(descriptionAnnotated = newState.descriptionAnnotated)
+                    }
                 }
             }
         }
@@ -413,7 +424,7 @@ class FaceCameraViewModel @Inject constructor(
 
     // ── Verification (1:N with role check) ───────────────────────────────────
 
-    @Suppress("ReturnCount")
+    @Suppress("ReturnCount", "LongMethod")
     private suspend fun verify(embedding: FloatArray) {
         val enrolled = faceCredentialStore.enrolledUsernames()
         if (enrolled.isEmpty()) {
@@ -464,6 +475,29 @@ class FaceCameraViewModel @Inject constructor(
                 isProcessing = false
                 return
             }
+        }
+
+        // Security: a matched face already logged in under a different role must not silently
+        // switch sessions — the crew member has to know their session is still active elsewhere.
+        val conflictingSession = getConflictingActiveSession(bestUsername, targetRole)
+        if (conflictingSession != null) {
+            val activeRoleName = OperationRole.getRoleByName(conflictingSession.role)?.humanizedName
+                ?: conflictingSession.role
+            val nameUser = conflictingSession.nameUser
+            _state.update {
+                FaceCameraState.NoMatch(
+                    message = "$nameUser ya tiene una sesión activa como $activeRoleName.",
+                    descriptionAnnotated = buildAnnotatedString {
+                        append("El tripulante ")
+                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append(nameUser) }
+                        append(" ya tiene una sesión activa como ")
+                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append(activeRoleName) }
+                        append(".")
+                    }
+                )
+            }
+            isProcessing = false
+            return
         }
 
         Timber.d("Face verified: $bestUsername (sim=$bestSim)")

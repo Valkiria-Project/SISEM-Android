@@ -4,6 +4,10 @@ Ajustes y correcciones aplicadas segun versiones:
 
 # Version 2.4.14 *(24.08.2026)*
 ----------------------------------------
+### Bloqueo de inicio de sesión biométrico con sesión activa en otro rol
+
+- **No se permite cambiar de rol silenciosamente vía biometría:** Si el rostro reconocido corresponde a un tripulante que ya tiene una sesión activa en el dispositivo bajo un rol distinto al que se intenta ingresar (por ejemplo, entró como Conductor y luego se intenta ingresar por el card de Auxiliar con biometría), el inicio de sesión ya no se ejecuta. En su lugar se muestra un aviso indicando que el tripulante ya tiene una sesión activa, con su nombre y el rol en negrita. Aplica tanto al primer ingreso por card como al cambio de turno.
+
 ### Mejoras en la verificación de registro biométrico (/exists)
 
 - **Aviso de "sin registro" en lugar de alerta de conexión:** Cuando el líder APH busca a un tripulante que aún no tiene biometría registrada (respuesta 404 o `exists: false`), la app ya no muestra la alerta roja de fallo de red; en su lugar presenta un aviso informativo azul indicando que el usuario no tiene registro y puede enrolarse en ese momento.

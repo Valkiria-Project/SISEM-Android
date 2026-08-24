@@ -40,7 +40,9 @@ sealed interface AuthRoute : NavRoute {
         val username: String? = null,
         val loggedOutRole: String? = null,
         /** Set after a biometric match: triggers a silent auto-login with stored credentials. */
-        val biometricUsername: String? = null
+        val biometricUsername: String? = null,
+        /** Role of the card the user tapped to get here — used to detect a conflicting session. */
+        val targetRole: String? = null
     ) : AuthRoute
 
     @Serializable
@@ -53,13 +55,17 @@ sealed interface AuthRoute : NavRoute {
      *   backend by document number, with no local storage or token.
      * loggedOutRole: non-empty when VERIFY after a logout — only a face that matches
      *   this role may authenticate (security check).
+     * targetRole: role the user is attempting to enter (tapped card, or the vacated role
+     *   during a shift change) — used to detect a matched face that already has an active
+     *   session under a different role.
      */
     @Serializable
     data class FaceCameraRoute(
         val mode: String,
         val username: String = "",
         val document: String = "",
-        val loggedOutRole: String = ""
+        val loggedOutRole: String = "",
+        val targetRole: String = ""
     ) : AuthRoute
 }
 // endregion
