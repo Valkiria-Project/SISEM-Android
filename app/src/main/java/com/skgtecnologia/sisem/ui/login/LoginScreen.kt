@@ -53,7 +53,7 @@ import com.valkiria.uicomponents.R as UiR
 fun LoginScreen(
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel(),
-    onBiometricLogin: (loggedOutRole: String) -> Unit = {},
+    onBiometricLogin: (loggedOutRole: String, targetRole: String) -> Unit = { _, _ -> },
     onNavigation: (loginNavigationModel: LoginNavigationModel) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -72,7 +72,7 @@ fun LoginScreen(
             when {
                 uiState.navigateToBiometric -> {
                     viewModel.consumeBiometricNavigationEvent()
-                    onBiometricLogin(uiState.loggedOutRole.orEmpty())
+                    onBiometricLogin(uiState.loggedOutRole.orEmpty(), uiState.targetRole.orEmpty())
                 }
 
                 uiState.navigationModel != null &&

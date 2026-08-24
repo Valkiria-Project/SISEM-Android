@@ -57,6 +57,7 @@ class LoginViewModel @Inject constructor(
     private val previousUsername = savedStateHandle.toRoute<AuthRoute.LoginRoute>().username
     private val loggedOutRole = savedStateHandle.toRoute<AuthRoute.LoginRoute>().loggedOutRole
     private val biometricUsername = savedStateHandle.toRoute<AuthRoute.LoginRoute>().biometricUsername
+    private val targetRole = savedStateHandle.toRoute<AuthRoute.LoginRoute>().targetRole
 
     private var code by mutableStateOf("")
     var username by mutableStateOf("")
@@ -65,7 +66,7 @@ class LoginViewModel @Inject constructor(
     var isValidPassword by mutableStateOf(false)
 
     init {
-        uiState.update { it.copy(isLoading = true, loggedOutRole = loggedOutRole) }
+        uiState.update { it.copy(isLoading = true, loggedOutRole = loggedOutRole, targetRole = targetRole) }
 
         // Every login-screen load evicts biometric records idle for more than the inactivity
         // window (record + encrypted credentials), independent of the screen fetch.
@@ -155,12 +156,12 @@ class LoginViewModel @Inject constructor(
     }
 
     /**
-     * Biometric login is just a shortcut that runs the normal login with the matched user's
-     * stored credentials, so it is always available — it does not require the rest of the crew
-     * to have an active session. The matched face resolves to a user, the login executes, and
-     * routing lands on that user's cards like a manual login. During a shift change
-     * ([loggedOutRole] is set) the vacated role is still enforced against the matched face
-     * downstream in FaceCameraViewModel.verify().
+     * Biometric login is a shortcut that runs the normal login with the matched user's stored
+     * credentials. The matched face resolves to a user, the login executes, and routing lands
+     * on that user's cards like a manual login. [targetRole] (the tapped card, or the vacated
+     * role during a shift change) travels down to FaceCameraViewModel.verify(), which blocks
+     * the match — without ever reaching here — if that user already has an active session
+     * under a different role.
      */
     fun onBiometricLogin() {
         uiState.update { it.copy(navigateToBiometric = true) }

@@ -178,7 +178,8 @@ private fun AuthCardsScreenRender(
                     onNavigation(
                         AuthRoute.FaceCameraRoute(
                             mode = "VERIFY",
-                            loggedOutRole = uiState.loggedOutRole.orEmpty()
+                            loggedOutRole = uiState.loggedOutRole.orEmpty(),
+                            targetRole = uiState.loggedOutRole.orEmpty()
                         )
                     )
                 },
@@ -262,7 +263,12 @@ private fun handleAction(
                     viewModel.showRoleRestrictionBanner(buildRoleRestrictionBanner(loggedOutRole, context))
                     return
                 }
-                onNavigation(AuthRoute.LoginRoute(loggedOutRole = loggedOutRole))
+                onNavigation(
+                    AuthRoute.LoginRoute(
+                        loggedOutRole = loggedOutRole,
+                        targetRole = roleForCardIdentifier(uiAction.identifier)
+                    )
+                )
                 return
             }
 
@@ -297,11 +303,13 @@ private fun buildRoleRestrictionBanner(loggedOutRole: String, context: Context):
 }
 
 private fun isCardRoleAllowed(cardIdentifier: String, loggedOutRole: String): Boolean {
-    val cardRole = when (cardIdentifier) {
-        AuthCardsIdentifier.CREW_MEMBER_CARD_DRIVER.name -> OperationRole.DRIVER.name
-        AuthCardsIdentifier.CREW_MEMBER_CARD_DOCTOR.name -> OperationRole.MEDIC_APH.name
-        AuthCardsIdentifier.CREW_MEMBER_CARD_ASSISTANT.name -> OperationRole.AUXILIARY_AND_OR_TAPH.name
-        else -> null
-    }
+    val cardRole = roleForCardIdentifier(cardIdentifier)
     return cardRole?.equals(loggedOutRole, ignoreCase = true) == true
+}
+
+private fun roleForCardIdentifier(cardIdentifier: String): String? = when (cardIdentifier) {
+    AuthCardsIdentifier.CREW_MEMBER_CARD_DRIVER.name -> OperationRole.DRIVER.name
+    AuthCardsIdentifier.CREW_MEMBER_CARD_DOCTOR.name -> OperationRole.MEDIC_APH.name
+    AuthCardsIdentifier.CREW_MEMBER_CARD_ASSISTANT.name -> OperationRole.AUXILIARY_AND_OR_TAPH.name
+    else -> null
 }

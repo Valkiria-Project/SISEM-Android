@@ -190,9 +190,13 @@ private fun NavGraphBuilder.authGraph(
         composable<AuthRoute.LoginRoute> {
             LoginScreen(
                 modifier = modifier,
-                onBiometricLogin = { loggedOutRole ->
+                onBiometricLogin = { loggedOutRole, targetRole ->
                     navController.navigate(
-                        AuthRoute.FaceCameraRoute(mode = "VERIFY", loggedOutRole = loggedOutRole)
+                        AuthRoute.FaceCameraRoute(
+                            mode = "VERIFY",
+                            loggedOutRole = loggedOutRole,
+                            targetRole = targetRole
+                        )
                     )
                 }
             ) { navigationModel ->
