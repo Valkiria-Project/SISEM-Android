@@ -44,8 +44,8 @@ android {
         applicationId = "com.skgtecnologia.sisem"
         minSdk = 30
         targetSdk = 36
-        versionCode = 96
-        versionName = "2.4.13"
+        versionCode = 97
+        versionName = "2.4.14"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

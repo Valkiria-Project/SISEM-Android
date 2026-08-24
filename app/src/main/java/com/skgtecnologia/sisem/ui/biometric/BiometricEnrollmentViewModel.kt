@@ -9,6 +9,7 @@ import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
 import com.skgtecnologia.sisem.domain.biometric.model.BiometricRegistrationStatus
 import com.skgtecnologia.sisem.domain.biometric.usecases.GetBiometricRegistrationStatus
 import com.skgtecnologia.sisem.domain.model.banner.biometricIntermittencyBanner
+import com.skgtecnologia.sisem.domain.model.banner.biometricNotRegisteredBanner
 import com.skgtecnologia.sisem.domain.model.banner.biometricQueryErrorBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.ui.navigation.MainRoute
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -48,7 +50,7 @@ class BiometricEnrollmentViewModel @Inject constructor(
                     // the screen with name/role, otherwise we show only the document.
                     val token = accessTokenModels.firstOrNull { it.document == document }
 
-                    val crewMember = token?.let {
+                    val localCrewMember = token?.let {
                         val humanRole = OperationRole.getRoleByName(it.role)
                             ?.humanizedName
                             .orEmpty()
@@ -68,26 +70,27 @@ class BiometricEnrollmentViewModel @Inject constructor(
                     withContext(Dispatchers.Main) {
                         _uiState.update { state ->
                             when (status) {
-                                BiometricRegistrationStatus.Registered -> state.copy(
-                                    crewMember = crewMember,
+                                is BiometricRegistrationStatus.Registered -> state.copy(
+                                    crewMember = status.toCrewBiometricStatus(localCrewMember?.username.orEmpty()),
                                     isRegistered = true,
                                     isLoading = false
                                 )
 
                                 BiometricRegistrationStatus.NotRegistered -> state.copy(
-                                    crewMember = crewMember,
+                                    crewMember = localCrewMember,
                                     isRegistered = false,
-                                    isLoading = false
+                                    isLoading = false,
+                                    errorModel = biometricNotRegisteredBanner().mapToUi()
                                 )
 
                                 BiometricRegistrationStatus.NetworkIntermittency -> state.copy(
-                                    crewMember = crewMember,
+                                    crewMember = localCrewMember,
                                     isLoading = false,
                                     errorModel = biometricIntermittencyBanner().mapToUi()
                                 )
 
                                 BiometricRegistrationStatus.QueryError -> state.copy(
-                                    crewMember = crewMember,
+                                    crewMember = localCrewMember,
                                     isLoading = false,
                                     errorModel = biometricQueryErrorBanner().mapToUi()
                                 )
@@ -112,5 +115,33 @@ class BiometricEnrollmentViewModel @Inject constructor(
 
     fun consumeError() {
         _uiState.update { it.copy(errorModel = null) }
+    }
+}
+
+/**
+ * Maps the /exists payload into the UI model. [fallbackUsername] is only known locally
+ * (from a prior login on this device); GET v1/biometric/exists never returns it.
+ *
+ * The `role` value observed from the backend is a plain Spanish word (e.g. "medico") rather
+ * than an [OperationRole] enum name, so it is humanized by keyword instead of exact match.
+ * Unrecognized values are shown as-is rather than dropped.
+ */
+private fun BiometricRegistrationStatus.Registered.toCrewBiometricStatus(
+    fallbackUsername: String
+) = CrewBiometricStatus(
+    username = fallbackUsername,
+    name = "$userName $userLastName".trim(),
+    role = humanizeRole(role),
+    document = documentNumber
+)
+
+private fun humanizeRole(rawRole: String): String {
+    val normalized = rawRole.trim().lowercase(Locale.ROOT)
+    return when {
+        normalized.contains("medic") -> OperationRole.MEDIC_APH.humanizedName
+        normalized.contains("conductor") || normalized.contains("driver") -> OperationRole.DRIVER.humanizedName
+        normalized.contains("auxiliar") -> OperationRole.AUXILIARY_AND_OR_TAPH.humanizedName
+        normalized.contains("lider") || normalized.contains("líder") -> OperationRole.LEAD_APH.humanizedName
+        else -> rawRole
     }
 }
