@@ -2,54 +2,49 @@
 Ajustes y correcciones aplicadas segun versiones:
 
 
+# Version 2.4.13 *(24.08.2026)*
+----------------------------------------
+### Mejoras en la verificación de registro biométrico (/exists)
+
+- **Aviso de "sin registro" en lugar de alerta de conexión:** Cuando el líder APH busca a un tripulante que aún no tiene biometría registrada (respuesta 404 o `exists: false`), la app ya no muestra la alerta roja de fallo de red; en su lugar presenta un aviso informativo azul indicando que el usuario no tiene registro y puede enrolarse en ese momento.
+- **Datos de la persona traídos desde el servidor:** Cuando el tripulante sí tiene biometría registrada, la pantalla muestra su nombre, número de documento y rol tal como los entrega el backend, sin depender de que la persona haya iniciado sesión previamente en el dispositivo.
+- **Distinción real entre "sin conexión" y "sin registro":** La alerta de intermitencia de red queda reservada exclusivamente para fallas reales de conectividad; un 404 o `exists: false` ya no se confunde con un problema de red.
+
+
 # Version 2.4.13 *(21.08.2026)*
 ----------------------------------------
 ### Rediseño del registro y validación biométrica facial
 
 - **El registro facial ahora lo realiza el líder APH:** El enrolamiento del rostro se traslada al flujo de firma del líder APH. En lugar de que cada tripulante se registre tras su propio inicio de sesión, el líder registra a la tripulación buscando por número de documento, sin necesidad de que la persona tenga una sesión activa en el dispositivo. Se elimina el registro biométrico por tripulante y su ítem del menú lateral.
-
 - **La huella dactilar se reemplaza por biometría facial:** En la pantalla de firma, el componente de huella deja de mostrarse; el registro biométrico pasa a ser exclusivamente por reconocimiento facial.
-
 - **Nuevo botón "Ingresar con Biometría" en la pantalla de login:** Aparece automáticamente cuando el dispositivo ya tiene un rostro enrolado con credenciales previas. Solo se muestra si existe al menos un registro biométrico válido en el dispositivo.
-
 - **Inicio de sesión biométrico como atajo (re-autenticación silenciosa):** Al reconocer el rostro, la aplicación recupera las credenciales del usuario y ejecuta el inicio de sesión normal de forma automática, redirigiendo a las tarjetas de cada tripulante igual que un login manual. Funciona como atajo independiente del estado de sesión de los demás tripulantes: no requiere que el resto de la tripulación tenga su sesión activa.
-
 - **Credenciales almacenadas de forma cifrada:** La contraseña se guarda localmente cifrada con AES/GCM; la llave de cifrado reside en el Android Keystore del dispositivo. Esto permite la re-autenticación por rostro sin exponer la contraseña en texto plano.
-
 - **Embeddings biométricos entregados en la respuesta de inicio de sesión:** Los datos faciales del usuario ahora llegan directamente en la respuesta de login y se almacenan localmente en ese momento, eliminando una consulta adicional al servidor. El botón de biometría queda disponible en la siguiente visita a la pantalla de login.
-
 - **Depuración automática por inactividad (10 días):** Los registros biométricos y sus credenciales cifradas que permanezcan sin uso por más de 10 días se eliminan automáticamente al cargar la pantalla de login. Cada inicio de sesión exitoso (manual o biométrico) renueva la vigencia del registro, por lo que un usuario activo nunca se depura (ventana deslizante).
-
 - **Los datos biométricos sobreviven a las actualizaciones de la app:** La migración de la base de datos local es no destructiva, garantizando que la tripulación no deba volver a registrarse tras actualizar la aplicación.
 
 ### Rediseño visual del scanner biométrico
 
 - **Nueva interfaz de captura:** El scanner se rediseña con encabezado de título y subtítulo, óvalo guía punteado, esquinas de encuadre (brackets) y un fondo atenuado que resalta el área del rostro. El nuevo diseño aplica tanto al registro (enrolamiento) como a la verificación (inicio de sesión).
-
 - **Guías de distancia en tiempo real:** Mientras se ubica el rostro, la app indica al usuario si debe acercarse, alejarse o si su posición es correcta, mejorando la tasa de captura exitosa. Se conserva el desafío de liveness (anti-suplantación).
-
 - **Indicadores de estado (cargando, éxito y falla):** Durante el procesamiento se muestra un círculo de carga; al finalizar, un círculo con check de éxito o cruz de falla comunica claramente el resultado del registro o la verificación.
-
 - **Navegación automática al mapa tras enrolamiento exitoso:** Cuando el líder APH captura y envía correctamente el registro biométrico, la aplicación navega al mapa, replicando el comportamiento de registrar o actualizar la firma.
 
 ### Correcciones
 
 - **Resolución del Android ID:** Se restaura la resolución dinámica del identificador del dispositivo con almacenamiento en caché, evitando valores fijos.
 
+
 # Version 2.4.12 *(19.08.2026)*
 ----------------------------------------
 ### Autenticación biométrica por reconocimiento facial
 
 - **Motor FaceNet 512 (TFLite):** El sistema de reconocimiento facial migra de un enfoque geométrico basado en contornos a un modelo de aprendizaje profundo (FaceNet 512 dimensiones) ejecutado completamente en el dispositivo. La precisión de comparación mejora de ~70-80% a ~99%, sin enviar imágenes a ningún servidor.
-
 - **Liveness detection — anti-suplantación:** Antes de capturar o verificar un rostro, la app emite un desafío aleatorio (parpadear, girar la cabeza a la izquierda o a la derecha) con un contador regresivo de 8 segundos. Esto impide el acceso mediante fotos impresas, pantallas con la imagen del usuario o videos pregrabados. El desafío aplica tanto al registro como a la verificación.
-z
 - **Registro en base de datos local (Room):** Los embeddings biométricos se almacenan ahora en una tabla cifrada de la base de datos del dispositivo (`biometric_credentials`) en lugar de preferencias compartidas. Esto mejora la gestión, la trazabilidad y el control del ciclo de vida de los datos biométricos por usuario.
-
 - **Sincronización en la nube:** Al completar el registro facial, los embeddings se suben automáticamente a un servicio en la nube. Si la subida falla por falta de conexión, WorkManager reintenta el envío en segundo plano con backoff exponencial cuando se restaura la red.
-
 - **Portabilidad entre dispositivos:** Al iniciar sesión en un dispositivo donde el usuario no tiene biometría registrada localmente, la aplicación consulta la nube automáticamente. Si el usuario ya se registró en otro dispositivo, sus datos se descargan y almacenan localmente, permitiendo autenticarse con el rostro sin necesidad de volver a registrarse.
-
 - **Falla de modal en vista de mapa en tablet:** Se corrige la visualizacion de como se mostraba la info de un incidente en ruta en un modal, asi mismo los datos de distancia que se sobreponian
     - Resuelve:  https://skgtecnologia.atlassian.net/browse/SMA-763
 
@@ -60,6 +55,7 @@ z
 
 - **Doble navegación al aceptar el enroll facial:** Al pulsar "Registrar ahora" en el diálogo de enrollment, se producían dos navegaciones simultáneas que corrompían el historial de pantallas. Corregido limpiando el evento de navegación pendiente antes de redirigir a la cámara de registro.
     - Resuelve https://skgtecnologia.atlassian.net/browse/SMA-762
+
 
 # Version 2.4.11 *(02.08.2026)*
 ----------------------------------------
@@ -78,8 +74,8 @@ z
 - Se agregan mejoras para corregir el flujo de navegacion cuando el usuario ya no tiene incidentes asignados, para no mostrar navegacion activa cuando recibe un actualizacion de estado tipo 508
 
 ### Diagnóstico (temporal)
-
 - **Registro de logs en almacenamiento:** La aplicación ahora guarda un registro diario de actividad y errores en la carpeta **Descargas / SISEM-Logs/** del dispositivo. Los archivos se eliminan automáticamente después de 10 días. Esta función es temporal y permite al equipo recibir logs de forma manual para diagnosticar problemas en campo.
+
 
 # Version 2.4.10 *(30.07.2026)*
 ----------------------------------------
@@ -87,6 +83,7 @@ z
 
 - **Cierre de sesión duplicada y navegación automática:** Al confirmar el cierre de una sesión activa en otro dispositivo, la aplicación reintenta el inicio de sesión automáticamente enviando el parámetro `force_close_session` al servidor. Esto elimina la sesión remota y autentica al usuario en un solo paso, navegando directamente a la pantalla correspondiente sin requerir un segundo inicio de sesión manual.
 - **Crash al volver al mapa tras animación de cámara:** Se corrige un error que cerraba la aplicación abruptamente cuando la animación de la cámara de navegación terminaba después de que el mapa había sido destruido en segundo plano.
+
 
 # Version 2.4.9 *(30.07.2026)*
 ----------------------------------------
@@ -115,11 +112,12 @@ z
 - **Teclado se cierra automáticamente al aparecer un aviso:** Cuando la aplicación muestra un mensaje de alerta o confirmación (como "Guardar cambios"), el teclado del dispositivo ahora se oculta automáticamente para que el aviso sea completamente visible.
 - **Botones de avisos siempre visibles:** Los botones de acción dentro de las ventanas emergentes (como "Cancelar" o "Guardar") ya no quedaban ocultos detrás de la barra de navegación del dispositivo. Ahora siempre son accesibles.
 
+
 ### Correcciones
 
 - **Sesión activa en otro dispositivo:** Se corrige un problema donde, al intentar iniciar sesión teniendo una sesión abierta en otro dispositivo o navegador, la aplicación quedaba bloqueada en el inicio de sesión sin forma de continuar. Ahora se muestra el aviso *"Duplicidad"* con las opciones **Sí** y **No**: al elegir **Sí** se cierra la sesión del otro dispositivo y se confirma en pantalla, quedando el usuario habilitado para ingresar.
-
 - **Cierre inesperado al expirar la sesión:** Se corrigió un error poco frecuente que podía cerrar la aplicación abruptamente al intentar redirigir al usuario al inicio de sesión por sesión expirada.
+
 
 # Version 2.4.7 *(27.07.2026)*
 ----------------------------------------
@@ -127,12 +125,14 @@ z
 
 - **Teclado en pantallas con botones fijos:** Se extiende a otras pantallas la corrección aplicada en la 2.4.6 a *"Olvidó su contraseña"*. Al abrir el teclado en *Cambio de contraseña*, *Autenticación del dispositivo*, *Firma*, *Registro de firma*, *Novedades* e *Inventario (detalle)*, el contenido y los botones inferiores quedaban ocultos o inaccesibles en equipos donde el teclado ocupa una porción mayor de la pantalla, como el Motorola G47. Ahora los botones se elevan sobre el teclado y el contenido permanece visible.
 
+
 # Version 2.4.6 *(27.07.2026)*
 ----------------------------------------
 ### Correcciones
 
 - **Contraseña vencida:** Se corrige un problema donde, al cerrar el aviso *"Su contraseña se ha vencido"*, el usuario quedaba en la pantalla de inicio de sesión sin ninguna opción para cambiarla. Ahora al cerrar el aviso se abre directamente la pantalla de cambio de contraseña.
 - **Recuperar contraseña en pantallas pequeñas:** Se corrige un problema donde, al abrir el teclado en la pantalla *"Olvidó su contraseña"*, desaparecían el campo de correo y los botones Cancelar y Enviar, dejando la pantalla inutilizable. Se presentaba en equipos donde el teclado ocupa una porción mayor de la pantalla, como el Motorola G47. Ahora el contenido y los botones permanecen visibles sobre el teclado.
+
 
 # Version 2.4.5 *(26.07.2026)*
 ----------------------------------------

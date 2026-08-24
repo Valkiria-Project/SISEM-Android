@@ -410,6 +410,13 @@ fun faceErrorBanner(message: String): BannerModel = BannerModel(
     description = message
 )
 
+fun biometricNotRegisteredBanner(): BannerModel = BannerModel(
+    icon = "ic_alert",
+    iconColor = "#42A4FA",
+    title = "Sin registro biométrico",
+    description = "Este tripulante no tiene biometría registrada. Puede registrarla en este momento."
+)
+
 fun biometricIntermittencyBanner(): BannerModel = BannerModel(
     icon = "ic_alert",
     title = "Intermitencia de red",

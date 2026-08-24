@@ -48,8 +48,9 @@ class BiometricRemoteDataSource @Inject constructor(
     /**
      * Existence check that maps HTTP outcomes to a domain status. It bypasses
      * [NetworkApi.apiCall] on purpose: that wrapper collapses every failure into a generic
-     * banner, but here the caller needs to tell a 404 (treated as network intermittency)
-     * apart from a 5xx/unexpected error.
+     * banner, but here the caller needs to tell "no record yet" (200 with `exists: false`,
+     * or a 404 — both are a normal, expected outcome) apart from a real connectivity failure
+     * or a 5xx/unexpected error.
      */
     @Suppress("TooGenericExceptionCaught")
     suspend fun exists(documentNumber: String): BiometricRegistrationStatus = try {
@@ -57,16 +58,17 @@ class BiometricRemoteDataSource @Inject constructor(
         val body = response.body()
 
         when {
-            response.isSuccessful && body != null -> {
-                if (body.registered) {
-                    BiometricRegistrationStatus.Registered
-                } else {
-                    BiometricRegistrationStatus.NotRegistered
-                }
+            response.isSuccessful && body?.exists == true -> {
+                BiometricRegistrationStatus.Registered(
+                    userName = body.userName.orEmpty(),
+                    userLastName = body.userLastName.orEmpty(),
+                    documentNumber = body.documentNumber.orEmpty(),
+                    role = body.role.orEmpty()
+                )
             }
 
-            response.code() == HTTP_NOT_FOUND_STATUS_CODE -> {
-                BiometricRegistrationStatus.NetworkIntermittency
+            response.isSuccessful || response.code() == HTTP_NOT_FOUND_STATUS_CODE -> {
+                BiometricRegistrationStatus.NotRegistered
             }
 
             else -> {

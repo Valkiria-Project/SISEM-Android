@@ -250,6 +250,9 @@
     <string name="biometric_enrollment_register">Registrar biometría</string>
     <string name="biometric_enrollment_update">Actualizar biometría</string>
     <string name="biometric_enrollment_update_description">Ya tiene una biometría registrada. Actualícela si desea reemplazarla</string>
+    <string name="biometric_enrollment_name_label">Nombres y apellidos del tripulante</string>
+    <string name="biometric_enrollment_document_label">Número de documento</string>
+    <string name="biometric_enrollment_role_label">Rol</string>
 
     <!-- Wounds dialog -->
     <string name="wounds_burn_description">¿Que tipo de quemadura presenta el paciente?</string>

@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -35,10 +34,9 @@ import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import com.valkiria.uicomponents.R as UiR
 
-private const val CHIP_CORNER_RADIUS = 12
-private const val CHIP_ALPHA = 0.35f
 private const val FACE_CIRCLE_SIZE = 180
 private const val FACE_ICON_SIZE = 96
+private const val FIELD_SPACING = 20
 
 @Composable
 fun BiometricEnrollmentScreen(
@@ -80,8 +78,9 @@ fun BiometricEnrollmentScreen(
             text = stringResource(R.string.biometric_enrollment_subtitle),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontWeight = FontWeight.Normal,
             fontSize = 15.sp,
-            modifier = Modifier.padding(top = 12.dp)
+            modifier = Modifier.padding(top = 20.dp)
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -108,18 +107,30 @@ private fun CrewMemberEnrollment(
     onEnroll: () -> Unit
 ) {
     if (crewMember != null) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            InfoChip(text = crewMember.name, modifier = Modifier.weight(1f))
-            InfoChip(text = crewMember.role)
-        }
+        LabeledValue(
+            label = stringResource(R.string.biometric_enrollment_name_label),
+            value = crewMember.name
+        )
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(FIELD_SPACING.dp))
+
+        LabeledValue(
+            label = stringResource(R.string.biometric_enrollment_document_label),
+            value = crewMember.document
+        )
+
+        Spacer(modifier = Modifier.height(FIELD_SPACING.dp))
+
+        LabeledValue(
+            label = stringResource(R.string.biometric_enrollment_role_label),
+            value = crewMember.role
+        )
+    } else {
+        LabeledValue(
+            label = stringResource(R.string.biometric_enrollment_document_label),
+            value = document
+        )
     }
-
-    InfoChip(text = crewMember?.document ?: document, modifier = Modifier.fillMaxWidth())
 
     Spacer(modifier = Modifier.height(40.dp))
 
@@ -127,6 +138,31 @@ private fun CrewMemberEnrollment(
         isRegistered = isRegistered,
         onEnroll = onEnroll
     )
+}
+
+@Composable
+private fun LabeledValue(
+    label: String,
+    value: String,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontWeight = FontWeight.Medium,
+            fontSize = 13.sp
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+            color = MaterialTheme.colorScheme.onSurface,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 16.sp,
+            modifier = Modifier.padding(top = 4.dp)
+        )
+    }
 }
 
 @Composable
@@ -203,22 +239,4 @@ private fun FaceIllustration() {
             modifier = Modifier.size(FACE_ICON_SIZE.dp)
         )
     }
-}
-
-@Composable
-private fun InfoChip(
-    text: String,
-    modifier: Modifier = Modifier
-) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurface,
-        modifier = modifier
-            .background(
-                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = CHIP_ALPHA),
-                shape = RoundedCornerShape(CHIP_CORNER_RADIUS.dp)
-            )
-            .padding(horizontal = 16.dp, vertical = 12.dp)
-    )
 }
