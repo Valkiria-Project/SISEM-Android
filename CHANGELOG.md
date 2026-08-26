@@ -14,7 +14,7 @@ Ajustes y correcciones aplicadas segun versiones:
 - **Datos de la persona traídos desde el servidor:** Cuando el tripulante sí tiene biometría registrada, la pantalla muestra su nombre, número de documento y rol tal como los entrega el backend, sin depender de que la persona haya iniciado sesión previamente en el dispositivo.
 - **Distinción real entre "sin conexión" y "sin registro":** La alerta de intermitencia de red queda reservada exclusivamente para fallas reales de conectividad; un 404 o `exists: false` ya no se confunde con un problema de red.
 - **Datos de la persona visibles aunque no tenga biometría registrada:** Si el backend devuelve nombre, documento o rol junto con `exists: false`, la pantalla ya no los descarta — se muestran igual que en el caso registrado, y solo se deja de mostrar el documento ingresado por el líder cuando el backend no entrega ningún dato de identidad.
-
+- **VersionCode** Se sube version code a 98 para registrar actualizaciones
 # Version 2.4.13 *(21.08.2026)*
 ----------------------------------------
 ### Rediseño del registro y validación biométrica facial
