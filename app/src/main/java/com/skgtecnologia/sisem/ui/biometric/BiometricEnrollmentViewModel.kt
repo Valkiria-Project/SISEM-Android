@@ -68,34 +68,7 @@ class BiometricEnrollmentViewModel @Inject constructor(
                     val status = getBiometricRegistrationStatus(document)
 
                     withContext(Dispatchers.Main) {
-                        _uiState.update { state ->
-                            when (status) {
-                                is BiometricRegistrationStatus.Registered -> state.copy(
-                                    crewMember = status.toCrewBiometricStatus(localCrewMember?.username.orEmpty()),
-                                    isRegistered = true,
-                                    isLoading = false
-                                )
-
-                                BiometricRegistrationStatus.NotRegistered -> state.copy(
-                                    crewMember = localCrewMember,
-                                    isRegistered = false,
-                                    isLoading = false,
-                                    errorModel = biometricNotRegisteredBanner().mapToUi()
-                                )
-
-                                BiometricRegistrationStatus.NetworkIntermittency -> state.copy(
-                                    crewMember = localCrewMember,
-                                    isLoading = false,
-                                    errorModel = biometricIntermittencyBanner().mapToUi()
-                                )
-
-                                BiometricRegistrationStatus.QueryError -> state.copy(
-                                    crewMember = localCrewMember,
-                                    isLoading = false,
-                                    errorModel = biometricQueryErrorBanner().mapToUi()
-                                )
-                            }
-                        }
+                        _uiState.update { state -> state.withStatus(status, localCrewMember) }
                     }
                 }
                 .onFailure { throwable ->
@@ -118,6 +91,36 @@ class BiometricEnrollmentViewModel @Inject constructor(
     }
 }
 
+private fun BiometricEnrollmentUiState.withStatus(
+    status: BiometricRegistrationStatus,
+    localCrewMember: CrewBiometricStatus?
+): BiometricEnrollmentUiState = when (status) {
+    is BiometricRegistrationStatus.Registered -> copy(
+        crewMember = status.toCrewBiometricStatus(localCrewMember?.username.orEmpty()),
+        isRegistered = true,
+        isLoading = false
+    )
+
+    is BiometricRegistrationStatus.NotRegistered -> copy(
+        crewMember = status.toCrewBiometricStatusOrNull(localCrewMember?.username.orEmpty()) ?: localCrewMember,
+        isRegistered = false,
+        isLoading = false,
+        errorModel = biometricNotRegisteredBanner().mapToUi()
+    )
+
+    BiometricRegistrationStatus.NetworkIntermittency -> copy(
+        crewMember = localCrewMember,
+        isLoading = false,
+        errorModel = biometricIntermittencyBanner().mapToUi()
+    )
+
+    BiometricRegistrationStatus.QueryError -> copy(
+        crewMember = localCrewMember,
+        isLoading = false,
+        errorModel = biometricQueryErrorBanner().mapToUi()
+    )
+}
+
 /**
  * Maps the /exists payload into the UI model. [fallbackUsername] is only known locally
  * (from a prior login on this device); GET v1/biometric/exists never returns it.
@@ -134,6 +137,32 @@ private fun BiometricRegistrationStatus.Registered.toCrewBiometricStatus(
     role = humanizeRole(role),
     document = documentNumber
 )
+
+/**
+ * Maps the /exists payload into the UI model even when `exists: false` — the backend may
+ * still return identity data for a document that has no biometric record yet, and that
+ * data should be shown whenever it isn't null/blank. Returns null only when the backend
+ * gave no identity data at all, letting the caller fall back to a local session match.
+ */
+private fun BiometricRegistrationStatus.NotRegistered.toCrewBiometricStatusOrNull(
+    fallbackUsername: String
+): CrewBiometricStatus? {
+    val name = listOfNotNull(userName, userLastName)
+        .filter { it.isNotBlank() }
+        .joinToString(" ")
+    val hasIdentity = name.isNotBlank() || !documentNumber.isNullOrBlank() || !role.isNullOrBlank()
+
+    return if (hasIdentity) {
+        CrewBiometricStatus(
+            username = fallbackUsername,
+            name = name,
+            role = role?.let(::humanizeRole).orEmpty(),
+            document = documentNumber.orEmpty()
+        )
+    } else {
+        null
+    }
+}
 
 private fun humanizeRole(rawRole: String): String {
     val normalized = rawRole.trim().lowercase(Locale.ROOT)

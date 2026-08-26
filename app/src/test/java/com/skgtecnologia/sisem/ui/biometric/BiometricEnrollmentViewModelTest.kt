@@ -77,12 +77,32 @@ class BiometricEnrollmentViewModelTest {
     fun `when status is NotRegistered it shows the blue not-registered banner`() = runTest {
         coEvery { getAllAccessTokens.invoke() } returns Result.success(emptyList())
         coEvery { getBiometricRegistrationStatus(DOCUMENT_NUMBER) } returns
-            BiometricRegistrationStatus.NotRegistered
+            BiometricRegistrationStatus.NotRegistered()
 
         buildViewModel()
 
         Assert.assertEquals(false, viewModel.uiState.value.isRegistered)
         Assert.assertEquals("#42A4FA", viewModel.uiState.value.errorModel?.iconColor)
+        Assert.assertEquals(null, viewModel.uiState.value.crewMember)
+    }
+
+    @Test
+    fun `when status is NotRegistered but the backend still returns identity it shows the user data`() = runTest {
+        coEvery { getAllAccessTokens.invoke() } returns Result.success(emptyList())
+        coEvery { getBiometricRegistrationStatus(DOCUMENT_NUMBER) } returns
+            BiometricRegistrationStatus.NotRegistered(
+                userName = "Q",
+                userLastName = "CONDUCTOR",
+                documentNumber = DOCUMENT_NUMBER,
+                role = "medico"
+            )
+
+        buildViewModel()
+
+        Assert.assertEquals(false, viewModel.uiState.value.isRegistered)
+        Assert.assertEquals("Q CONDUCTOR", viewModel.uiState.value.crewMember?.name)
+        Assert.assertEquals(DOCUMENT_NUMBER, viewModel.uiState.value.crewMember?.document)
+        Assert.assertEquals("Médico", viewModel.uiState.value.crewMember?.role)
     }
 
     @Test
