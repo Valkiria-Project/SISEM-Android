@@ -66,7 +66,32 @@ class BiometricRemoteDataSourceTest {
 
         val status = biometricRemoteDataSource.exists(DOCUMENT_NUMBER)
 
-        Assert.assertEquals(BiometricRegistrationStatus.NotRegistered, status)
+        Assert.assertEquals(BiometricRegistrationStatus.NotRegistered(), status)
+    }
+
+    @Test
+    fun `when exists returns 200 with exists false it still carries identity data if present`() = runTest {
+        coEvery { biometricApi.biometricExists(DOCUMENT_NUMBER) } returns Response.success(
+            BiometricExistsResponse(
+                userName = "Q",
+                userLastName = "CONDUCTOR",
+                documentNumber = DOCUMENT_NUMBER,
+                role = "medico",
+                exists = false
+            )
+        )
+
+        val status = biometricRemoteDataSource.exists(DOCUMENT_NUMBER)
+
+        Assert.assertEquals(
+            BiometricRegistrationStatus.NotRegistered(
+                userName = "Q",
+                userLastName = "CONDUCTOR",
+                documentNumber = DOCUMENT_NUMBER,
+                role = "medico"
+            ),
+            status
+        )
     }
 
     @Test
@@ -78,7 +103,7 @@ class BiometricRemoteDataSourceTest {
 
         val status = biometricRemoteDataSource.exists(DOCUMENT_NUMBER)
 
-        Assert.assertEquals(BiometricRegistrationStatus.NotRegistered, status)
+        Assert.assertEquals(BiometricRegistrationStatus.NotRegistered(), status)
     }
 
     @Test

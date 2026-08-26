@@ -68,7 +68,12 @@ class BiometricRemoteDataSource @Inject constructor(
             }
 
             response.isSuccessful || response.code() == HTTP_NOT_FOUND_STATUS_CODE -> {
-                BiometricRegistrationStatus.NotRegistered
+                BiometricRegistrationStatus.NotRegistered(
+                    userName = body?.userName,
+                    userLastName = body?.userLastName,
+                    documentNumber = body?.documentNumber,
+                    role = body?.role
+                )
             }
 
             else -> {
