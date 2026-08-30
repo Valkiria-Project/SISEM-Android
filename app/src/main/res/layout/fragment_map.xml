@@ -15,32 +15,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/tripProgressCard"
+    <!--
+         Transparent overlay that sits above the MapView (so it captures taps on
+         Mapbox ViewAnnotation callout bubbles) but below the UI controls (so the
+         CardView and RecenterButton still receive their own touches normally).
+         All touch events are forwarded to the MapView so panning/zooming/long-press
+         still work; ACTION_UP is also used to detect alternative-route selection.
+    -->
+    <View
+        android:id="@+id/routeSelectionOverlay"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        app:cardElevation="8dp"
-        app:cardUseCompatPadding="false"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <com.mapbox.navigation.ui.components.tripprogress.view.MapboxTripProgressView
-            android:id="@+id/tripProgressView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/map_controls_margin_end" />
-
-        <ImageView
-            android:id="@+id/stop"
-            android:layout_width="@dimen/map_controls_stop_button_size"
-            android:layout_height="@dimen/map_controls_stop_button_size"
-            android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="@dimen/map_controls_margin_end"
-            android:contentDescription="@null"
-            app:srcCompat="@android:drawable/ic_delete" />
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.mapbox.navigation.ui.components.maps.camera.view.MapboxRecenterButton
         android:id="@+id/recenter"

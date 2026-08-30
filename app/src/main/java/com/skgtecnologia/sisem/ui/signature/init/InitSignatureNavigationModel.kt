@@ -17,7 +17,7 @@ data class InitSignatureNavigationModel(
             back -> navController.navigateBack()
 
             document?.isNotEmpty() == true -> navController.navigate(
-                MainRoute.SignatureRoute(document)
+                MainRoute.SignatureBiometricRoute(document)
             )
         }
     }

@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -43,6 +42,8 @@ import com.skgtecnologia.sisem.commons.location.LocationService
 import com.skgtecnologia.sisem.domain.preoperational.model.Novelty
 import com.skgtecnologia.sisem.ui.authcards.create.AuthCardsScreen
 import com.skgtecnologia.sisem.ui.authcards.view.AuthCardViewScreen
+import com.skgtecnologia.sisem.ui.biometric.BiometricEnrollmentScreen
+import com.skgtecnologia.sisem.ui.biometric.BiometricRegistrationScreen
 import com.skgtecnologia.sisem.ui.changepassword.ChangePasswordScreen
 import com.skgtecnologia.sisem.ui.commons.extensions.sharedViewModel
 import com.skgtecnologia.sisem.ui.deviceauth.DeviceAuthScreen
@@ -116,49 +117,39 @@ fun SisemNavGraph(navigationModel: StartupNavigationModel?) {
             }
         }
 
-        // --- Location permission: request on every resume ---
-        val lifecycleOwner = LocalLifecycleOwner.current
-        val fineLocationPermission = rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
-        var locationResumeTick by remember { mutableIntStateOf(0) }
+        if (startDestination == NavGraph.MainGraph) {
+            val lifecycleOwner = LocalLifecycleOwner.current
+            val fineLocationPermission =
+                rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
+            var locationResumeTick by remember { mutableIntStateOf(0) }
 
-        DisposableEffect(lifecycleOwner) {
-            val observer = LifecycleEventObserver { _, event ->
-                if (event == Lifecycle.Event.ON_RESUME) locationResumeTick++
+            DisposableEffect(lifecycleOwner) {
+                val observer = LifecycleEventObserver { _, event ->
+                    if (event == Lifecycle.Event.ON_RESUME) locationResumeTick++
+                }
+                lifecycleOwner.lifecycle.addObserver(observer)
+                onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
             }
-            lifecycleOwner.lifecycle.addObserver(observer)
-            onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
-        }
 
-        LaunchedEffect(fineLocationPermission.status, locationResumeTick) {
-            if (!fineLocationPermission.status.isGranted) {
-                fineLocationPermission.launchPermissionRequest()
-            } else if (startDestination == NavGraph.MainGraph) {
-                startLocationTracking(context)
-            }
-        }
-        // ----------------------------------------------------
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            val notificationPermission = rememberPermissionState(
-                Manifest.permission.POST_NOTIFICATIONS
-            )
-
-            LaunchedEffect(notificationPermission.status) {
-                if (!notificationPermission.status.isGranted &&
-                    !notificationPermission.status.shouldShowRationale
-                ) {
-                    notificationPermission.launchPermissionRequest()
+            LaunchedEffect(fineLocationPermission.status, locationResumeTick) {
+                if (!fineLocationPermission.status.isGranted) {
+                    fineLocationPermission.launchPermissionRequest()
+                } else {
+                    startLocationTracking(context)
                 }
             }
 
-            if (!notificationPermission.status.isGranted &&
-                notificationPermission.status.shouldShowRationale
-            ) {
-                LaunchedEffect(Unit) {
-                    Timber.w(
-                        "POST_NOTIFICATIONS permanently denied — enable in Settings: %s",
-                        Uri.fromParts("package", context.packageName, null)
-                    )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                val notificationPermission = rememberPermissionState(
+                    Manifest.permission.POST_NOTIFICATIONS
+                )
+
+                LaunchedEffect(notificationPermission.status) {
+                    if (!notificationPermission.status.isGranted &&
+                        !notificationPermission.status.shouldShowRationale
+                    ) {
+                        notificationPermission.launchPermissionRequest()
+                    }
                 }
             }
         }
@@ -199,6 +190,15 @@ private fun NavGraphBuilder.authGraph(
         composable<AuthRoute.LoginRoute> {
             LoginScreen(
                 modifier = modifier,
+                onBiometricLogin = { loggedOutRole, targetRole ->
+                    navController.navigate(
+                        AuthRoute.FaceCameraRoute(
+                            mode = "VERIFY",
+                            loggedOutRole = loggedOutRole,
+                            targetRole = targetRole
+                        )
+                    )
+                }
             ) { navigationModel ->
                 with(navigationModel) {
                     if (isTurnComplete && requiresPreOperational.not()) {
@@ -264,6 +264,28 @@ private fun NavGraphBuilder.authGraph(
                     }
                 },
                 onCancel = { navController.navigateUp() }
+            )
+        }
+
+        composable<AuthRoute.FaceCameraRoute> {
+            com.skgtecnologia.sisem.ui.authcards.face.FaceCameraScreen(
+                onVerified = { username ->
+                    // A face match returns to the login screen, which silently re-authenticates
+                    // with the matched user's decrypted credentials (the normal login flow then
+                    // handles turn/pre-operational/device-auth routing).
+                    navController.navigate(AuthRoute.LoginRoute(biometricUsername = username)) {
+                        popUpTo(AuthRoute.LoginRoute()) { inclusive = true }
+                    }
+                },
+                onEnrolled = {
+                    // Líder APH enrollment finished: land on the map like the signature
+                    // register/update flow, clearing the enrollment/camera back stack.
+                    navController.navigate(NavGraph.MainGraph) {
+                        popUpTo(NavGraph.MainGraph) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                },
+                onBack = { navController.navigateUp() }
             )
         }
     }
@@ -361,6 +383,33 @@ private fun NavGraphBuilder.mainGraph(
             ) { navigationModel ->
                 navigationModel.navigate(navController)
             }
+        }
+
+        composable<MainRoute.SignatureBiometricRoute> { backStackEntry ->
+            val document = backStackEntry.toRoute<MainRoute.SignatureBiometricRoute>().document
+            BiometricRegistrationScreen(
+                modifier = modifier,
+                onSignature = {
+                    navController.navigate(MainRoute.SignatureRoute(document))
+                },
+                onBiometric = {
+                    navController.navigate(MainRoute.BiometricEnrollmentRoute(document))
+                },
+                onBack = { navController.navigateUp() }
+            )
+        }
+
+        composable<MainRoute.BiometricEnrollmentRoute> { backStackEntry ->
+            val document = backStackEntry.toRoute<MainRoute.BiometricEnrollmentRoute>().document
+            BiometricEnrollmentScreen(
+                modifier = modifier,
+                onEnroll = {
+                    navController.navigate(
+                        AuthRoute.FaceCameraRoute(mode = "ENROLL", document = document)
+                    )
+                },
+                onBack = { navController.navigateUp() }
+            )
         }
 
         composable<MainRoute.PreStretcherRetentionRoute> {

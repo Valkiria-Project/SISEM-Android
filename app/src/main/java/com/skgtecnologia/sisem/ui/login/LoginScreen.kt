@@ -1,16 +1,33 @@
 package com.skgtecnologia.sisem.ui.login
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.domain.login.model.LoginIdentifier
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.model.toLegalContentModel
@@ -28,6 +45,7 @@ import com.valkiria.uicomponents.bricks.banner.OnBannerHandler
 import com.valkiria.uicomponents.bricks.bottomsheet.BottomSheetView
 import com.valkiria.uicomponents.bricks.loader.OnLoadingHandler
 import kotlinx.coroutines.launch
+import com.valkiria.uicomponents.R as UiR
 
 @Suppress("LongMethod")
 @androidx.compose.material3.ExperimentalMaterial3Api
@@ -35,6 +53,7 @@ import kotlinx.coroutines.launch
 fun LoginScreen(
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel(),
+    onBiometricLogin: (loggedOutRole: String, targetRole: String) -> Unit = { _, _ -> },
     onNavigation: (loginNavigationModel: LoginNavigationModel) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -42,10 +61,22 @@ fun LoginScreen(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
 
+    // Biometric is never used while typing a password, so hide its button while the
+    // keyboard is up. This frees the vertical space above the keyboard for the form and
+    // its INGRESAR button, which otherwise gets clipped (the button is fixed-height and
+    // pinned to the bottom).
+    val imeVisible = WindowInsets.ime.getBottom(LocalDensity.current) > 0
+
     LaunchedEffect(uiState) {
         launch {
             when {
-                uiState.navigationModel != null && uiState.warning == null -> {
+                uiState.navigateToBiometric -> {
+                    viewModel.consumeBiometricNavigationEvent()
+                    onBiometricLogin(uiState.loggedOutRole.orEmpty(), uiState.targetRole.orEmpty())
+                }
+
+                uiState.navigationModel != null &&
+                    uiState.warning == null -> {
                     viewModel.consumeNavigationEvent()
                     onNavigation(checkNotNull(uiState.navigationModel))
                 }
@@ -54,9 +85,14 @@ fun LoginScreen(
     }
 
     ConstraintLayout(
-        modifier = modifier.fillMaxSize()
+        // The body is pinned between the header and the biometric button, so insetting it
+        // for the keyboard eats its fixed height instead of scrolling. Inset the whole
+        // layout so the button rises above the keyboard and the body keeps the rest.
+        modifier = modifier
+            .fillMaxSize()
+            .imePadding()
     ) {
-        val (header, body) = createRefs()
+        val (header, body, biometric) = createRefs()
 
         LoginHeaderSection(
             modifier = modifier.constrainAs(header) { top.linkTo(parent.top) }
@@ -67,12 +103,24 @@ fun LoginScreen(
             modifier = Modifier
                 .constrainAs(body) {
                     top.linkTo(header.bottom)
-                    bottom.linkTo(parent.bottom)
+                    bottom.linkTo(if (imeVisible) parent.bottom else biometric.top)
                     height = Dimension.fillToConstraints
                 },
-            validateFields = uiState.validateFields
+            validateFields = uiState.validateFields,
+            applyImePadding = false
         ) { uiAction ->
             handleAction(uiAction, viewModel)
+        }
+
+        if (!imeVisible) {
+            BiometricLoginButton(
+                onClick = viewModel::onBiometricLogin,
+                modifier = modifier.constrainAs(biometric) {
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+            )
         }
     }
 
@@ -113,6 +161,32 @@ fun LoginScreen(
     }
 
     OnLoadingHandler(uiState.isLoading, modifier)
+}
+
+@Composable
+private fun BiometricLoginButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .clickable(onClick = onClick)
+            .padding(bottom = 32.dp, top = 8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            imageVector = ImageVector.vectorResource(id = UiR.drawable.ic_biometric),
+            contentDescription = stringResource(R.string.login_biometric_button),
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(48.dp)
+        )
+        Text(
+            text = stringResource(R.string.login_biometric_button),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = 8.dp)
+        )
+    }
 }
 
 private fun handleAction(

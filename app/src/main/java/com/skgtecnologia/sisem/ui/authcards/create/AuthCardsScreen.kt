@@ -6,6 +6,14 @@ import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,17 +24,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.permissions.shouldShowRationale
 import com.skgtecnologia.sisem.R
 import com.skgtecnologia.sisem.commons.communication.NotificationEventHandler
 import com.skgtecnologia.sisem.di.operation.OperationRole
@@ -76,21 +85,23 @@ fun AuthCardsScreen(
     val fineLocationPermissionState: PermissionState =
         rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
 
-    LaunchedEffect(notificationsPermissionState?.status) {
-        if (notificationsPermissionState?.status?.isGranted == false &&
-            !notificationsPermissionState.status.shouldShowRationale
-        ) {
-            notificationsPermissionState.launchPermissionRequest()
+    val cameraPermissionState: PermissionState =
+        rememberPermissionState(Manifest.permission.CAMERA)
+
+    val backgroundLocationPermissionState: PermissionState? =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            rememberPermissionState(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+        } else {
+            null
         }
 
-        if (!fineLocationPermissionState.status.isGranted &&
-            !fineLocationPermissionState.status.shouldShowRationale
-        ) {
-            fineLocationPermissionState.launchPermissionRequest()
-        }
-    }
-
-    if (arePermissionsGranted(notificationsPermissionState, fineLocationPermissionState)) {
+    if (arePermissionsGranted(
+            notificationsPermissionState,
+            fineLocationPermissionState,
+            cameraPermissionState,
+            backgroundLocationPermissionState
+        )
+    ) {
         AuthCardsScreenRender(viewModel, modifier, onNavigation)
 
         OnNotificationHandler(notificationData) {
@@ -100,6 +111,14 @@ fun AuthCardsScreen(
                 Timber.d("Navigate to MapScreen")
             }
         }
+    } else {
+        PermissionCarousel(
+            notificationsPermissionState = notificationsPermissionState,
+            fineLocationPermissionState = fineLocationPermissionState,
+            cameraPermissionState = cameraPermissionState,
+            backgroundLocationPermissionState = backgroundLocationPermissionState,
+            modifier = modifier
+        )
     }
 
     OnBannerHandler(uiModel = uiState.roleRestrictionBanner) {
@@ -113,6 +132,7 @@ fun AuthCardsScreen(
     OnLoadingHandler(uiState.isLoading, modifier)
 }
 
+@Suppress("LongMethod")
 @Composable
 private fun AuthCardsScreenRender(
     viewModel: AuthCardsViewModel,
@@ -128,7 +148,7 @@ private fun AuthCardsScreenRender(
     ConstraintLayout(
         modifier = modifier.fillMaxSize()
     ) {
-        val (header, body) = createRefs()
+        val (header, body, faceBtn) = createRefs()
 
         uiState.screenModel?.header?.let {
             HeaderSection(
@@ -150,6 +170,33 @@ private fun AuthCardsScreenRender(
             }
         ) { uiAction ->
             handleAction(uiAction, viewModel, onNavigation, context)
+        }
+
+        if (uiState.hasEnrolledFaces && uiState.loggedOutRole != null) {
+            FloatingActionButton(
+                onClick = {
+                    onNavigation(
+                        AuthRoute.FaceCameraRoute(
+                            mode = "VERIFY",
+                            loggedOutRole = uiState.loggedOutRole.orEmpty(),
+                            targetRole = uiState.loggedOutRole.orEmpty()
+                        )
+                    )
+                },
+                containerColor = MaterialTheme.colorScheme.primary,
+                modifier = modifier
+                    .constrainAs(faceBtn) {
+                        end.linkTo(parent.end)
+                        bottom.linkTo(parent.bottom)
+                    }
+                    .navigationBarsPadding()
+                    .padding(end = 16.dp, bottom = 16.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Face,
+                    contentDescription = stringResource(R.string.face_auth_button)
+                )
+            }
         }
     }
 
@@ -182,14 +229,15 @@ private fun AuthCardsScreenRender(
 
 private fun arePermissionsGranted(
     notificationsPermissionState: PermissionState?,
-    fineLocationPermissionState: PermissionState
+    fineLocationPermissionState: PermissionState,
+    cameraPermissionState: PermissionState,
+    backgroundLocationPermissionState: PermissionState?
 ): Boolean {
-    return if (notificationsPermissionState == null) {
-        true
-    } else {
-        notificationsPermissionState.status.isGranted &&
-                 fineLocationPermissionState.status.isGranted
-    }
+    val locationGranted = fineLocationPermissionState.status.isGranted
+    val cameraGranted = cameraPermissionState.status.isGranted
+    val notificationsGranted = notificationsPermissionState?.status?.isGranted != false
+    val bgLocationGranted = backgroundLocationPermissionState?.status?.isGranted != false
+    return locationGranted && cameraGranted && notificationsGranted && bgLocationGranted
 }
 
 private fun handleAction(
@@ -215,7 +263,12 @@ private fun handleAction(
                     viewModel.showRoleRestrictionBanner(buildRoleRestrictionBanner(loggedOutRole, context))
                     return
                 }
-                onNavigation(AuthRoute.LoginRoute())
+                onNavigation(
+                    AuthRoute.LoginRoute(
+                        loggedOutRole = loggedOutRole,
+                        targetRole = roleForCardIdentifier(uiAction.identifier)
+                    )
+                )
                 return
             }
 
@@ -250,11 +303,13 @@ private fun buildRoleRestrictionBanner(loggedOutRole: String, context: Context):
 }
 
 private fun isCardRoleAllowed(cardIdentifier: String, loggedOutRole: String): Boolean {
-    val cardRole = when (cardIdentifier) {
-        AuthCardsIdentifier.CREW_MEMBER_CARD_DRIVER.name -> OperationRole.DRIVER.name
-        AuthCardsIdentifier.CREW_MEMBER_CARD_DOCTOR.name -> OperationRole.MEDIC_APH.name
-        AuthCardsIdentifier.CREW_MEMBER_CARD_ASSISTANT.name -> OperationRole.AUXILIARY_AND_OR_TAPH.name
-        else -> null
-    }
+    val cardRole = roleForCardIdentifier(cardIdentifier)
     return cardRole?.equals(loggedOutRole, ignoreCase = true) == true
+}
+
+private fun roleForCardIdentifier(cardIdentifier: String): String? = when (cardIdentifier) {
+    AuthCardsIdentifier.CREW_MEMBER_CARD_DRIVER.name -> OperationRole.DRIVER.name
+    AuthCardsIdentifier.CREW_MEMBER_CARD_DOCTOR.name -> OperationRole.MEDIC_APH.name
+    AuthCardsIdentifier.CREW_MEMBER_CARD_ASSISTANT.name -> OperationRole.AUXILIARY_AND_OR_TAPH.name
+    else -> null
 }

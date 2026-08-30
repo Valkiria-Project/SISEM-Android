@@ -1,24 +1,20 @@
 package com.skgtecnologia.sisem.ui.medicalhistory.signaturepad
 
-import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
-import androidx.activity.ComponentActivity
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.skgtecnologia.sisem.R.string
@@ -39,21 +35,14 @@ import com.valkiria.uicomponents.components.label.TextStyle
 import com.valkiria.uicomponents.extensions.encodeAsBase64
 import timber.log.Timber
 
+private const val SIGNATURE_PAD_HEIGHT_FRACTION = 0.5f
+
 @Suppress("LongMethod")
 @Composable
 fun SignaturePadScreen(
     modifier: Modifier = Modifier,
     onNavigation: (signaturePadNavigationModel: SignaturePadNavigationModel) -> Unit
 ) {
-    val context = LocalContext.current
-    DisposableEffect(Unit) {
-        val activity = context as? ComponentActivity
-        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-        onDispose {
-            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-        }
-    }
-
     var notificationData by remember { mutableStateOf<NotificationData?>(null) }
     NotificationEventHandler.subscribeNotificationEvent {
         notificationData = it
@@ -82,17 +71,13 @@ fun SignaturePadScreen(
         ComposeSignature(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.outline,
-                    shape = RoundedCornerShape(12.dp)
-                ),
+                .fillMaxHeight(SIGNATURE_PAD_HEIGHT_FRACTION)
+                .padding(16.dp),
             fillHeight = true,
-            signaturePadColor = MaterialTheme.colorScheme.surfaceVariant,
-            signatureColor = MaterialTheme.colorScheme.onSurface,
+            signaturePadColor = Color.White,
+            signatureColor = Color.Black,
             signatureThickness = 10f,
+            canvasBorderColor = MaterialTheme.colorScheme.outline,
             completeComponent = { onClick ->
                 ButtonView(
                     uiModel = ButtonUiModel(

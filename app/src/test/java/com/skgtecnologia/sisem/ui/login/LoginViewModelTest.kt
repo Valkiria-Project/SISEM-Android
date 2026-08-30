@@ -1,20 +1,23 @@
 package com.skgtecnologia.sisem.ui.login
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.testing.invoke
 import com.skgtecnologia.sisem.commons.ANDROID_ID
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.PASSWORD
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
 import com.skgtecnologia.sisem.commons.USERNAME
+import com.skgtecnologia.sisem.commons.biometric.FaceCredentialStore
 import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
 import com.skgtecnologia.sisem.domain.auth.usecases.Login
+import com.skgtecnologia.sisem.domain.biometric.usecases.GetLoginCredentials
+import com.skgtecnologia.sisem.domain.biometric.usecases.PurgeStaleBiometrics
+import com.skgtecnologia.sisem.domain.biometric.usecases.StoreBiometricFromLogin
+import com.skgtecnologia.sisem.domain.biometric.usecases.StoreLoginCredentials
 import com.skgtecnologia.sisem.domain.login.model.LoginLink
 import com.skgtecnologia.sisem.domain.login.usecases.GetLoginScreen
 import com.skgtecnologia.sisem.domain.model.banner.BannerModel
-import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -44,9 +47,24 @@ class LoginViewModelTest {
     @MockK
     private lateinit var androidIdProvider: AndroidIdProvider
 
-    private val savedStateHandle: SavedStateHandle = SavedStateHandle(
-        route = AuthRoute.LoginRoute(username = USERNAME)
-    )
+    @MockK
+    private lateinit var faceCredentialStore: FaceCredentialStore
+
+    @MockK
+    private lateinit var storeBiometricFromLogin: StoreBiometricFromLogin
+
+    @MockK
+    private lateinit var storeLoginCredentials: StoreLoginCredentials
+
+    @MockK
+    private lateinit var getLoginCredentials: GetLoginCredentials
+
+    @MockK
+    private lateinit var purgeStaleBiometrics: PurgeStaleBiometrics
+
+    private val savedStateHandle: SavedStateHandle = SavedStateHandle().apply {
+        set("username", USERNAME)
+    }
 
     private lateinit var loginViewModel: LoginViewModel
 
@@ -55,13 +73,25 @@ class LoginViewModelTest {
         MockKAnnotations.init(this)
 
         every { androidIdProvider.getAndroidId() } returns ANDROID_ID
+        coEvery { faceCredentialStore.storeRefreshToken(any(), any()) } returns Unit
+        coEvery { faceCredentialStore.storeRole(any(), any()) } returns Unit
+        coEvery { faceCredentialStore.enrolledUsernames() } returns emptyList()
+        coEvery { storeBiometricFromLogin.invoke(any(), any(), any(), any()) } returns Unit
+        coEvery { storeLoginCredentials.invoke(any(), any()) } returns Unit
+        coEvery { getLoginCredentials.invoke(any()) } returns null
+        coEvery { purgeStaleBiometrics.invoke() } returns Unit
     }
 
     private fun createViewModel() = LoginViewModel(
         savedStateHandle = savedStateHandle,
         androidIdProvider = androidIdProvider,
         getLoginScreen = getLoginScreen,
-        login = login
+        login = login,
+        faceCredentialStore = faceCredentialStore,
+        storeBiometricFromLogin = storeBiometricFromLogin,
+        storeLoginCredentials = storeLoginCredentials,
+        getLoginCredentials = getLoginCredentials,
+        purgeStaleBiometrics = purgeStaleBiometrics
     )
 
     @Test
@@ -133,7 +163,7 @@ class LoginViewModelTest {
             )
         )
 
-        coEvery { login.invoke(any(), any()) } returns Result.success(accessTokenModel)
+        coEvery { login.invoke(any(), any(), any()) } returns Result.success(accessTokenModel)
 
         loginViewModel.login()
 
@@ -153,13 +183,13 @@ class LoginViewModelTest {
         loginViewModel.isValidPassword = true
         val accessTokenModel = createAccessToken(null)
 
-        coEvery { login.invoke(any(), any()) } returns Result.success(accessTokenModel)
+        coEvery { login.invoke(any(), any(), any()) } returns Result.success(accessTokenModel)
 
         loginViewModel.login()
 
         Assert.assertEquals(true, loginViewModel.uiState.value.validateFields)
         Assert.assertEquals(false, loginViewModel.uiState.value.navigationModel?.isWarning)
-        Assert.assertEquals(true, loginViewModel.uiState.value.isLoading)
+        Assert.assertEquals(false, loginViewModel.uiState.value.isLoading)
     }
 
     @Test
@@ -172,7 +202,7 @@ class LoginViewModelTest {
         loginViewModel.isValidUsername = true
         loginViewModel.isValidPassword = true
 
-        coEvery { login.invoke(any(), any()) } returns Result.failure(Throwable())
+        coEvery { login.invoke(any(), any(), any()) } returns Result.failure(Throwable())
 
         loginViewModel.login()
 
@@ -245,9 +275,36 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `when closeActiveSession is called it retries the login forcing the close`() = runTest {
+    fun `when closeActiveSession succeeds the retried login navigates`() = runTest {
         coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
-        coEvery { login.invoke(any(), any(), any()) } returns Result.success(createAccessToken(null))
+        val accessTokenModel = createAccessToken(null)
+        coEvery { login.invoke(any(), any(), any()) } returns Result.success(accessTokenModel)
+
+        loginViewModel = createViewModel()
+        loginViewModel.closeActiveSession()
+
+        Assert.assertEquals(null, loginViewModel.uiState.value.errorModel)
+        Assert.assertNotNull(loginViewModel.uiState.value.navigationModel)
+        Assert.assertEquals(false, loginViewModel.uiState.value.isLoading)
+    }
+
+    @Test
+    fun `when closeActiveSession fails it surfaces the error`() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
+        coEvery { login.invoke(any(), any(), any()) } returns Result.failure(Throwable())
+
+        loginViewModel = createViewModel()
+        loginViewModel.closeActiveSession()
+
+        Assert.assertEquals(SERVER_ERROR_TITLE, loginViewModel.uiState.value.errorModel?.title)
+        Assert.assertEquals(false, loginViewModel.uiState.value.isLoading)
+    }
+
+    @Test
+    fun `when closeActiveSession is called it uses the typed credentials`() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
+        val accessTokenModel = createAccessToken(null)
+        coEvery { login.invoke(any(), any(), any()) } returns Result.success(accessTokenModel)
 
         loginViewModel = createViewModel()
         loginViewModel.username = USERNAME
@@ -258,26 +315,49 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `when closeActiveSession is called it clears the duplicate-session banner`() = runTest {
+    fun `when onBiometricLogin it requests navigation regardless of crew state`() = runTest {
         coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
-        coEvery { login.invoke(any(), any(), any()) } returns Result.success(createAccessToken(null))
 
         loginViewModel = createViewModel()
-        loginViewModel.closeActiveSession()
+        loginViewModel.onBiometricLogin()
 
+        Assert.assertEquals(true, loginViewModel.uiState.value.navigateToBiometric)
         Assert.assertEquals(null, loginViewModel.uiState.value.errorModel)
+        Assert.assertEquals(false, loginViewModel.uiState.value.isLoading)
     }
 
     @Test
-    fun `when the forced login fails it surfaces the error`() = runTest {
+    fun `when arriving with a biometric match it auto-logs in with stored credentials`() = runTest {
         coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
-        coEvery { login.invoke(any(), any(), any()) } returns Result.failure(Throwable())
+        coEvery { getLoginCredentials.invoke(USERNAME) } returns
+            com.skgtecnologia.sisem.domain.biometric.model.LoginCredentials(USERNAME, PASSWORD)
+        coEvery { login.invoke(any(), any(), any()) } returns Result.success(createAccessToken(null))
+
+        val biometricHandle = SavedStateHandle().apply { set("biometricUsername", USERNAME) }
+        loginViewModel = LoginViewModel(
+            savedStateHandle = biometricHandle,
+            androidIdProvider = androidIdProvider,
+            getLoginScreen = getLoginScreen,
+            login = login,
+            faceCredentialStore = faceCredentialStore,
+            storeBiometricFromLogin = storeBiometricFromLogin,
+            storeLoginCredentials = storeLoginCredentials,
+            getLoginCredentials = getLoginCredentials,
+            purgeStaleBiometrics = purgeStaleBiometrics
+        )
+
+        coVerify { login.invoke(USERNAME, PASSWORD, false) }
+        Assert.assertNotNull(loginViewModel.uiState.value.navigationModel)
+    }
+
+    @Test
+    fun `when consumeBiometricNavigationEvent clears the flag`() = runTest {
+        coEvery { getLoginScreen.invoke(ANDROID_ID) } returns Result.success(emptyScreenModel)
 
         loginViewModel = createViewModel()
-        loginViewModel.closeActiveSession()
+        loginViewModel.consumeBiometricNavigationEvent()
 
-        Assert.assertEquals(SERVER_ERROR_TITLE, loginViewModel.uiState.value.errorModel?.title)
-        Assert.assertEquals(false, loginViewModel.uiState.value.isLoading)
+        Assert.assertEquals(false, loginViewModel.uiState.value.navigateToBiometric)
     }
 
     private fun createAccessToken(warning: BannerModel?) = AccessTokenModel(

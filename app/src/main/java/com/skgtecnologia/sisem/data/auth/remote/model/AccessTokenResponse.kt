@@ -24,7 +24,8 @@ data class AccessTokenResponse(
     @Json(name = "warning") val warning: BannerResponse?,
     @Json(name = "doc_type") val docType: String,
     @Json(name = "document") val document: String,
-    @Json(name = "exp_date") val expDate: String
+    @Json(name = "exp_date") val expDate: String,
+    @Json(name = "embeddings") val embeddings: List<String> = emptyList()
 )
 
 fun AccessTokenResponse.mapToDomain(): AccessTokenModel = AccessTokenModel(
@@ -44,7 +45,8 @@ fun AccessTokenResponse.mapToDomain(): AccessTokenModel = AccessTokenModel(
     warning = warning?.mapToDomain(),
     docType = docType,
     document = document,
-    expDate = expDate.mapToDomain()
+    expDate = expDate.mapToDomain(),
+    embeddings = embeddings
 )
 
 fun String.mapToDomain(): LocalDateTime = TimeUtils.getLocalDateTime(this)

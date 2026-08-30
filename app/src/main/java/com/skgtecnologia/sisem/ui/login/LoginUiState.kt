@@ -11,5 +11,8 @@ data class LoginUiState(
     val navigationModel: LoginNavigationModel? = null,
     val isLoading: Boolean = false,
     val warning: BannerUiModel? = null,
-    val errorModel: BannerUiModel? = null
+    val errorModel: BannerUiModel? = null,
+    val navigateToBiometric: Boolean = false,
+    val loggedOutRole: String? = null,
+    val targetRole: String? = null,
 )

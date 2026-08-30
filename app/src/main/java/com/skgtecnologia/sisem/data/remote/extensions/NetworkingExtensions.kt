@@ -7,6 +7,7 @@ import okhttp3.Response
 private const val HTTP_AUTHORIZATION_HEADER = "Authorization"
 const val HTTP_FORBIDDEN_STATUS_CODE = 403
 const val HTTP_UNAUTHORIZED_STATUS_CODE = 401
+const val HTTP_NOT_FOUND_STATUS_CODE = 404
 private const val BEARER_TOKEN_PREFIX = "Bearer "
 
 /**

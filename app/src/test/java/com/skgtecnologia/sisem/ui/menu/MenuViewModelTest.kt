@@ -16,18 +16,24 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
 private const val USERNAME = "username"
 
+@RunWith(RobolectricTestRunner::class)
 class MenuViewModelTest {
 
     @get:Rule
@@ -57,12 +63,8 @@ class MenuViewModelTest {
 
     @Test
     fun `when getAllAccessTokens failure`() = runTest {
-        val vehicleConfigModel = mockk<VehicleConfigModel>()
-        val operationConfig = mockk<OperationModel> {
-            every { vehicleConfig } returns vehicleConfigModel
-        }
         coEvery { getAllAccessTokens.invoke() } returns Result.failure(Throwable())
-        coEvery { observeOperationConfig.invoke() } returns flowOf(operationConfig)
+        coEvery { observeOperationConfig.invoke() } returns MutableSharedFlow()
 
         viewModel = MenuViewModel(
             getAllAccessTokens = getAllAccessTokens,
@@ -72,11 +74,14 @@ class MenuViewModelTest {
             observeOperationConfig = observeOperationConfig
         )
 
-        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+        val job = backgroundScope.launch {
             viewModel.operationConfig.collect()
         }
 
+        viewModel.uiState.first { it.errorModel != null }
+
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.value.errorModel?.title)
+        job.cancel()
     }
 
     @Test
@@ -100,6 +105,7 @@ class MenuViewModelTest {
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
             viewModel.operationConfig.collect()
         }
+        advanceUntilIdle()
 
         Assert.assertEquals(vehicleConfigModel, viewModel.uiState.value.vehicleConfig)
         Assert.assertEquals(accessTokens, viewModel.uiState.value.accessTokenModelList)
@@ -121,6 +127,7 @@ class MenuViewModelTest {
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
             viewModel.operationConfig.collect()
         }
+        advanceUntilIdle()
 
         Assert.assertEquals(null, viewModel.uiState.value.accessTokenModelList)
         Assert.assertEquals(SERVER_ERROR_TITLE, viewModel.uiState.value.errorModel?.title)

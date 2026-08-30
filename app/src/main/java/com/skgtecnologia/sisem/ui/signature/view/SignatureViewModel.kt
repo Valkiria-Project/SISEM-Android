@@ -16,6 +16,7 @@ import com.skgtecnologia.sisem.domain.signature.usecases.RegisterSignature
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
 import com.skgtecnologia.sisem.ui.navigation.MainRoute
 import com.valkiria.uicomponents.action.UiAction
+import com.valkiria.uicomponents.components.fingerprint.FingerprintUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -48,7 +49,12 @@ class SignatureViewModel @Inject constructor(
                 .onSuccess { signatureScreenModel ->
                     withContext(Dispatchers.Main) {
                         uiState = uiState.copy(
-                            screenModel = signatureScreenModel,
+                            // Fingerprint (huella) is deprecated in favor of facial
+                            // biometrics; drop the server-driven component client-side.
+                            screenModel = signatureScreenModel.copy(
+                                body = signatureScreenModel.body
+                                    .filterNot { it is FingerprintUiModel }
+                            ),
                             isLoading = false
                         )
                     }

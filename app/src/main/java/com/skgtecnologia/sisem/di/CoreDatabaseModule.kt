@@ -3,7 +3,9 @@ package com.skgtecnologia.sisem.di
 import android.content.Context
 import androidx.room.Room
 import com.skgtecnologia.sisem.data.auth.cache.dao.AccessTokenDao
+import com.skgtecnologia.sisem.data.biometric.cache.BiometricCredentialDao
 import com.skgtecnologia.sisem.data.cache.SisemDatabase
+import com.skgtecnologia.sisem.data.cache.migrations.MIGRATION_24_25
 import com.skgtecnologia.sisem.data.incident.cache.dao.IncidentDao
 import com.skgtecnologia.sisem.data.notification.cache.dao.NotificationDao
 import com.skgtecnologia.sisem.data.operation.cache.dao.OperationDao
@@ -22,12 +24,17 @@ object CoreDatabaseModule {
     @Provides
     fun provideSisemDatabase(@ApplicationContext appContext: Context): SisemDatabase =
         Room.databaseBuilder(appContext, SisemDatabase::class.java, "sisem.db")
+            .addMigrations(MIGRATION_24_25)
             .fallbackToDestructiveMigration()
             .build()
 
     @Provides
     fun provideAccessTokenDao(sisemDatabase: SisemDatabase): AccessTokenDao =
         sisemDatabase.accessTokenDao()
+
+    @Provides
+    fun provideBiometricCredentialDao(sisemDatabase: SisemDatabase): BiometricCredentialDao =
+        sisemDatabase.biometricCredentialDao()
 
     @Provides
     fun provideIncidentDao(sisemDatabase: SisemDatabase): IncidentDao = sisemDatabase.incidentDao()

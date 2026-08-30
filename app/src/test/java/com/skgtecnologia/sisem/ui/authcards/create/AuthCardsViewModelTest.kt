@@ -1,15 +1,14 @@
 package com.skgtecnologia.sisem.ui.authcards.create
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.testing.invoke
 import com.skgtecnologia.sisem.commons.ANDROID_ID
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.SERVER_ERROR_TITLE
+import com.skgtecnologia.sisem.commons.biometric.FaceCredentialStore
 import com.skgtecnologia.sisem.commons.emptyScreenModel
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.domain.authcards.usecases.GetAuthCardsScreen
 import com.skgtecnologia.sisem.domain.operation.usecases.GetOperationConfig
-import com.skgtecnologia.sisem.ui.navigation.AuthRoute
 import com.valkiria.uicomponents.bricks.banner.report.ReportsDetailUiModel
 import com.valkiria.uicomponents.bricks.chip.ChipSectionUiModel
 import io.mockk.MockKAnnotations
@@ -17,7 +16,13 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -25,11 +30,14 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
 class AuthCardsViewModelTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
+
+    private val testDispatcher = UnconfinedTestDispatcher()
 
     @MockK
     private lateinit var androidIdProvider: AndroidIdProvider
@@ -40,17 +48,27 @@ class AuthCardsViewModelTest {
     @MockK
     private lateinit var getOperationConfig: GetOperationConfig
 
-    private val savedStateHandle: SavedStateHandle = SavedStateHandle(
-        route = AuthRoute.AuthCardsRoute()
-    )
+    @MockK
+    private lateinit var faceCredentialStore: FaceCredentialStore
+
+    private val savedStateHandle = SavedStateHandle().apply {
+        set("loggedOutRole", null)
+    }
 
     private lateinit var authCardsViewModel: AuthCardsViewModel
 
     @Before
     fun setup() {
         MockKAnnotations.init(this)
+        Dispatchers.setMain(testDispatcher)
 
         every { androidIdProvider.getAndroidId() } returns ANDROID_ID
+        coEvery { faceCredentialStore.enrolledUsernames() } returns emptyList()
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
     }
 
     @Test
@@ -62,6 +80,7 @@ class AuthCardsViewModelTest {
             androidIdProvider,
             getAuthCardsScreen,
             getOperationConfig,
+            faceCredentialStore,
             savedStateHandle
         )
 
@@ -76,6 +95,7 @@ class AuthCardsViewModelTest {
             androidIdProvider,
             getAuthCardsScreen,
             getOperationConfig,
+            faceCredentialStore,
             savedStateHandle
         )
 
@@ -91,6 +111,7 @@ class AuthCardsViewModelTest {
             androidIdProvider,
             getAuthCardsScreen,
             getOperationConfig,
+            faceCredentialStore,
             savedStateHandle
         )
 
@@ -107,6 +128,7 @@ class AuthCardsViewModelTest {
             androidIdProvider,
             getAuthCardsScreen,
             getOperationConfig,
+            faceCredentialStore,
             savedStateHandle
         )
         authCardsViewModel.showReportBottomSheet(reportDetail)
@@ -124,6 +146,7 @@ class AuthCardsViewModelTest {
                 androidIdProvider,
                 getAuthCardsScreen,
                 getOperationConfig,
+                faceCredentialStore,
                 savedStateHandle
             )
             authCardsViewModel.consumeReportBottomSheetEvent()
@@ -141,6 +164,7 @@ class AuthCardsViewModelTest {
             androidIdProvider,
             getAuthCardsScreen,
             getOperationConfig,
+            faceCredentialStore,
             savedStateHandle
         )
         authCardsViewModel.showFindingsBottomSheet(chipSection)
@@ -158,6 +182,7 @@ class AuthCardsViewModelTest {
                 androidIdProvider,
                 getAuthCardsScreen,
                 getOperationConfig,
+                faceCredentialStore,
                 savedStateHandle
             )
             authCardsViewModel.consumeFindingsBottomSheetEvent()
@@ -174,6 +199,7 @@ class AuthCardsViewModelTest {
             androidIdProvider,
             getAuthCardsScreen,
             getOperationConfig,
+            faceCredentialStore,
             savedStateHandle
         )
         authCardsViewModel.consumeErrorEvent()

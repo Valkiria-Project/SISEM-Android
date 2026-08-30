@@ -389,3 +389,44 @@ fun sendEmailScreenSuccessBanner(): BannerModel = BannerModel(
     title = "Éxito",
     description = "Correo enviado exitosamente"
 )
+
+fun faceEnrollmentSuccessBanner(): BannerModel = BannerModel(
+    icon = "ic_alert",
+    iconColor = "#42A4FA",
+    title = "Registro exitoso",
+    description = "El registro facial ha sido guardado exitosamente."
+)
+
+fun faceVerificationSuccessBanner(username: String): BannerModel = BannerModel(
+    icon = "ic_alert",
+    iconColor = "#42A4FA",
+    title = "Verificación exitosa",
+    description = "Rostro verificado correctamente para $username."
+)
+
+fun faceErrorBanner(message: String): BannerModel = BannerModel(
+    icon = "ic_alert",
+    title = "Error de reconocimiento",
+    description = message
+)
+
+fun biometricNotRegisteredBanner(): BannerModel = BannerModel(
+    icon = "ic_alert",
+    iconColor = "#42A4FA",
+    title = "Sin registro biométrico",
+    description = "Este tripulante no tiene biometría registrada. Puede registrarla en este momento."
+)
+
+fun biometricIntermittencyBanner(): BannerModel = BannerModel(
+    icon = "ic_alert",
+    title = "Intermitencia de red",
+    description = "No fue posible consultar la biometría por intermitencia de red. " +
+        "Verifique su conexión e intente nuevamente."
+)
+
+fun biometricQueryErrorBanner(): BannerModel = BannerModel(
+    icon = "ic_alert",
+    title = "Error de consulta",
+    description = "Ocurrió un error al consultar la biometría de este documento. " +
+        "Intente nuevamente más tarde."
+)

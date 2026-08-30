@@ -53,7 +53,10 @@ fun MenuDrawer(
                 drawerState = drawerState,
                 vehicleConfig = operationConfig?.vehicleConfig,
                 crewMenuItems = crewMenuItems,
-                menuItems = getDrawerMenuItemList(LocalContext.current, isAdmin),
+                menuItems = getDrawerMenuItemList(
+                    LocalContext.current,
+                    isAdmin
+                ),
                 onMenuItemClick = onClick,
                 onLogout = {
                     if (isAdmin == true) {

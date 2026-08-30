@@ -133,6 +133,50 @@
         La presente Política de Protección y Tratamiento de Datos Personales está rigiendo a partir de su publicación en la SDS y en el portal web de la entidad.
     </string>
 
+    <!-- Face camera screen -->
+    <string name="face_camera_enroll_hint">Centra tu rostro mirando de frente a la cámara</string>
+    <string name="face_camera_step_frontal">Paso 1/3 — Mira de frente a la cámara</string>
+    <string name="face_camera_step_left">Paso 2/3 — Gira lentamente tu cabeza hacia la izquierda</string>
+    <string name="face_camera_step_right">Paso 3/3 — Gira lentamente tu cabeza hacia la derecha</string>
+    <string name="face_camera_verify_hint">Mira la cámara para ingresar</string>
+    <string name="face_camera_detected">Rostro detectado…</string>
+    <string name="face_camera_enrolled">¡Rostro registrado exitosamente!</string>
+    <string name="face_camera_success">Bienvenido, %s</string>
+    <string name="face_camera_retry">Intentar de nuevo</string>
+    <string name="face_camera_use_password">Usar contraseña</string>
+    <string name="face_camera_cancel">Cancelar</string>
+    <!-- Scanner chrome and distance guidance -->
+    <string name="face_camera_scanner_title">Autorización biométrica</string>
+    <string name="face_camera_scanner_subtitle">Reconocimiento Biométrico</string>
+    <string name="face_camera_guidance_no_face">Ubica tu rostro en el óvalo</string>
+    <string name="face_camera_guidance_move_closer">¡Acércate a la pantalla!</string>
+    <string name="face_camera_guidance_move_away">¡Aleja un poco la pantalla!</string>
+    <string name="face_camera_guidance_perfect">¡Estás perfecto!</string>
+    <string name="face_camera_loading_enroll">Cargando registro</string>
+    <string name="face_camera_enroll_success">¡Registro exitoso!</string>
+    <string name="face_camera_enroll_failed">¡Registro fallido!</string>
+    <string name="face_auth_button">Ingresar con rostro</string>
+    <string name="login_biometric_button">Ingresar con Biometría</string>
+    <!-- Liveness detection challenges -->
+    <string name="face_liveness_blink">Parpadea para confirmar que eres una persona real</string>
+    <string name="face_liveness_turn_left">Gira lentamente tu cabeza hacia la izquierda</string>
+    <string name="face_liveness_turn_right">Gira lentamente tu cabeza hacia la derecha</string>
+
+    <!-- Permissions carousel -->
+    <string name="permission_carousel_title">Permisos necesarios</string>
+    <string name="permission_carousel_subtitle">Para funcionar correctamente, la app necesita los siguientes permisos</string>
+    <string name="permission_location_title">Ubicación</string>
+    <string name="permission_location_description">Permite rastrear la ambulancia en tiempo real y reportar su posición al centro de emergencias.</string>
+    <string name="permission_notifications_title">Notificaciones</string>
+    <string name="permission_notifications_description">Permite recibir alertas de incidentes asignados y novedades del turno.</string>
+    <string name="permission_camera_title">Cámara</string>
+    <string name="permission_camera_description">Permite tomar fotos para registros de atención prehospitalaria, hallazgos y reportes.</string>
+    <string name="permission_bg_location_title">Ubicación en segundo plano</string>
+    <string name="permission_bg_location_description">Permite rastrear la ambulancia mientras la app está minimizada. Selecciona \"Permitir todo el tiempo\" en los ajustes del permiso de Ubicación.</string>
+    <string name="permission_allow_cta">PERMITIR</string>
+    <string name="permission_go_to_settings_cta">Ir a ajustes</string>
+    <string name="permission_granted_label">Concedido</string>
+
     <!-- Location background permission dialog -->
     <string name="location_bg_permission_title">Ubicación en segundo plano</string>
     <string name="location_bg_permission_description">Para rastrear la ambulancia mientras la app está minimizada, selecciona \"Permitir todo el tiempo\" en los ajustes de la app en el permiso de Ubicación.</string>
@@ -188,8 +232,24 @@
     <string name="drawer_pre_operational">Preoperacionales</string>
     <string name="drawer_hceud">HCEUD</string>
     <string name="drawer_device_auth">Asociar dispositivo al vehículo</string>
-    <string name="drawer_signature_and_fingerprint">Registrar firma y huella</string>
+    <string name="drawer_signature_and_biometric">Registrar firma y biometría</string>
     <string name="drawer_stretcher_retention">Registra retención de camilla</string>
+
+    <!-- Signature &amp; biometric registration flow (líder APH) -->
+    <string name="biometric_selection_title">Firma y biometría</string>
+    <string name="biometric_selection_subtitle">Registre o actualice firma y biometría del tripulante.</string>
+    <string name="biometric_selection_signature">Registro de firma</string>
+    <string name="biometric_selection_biometric">Registro de biometría</string>
+    <string name="biometric_enrollment_title">Registro biometría</string>
+    <string name="biometric_enrollment_subtitle">Registre o actualice la biometría del tripulante.</string>
+    <string name="biometric_enrollment_face_title">Reconocimiento Biométrico</string>
+    <string name="biometric_enrollment_face_description">Registre el rostro del tripulante para poder activar las funciones biométricas</string>
+    <string name="biometric_enrollment_register">Registrar biometría</string>
+    <string name="biometric_enrollment_update">Actualizar biometría</string>
+    <string name="biometric_enrollment_update_description">Ya tiene una biometría registrada. Actualícela si desea reemplazarla</string>
+    <string name="biometric_enrollment_name_label">Nombres y apellidos del tripulante</string>
+    <string name="biometric_enrollment_document_label">Número de documento</string>
+    <string name="biometric_enrollment_role_label">Rol</string>
 
     <!-- Wounds dialog -->
     <string name="wounds_burn_description">¿Que tipo de quemadura presenta el paciente?</string>

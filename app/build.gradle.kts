@@ -44,8 +44,8 @@ android {
         applicationId = "com.skgtecnologia.sisem"
         minSdk = 30
         targetSdk = 36
-        versionCode = 95
-        versionName = "2.4.12"
+        versionCode = 98
+        versionName = "2.4.14"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -125,6 +125,9 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+    androidResources {
+        noCompress += "tflite"
     }
 }
 
@@ -223,6 +226,12 @@ dependencies {
     implementation(libs.androidx.camera.extensions)
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.view)
+
+    // Face recognition (on-device, no server)
+    implementation(libs.mlkit.face.detection)
+    implementation(libs.tensorflow.lite)
+    implementation(libs.tensorflow.lite.support)
+    implementation(libs.androidx.security.crypto)
     implementation(libs.accompanist.permissions)
     implementation(libs.accompanist.placeholder.material)
     implementation(libs.coil.compose)

@@ -15,7 +15,10 @@ data class DrawerMenuItemModel(
     @DrawableRes val drawableId: Int
 )
 
-fun getDrawerMenuItemList(context: Context, isAdmin: Boolean?): List<DrawerMenuItemModel> {
+fun getDrawerMenuItemList(
+    context: Context,
+    isAdmin: Boolean?
+): List<DrawerMenuItemModel> {
     return if (isAdmin == true) {
         getLeaderDrawerItems(context)
     } else {
@@ -90,7 +93,7 @@ private fun getLeaderDrawerItems(context: Context) = listOf(
     ),
     DrawerMenuItemModel(
         MainRoute.InitSignatureRoute,
-        context.getString(R.string.drawer_signature_and_fingerprint),
-        drawable.ic_fingerprint
+        context.getString(R.string.drawer_signature_and_biometric),
+        drawable.ic_biometric
     )
 )
