@@ -9,6 +9,7 @@ import com.skgtecnologia.sisem.data.remote.extensions.signWithToken
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
+import com.skgtecnologia.sisem.domain.auth.model.SessionRefreshException
 import com.skgtecnologia.sisem.domain.model.banner.BannerModel
 import com.valkiria.uicomponents.utlis.TimeUtils
 import kotlinx.coroutines.flow.first
@@ -134,6 +135,13 @@ class AccessTokenAuthenticator @Inject constructor(
                         "\n\n"
                     ).toByteArray()
                 )
+
+                // Give up on this request, but only end the session if Keycloak refused the
+                // token. Answering a 401 is exactly when a flaky reconnection is most likely, and
+                // a refresh that times out there used to sign the crew out — while the logout
+                // below failed too, leaving the session open server-side, so the next sign-in
+                // came back as a duplicate session.
+                if (throwable !is SessionRefreshException.Rejected) return@synchronized null
 
                 runBlocking {
                     // End the session server-side before discarding the token. This path

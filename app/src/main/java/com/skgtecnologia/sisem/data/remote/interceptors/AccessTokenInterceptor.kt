@@ -9,6 +9,7 @@ import com.skgtecnologia.sisem.data.remote.extensions.signWithToken
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
+import com.skgtecnologia.sisem.domain.auth.model.SessionRefreshException
 import com.skgtecnologia.sisem.domain.model.banner.BannerModel
 import com.valkiria.uicomponents.utlis.TimeUtils
 import kotlinx.coroutines.runBlocking
@@ -176,6 +177,12 @@ class AccessTokenInterceptor @Inject constructor(
                     "\n\n"
                 ).toByteArray()
         )
+
+        // Only Keycloak refusing the refresh token ends the session. No signal, a timeout or
+        // Keycloak failing on its side say nothing about it — and this runs on every request, so
+        // treating them as a dead session signed crews out whenever the ambulance lost coverage
+        // for longer than the token's lifetime. Keep the token; the next request tries again.
+        if (throwable !is SessionRefreshException.Rejected) return
 
         // Remove the dead token from the cache so subsequent requests do not
         // keep hitting Keycloak with an already-expired refresh token. Without

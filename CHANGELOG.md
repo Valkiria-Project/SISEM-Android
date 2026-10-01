@@ -2,6 +2,12 @@
 Ajustes y correcciones aplicadas segun versiones:
 
 
+# Version 2.4.X *(pendiente de asignar al sincronizar con GitLab)*
+----------------------------------------
+### Correcciones
+
+- **Cierre de sesión al perder la señal:** Se corrige un problema donde la aplicación cerraba la sesión de la tripulación cuando la ambulancia pasaba más de unos minutos sin internet. Al vencerse el permiso de acceso, la app intentaba renovarlo; si no había señal, trataba esa falla como si la sesión hubiera terminado, sacaba al usuario al inicio de sesión y dejaba la sesión abierta en el servidor, lo que luego provocaba el aviso de *"Duplicidad"* o *"credenciales incorrectas"* al volver a ingresar. Ahora la sesión solo se cierra cuando el servidor la rechaza; mientras no haya señal, la app conserva la sesión y reintenta al recuperar la conexión.
+
 # Version 2.4.14 *(24.08.2026)*
 ----------------------------------------
 ### Bloqueo de inicio de sesión biométrico con sesión activa en otro rol
