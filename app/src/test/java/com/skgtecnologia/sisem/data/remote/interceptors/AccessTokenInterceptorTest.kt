@@ -4,7 +4,7 @@ import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.StorageProvider
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
-import com.skgtecnologia.sisem.domain.model.banner.BannerModel
+import com.skgtecnologia.sisem.domain.auth.model.SessionRefreshException
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -100,14 +100,10 @@ class AccessTokenInterceptorTest {
     }
 
     @Test
-    fun `when token expired and refresh fails with BannerModel, deletes dead token and publishes event`() = runTest {
-        val bannerError = BannerModel(
-            icon = "ic_alert",
-            title = "Token expired",
-            description = "Session is no longer valid"
-        )
+    fun `when Keycloak rejects the refresh, deletes dead token and publishes event`() = runTest {
         coEvery { authRepository.getAllAccessTokens() } returns listOf(expiredToken)
-        coEvery { authRepository.refreshToken(expiredToken) } throws bannerError
+        coEvery { authRepository.refreshToken(expiredToken) } throws
+            SessionRefreshException.Rejected(code = 400)
         coEvery { authRepository.deleteAccessTokenByUsername("testuser") } just runs
         coEvery { authRepository.getLastToken() } returns expiredToken.accessToken
         every { UnauthorizedEventHandler.publishUnauthorizedEvent("testuser") } just runs
@@ -118,10 +114,7 @@ class AccessTokenInterceptorTest {
             storageProvider.storeContent(
                 any(),
                 any(),
-                match { bytes ->
-                    val content = String(bytes)
-                    content.contains("Token expired") && content.contains("Session is no longer valid")
-                }
+                match { bytes -> String(bytes).contains("Refresh rejected with HTTP 400") }
             )
         }
         coVerify(exactly = 1) { authRepository.deleteAccessTokenByUsername("testuser") }
@@ -129,17 +122,38 @@ class AccessTokenInterceptorTest {
     }
 
     @Test
-    fun `when token expired and refresh fails with exception, deletes dead token and publishes event`() = runTest {
+    fun `when the refresh cannot reach the server, keeps the token and the session`() = runTest {
         coEvery { authRepository.getAllAccessTokens() } returns listOf(expiredToken)
-        coEvery { authRepository.refreshToken(expiredToken) } throws RuntimeException("network error")
-        coEvery { authRepository.deleteAccessTokenByUsername("testuser") } just runs
+        coEvery { authRepository.refreshToken(expiredToken) } throws
+            SessionRefreshException.Unreachable(detail = "UnknownHostException")
         coEvery { authRepository.getLastToken() } returns expiredToken.accessToken
-        every { UnauthorizedEventHandler.publishUnauthorizedEvent("testuser") } just runs
 
         interceptor.intercept(chain)
 
-        coVerify(exactly = 1) { authRepository.deleteAccessTokenByUsername("testuser") }
-        verify(exactly = 1) { UnauthorizedEventHandler.publishUnauthorizedEvent("testuser") }
+        // An ambulance in a dead zone: the failure is logged, but nobody is signed out.
+        verify {
+            storageProvider.storeContent(
+                any(),
+                any(),
+                match { bytes -> String(bytes).contains("UnknownHostException") }
+            )
+        }
+        coVerify(exactly = 0) { authRepository.deleteAccessTokenByUsername(any()) }
+        verify(exactly = 0) { UnauthorizedEventHandler.publishUnauthorizedEvent(any()) }
+    }
+
+    @Test
+    fun `an unexpected failure does not end the session either`() = runTest {
+        // This used to assert the opposite: a plain exception signed the user out. Only an
+        // explicit rejection should do that.
+        coEvery { authRepository.getAllAccessTokens() } returns listOf(expiredToken)
+        coEvery { authRepository.refreshToken(expiredToken) } throws RuntimeException("boom")
+        coEvery { authRepository.getLastToken() } returns expiredToken.accessToken
+
+        interceptor.intercept(chain)
+
+        coVerify(exactly = 0) { authRepository.deleteAccessTokenByUsername(any()) }
+        verify(exactly = 0) { UnauthorizedEventHandler.publishUnauthorizedEvent(any()) }
     }
 
     @Test

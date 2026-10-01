@@ -4,6 +4,7 @@ import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.StorageProvider
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
 import com.skgtecnologia.sisem.domain.auth.model.AccessTokenModel
+import com.skgtecnologia.sisem.domain.auth.model.SessionRefreshException
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -124,10 +125,11 @@ class AccessTokenAuthenticatorTest {
     }
 
     @Test
-    fun `when 401 and refresh fails, deletes dead token and publishes unauthorized event`() = runTest {
+    fun `when 401 and Keycloak rejects the refresh, deletes dead token and publishes event`() = runTest {
         val response = build401Response(totalAttemptCount = 1)
         coEvery { authRepository.observeCurrentAccessToken() } returns flowOf(expiredToken)
-        coEvery { authRepository.refreshToken(expiredToken) } throws RuntimeException("refresh failed")
+        coEvery { authRepository.refreshToken(expiredToken) } throws
+            SessionRefreshException.Rejected(code = 400)
         coEvery { authRepository.deleteAccessTokenByUsername("testuser") } just runs
 
         val result = authenticator.authenticate(null, response)
@@ -138,10 +140,11 @@ class AccessTokenAuthenticatorTest {
     }
 
     @Test
-    fun `when 401 and refresh fails, ends the session before dropping the token`() = runTest {
+    fun `when 401 and Keycloak rejects the refresh, ends the session before dropping the token`() = runTest {
         val response = build401Response(totalAttemptCount = 1)
         coEvery { authRepository.observeCurrentAccessToken() } returns flowOf(expiredToken)
-        coEvery { authRepository.refreshToken(expiredToken) } throws RuntimeException("refresh failed")
+        coEvery { authRepository.refreshToken(expiredToken) } throws
+            SessionRefreshException.Rejected(code = 400)
         coEvery { authRepository.logout("testuser") } returns "testuser"
         coEvery { authRepository.deleteAccessTokenByUsername("testuser") } just runs
 
@@ -154,10 +157,11 @@ class AccessTokenAuthenticatorTest {
     }
 
     @Test
-    fun `when 401 and both refresh and logout fail, still drops the token and notifies`() = runTest {
+    fun `when 401 is rejected and the logout fails too, still drops the token and notifies`() = runTest {
         val response = build401Response(totalAttemptCount = 1)
         coEvery { authRepository.observeCurrentAccessToken() } returns flowOf(expiredToken)
-        coEvery { authRepository.refreshToken(expiredToken) } throws RuntimeException("refresh failed")
+        coEvery { authRepository.refreshToken(expiredToken) } throws
+            SessionRefreshException.Rejected(code = 400)
         coEvery { authRepository.logout("testuser") } throws RuntimeException("logout failed")
         coEvery { authRepository.deleteAccessTokenByUsername("testuser") } just runs
 
@@ -168,6 +172,38 @@ class AccessTokenAuthenticatorTest {
         assertNull(result)
         coVerify(exactly = 1) { authRepository.deleteAccessTokenByUsername("testuser") }
         verify(exactly = 1) { UnauthorizedEventHandler.publishUnauthorizedEvent("testuser") }
+    }
+
+    @Test
+    fun `when 401 and the refresh cannot reach the server, gives up without ending the session`() =
+        runTest {
+            val response = build401Response(totalAttemptCount = 1)
+            coEvery { authRepository.observeCurrentAccessToken() } returns flowOf(expiredToken)
+            coEvery { authRepository.refreshToken(expiredToken) } throws
+                SessionRefreshException.Unreachable(detail = "SocketTimeoutException")
+
+            val result = authenticator.authenticate(null, response)
+
+            // The flaky-reconnection case: this request is dropped, but the crew stays signed in
+            // and nothing is sent to Keycloak — a logout here would fail anyway and leave the
+            // session open server-side, which is what turned into "duplicate session" later.
+            assertNull(result)
+            coVerify(exactly = 0) { authRepository.logout(any()) }
+            coVerify(exactly = 0) { authRepository.deleteAccessTokenByUsername(any()) }
+            verify(exactly = 0) { UnauthorizedEventHandler.publishUnauthorizedEvent(any()) }
+        }
+
+    @Test
+    fun `when 401 and the refresh fails unexpectedly, the session is kept`() = runTest {
+        val response = build401Response(totalAttemptCount = 1)
+        coEvery { authRepository.observeCurrentAccessToken() } returns flowOf(expiredToken)
+        coEvery { authRepository.refreshToken(expiredToken) } throws RuntimeException("boom")
+
+        val result = authenticator.authenticate(null, response)
+
+        assertNull(result)
+        coVerify(exactly = 0) { authRepository.deleteAccessTokenByUsername(any()) }
+        verify(exactly = 0) { UnauthorizedEventHandler.publishUnauthorizedEvent(any()) }
     }
 
     @Test
