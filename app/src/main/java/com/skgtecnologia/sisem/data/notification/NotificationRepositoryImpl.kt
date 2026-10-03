@@ -3,8 +3,10 @@ package com.skgtecnologia.sisem.data.notification
 import com.skgtecnologia.sisem.commons.communication.IncidentEventHandler
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.data.auth.cache.AuthCacheDataSource
+import com.skgtecnologia.sisem.data.incident.AssignedIncidentFetcher
+import com.skgtecnologia.sisem.data.incident.IncidentAssignment
 import com.skgtecnologia.sisem.data.incident.cache.IncidentCacheDataSource
-import com.skgtecnologia.sisem.data.incident.remote.IncidentRemoteDataSource
+import com.skgtecnologia.sisem.data.incident.worker.IncidentAssignmentRetryScheduler
 import com.skgtecnologia.sisem.data.notification.cache.NotificationCacheDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.data.operation.remote.OperationRemoteDataSource
@@ -16,7 +18,6 @@ import com.valkiria.uicomponents.bricks.notification.model.IpsPatientTransferred
 import com.valkiria.uicomponents.bricks.notification.model.NotificationData
 import com.valkiria.uicomponents.bricks.notification.model.TransmiNotification
 import com.valkiria.uicomponents.bricks.notification.model.UpdateVehicleStatusNotification
-import com.valkiria.uicomponents.components.incident.model.IncidentPriority
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import timber.log.Timber
@@ -27,7 +28,8 @@ class NotificationRepositoryImpl @Inject constructor(
     private val androidIdProvider: AndroidIdProvider,
     private val authCacheDataSource: AuthCacheDataSource,
     private val incidentCacheDataSource: IncidentCacheDataSource,
-    private val incidentRemoteDataSource: IncidentRemoteDataSource,
+    private val assignedIncidentFetcher: AssignedIncidentFetcher,
+    private val incidentAssignmentRetryScheduler: IncidentAssignmentRetryScheduler,
     private val notificationCacheDataSource: NotificationCacheDataSource,
     private val operationCacheDataSource: OperationCacheDataSource,
     private val operationRemoteDataSource: OperationRemoteDataSource
@@ -62,28 +64,17 @@ class NotificationRepositoryImpl @Inject constructor(
     private suspend fun handleIncidentAssignedNotification(
         notification: IncidentAssignedNotification
     ) {
-        incidentRemoteDataSource.getIncidentInfo(
-            idIncident = notification.incidentNumber,
-            idTurn = authCacheDataSource.observeAccessToken()
-                .first()
-                ?.turn
-                ?.id
-                ?.toString()
-                .orEmpty(),
-            codeVehicle = operationCacheDataSource.observeOperationConfig()
-                .first()
-                ?.vehicleCode
-                .orEmpty()
-        ).onSuccess {
-            val (longitude, latitude) = notification.geolocation.split(",")
-            val incident = it.copy(
-                incidentPriority = IncidentPriority.getPriority(notification.incidentPriority),
-                latitude = latitude.toDoubleOrNull(),
-                longitude = longitude.toDoubleOrNull()
-            )
-            incidentCacheDataSource.storeIncident(incident)
-        }.onFailure {
+        val assignment = IncidentAssignment(
+            incidentNumber = notification.incidentNumber,
+            incidentPriority = notification.incidentPriority,
+            geolocation = notification.geolocation
+        )
+
+        assignedIncidentFetcher.fetch(assignment).onFailure {
             IncidentEventHandler.publishIncidentErrorEvent(it.mapToUi())
+            // The push made it through on a weak signal, the details did not. Keep trying in the
+            // background, or the crew could not open a medical history for this incident at all.
+            incidentAssignmentRetryScheduler.schedule(assignment)
         }
     }
 
