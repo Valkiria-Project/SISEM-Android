@@ -44,8 +44,8 @@
         <item quantity="other">Sin conexión · %d registros esperando señal para enviarse</item>
     </plurals>
     <plurals name="connectivity_syncing">
-        <item quantity="one">Enviando 1 registro pendiente…</item>
-        <item quantity="other">Enviando %d registros pendientes…</item>
+        <item quantity="one">1 registro pendiente de envío</item>
+        <item quantity="other">%d registros pendientes de envío</item>
     </plurals>
     <plurals name="connectivity_rejected">
         <item quantity="one">1 registro fue rechazado por el servidor. Contacta a soporte.</item>

@@ -4,6 +4,7 @@ import android.content.Context
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.resources.ANDROID_NETWORKING_FILE_NAME
 import com.skgtecnologia.sisem.commons.resources.StorageProvider
+import com.skgtecnologia.sisem.data.offline.outbox.isOutboxReplay
 import com.skgtecnologia.sisem.data.remote.extensions.isUnauthorized
 import com.skgtecnologia.sisem.data.remote.extensions.signWithToken
 import com.skgtecnologia.sisem.di.operation.OperationRole
@@ -41,6 +42,11 @@ class AccessTokenAuthenticator @Inject constructor(
     }
 
     override fun authenticate(route: Route?, response: Response): Request? {
+        // A resend is signed as its creator on purpose. Retrying it with a token chosen by role
+        // could attribute it to someone else, so the 401 goes back to the outbox, which holds the
+        // write until its creator can sign it.
+        if (response.request.isOutboxReplay()) return null
+
         return if (response.isUnauthorized() && responseCount(response) <= MAX_ATTEMPTS) {
             val url = response.request.url
 

@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.data.remote.interceptors
 
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.skgtecnologia.sisem.BuildConfig
+import com.skgtecnologia.sisem.data.offline.outbox.isOutboxReplay
 import com.skgtecnologia.sisem.ui.commons.extensions.locationFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
@@ -41,6 +42,10 @@ class AuditInterceptor @Inject constructor(
     private val ipClient = OkHttpClient()
 
     override fun intercept(chain: Interceptor.Chain): Response {
+        // A resend already carries where and when the write was made. Stamping it again would
+        // record the position at the time the signal came back instead.
+        if (chain.request().isOutboxReplay()) return chain.proceed(chain.request())
+
         val request = chain
             .request()
             .newBuilder()
