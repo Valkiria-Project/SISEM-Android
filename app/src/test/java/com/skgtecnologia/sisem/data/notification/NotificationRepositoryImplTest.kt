@@ -3,11 +3,14 @@ package com.skgtecnologia.sisem.data.notification
 import com.skgtecnologia.sisem.commons.MainDispatcherRule
 import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.data.auth.cache.AuthCacheDataSource
+import com.skgtecnologia.sisem.data.incident.AssignedIncidentFetcher
+import com.skgtecnologia.sisem.data.incident.IncidentAssignment
 import com.skgtecnologia.sisem.data.incident.cache.IncidentCacheDataSource
-import com.skgtecnologia.sisem.data.incident.remote.IncidentRemoteDataSource
+import com.skgtecnologia.sisem.data.incident.worker.IncidentAssignmentRetryScheduler
 import com.skgtecnologia.sisem.data.notification.cache.NotificationCacheDataSource
 import com.skgtecnologia.sisem.data.operation.cache.OperationCacheDataSource
 import com.skgtecnologia.sisem.data.operation.remote.OperationRemoteDataSource
+import com.valkiria.uicomponents.bricks.notification.model.IncidentAssignedNotification
 import com.valkiria.uicomponents.bricks.notification.model.IpsPatientTransferredNotification
 import com.valkiria.uicomponents.bricks.notification.model.TransmilenioAuthorizationNotification
 import io.mockk.MockKAnnotations
@@ -33,7 +36,9 @@ class NotificationRepositoryImplTest {
 
     @MockK private lateinit var incidentCacheDataSource: IncidentCacheDataSource
 
-    @MockK private lateinit var incidentRemoteDataSource: IncidentRemoteDataSource
+    @MockK private lateinit var assignedIncidentFetcher: AssignedIncidentFetcher
+
+    @MockK private lateinit var incidentAssignmentRetryScheduler: IncidentAssignmentRetryScheduler
 
     @MockK private lateinit var notificationCacheDataSource: NotificationCacheDataSource
 
@@ -50,7 +55,8 @@ class NotificationRepositoryImplTest {
             androidIdProvider,
             authCacheDataSource,
             incidentCacheDataSource,
-            incidentRemoteDataSource,
+            assignedIncidentFetcher,
+            incidentAssignmentRetryScheduler,
             notificationCacheDataSource,
             operationCacheDataSource,
             operationRemoteDataSource
@@ -91,5 +97,37 @@ class NotificationRepositoryImplTest {
         repository.storeNotification(notification)
 
         coVerify(exactly = 0) { incidentCacheDataSource.updateTransmiStatus(any(), any()) }
+    }
+
+    private val assignedNotification = mockk<IncidentAssignedNotification>(relaxed = true) {
+        every { incidentNumber } returns "4521"
+        every { incidentPriority } returns "HIGH"
+        every { geolocation } returns "-74.1,4.6"
+    }
+
+    private val assignment = IncidentAssignment(
+        incidentNumber = "4521",
+        incidentPriority = "HIGH",
+        geolocation = "-74.1,4.6"
+    )
+
+    @Test
+    fun `an assigned incident whose details cannot be loaded is retried in the background`() = runTest {
+        coEvery { notificationCacheDataSource.storeNotification(any()) } returns 1L
+        coEvery { assignedIncidentFetcher.fetch(assignment) } returns Result.failure(java.io.IOException("weak signal"))
+
+        repository.storeNotification(assignedNotification)
+
+        coVerify(exactly = 1) { incidentAssignmentRetryScheduler.schedule(assignment) }
+    }
+
+    @Test
+    fun `an assigned incident loaded at once needs no retry`() = runTest {
+        coEvery { notificationCacheDataSource.storeNotification(any()) } returns 1L
+        coEvery { assignedIncidentFetcher.fetch(assignment) } returns Result.success(Unit)
+
+        repository.storeNotification(assignedNotification)
+
+        coVerify(exactly = 0) { incidentAssignmentRetryScheduler.schedule(any()) }
     }
 }
