@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.di
 
 import android.content.Context
 import com.skgtecnologia.sisem.BuildConfig
+import com.skgtecnologia.sisem.data.offline.screen.OfflineScreenCacheInterceptor
 import com.skgtecnologia.sisem.data.remote.interceptors.AccessTokenAuthenticator
 import com.skgtecnologia.sisem.data.remote.interceptors.AccessTokenInterceptor
 import com.skgtecnologia.sisem.data.remote.interceptors.AuditInterceptor
@@ -36,13 +37,17 @@ object BearerNetworkModule {
         accessTokenInterceptor: AccessTokenInterceptor,
         auditInterceptor: AuditInterceptor,
         loggingInterceptor: HttpLoggingInterceptor,
-        networkInterceptor: NetworkInterceptor
+        networkInterceptor: NetworkInterceptor,
+        offlineScreenCacheInterceptor: OfflineScreenCacheInterceptor
     ): OkHttpClient = OkHttpClient.Builder().apply {
         cache(Cache(File(context.cacheDir, "http-bearer"), HTTP_CACHE_SIZE_BYTES))
         connectTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
         readTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
         writeTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
         addInterceptor(auditInterceptor)
+        // Ahead of the token interceptor: with no network the cached screen is served without
+        // first trying, and failing, to refresh the token.
+        addInterceptor(offlineScreenCacheInterceptor)
         addInterceptor(accessTokenInterceptor)
         addInterceptor(loggingInterceptor)
         addInterceptor(networkInterceptor)

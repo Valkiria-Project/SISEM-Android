@@ -3,6 +3,7 @@ package com.skgtecnologia.sisem.di.auth
 import android.content.Context
 import com.skgtecnologia.sisem.BuildConfig
 import com.skgtecnologia.sisem.data.auth.remote.AuthApi
+import com.skgtecnologia.sisem.data.offline.screen.OfflineScreenCacheInterceptor
 import com.skgtecnologia.sisem.data.remote.interceptors.AuditInterceptor
 import com.skgtecnologia.sisem.data.remote.interceptors.NetworkInterceptor
 import com.skgtecnologia.sisem.di.CLIENT_TIMEOUT_DEFAULTS
@@ -35,13 +36,15 @@ object AuthNetworkModule {
         @ApplicationContext context: Context,
         loggingInterceptor: HttpLoggingInterceptor?,
         auditInterceptor: AuditInterceptor,
-        networkInterceptor: NetworkInterceptor
+        networkInterceptor: NetworkInterceptor,
+        offlineScreenCacheInterceptor: OfflineScreenCacheInterceptor
     ): OkHttpClient = OkHttpClient.Builder().apply {
         cache(Cache(File(context.cacheDir, "http-auth"), HTTP_CACHE_SIZE_BYTES))
         connectTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
         readTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
         writeTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
         addInterceptor(auditInterceptor)
+        addInterceptor(offlineScreenCacheInterceptor)
         addInterceptor(networkInterceptor)
         loggingInterceptor?.also { addInterceptor(it) }
     }.build()

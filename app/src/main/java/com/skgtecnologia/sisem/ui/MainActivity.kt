@@ -18,6 +18,7 @@ import com.skgtecnologia.sisem.commons.location.ACTION_STOP
 import com.skgtecnologia.sisem.commons.location.LocationService
 import com.skgtecnologia.sisem.data.notification.NotificationsManager
 import com.skgtecnologia.sisem.domain.notification.usecases.StoreNotification
+import com.skgtecnologia.sisem.ui.commons.connectivity.ConnectivityHost
 import com.skgtecnologia.sisem.ui.navigation.SisemNavGraph
 import com.skgtecnologia.sisem.ui.navigation.StartupNavigationModel
 import com.skgtecnologia.sisem.ui.theme.SisemTheme
@@ -78,7 +79,9 @@ class MainActivity : FragmentActivity() {
 
         setContent {
             SisemTheme {
-                SisemNavGraph(startupNavigationModel)
+                ConnectivityHost {
+                    SisemNavGraph(startupNavigationModel)
+                }
             }
         }
     }

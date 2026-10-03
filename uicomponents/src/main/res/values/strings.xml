@@ -36,4 +36,19 @@
     
     <!-- TimePicket -->
     <string name="time_picker_title">Seleccione una hora</string>
+
+    <!-- Connectivity -->
+    <string name="connectivity_offline">Sin conexión. Puedes seguir trabajando: lo que registres se enviará cuando vuelva la señal.</string>
+    <plurals name="connectivity_offline_pending">
+        <item quantity="one">Sin conexión · 1 registro esperando señal para enviarse</item>
+        <item quantity="other">Sin conexión · %d registros esperando señal para enviarse</item>
+    </plurals>
+    <plurals name="connectivity_syncing">
+        <item quantity="one">Enviando 1 registro pendiente…</item>
+        <item quantity="other">Enviando %d registros pendientes…</item>
+    </plurals>
+    <plurals name="connectivity_rejected">
+        <item quantity="one">1 registro fue rechazado por el servidor. Contacta a soporte.</item>
+        <item quantity="other">%d registros fueron rechazados por el servidor. Contacta a soporte.</item>
+    </plurals>
 </resources>
