@@ -5,6 +5,7 @@ import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
 import com.skgtecnologia.sisem.commons.extensions.resultOf
 import com.skgtecnologia.sisem.commons.resources.ANDROID_NETWORKING_FILE_NAME
 import com.skgtecnologia.sisem.commons.resources.StorageProvider
+import com.skgtecnologia.sisem.data.offline.outbox.isOutboxReplay
 import com.skgtecnologia.sisem.data.remote.extensions.signWithToken
 import com.skgtecnologia.sisem.di.operation.OperationRole
 import com.skgtecnologia.sisem.domain.auth.AuthRepository
@@ -29,17 +30,23 @@ class AccessTokenInterceptor @Inject constructor(
     private val storageProvider: StorageProvider
 ) : Interceptor {
 
-    override fun intercept(chain: Interceptor.Chain): Response = try {
-        val newRequest = chain.request().signedRequest()
+    override fun intercept(chain: Interceptor.Chain): Response {
+        // A resend is already signed as the user who made it. Re-signing by role here could
+        // attribute it to whoever holds that role now.
+        if (chain.request().isOutboxReplay()) return chain.proceed(chain.request())
 
-        if (newRequest != null) {
-            chain.proceed(newRequest)
-        } else {
+        return try {
+            val newRequest = chain.request().signedRequest()
+
+            if (newRequest != null) {
+                chain.proceed(newRequest)
+            } else {
+                chain.proceed(chain.request())
+            }
+        } catch (connectException: ConnectException) {
+            Timber.d("ConnectException ${connectException.message}")
             chain.proceed(chain.request())
         }
-    } catch (connectException: ConnectException) {
-        Timber.d("ConnectException ${connectException.message}")
-        chain.proceed(chain.request())
     }
 
     @Suppress("ComplexMethod")

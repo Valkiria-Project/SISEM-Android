@@ -10,7 +10,11 @@ import com.mapbox.navigation.base.options.NavigationOptions
 import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
 import com.skgtecnologia.sisem.commons.logging.CrashFileHandler
 import com.skgtecnologia.sisem.commons.logging.FileLoggingTree
+import com.skgtecnologia.sisem.data.offline.outbox.OutboxSyncTrigger
 import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -20,6 +24,12 @@ class SisemApplication : Application(), Configuration.Provider {
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
 
+    @Inject
+    lateinit var outboxSyncTrigger: OutboxSyncTrigger
+
+    // Lives as long as the process: the outbox has to be watched whatever screen is open.
+    private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
             .setWorkerFactory(workerFactory)
@@ -27,6 +37,8 @@ class SisemApplication : Application(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
+
+        outboxSyncTrigger.start(applicationScope)
 
         Timber.plant(FileLoggingTree(this))
         CrashFileHandler.install()

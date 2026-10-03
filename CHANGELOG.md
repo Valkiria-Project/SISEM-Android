@@ -4,6 +4,13 @@ Ajustes y correcciones aplicadas segun versiones:
 
 # Version 2.4.X *(pendiente de asignar al sincronizar con GitLab)*
 ----------------------------------------
+### Modo sin conexión
+
+- **Navegación sin señal:** Las pantallas que la tripulación ya abrió (historia clínica, preoperacionales, novedades, etc.) se guardan cifradas en el dispositivo durante 72 horas. Si la ambulancia pierde la señal, la app las muestra desde el dispositivo en lugar de quedarse cargando o mostrar un error. La información de cada paciente se guarda por separado.
+- **Registro sin señal:** La historia clínica, sus fotos y adjuntos, la retención de camilla, el envío por correo, los preoperacionales, las novedades, el retorno de traslado y el cambio de tripulación ya no se pierden sin internet. La app los guarda cifrados en el dispositivo, permite seguir trabajando y los envía sola cuando vuelve la señal, en el mismo orden en que se hicieron.
+- **Cada registro se envía a nombre de quien lo hizo:** Un registro guardado sin señal solo se envía con la sesión del tripulante que lo creó, nunca con la de quien tenga el mismo rol después de un cambio de turno. Si esa persona ya no tiene sesión en el dispositivo, el registro espera a que vuelva a ingresar.
+- **Aviso de conexión:** Una franja en la parte superior indica cuando no hay señal, cuántos registros están pendientes de envío y si el servidor rechazó alguno, para que la tripulación pueda reportarlo a soporte.
+
 ### Correcciones
 
 - **Cierre de sesión al perder la señal:** Se corrige un problema donde la aplicación cerraba la sesión de la tripulación cuando la ambulancia pasaba más de unos minutos sin internet. Al vencerse el permiso de acceso, la app intentaba renovarlo; si no había señal, trataba esa falla como si la sesión hubiera terminado, sacaba al usuario al inicio de sesión y dejaba la sesión abierta en el servidor, lo que luego provocaba el aviso de *"Duplicidad"* o *"credenciales incorrectas"* al volver a ingresar. Ahora la sesión solo se cierra cuando el servidor la rechaza; mientras no haya señal, la app conserva la sesión y reintenta al recuperar la conexión.

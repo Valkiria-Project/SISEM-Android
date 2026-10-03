@@ -2,6 +2,7 @@ package com.skgtecnologia.sisem.di
 
 import android.content.Context
 import com.skgtecnologia.sisem.BuildConfig
+import com.skgtecnologia.sisem.data.offline.outbox.OutboxInterceptor
 import com.skgtecnologia.sisem.data.offline.screen.OfflineScreenCacheInterceptor
 import com.skgtecnologia.sisem.data.remote.interceptors.AccessTokenAuthenticator
 import com.skgtecnologia.sisem.data.remote.interceptors.AccessTokenInterceptor
@@ -38,7 +39,8 @@ object BearerNetworkModule {
         auditInterceptor: AuditInterceptor,
         loggingInterceptor: HttpLoggingInterceptor,
         networkInterceptor: NetworkInterceptor,
-        offlineScreenCacheInterceptor: OfflineScreenCacheInterceptor
+        offlineScreenCacheInterceptor: OfflineScreenCacheInterceptor,
+        outboxInterceptor: OutboxInterceptor
     ): OkHttpClient = OkHttpClient.Builder().apply {
         cache(Cache(File(context.cacheDir, "http-bearer"), HTTP_CACHE_SIZE_BYTES))
         connectTimeout(CLIENT_TIMEOUT_DEFAULTS, TimeUnit.MILLISECONDS)
@@ -49,6 +51,9 @@ object BearerNetworkModule {
         // first trying, and failing, to refresh the token.
         addInterceptor(offlineScreenCacheInterceptor)
         addInterceptor(accessTokenInterceptor)
+        // After the token interceptor on purpose: the write it keeps is already signed, which is
+        // how it knows who made it and so who it may be sent as later.
+        addInterceptor(outboxInterceptor)
         addInterceptor(loggingInterceptor)
         addInterceptor(networkInterceptor)
         authenticator(accessTokenAuthenticator)
