@@ -22,6 +22,9 @@ interface OutboxDao {
     @Query("SELECT COUNT(*) FROM outbox WHERE state = '$STATE_PENDING'")
     fun observePendingCount(): Flow<Int>
 
+    @Query("SELECT COUNT(*) FROM outbox WHERE state = '$STATE_PENDING' AND createdBy = :username")
+    suspend fun countPendingBy(username: String): Int
+
     @Query("SELECT COUNT(*) FROM outbox WHERE state = '$STATE_REJECTED'")
     fun observeRejectedCount(): Flow<Int>
 

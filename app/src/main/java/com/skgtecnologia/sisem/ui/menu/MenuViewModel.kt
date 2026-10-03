@@ -3,14 +3,19 @@ package com.skgtecnologia.sisem.ui.menu
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skgtecnologia.sisem.commons.communication.UnauthorizedEventHandler
+import com.skgtecnologia.sisem.commons.extensions.resultOf
+import com.skgtecnologia.sisem.data.offline.outbox.OutboxStore
+import com.skgtecnologia.sisem.domain.auth.model.LogoutIdentifier
 import com.skgtecnologia.sisem.domain.auth.usecases.GetAllAccessTokens
 import com.skgtecnologia.sisem.domain.auth.usecases.Logout
 import com.skgtecnologia.sisem.domain.auth.usecases.LogoutCurrentUser
+import com.skgtecnologia.sisem.domain.model.banner.logoutWithPendingWritesBanner
 import com.skgtecnologia.sisem.domain.model.banner.mapToUi
 import com.skgtecnologia.sisem.domain.operation.usecases.LogoutTurn
 import com.skgtecnologia.sisem.domain.operation.usecases.ObserveOperationConfig
 import com.skgtecnologia.sisem.ui.commons.extensions.STATE_FLOW_STARTED_TIME
 import com.skgtecnologia.sisem.ui.commons.extensions.handleAuthorizationErrorEvent
+import com.valkiria.uicomponents.action.FooterUiAction
 import com.valkiria.uicomponents.action.UiAction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -33,10 +38,13 @@ class MenuViewModel @Inject constructor(
     private val logout: Logout,
     private val logoutCurrentUser: LogoutCurrentUser,
     private val logoutTurn: LogoutTurn,
+    private val outboxStore: OutboxStore,
     observeOperationConfig: ObserveOperationConfig
 ) : ViewModel() {
 
     private var job: Job? = null
+
+    private var usernameAwaitingLogout: String? = null
 
     var uiState: MutableStateFlow<MenuUiState> = MutableStateFlow(MenuUiState())
         private set
@@ -99,39 +107,56 @@ class MenuViewModel @Inject constructor(
         )
 
     fun logout(username: String) {
+        job?.cancel()
+        job = viewModelScope.launch {
+            // Whatever is still queued can only ever be sent as its creator. Once they sign out
+            // it waits until they sign in again on this device, so they get to choose.
+            val pending = resultOf { outboxStore.pendingCountFor(username) }.getOrDefault(0)
+
+            if (pending > 0) {
+                usernameAwaitingLogout = username
+                withContext(Dispatchers.Main) {
+                    uiState.update { it.copy(errorModel = logoutWithPendingWritesBanner(pending).mapToUi()) }
+                }
+            } else {
+                logoutTurnOf(username)
+            }
+        }
+    }
+
+    private suspend fun logoutTurnOf(username: String) {
         val role = uiState.value.accessTokenModelList
             ?.firstOrNull { it.username == username }
             ?.role
 
-        uiState.update { it.copy(isLoading = true) }
-
-        job?.cancel()
-        job = viewModelScope.launch {
-            logoutTurn.invoke(username = username)
-                .onSuccess {
-                    withContext(Dispatchers.Main) {
-                        uiState.update {
-                            it.copy(
-                                isLoading = false,
-                                isLogout = true,
-                                loggedOutRole = role
-                            )
-                        }
-                    }
-                }
-                .onFailure { throwable ->
-                    Timber.wtf(throwable, "This is a failure")
-
-                    withContext(Dispatchers.Main) {
-                        uiState.update {
-                            it.copy(
-                                isLoading = false,
-                                errorModel = throwable.mapToUi()
-                            )
-                        }
-                    }
-                }
+        withContext(Dispatchers.Main) {
+            uiState.update { it.copy(isLoading = true) }
         }
+
+        logoutTurn.invoke(username = username)
+            .onSuccess {
+                withContext(Dispatchers.Main) {
+                    uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            isLogout = true,
+                            loggedOutRole = role
+                        )
+                    }
+                }
+            }
+            .onFailure { throwable ->
+                Timber.wtf(throwable, "This is a failure")
+
+                withContext(Dispatchers.Main) {
+                    uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorModel = throwable.mapToUi()
+                        )
+                    }
+                }
+            }
     }
 
     fun logoutAdmin(username: String) {
@@ -167,6 +192,18 @@ class MenuViewModel @Inject constructor(
 
     fun handleEvent(uiAction: UiAction) {
         consumeShownError()
+
+        val confirmedUsername = usernameAwaitingLogout
+        usernameAwaitingLogout = null
+        if (
+            confirmedUsername != null &&
+            (uiAction as? FooterUiAction)?.identifier ==
+            LogoutIdentifier.LOGOUT_PENDING_WRITES_CONTINUE_BANNER.name
+        ) {
+            job?.cancel()
+            job = viewModelScope.launch { logoutTurnOf(confirmedUsername) }
+            return
+        }
 
         uiAction.handleAuthorizationErrorEvent {
             job?.cancel()

@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.skgtecnologia.sisem.domain.auth.model.LogoutIdentifier
 import com.skgtecnologia.sisem.domain.deviceauth.model.DeviceAuthIdentifier
 import com.skgtecnologia.sisem.domain.inventory.model.TransferReturnIdentifiers
 import com.skgtecnologia.sisem.domain.preoperational.model.PreOperationalIdentifier
@@ -429,4 +430,47 @@ fun biometricQueryErrorBanner(): BannerModel = BannerModel(
     title = "Error de consulta",
     description = "Ocurrió un error al consultar la biometría de este documento. " +
         "Intente nuevamente más tarde."
+)
+
+fun logoutWithPendingWritesBanner(pendingCount: Int): BannerModel = BannerModel(
+    icon = "ic_alert",
+    title = "Registros sin enviar",
+    description = if (pendingCount == 1) {
+        "Tienes 1 registro que aún no llega al servidor."
+    } else {
+        "Tienes $pendingCount registros que aún no llegan al servidor."
+    } + " Si cierras sesión, quedarán guardados en este dispositivo y solo se enviarán cuando " +
+        "vuelvas a ingresar en él. Si puedes, espera a tener señal antes de cerrar sesión.",
+    footerModel = FooterUiModel(
+        leftButton = ButtonUiModel(
+            identifier = LogoutIdentifier.LOGOUT_PENDING_WRITES_CANCEL_BANNER.name,
+            label = "CANCELAR",
+            style = ButtonStyle.LOUD,
+            textStyle = TextStyle.HEADLINE_5,
+            onClick = OnClick.DISMISS,
+            size = ButtonSize.DEFAULT,
+            arrangement = Arrangement.Center,
+            modifier = Modifier.padding(
+                start = 0.dp,
+                top = 20.dp,
+                end = 0.dp,
+                bottom = 0.dp
+            )
+        ),
+        rightButton = ButtonUiModel(
+            identifier = LogoutIdentifier.LOGOUT_PENDING_WRITES_CONTINUE_BANNER.name,
+            label = "CERRAR SESIÓN",
+            style = ButtonStyle.LOUD,
+            textStyle = TextStyle.HEADLINE_5,
+            onClick = OnClick.DISMISS,
+            size = ButtonSize.DEFAULT,
+            arrangement = Arrangement.Center,
+            modifier = Modifier.padding(
+                start = 0.dp,
+                top = 20.dp,
+                end = 0.dp,
+                bottom = 0.dp
+            )
+        )
+    )
 )
