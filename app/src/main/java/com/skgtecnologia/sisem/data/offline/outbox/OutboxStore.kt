@@ -64,6 +64,9 @@ class OutboxStore(
 
     suspend fun hasPending(): Boolean = dao.hasPending()
 
+    /** Writes still waiting to be sent as [username], who is the only one they can be sent as. */
+    suspend fun pendingCountFor(username: String): Int = dao.countPendingBy(username)
+
     /** Everything still waiting, oldest first, with its body opened. */
     suspend fun pending(): List<QueuedWrite> = dao.pendingInOrder().map { entry ->
         if (!entry.hasBody) {
