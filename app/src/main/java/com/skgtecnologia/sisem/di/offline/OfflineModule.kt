@@ -4,15 +4,20 @@ import android.content.Context
 import androidx.room.Room
 import com.skgtecnologia.sisem.commons.connectivity.AndroidNetworkMonitor
 import com.skgtecnologia.sisem.commons.connectivity.NetworkMonitor
+import com.skgtecnologia.sisem.commons.resources.AndroidIdProvider
 import com.skgtecnologia.sisem.commons.security.BlobCipher
 import com.skgtecnologia.sisem.commons.security.KeystoreBlobCipher
+import com.skgtecnologia.sisem.data.incident.IncidentRepositoryImpl
 import com.skgtecnologia.sisem.data.incident.worker.IncidentAssignmentRetryScheduler
 import com.skgtecnologia.sisem.data.incident.worker.WorkManagerIncidentAssignmentRetryScheduler
+import com.skgtecnologia.sisem.data.medicalhistory.MedicalHistoryRepositoryImpl
 import com.skgtecnologia.sisem.data.offline.OfflineDatabase
 import com.skgtecnologia.sisem.data.offline.outbox.OutboxStore
 import com.skgtecnologia.sisem.data.offline.outbox.OutboxSyncScheduler
 import com.skgtecnologia.sisem.data.offline.outbox.WorkManagerOutboxSyncScheduler
+import com.skgtecnologia.sisem.data.offline.screen.IncidentScreenPrefetcher
 import com.skgtecnologia.sisem.data.offline.screen.ScreenCacheStore
+import com.skgtecnologia.sisem.data.stretcherretention.StretcherRetentionRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -73,6 +78,23 @@ abstract class OfflineModule {
             dao = database.outboxDao(),
             bodies = File(context.noBackupFilesDir, "offline/outbox"),
             cipher = cipher
+        )
+
+        @Provides
+        @Singleton
+        @Suppress("LongParameterList")
+        internal fun providesIncidentScreenPrefetcher(
+            incidentRepository: IncidentRepositoryImpl,
+            medicalHistoryRepository: MedicalHistoryRepositoryImpl,
+            stretcherRetentionRepository: StretcherRetentionRepositoryImpl,
+            androidIdProvider: AndroidIdProvider,
+            networkMonitor: NetworkMonitor
+        ): IncidentScreenPrefetcher = IncidentScreenPrefetcher(
+            incidentRepository = incidentRepository,
+            medicalHistoryRepository = medicalHistoryRepository,
+            stretcherRetentionRepository = stretcherRetentionRepository,
+            androidIdProvider = androidIdProvider,
+            networkMonitor = networkMonitor
         )
     }
 }
