@@ -67,8 +67,9 @@ Se recomienda la opción 2 más el aviso al cerrar sesión, y evaluar la 1 solo 
 
 **Problema.** La app ahora guarda (72 h) y **precarga** las pantallas `screen/*` del incidente activo: `aph`, `aph-vital-signs`, `aph-medicines`, `pre-aph-stretcher-retention`, `aph-stretcher-retention` e `incident-view`.
 
+**Verificado en el backend** (`sisem-sisem-mobile`, `develop` `a06aa8f1`): `ScreenController` delega en `ResolveSDService`, y los servicios de esas seis pantallas (`AphScreenService`, `AphVitalSignsScreenService`, `AphMedicinesScreenService`, `AphStretcherRetentionScreenService`, `PreAphStretcherRetentionScreenService`, `IncidentViewScreenService`) solo hacen `GET` al core (`getAph`, `validStretcherRetention`, `getAssociationVehicle`, `getIncidentById`, `getIncidentByVehicleCode`) y leen el rol del token. **No escriben nada.** El único efecto es un registro de auditoría `getScreenMobile` por RabbitMQ, así que la precarga agrega entradas a ese log. Si se agrega una pantalla nueva a la precarga, hay que repetir esta revisión.
+
 **Qué se necesita.**
-- Confirmar que ningún `POST screen/*` tiene efectos secundarios (marcar como "visto", bloquear la HC, iniciar tiempos). Si alguno los tiene, la precarga los dispararía antes de que la tripulación abra la pantalla. **Hay que confirmarlo antes de llevar la precarga a producción.**
 - Agregar una versión o `ETag` en la respuesta de cada pantalla. Si un formulario cambia, hoy la app puede mostrar la copia anterior hasta por 72 h sin señal, y el servidor debería aceptar o rechazar con un 4xx claro un envío hecho con la versión anterior.
 
 ## 7. Inicio de sesión requiere red — medio
@@ -89,4 +90,4 @@ Android marca una red como "validada" solo si llega a `connectivitycheck.gstatic
 
 ---
 
-**Resumen para priorizar:** 1 y 2 son los que pueden afectar la integridad de los registros clínicos y deberían estar antes de llevar el modo sin conexión a producción. El 6 (confirmar que no hay efectos secundarios) es una pregunta de una línea que hay que responder antes de activar la precarga.
+**Resumen para priorizar:** 1 y 2 son los que pueden afectar la integridad de los registros clínicos y deberían estar antes de llevar el modo sin conexión a producción. El 6 ya está verificado: las pantallas que se precargan solo leen.
