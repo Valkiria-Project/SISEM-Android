@@ -30,6 +30,9 @@ internal class FakeOutboxDao : OutboxDao {
     override fun observePendingCount(): Flow<Int> =
         rows.map { list -> list.count { it.state == OutboxEntity.STATE_PENDING } }
 
+    override suspend fun countPendingBy(username: String): Int =
+        pendingInOrder().count { it.createdBy == username }
+
     override fun observeRejectedCount(): Flow<Int> =
         rows.map { list -> list.count { it.state == OutboxEntity.STATE_REJECTED } }
 
