@@ -6,6 +6,8 @@ import com.skgtecnologia.sisem.commons.connectivity.AndroidNetworkMonitor
 import com.skgtecnologia.sisem.commons.connectivity.NetworkMonitor
 import com.skgtecnologia.sisem.commons.security.BlobCipher
 import com.skgtecnologia.sisem.commons.security.KeystoreBlobCipher
+import com.skgtecnologia.sisem.data.incident.worker.IncidentAssignmentRetryScheduler
+import com.skgtecnologia.sisem.data.incident.worker.WorkManagerIncidentAssignmentRetryScheduler
 import com.skgtecnologia.sisem.data.offline.OfflineDatabase
 import com.skgtecnologia.sisem.data.offline.outbox.OutboxStore
 import com.skgtecnologia.sisem.data.offline.outbox.OutboxSyncScheduler
@@ -34,6 +36,11 @@ abstract class OfflineModule {
     internal abstract fun bindsOutboxSyncScheduler(
         scheduler: WorkManagerOutboxSyncScheduler
     ): OutboxSyncScheduler
+
+    @Binds
+    internal abstract fun bindsIncidentAssignmentRetryScheduler(
+        scheduler: WorkManagerIncidentAssignmentRetryScheduler
+    ): IncidentAssignmentRetryScheduler
 
     companion object {
 
