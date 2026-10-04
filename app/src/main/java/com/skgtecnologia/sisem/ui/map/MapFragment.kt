@@ -30,6 +30,7 @@ import com.mapbox.navigation.base.extensions.applyDefaultNavigationOptions
 import com.mapbox.navigation.base.extensions.applyLanguageAndVoiceUnitOptions
 import com.mapbox.navigation.base.formatter.DistanceFormatterOptions
 import com.mapbox.navigation.base.formatter.UnitType
+import com.mapbox.navigation.base.options.PredictiveCacheOptions
 import com.mapbox.navigation.base.route.NavigationRoute
 import com.mapbox.navigation.base.route.NavigationRouterCallback
 import com.mapbox.navigation.base.route.RouterFailure
@@ -49,6 +50,8 @@ import com.mapbox.navigation.tripdata.progress.model.EstimatedTimeToArrivalForma
 import com.mapbox.navigation.tripdata.progress.model.PercentDistanceTraveledFormatter
 import com.mapbox.navigation.tripdata.progress.model.TimeRemainingFormatter
 import com.mapbox.navigation.tripdata.progress.model.TripProgressUpdateFormatter
+import com.mapbox.navigation.ui.maps.PredictiveCacheController
+import com.mapbox.navigation.ui.maps.PredictiveCacheControllerErrorHandler
 import com.mapbox.navigation.ui.maps.camera.NavigationCamera
 import com.mapbox.navigation.ui.maps.camera.data.MapboxNavigationViewportDataSource
 import com.mapbox.navigation.ui.maps.camera.lifecycle.NavigationBasicGesturesHandler
@@ -166,6 +169,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         onResumedObserver = object : MapboxNavigationObserver {
             @SuppressLint("MissingPermission")
             override fun onAttached(mapboxNavigation: MapboxNavigation) {
+                startPredictiveCache(mapboxNavigation)
                 mapboxNavigation.registerArrivalObserver(arrivalObserver)
                 mapboxNavigation.registerRoutesObserver(routesObserver)
                 mapboxNavigation.registerLocationObserver(locationObserver)
@@ -186,6 +190,8 @@ class MapFragment : Fragment(R.layout.fragment_map) {
             }
 
             override fun onDetached(mapboxNavigation: MapboxNavigation) {
+                predictiveCacheController?.onDestroy()
+                predictiveCacheController = null
                 mapboxNavigation.unregisterArrivalObserver(arrivalObserver)
                 mapboxNavigation.unregisterRoutesObserver(routesObserver)
                 mapboxNavigation.unregisterLocationObserver(locationObserver)
@@ -194,6 +200,27 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         },
         onInitialize = this::initNavigation
     )
+
+    // Keeps map and routing tiles around the ambulance, its route and its destination on the
+    // device while there is signal, so the map and a reroute still work when coverage drops on
+    // the way to an incident.
+    private var predictiveCacheController: PredictiveCacheController? = null
+
+    private fun startPredictiveCache(mapboxNavigation: MapboxNavigation) {
+        val mapboxMap = mapBinding?.mapView?.mapboxMap ?: return
+        predictiveCacheController?.onDestroy()
+        predictiveCacheController = PredictiveCacheController(
+            mapboxNavigation,
+            PredictiveCacheOptions.Builder().build()
+        ).apply {
+            predictiveCacheControllerErrorHandler = object : PredictiveCacheControllerErrorHandler {
+                override fun onError(message: String?) {
+                    Timber.w("Predictive cache: $message")
+                }
+            }
+            createStyleMapControllers(mapboxMap)
+        }
+    }
 
     private val arrivalObserver: ArrivalObserver = object : ArrivalObserver {
         override fun onFinalDestinationArrival(routeProgress: RouteProgress) {
